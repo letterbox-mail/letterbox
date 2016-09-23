@@ -1,0 +1,216 @@
+//
+//  ReadViewController.swift
+//  readView
+//
+//  Created by Joscha on 22.07.16.
+//  Copyright © 2016 Joscha. All rights reserved.
+//
+
+import UIKit
+import Foundation
+
+class ReadViewController : UITableViewController {
+    @IBOutlet weak var sender: UILabel!
+    @IBOutlet weak var receivers: UILabel!
+    @IBOutlet weak var receivedTime: UILabel!
+    @IBOutlet weak var subject: UILabel!
+    @IBOutlet weak var messageBody: UILabel!
+    
+    // Cells
+    @IBOutlet weak var senderCell: UITableViewCell!
+    @IBOutlet weak var receiversCell: UITableViewCell!
+    @IBOutlet weak var subjectCell: UITableViewCell!
+    @IBOutlet weak var infoCell: UITableViewCell!
+    @IBOutlet weak var infoButtonCell: UITableViewCell!
+    @IBOutlet weak var messageCell: MessageBodyTableViewCell!
+        
+    @IBOutlet weak var iconButton: UIButton!
+    
+    @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
+    
+    var mail: Mail? = nil
+    let red = UIColor(red: 255/255, green: 99/255, blue: 99/255, alpha: 1.0)
+    let green = UIColor(red: 115/255, green: 229/255, blue: 105/255, alpha: 1.0)
+    let orange = UIColor(red: 247/255, green: 185/255, blue: 0/255, alpha: 1.0)
+    let defaultColor = UIColor.groupTableViewBackgroundColor() // UIColor(red: 242/255, green: 242/255, blue: 246/255, alpha: 1.0)
+
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 44.0
+        
+        // not possible to set in IB
+        SeperatorConstraint.constant = 0.5
+        infoCell.layoutMargins = UIEdgeInsetsZero
+
+        setUItoMail()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        // NavigationBar color
+        if let m = mail {
+            if m.trouble {
+                self.navigationController?.navigationBar.barTintColor = self.red
+            } else if m.isEncrypted {
+                self.navigationController?.navigationBar.barTintColor = self.green
+            } else {
+                self.navigationController?.navigationBar.barTintColor = self.orange
+            }
+        }
+    }
+    
+    override func willMoveToParentViewController(parent: UIViewController?) {
+        super.willMoveToParentViewController(parent)
+        
+        if parent == nil {
+            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = self.defaultColor})
+        }
+    }
+    
+    // set top seperator height
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 8
+        }
+        return tableView.sectionHeaderHeight
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if mail != nil {
+            if mail!.trouble && mail!.showMessage {
+                return 3
+            }
+        }
+        
+        return 2
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 3
+        }
+        if mail != nil {
+            if mail!.trouble && section == 1 {
+                if mail!.showMessage {
+                    return 1
+                } else {
+                    return 2
+                }
+            }
+        }
+        
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            switch indexPath.row {
+            case 0:
+                return senderCell
+            case 1:
+                return receiversCell
+            default:
+                return subjectCell
+            }
+        }
+        if indexPath.section == 1 {
+            if mail != nil {
+                if mail!.trouble {
+                    if indexPath.row == 0 {
+                        return infoCell
+                    } else if indexPath.row == 1 {
+                        return infoButtonCell
+                    }
+                }
+            } else {
+                return messageCell
+            }
+        }
+        
+        return messageCell
+    }
+    
+    @IBAction func showEmailButton(sender: UIButton) {
+        mail!.showMessage = true
+        
+        self.tableView.beginUpdates()
+        let path = NSIndexPath(forRow: 1, inSection: 1)
+        self.tableView.deleteRowsAtIndexPaths([path], withRowAnimation: .Fade)
+        self.tableView.insertSections(NSIndexSet(index: 2), withRowAnimation: .Fade)
+        self.tableView.endUpdates()
+    }
+    
+    @IBAction func ignoreEmailButton(sender: AnyObject) {
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func markUnreadButton(sender: AnyObject) {
+        mail?.isUnread = true
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func deleteButton(sender: AnyObject) {
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func iconButton(sender: AnyObject) {
+        if let m = mail {
+            let alert: UIAlertController
+            let url: String
+            if m.trouble {
+                alert = UIAlertController(title: "Angerissener Brief", message: "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.", preferredStyle: UIAlertControllerStyle.Alert)
+                url = "https://enzevalos.org/infos/corrupted"
+            } else if m.isEncrypted {
+                alert = UIAlertController(title: "Brief", message: "Diese Nachricht war ordnungsgemäß verschlossen. Er kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt", preferredStyle: UIAlertControllerStyle.Alert)
+                url = "https://enzevalos.org/infos/letter"
+            } else {
+                alert = UIAlertController(title: "Postkarte", message: "Diese Nachricht wurde unverschlüsselt gesendet und kann somit von Allen am Weg mitgelesen werden. Auch kann die Identität des Absenders nicht bestätigt werden.", preferredStyle: UIAlertControllerStyle.Alert)
+                url = "https://enzevalos.org/infos/postcard"
+            }
+            alert.addAction(UIAlertAction(title: "Mehr Informationen", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+            dispatch_async(dispatch_get_main_queue(), {
+                self.presentViewController(alert, animated: true, completion: nil)
+            })
+        }
+    }
+    
+    func setUItoMail() {
+        if let m = mail {
+            sender.text = m.sender
+            receivers.text = "An: " + m.receivers.joinWithSeparator(", ")
+            receivedTime.text = m.timeString
+            
+            if let subj = m.subject {
+                if subj != "" && subj != " " {
+                    subject.text = subj
+                } else {
+                    subject.text = "(Kein Betreff)"
+                }
+            }
+            
+            messageBody.text = m.body
+            
+            // NavigationBar Icon
+            let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 38))
+            iconView.contentMode = .ScaleAspectFit
+            var icon: UIImage
+            if m.trouble {
+                icon = UIImage(named: "letter_corrupted")!
+            } else if m.isEncrypted {
+                icon = UIImage(named: "letter_open")!
+            } else {
+                icon = UIImage(named: "postcard")!
+            }
+            iconView.image = icon
+            iconButton.setImage(icon, forState: UIControlState.Normal)
+        }
+    }
+}

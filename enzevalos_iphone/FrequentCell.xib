@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="frequent" id="w2v-x8-dyj" customClass="FrequentCell" customModule="mail_dynamic_icon_001" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EAf-Ln-NIo">
+                        <rect key="frame" x="10" y="0.0" width="60" height="70"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="70" id="QGM-0P-eJO"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2IJ-xu-7fu" userLabel="background">
+                        <rect key="frame" x="60" y="41" width="28" height="29"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PpF-WH-X3b">
+                        <rect key="frame" x="24" y="74" width="33" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Km-aB-hr6">
+                        <rect key="frame" x="64" y="45" width="20" height="20"/>
+                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="PpF-WH-X3b" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="w2v-x8-dyj" secondAttribute="leading" constant="5" id="3br-Vm-olJ"/>
+                <constraint firstAttribute="trailing" secondItem="EAf-Ln-NIo" secondAttribute="trailing" constant="10" id="7ga-yh-RtT"/>
+                <constraint firstAttribute="bottom" secondItem="PpF-WH-X3b" secondAttribute="bottom" id="FO3-Bu-Mfq" userLabel="bottom = Name.bottom"/>
+                <constraint firstItem="PpF-WH-X3b" firstAttribute="centerX" secondItem="w2v-x8-dyj" secondAttribute="centerX" id="J0p-Wn-JmD"/>
+                <constraint firstItem="PpF-WH-X3b" firstAttribute="top" secondItem="EAf-Ln-NIo" secondAttribute="bottom" constant="4" id="q6O-5t-WCb"/>
+                <constraint firstItem="EAf-Ln-NIo" firstAttribute="top" secondItem="w2v-x8-dyj" secondAttribute="top" id="tSd-gS-rCL"/>
+                <constraint firstItem="EAf-Ln-NIo" firstAttribute="leading" secondItem="w2v-x8-dyj" secondAttribute="leading" constant="10" id="wBg-8I-TqR" userLabel="Img.leading = leading + 5"/>
+            </constraints>
+            <size key="customSize" width="80" height="90"/>
+            <connections>
+                <outlet property="background" destination="2IJ-xu-7fu" id="Ahm-dc-bst"/>
+                <outlet property="img" destination="EAf-Ln-NIo" id="gE0-Xg-UZI"/>
+                <outlet property="name" destination="PpF-WH-X3b" id="6vF-Jw-RGP"/>
+                <outlet property="type" destination="0Km-aB-hr6" id="EAI-t3-kHM"/>
+            </connections>
+            <point key="canvasLocation" x="825" y="210"/>
+        </collectionViewCell>
+    </objects>
+</document>
