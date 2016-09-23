@@ -8,7 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="inboxCell" rowHeight="130" id="CFu-ns-kay" userLabel="inboxCell" customClass="InboxTableViewCell" customModule="enzevalos_iphone" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="inboxCell" rowHeight="130" id="CFu-ns-kay" userLabel="inboxCell" customClass="InboxTableViewCell" customModule="enzevalos_iphone">
             <rect key="frame" x="0.0" y="0.0" width="400" height="130"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CFu-ns-kay" id="iQP-01-jFC" userLabel="Container">
@@ -97,7 +97,7 @@
                             <action selector="moreButtonPressed:" destination="CFu-ns-kay" eventType="touchUpInside" id="twS-jf-JDL"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ixt-EX-9TM">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ixt-EX-9TM">
                         <rect key="frame" x="8" y="90" width="86" height="32"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="r0W-bg-uj9"/>
