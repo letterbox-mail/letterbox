@@ -1,0 +1,525 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
+		A135267B1D955BDF00D3BFE1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135267A1D955BDF00D3BFE1 /* ViewController.swift */; };
+		A135267E1D955BDF00D3BFE1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A135267C1D955BDF00D3BFE1 /* Main.storyboard */; };
+		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
+		A13526831D955BDF00D3BFE1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A13526821D955BDF00D3BFE1 /* Assets.xcassets */; };
+		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
+		A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */; };
+		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A135268D1D955BE000D3BFE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A135266D1D955BDF00D3BFE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A13526741D955BDF00D3BFE1;
+			remoteInfo = enzevalos_iphone;
+		};
+		A13526981D955BE000D3BFE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A135266D1D955BDF00D3BFE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A13526741D955BDF00D3BFE1;
+			remoteInfo = enzevalos_iphone;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A135267A1D955BDF00D3BFE1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A135267D1D955BDF00D3BFE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = enzevalos_iphone.xcdatamodel; sourceTree = "<group>"; };
+		A13526821D955BDF00D3BFE1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A13526851D955BDF00D3BFE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A13526871D955BDF00D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A135268C1D955BE000D3BFE1 /* enzevalos_iphoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = enzevalos_iphoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enzevalos_iphoneTests.swift; sourceTree = "<group>"; };
+		A13526921D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A13526971D955BE000D3BFE1 /* enzevalos_iphoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = enzevalos_iphoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enzevalos_iphoneUITests.swift; sourceTree = "<group>"; };
+		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A13526721D955BDF00D3BFE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A13526891D955BE000D3BFE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A13526941D955BE000D3BFE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A135266C1D955BDF00D3BFE1 = {
+			isa = PBXGroup;
+			children = (
+				A13526771D955BDF00D3BFE1 /* enzevalos_iphone */,
+				A135268F1D955BE000D3BFE1 /* enzevalos_iphoneTests */,
+				A135269A1D955BE000D3BFE1 /* enzevalos_iphoneUITests */,
+				A13526761D955BDF00D3BFE1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A13526761D955BDF00D3BFE1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */,
+				A135268C1D955BE000D3BFE1 /* enzevalos_iphoneTests.xctest */,
+				A13526971D955BE000D3BFE1 /* enzevalos_iphoneUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
+			isa = PBXGroup;
+			children = (
+				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
+				A135267A1D955BDF00D3BFE1 /* ViewController.swift */,
+				A135267C1D955BDF00D3BFE1 /* Main.storyboard */,
+				A13526821D955BDF00D3BFE1 /* Assets.xcassets */,
+				A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */,
+				A13526871D955BDF00D3BFE1 /* Info.plist */,
+				A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */,
+			);
+			path = enzevalos_iphone;
+			sourceTree = "<group>";
+		};
+		A135268F1D955BE000D3BFE1 /* enzevalos_iphoneTests */ = {
+			isa = PBXGroup;
+			children = (
+				A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */,
+				A13526921D955BE000D3BFE1 /* Info.plist */,
+			);
+			path = enzevalos_iphoneTests;
+			sourceTree = "<group>";
+		};
+		A135269A1D955BE000D3BFE1 /* enzevalos_iphoneUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */,
+				A135269D1D955BE000D3BFE1 /* Info.plist */,
+			);
+			path = enzevalos_iphoneUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A13526741D955BDF00D3BFE1 /* enzevalos_iphone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A13526A01D955BE000D3BFE1 /* Build configuration list for PBXNativeTarget "enzevalos_iphone" */;
+			buildPhases = (
+				A13526711D955BDF00D3BFE1 /* Sources */,
+				A13526721D955BDF00D3BFE1 /* Frameworks */,
+				A13526731D955BDF00D3BFE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = enzevalos_iphone;
+			productName = enzevalos_iphone;
+			productReference = A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A135268B1D955BE000D3BFE1 /* enzevalos_iphoneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A13526A31D955BE000D3BFE1 /* Build configuration list for PBXNativeTarget "enzevalos_iphoneTests" */;
+			buildPhases = (
+				A13526881D955BE000D3BFE1 /* Sources */,
+				A13526891D955BE000D3BFE1 /* Frameworks */,
+				A135268A1D955BE000D3BFE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A135268E1D955BE000D3BFE1 /* PBXTargetDependency */,
+			);
+			name = enzevalos_iphoneTests;
+			productName = enzevalos_iphoneTests;
+			productReference = A135268C1D955BE000D3BFE1 /* enzevalos_iphoneTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A13526961D955BE000D3BFE1 /* enzevalos_iphoneUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A13526A61D955BE000D3BFE1 /* Build configuration list for PBXNativeTarget "enzevalos_iphoneUITests" */;
+			buildPhases = (
+				A13526931D955BE000D3BFE1 /* Sources */,
+				A13526941D955BE000D3BFE1 /* Frameworks */,
+				A13526951D955BE000D3BFE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A13526991D955BE000D3BFE1 /* PBXTargetDependency */,
+			);
+			name = enzevalos_iphoneUITests;
+			productName = enzevalos_iphoneUITests;
+			productReference = A13526971D955BE000D3BFE1 /* enzevalos_iphoneUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A135266D1D955BDF00D3BFE1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "fu-berlin";
+				TargetAttributes = {
+					A13526741D955BDF00D3BFE1 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 4377G946WP;
+					};
+					A135268B1D955BE000D3BFE1 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 4377G946WP;
+						TestTargetID = A13526741D955BDF00D3BFE1;
+					};
+					A13526961D955BE000D3BFE1 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 4377G946WP;
+						TestTargetID = A13526741D955BDF00D3BFE1;
+					};
+				};
+			};
+			buildConfigurationList = A13526701D955BDF00D3BFE1 /* Build configuration list for PBXProject "enzevalos_iphone" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A135266C1D955BDF00D3BFE1;
+			productRefGroup = A13526761D955BDF00D3BFE1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A13526741D955BDF00D3BFE1 /* enzevalos_iphone */,
+				A135268B1D955BE000D3BFE1 /* enzevalos_iphoneTests */,
+				A13526961D955BE000D3BFE1 /* enzevalos_iphoneUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A13526731D955BDF00D3BFE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
+				A13526831D955BDF00D3BFE1 /* Assets.xcassets in Resources */,
+				A135267E1D955BDF00D3BFE1 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A135268A1D955BE000D3BFE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A13526951D955BE000D3BFE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A13526711D955BDF00D3BFE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A135267B1D955BDF00D3BFE1 /* ViewController.swift in Sources */,
+				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
+				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A13526881D955BE000D3BFE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A13526931D955BE000D3BFE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A135268E1D955BE000D3BFE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A13526741D955BDF00D3BFE1 /* enzevalos_iphone */;
+			targetProxy = A135268D1D955BE000D3BFE1 /* PBXContainerItemProxy */;
+		};
+		A13526991D955BE000D3BFE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A13526741D955BDF00D3BFE1 /* enzevalos_iphone */;
+			targetProxy = A13526981D955BE000D3BFE1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A135267C1D955BDF00D3BFE1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A135267D1D955BDF00D3BFE1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A13526851D955BDF00D3BFE1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A135269E1D955BE000D3BFE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A135269F1D955BE000D3BFE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A13526A11D955BE000D3BFE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A13526A21D955BE000D3BFE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		A13526A41D955BE000D3BFE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/enzevalos_iphone.app/enzevalos_iphone";
+			};
+			name = Debug;
+		};
+		A13526A51D955BE000D3BFE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/enzevalos_iphone.app/enzevalos_iphone";
+			};
+			name = Release;
+		};
+		A13526A71D955BE000D3BFE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = enzevalos_iphoneUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = enzevalos_iphone;
+			};
+			name = Debug;
+		};
+		A13526A81D955BE000D3BFE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = enzevalos_iphoneUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = enzevalos_iphone;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A13526701D955BDF00D3BFE1 /* Build configuration list for PBXProject "enzevalos_iphone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A135269E1D955BE000D3BFE1 /* Debug */,
+				A135269F1D955BE000D3BFE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A13526A01D955BE000D3BFE1 /* Build configuration list for PBXNativeTarget "enzevalos_iphone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A13526A11D955BE000D3BFE1 /* Debug */,
+				A13526A21D955BE000D3BFE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		A13526A31D955BE000D3BFE1 /* Build configuration list for PBXNativeTarget "enzevalos_iphoneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A13526A41D955BE000D3BFE1 /* Debug */,
+				A13526A51D955BE000D3BFE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		A13526A61D955BE000D3BFE1 /* Build configuration list for PBXNativeTarget "enzevalos_iphoneUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A13526A71D955BE000D3BFE1 /* Debug */,
+				A13526A81D955BE000D3BFE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */,
+			);
+			currentVersion = A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */;
+			path = enzevalos_iphone.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = A135266D1D955BDF00D3BFE1 /* Project object */;
+}
