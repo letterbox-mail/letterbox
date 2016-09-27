@@ -29,15 +29,15 @@ class FrequentCell : UICollectionViewCell {
         // Clip context to a circle
         //
         let path = CGPathCreateWithEllipseInRect(myBounds, nil);
-        CGContextAddPath(context, path);
-        CGContextClip(context);
+        CGContextAddPath(context!, path);
+        CGContextClip(context!);
         
         
         //
         // Fill background of context
         //
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
+        CGContextSetFillColorWithColor(context!, color.CGColor)
+        CGContextFillRect(context!, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
         
         let snapshot = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();

@@ -42,15 +42,15 @@ extension CNContact {
         // Clip context to a circle
         //
         let path = CGPathCreateWithEllipseInRect(myBounds, nil);
-        CGContextAddPath(context, path);
-        CGContextClip(context);
+        CGContextAddPath(context!, path);
+        CGContextClip(context!);
         
         
         //
         // Fill background of context
         //
-        CGContextSetFillColorWithColor(context, self.getColor().CGColor)
-        CGContextFillRect(context, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
+        CGContextSetFillColorWithColor(context!, self.getColor().CGColor)
+        CGContextFillRect(context!, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
         
         //
         // Draw text in the context
@@ -61,12 +61,12 @@ extension CNContact {
         
         let snapshot = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        return snapshot
+        return snapshot!
     }
     
     func getColor() -> UIColor{
         
-        srand(UInt32(abs((self.emailAddresses.last!.value as! String).hash) % Int(UInt32.max)))
-        return UIColor(hue: CGFloat(rand()) / CGFloat(INT_MAX), saturation: 1, brightness: 0.75, alpha: 1)
+        let hash = abs((self.emailAddresses.last!.value as! String).hash) % Int(UInt32.max)
+        return UIColor(hue: CGFloat(hash) / CGFloat(INT_MAX), saturation: 1, brightness: 0.75, alpha: 1)
     }
 }
