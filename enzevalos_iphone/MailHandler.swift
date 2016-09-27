@@ -23,7 +23,7 @@ class MailHandler {
     func send(toEntrys : [String], ccEntrys : [String], bccEntrys : [String], subject : String, message : String, callback : (NSError?) -> Void){
         //http://stackoverflow.com/questions/31485359/sending-mailcore2-plain-emails-in-swift
         
-        /*let session =  MCOSMTPSession()
+        let session =  MCOSMTPSession()
         session.hostname = hostname
         session.port = port
         session.username = useraddr
@@ -61,7 +61,7 @@ class MailHandler {
         let rfc822Data = builder.data()
         let sendOperation = session.sendOperationWithData(rfc822Data)
         
-        sendOperation.start(callback)*/
+        sendOperation.start(callback)
     }
     
 }

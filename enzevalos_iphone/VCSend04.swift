@@ -263,8 +263,9 @@ class VCSend04: UIViewController, UITextViewDelegate{
                 //self.scrollview.heightAnchor -= self.reducedSize
                 
                 //self.bottomConstraint.constant = self.reducedSize
-                let contentInsets = UIEdgeInsetsMake(0.0, 0.0, self.reducedSize, 0.0)
+                let contentInsets = UIEdgeInsetsMake(self.toText.frame.minY/*self.navigationController!.navigationBar.frame.size.height*//*0.0*/, 0.0, self.reducedSize, 0.0)
                 self.scrollview!.contentInset = contentInsets
+                //self.scrollview!.setContentOffset(CGPoint(x: self.scrollview!.contentOffset.x,y: self.scrollview!.contentOffset.y-self.reducedSize), animated: false)
                 //self.scrollview!.scrollIndicatorInsets = contentInsets
             })
             //print(self.bottomConstraint.constant)
