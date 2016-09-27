@@ -24,6 +24,7 @@ class AddressHandler {
             }*/
         var cons : [(UIImage,String,String,UIImage?,UIColor)] = []
             do{
+                
                 try AppDelegate.getAppDelegate().contactStore.enumerateContactsWithFetchRequest(CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey]), usingBlock: {
                     (let c : CNContact, let stop) -> Void in
                     print(c)

@@ -125,7 +125,10 @@ class VCSend04: UIViewController, UITextViewDelegate{
         if let inText = tokenField.inputText(){
             if inText != "" {
                 scrollview.scrollEnabled = false
-                scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y)
+                //ccCollectionviewHeight.constant = 0
+                //toCollectionviewHeight.constant = 0
+                scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y-self.topLayoutGuide.length)
+                print(tokenField.frame.origin.y, " ", tokenField.frame.maxY)
                 tableviewBegin.constant = tokenField.frame.maxY-tokenField.frame.origin.y
                 tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
                 //tableDataDelegate.tokenField = tokenField
@@ -135,6 +138,12 @@ class VCSend04: UIViewController, UITextViewDelegate{
             else {
                 scrollview.scrollEnabled = true
                 tableviewHeight.constant = 0
+                if tokenField == toText {
+//toCollectionviewHeight.constant = 100
+                }
+                else {
+                    //ccCollectionviewHeight.constant = 100
+                }
             }
         }
     }
@@ -263,7 +272,7 @@ class VCSend04: UIViewController, UITextViewDelegate{
                 //self.scrollview.heightAnchor -= self.reducedSize
                 
                 //self.bottomConstraint.constant = self.reducedSize
-                let contentInsets = UIEdgeInsetsMake(self.toText.frame.minY/*self.navigationController!.navigationBar.frame.size.height*//*0.0*/, 0.0, self.reducedSize, 0.0)
+                let contentInsets = UIEdgeInsetsMake(/*(self.navigationController?.navigationBar.frame.height)!+*/self.topLayoutGuide.length/*self.navigationController!.navigationBar.frame.size.height*//*0.0*/, 0.0, self.reducedSize, 0.0)
                 self.scrollview!.contentInset = contentInsets
                 //self.scrollview!.setContentOffset(CGPoint(x: self.scrollview!.contentOffset.x,y: self.scrollview!.contentOffset.y-self.reducedSize), animated: false)
                 //self.scrollview!.scrollIndicatorInsets = contentInsets
@@ -281,7 +290,7 @@ class VCSend04: UIViewController, UITextViewDelegate{
                 
                 //self.bottomConstraint.constant = 0
                 self.reducedSize = 0
-                let contentInsets = UIEdgeInsetsMake(0.0, 0.0, self.reducedSize, 0.0)
+                let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length/*0.0*/, 0.0, self.reducedSize, 0.0)
                 self.scrollview!.contentInset = contentInsets
                 //self.scrollview!.scrollIndicatorInsets = contentInsets
             })
