@@ -33,13 +33,16 @@ class InboxTableViewCell: UITableViewCell {
     }
     
     @IBAction func secondButtonPressed(sender: AnyObject) {
-        if let delegate = delegate where secondMail != nil{
+        if let delegate = delegate where secondMail != nil {
             secondMail!.isUnread = false
             delegate.callSegueFromCell(secondMail)
         }
     }
     
     @IBAction func moreButtonPressed(sender: AnyObject) {
+        if let delegate = delegate {
+            delegate.callSegueFromCell(enzContact)
+        }
     }
     
     var enzContact: EnzevalosContact? {

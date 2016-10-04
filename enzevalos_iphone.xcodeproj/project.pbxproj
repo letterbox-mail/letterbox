@@ -74,6 +74,8 @@
 		A1EB05ED1D956F8E008659C1 /* Unbenannt.gif in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05C91D956F8E008659C1 /* Unbenannt.gif */; };
 		EE57562DDC09AD98702A0BA4 /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */; };
 		EE9FF2F1FD02293642A4B05C /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C1165F07662D8C13674825 /* Pods_enzevalos_iphoneTests.framework */; };
+		F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
+		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -173,6 +175,8 @@
 		AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F12041FA1DA3FBF7002E4940 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		FC2DE71EDB6C5C054D57F260 /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -309,6 +313,8 @@
 			isa = PBXGroup;
 			children = (
 				A1EB058F1D956923008659C1 /* ReadViewController.swift */,
+				F12041FA1DA3FBF7002E4940 /* ListViewController.swift */,
+				F12041FC1DA409A5002E4940 /* ListViewCell.swift */,
 				A1EB05931D956931008659C1 /* InboxCellDelegator.swift */,
 				A1EB05951D956939008659C1 /* InboxTableViewCell.swift */,
 				A1EB05971D956947008659C1 /* InboxViewController.swift */,
@@ -666,6 +672,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
@@ -686,6 +693,7 @@
 				A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
+				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
