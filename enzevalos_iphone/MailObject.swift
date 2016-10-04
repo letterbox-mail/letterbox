@@ -9,13 +9,14 @@
 import Foundation
 
 class Mail: Comparable {
-    var sender: String?
-    var receivers = [String]()
+    let uid: UInt32
+    var sender: MCOAddress?
+    var receivers = [MCOAddress]()
     let time: NSDate?
     let received: Bool
     var subject: String?
     var body: String?
-    var isUnread = true
+    var isUnread: Bool
     var isVerified = false
     var isEncrypted = false
     var showMessage = true
@@ -33,7 +34,8 @@ class Mail: Comparable {
         let dateFormatter = NSDateFormatter()
         dateFormatter.locale = NSLocale(localeIdentifier: "de_DE")
         if let mailTime = self.time {
-            switch mailTime.timeIntervalSinceNow {
+            let interval = NSDate().timeIntervalSinceDate(mailTime)
+            switch interval {
             case -1..<55:
                 returnString = "jetzt"
             case 55..<120:
@@ -53,7 +55,8 @@ class Mail: Comparable {
         return returnString
     }
 
-    init(sender: String?, receivers: [String], time: NSDate?, received: Bool, subject: String?, body: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool) {
+    init(uid: UInt32, sender: MCOAddress?, receivers: [MCOAddress], time: NSDate?, received: Bool, subject: String?, body: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool) {
+        self.uid = uid
         self.sender = sender
         self.subject = subject
         self.receivers = receivers
@@ -61,6 +64,7 @@ class Mail: Comparable {
         self.received = received
         self.subject = subject
         self.body = body
+        self.isUnread = isUnread
         self.isEncrypted = isEncrypted
         self.isVerified = isVerified
         setTrouble(trouble)
@@ -72,7 +76,7 @@ class Mail: Comparable {
 }
 
 func ==(lhs: Mail, rhs: Mail) -> Bool {
-    return lhs.time == rhs.time
+    return lhs.time == rhs.time && lhs.uid == rhs.uid
 }
 
 func <(lhs: Mail, rhs: Mail) -> Bool {

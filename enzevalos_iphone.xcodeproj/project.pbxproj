@@ -255,6 +255,10 @@
 				A1EB05761D9567F2008659C1 /* read */,
 				A1EB05751D956748008659C1 /* send */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
+				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
+				A1EB05911D95692A008659C1 /* MailObject.swift */,
+				A1EB059D1D956963008659C1 /* EnzevalosContact.swift */,
+				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				A1EB05771D956817008659C1 /* ImageExtension.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
 				A1EB058D1D956913008659C1 /* Main.storyboard */,
@@ -292,7 +296,6 @@
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
 				A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */,
 				A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */,
-				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				A1EB05871D956879008659C1 /* AddressHandler.swift */,
 				A1EB05791D956829008659C1 /* ContactCell.swift */,
 				A1EB05851D956872008659C1 /* FrequentCell.swift */,
@@ -306,13 +309,10 @@
 			isa = PBXGroup;
 			children = (
 				A1EB058F1D956923008659C1 /* ReadViewController.swift */,
-				A1EB05911D95692A008659C1 /* MailObject.swift */,
 				A1EB05931D956931008659C1 /* InboxCellDelegator.swift */,
 				A1EB05951D956939008659C1 /* InboxTableViewCell.swift */,
 				A1EB05971D956947008659C1 /* InboxViewController.swift */,
 				A1EB05991D95694E008659C1 /* FillInbox.swift */,
-				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
-				A1EB059D1D956963008659C1 /* EnzevalosContact.swift */,
 				A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */,
 				A1EB05A11D956972008659C1 /* InboxTableViewCell.xib */,
 			);
@@ -829,8 +829,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 2.3;
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -846,8 +846,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 2.3;
 				"SWIFT_OBJC_BRIDGING_HEADER[sdk=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};

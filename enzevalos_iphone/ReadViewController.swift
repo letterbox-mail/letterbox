@@ -168,7 +168,7 @@ class ReadViewController : UITableViewController {
                 alert = UIAlertController(title: "Angerissener Brief", message: "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.", preferredStyle: UIAlertControllerStyle.Alert)
                 url = "https://enzevalos.org/infos/corrupted"
             } else if m.isEncrypted {
-                alert = UIAlertController(title: "Brief", message: "Diese Nachricht war ordnungsgemäß verschlossen. Er kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt", preferredStyle: UIAlertControllerStyle.Alert)
+                alert = UIAlertController(title: "Brief", message: "Diese Nachricht war ordnungsgemäß verschlossen. Sie kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt", preferredStyle: UIAlertControllerStyle.Alert)
                 url = "https://enzevalos.org/infos/letter"
             } else {
                 alert = UIAlertController(title: "Postkarte", message: "Diese Nachricht wurde unverschlüsselt gesendet und kann somit von Allen am Weg mitgelesen werden. Auch kann die Identität des Absenders nicht bestätigt werden.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -184,8 +184,12 @@ class ReadViewController : UITableViewController {
     
     func setUItoMail() {
         if let m = mail {
-            sender.text = m.sender
-            receivers.text = "An: " + m.receivers.joinWithSeparator(", ")
+            sender.text = m.sender?.mailbox
+            receivers.text = "An: "
+            for r in m.receivers {
+                receivers.text?.appendContentsOf(r.mailbox)
+                receivers.text?.appendContentsOf(" ")
+            }
             receivedTime.text = m.timeString
             
             if let subj = m.subject {

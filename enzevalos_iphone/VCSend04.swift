@@ -42,7 +42,7 @@ class VCSend04: UIViewController, UITextViewDelegate{
     var mailHandler = MailHandler()
     var tableDataDelegate = TableViewDataDelegate(insertCallback: {(name : String, address : String) -> Void in return})
     var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: {(name : String, address : String) -> Void in return})
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         dataDelegate = VENDataDelegate(changeFunc: self.editName)
@@ -166,7 +166,7 @@ class VCSend04: UIViewController, UITextViewDelegate{
         if authorizationStatus == CNAuthorizationStatus.Authorized {
             do {
                 let contacts = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName(prefix), keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
-                print(contacts)
+//                print(contacts)
                 var indexes : [NSIndexPath] = []
                 var i = 0
                 for (i=0; i<tableview.numberOfRowsInSection(0); i+=1) {

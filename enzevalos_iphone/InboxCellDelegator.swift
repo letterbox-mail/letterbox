@@ -8,4 +8,5 @@
 
 protocol InboxCellDelegator {
     func callSegueFromCell(mail: Mail?)
+    func addNewMail(mail: Mail)
 }

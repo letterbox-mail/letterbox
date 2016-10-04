@@ -38,10 +38,10 @@ func generateMail() -> [EnzevalosContact] {
             date = dateFormatter.dateFromString(d)
             } while(date == nil)
             
-            let mail = Mail(sender: emails[c], receivers: ["bob@web.de", emails[Int(arc4random_uniform(UInt32(emails.count)))]], time: date, received: true, subject: subjects[Int(arc4random_uniform(UInt32(subjects.count)))], body: lorem, isEncrypted: encrypted, isVerified: false, trouble: false)
-            mail.isUnread = randBool()
-            
-            mails.append(mail)
+//            let mail = Mail(sender: emails[c], receivers: ["bob@web.de", emails[Int(arc4random_uniform(UInt32(emails.count)))]], time: date, received: true, subject: subjects[Int(arc4random_uniform(UInt32(subjects.count)))], body: lorem, isEncrypted: encrypted, isVerified: false, trouble: false)
+//            mail.isUnread = randBool()
+//            
+//            mails.append(mail)
         }
         
         contacts.append(EnzevalosContact(contact: con, mails: mails))
