@@ -13,9 +13,11 @@ import Contacts
 class InboxViewController : UITableViewController, InboxCellDelegator {
     var contacts: [EnzevalosContact] = [] {
         didSet {
-            contacts.sortInPlace()
-            tableView.reloadData()
-            print("Refreshed TableView")
+            self.contacts.sortInPlace()
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.tableView.reloadData()
+                print("Refreshed TableView")
+            })
         }
     }
     let mailHandler = MailHandler()

@@ -21,6 +21,9 @@ class MailHandler {
     var IMAPPort: UInt32 = 993
     
     var delegate: InboxCellDelegator?
+    var lastUID: UInt64 = 1
+    
+    var IMAPSession: MCOIMAPSession?
     
     //TODO: signatur hinzufügen
     
@@ -70,7 +73,7 @@ class MailHandler {
         sendOperation.start(callback)
     }
     
-    func recieve() {
+    func setupIMAPSession() {
         let imapsession = MCOIMAPSession()
         imapsession.hostname = IMAPHostname
         imapsession.port = IMAPPort
@@ -78,19 +81,30 @@ class MailHandler {
         imapsession.password = pw
         imapsession.authType = MCOAuthType.SASLPlain
         imapsession.connectionType = MCOConnectionType.TLS
+        self.IMAPSession = imapsession
+    }
+    
+    func recieve() {
+        if IMAPSession == nil {
+            setupIMAPSession()
+        }
         
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
         let folder = "INBOX"
-        let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
-        let fetchOperation : MCOIMAPFetchMessagesOperation = imapsession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
+        let uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
+        let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession!.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.start { (err, msg, vanished) -> Void in
             if let error = err {
                 print("error from server \(error)")
             }
             if let msgs = msg {
+                var biggest = self.lastUID
                 for m in msgs {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
-                    let op = imapsession.fetchMessageByUIDOperationWithFolder(folder, uid: message.uid)
+                    if UInt64(message.uid) > biggest {
+                        biggest = UInt64(message.uid)
+                    }
+                    let op = self.IMAPSession!.fetchMessageByUIDOperationWithFolder(folder, uid: message.uid)
                     op.start { (err, data) -> Void in
                         let msgParser = MCOMessageParser(data: data)
                         let html: String = msgParser.plainTextBodyRendering()
@@ -102,24 +116,14 @@ class MailHandler {
                                 rec.append(r as! MCOAddress)
                             }
                         }
-                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: header.subject, body: html, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead)
-                        
-                        print("Got new Mail!")
+                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: "UID: \(message.uid) \(header.subject)", body: html, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead)
+
+                        print("Got new Mail! Subject: \(header.subject)")
                         self.delegate?.addNewMail(mail)
-                        
                     }
+                    self.lastUID = biggest
                 }
             }
         }
-        
-        //        imapsession.disconnectOperation().start {
-        //            (error) -> Void in
-        //            if let e = error {
-        //                print("Error while disconnecting: \(e)")
-        //            }
-        //
-        //        }
-        //        return returns
     }
-    
 }
