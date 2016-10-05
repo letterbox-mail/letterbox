@@ -20,7 +20,7 @@ class MailHandler {
     var IMAPHostname = "imap.web.de"
     var IMAPPort: UInt32 = 993
     
-    var delegate: InboxCellDelegator?
+    var delegate: MailHandlerDelegator?
     var lastUID: UInt64 = 1
     
     var IMAPSession: MCOIMAPSession?
@@ -99,6 +99,7 @@ class MailHandler {
             }
             if let msgs = msg {
                 var biggest = self.lastUID
+                let dispatchGroup = dispatch_group_create()
                 for m in msgs {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
                     if UInt64(message.uid) > biggest {
@@ -106,6 +107,7 @@ class MailHandler {
                     }
                     let op = self.IMAPSession!.fetchMessageByUIDOperationWithFolder(folder, uid: message.uid)
                     op.start { (err, data) -> Void in
+                        dispatch_group_enter(dispatchGroup)
                         let msgParser = MCOMessageParser(data: data)
                         let html: String = msgParser.plainTextBodyRendering()
                         var rec: [MCOAddress] = []
@@ -118,10 +120,15 @@ class MailHandler {
                         }
                         let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: "UID: \(message.uid) \(header.subject)", body: html, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead)
 
-                        print("Got new Mail! Subject: \(header.subject)")
                         self.delegate?.addNewMail(mail)
+                        dispatch_group_leave(dispatchGroup)
                     }
                     self.lastUID = biggest
+                    
+                    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
+                        print("All Done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                        self.delegate?.getMailCompleted()
+                    }
                 }
             }
         }

@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import Contacts
 
-class InboxViewController : UITableViewController, InboxCellDelegator {
+class InboxViewController : UITableViewController, InboxCellDelegator, MailHandlerDelegator {
     var contacts: [EnzevalosContact] = [] {
         didSet {
             self.contacts.sortInPlace()
@@ -22,6 +22,17 @@ class InboxViewController : UITableViewController, InboxCellDelegator {
     }
     let mailHandler = MailHandler()
     
+    @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
+    var lastUpdateLabel = UILabel(frame: CGRectZero)
+    var lastUpdateText: String? {
+        didSet {
+            lastUpdateLabel.text = lastUpdateText
+            lastUpdateLabel.sizeToFit()
+        }
+    }
+    
+    var lastUpdate: NSDate?
+
     func addNewMail(mail: Mail) {
         var isAdded = false
         for contact in contacts {
@@ -31,31 +42,29 @@ class InboxViewController : UITableViewController, InboxCellDelegator {
                     if !contact.mails.contains(mail) {
                         contact.mails.append(mail)
                     }
-                    isAdded = true
+                    return
                 }
             }
         }
         // TODO: Check if contact exists in address book
         
-        if !isAdded {
-            // Neuer Kontakt muss angelegt werden
-            let con = CNMutableContact()
-            let name = mail.sender?.displayName
-            if let n = name {
-                let nameArray = n.characters.split(" ").map(String.init)
-                if let n = nameArray.first {
-                    con.givenName = n
-                }
-                if let fam = nameArray.last {
-                    con.familyName = fam
-                } else {
-                    con.givenName = "NO"
-                    con.familyName = "NAME"
-                }
+        // Neuer Kontakt muss angelegt werden
+        let con = CNMutableContact()
+        let name = mail.sender?.displayName
+        if let n = name {
+            let nameArray = n.characters.split(" ").map(String.init)
+            if let n = nameArray.first {
+                con.givenName = n
             }
-            con.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: mail.sender!.mailbox)]
-            contacts.append(EnzevalosContact(contact: con, mails: [mail]))
+            if let fam = nameArray.last {
+                con.familyName = fam
+            } else {
+                con.givenName = "NO"
+                con.familyName = "NAME"
+            }
         }
+        con.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: mail.sender!.mailbox)]
+        contacts.append(EnzevalosContact(contact: con, mails: [mail]))
     }
     
     override func viewDidLoad() {
@@ -65,24 +74,42 @@ class InboxViewController : UITableViewController, InboxCellDelegator {
         tableView.sectionFooterHeight = 0
         
         self.refreshControl?.addTarget(self, action: #selector(InboxViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+//        self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        
+        lastUpdateLabel.sizeToFit()
+        lastUpdateLabel.backgroundColor = UIColor.clearColor()
+        lastUpdateLabel.textAlignment = .Center
+        lastUpdateLabel.font = UIFont.systemFontOfSize(13)
+        lastUpdateLabel.textColor = UIColor.blackColor()
+        lastUpdateButton.customView = lastUpdateLabel
+        
 //        random mail generation
 //        contacts = generateMail()
-        self.mailHandler.delegate = self
-        self.mailHandler.recieve()
         
+        self.mailHandler.delegate = self
         
         tableView.registerNib(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
     }
     
     func refresh(refreshControl: UIRefreshControl) {
         print("refresh")
+        lastUpdateText = "Updating..."
         self.mailHandler.recieve()
-        tableView.reloadData()
-        refreshControl.endRefreshing()
+    }
+    
+    func getMailCompleted() {
+        if let rc = self.refreshControl {
+            lastUpdate = NSDate()
+            rc.endRefreshing()
+            lastUpdateText = "Just refreshed"
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
+        if lastUpdate == nil || NSDate().timeIntervalSinceDate(lastUpdate!) > 30 {
+            self.refreshControl?.beginRefreshingManually()
+        }
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

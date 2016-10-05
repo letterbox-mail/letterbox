@@ -76,6 +76,8 @@
 		EE9FF2F1FD02293642A4B05C /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C1165F07662D8C13674825 /* Pods_enzevalos_iphoneTests.framework */; };
 		F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
+		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
+		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -177,6 +179,8 @@
 		DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F12041FA1DA3FBF7002E4940 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
+		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
+		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
 		FC2DE71EDB6C5C054D57F260 /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -316,8 +320,10 @@
 				F12041FA1DA3FBF7002E4940 /* ListViewController.swift */,
 				F12041FC1DA409A5002E4940 /* ListViewCell.swift */,
 				A1EB05931D956931008659C1 /* InboxCellDelegator.swift */,
+				F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */,
 				A1EB05951D956939008659C1 /* InboxTableViewCell.swift */,
 				A1EB05971D956947008659C1 /* InboxViewController.swift */,
+				F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */,
 				A1EB05991D95694E008659C1 /* FillInbox.swift */,
 				A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */,
 				A1EB05A11D956972008659C1 /* InboxTableViewCell.xib */,
@@ -681,6 +687,7 @@
 				A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
+				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
 				A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				A1EB05781D956817008659C1 /* ImageExtension.swift in Sources */,
@@ -692,6 +699,7 @@
 				A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */,
 				A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
+				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
 			);

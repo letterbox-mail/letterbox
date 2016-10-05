@@ -113,7 +113,7 @@ class InboxTableViewCell: UITableViewCell {
                 }
                 let messageArray = message.componentsSeparatedByString("\n")
                 secondMessageLabel.text = messageArray.joinWithSeparator(" ")
-               
+                
                 secondDateLabel.text = mail.timeString
                 
                 moreButton.enabled = true
