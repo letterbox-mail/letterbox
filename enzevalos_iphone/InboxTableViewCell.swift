@@ -27,14 +27,12 @@ class InboxTableViewCell: UITableViewCell {
     
     @IBAction func firstButtonPressed(sender: AnyObject) {
         if let delegate = delegate where firstMail != nil {
-            enzContact?.mails.maxElement()?.isUnread = false
             delegate.callSegueFromCell(firstMail)
         }
     }
     
     @IBAction func secondButtonPressed(sender: AnyObject) {
         if let delegate = delegate where secondMail != nil {
-            secondMail!.isUnread = false
             delegate.callSegueFromCell(secondMail)
         }
     }

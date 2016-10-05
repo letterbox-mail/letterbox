@@ -184,6 +184,19 @@ class ReadViewController : UITableViewController {
     
     func setUItoMail() {
         if let m = mail {
+            
+            // mark mail as read if viewcontroller is open for more than 1.5 sec
+            let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(1.5 * Double(NSEC_PER_SEC)))
+            dispatch_after(delay, dispatch_get_main_queue()) {
+                if let viewControllers = self.navigationController?.viewControllers {
+                    for viewController in viewControllers {
+                        if viewController.isKindOfClass(ReadViewController) {
+                            m.isUnread = false
+                        }
+                    }
+                }
+            }
+            
             sender.text = m.sender?.mailbox
             receivers.text = "An: "
             for r in m.receivers {

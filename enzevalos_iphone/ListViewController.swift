@@ -18,6 +18,9 @@ class ListViewController: UITableViewController {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        tableView.reloadData()
+    }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let count = contact?.mails.count {
@@ -31,6 +34,11 @@ class ListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("ListCell") as! ListViewCell!
         
         if let mail = contact?.mails[indexPath.row] {
+            if mail.isUnread {
+                cell.subjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
+            } else {
+                cell.subjectLabel.font = UIFont.systemFontOfSize(17.0)
+            }
             cell.subjectLabel.text = mail.subject
             cell.bodyLabel.text = mail.body
             cell.dateLabel.text = mail.timeString
