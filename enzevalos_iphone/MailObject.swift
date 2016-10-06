@@ -80,5 +80,5 @@ func ==(lhs: Mail, rhs: Mail) -> Bool {
 }
 
 func <(lhs: Mail, rhs: Mail) -> Bool {
-    return lhs.time < rhs.time
+    return lhs.time > rhs.time
 }
