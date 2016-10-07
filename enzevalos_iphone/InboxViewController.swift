@@ -52,11 +52,11 @@ let mailHandler = MailHandler()
             }
         }
         // TODO: Check if contact exists in address book
-        let contactFromBook = AddressHandler.contactByEmail((mail.sender?.mailbox)!)
-        if let con = contactFromBook {
-            contacts.append(EnzevalosContact(contact: con, mails: [mail]))
-            return
-        }
+//        let contactFromBook = AddressHandler.contactByEmail((mail.sender?.mailbox)!)
+//        if let con = contactFromBook {
+//            contacts.append(EnzevalosContact(contact: con, mails: [mail]))
+//            return
+//        }
         
         // New contact has to be added
         let con = CNMutableContact()
@@ -99,7 +99,7 @@ let mailHandler = MailHandler()
         
         self.mailHandler.delegate = self
         
-        dateFormatter.locale = NSLocale(localeIdentifier: "de_DE")
+        dateFormatter.locale = NSLocale.currentLocale()
         dateFormatter.timeStyle = .MediumStyle
         
         tableView.registerNib(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
