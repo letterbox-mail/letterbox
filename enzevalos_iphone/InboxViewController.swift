@@ -53,17 +53,18 @@ let mailHandler = MailHandler()
         }
         // TODO: Check if contact exists in address book
         
-        // Neuer Kontakt muss angelegt werden
+        // New contact has to be added
         let con = CNMutableContact()
         let name = mail.sender?.displayName
         if let n = name {
             let nameArray = n.characters.split(" ").map(String.init)
-            if let n = nameArray.first {
-                con.givenName = n
-            }
-            if let fam = nameArray.last {
-                con.familyName = fam
-            } else {
+            switch nameArray.count {
+            case 1:
+                con.givenName = nameArray.first!
+            case 2..<20: // who has more than two names?!
+                con.givenName = nameArray.first!
+                con.familyName = nameArray.last!
+            default:
                 con.givenName = "NO"
                 con.familyName = "NAME"
             }
