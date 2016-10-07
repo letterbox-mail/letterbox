@@ -1,0 +1,18 @@
+
+/* Class = "UILabel"; text = "Keine weiteren Nachrichten..."; ObjectID = "5es-fE-2Ig"; */
+"5es-fE-2Ig.text" = "No more Messages...";
+
+/* Class = "UILabel"; text = "Datum"; ObjectID = "Nu7-tF-hGe"; */
+"Nu7-tF-hGe.text" = "Date";
+
+/* Class = "UILabel"; text = "Nachricht"; ObjectID = "TqY-sR-0LV"; */
+"TqY-sR-0LV.text" = "Message";
+
+/* Class = "UILabel"; text = "Betreff"; ObjectID = "XJ6-AX-Txg"; */
+"XJ6-AX-Txg.text" = "Subject";
+
+/* Class = "UIButton"; normalTitle = "Alle E-Mails von diesem Kontakt"; ObjectID = "fkg-yw-zDk"; */
+"fkg-yw-zDk.normalTitle" = "All E-Mails from this contact";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "ixt-EX-9TM"; */
+"ixt-EX-9TM.text" = "Name";

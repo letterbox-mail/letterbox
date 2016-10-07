@@ -34,7 +34,6 @@
 		A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
 		A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059D1D956963008659C1 /* EnzevalosContact.swift */; };
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
-		A1EB05A21D956972008659C1 /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A11D956972008659C1 /* InboxTableViewCell.xib */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
 		A1EB05CA1D956F8E008659C1 /* home2_white.png in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A61D956F8E008659C1 /* home2_white.png */; };
 		A1EB05CB1D956F8E008659C1 /* home2_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A71D956F8E008659C1 /* home2_white@2x.png */; };
@@ -73,6 +72,7 @@
 		A1EB05EC1D956F8E008659C1 /* gruen.gif in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05C81D956F8E008659C1 /* gruen.gif */; };
 		A1EB05ED1D956F8E008659C1 /* Unbenannt.gif in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05C91D956F8E008659C1 /* Unbenannt.gif */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
+		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
 		EE57562DDC09AD98702A0BA4 /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */; };
 		EE9FF2F1FD02293642A4B05C /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C1165F07662D8C13674825 /* Pods_enzevalos_iphoneTests.framework */; };
 		F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
@@ -137,7 +137,6 @@
 		A1EB059B1D956957008659C1 /* NSDateCompare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateCompare.swift; sourceTree = "<group>"; };
 		A1EB059D1D956963008659C1 /* EnzevalosContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnzevalosContact.swift; sourceTree = "<group>"; };
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
-		A1EB05A11D956972008659C1 /* InboxTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTableViewCell.xib; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1EB05A61D956F8E008659C1 /* home2_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home2_white.png; sourceTree = "<group>"; };
 		A1EB05A71D956F8E008659C1 /* home2_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home2_white@2x.png"; sourceTree = "<group>"; };
@@ -175,11 +174,14 @@
 		A1EB05C71D956F8E008659C1 /* Icon_animated001-007.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_animated001-007.png"; sourceTree = "<group>"; };
 		A1EB05C81D956F8E008659C1 /* gruen.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gruen.gif; sourceTree = "<group>"; };
 		A1EB05C91D956F8E008659C1 /* Unbenannt.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Unbenannt.gif; sourceTree = "<group>"; };
-		A1F9922A1DA7C9100073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992321DA7D2360073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A1F992331DA7D2670073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A1F992341DA7DA570073BF1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A1F992371DA7DC760073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		A1F992381DA7DC7B0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		A1F9923A1DA7DD2E0073BF1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/InboxTableViewCell.xib; sourceTree = "<group>"; };
+		A1F9923D1DA7DD350073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
+		A1F9923F1DA7DD370073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
 		AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -333,7 +335,7 @@
 				F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */,
 				A1EB05991D95694E008659C1 /* FillInbox.swift */,
 				A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */,
-				A1EB05A11D956972008659C1 /* InboxTableViewCell.xib */,
+				A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */,
 			);
 			name = read;
 			sourceTree = "<group>";
@@ -500,7 +502,7 @@
 				A1EB05CC1D956F8E008659C1 /* home2_white@3x.png in Resources */,
 				A1EB05CF1D956F8E008659C1 /* work2_white@3x.png in Resources */,
 				A1EB05E41D956F8E008659C1 /* Icon_animated001-001.png in Resources */,
-				A1EB05A21D956972008659C1 /* InboxTableViewCell.xib in Resources */,
+				A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */,
 				A1EB05DA1D956F8E008659C1 /* Icon_animated001-005_alpha.png in Resources */,
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
 				A1EB05E51D956F8E008659C1 /* Icon_animated001-001_alpha.png in Resources */,
@@ -767,11 +769,21 @@
 		A1F9922B1DA7C9100073BF1B /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A1F9922A1DA7C9100073BF1B /* en */,
-				A1F992331DA7D2670073BF1B /* de */,
 				A1F992341DA7DA570073BF1B /* Base */,
+				A1F992371DA7DC760073BF1B /* en */,
+				A1F992381DA7DC7B0073BF1B /* de */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1F9923A1DA7DD2E0073BF1B /* Base */,
+				A1F9923D1DA7DD350073BF1B /* en */,
+				A1F9923F1DA7DD370073BF1B /* de */,
+			);
+			name = InboxTableViewCell.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

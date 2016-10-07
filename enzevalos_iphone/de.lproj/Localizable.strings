@@ -24,13 +24,14 @@
 "Insecure" = "Unsicher";
 "Junk" = "Spam";
 "Letter" = "Brief";
+"LetterDamaged" = "Angerissener Brief";
 "Message" = "Nachricht";
 "MoreInformation" = "Mehr Informationen";
 "Postcard" = "Postkarte";
 "Receive" = "Empfangen";
 "ReceiveError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
-"ReceiveSecureInfo" = "";
-"ReceiveInsecureInfo" = "";
+"ReceiveSecureInfo" = "Diese Nachricht war ordnungsgemäß verschlossen. Sie kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt";
+"ReceiveInsecureInfo" = "Diese Nachricht wurde unverschlüsselt gesendet und kann somit von Allen am Weg mitgelesen werden. Auch kann die Identität des Absenders nicht bestätigt werden.";
 "Refresh" = "Erneut laden";
 "Reply" = "Antworten";
 "SaveToDrafts" = "Speichern in Entwürfen";

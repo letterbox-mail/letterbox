@@ -165,13 +165,13 @@ class ReadViewController : UITableViewController {
             let alert: UIAlertController
             let url: String
             if m.trouble {
-                alert = UIAlertController(title: "Angerissener Brief", message: "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.", preferredStyle: UIAlertControllerStyle.Alert)
                 url = "https://enzevalos.org/infos/corrupted"
             } else if m.isEncrypted {
-                alert = UIAlertController(title: "Brief", message: "Diese Nachricht war ordnungsgemäß verschlossen. Sie kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt", preferredStyle: UIAlertControllerStyle.Alert)
+                alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: UIAlertControllerStyle.Alert)
                 url = "https://enzevalos.org/infos/letter"
             } else {
-                alert = UIAlertController(title: "Postkarte", message: "Diese Nachricht wurde unverschlüsselt gesendet und kann somit von Allen am Weg mitgelesen werden. Auch kann die Identität des Absenders nicht bestätigt werden.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: UIAlertControllerStyle.Alert)
                 url = "https://enzevalos.org/infos/postcard"
             }
             alert.addAction(UIAlertAction(title: "Mehr Informationen", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
@@ -180,11 +180,6 @@ class ReadViewController : UITableViewController {
                 self.presentViewController(alert, animated: true, completion: nil)
             })
         }
-    }
-    
-    
-    @IBAction func ausgabe(sender: AnyObject) {
-        print("dämelkopf!")
     }
     
     func setUItoMail() {
@@ -203,7 +198,7 @@ class ReadViewController : UITableViewController {
             }
             
             sender.text = m.sender?.mailbox
-            receivers.text = "An: "
+            receivers.text = NSLocalizedString("To", comment: "To label")+": "
             for r in m.receivers {
                 receivers.text?.appendContentsOf(r.mailbox)
                 receivers.text?.appendContentsOf(" ")
