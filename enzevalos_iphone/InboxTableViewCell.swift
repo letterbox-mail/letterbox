@@ -27,12 +27,14 @@ class InboxTableViewCell: UITableViewCell {
     
     @IBAction func firstButtonPressed(sender: AnyObject) {
         if let delegate = delegate where firstMail != nil {
+            firstButton.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
             delegate.callSegueFromCell(firstMail)
         }
     }
     
     @IBAction func secondButtonPressed(sender: AnyObject) {
         if let delegate = delegate where secondMail != nil {
+            secondButton.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
             delegate.callSegueFromCell(secondMail)
         }
     }
@@ -41,6 +43,12 @@ class InboxTableViewCell: UITableViewCell {
         if let delegate = delegate {
             delegate.callSegueFromCell(enzContact)
         }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        firstButton.backgroundColor = UIColor.clearColor()
+        secondButton.backgroundColor = UIColor.clearColor()
     }
     
     var enzContact: EnzevalosContact? {

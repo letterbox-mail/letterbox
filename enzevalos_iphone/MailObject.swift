@@ -32,7 +32,7 @@ class Mail: Comparable {
     var timeString: String {
         var returnString = ""
         let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "de_DE")
+        dateFormatter.locale = NSLocale.currentLocale()
         if let mailTime = self.time {
             let interval = NSDate().timeIntervalSinceDate(mailTime)
             switch interval {
