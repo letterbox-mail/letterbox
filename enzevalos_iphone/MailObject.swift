@@ -37,16 +37,16 @@ class Mail: Comparable {
             let interval = NSDate().timeIntervalSinceDate(mailTime)
             switch interval {
             case -1..<55:
-                returnString = "jetzt"
+                returnString = NSLocalizedString("Now", comment: "New email")
             case 55..<120:
-                returnString = "vor 1 min"
+                returnString = NSLocalizedString("OneMinuteAgo", comment: "Email came one minute ago.")
             case 120..<24*60*60:
                 dateFormatter.timeStyle = .ShortStyle
                 returnString = dateFormatter.stringFromDate(mailTime)
             case 24*60*60..<48*60*60:
-                returnString = "Gestern"
+                returnString = NSLocalizedString("Yesterday", comment: "Email came yesterday")
             case 48*60*60..<72*60*60:
-                returnString = "Vorgestern"
+                returnString = NSLocalizedString("TwoDaysAgo", comment: "Email came two days ago")
             default:
                 dateFormatter.dateStyle = .ShortStyle
                 returnString = dateFormatter.stringFromDate(mailTime)
