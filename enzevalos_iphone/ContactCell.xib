@@ -8,7 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="contacts" rowHeight="70" id="Xly-Kn-P4y" customClass="ContactCell" customModule="mail_dynamic_icon_001" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="contacts" rowHeight="70" id="Xly-Kn-P4y" customClass="ContactCell" customModule="enzevalos_iphone" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xly-Kn-P4y" id="pxY-cN-hIw">

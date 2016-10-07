@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6F4F718DEF29038C629100F3 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2DE71EDB6C5C054D57F260 /* Pods_enzevalos_iphone.framework */; };
+		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
 		A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
 		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
 		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
@@ -103,6 +104,9 @@
 		796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 		9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A1123E691DA6827D0069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		A1123E6B1DA682850069551C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = enzevalos_iphone.xcdatamodel; sourceTree = "<group>"; };
@@ -270,6 +274,7 @@
 				A1EB05771D956817008659C1 /* ImageExtension.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
 				A1EB058D1D956913008659C1 /* Main.storyboard */,
+				A1123E6C1DA682850069551C /* Localizable.strings */,
 				A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */,
 				A1EB05A31D956E32008659C1 /* Assets.xcassets */,
 				A13526871D955BDF00D3BFE1 /* Info.plist */,
@@ -471,6 +476,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = A135266C1D955BDF00D3BFE1;
 			productRefGroup = A13526761D955BDF00D3BFE1 /* Products */;
@@ -497,6 +503,7 @@
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
 				A1EB05E51D956F8E008659C1 /* Icon_animated001-001_alpha.png in Resources */,
 				A1EB05DC1D956F8E008659C1 /* Icon_animated001-001_alpha_verschoben-90.png in Resources */,
+				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1EB05D11D956F8E008659C1 /* work@3x.png in Resources */,
 				A1EB05E21D956F8E008659C1 /* Icon_animated001-007_alpha_verschoben-90.png in Resources */,
 				A1EB05E11D956F8E008659C1 /* Icon_animated001-006_alpha_verschoben-90.png in Resources */,
@@ -737,10 +744,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		A1123E6C1DA682850069551C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1123E6B1DA682850069551C /* en */,
+				A1123E6D1DA682870069551C /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A13526851D955BDF00D3BFE1 /* Base */,
+				A1123E691DA6827D0069551C /* de */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
