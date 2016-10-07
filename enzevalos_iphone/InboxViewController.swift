@@ -11,6 +11,8 @@ import Foundation
 import Contacts
 
 class InboxViewController : UITableViewController, InboxCellDelegator, MailHandlerDelegator {
+    let dateFormatter = NSDateFormatter()
+    
     var contacts: [EnzevalosContact] = [] {
         didSet {
             self.contacts.sortInPlace()
@@ -91,6 +93,9 @@ let mailHandler = MailHandler()
         
         self.mailHandler.delegate = self
         
+        dateFormatter.locale = NSLocale(localeIdentifier: "de_DE")
+        dateFormatter.timeStyle = .MediumStyle
+        
         tableView.registerNib(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
     }
     
@@ -103,7 +108,7 @@ let mailHandler = MailHandler()
         if let rc = self.refreshControl {
             lastUpdate = NSDate()
             rc.endRefreshing()
-            lastUpdateText = "Just refreshed"
+            lastUpdateText = "Last Update: \(dateFormatter.stringFromDate(lastUpdate!))"
             self.contacts.sortInPlace()
             self.tableView.reloadData()
         }
