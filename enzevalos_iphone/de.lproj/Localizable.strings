@@ -1,0 +1,50 @@
+/* 
+  Localizable.strings
+  enzevalos_iphone
+
+  Created by jakobsbode on 06.10.16.
+  Copyright © 2016 fu-berlin. All rights reserved.
+*/
+"Address" = "Adresse";
+"Addressbook" = "Adressbuch";
+"Attach" = "Anhängen";
+"Attachment" = "Anhang";
+"Back" = "Zurück";
+"Bcc" = "Blindkopie";
+"Cancel" = "Abbrechen";
+"Cc" = "Kopie";
+"Contacts" = "Kontakte";
+"Content" = "Inhalt";
+"ContentNo" = "Kein Inhalt";
+"Drafts" = "Entwürfe";
+"Emailaddress" = "Emailadresse";
+"Forward" = "Weiterleiten";
+"From" = "Von";
+"Inbox" = "Postfach";//Briefkasten?
+"Insecure" = "Unsicher";
+"Junk" = "Spam";
+"Letter" = "Brief";
+"LetterDamaged" = "Angerissener Brief";
+"Message" = "Nachricht";
+"MoreInformation" = "Mehr Informationen";
+"Postcard" = "Postkarte";
+"Receive" = "Empfangen";
+"ReceiveError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
+"ReceiveSecureInfo" = "Diese Nachricht war ordnungsgemäß verschlossen. Sie kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt";
+"ReceiveInsecureInfo" = "Diese Nachricht wurde unverschlüsselt gesendet und kann somit von Allen am Weg mitgelesen werden. Auch kann die Identität des Absenders nicht bestätigt werden.";
+"Refresh" = "Erneut laden";
+"Reply" = "Antworten";
+"SaveToDrafts" = "Speichern in Entwürfen";
+"Secure" = "Sicher";
+"Send" = "Senden";
+"SendError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
+"SendInsecureInfo" = "Diese Nachricht wird unverschlüsselt an alle orange eingefärbten Kontakte gesendet. D.h. unterwegs kann sie von anderen gelesen und manipuliert werden."; //anstatt unterwegs: auf ihrem Weg
+"SendSecureInfo" = "Super! Diese Nachricht wird verschlüsselt gesendet. D.h. sie kann nicht unterwegs gelesen oder ihr Inhalt verändert werden.";
+"SendSuccess" = "Erfolgreich gesendet";
+"Sent" = "Gesendet";
+"Sign" = "Signieren";
+"Signed" = "Signiert";
+"Subject" = "Betreff";
+"SubjectNo" = "Kein Betreff";
+"To" = "An";
+"Trash" = "Papierkorb";

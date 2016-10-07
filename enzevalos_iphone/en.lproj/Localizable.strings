@@ -1,0 +1,49 @@
+/* 
+  Localizable.strings
+  enzevalos_iphone
+
+  Created by jakobsbode on 06.10.16.
+  Copyright © 2016 fu-berlin. All rights reserved.
+*/
+"Address" = "Address";
+"Addressbook" = "Addressbook";
+"Attach" = "Attach";
+"Attachment" = "Attachment";
+"Back" = "Back";
+"Bcc" = "Bcc";//"Blindkopie";
+"Cancel" = "Cancel";
+"Cc" = "Cc";//"Kopie";
+"Contacts" = "Contacts";
+"Content" = "Content";
+"ContentNo" = "No content";
+"Drafts" = "Drafts";
+"Emailaddress" = "Emailaddress";
+"Forward" = "Forward";
+"From" = "From";
+"Inbox" = "Inbox";
+"Insecure" = "Insecure";
+"Junk" = "Junk";
+"Letter" = "Letter";
+"Message" = "Message";
+"MoreInformation" = "More Information";
+"Postcard" = "Postcard";
+"Receive" = "Receive";
+"ReceiveError" = "An error occured"; //mehr spezifizieren?
+"ReceiveSecureInfo" = "";
+"ReceiveInsecureInfo" = "";
+"Refresh" = "Refresh";
+"Reply" = "Reply";
+"SaveToDrafts" = "Save to drafts";
+"Secure" = "Secure";
+"Send" = "Send";
+"SendError" = "An error occured"; //mehr spezifizieren?
+"SendInsecureInfo" = "";
+"SendSecureInfo" = "";
+"SendSuccess" = "Sent successfully";
+"Sent" = "Sent";
+"Sign" = "Sign";
+"Signed" = "Signed";
+"Subject" = "Subject";
+"SubjectNo" = "No subject";
+"To" = "To";
+"Trash" = "Trash";
