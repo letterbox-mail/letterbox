@@ -118,7 +118,7 @@ class MailHandler {
                                 rec.append(r as! MCOAddress)
                             }
                         }
-                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: "UID: \(message.uid) \(header.subject)", body: html, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead)
+                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: header.subject, body: html, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead)
                         
                         self.delegate?.addNewMail(mail)
                         
