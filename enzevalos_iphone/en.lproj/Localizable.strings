@@ -25,6 +25,7 @@
 "Junk" = "Junk";
 "Letter" = "Letter";
 "Message" = "Message";
+"MoreInformation" = "More Information";
 "Postcard" = "Postcard";
 "Receive" = "Receive";
 "ReceiveError" = "An error occured"; //mehr spezifizieren?

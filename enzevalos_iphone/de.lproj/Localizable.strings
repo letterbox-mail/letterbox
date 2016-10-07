@@ -25,6 +25,7 @@
 "Junk" = "Spam";
 "Letter" = "Brief";
 "Message" = "Nachricht";
+"MoreInformation" = "Mehr Informationen";
 "Postcard" = "Postkarte";
 "Receive" = "Empfangen";
 "ReceiveError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
@@ -36,8 +37,8 @@
 "Secure" = "Sicher";
 "Send" = "Senden";
 "SendError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
-"SendInsecureInfo" = "";
-"SendSecureInfo" = "";
+"SendInsecureInfo" = "Diese Nachricht wird unverschlüsselt an alle orange eingefärbten Kontakte gesendet. D.h. unterwegs kann sie von anderen gelesen und manipuliert werden."; //anstatt unterwegs: auf ihrem Weg
+"SendSecureInfo" = "Super! Diese Nachricht wird verschlüsselt gesendet. D.h. sie kann nicht unterwegs gelesen oder ihr Inhalt verändert werden.";
 "SendSuccess" = "Erfolgreich gesendet";
 "Sent" = "Gesendet";
 "Sign" = "Signieren";

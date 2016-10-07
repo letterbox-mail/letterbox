@@ -25,7 +25,6 @@
 		A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05871D956879008659C1 /* AddressHandler.swift */; };
 		A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05891D956890008659C1 /* ContactCell.xib */; };
 		A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB058B1D9568AB008659C1 /* FrequentCell.xib */; };
-		A1EB058E1D956913008659C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1EB058D1D956913008659C1 /* Main.storyboard */; };
 		A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB058F1D956923008659C1 /* ReadViewController.swift */; };
 		A1EB05921D95692A008659C1 /* MailObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05911D95692A008659C1 /* MailObject.swift */; };
 		A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05931D956931008659C1 /* InboxCellDelegator.swift */; };
@@ -73,6 +72,7 @@
 		A1EB05EB1D956F8E008659C1 /* Icon_animated001-007.png in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05C71D956F8E008659C1 /* Icon_animated001-007.png */; };
 		A1EB05EC1D956F8E008659C1 /* gruen.gif in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05C81D956F8E008659C1 /* gruen.gif */; };
 		A1EB05ED1D956F8E008659C1 /* Unbenannt.gif in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05C91D956F8E008659C1 /* Unbenannt.gif */; };
+		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		EE57562DDC09AD98702A0BA4 /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */; };
 		EE9FF2F1FD02293642A4B05C /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C1165F07662D8C13674825 /* Pods_enzevalos_iphoneTests.framework */; };
 		F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
@@ -104,13 +104,11 @@
 		796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 		9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		A1123E691DA6827D0069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		A1123E6B1DA682850069551C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = enzevalos_iphone.xcdatamodel; sourceTree = "<group>"; };
-		A13526851D955BDF00D3BFE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A13526871D955BDF00D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A135268C1D955BE000D3BFE1 /* enzevalos_iphoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = enzevalos_iphoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enzevalos_iphoneTests.swift; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 		A1EB05871D956879008659C1 /* AddressHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressHandler.swift; sourceTree = "<group>"; };
 		A1EB05891D956890008659C1 /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		A1EB058B1D9568AB008659C1 /* FrequentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FrequentCell.xib; sourceTree = "<group>"; };
-		A1EB058D1D956913008659C1 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		A1EB058F1D956923008659C1 /* ReadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadViewController.swift; sourceTree = "<group>"; };
 		A1EB05911D95692A008659C1 /* MailObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailObject.swift; sourceTree = "<group>"; };
 		A1EB05931D956931008659C1 /* InboxCellDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxCellDelegator.swift; sourceTree = "<group>"; };
@@ -178,6 +175,11 @@
 		A1EB05C71D956F8E008659C1 /* Icon_animated001-007.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_animated001-007.png"; sourceTree = "<group>"; };
 		A1EB05C81D956F8E008659C1 /* gruen.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gruen.gif; sourceTree = "<group>"; };
 		A1EB05C91D956F8E008659C1 /* Unbenannt.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Unbenannt.gif; sourceTree = "<group>"; };
+		A1F9922A1DA7C9100073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A1F992321DA7D2360073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A1F992331DA7D2670073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A1F992341DA7DA570073BF1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -274,7 +276,7 @@
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				A1EB05771D956817008659C1 /* ImageExtension.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
-				A1EB058D1D956913008659C1 /* Main.storyboard */,
+				A1F9922B1DA7C9100073BF1B /* Main.storyboard */,
 				A1123E6C1DA682850069551C /* Localizable.strings */,
 				A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */,
 				A1EB05A31D956E32008659C1 /* Assets.xcassets */,
@@ -517,7 +519,7 @@
 				A1EB05D01D956F8E008659C1 /* work.png in Resources */,
 				A1EB05DB1D956F8E008659C1 /* Icon_animated001-006_alpha.png in Resources */,
 				A1EB05DE1D956F8E008659C1 /* Icon_animated001-003_alpha_verschoben-90.png in Resources */,
-				A1EB058E1D956913008659C1 /* Main.storyboard in Resources */,
+				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
 				A1EB05E81D956F8E008659C1 /* Icon_animated001-004.png in Resources */,
 				A1EB05DF1D956F8E008659C1 /* Icon_animated001-004_alpha_verschoben-90.png in Resources */,
 				A1EB05E71D956F8E008659C1 /* Icon_animated001-003.png in Resources */,
@@ -756,10 +758,20 @@
 		A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A13526851D955BDF00D3BFE1 /* Base */,
-				A1123E691DA6827D0069551C /* de */,
+				A1F992301DA7D22D0073BF1B /* de */,
+				A1F992321DA7D2360073BF1B /* en */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A1F9922B1DA7C9100073BF1B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1F9922A1DA7C9100073BF1B /* en */,
+				A1F992331DA7D2670073BF1B /* de */,
+				A1F992341DA7DA570073BF1B /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

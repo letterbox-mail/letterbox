@@ -52,21 +52,24 @@ class VCSend04: UIViewController, UITextViewDelegate{
         imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!
         setAnimation(false)
         self.navigationItem.titleView = imageView
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.iconButton(_:))))
+        imageView.userInteractionEnabled = true
         
         textView.delegate = self
         
-        subjectText.toLabelText = "Subject: "
+        subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label")+": " //"Subject: "
         
         toText.delegate = dataDelegate
         toText.dataSource = dataDelegate
         toText.inputTextFieldKeyboardType = UIKeyboardType.EmailAddress
+        toText.toLabelText = NSLocalizedString("To", comment: "to label")+": "
         toCollectionview.delegate = collectionDataDelegate
         toCollectionview.dataSource = collectionDataDelegate
         toCollectionview.registerNib(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
         toCollectionviewHeight.constant = 0
         ccText.delegate = dataDelegate
         ccText.dataSource = dataDelegate
-        ccText.toLabelText = "Cc:"
+        ccText.toLabelText = NSLocalizedString("Cc", comment: "copy label")+": "//"Cc:"
         ccCollectionview.delegate = collectionDataDelegate
         ccCollectionview.dataSource = collectionDataDelegate
         ccCollectionview.registerNib(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
@@ -302,6 +305,31 @@ class VCSend04: UIViewController, UITextViewDelegate{
             }
         }
     }
+    
+    func iconButton(sender: AnyObject) {
+        let m = self.secureState
+        let alert: UIAlertController
+        let url: String
+        if !m {
+            alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+            url = "https://enzevalos.org/infos/postcard"
+        } else {
+            alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+            url = "https://enzevalos.org/infos/letter"
+        }
+        alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+        dispatch_async(dispatch_get_main_queue(), {
+            self.presentViewController(alert, animated: true, completion: nil)
+        })
+    }
+    
+    @IBAction func pressCancel(sender: AnyObject) {
+        navigationController?.popViewControllerAnimated(true)
+    }
+    /*@IBAction func pressCancel(sender: AnyObject) {
+        navigationController?.popViewControllerAnimated(true)
+    }*/
     
     @IBAction func pressSend(sender: AnyObject) {
         let toEntrys = toText.mailTokens

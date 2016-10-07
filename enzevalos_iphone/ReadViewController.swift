@@ -182,6 +182,11 @@ class ReadViewController : UITableViewController {
         }
     }
     
+    
+    @IBAction func ausgabe(sender: AnyObject) {
+        print("dämelkopf!")
+    }
+    
     func setUItoMail() {
         if let m = mail {
             
