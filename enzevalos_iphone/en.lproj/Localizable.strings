@@ -24,13 +24,14 @@
 "Insecure" = "Insecure";
 "Junk" = "Junk";
 "Letter" = "Letter";
+"LetterDamaged" = "Damaged Letter";
 "Message" = "Message";
 "MoreInformation" = "More Information";
 "Postcard" = "Postcard";
 "Receive" = "Receive";
 "ReceiveError" = "An error occured"; //mehr spezifizieren?
-"ReceiveSecureInfo" = "";
-"ReceiveInsecureInfo" = "";
+"ReceiveSecureInfo" = "This message was properly closed. It can not be read by third parties. The identity of the sender has beed checked.";
+"ReceiveInsecureInfo" = "This message was not encrypted so it was possible for everyone on the way to read its content. The identity of the sender can not be ensured.";
 "Refresh" = "Refresh";
 "Reply" = "Reply";
 "SaveToDrafts" = "Save to drafts";

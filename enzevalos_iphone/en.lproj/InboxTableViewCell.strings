@@ -12,7 +12,7 @@
 "XJ6-AX-Txg.text" = "Subject";
 
 /* Class = "UIButton"; normalTitle = "Alle E-Mails von diesem Kontakt"; ObjectID = "fkg-yw-zDk"; */
-"fkg-yw-zDk.normalTitle" = "All E-Mails from this contact";
+"fkg-yw-zDk.normalTitle" = "All emails from this contact";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "ixt-EX-9TM"; */
 "ixt-EX-9TM.text" = "Name";
