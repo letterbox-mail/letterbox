@@ -14,7 +14,13 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     var contacts: [EnzevalosContact] = [] {
         didSet {
             self.contacts.sortInPlace()
-            self.tableView.reloadData()
+            if oldValue.count < contacts.count {
+                self.tableView.insertSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+            } else if oldValue.count > contacts.count {
+                self.tableView.reloadData()
+            } else {
+                self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, contacts.count)), withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
         }
     }
 
@@ -34,7 +40,6 @@ let mailHandler = MailHandler()
     func addNewMail(mail: Mail) {
         for contact in contacts {
             for address in contact.contact.emailAddresses {
-                print("addr: \(address.value) sender: \(mail.sender?.mailbox)")
                 if address.value as? String == mail.sender?.mailbox {
                     // Kontakt existiert bereits
                     if !contact.mails.contains(mail) {
