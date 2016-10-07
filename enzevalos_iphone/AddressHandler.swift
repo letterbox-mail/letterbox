@@ -123,13 +123,12 @@ class AddressHandler {
     
     static func contactByEmail(email: String) -> CNContact? {
         var contacts: [CNContact] = []
-//        let predicate = NSPredicate { (evaluatedObject, bindings) -> Bool in
-//            guard let evaluatedContact = evaluatedObject as? CNContact else {
-//                return false
-//            }
-//            return Set(evaluatedContact.emailAddresses.map{$0.identifier}).contains(email)
-//        }
-        let predicate = CNContact.predicateForContactsMatchingName("josch")
+        let predicate = NSPredicate { (evaluatedObject, bindings) -> Bool in
+            guard let evaluatedContact = evaluatedObject as? CNContact else {
+                return false
+            }
+            return Set(evaluatedContact.emailAddresses.map{$0.identifier}).contains(email)
+        }
         do{
             try contacts = AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(predicate, keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
         }
