@@ -52,6 +52,11 @@ let mailHandler = MailHandler()
             }
         }
         // TODO: Check if contact exists in address book
+        let contactFromBook = AddressHandler.contactByEmail((mail.sender?.mailbox)!)
+        if let con = contactFromBook {
+            contacts.append(EnzevalosContact(contact: con, mails: [mail]))
+            return
+        }
         
         // New contact has to be added
         let con = CNMutableContact()
