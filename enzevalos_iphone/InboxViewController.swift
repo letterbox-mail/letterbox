@@ -14,13 +14,11 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     var contacts: [EnzevalosContact] = [] {
         didSet {
             self.contacts.sortInPlace()
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.tableView.reloadData()
-                print("Refreshed TableView")
-            })
+            self.tableView.reloadData()
         }
     }
-    let mailHandler = MailHandler()
+
+let mailHandler = MailHandler()
     
     @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
     var lastUpdateLabel = UILabel(frame: CGRectZero)
@@ -34,9 +32,9 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     var lastUpdate: NSDate?
 
     func addNewMail(mail: Mail) {
-        var isAdded = false
         for contact in contacts {
             for address in contact.contact.emailAddresses {
+                print("addr: \(address.value) sender: \(mail.sender?.mailbox)")
                 if address.value as? String == mail.sender?.mailbox {
                     // Kontakt existiert bereits
                     if !contact.mails.contains(mail) {
@@ -74,7 +72,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
         tableView.sectionFooterHeight = 0
         
         self.refreshControl?.addTarget(self, action: #selector(InboxViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
-//        self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
         
         lastUpdateLabel.sizeToFit()
         lastUpdateLabel.backgroundColor = UIColor.clearColor()
@@ -92,7 +90,6 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     }
     
     func refresh(refreshControl: UIRefreshControl) {
-        print("refresh")
         lastUpdateText = "Updating..."
         self.mailHandler.recieve()
     }
@@ -102,6 +99,8 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
             lastUpdate = NSDate()
             rc.endRefreshing()
             lastUpdateText = "Just refreshed"
+            self.contacts.sortInPlace()
+            self.tableView.reloadData()
         }
     }
     

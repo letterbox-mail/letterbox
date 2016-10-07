@@ -27,9 +27,9 @@ class EnzevalosContact: Comparable {
 }
 
 func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
-    return lhs.mails.maxElement()!.time == rhs.mails.maxElement()!.time
+    return lhs.mails.first!.time == rhs.mails.first!.time
 }
 
 func <(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
-    return lhs.mails.maxElement()!.time > rhs.mails.maxElement()!.time
+    return lhs.mails.first!.time > rhs.mails.first!.time
 }

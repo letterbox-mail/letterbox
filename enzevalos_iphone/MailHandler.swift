@@ -105,9 +105,9 @@ class MailHandler {
                     if UInt64(message.uid) > biggest {
                         biggest = UInt64(message.uid)
                     }
+                    dispatch_group_enter(dispatchGroup)
                     let op = self.IMAPSession!.fetchMessageByUIDOperationWithFolder(folder, uid: message.uid)
                     op.start { (err, data) -> Void in
-                        dispatch_group_enter(dispatchGroup)
                         let msgParser = MCOMessageParser(data: data)
                         let html: String = msgParser.plainTextBodyRendering()
                         var rec: [MCOAddress] = []
@@ -118,17 +118,17 @@ class MailHandler {
                                 rec.append(r as! MCOAddress)
                             }
                         }
-                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: "UID: \(message.uid) \(header.subject)", body: html, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead)
-
+                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: header.subject, body: html, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead)
+                        
                         self.delegate?.addNewMail(mail)
+                        
                         dispatch_group_leave(dispatchGroup)
                     }
                     self.lastUID = biggest
-                    
-                    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
-                        print("All Done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                        self.delegate?.getMailCompleted()
-                    }
+                }
+                dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
+                    self.delegate?.getMailCompleted()
+                    self.IMAPSession?.disconnectOperation().start({_ in })
                 }
             }
         }

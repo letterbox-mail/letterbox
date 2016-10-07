@@ -13,9 +13,15 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="130"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CFu-ns-kay" id="iQP-01-jFC" userLabel="Container">
-                <frame key="frameInset" width="400" height="129.5"/>
+                <frame key="frameInset" width="400" height="129"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uDO-9h-a86" userLabel="Icon View">
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="Zf5-eH-DtF"/>
+                            <constraint firstAttribute="height" constant="30" id="n7I-Eu-a0k"/>
+                        </constraints>
+                    </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WNp-Ty-Hv1">
                         <constraints>
                             <constraint firstAttribute="height" constant="70" id="Bei-PK-STi"/>
@@ -94,12 +100,6 @@
                             <action selector="firstButtonPressed:" destination="CFu-ns-kay" eventType="touchUpInside" id="YFb-kT-nNt"/>
                         </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uDO-9h-a86" userLabel="Icon View">
-                        <constraints>
-                            <constraint firstAttribute="width" constant="30" id="Zf5-eH-DtF"/>
-                            <constraint firstAttribute="height" constant="30" id="n7I-Eu-a0k"/>
-                        </constraints>
-                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Woe-Z6-TzX" firstAttribute="leading" secondItem="6Ac-fp-DaH" secondAttribute="trailing" constant="-498" id="1Xo-Rd-5M9"/>

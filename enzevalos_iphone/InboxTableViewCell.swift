@@ -46,9 +46,9 @@ class InboxTableViewCell: UITableViewCell {
     var enzContact: EnzevalosContact? {
         didSet {
             if let con = enzContact {
-                self.firstMail = con.mails.last
+                self.firstMail = con.mails.first
                 if con.mails.count > 1 {
-                    self.secondMail = con.mails[con.mails.endIndex - 2]
+                    self.secondMail = con.mails[1]
                 }
                 self.contact = con.contact
             }
