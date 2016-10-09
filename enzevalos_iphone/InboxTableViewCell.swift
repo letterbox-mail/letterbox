@@ -49,6 +49,12 @@ class InboxTableViewCell: UITableViewCell {
         super.layoutSubviews()
         firstButton.backgroundColor = UIColor.clearColor()
         secondButton.backgroundColor = UIColor.clearColor()
+        firstButton.addTarget(self, action: .touchDown, forControlEvents: .TouchDown)
+        firstButton.addTarget(self, action: .dragExit, forControlEvents: .TouchDragExit)
+        firstButton.addTarget(self, action: .touchDown, forControlEvents: .TouchDragEnter)
+        secondButton.addTarget(self, action: .touchDown, forControlEvents: .TouchDown)
+        secondButton.addTarget(self, action: .dragExit, forControlEvents: .TouchDragExit)
+        secondButton.addTarget(self, action: .touchDown, forControlEvents: .TouchDragEnter)
     }
     
     var enzContact: EnzevalosContact? {
@@ -146,4 +152,21 @@ class InboxTableViewCell: UITableViewCell {
             }
         }
     }
+    
+    func touchDown(sender: AnyObject) {
+        if let button = sender as? UIButton {
+            button.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
+        }
+    }
+    
+    func touchDragExit(sender: AnyObject) {
+        if let button = sender as? UIButton {
+            button.backgroundColor = UIColor.clearColor()
+        }
+    }
+}
+
+private extension Selector {
+    static let touchDown = #selector(InboxTableViewCell.touchDown(_:))
+    static let dragExit = #selector(InboxTableViewCell.touchDragExit(_:))
 }
