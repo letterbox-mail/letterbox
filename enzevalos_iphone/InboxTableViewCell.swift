@@ -49,20 +49,21 @@ class InboxTableViewCell: UITableViewCell {
         super.layoutSubviews()
         firstButton.backgroundColor = UIColor.clearColor()
         secondButton.backgroundColor = UIColor.clearColor()
-        firstButton.addTarget(self, action: .touchDown, forControlEvents: .TouchDown)
-        firstButton.addTarget(self, action: .dragExit, forControlEvents: .TouchDragExit)
-        firstButton.addTarget(self, action: .touchDown, forControlEvents: .TouchDragEnter)
-        secondButton.addTarget(self, action: .touchDown, forControlEvents: .TouchDown)
-        secondButton.addTarget(self, action: .dragExit, forControlEvents: .TouchDragExit)
-        secondButton.addTarget(self, action: .touchDown, forControlEvents: .TouchDragEnter)
+        firstButton.addTarget(self, action: .cellTouched, forControlEvents: .TouchDown)
+        firstButton.addTarget(self, action: .clearCell, forControlEvents: .TouchDragExit)
+        firstButton.addTarget(self, action: .cellTouched, forControlEvents: .TouchDragEnter)
+        secondButton.addTarget(self, action: .cellTouched, forControlEvents: .TouchDown)
+        secondButton.addTarget(self, action: .clearCell, forControlEvents: .TouchDragExit)
+        secondButton.addTarget(self, action: .cellTouched, forControlEvents: .TouchDragEnter)
     }
     
     var enzContact: EnzevalosContact? {
         didSet {
             if let con = enzContact {
-                self.firstMail = con.mails.first
+                firstMail = con.mails.first
                 if con.mails.count > 1 {
-                    self.secondMail = con.mails[1]
+                    secondMail = con.mails[1]
+                    secondButton.enabled = true
                 } else {
                     secondButton.enabled = false
                 }
@@ -155,13 +156,13 @@ class InboxTableViewCell: UITableViewCell {
         }
     }
     
-    func touchDown(sender: AnyObject) {
+    func cellTouched(sender: AnyObject) {
         if let button = sender as? UIButton {
             button.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
         }
     }
     
-    func touchDragExit(sender: AnyObject) {
+    func clearCell(sender: AnyObject) {
         if let button = sender as? UIButton {
             button.backgroundColor = UIColor.clearColor()
         }
@@ -169,6 +170,6 @@ class InboxTableViewCell: UITableViewCell {
 }
 
 private extension Selector {
-    static let touchDown = #selector(InboxTableViewCell.touchDown(_:))
-    static let dragExit = #selector(InboxTableViewCell.touchDragExit(_:))
+    static let cellTouched = #selector(InboxTableViewCell.cellTouched(_:))
+    static let clearCell = #selector(InboxTableViewCell.clearCell(_:))
 }
