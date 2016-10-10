@@ -120,10 +120,10 @@ class MailHandler {
                             return
                         }
                         let msgParser = MCOMessageParser(data: data)
-                        let html: String = msgParser.plainTextBodyRendering()
+                        let html: String = msgParser.plainTextRendering()
                         var rec: [MCOAddress] = []
                         let header = message.header
-                        let messageRead = message.flags.rawValue & MCOMessageFlag.Seen.rawValue == MCOMessageFlag.Seen.rawValue
+                        let messageRead = MCOMessageFlag.Seen.isSubsetOf(message.flags)
                         if let cc = header.cc {
                             for r in cc {
                                 rec.append(r as! MCOAddress)
@@ -146,7 +146,7 @@ class MailHandler {
     }
     
     func addFlag(uid: UInt64, flags: MCOMessageFlag) {
-        let op = self.IMAPSession.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Add, flags: flags)
+        let op = self.IMAPSession.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Set, flags: flags)
         
         op.start { error -> Void in
             if let err = error {

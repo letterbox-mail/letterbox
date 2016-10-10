@@ -28,7 +28,7 @@ class Mail: Comparable {
             if isUnread {
                 AppDelegate.getAppDelegate().mailHandler.removeFlag(UInt64(self.uid), flags: MCOMessageFlag.Seen)
             } else {
-                AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64(self.uid), flags: MCOMessageFlag(rawValue: self.flags.rawValue | MCOMessageFlag.Seen.rawValue))
+                AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64(self.uid), flags: flags.union(MCOMessageFlag.Seen))
             }
         }
     }
@@ -80,14 +80,16 @@ class Mail: Comparable {
         if isUnread {
             returnString.appendContentsOf("🔵 ")
         }
-        if flags.rawValue & MCOMessageFlag.Answered.rawValue == MCOMessageFlag.Answered.rawValue {
+        if MCOMessageFlag.Answered.isSubsetOf(flags) {
             returnString.appendContentsOf("↩️ ")
         }
-        if flags.rawValue & MCOMessageFlag.Forwarded.rawValue == MCOMessageFlag.Forwarded.rawValue {
+        if MCOMessageFlag.Forwarded.isSubsetOf(flags) {
             returnString.appendContentsOf("➡️ ")
         }
+        if MCOMessageFlag.Flagged.isSubsetOf(flags) {
+            returnString.appendContentsOf("⭐️ ")
+        }
         let ret = "\(returnString)\(subj)"
-//        print(ret)
         return ret
     }
 
