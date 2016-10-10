@@ -81,13 +81,7 @@ class InboxTableViewCell: UITableViewCell {
                     firstSubjectLabel.font = UIFont.systemFontOfSize(17.0)
                 }
                 
-                if let subj = mail.subject {
-                    if subj != "" && subj != " " {
-                        firstSubjectLabel.text = subj
-                    } else {
-                        firstSubjectLabel.text = "(Kein Betreff)"
-                    }
-                }
+                firstSubjectLabel.text = mail.subjectWithFlagsString
                 
                 // Reducing message to one line and truncating to 50
                 let message: String
@@ -113,14 +107,8 @@ class InboxTableViewCell: UITableViewCell {
                     secondSubjectLabel.font = UIFont.systemFontOfSize(17.0)
                 }
                 
-                if let subj = mail.subject {
-                    if subj != "" && subj != " " {
-                        secondSubjectLabel.text = subj
-                    } else {
-                        secondSubjectLabel.text = "(Kein Betreff)"
-                    }
-                }
-                
+                secondSubjectLabel.text = mail.subjectWithFlagsString
+
                 // Reducing message to one line and truncating to 50
                 let message: String
                 if mail.body?.characters.count > 50 {

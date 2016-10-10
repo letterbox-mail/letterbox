@@ -39,7 +39,7 @@ class ListViewController: UITableViewController {
             } else {
                 cell.subjectLabel.font = UIFont.systemFontOfSize(17.0)
             }
-            cell.subjectLabel.text = mail.subject
+            cell.subjectLabel.text = mail.subjectWithFlagsString
             cell.bodyLabel.text = mail.body
             cell.dateLabel.text = mail.timeString
         }

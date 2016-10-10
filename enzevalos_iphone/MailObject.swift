@@ -68,6 +68,28 @@ class Mail: Comparable {
         }
         return returnString
     }
+    
+    var subjectWithFlagsString: String {
+        let subj: String
+        if self.subject == nil {
+            subj = NSLocalizedString("SubjectNo", comment: "This email has no subject")
+        } else {
+            subj = subject!
+        }
+        var returnString: String = ""
+        if isUnread {
+            returnString.appendContentsOf("🔵 ")
+        }
+        if flags.rawValue & MCOMessageFlag.Answered.rawValue == MCOMessageFlag.Answered.rawValue {
+            returnString.appendContentsOf("↩️ ")
+        }
+        if flags.rawValue & MCOMessageFlag.Forwarded.rawValue == MCOMessageFlag.Forwarded.rawValue {
+            returnString.appendContentsOf("➡️ ")
+        }
+        let ret = "\(returnString)\(subj)"
+//        print(ret)
+        return ret
+    }
 
     init(uid: UInt32, sender: MCOAddress?, receivers: [MCOAddress], time: NSDate?, received: Bool, subject: String?, body: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool, flags: MCOMessageFlag) {
         self.uid = uid
