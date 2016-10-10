@@ -63,6 +63,8 @@ class InboxTableViewCell: UITableViewCell {
                 self.firstMail = con.mails.first
                 if con.mails.count > 1 {
                     self.secondMail = con.mails[1]
+                } else {
+                    secondButton.enabled = false
                 }
                 self.contact = con.contact
             }
