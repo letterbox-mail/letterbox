@@ -23,7 +23,17 @@ class MailHandler {
     var delegate: MailHandlerDelegator?
     var lastUID: UInt64 = 1
     
-    var IMAPSession: MCOIMAPSession?
+    var IMAPSes: MCOIMAPSession?
+    
+    var IMAPSession: MCOIMAPSession {
+        get {
+            if IMAPSes == nil {
+                setupIMAPSession()
+            }
+            
+            return IMAPSes!
+        }
+    }
     
     //TODO: signatur hinzufügen
     
@@ -81,21 +91,18 @@ class MailHandler {
         imapsession.password = pw
         imapsession.authType = MCOAuthType.SASLPlain
         imapsession.connectionType = MCOConnectionType.TLS
-        self.IMAPSession = imapsession
+        self.IMAPSes = imapsession
     }
     
     func recieve() {
-        if IMAPSession == nil {
-            setupIMAPSession()
-        }
-        
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
         let folder = "INBOX"
         let uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
-        let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession!.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
+        let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.start { (err, msg, vanished) -> Void in
-            if let error = err {
-                print("error from server \(error)")
+            guard err == nil else {
+                print("Error while fetching inbox: \(err)")
+                return
             }
             if let msgs = msg {
                 var biggest = self.lastUID
@@ -106,8 +113,12 @@ class MailHandler {
                         biggest = UInt64(message.uid)
                     }
                     dispatch_group_enter(dispatchGroup)
-                    let op = self.IMAPSession!.fetchMessageByUIDOperationWithFolder(folder, uid: message.uid)
+                    let op = self.IMAPSession.fetchMessageByUIDOperationWithFolder(folder, uid: message.uid)
                     op.start { (err, data) -> Void in
+                        guard err == nil else {
+                            print("Error while fetching mail: \(err)")
+                            return
+                        }
                         let msgParser = MCOMessageParser(data: data)
                         let html: String = msgParser.plainTextBodyRendering()
                         var rec: [MCOAddress] = []
@@ -128,21 +139,18 @@ class MailHandler {
                 }
                 dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
                     self.delegate?.getMailCompleted()
-                    self.IMAPSession?.disconnectOperation().start({_ in })
+                    self.IMAPSession.disconnectOperation().start({_ in })
                 }
             }
         }
     }
     
     func addFlag(uid: UInt64, flags: MCOMessageFlag) {
-        if IMAPSession == nil {
-            setupIMAPSession()
-        }
-        let op = self.IMAPSession!.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Add, flags: flags)
+        let op = self.IMAPSession.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Add, flags: flags)
         
         op.start { error -> Void in
             if let err = error {
-                print("Error: \(err)")
+                print("Error while updating flags: \(err)")
             } else {
                 print("Succsessfully updated flags!")
             }
@@ -150,14 +158,11 @@ class MailHandler {
     }
     
     func removeFlag(uid: UInt64, flags: MCOMessageFlag) {
-        if IMAPSession == nil {
-            setupIMAPSession()
-        }
-        let op = self.IMAPSession!.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Remove, flags: flags)
+        let op = self.IMAPSession.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Remove, flags: flags)
         
         op.start { error -> Void in
             if let err = error {
-                print("Error: \(err)")
+                print("Error while updating flags: \(err)")
             } else {
                 print("Succsessfully updated flags!")
             }
