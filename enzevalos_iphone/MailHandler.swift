@@ -118,7 +118,7 @@ class MailHandler {
                                 rec.append(r as! MCOAddress)
                             }
                         }
-                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: header.subject, body: html, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead)
+                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: header.subject, body: html, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead, flags: message.flags)
                         
                         self.delegate?.addNewMail(mail)
                         
@@ -130,6 +130,36 @@ class MailHandler {
                     self.delegate?.getMailCompleted()
                     self.IMAPSession?.disconnectOperation().start({_ in })
                 }
+            }
+        }
+    }
+    
+    func addFlag(uid: UInt64, flags: MCOMessageFlag) {
+        if IMAPSession == nil {
+            setupIMAPSession()
+        }
+        let op = self.IMAPSession!.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Add, flags: flags)
+        
+        op.start { error -> Void in
+            if let err = error {
+                print("Error: \(err)")
+            } else {
+                print("Succsessfully updated flags!")
+            }
+        }
+    }
+    
+    func removeFlag(uid: UInt64, flags: MCOMessageFlag) {
+        if IMAPSession == nil {
+            setupIMAPSession()
+        }
+        let op = self.IMAPSession!.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Remove, flags: flags)
+        
+        op.start { error -> Void in
+            if let err = error {
+                print("Error: \(err)")
+            } else {
+                print("Succsessfully updated flags!")
             }
         }
     }

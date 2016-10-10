@@ -14,12 +14,25 @@ class Mail: Comparable {
     var receivers = [MCOAddress]()
     let time: NSDate?
     let received: Bool
+    let flags: MCOMessageFlag
     var subject: String?
     var body: String?
-    var isUnread: Bool
     var isVerified = false
     var isEncrypted = false
     var showMessage = true
+    var isUnread: Bool {
+        didSet{
+            guard isUnread != oldValue else {
+                return
+            }
+            if isUnread {
+                AppDelegate.getAppDelegate().mailHandler.removeFlag(UInt64(self.uid), flags: MCOMessageFlag.Seen)
+            } else {
+                AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64(self.uid), flags: MCOMessageFlag(rawValue: self.flags.rawValue | MCOMessageFlag.Seen.rawValue))
+            }
+        }
+    }
+
     var trouble = true {
         didSet{
             if trouble {
@@ -29,6 +42,7 @@ class Mail: Comparable {
             }
         }
     }
+    
     var timeString: String {
         var returnString = ""
         let dateFormatter = NSDateFormatter()
@@ -39,7 +53,7 @@ class Mail: Comparable {
             case -1..<55:
                 returnString = NSLocalizedString("Now", comment: "New email")
             case 55..<120:
-                returnString = NSLocalizedString("OneMinuteAgo", comment: "Email came one minute ago.")
+                returnString = NSLocalizedString("OneMinuteAgo", comment: "Email came one minute ago")
             case 120..<24*60*60:
                 dateFormatter.timeStyle = .ShortStyle
                 returnString = dateFormatter.stringFromDate(mailTime)
@@ -55,7 +69,7 @@ class Mail: Comparable {
         return returnString
     }
 
-    init(uid: UInt32, sender: MCOAddress?, receivers: [MCOAddress], time: NSDate?, received: Bool, subject: String?, body: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool) {
+    init(uid: UInt32, sender: MCOAddress?, receivers: [MCOAddress], time: NSDate?, received: Bool, subject: String?, body: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool, flags: MCOMessageFlag) {
         self.uid = uid
         self.sender = sender
         self.subject = subject
@@ -65,6 +79,7 @@ class Mail: Comparable {
         self.subject = subject
         self.body = body
         self.isUnread = isUnread
+        self.flags = flags
         self.isEncrypted = isEncrypted
         self.isVerified = isVerified
         setTrouble(trouble)

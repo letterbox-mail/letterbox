@@ -248,7 +248,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Delete" id="Mac-KZ-4YQ">
+                        <barButtonItem enabled="NO" title="Delete" id="Mac-KZ-4YQ">
                             <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="deleteButton:" destination="Ouw-WD-EV6" id="QYh-Ah-Evh"/>
@@ -261,7 +261,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="fWW-Bq-Eim"/>
-                        <barButtonItem title="Archive" id="tGx-Pm-eAc">
+                        <barButtonItem enabled="NO" title="Archive" id="tGx-Pm-eAc">
                             <connections>
                                 <action selector="ausgabe:" destination="Ouw-WD-EV6" id="dQm-VQ-LMi"/>
                             </connections>

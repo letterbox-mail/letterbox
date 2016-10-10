@@ -25,8 +25,6 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
             }
         }
     }
-
-let mailHandler = MailHandler()
     
     @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
     var lastUpdateLabel = UILabel(frame: CGRectZero)
@@ -97,7 +95,7 @@ let mailHandler = MailHandler()
 //        random mail generation
 //        contacts = generateMail()
         
-        self.mailHandler.delegate = self
+        AppDelegate.getAppDelegate().mailHandler.delegate = self
         
         dateFormatter.locale = NSLocale.currentLocale()
         dateFormatter.timeStyle = .MediumStyle
@@ -107,7 +105,7 @@ let mailHandler = MailHandler()
     
     func refresh(refreshControl: UIRefreshControl) {
         lastUpdateText = "Updating..."
-        self.mailHandler.recieve()
+        AppDelegate.getAppDelegate().mailHandler.recieve()
     }
     
     func getMailCompleted() {
