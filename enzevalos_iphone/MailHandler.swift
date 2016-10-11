@@ -125,15 +125,17 @@ class MailHandler {
                         var lineArray = html.componentsSeparatedByString("\n")
                         lineArray.removeFirst(4)
                         var body = lineArray.joinWithSeparator("\n")
+                        body = body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                        body.appendContentsOf("\n")
                         var rec: [MCOAddress] = []
                         let header = message.header
                         let messageRead = MCOMessageFlag.Seen.isSubsetOf(message.flags)
-                        if let cc = header.cc {
-                            for r in cc {
+                        if let to = header.to {
+                            for r in to {
                                 rec.append(r as! MCOAddress)
                             }
                         }
-                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: header.subject, body: body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()), isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead, flags: message.flags)
+                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: header.subject, body: body, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead, flags: message.flags)
                         
                         self.delegate?.addNewMail(mail)
                         
