@@ -81,7 +81,16 @@ class VCSend04: UIViewController, UITextViewDelegate{
         toText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         ccText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         
-        toText.delegate?.tokenField!(toText, didEnterText: "jakob.bode@fu-berlin.de")
+        //toText.delegate?.tokenField!(toText, didEnterText: "jakob.bode@fu-berlin.de")
+        if answerTo != nil {
+            toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.sender?.mailbox!)!)
+            for r in (answerTo?.receivers)!{
+                ccText.delegate?.tokenField!(ccText, didEnterText: r.mailbox!)
+            }
+            subjectText.setText((answerTo?.subject!)!)
+            textView.text = answerTo?.body
+            
+        }
         
         seperator1Height.constant = 0.5
         seperator2Height.constant = 0.5
