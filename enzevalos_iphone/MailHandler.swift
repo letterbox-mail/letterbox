@@ -128,6 +128,7 @@ class MailHandler {
                         body = body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                         body.appendContentsOf("\n")
                         var rec: [MCOAddress] = []
+                        var cc: [MCOAddress] = []
                         let header = message.header
                         let messageRead = MCOMessageFlag.Seen.isSubsetOf(message.flags)
                         if let to = header.to {
@@ -135,7 +136,12 @@ class MailHandler {
                                 rec.append(r as! MCOAddress)
                             }
                         }
-                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, time: header.date, received: true, subject: header.subject, body: body, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead, flags: message.flags)
+                        if let c = header.cc {
+                            for r in c {
+                                cc.append(r as! MCOAddress)
+                            }
+                        }
+                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead, flags: message.flags)
                         
                         self.delegate?.addNewMail(mail)
                         

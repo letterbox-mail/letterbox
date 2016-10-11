@@ -12,6 +12,7 @@ class Mail: Comparable {
     let uid: UInt32
     var sender: MCOAddress?
     var receivers = [MCOAddress]()
+    var cc = [MCOAddress]()
     let time: NSDate?
     let received: Bool
     let flags: MCOMessageFlag
@@ -93,11 +94,12 @@ class Mail: Comparable {
         return ret
     }
 
-    init(uid: UInt32, sender: MCOAddress?, receivers: [MCOAddress], time: NSDate?, received: Bool, subject: String?, body: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool, flags: MCOMessageFlag) {
+    init(uid: UInt32, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate?, received: Bool, subject: String?, body: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool, flags: MCOMessageFlag) {
         self.uid = uid
         self.sender = sender
         self.subject = subject
         self.receivers = receivers
+        self.cc = cc
         self.time = time
         self.received = received
         self.subject = subject
