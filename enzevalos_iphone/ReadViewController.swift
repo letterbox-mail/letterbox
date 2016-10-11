@@ -166,13 +166,13 @@ class ReadViewController : UITableViewController {
             let url: String
             if m.trouble {
                 alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.", preferredStyle: UIAlertControllerStyle.Alert)
-                url = "https://enzevalos.org/infos/corrupted"
+                url = "https://enzevalos.de/infos/corrupted"
             } else if m.isEncrypted {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: UIAlertControllerStyle.Alert)
-                url = "https://enzevalos.org/infos/letter"
+                url = "https://enzevalos.de/infos/letter"
             } else {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: UIAlertControllerStyle.Alert)
-                url = "https://enzevalos.org/infos/postcard"
+                url = "https://enzevalos.de/infos/postcard"
             }
             alert.addAction(UIAlertAction(title: "Mehr Informationen", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
@@ -214,7 +214,7 @@ class ReadViewController : UITableViewController {
             }
             
             messageBody.text = m.body
-            
+            print(messageBody.text)
             // NavigationBar Icon
             let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 38))
             iconView.contentMode = .ScaleAspectFit

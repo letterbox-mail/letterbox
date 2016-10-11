@@ -57,14 +57,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="okf-3B-Nb6">
-                                                    <frame key="frameInset" minX="15" minY="12" width="31.5" height="19.5"/>
+                                                    <frame key="frameInset" minX="15" minY="12" width="32" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Sdq-CE-2Do">
-                                                    <frame key="frameInset" minX="318.5" minY="12" width="41.5" height="19.5"/>
+                                                    <frame key="frameInset" minX="318" minY="12" width="42" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -103,8 +103,8 @@
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="72" id="hiO-mC-dXs">
                                         <rect key="frame" x="0.0" y="240" width="375" height="72"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hiO-mC-dXs" id="gEu-X7-3M0">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hiO-mC-dXs" id="gEu-X7-3M0">
                                             <frame key="frameInset" width="375" height="72"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -195,10 +195,10 @@
                                                         </button>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="I7i-jf-aSX" firstAttribute="top" secondItem="3eI-t6-Pay" secondAttribute="top" constant="20" symbolic="YES" id="5ME-wz-RgK"/>
                                                         <constraint firstItem="qTi-rO-CH3" firstAttribute="leading" secondItem="cap-Ul-t1I" secondAttribute="trailing" id="NZx-k6-SWE"/>
-                                                        <constraint firstItem="cap-Ul-t1I" firstAttribute="top" secondItem="3eI-t6-Pay" secondAttribute="top" id="NxY-eD-ddP"/>
                                                         <constraint firstItem="cap-Ul-t1I" firstAttribute="leading" secondItem="I7i-jf-aSX" secondAttribute="trailing" id="g0n-ew-GTy"/>
-                                                        <constraint firstAttribute="bottom" secondItem="cap-Ul-t1I" secondAttribute="bottom" id="gcr-oi-Fn7"/>
+                                                        <constraint firstItem="qTi-rO-CH3" firstAttribute="baseline" secondItem="I7i-jf-aSX" secondAttribute="baseline" id="hv7-f5-5eA"/>
                                                     </constraints>
                                                 </stackView>
                                             </subviews>
@@ -233,7 +233,6 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="djb-A5-Dwe" secondAttribute="bottom" id="6pO-xi-ovB"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="djb-A5-Dwe" secondAttribute="trailing" id="7AP-Yj-VvH"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="djb-A5-Dwe" secondAttribute="leading" id="92e-Kh-ibK"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="djb-A5-Dwe" secondAttribute="trailing" id="KIa-k5-lho"/>
                                                 <constraint firstItem="djb-A5-Dwe" firstAttribute="top" secondItem="MwJ-Pq-fRD" secondAttribute="topMargin" constant="-8" id="j1y-EV-9ca"/>
                                             </constraints>
                                             <edgeInsets key="layoutMargins" top="20" left="8" bottom="8" right="8"/>
@@ -270,7 +269,7 @@
                     <navigationItem key="navigationItem" id="JgT-PA-2op">
                         <nil key="title"/>
                         <button key="titleView" opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bcV-Tv-Mmh">
-                            <rect key="frame" x="172.5" y="3" width="30" height="38"/>
+                            <rect key="frame" x="173" y="3" width="30" height="38"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal">
