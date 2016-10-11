@@ -230,4 +230,13 @@ class ReadViewController : UITableViewController {
             iconButton.setImage(icon, forState: UIControlState.Normal)
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "answerTo"{
+            let controller = segue.destinationViewController as? VCSend04
+            if controller != nil {
+                controller?.answerTo = mail
+            }
+        }
+    }
 }

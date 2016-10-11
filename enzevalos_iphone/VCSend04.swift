@@ -42,6 +42,8 @@ class VCSend04: UIViewController, UITextViewDelegate{
     var mailHandler = MailHandler()
     var tableDataDelegate = TableViewDataDelegate(insertCallback: {(name : String, address : String) -> Void in return})
     var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: {(name : String, address : String) -> Void in return})
+    
+    var answerTo: Mail? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
