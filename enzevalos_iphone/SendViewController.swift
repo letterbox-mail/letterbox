@@ -10,7 +10,7 @@ import UIKit
 import VENTokenField
 import Contacts
 
-class VCSend04: UIViewController, UITextViewDelegate{
+class SendViewController: UIViewController, UITextViewDelegate{
     
     var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 5, width: 200, height: 45))
     @IBOutlet weak var button: UIBarButtonItem!

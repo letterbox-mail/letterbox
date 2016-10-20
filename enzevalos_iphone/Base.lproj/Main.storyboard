@@ -431,10 +431,10 @@
             </objects>
             <point key="canvasLocation" x="210" y="432"/>
         </scene>
-        <!--Send04-->
+        <!--Send View Controller-->
         <scene sceneID="gr5-XJ-geZ">
             <objects>
-                <viewController id="4Ey-v4-VeB" customClass="VCSend04" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4Ey-v4-VeB" customClass="SendViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Pd7-8i-0I9"/>
                         <viewControllerLayoutGuide type="bottom" id="zNd-c4-1JB"/>

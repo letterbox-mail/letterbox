@@ -19,7 +19,7 @@
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
 		A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
 		A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057D1D956848008659C1 /* VENDataDelegate.swift */; };
-		A1EB05801D956851008659C1 /* VCSend04.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057F1D956851008659C1 /* VCSend04.swift */; };
+		A1EB05801D956851008659C1 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057F1D956851008659C1 /* SendViewController.swift */; };
 		A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */; };
 		A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */; };
 		A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05851D956872008659C1 /* FrequentCell.swift */; };
@@ -89,7 +89,7 @@
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		A1EB057B1D956838008659C1 /* MailHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandler.swift; sourceTree = "<group>"; };
 		A1EB057D1D956848008659C1 /* VENDataDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VENDataDelegate.swift; sourceTree = "<group>"; };
-		A1EB057F1D956851008659C1 /* VCSend04.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCSend04.swift; sourceTree = "<group>"; };
+		A1EB057F1D956851008659C1 /* SendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendViewController.swift; sourceTree = "<group>"; };
 		A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionDataDelegate.swift; sourceTree = "<group>"; };
 		A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataDelegate.swift; sourceTree = "<group>"; };
 		A1EB05851D956872008659C1 /* FrequentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrequentCell.swift; sourceTree = "<group>"; };
@@ -244,7 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				A1EB05A51D956F73008659C1 /* images */,
-				A1EB057F1D956851008659C1 /* VCSend04.swift */,
+				A1EB057F1D956851008659C1 /* SendViewController.swift */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
 				A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */,
 				A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */,
@@ -561,7 +561,7 @@
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
-				A1EB05801D956851008659C1 /* VCSend04.swift in Sources */,
+				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
 				A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,

@@ -241,7 +241,7 @@ class ReadViewController : UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "answerTo"{
-            let controller = segue.destinationViewController as? VCSend04
+            let controller = segue.destinationViewController as? SendViewController
             if controller != nil {
                 controller?.answerTo = mail
             }
