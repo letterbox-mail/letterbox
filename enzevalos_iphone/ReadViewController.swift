@@ -198,10 +198,18 @@ class ReadViewController : UITableViewController {
             }
             
             sender.text = m.sender?.mailbox
-            receivers.text = NSLocalizedString("To", comment: "To label")+": "
-            for r in m.receivers {
-                receivers.text?.appendContentsOf(r.mailbox)
-                receivers.text?.appendContentsOf(" ")
+            if m.receivers.count == 1 && m.receivers.first?.mailbox == AppDelegate.getAppDelegate().mailHandler.useraddr && m.cc.count > 0 {
+                receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
+                for c in m.cc {
+                    receivers.text?.appendContentsOf(c.mailbox)
+                    receivers.text?.appendContentsOf(" ")
+                }
+            } else {
+                receivers.text = NSLocalizedString("To", comment: "To label") + ": "
+                for r in m.receivers {
+                    receivers.text?.appendContentsOf(r.mailbox)
+                    receivers.text?.appendContentsOf(" ")
+                }
             }
             receivedTime.text = m.timeString
             
