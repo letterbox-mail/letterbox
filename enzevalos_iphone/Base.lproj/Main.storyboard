@@ -57,14 +57,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="okf-3B-Nb6">
-                                                    <frame key="frameInset" minX="15" minY="12" width="32" height="20"/>
+                                                    <frame key="frameInset" minX="15" minY="12" width="31.5" height="19.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Sdq-CE-2Do">
-                                                    <frame key="frameInset" minX="318" minY="12" width="42" height="20"/>
+                                                    <frame key="frameInset" minX="318.5" minY="12" width="41.5" height="19.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -103,8 +103,8 @@
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="72" id="hiO-mC-dXs">
                                         <rect key="frame" x="0.0" y="240" width="375" height="72"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hiO-mC-dXs" id="gEu-X7-3M0">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hiO-mC-dXs" id="gEu-X7-3M0">
                                             <frame key="frameInset" width="375" height="72"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -269,7 +269,7 @@
                     <navigationItem key="navigationItem" id="JgT-PA-2op">
                         <nil key="title"/>
                         <button key="titleView" opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bcV-Tv-Mmh">
-                            <rect key="frame" x="173" y="3" width="30" height="38"/>
+                            <rect key="frame" x="172.5" y="3" width="30" height="38"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal">
@@ -519,7 +519,7 @@
                                     </textView>
                                     <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zgt-Nh-yna" customClass="VENTokenField">
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="1"/>
+                                        <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" identifier="tokenFieldHeight" id="CIk-PS-cBx"/>
                                         </constraints>
@@ -569,10 +569,10 @@
                             <constraint firstItem="zgt-Nh-yna" firstAttribute="leading" secondItem="5dv-YO-2iV" secondAttribute="leadingMargin" constant="-15" id="i6W-jZ-JWg"/>
                             <constraint firstItem="KMI-R1-Q95" firstAttribute="leading" secondItem="5dv-YO-2iV" secondAttribute="leadingMargin" constant="-15" id="ixA-kP-XH5"/>
                             <constraint firstItem="iEa-Rh-6bS" firstAttribute="leading" secondItem="5dv-YO-2iV" secondAttribute="leadingMargin" constant="-20" id="jcW-se-iSe"/>
+                            <constraint firstItem="sij-Oe-ann" firstAttribute="top" secondItem="Pd7-8i-0I9" secondAttribute="bottom" constant="-64" id="ly1-Ry-Kaa"/>
                             <constraint firstItem="HOW-9b-T8z" firstAttribute="leading" secondItem="5dv-YO-2iV" secondAttribute="leadingMargin" constant="-15" id="nv0-Kh-wEj"/>
                             <constraint firstAttribute="trailingMargin" secondItem="iEa-Rh-6bS" secondAttribute="trailing" constant="-20" id="pPm-lz-HXC"/>
                             <constraint firstItem="zNd-c4-1JB" firstAttribute="top" secondItem="sij-Oe-ann" secondAttribute="bottom" id="pVt-4d-hDm"/>
-                            <constraint firstItem="sij-Oe-ann" firstAttribute="top" secondItem="5dv-YO-2iV" secondAttribute="topMargin" id="uBt-sS-XPD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="KMI-R1-Q95" secondAttribute="trailing" constant="-15" id="vjT-LW-ohI"/>
                             <constraint firstItem="zNd-c4-1JB" firstAttribute="top" secondItem="sij-Oe-ann" secondAttribute="bottom" constant="62" id="vmr-BM-sKL"/>
                             <constraint firstItem="vj8-uM-8eP" firstAttribute="leading" secondItem="5dv-YO-2iV" secondAttribute="leadingMargin" constant="-15" id="yXj-sj-waX"/>

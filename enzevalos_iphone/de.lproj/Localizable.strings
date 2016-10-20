@@ -25,9 +25,14 @@
 "Junk" = "Spam";
 "Letter" = "Brief";
 "LetterDamaged" = "Angerissener Brief";
+"mail from" = "Nachricht von";
 "Message" = "Nachricht";
 "MoreInformation" = "Mehr Informationen";
+"Now" = "jetzt";
+"OneMinuteAgo" = "vor 1 min";
+"original message" = "originale Nachricht";
 "Postcard" = "Postkarte";
+"Re" = "AW";
 "Receive" = "Empfangen";
 "ReceiveError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
 "ReceiveSecureInfo" = "Diese Nachricht war ordnungsgemäß verschlossen. Sie kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt";
@@ -42,13 +47,15 @@
 "SendSecureInfo" = "Super! Diese Nachricht wird verschlüsselt gesendet. Somit kann sie unterwegs nicht gelesen oder ihr Inhalt verändert werden.";
 "SendSuccess" = "Erfolgreich gesendet";
 "Sent" = "Gesendet";
+"sent at" = "gesendet am";
 "Sign" = "Signieren";
 "Signed" = "Signiert";
 "Subject" = "Betreff";
+"subject" = "Betreff";
 "SubjectNo" = "Kein Betreff";
 "To" = "An";
+"to" = "an";
 "Trash" = "Papierkorb";
-"Now" = "jetzt";
-"OneMinuteAgo" = "vor 1 min";
-"Yesterday" = "Gestern";
 "TwoDaysAgo" = "Vorgestern";
+"Yesterday" = "Gestern";
+

@@ -58,6 +58,7 @@ class VCSend04: UIViewController, UITextViewDelegate{
         imageView.userInteractionEnabled = true
         
         textView.delegate = self
+        textView.font = UIFont.systemFontOfSize(17)
         
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label")+": " //"Subject: "
         
@@ -87,9 +88,14 @@ class VCSend04: UIViewController, UITextViewDelegate{
             for r in (answerTo?.receivers)!{
                 ccText.delegate?.tokenField!(ccText, didEnterText: r.mailbox!)
             }
-            subjectText.setText((answerTo?.subject!)!)
-            textView.text = answerTo?.body
-            
+            subjectText.setText(NSLocalizedString("Re", comment: "prefix for subjects of answered mails")+": "+(answerTo?.subject!)!)
+            textView.text = NSLocalizedString("mail from", comment: "describing who send the mail")+" "
+            textView.text.appendContentsOf((answerTo?.sender?.mailbox!)!)
+            textView.text.appendContentsOf(" "+NSLocalizedString("sent at", comment: "describing when the mail was send")+" "+(answerTo?.timeString)!)
+            textView.text.appendContentsOf("\n"+NSLocalizedString("to", comment: "describing adressee")+": "+ccText.mailTokens.componentsJoinedByString(", "))
+            textView.text.appendContentsOf("\n"+NSLocalizedString("subject", comment:"describing what subject was choosen")+": "+(answerTo?.subject!)!)
+            textView.text.appendContentsOf("\n--------------------\n\n"+(answerTo?.body)!) //textView.text.appendContentsOf("\n"+NSLocalizedString("original message", comment: "describing contents of the original message")+": \n\n"+(answerTo?.body)!)
+            textView.text = TextFormatter.insertBeforeEveryLine("> ", text: textView.text)
         }
         
         seperator1Height.constant = 0.5
@@ -357,6 +363,7 @@ class VCSend04: UIViewController, UITextViewDelegate{
             AppDelegate.getAppDelegate().showMessage("An error occured")
         } else {
             NSLog("Send!")
+            AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64((self.answerTo?.uid)!), flags: MCOMessageFlag.Answered)
             AppDelegate.getAppDelegate().showMessage("Send successfully")
         }
     }

@@ -65,7 +65,7 @@ extension CNContact {
     }
     
     func getColor() -> UIColor{
-        
+        // Overflow?!
         let hash = abs((self.emailAddresses.last!.value as! String).hash) % Int(UInt32.max)
         return UIColor(hue: CGFloat(hash) / CGFloat(INT_MAX), saturation: 1, brightness: 0.75, alpha: 1)
     }
