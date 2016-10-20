@@ -33,10 +33,10 @@ class AddressHandler {
                         var type : UIImage? = nil
                         if c.emailAddresses.count > 1 {
                             if email.label == "_$!<Work>!$_"{
-                                type = UIImage(named: "work2_white.png")!
+                                type = UIImage(named: "work2_white")!
                             }
                             else if email.label == "_$!<Home>!$_"{
-                                type = UIImage(named: "home2_white.png")!
+                                type = UIImage(named: "home2_white")!
                             }
                             else if email.label == "_$!<iCloud>!$_"{
                                 //TODO: appleIcon hinzufügen

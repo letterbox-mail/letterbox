@@ -51,7 +51,7 @@ class VCSend04: UIViewController, UITextViewDelegate{
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
         imageView.contentMode = .ScaleAspectFit
-        imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!
+        imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90")!
         setAnimation(false)
         self.navigationItem.titleView = imageView
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.iconButton(_:))))
