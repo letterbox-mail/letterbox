@@ -31,6 +31,11 @@ class SendViewController: UIViewController, UITextViewDelegate{
     @IBOutlet weak var toCollectionviewHeight: NSLayoutConstraint!
     @IBOutlet weak var ccCollectionview: UICollectionView!
     @IBOutlet weak var ccCollectionviewHeight: NSLayoutConstraint!
+    @IBOutlet weak var seperator1Leading: NSLayoutConstraint!
+    @IBOutlet weak var seperator2Leading: NSLayoutConstraint!
+    @IBOutlet weak var seperator3Leading: NSLayoutConstraint!
+    @IBOutlet weak var textViewLeading: NSLayoutConstraint!
+    
     
     var keyboardOpened = false
     var keyboardY : CGFloat = 0
@@ -101,6 +106,13 @@ class SendViewController: UIViewController, UITextViewDelegate{
         seperator1Height.constant = 0.5
         seperator2Height.constant = 0.5
         seperator3Height.constant = 0.5
+        
+        
+        seperator1Leading.constant += toText.horizontalInset
+        seperator2Leading.constant += ccText.horizontalInset
+        seperator3Leading.constant += subjectText.horizontalInset
+        
+        textViewLeading.constant = seperator3Leading.constant
         
         //ccText.horizontalInset = 9
     

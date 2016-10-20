@@ -606,13 +606,17 @@
                         <outlet property="ccText" destination="HOW-9b-T8z" id="hlS-ac-BpK"/>
                         <outlet property="scrollview" destination="sij-Oe-ann" id="8k5-VA-Nfk"/>
                         <outlet property="seperator1Height" destination="veB-dJ-Aq3" id="3zW-z5-ATB"/>
+                        <outlet property="seperator1Leading" destination="6Vg-lw-tja" id="kBF-2U-K8X"/>
                         <outlet property="seperator2Height" destination="ojt-b3-hEs" id="eRT-pm-Xjk"/>
+                        <outlet property="seperator2Leading" destination="RzX-AS-6SI" id="Ib2-tX-Zvk"/>
                         <outlet property="seperator3Height" destination="ejd-X4-e7O" id="BLl-SX-WX0"/>
+                        <outlet property="seperator3Leading" destination="yXj-sj-waX" id="b9Q-d9-eDe"/>
                         <outlet property="subjectText" destination="zbn-j5-Dz7" id="5wb-G0-ipJ"/>
                         <outlet property="tableview" destination="iEa-Rh-6bS" id="DWg-RH-6ph"/>
                         <outlet property="tableviewBegin" destination="2Wa-Qq-G93" id="YUM-qf-3Ia"/>
                         <outlet property="tableviewHeight" destination="fcx-4L-TLn" id="onv-6z-sYk"/>
                         <outlet property="textView" destination="quA-hP-Xkp" id="bsZ-Gx-Cds"/>
+                        <outlet property="textViewLeading" destination="7wJ-8N-go2" id="uKC-m1-WGE"/>
                         <outlet property="toCollectionview" destination="KMI-R1-Q95" id="X2e-ny-ePA"/>
                         <outlet property="toCollectionviewHeight" destination="k38-La-Ttc" id="akM-GJ-3DP"/>
                         <outlet property="toHeight" destination="CIk-PS-cBx" id="J4L-8a-qeq"/>
