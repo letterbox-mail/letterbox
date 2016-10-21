@@ -64,8 +64,9 @@ class SendViewController: UIViewController, UITextViewDelegate{
         
         textView.delegate = self
         textView.font = UIFont.systemFontOfSize(17)
+        textView.text = ""
         
-        subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label")+": " //"Subject: "
+        subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label")+": "
         
         toText.delegate = dataDelegate
         toText.dataSource = dataDelegate
@@ -77,7 +78,7 @@ class SendViewController: UIViewController, UITextViewDelegate{
         toCollectionviewHeight.constant = 0
         ccText.delegate = dataDelegate
         ccText.dataSource = dataDelegate
-        ccText.toLabelText = NSLocalizedString("Cc", comment: "copy label")+": "//"Cc:"
+        ccText.toLabelText = NSLocalizedString("Cc", comment: "copy label")+": "
         ccCollectionview.delegate = collectionDataDelegate
         ccCollectionview.dataSource = collectionDataDelegate
         ccCollectionview.registerNib(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
@@ -112,9 +113,7 @@ class SendViewController: UIViewController, UITextViewDelegate{
         seperator2Leading.constant += ccText.horizontalInset
         seperator3Leading.constant += subjectText.horizontalInset
         
-        textViewLeading.constant = seperator3Leading.constant
-        
-        //ccText.horizontalInset = 9
+        textViewLeading.constant = seperator3Leading.constant-4
     
         ccText.inputTextFieldKeyboardType = UIKeyboardType.EmailAddress
         scrollview.clipsToBounds = true
@@ -122,26 +121,15 @@ class SendViewController: UIViewController, UITextViewDelegate{
         tableview.delegate = tableDataDelegate
         tableview.dataSource = tableDataDelegate
         tableview.registerNib(UINib(nibName: "ContactCell", bundle: nil), forCellReuseIdentifier: "contacts")
+        tableviewHeight.constant = 0
         
-        //tableview.registerClass(ContactCell.self, forCellReuseIdentifier: "contacts")
         
         let indexPath = NSIndexPath()
-        //tableview.registerNib(UINib(nibName: "nib", bundle: nil), forCellReuseIdentifier: "contacts")
-        
-        //tableview.cellForRowAtIndexPath(indexPath)?.textLabel?.text = "hallo2"
         tableview.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
         
         //register KeyBoardevents
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardOpen(_:)), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardClose(_:)), name:UIKeyboardWillHideNotification, object: nil);
-        
-        //        UIView.animateWithDuration(0.5, delay: 1, options: UIViewAnimationOptions() ,animations: {
-        //            self.button!.setImage(self.imageView.image!, forState: UIControlState.Normal)
-        //            //self.button!.frame = CGRectOffset(self.button!.frame, 0, 100)
-        //            }, completion: nil)
-        //showMessage("hallihallo")
-        
-        //doContact()
     }
     
     override func viewDidAppear(animated: Bool){
@@ -157,15 +145,11 @@ class SendViewController: UIViewController, UITextViewDelegate{
         if let inText = tokenField.inputText(){
             if inText != "" {
                 scrollview.scrollEnabled = false
-                //ccCollectionviewHeight.constant = 0
-                //toCollectionviewHeight.constant = 0
                 scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y-self.topLayoutGuide.length)
-                print(tokenField.frame.origin.y, " ", tokenField.frame.maxY)
+                //print(tokenField.frame.origin.y, " ", tokenField.frame.maxY)
                 tableviewBegin.constant = tokenField.frame.maxY-tokenField.frame.origin.y
                 tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
-                //tableDataDelegate.tokenField = tokenField
                 searchContacts(inText)
-                //tableview.frame.origin = CGPoint(x:0, y:tokenField.frame.origin.y+tokenField.frame.maxY)
             }
             else {
                 scrollview.scrollEnabled = true
@@ -187,18 +171,16 @@ class SendViewController: UIViewController, UITextViewDelegate{
         else if ccText.isFirstResponder(){
             ccText.delegate?.tokenField!(ccText, didEnterText: name, mail: address)
         }
-        //collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
     }
     
     func searchContacts(prefix: String){
         AppDelegate.getAppDelegate().requestForAccess({access in
-            print(access)
+            //print(access)
         })
         let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
         if authorizationStatus == CNAuthorizationStatus.Authorized {
             do {
                 let contacts = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName(prefix), keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
-//                print(contacts)
                 var indexes : [NSIndexPath] = []
                 var i = 0
                 for (i=0; i<tableview.numberOfRowsInSection(0); i+=1) {
@@ -238,7 +220,7 @@ class SendViewController: UIViewController, UITextViewDelegate{
             catch {
                 print("exception")
             }
-            print("contacts done")
+            //print("contacts done")
         }
         else {
             print("no Access!")
@@ -280,7 +262,7 @@ class SendViewController: UIViewController, UITextViewDelegate{
             reducedSize = keyboardFrame.size.height
         
             keyboardY = keyboardFrame.origin.y
-            print("keyboard ", keyboardY)
+            //print("keyboard ", keyboardY)
         
         if toText.isFirstResponder() {
             toCollectionview.reloadData()
@@ -298,33 +280,18 @@ class SendViewController: UIViewController, UITextViewDelegate{
         }
         
             UIView.animateWithDuration(0.1, animations: { () -> Void in
-                //self.bottomConstraint.constant = keyboardFrame.size.height + 20 //gaaaaaanz alt
                 
-                //self.textViewHeight.constant -= self.reducedSize
-                //self.scrollview.heightAnchor -= self.reducedSize
-                
-                //self.bottomConstraint.constant = self.reducedSize
-                let contentInsets = UIEdgeInsetsMake(/*(self.navigationController?.navigationBar.frame.height)!+*/self.topLayoutGuide.length/*self.navigationController!.navigationBar.frame.size.height*//*0.0*/, 0.0, self.reducedSize, 0.0)
+                let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.0, self.reducedSize, 0.0)
                 self.scrollview!.contentInset = contentInsets
-                //self.scrollview!.setContentOffset(CGPoint(x: self.scrollview!.contentOffset.x,y: self.scrollview!.contentOffset.y-self.reducedSize), animated: false)
-                //self.scrollview!.scrollIndicatorInsets = contentInsets
             })
-            //print(self.bottomConstraint.constant)
-        //}
     }
     
     func keyboardClose(notification: NSNotification) {
         if reducedSize != 0{
             UIView.animateWithDuration(0.1, animations: { () -> Void in
-                //self.bottomConstraint.constant = keyboardFrame.size.height + 20 //auch ganz alt
-                //self.textViewHeight.constant += self.reducedSize
-                //self.scrollview.heightAnchor -= self.reducedSize
-                
-                //self.bottomConstraint.constant = 0
                 self.reducedSize = 0
-                let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length/*0.0*/, 0.0, self.reducedSize, 0.0)
+                let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.0, self.reducedSize, 0.0)
                 self.scrollview!.contentInset = contentInsets
-                //self.scrollview!.scrollIndicatorInsets = contentInsets
             })
             if !toText.isFirstResponder() {
                 toCollectionviewHeight.constant = 0
@@ -356,9 +323,6 @@ class SendViewController: UIViewController, UITextViewDelegate{
     @IBAction func pressCancel(sender: AnyObject) {
         navigationController?.popViewControllerAnimated(true)
     }
-    /*@IBAction func pressCancel(sender: AnyObject) {
-        navigationController?.popViewControllerAnimated(true)
-    }*/
     
     @IBAction func pressSend(sender: AnyObject) {
         let toEntrys = toText.mailTokens
@@ -375,7 +339,9 @@ class SendViewController: UIViewController, UITextViewDelegate{
             AppDelegate.getAppDelegate().showMessage("An error occured")
         } else {
             NSLog("Send!")
-            AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64((self.answerTo?.uid)!), flags: MCOMessageFlag.Answered)
+            if (self.answerTo != nil) {
+                AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64((self.answerTo?.uid)!), flags: MCOMessageFlag.Answered)
+            }
             AppDelegate.getAppDelegate().showMessage("Send successfully")
         }
     }

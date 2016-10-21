@@ -11,7 +11,7 @@ import VENTokenField
 class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegate {
     
     var changeFunc : (VENTokenField -> Void) = {(_ : VENTokenField) -> Void in
-        print ("hallo")
+        //print ("hallo")
     }
     
     override init() {
@@ -24,8 +24,8 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenField(tokenField: VENTokenField, didChangeText text: String?) {
-        print(tokenField.inputText())
-        print(text)
+        //print(tokenField.inputText())
+        //print(text)
         changeFunc(tokenField)
     }
    
@@ -38,8 +38,8 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenFieldDidBeginEditing(tokenField: VENTokenField) {
-        print("begin")
-        print(numberOfTokensInTokenField(tokenField))
+        //print("begin")
+        //print(numberOfTokensInTokenField(tokenField))
     }
     
     func tokenField(tokenField: VENTokenField, didEnterText text: String) {
@@ -85,11 +85,11 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenField(tokenField: VENTokenField, didChangeContentHeight height: CGFloat) {
-        print("height: ",height)
+        //print("height: ",height)
         for c in tokenField.constraints {
             if (c.identifier == "tokenFieldHeight"){
                 c.constant = height
-                print("set height")
+                //print("set height")
             }
         }
     }
@@ -97,7 +97,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     //eigene Methoden
     
     func tokenFieldDidEndEditing(tokenF: VENTokenField){
-        print("end")
+        //print("end")
         if let last = tokenF.inputText() {
             if last.stringByReplacingOccurrencesOfString(" ", withString: "") != "" {
                 tokenField(tokenF, didEnterText: last)
