@@ -72,7 +72,7 @@ class Mail: Comparable {
     
     var subjectWithFlagsString: String {
         let subj: String
-        if self.subject == nil {
+        if self.subject == nil || (self.subject?.isEmpty)! {
             subj = NSLocalizedString("SubjectNo", comment: "This email has no subject")
         } else {
             subj = subject!
