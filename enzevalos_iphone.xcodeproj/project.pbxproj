@@ -38,8 +38,6 @@
 		A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059D1D956963008659C1 /* EnzevalosContact.swift */; };
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
-		A1EB05EC1D956F8E008659C1 /* gruen.gif in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05C81D956F8E008659C1 /* gruen.gif */; };
-		A1EB05ED1D956F8E008659C1 /* Unbenannt.gif in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05C91D956F8E008659C1 /* Unbenannt.gif */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
 		EE57562DDC09AD98702A0BA4 /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */; };
@@ -110,8 +108,6 @@
 		A1EB059D1D956963008659C1 /* EnzevalosContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnzevalosContact.swift; sourceTree = "<group>"; };
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A1EB05C81D956F8E008659C1 /* gruen.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gruen.gif; sourceTree = "<group>"; };
-		A1EB05C91D956F8E008659C1 /* Unbenannt.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Unbenannt.gif; sourceTree = "<group>"; };
 		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992321DA7D2360073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992341DA7DA570073BF1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -247,7 +243,6 @@
 		A1EB05751D956748008659C1 /* send */ = {
 			isa = PBXGroup;
 			children = (
-				A1EB05A51D956F73008659C1 /* images */,
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
 				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
@@ -279,15 +274,6 @@
 				A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */,
 			);
 			name = read;
-			sourceTree = "<group>";
-		};
-		A1EB05A51D956F73008659C1 /* images */ = {
-			isa = PBXGroup;
-			children = (
-				A1EB05C81D956F8E008659C1 /* gruen.gif */,
-				A1EB05C91D956F8E008659C1 /* Unbenannt.gif */,
-			);
-			name = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -410,9 +396,7 @@
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
-				A1EB05ED1D956F8E008659C1 /* Unbenannt.gif in Resources */,
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
-				A1EB05EC1D956F8E008659C1 /* gruen.gif in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
 			);
