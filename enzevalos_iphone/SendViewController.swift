@@ -179,12 +179,24 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         
     }
     
+    @IBAction func panned(sender: UIPanGestureRecognizer) {
+        if LogHandler.logging && false {
+            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "pan", point: CGPoint(x: 0,y: 0), comment: String(sender.translationInView(sender.view)))
+        }
+    }
+    
     func tokenField(tokenField: VENTokenField, didChangeText text: String?) {
         if text == "log"{
                 LogHandler.stopLogging()
                 textView.text = LogHandler.getLogs()
                 LogHandler.deleteLogs()
                 LogHandler.newLog()
+        }
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        if LogHandler.logging{
+            LogHandler.doLog(UIViewResolver.resolve(textView.tag), interaction: "changeText", point: CGPoint(x: 0,y: 0), comment: textView.text)
         }
     }
     
@@ -310,6 +322,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func keyboardOpen(notification: NSNotification) {
         //if reducedSize == 0{
+        LogHandler.doLog("keyboard", interaction: "open", point: CGPoint(x: 0,y: 0), comment: "")
             var info = notification.userInfo!
             let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
             reducedSize = keyboardFrame.size.height
@@ -340,6 +353,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     func keyboardClose(notification: NSNotification) {
+        LogHandler.doLog("keyboard", interaction: "close", point: CGPoint(x: 0,y: 0), comment: "")
         if reducedSize != 0{
             UIView.animateWithDuration(0.1, animations: { () -> Void in
                 self.reducedSize = 0
