@@ -49,12 +49,10 @@ class InboxTableViewCell: UITableViewCell {
         super.layoutSubviews()
         firstButton.backgroundColor = UIColor.clearColor()
         secondButton.backgroundColor = UIColor.clearColor()
-        firstButton.addTarget(self, action: .cellTouched, forControlEvents: .TouchDown)
-        firstButton.addTarget(self, action: .clearCell, forControlEvents: .TouchDragExit)
-        firstButton.addTarget(self, action: .cellTouched, forControlEvents: .TouchDragEnter)
-        secondButton.addTarget(self, action: .cellTouched, forControlEvents: .TouchDown)
-        secondButton.addTarget(self, action: .clearCell, forControlEvents: .TouchDragExit)
-        secondButton.addTarget(self, action: .cellTouched, forControlEvents: .TouchDragEnter)
+        firstButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
+        firstButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchUpInside, .TouchDragExit])
+        secondButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
+        secondButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchUpInside, .TouchDragExit])
     }
     
     var enzContact: EnzevalosContact? {
