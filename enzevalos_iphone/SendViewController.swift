@@ -10,7 +10,7 @@ import UIKit
 import VENTokenField
 import Contacts
 
-class SendViewController: UIViewController, UITextViewDelegate{
+class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecognizerDelegate, VENTokenFieldDelegate{
     
     var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 5, width: 200, height: 45))
     @IBOutlet weak var button: UIBarButtonItem!
@@ -47,6 +47,7 @@ class SendViewController: UIViewController, UITextViewDelegate{
     var mailHandler = MailHandler()
     var tableDataDelegate = TableViewDataDelegate(insertCallback: {(name : String, address : String) -> Void in return})
     var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: {(name : String, address : String) -> Void in return})
+    var recognizer : UIGestureRecognizer = UIGestureRecognizer.init()
     
     var answerTo: Mail? = nil
 
@@ -59,6 +60,8 @@ class SendViewController: UIViewController, UITextViewDelegate{
         imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90")!
         setAnimation(false)
         self.navigationItem.titleView = imageView
+        //recognizer = UIGestureRecognizer(target: self, action: #selector(self.tapped(_:)))
+        //self.view.addGestureRecognizer(recognizer)
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.iconButton(_:))))
         imageView.userInteractionEnabled = true
         
@@ -84,6 +87,8 @@ class SendViewController: UIViewController, UITextViewDelegate{
         ccCollectionview.registerNib(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
         ccCollectionviewHeight.constant = 0
         
+        subjectText.delegate = self
+        
         //will always be thrown, when a token was editied
         toText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         ccText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
@@ -92,7 +97,9 @@ class SendViewController: UIViewController, UITextViewDelegate{
         if answerTo != nil {
             toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.sender?.mailbox!)!)
             for r in (answerTo?.receivers)!{
-                ccText.delegate?.tokenField!(ccText, didEnterText: r.mailbox!)
+                if r.mailbox! != mailHandler.useraddr{
+                    ccText.delegate?.tokenField!(ccText, didEnterText: r.mailbox!)
+                }
             }
             subjectText.setText(NSLocalizedString("Re", comment: "prefix for subjects of answered mails")+": "+(answerTo?.subject!)!)
             textView.text = NSLocalizedString("mail from", comment: "describing who send the mail")+" "
@@ -130,6 +137,24 @@ class SendViewController: UIViewController, UITextViewDelegate{
         //register KeyBoardevents
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardOpen(_:)), name:UIKeyboardWillShowNotification, object: nil);
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.keyboardClose(_:)), name:UIKeyboardWillHideNotification, object: nil);
+        
+        toText.tag = UIViewResolver.toText.rawValue
+        ccText.tag = UIViewResolver.ccText.rawValue
+        textView.tag = UIViewResolver.textView.rawValue
+        imageView.tag = UIViewResolver.imageView.rawValue
+        tableview.tag = UIViewResolver.tableview.rawValue
+        toCollectionview.tag = UIViewResolver.toCollectionview.rawValue
+        ccCollectionview.tag = UIViewResolver.ccCollectionview.rawValue
+        subjectText.tag = UIViewResolver.subjectText.rawValue
+        scrollview.tag = UIViewResolver.scrollview.rawValue
+        
+        
+        //LogHandler.printLogs()
+        //LogHandler.deleteLogs()
+        LogHandler.newLog()
+        //LogHandler.printLogs()
+        
+        //LogHandler.printLogs()
     }
     
     override func viewDidAppear(animated: Bool){
@@ -140,6 +165,34 @@ class SendViewController: UIViewController, UITextViewDelegate{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    @IBAction func tapped(sender: UITapGestureRecognizer) {
+        //print(sender.description)
+        //print(String(sender.view?.valueForKey("UILoggingName")))
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "tap", point: sender.locationOfTouch(sender.numberOfTouches()-1, inView: self.view), /*debugDescription: sender.view.debugDescription,*/ comment: "")
+        }
+        
+    }
+    
+    func tokenField(tokenField: VENTokenField, didChangeText text: String?) {
+        if text == "log"{
+                LogHandler.stopLogging()
+                textView.text = LogHandler.getLogs()
+                LogHandler.deleteLogs()
+                LogHandler.newLog()
+        }
+    }
+    
+    func tokenFieldDidEndEditing(tokenField: VENTokenField) {}
+    
+    /*func tapped(sender: AnyObject){
+        print("anything")
+    }*/
     
     func editName(tokenField : VENTokenField){
         if let inText = tokenField.inputText(){
@@ -303,6 +356,11 @@ class SendViewController: UIViewController, UITextViewDelegate{
     }
     
     func iconButton(sender: AnyObject) {
+        //print(sender.absoluteString)
+        //print(recognizer.locationOfTouch(recognizer.numberOfTouches()-1, inView: imageView))
+        /*for var i in 1 ..< recognizer.numberOfTouches(){
+            print(recognizer.locationOfTouch(i, inView: self.view))
+        }*/
         let m = self.secureState
         let alert: UIAlertController
         let url: String

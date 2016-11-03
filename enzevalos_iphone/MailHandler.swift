@@ -141,8 +141,40 @@ class MailHandler {
                                 cc.append(r as! MCOAddress)
                             }
                         }
+                        /*Jakob prototypeänderung anfang*/
+                        /*ursprünglicher Code :
+                         
                         let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead, flags: message.flags)
-                        
+
+                         */
+                        var enc = false
+                        var ver = false
+                        var troub = false
+                        if header.subject != nil {
+                            if header.subject == "Schlüssel" {
+                                enc = true
+                            }
+                            if header.subject == "Re: Prüfung"{
+                                enc = true
+                                troub = true
+                            }
+                            if header.subject == "Test4" {
+                                ver = true
+                                enc = true
+                            }
+                            if header.subject == "Multiple"{
+                                enc = true
+                            }
+                            if header.subject == "Noch ein Test"{
+                                enc = true
+                                ver = true
+                            }
+                            if header.subject == "jetzt du"{
+                                enc = true
+                            }
+                        }
+                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, isEncrypted: enc, isVerified: ver, trouble: troub, isUnread: !messageRead, flags: message.flags)
+                        /*Jakob prototypeänderung Ende*/
                         self.delegate?.addNewMail(mail)
                         
                         dispatch_group_leave(dispatchGroup)

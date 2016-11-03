@@ -67,3 +67,6 @@
 
 /* Class = "UIBarButtonItem"; title = "Archivieren"; ObjectID = "tGx-Pm-eAc"; */
 "tGx-Pm-eAc.title" = "Archivieren";
+
+/* Class = "UIBarButtonItem"; title = "write"; ObjectID = "j5W-eH-o1q"; */
+"write" = "verfassen";

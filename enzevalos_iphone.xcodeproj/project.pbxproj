@@ -14,7 +14,9 @@
 		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
 		A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */; };
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
+		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
+		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB05781D956817008659C1 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05771D956817008659C1 /* ImageExtension.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
 		A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
@@ -83,8 +85,10 @@
 		A13526971D955BE000D3BFE1 /* enzevalos_iphoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = enzevalos_iphoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enzevalos_iphoneUITests.swift; sourceTree = "<group>"; };
 		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
+		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05771D956817008659C1 /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		A1EB057B1D956838008659C1 /* MailHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandler.swift; sourceTree = "<group>"; };
@@ -245,12 +249,14 @@
 			children = (
 				A1EB05A51D956F73008659C1 /* images */,
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
+				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
 				A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */,
 				A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */,
 				A1EB05791D956829008659C1 /* ContactCell.swift */,
 				A1EB05851D956872008659C1 /* FrequentCell.swift */,
 				A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */,
+				A17C04831DC6504E00F66EDB /* LogHandler.swift */,
 				A1EB05891D956890008659C1 /* ContactCell.xib */,
 				A1EB058B1D9568AB008659C1 /* FrequentCell.xib */,
 			);
@@ -561,10 +567,12 @@
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
+				A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
 				A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
+				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
 				A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */,

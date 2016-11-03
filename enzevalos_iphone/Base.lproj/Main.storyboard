@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Amm-QN-vA7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1108" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Amm-QN-vA7">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -463,18 +463,27 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="b27-VB-voz" appends="YES" id="XZE-Dy-asu"/>
+                                        </connections>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5B-h5-HOl">
                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="veB-dJ-Aq3"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="nNs-nd-j1C" appends="YES" id="aPz-In-MVP"/>
+                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HOW-9b-T8z" customClass="VENTokenField">
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" identifier="tokenFieldHeight" id="gjA-gA-kgR"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="rts-b0-KoE" appends="YES" id="uDk-bp-RfX"/>
+                                        </connections>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="w9d-ml-jRA">
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -488,28 +497,40 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="7ir-1V-kSk" appends="YES" id="l5Z-Xj-HlA"/>
+                                        </connections>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gUv-Jf-9DD">
                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="ojt-b3-hEs"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="Mrn-Zn-b3E" appends="YES" id="XgT-ow-a88"/>
+                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zbn-j5-Dz7" customClass="VENTokenField">
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Ija-JO-UZ4"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="LHc-53-Rjd" appends="YES" id="KNa-J3-ITp"/>
+                                        </connections>
                                     </view>
                                     <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="vj8-uM-8eP">
                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="ejd-X4-e7O"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="QzT-UB-ohJ" appends="YES" id="y0t-Ge-Ti7"/>
+                                        </connections>
                                     </view>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="quA-hP-Xkp">
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <accessibility key="accessibilityConfiguration" label="test">
+                                        <accessibility key="accessibilityConfiguration" identifier="send_textview" label="test">
                                             <accessibilityTraits key="traits" adjustable="YES"/>
                                         </accessibility>
                                         <constraints>
@@ -524,13 +545,20 @@
                                             </fragment>
                                         </attributedString>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="5Nw-fP-Sop" appends="YES" id="MoD-Bq-Hcq"/>
+                                        </connections>
                                     </textView>
                                     <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zgt-Nh-yna" customClass="VENTokenField">
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="send_toText"/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" identifier="tokenFieldHeight" id="CIk-PS-cBx"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="uWH-WG-0hT" appends="YES" id="XzP-g3-Y8F"/>
+                                        </connections>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -553,6 +581,9 @@
                                     <constraint firstAttribute="height" constant="100" id="fcx-4L-TLn"/>
                                 </constraints>
                                 <sections/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="4sw-b8-JJf" appends="YES" id="dYM-pN-Zf5"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -632,9 +663,64 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lv5-U9-uUg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="6eR-9b-HYR">
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="uWH-WG-0hT" userLabel="toText Tap Gesture Recognizer">
                     <connections>
-                        <action selector="textTapped:" destination="4Ey-v4-VeB" id="LUb-GS-msq"/>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="Or8-ff-LLE"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="XsS-3t-Yi1"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="b27-VB-voz" userLabel="toCollectionview Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="kPe-9S-TOh"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="QVe-4k-TSH"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="nNs-nd-j1C" userLabel="seperator1 Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="j6N-Kq-gRi"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="0sU-Ag-o2B"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="rts-b0-KoE" userLabel="ccText Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="QxX-yw-Icz"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="rd6-Af-9dV"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="7ir-1V-kSk" userLabel="ccCollectionview Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="FJi-Ty-Ji9"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="9b6-pw-xaT"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="Mrn-Zn-b3E" userLabel="seperator2 Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="xzL-uL-7Rv"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="ofL-bx-K8K"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="LHc-53-Rjd" userLabel="subjectText Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="I3d-dI-edH"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="aFV-WX-04N"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="QzT-UB-ohJ" userLabel="seperator3 Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="7kd-1z-gva"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="JU1-Zt-iBr"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="5Nw-fP-Sop" userLabel="textview Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="FGa-LE-p9S"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="dCt-BE-yT4"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="4sw-b8-JJf" userLabel="tableview Tap Gesture Recognizer">
+                    <connections>
+                        <action selector="tapped:" destination="4Ey-v4-VeB" id="cuh-kH-UvI"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="3jq-wi-4U0"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -643,6 +729,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="GWh-iO-bPb"/>
-        <segue reference="Yft-MI-Wtf"/>
+        <segue reference="j4Q-k1-ud3"/>
     </inferredMetricsTieBreakers>
 </document>
