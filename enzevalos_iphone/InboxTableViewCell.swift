@@ -63,6 +63,9 @@ class InboxTableViewCell: UITableViewCell {
                     secondMail = con.mails[1]
                     secondButton.enabled = true
                 } else {
+                    secondDateLabel.text = ""
+                    secondSubjectLabel.text = ""
+                    secondMessageLabel.text = NSLocalizedString("NoFurtherMessages", comment: "There is only one message from this sender.")
                     secondButton.enabled = false
                 }
                 self.contact = con.contact
