@@ -43,8 +43,8 @@
 "Secure" = "Secure";
 "Send" = "Send";
 "SendError" = "An error occured"; //mehr spezifizieren?
-"SendInsecureInfo" = "";
-"SendSecureInfo" = "";
+"SendInsecureInfo" = "This Mail will be send unencrypted to all orange contacts. So everybody could read and manipulate it.";
+"SendSecureInfo" = "Congratulations! This Mail will be send encrypted. It is not possible for everybody to read and manipulate it.";
 "SendSuccess" = "Sent successfully";
 "Sent" = "Sent";
 "sent at" = "sent at";
