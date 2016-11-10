@@ -59,4 +59,6 @@
 "TwoDaysAgo" = "Vorgestern";
 "write" = "verfassen";
 "Yesterday" = "Gestern";
-
+"NoFurtherMessages" = "Keine weiteren Nachrichten...";
+"Updating" = "Aktualisiere...";
+"LastUpdate" = "Letzte Aktualisierung";

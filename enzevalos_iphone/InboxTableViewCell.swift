@@ -50,9 +50,9 @@ class InboxTableViewCell: UITableViewCell {
         firstButton.backgroundColor = UIColor.clearColor()
         secondButton.backgroundColor = UIColor.clearColor()
         firstButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
-        firstButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchUpInside, .TouchDragExit])
+        firstButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchDragExit, .TouchCancel])
         secondButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
-        secondButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchUpInside, .TouchDragExit])
+        secondButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchDragExit, .TouchCancel])
     }
     
     var enzContact: EnzevalosContact? {
@@ -63,6 +63,9 @@ class InboxTableViewCell: UITableViewCell {
                     secondMail = con.mails[1]
                     secondButton.enabled = true
                 } else {
+                    secondDateLabel.text = ""
+                    secondSubjectLabel.text = ""
+                    secondMessageLabel.text = NSLocalizedString("NoFurtherMessages", comment: "There is only one message from this sender.")
                     secondButton.enabled = false
                 }
                 self.contact = con.contact

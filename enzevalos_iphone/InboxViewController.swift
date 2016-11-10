@@ -104,7 +104,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     }
     
     func refresh(refreshControl: UIRefreshControl) {
-        lastUpdateText = "Updating..."
+        lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         AppDelegate.getAppDelegate().mailHandler.recieve()
     }
     
@@ -112,7 +112,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
         if let rc = self.refreshControl {
             lastUpdate = NSDate()
             rc.endRefreshing()
-            lastUpdateText = "Last Update: \(dateFormatter.stringFromDate(lastUpdate!))"
+            lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.stringFromDate(lastUpdate!))"
             self.contacts.sortInPlace()
             self.tableView.reloadData()
         }
