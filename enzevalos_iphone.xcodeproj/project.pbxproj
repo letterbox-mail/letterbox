@@ -7,14 +7,52 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6F4F718DEF29038C629100F3 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC2DE71EDB6C5C054D57F260 /* Pods_enzevalos_iphone.framework */; };
+		9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */; };
+		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
 		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
 		A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
 		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
 		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
 		A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */; };
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
+		A135CF021DD4BDD1007E3C29 /* NSData+compression.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEB91DD4BDD1007E3C29 /* NSData+compression.m */; };
+		A135CF031DD4BDD1007E3C29 /* NSData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEBB1DD4BDD1007E3C29 /* NSData+PGPUtils.m */; };
+		A135CF041DD4BDD1007E3C29 /* NSValue+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEBD1DD4BDD1007E3C29 /* NSValue+PGPUtils.m */; };
+		A135CF051DD4BDD1007E3C29 /* ObjectivePGP.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEC01DD4BDD1007E3C29 /* ObjectivePGP.m */; };
+		A135CF061DD4BDD1007E3C29 /* PGPArmor.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEC21DD4BDD1007E3C29 /* PGPArmor.m */; };
+		A135CF071DD4BDD1007E3C29 /* PGPCompressedPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEC41DD4BDD1007E3C29 /* PGPCompressedPacket.m */; };
+		A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEC61DD4BDD1007E3C29 /* PGPCryptoCFB.m */; };
+		A135CF091DD4BDD1007E3C29 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEC81DD4BDD1007E3C29 /* PGPCryptoUtils.m */; };
+		A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CECA1DD4BDD1007E3C29 /* PGPFingerprint.m */; };
+		A135CF0B1DD4BDD1007E3C29 /* PGPKey.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CECC1DD4BDD1007E3C29 /* PGPKey.m */; };
+		A135CF0C1DD4BDD1007E3C29 /* PGPKeyID.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CECE1DD4BDD1007E3C29 /* PGPKeyID.m */; };
+		A135CF0D1DD4BDD1007E3C29 /* PGPLiteralPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CED01DD4BDD1007E3C29 /* PGPLiteralPacket.m */; };
+		A135CF0E1DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CED21DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.m */; };
+		A135CF0F1DD4BDD1007E3C29 /* PGPMPI.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CED41DD4BDD1007E3C29 /* PGPMPI.m */; };
+		A135CF101DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CED61DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m */; };
+		A135CF111DD4BDD1007E3C29 /* PGPPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CED81DD4BDD1007E3C29 /* PGPPacket.m */; };
+		A135CF121DD4BDD1007E3C29 /* PGPPacketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEDA1DD4BDD1007E3C29 /* PGPPacketFactory.m */; };
+		A135CF131DD4BDD1007E3C29 /* PGPPKCSEme.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEDC1DD4BDD1007E3C29 /* PGPPKCSEme.m */; };
+		A135CF141DD4BDD1007E3C29 /* PGPPKCSEmsa.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEDE1DD4BDD1007E3C29 /* PGPPKCSEmsa.m */; };
+		A135CF151DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEE01DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.m */; };
+		A135CF161DD4BDD1007E3C29 /* PGPPublicKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEE21DD4BDD1007E3C29 /* PGPPublicKeyPacket.m */; };
+		A135CF171DD4BDD1007E3C29 /* PGPPublicKeyRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEE41DD4BDD1007E3C29 /* PGPPublicKeyRSA.m */; };
+		A135CF181DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEE61DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m */; };
+		A135CF191DD4BDD1007E3C29 /* PGPS2K.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEE81DD4BDD1007E3C29 /* PGPS2K.m */; };
+		A135CF1A1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEEA1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m */; };
+		A135CF1B1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEEC1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.m */; };
+		A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEEE1DD4BDD1007E3C29 /* PGPSignaturePacket.m */; };
+		A135CF1D1DD4BDD1007E3C29 /* PGPSignatureSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEF01DD4BDD1007E3C29 /* PGPSignatureSubpacket.m */; };
+		A135CF1E1DD4BDD1007E3C29 /* PGPSubKey.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEF21DD4BDD1007E3C29 /* PGPSubKey.m */; };
+		A135CF1F1DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEF41DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m */; };
+		A135CF201DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEF61DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */; };
+		A135CF211DD4BDD1007E3C29 /* PGPTrustPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEF81DD4BDD1007E3C29 /* PGPTrustPacket.m */; };
+		A135CF221DD4BDD1007E3C29 /* PGPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFB1DD4BDD1007E3C29 /* PGPUser.m */; };
+		A135CF231DD4BDD1007E3C29 /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFD1DD4BDD1007E3C29 /* PGPUserAttributePacket.m */; };
+		A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */; };
+		A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
+		A1B8C0181DD5CDC60044A358 /* CryptoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB05781D956817008659C1 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05771D956817008659C1 /* ImageExtension.swift */; };
@@ -40,12 +78,11 @@
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
-		EE57562DDC09AD98702A0BA4 /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */; };
-		EE9FF2F1FD02293642A4B05C /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22C1165F07662D8C13674825 /* Pods_enzevalos_iphoneTests.framework */; };
 		F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
+		F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,8 +103,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		22C1165F07662D8C13674825 /* Pods_enzevalos_iphoneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
+		48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 		9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -83,8 +121,83 @@
 		A13526971D955BE000D3BFE1 /* enzevalos_iphoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = enzevalos_iphoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enzevalos_iphoneUITests.swift; sourceTree = "<group>"; };
 		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A135CEB81DD4BDD1007E3C29 /* NSData+compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+compression.h"; sourceTree = "<group>"; };
+		A135CEB91DD4BDD1007E3C29 /* NSData+compression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+compression.m"; sourceTree = "<group>"; };
+		A135CEBA1DD4BDD1007E3C29 /* NSData+PGPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+PGPUtils.h"; sourceTree = "<group>"; };
+		A135CEBB1DD4BDD1007E3C29 /* NSData+PGPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+PGPUtils.m"; sourceTree = "<group>"; };
+		A135CEBC1DD4BDD1007E3C29 /* NSValue+PGPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+PGPUtils.h"; sourceTree = "<group>"; };
+		A135CEBD1DD4BDD1007E3C29 /* NSValue+PGPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+PGPUtils.m"; sourceTree = "<group>"; };
+		A135CEBE1DD4BDD1007E3C29 /* ObjectivePGP-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ObjectivePGP-Prefix.pch"; sourceTree = "<group>"; };
+		A135CEBF1DD4BDD1007E3C29 /* ObjectivePGP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectivePGP.h; sourceTree = "<group>"; };
+		A135CEC01DD4BDD1007E3C29 /* ObjectivePGP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectivePGP.m; sourceTree = "<group>"; };
+		A135CEC11DD4BDD1007E3C29 /* PGPArmor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPArmor.h; sourceTree = "<group>"; };
+		A135CEC21DD4BDD1007E3C29 /* PGPArmor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPArmor.m; sourceTree = "<group>"; };
+		A135CEC31DD4BDD1007E3C29 /* PGPCompressedPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCompressedPacket.h; sourceTree = "<group>"; };
+		A135CEC41DD4BDD1007E3C29 /* PGPCompressedPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCompressedPacket.m; sourceTree = "<group>"; };
+		A135CEC51DD4BDD1007E3C29 /* PGPCryptoCFB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoCFB.h; sourceTree = "<group>"; };
+		A135CEC61DD4BDD1007E3C29 /* PGPCryptoCFB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoCFB.m; sourceTree = "<group>"; };
+		A135CEC71DD4BDD1007E3C29 /* PGPCryptoUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoUtils.h; sourceTree = "<group>"; };
+		A135CEC81DD4BDD1007E3C29 /* PGPCryptoUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoUtils.m; sourceTree = "<group>"; };
+		A135CEC91DD4BDD1007E3C29 /* PGPFingerprint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPFingerprint.h; sourceTree = "<group>"; };
+		A135CECA1DD4BDD1007E3C29 /* PGPFingerprint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPFingerprint.m; sourceTree = "<group>"; };
+		A135CECB1DD4BDD1007E3C29 /* PGPKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKey.h; sourceTree = "<group>"; };
+		A135CECC1DD4BDD1007E3C29 /* PGPKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKey.m; sourceTree = "<group>"; };
+		A135CECD1DD4BDD1007E3C29 /* PGPKeyID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyID.h; sourceTree = "<group>"; };
+		A135CECE1DD4BDD1007E3C29 /* PGPKeyID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyID.m; sourceTree = "<group>"; };
+		A135CECF1DD4BDD1007E3C29 /* PGPLiteralPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPLiteralPacket.h; sourceTree = "<group>"; };
+		A135CED01DD4BDD1007E3C29 /* PGPLiteralPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPLiteralPacket.m; sourceTree = "<group>"; };
+		A135CED11DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPModificationDetectionCodePacket.h; sourceTree = "<group>"; };
+		A135CED21DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPModificationDetectionCodePacket.m; sourceTree = "<group>"; };
+		A135CED31DD4BDD1007E3C29 /* PGPMPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPMPI.h; sourceTree = "<group>"; };
+		A135CED41DD4BDD1007E3C29 /* PGPMPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPMPI.m; sourceTree = "<group>"; };
+		A135CED51DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPOnePassSignaturePacket.h; sourceTree = "<group>"; };
+		A135CED61DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPOnePassSignaturePacket.m; sourceTree = "<group>"; };
+		A135CED71DD4BDD1007E3C29 /* PGPPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPacket.h; sourceTree = "<group>"; };
+		A135CED81DD4BDD1007E3C29 /* PGPPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPacket.m; sourceTree = "<group>"; };
+		A135CED91DD4BDD1007E3C29 /* PGPPacketFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPacketFactory.h; sourceTree = "<group>"; };
+		A135CEDA1DD4BDD1007E3C29 /* PGPPacketFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPacketFactory.m; sourceTree = "<group>"; };
+		A135CEDB1DD4BDD1007E3C29 /* PGPPKCSEme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPKCSEme.h; sourceTree = "<group>"; };
+		A135CEDC1DD4BDD1007E3C29 /* PGPPKCSEme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPKCSEme.m; sourceTree = "<group>"; };
+		A135CEDD1DD4BDD1007E3C29 /* PGPPKCSEmsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPKCSEmsa.h; sourceTree = "<group>"; };
+		A135CEDE1DD4BDD1007E3C29 /* PGPPKCSEmsa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPKCSEmsa.m; sourceTree = "<group>"; };
+		A135CEDF1DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicKeyEncryptedSessionKeyPacket.h; sourceTree = "<group>"; };
+		A135CEE01DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicKeyEncryptedSessionKeyPacket.m; sourceTree = "<group>"; };
+		A135CEE11DD4BDD1007E3C29 /* PGPPublicKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicKeyPacket.h; sourceTree = "<group>"; };
+		A135CEE21DD4BDD1007E3C29 /* PGPPublicKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicKeyPacket.m; sourceTree = "<group>"; };
+		A135CEE31DD4BDD1007E3C29 /* PGPPublicKeyRSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicKeyRSA.h; sourceTree = "<group>"; };
+		A135CEE41DD4BDD1007E3C29 /* PGPPublicKeyRSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicKeyRSA.m; sourceTree = "<group>"; };
+		A135CEE51DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicSubKeyPacket.h; sourceTree = "<group>"; };
+		A135CEE61DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicSubKeyPacket.m; sourceTree = "<group>"; };
+		A135CEE71DD4BDD1007E3C29 /* PGPS2K.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPS2K.h; sourceTree = "<group>"; };
+		A135CEE81DD4BDD1007E3C29 /* PGPS2K.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPS2K.m; sourceTree = "<group>"; };
+		A135CEE91DD4BDD1007E3C29 /* PGPSecretKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSecretKeyPacket.h; sourceTree = "<group>"; };
+		A135CEEA1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSecretKeyPacket.m; sourceTree = "<group>"; };
+		A135CEEB1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSecretSubKeyPacket.h; sourceTree = "<group>"; };
+		A135CEEC1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSecretSubKeyPacket.m; sourceTree = "<group>"; };
+		A135CEED1DD4BDD1007E3C29 /* PGPSignaturePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignaturePacket.h; sourceTree = "<group>"; };
+		A135CEEE1DD4BDD1007E3C29 /* PGPSignaturePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignaturePacket.m; sourceTree = "<group>"; };
+		A135CEEF1DD4BDD1007E3C29 /* PGPSignatureSubpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignatureSubpacket.h; sourceTree = "<group>"; };
+		A135CEF01DD4BDD1007E3C29 /* PGPSignatureSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignatureSubpacket.m; sourceTree = "<group>"; };
+		A135CEF11DD4BDD1007E3C29 /* PGPSubKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSubKey.h; sourceTree = "<group>"; };
+		A135CEF21DD4BDD1007E3C29 /* PGPSubKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSubKey.m; sourceTree = "<group>"; };
+		A135CEF31DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSymmetricallyEncryptedDataPacket.h; sourceTree = "<group>"; };
+		A135CEF41DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSymmetricallyEncryptedDataPacket.m; sourceTree = "<group>"; };
+		A135CEF51DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h; sourceTree = "<group>"; };
+		A135CEF61DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m; sourceTree = "<group>"; };
+		A135CEF71DD4BDD1007E3C29 /* PGPTrustPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPTrustPacket.h; sourceTree = "<group>"; };
+		A135CEF81DD4BDD1007E3C29 /* PGPTrustPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPTrustPacket.m; sourceTree = "<group>"; };
+		A135CEF91DD4BDD1007E3C29 /* PGPTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPTypes.h; sourceTree = "<group>"; };
+		A135CEFA1DD4BDD1007E3C29 /* PGPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUser.h; sourceTree = "<group>"; };
+		A135CEFB1DD4BDD1007E3C29 /* PGPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUser.m; sourceTree = "<group>"; };
+		A135CEFC1DD4BDD1007E3C29 /* PGPUserAttributePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserAttributePacket.h; sourceTree = "<group>"; };
+		A135CEFD1DD4BDD1007E3C29 /* PGPUserAttributePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributePacket.m; sourceTree = "<group>"; };
+		A135CEFE1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserAttributeSubpacket.h; sourceTree = "<group>"; };
+		A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeSubpacket.m; sourceTree = "<group>"; };
+		A135CF001DD4BDD1007E3C29 /* PGPUserIDPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserIDPacket.h; sourceTree = "<group>"; };
+		A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserIDPacket.m; sourceTree = "<group>"; };
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
+		A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHandler.swift; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05771D956817008659C1 /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
@@ -118,12 +231,11 @@
 		A1F9923F1DA7DD370073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
 		AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
-		DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F12041FA1DA3FBF7002E4940 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
-		FC2DE71EDB6C5C054D57F260 /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,7 +243,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F4F718DEF29038C629100F3 /* Pods_enzevalos_iphone.framework in Frameworks */,
+				9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,7 +251,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE9FF2F1FD02293642A4B05C /* Pods_enzevalos_iphoneTests.framework in Frameworks */,
+				F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +259,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE57562DDC09AD98702A0BA4 /* Pods_enzevalos_iphoneUITests.framework in Frameworks */,
+				9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,9 +282,9 @@
 		78280F99990BFF65543B7F0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FC2DE71EDB6C5C054D57F260 /* Pods_enzevalos_iphone.framework */,
-				22C1165F07662D8C13674825 /* Pods_enzevalos_iphoneTests.framework */,
-				DDF1ED2111398B0F43FD783D /* Pods_enzevalos_iphoneUITests.framework */,
+				4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */,
+				C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */,
+				48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -202,6 +314,7 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
+				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
 				A1EB05761D9567F2008659C1 /* read */,
 				A1EB05751D956748008659C1 /* send */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
@@ -240,10 +353,93 @@
 			path = enzevalos_iphoneUITests;
 			sourceTree = "<group>";
 		};
+		A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */ = {
+			isa = PBXGroup;
+			children = (
+				A135CEB81DD4BDD1007E3C29 /* NSData+compression.h */,
+				A135CEB91DD4BDD1007E3C29 /* NSData+compression.m */,
+				A135CEBA1DD4BDD1007E3C29 /* NSData+PGPUtils.h */,
+				A135CEBB1DD4BDD1007E3C29 /* NSData+PGPUtils.m */,
+				A135CEBC1DD4BDD1007E3C29 /* NSValue+PGPUtils.h */,
+				A135CEBD1DD4BDD1007E3C29 /* NSValue+PGPUtils.m */,
+				A135CEBE1DD4BDD1007E3C29 /* ObjectivePGP-Prefix.pch */,
+				A135CEBF1DD4BDD1007E3C29 /* ObjectivePGP.h */,
+				A135CEC01DD4BDD1007E3C29 /* ObjectivePGP.m */,
+				A135CEC11DD4BDD1007E3C29 /* PGPArmor.h */,
+				A135CEC21DD4BDD1007E3C29 /* PGPArmor.m */,
+				A135CEC31DD4BDD1007E3C29 /* PGPCompressedPacket.h */,
+				A135CEC41DD4BDD1007E3C29 /* PGPCompressedPacket.m */,
+				A135CEC51DD4BDD1007E3C29 /* PGPCryptoCFB.h */,
+				A135CEC61DD4BDD1007E3C29 /* PGPCryptoCFB.m */,
+				A135CEC71DD4BDD1007E3C29 /* PGPCryptoUtils.h */,
+				A135CEC81DD4BDD1007E3C29 /* PGPCryptoUtils.m */,
+				A135CEC91DD4BDD1007E3C29 /* PGPFingerprint.h */,
+				A135CECA1DD4BDD1007E3C29 /* PGPFingerprint.m */,
+				A135CECB1DD4BDD1007E3C29 /* PGPKey.h */,
+				A135CECC1DD4BDD1007E3C29 /* PGPKey.m */,
+				A135CECD1DD4BDD1007E3C29 /* PGPKeyID.h */,
+				A135CECE1DD4BDD1007E3C29 /* PGPKeyID.m */,
+				A135CECF1DD4BDD1007E3C29 /* PGPLiteralPacket.h */,
+				A135CED01DD4BDD1007E3C29 /* PGPLiteralPacket.m */,
+				A135CED11DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.h */,
+				A135CED21DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.m */,
+				A135CED31DD4BDD1007E3C29 /* PGPMPI.h */,
+				A135CED41DD4BDD1007E3C29 /* PGPMPI.m */,
+				A135CED51DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.h */,
+				A135CED61DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m */,
+				A135CED71DD4BDD1007E3C29 /* PGPPacket.h */,
+				A135CED81DD4BDD1007E3C29 /* PGPPacket.m */,
+				A135CED91DD4BDD1007E3C29 /* PGPPacketFactory.h */,
+				A135CEDA1DD4BDD1007E3C29 /* PGPPacketFactory.m */,
+				A135CEDB1DD4BDD1007E3C29 /* PGPPKCSEme.h */,
+				A135CEDC1DD4BDD1007E3C29 /* PGPPKCSEme.m */,
+				A135CEDD1DD4BDD1007E3C29 /* PGPPKCSEmsa.h */,
+				A135CEDE1DD4BDD1007E3C29 /* PGPPKCSEmsa.m */,
+				A135CEDF1DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.h */,
+				A135CEE01DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.m */,
+				A135CEE11DD4BDD1007E3C29 /* PGPPublicKeyPacket.h */,
+				A135CEE21DD4BDD1007E3C29 /* PGPPublicKeyPacket.m */,
+				A135CEE31DD4BDD1007E3C29 /* PGPPublicKeyRSA.h */,
+				A135CEE41DD4BDD1007E3C29 /* PGPPublicKeyRSA.m */,
+				A135CEE51DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.h */,
+				A135CEE61DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m */,
+				A135CEE71DD4BDD1007E3C29 /* PGPS2K.h */,
+				A135CEE81DD4BDD1007E3C29 /* PGPS2K.m */,
+				A135CEE91DD4BDD1007E3C29 /* PGPSecretKeyPacket.h */,
+				A135CEEA1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m */,
+				A135CEEB1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.h */,
+				A135CEEC1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.m */,
+				A135CEED1DD4BDD1007E3C29 /* PGPSignaturePacket.h */,
+				A135CEEE1DD4BDD1007E3C29 /* PGPSignaturePacket.m */,
+				A135CEEF1DD4BDD1007E3C29 /* PGPSignatureSubpacket.h */,
+				A135CEF01DD4BDD1007E3C29 /* PGPSignatureSubpacket.m */,
+				A135CEF11DD4BDD1007E3C29 /* PGPSubKey.h */,
+				A135CEF21DD4BDD1007E3C29 /* PGPSubKey.m */,
+				A135CEF31DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.h */,
+				A135CEF41DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m */,
+				A135CEF51DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h */,
+				A135CEF61DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */,
+				A135CEF71DD4BDD1007E3C29 /* PGPTrustPacket.h */,
+				A135CEF81DD4BDD1007E3C29 /* PGPTrustPacket.m */,
+				A135CEF91DD4BDD1007E3C29 /* PGPTypes.h */,
+				A135CEFA1DD4BDD1007E3C29 /* PGPUser.h */,
+				A135CEFB1DD4BDD1007E3C29 /* PGPUser.m */,
+				A135CEFC1DD4BDD1007E3C29 /* PGPUserAttributePacket.h */,
+				A135CEFD1DD4BDD1007E3C29 /* PGPUserAttributePacket.m */,
+				A135CEFE1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.h */,
+				A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */,
+				A135CF001DD4BDD1007E3C29 /* PGPUserIDPacket.h */,
+				A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */,
+			);
+			name = ObjectivePGP;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		A1EB05751D956748008659C1 /* send */ = {
 			isa = PBXGroup;
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
+				A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */,
 				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
 				A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */,
@@ -353,6 +549,7 @@
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 4377G946WP;
+						LastSwiftMigration = 0800;
 					};
 					A135268B1D955BE000D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -550,29 +747,66 @@
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
+				A135CF121DD4BDD1007E3C29 /* PGPPacketFactory.m in Sources */,
+				A135CF111DD4BDD1007E3C29 /* PGPPacket.m in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
 				A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
+				A135CF231DD4BDD1007E3C29 /* PGPUserAttributePacket.m in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
+				A135CF221DD4BDD1007E3C29 /* PGPUser.m in Sources */,
+				A135CF031DD4BDD1007E3C29 /* NSData+PGPUtils.m in Sources */,
 				A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */,
+				A135CF171DD4BDD1007E3C29 /* PGPPublicKeyRSA.m in Sources */,
+				A135CF181DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m in Sources */,
+				A135CF141DD4BDD1007E3C29 /* PGPPKCSEmsa.m in Sources */,
+				A135CF051DD4BDD1007E3C29 /* ObjectivePGP.m in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
+				A135CF0F1DD4BDD1007E3C29 /* PGPMPI.m in Sources */,
+				A135CF191DD4BDD1007E3C29 /* PGPS2K.m in Sources */,
+				A135CF061DD4BDD1007E3C29 /* PGPArmor.m in Sources */,
+				A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */,
+				A135CF0C1DD4BDD1007E3C29 /* PGPKeyID.m in Sources */,
+				A135CF021DD4BDD1007E3C29 /* NSData+compression.m in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
+				A135CF1E1DD4BDD1007E3C29 /* PGPSubKey.m in Sources */,
+				A135CF0D1DD4BDD1007E3C29 /* PGPLiteralPacket.m in Sources */,
+				A135CF1D1DD4BDD1007E3C29 /* PGPSignatureSubpacket.m in Sources */,
+				A135CF041DD4BDD1007E3C29 /* NSValue+PGPUtils.m in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
+				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
 				A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
+				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,
 				A1EB05781D956817008659C1 /* ImageExtension.swift in Sources */,
+				A135CF1F1DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
+				A135CF211DD4BDD1007E3C29 /* PGPTrustPacket.m in Sources */,
 				A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */,
+				A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				A1EB05921D95692A008659C1 /* MailObject.swift in Sources */,
+				A135CF131DD4BDD1007E3C29 /* PGPPKCSEme.m in Sources */,
+				A1B8C0181DD5CDC60044A358 /* CryptoHandler.swift in Sources */,
+				A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */,
+				A135CF151DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
+				A135CF0E1DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.m in Sources */,
 				A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */,
+				A135CF161DD4BDD1007E3C29 /* PGPPublicKeyPacket.m in Sources */,
+				A135CF0B1DD4BDD1007E3C29 /* PGPKey.m in Sources */,
 				A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
+				A135CF101DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
+				A135CF091DD4BDD1007E3C29 /* PGPCryptoUtils.m in Sources */,
+				A135CF1A1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
+				A135CF201DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
+				A135CF1B1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.m in Sources */,
+				A135CF071DD4BDD1007E3C29 /* PGPCompressedPacket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -739,15 +973,43 @@
 			baseConfigurationReference = AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/OpenSSL-Universal/lib-ios\"",
+					"$(inherited)",
+					"\"${PODS_ROOT}/mailcore2-ios/lib\"",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"MailCore-ios\"",
+					"-l\"c++\"",
+					"-l\"crypto\"",
+					"-l\"iconv\"",
+					"-l\"resolv\"",
+					"-l\"ssl\"",
+					"-l\"xml2\"",
+					"-l\"z\"",
+					"-lbz2",
+					"-framework",
+					"\"BZipCompression\"",
+					"-framework",
+					"\"FrameAccessor\"",
+					"-framework",
+					"\"VENTokenField\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
@@ -757,14 +1019,41 @@
 			baseConfigurationReference = 9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/OpenSSL-Universal/lib-ios\"",
+					"$(inherited)",
+					"\"${PODS_ROOT}/mailcore2-ios/lib\"",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"MailCore-ios\"",
+					"-l\"c++\"",
+					"-l\"crypto\"",
+					"-l\"iconv\"",
+					"-l\"resolv\"",
+					"-l\"ssl\"",
+					"-l\"xml2\"",
+					"-l\"z\"",
+					"-lbz2",
+					"-framework",
+					"\"BZipCompression\"",
+					"-framework",
+					"\"FrameAccessor\"",
+					"-framework",
+					"\"VENTokenField\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[sdk=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 			};
