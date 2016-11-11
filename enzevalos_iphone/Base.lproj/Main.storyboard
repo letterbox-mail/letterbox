@@ -288,7 +288,7 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="JgT-PA-2op">
                         <nil key="title"/>
-                        <button key="titleView" opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bcV-Tv-Mmh">
+                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bcV-Tv-Mmh">
                             <rect key="frame" x="172.5" y="3" width="30" height="38"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -374,7 +374,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ucv-8n-UVn"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Inbox" id="5GZ-GC-SZf">
-                        <barButtonItem key="rightBarButtonItem" title="write" id="j5W-eH-o1q">
+                        <barButtonItem key="rightBarButtonItem" title="New Mail" id="j5W-eH-o1q">
                             <connections>
                                 <segue destination="4Ey-v4-VeB" kind="show" id="j4Q-k1-ud3"/>
                             </connections>

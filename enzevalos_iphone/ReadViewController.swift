@@ -224,7 +224,9 @@ class ReadViewController : UITableViewController {
             messageBody.text = m.body
             print(messageBody.text)
             // NavigationBar Icon
-            let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 38))
+            let iconView = UIImageView()
+//            let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 38))
+            iconView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
             iconView.contentMode = .ScaleAspectFit
             var icon: UIImage
             if m.trouble {
