@@ -156,10 +156,13 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         
         //LogHandler.printLogs()
         var handler = CryptoHandler.getHandler()
-        //handler.pgp.importKeysFromFile("~/Documents/Alice_public.cer", allowDuplicates: false)
-        print(handler.pgp.importKeysFromData("-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmET/fC2VqlTBg0X4 0TRobDFsWQAdAXYDYnYEa83H6pzex5Wg E/0 YKV5n9fh4NsO1ma1yMAJ3MIBnr9PuLyI/67rqXd5YJENgtDIUHMr85CzW6UJIelVIf3QXMc7vbWXSLVbeX5mCNc8pQ5QPrfmFgHeqGQR7pRKYP4humJHjexW4fJbz774KgL4nzskGAxGBSY6VC9s7xlXJB99w7xXMPu2ZwEDNjqukK2lxx3EvhX8HvmueA0kU0Hf/7XLyp2lF/GiD3ZE/yNRcrh50AXwP34U7lv2NEv/oUTOocFlOte iaUXvdYx1UZPFdaJD/asnjcerSdqqfXS8LN55zQIDAQAB-----END PUBLIC KEY-----".dataUsingEncoding(NSUTF8StringEncoding)!, allowDuplicates: false))
+        handler.pgp.importKeysFromFile("alice2005-2.gpg", allowDuplicates: false)
+        //print(handler.pgp.importKeysFromData("-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmET/fC2VqlTBg0X4 0TRobDFsWQAdAXYDYnYEa83H6pzex5Wg E/0 YKV5n9fh4NsO1ma1yMAJ3MIBnr9PuLyI/67rqXd5YJENgtDIUHMr85CzW6UJIelVIf3QXMc7vbWXSLVbeX5mCNc8pQ5QPrfmFgHeqGQR7pRKYP4humJHjexW4fJbz774KgL4nzskGAxGBSY6VC9s7xlXJB99w7xXMPu2ZwEDNjqukK2lxx3EvhX8HvmueA0kU0Hf/7XLyp2lF/GiD3ZE/yNRcrh50AXwP34U7lv2NEv/oUTOocFlOte iaUXvdYx1UZPFdaJD/asnjcerSdqqfXS8LN55zQIDAQAB-----END PUBLIC KEY-----".dataUsingEncoding(NSUTF8StringEncoding)!, allowDuplicates: false))
+        
+        
         //print(handler.pgp.getKeysForUserID("Alice Bob <alice2005@web.de>"))
         print(handler.pgp.getKeysOfType(PGPKeyType.Public))
+        handler.pgp.im
     }
     
     override func viewDidAppear(animated: Bool){

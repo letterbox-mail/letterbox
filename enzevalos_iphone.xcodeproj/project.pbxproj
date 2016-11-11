@@ -53,6 +53,7 @@
 		A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
 		A1B8C0181DD5CDC60044A358 /* CryptoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */; };
+		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB05781D956817008659C1 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05771D956817008659C1 /* ImageExtension.swift */; };
@@ -198,6 +199,7 @@
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHandler.swift; sourceTree = "<group>"; };
+		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05771D956817008659C1 /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 			isa = PBXGroup;
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
+				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
 				A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */,
 				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
@@ -596,6 +599,7 @@
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
+				A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
