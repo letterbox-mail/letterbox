@@ -64,6 +64,9 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenField(tokenField: VENTokenField, didDeleteTokenAtIndex index: UInt) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve(tokenField.tag), interaction: "delete", point: CGPoint(x: Int(index), y: 0), comment: (tokenField.textTokens[Int(index)] as! String)+" "+(tokenField.mailTokens[Int(index)] as! String))
+        }
         tokenField.textTokens.removeObjectAtIndex(Int(index))
         tokenField.mailTokens.removeObjectAtIndex(Int(index))
         tokenField.reloadData()

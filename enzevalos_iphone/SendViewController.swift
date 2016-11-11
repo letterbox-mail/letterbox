@@ -179,12 +179,44 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         
     }
     
+    @IBAction func panned(sender: UIPanGestureRecognizer) {
+        if LogHandler.logging {
+            if sender.state == .Began{
+                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "beginPan", point: sender.locationInView(sender.view)/*CGPoint(x: 0,y: 0)*/, comment: String(sender.translationInView(sender.view)))
+            }
+            if sender.state == .Ended{
+                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "endPan", point: sender.locationInView(sender.view)/*CGPoint(x: 0,y: 0)*/, comment: String(sender.translationInView(sender.view)))
+            }
+        }
+    }
+    
+    @IBAction func swiped(sender: UISwipeGestureRecognizer) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "swipe", point: sender.locationOfTouch(sender.numberOfTouches()-1, inView: sender.view), comment: String(sender.direction))
+        }
+    }
+    
+    @IBAction func rotated(sender: UIRotationGestureRecognizer) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "rotate", point: CGPoint(x: 0, y: 0), comment: String(sender.rotation))
+        }
+    }
+    
     func tokenField(tokenField: VENTokenField, didChangeText text: String?) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve(subjectText.tag), interaction: "changeText", point: CGPoint(x:0, y:0), comment: subjectText.inputText()!)
+        }
         if text == "log"{
                 LogHandler.stopLogging()
                 textView.text = LogHandler.getLogs()
                 LogHandler.deleteLogs()
                 LogHandler.newLog()
+        }
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        if LogHandler.logging{
+            LogHandler.doLog(UIViewResolver.resolve(textView.tag), interaction: "changeText", point: CGPoint(x: 0,y: 0), comment: textView.text)
         }
     }
     
@@ -196,6 +228,9 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func editName(tokenField : VENTokenField){
         if let inText = tokenField.inputText(){
+            if LogHandler.logging {
+                LogHandler.doLog(UIViewResolver.resolve(tokenField.tag), interaction: "changeText", point: CGPoint(x:0, y:0), comment: inText)
+            }
             if inText != "" {
                 scrollview.scrollEnabled = false
                 scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y-self.topLayoutGuide.length)
@@ -220,9 +255,15 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     func insertName(name : String, address : String) {
         if toText.isFirstResponder(){
             toText.delegate?.tokenField!(toText, didEnterText: name, mail: address)
+            if LogHandler.logging {
+                LogHandler.doLog(UIViewResolver.resolve(toText.tag), interaction: "insert", point: CGPoint(x: 0, y: Int((toText.dataSource?.numberOfTokensInTokenField!(toText))!)), comment: name+" "+address)
+            }
         }
         else if ccText.isFirstResponder(){
             ccText.delegate?.tokenField!(ccText, didEnterText: name, mail: address)
+            if LogHandler.logging {
+                LogHandler.doLog(UIViewResolver.resolve(ccText.tag), interaction: "insert", point: CGPoint(x: 0, y: Int((ccText.dataSource?.numberOfTokensInTokenField!(ccText))!)), comment: name+" "+address)
+            }
         }
     }
     
@@ -310,6 +351,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func keyboardOpen(notification: NSNotification) {
         //if reducedSize == 0{
+        LogHandler.doLog("keyboard", interaction: "open", point: CGPoint(x: 0,y: 0), comment: "")
             var info = notification.userInfo!
             let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
             reducedSize = keyboardFrame.size.height
@@ -340,6 +382,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     func keyboardClose(notification: NSNotification) {
+        LogHandler.doLog("keyboard", interaction: "close", point: CGPoint(x: 0,y: 0), comment: "")
         if reducedSize != 0{
             UIView.animateWithDuration(0.1, animations: { () -> Void in
                 self.reducedSize = 0
@@ -435,9 +478,9 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
                 UIView.animateWithDuration(0.5, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn/*, UIViewAnimationOptions.Autoreverse*/] ,animations: {
                     self.navigationController?.navigationBar.barTintColor = UIColor.orangeColor()//UIColor.init(red: 1, green: 0.7, blue: 0.5, alpha: 1)
                     }, completion: nil)
-                UIView.animateWithDuration(0.5, delay: 0.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
+                /*UIView.animateWithDuration(0.5, delay: 0.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
                     self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()
-                    }, completion: nil)
+                    }, completion: nil)*/
             }
             imageView.startAnimating()
             self.secureState = toSecure && ccSecure

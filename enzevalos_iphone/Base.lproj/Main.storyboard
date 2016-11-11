@@ -490,6 +490,7 @@
                                         <cells/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="b27-VB-voz" appends="YES" id="XZE-Dy-asu"/>
+                                            <outletCollection property="gestureRecognizers" destination="Dyz-bi-xHw" appends="YES" id="LL1-Iz-H3Q"/>
                                         </connections>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5B-h5-HOl">
@@ -607,6 +608,9 @@
                                     <constraint firstItem="HOW-9b-T8z" firstAttribute="bottom" secondItem="w9d-ml-jRA" secondAttribute="top" id="rn8-O8-22D"/>
                                     <constraint firstItem="vj8-uM-8eP" firstAttribute="top" secondItem="zbn-j5-Dz7" secondAttribute="bottom" id="yMw-KE-GS7"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="zu2-PQ-J4Y" appends="YES" id="dyB-2A-E1t"/>
+                                </connections>
                             </scrollView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" sectionIndexMinimumDisplayRowCount="1" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iEa-Rh-6bS">
                                 <rect key="frame" x="-4" y="206" width="383" height="100"/>
@@ -658,6 +662,9 @@
                                 <exclude reference="vmr-BM-sKL"/>
                             </mask>
                         </variation>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="K6h-QT-Csm" appends="YES" id="YEu-Mz-U43"/>
+                        </connections>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Zow-gE-ukt">
@@ -697,6 +704,24 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lv5-U9-uUg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <rotationGestureRecognizer cancelsTouchesInView="NO" id="K6h-QT-Csm">
+                    <connections>
+                        <action selector="rotated:" destination="4Ey-v4-VeB" id="586-1i-2CD"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="BgN-nU-v33"/>
+                    </connections>
+                </rotationGestureRecognizer>
+                <swipeGestureRecognizer cancelsTouchesInView="NO" direction="right" id="Dyz-bi-xHw" userLabel="toCollectionview Swipe Gesture Recognizer">
+                    <connections>
+                        <action selector="swiped:" destination="4Ey-v4-VeB" id="dYc-tY-IBQ"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="Vy9-Yw-BGZ"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <panGestureRecognizer cancelsTouchesInView="NO" minimumNumberOfTouches="1" id="zu2-PQ-J4Y" userLabel="scrollview Pan Gesture Recognizer">
+                    <connections>
+                        <action selector="panned:" destination="4Ey-v4-VeB" id="I2O-c1-CK1"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="CgL-ka-ncO"/>
+                    </connections>
+                </panGestureRecognizer>
                 <tapGestureRecognizer cancelsTouchesInView="NO" id="uWH-WG-0hT" userLabel="toText Tap Gesture Recognizer">
                     <connections>
                         <action selector="tapped:" destination="4Ey-v4-VeB" id="Or8-ff-LLE"/>
