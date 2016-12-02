@@ -35,6 +35,12 @@ class MailHandler {
         }
     }
     
+    //Anpassen:
+    //Einstellungen in UserDefaults ablegen
+    static func getAddr() -> String{
+        return "alice2005@web.de"
+    }
+    
     //TODO: signatur hinzufügen
     
     
@@ -75,12 +81,59 @@ class MailHandler {
         
         builder.header.subject = subject
         
-        builder.htmlBody = message
+        builder.textBody = message //htmlBody = message
         
-        let rfc822Data = builder.data()
-        let sendOperation = session.sendOperationWithData(rfc822Data)
+        //let rfc822Data = builder.data()
         
-        sendOperation.start(callback)
+        var allRec : [String] = []
+        allRec.appendContentsOf(toEntrys)
+        allRec.appendContentsOf(ccEntrys)
+        
+        var enc : [MCOAddress] = []
+        var unenc : [MCOAddress] = []
+        let handler = KeyHandler.createHandler()
+        let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
+        var keys : [PGPKey] = []
+        
+        for rec in allRec{
+            if handler.addrHasKey(rec) {
+                enc.append(MCOAddress(displayName: "", mailbox: rec))
+                //let sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(CryptoHandler.getHandler().pgp.encryptData(message.dataUsingEncoding(NSUTF8StringEncoding)!, usingPublicKeys: )), from: userID, recipients: ["jakob.bode@fu-berlin.de"])//session.sendOperationWithData(rfc822Data)
+                //sendOperation.start(callback)
+                if let key = KeyHandler.createHandler().getKeyByAddr(rec) {
+                    if !keys.contains(key.key) {
+                        keys.append(key.key)
+                    }
+                }
+                //TODO: error in callback senden
+                else {
+                    print("ERROR NO KEY!!! MailHandler line 102")
+                    //unenc.append(MCOAddress(displayName: "", mailbox: rec))
+                }
+            }
+            else {
+                unenc.append(MCOAddress(displayName: "", mailbox: rec))
+                print(unenc)
+            }
+        }
+        //TODO: handle different cases
+        do {
+            var sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(try CryptoHandler.getHandler().pgp.encryptData(("\n"+message).dataUsingEncoding(NSUTF8StringEncoding)!, usingPublicKeys: keys, signWithSecretKey: KeyHandler.createHandler().getPrivateKey()?.key, passphrase: nil, armored: true)), from: userID, recipients: enc) //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+            //print("message to be encrypted:")
+            //print(String(data: message.dataUsingEncoding(NSUTF8StringEncoding)!, encoding: NSUTF8StringEncoding))
+        
+            if enc != [] {
+                sendOperation.start(callback)
+            }
+            if unenc != [] {
+                let rfc822Data = builder.data()
+                sendOperation = session.sendOperationWithData(rfc822Data, from: userID, recipients: unenc)
+                sendOperation.start(callback)
+            }
+        }
+        catch _ {
+            print("Error while sending; MailHandler, line 125")
+        }
     }
     
     func setupIMAPSession() {
@@ -122,7 +175,7 @@ class MailHandler {
                         let msgParser = MCOMessageParser(data: data)
                         
                         let html: String = msgParser.plainTextRendering()
-                        var lineArray = html.componentsSeparatedByString("\n")
+                        var lineArray = html.componentsSeparatedByString("\n") 
                         lineArray.removeFirst(4)
                         var body = lineArray.joinWithSeparator("\n")
                         body = body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
@@ -147,9 +200,29 @@ class MailHandler {
                         let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead, flags: message.flags)
 
                          */
+                        
+                        CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
+                        
+                        let content = try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+                        print(content)
+                        
+                        var signed : ObjCBool = false
+                        var valid : ObjCBool = false
+                        var integrityProtected : ObjCBool = false
+                        
+                        print(try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr(header.from.mailbox)?.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))
+                        
+                        
                         var enc = false
                         var ver = false
                         var troub = false
+                        
+                        //gute Wahl?
+                        //in-line PGP
+                        if body.commonPrefixWithString("-----BEGIN PGP MESSAGE-----", options: NSStringCompareOptions.CaseInsensitiveSearch) == "-----BEGIN PGP MESSAGE-----" {
+                            enc = true
+                        }
+                            
                         if header.subject != nil {
                             if header.subject == "Schlüssel" {
                                 enc = true

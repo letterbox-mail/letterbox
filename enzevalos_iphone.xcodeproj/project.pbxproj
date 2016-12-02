@@ -51,12 +51,20 @@
 		A135CF231DD4BDD1007E3C29 /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFD1DD4BDD1007E3C29 /* PGPUserAttributePacket.m */; };
 		A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */; };
 		A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */; };
+		A17A18F21DDCA4450058D934 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F11DDCA4450058D934 /* KeychainWrapper.m */; };
+		A17A18F51DDCB5580058D934 /* KeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F41DDCB5580058D934 /* KeyHandler.swift */; };
+		A17A18F71DDCBE530058D934 /* KeyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F61DDCBE530058D934 /* KeyWrapper.swift */; };
+		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
+		A18BCB3B1DDF3EFD004D81D8 /* test in Resources */ = {isa = PBXBuildFile; fileRef = A18BCB3A1DDF3EFD004D81D8 /* test */; };
+		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1B8C0181DD5CDC60044A358 /* CryptoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
+		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
+		A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C09FC71DF052FF0006B783 /* importKeys.swift */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
-		A1EB05781D956817008659C1 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05771D956817008659C1 /* ImageExtension.swift */; };
+		A1EB05781D956817008659C1 /* ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05771D956817008659C1 /* ContactExtension.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
 		A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
 		A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057D1D956848008659C1 /* VENDataDelegate.swift */; };
@@ -196,13 +204,22 @@
 		A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeSubpacket.m; sourceTree = "<group>"; };
 		A135CF001DD4BDD1007E3C29 /* PGPUserIDPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserIDPacket.h; sourceTree = "<group>"; };
 		A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserIDPacket.m; sourceTree = "<group>"; };
+		A17A18F01DDCA43B0058D934 /* KeychainWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
+		A17A18F11DDCA4450058D934 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
+		A17A18F41DDCB5580058D934 /* KeyHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyHandler.swift; sourceTree = "<group>"; };
+		A17A18F61DDCBE530058D934 /* KeyWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyWrapper.swift; sourceTree = "<group>"; };
+		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JakobBode.asc; sourceTree = "<group>"; };
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
+		A18BCB3A1DDF3EFD004D81D8 /* test */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
+		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jabo.asc; sourceTree = "<group>"; };
 		A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHandler.swift; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
+		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-private.gpg"; sourceTree = "<group>"; };
+		A1C09FC71DF052FF0006B783 /* importKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = importKeys.swift; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
-		A1EB05771D956817008659C1 /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
+		A1EB05771D956817008659C1 /* ContactExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactExtension.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		A1EB057B1D956838008659C1 /* MailHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandler.swift; sourceTree = "<group>"; };
 		A1EB057D1D956848008659C1 /* VENDataDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VENDataDelegate.swift; sourceTree = "<group>"; };
@@ -318,14 +335,18 @@
 			children = (
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
 				A1EB05761D9567F2008659C1 /* read */,
+				A17A18F31DDCA4B60058D934 /* KeychainWrapper */,
 				A1EB05751D956748008659C1 /* send */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
 				A1EB05871D956879008659C1 /* AddressHandler.swift */,
+				A1C09FC71DF052FF0006B783 /* importKeys.swift */,
 				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
+				A17A18F61DDCBE530058D934 /* KeyWrapper.swift */,
 				A1EB05911D95692A008659C1 /* MailObject.swift */,
 				A1EB059D1D956963008659C1 /* EnzevalosContact.swift */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
-				A1EB05771D956817008659C1 /* ImageExtension.swift */,
+				A17A18F41DDCB5580058D934 /* KeyHandler.swift */,
+				A1EB05771D956817008659C1 /* ContactExtension.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
 				A1F9922B1DA7C9100073BF1B /* Main.storyboard */,
 				A1123E6C1DA682850069551C /* Localizable.strings */,
@@ -437,11 +458,23 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		A17A18F31DDCA4B60058D934 /* KeychainWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				A17A18F01DDCA43B0058D934 /* KeychainWrapper.h */,
+				A17A18F11DDCA4450058D934 /* KeychainWrapper.m */,
+			);
+			name = KeychainWrapper;
+			sourceTree = "<group>";
+		};
 		A1EB05751D956748008659C1 /* send */ = {
 			isa = PBXGroup;
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
+				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
+				A19C12461DE602FF007F72E7 /* jabo.asc */,
 				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
+				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
 				A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */,
 				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
@@ -453,6 +486,7 @@
 				A17C04831DC6504E00F66EDB /* LogHandler.swift */,
 				A1EB05891D956890008659C1 /* ContactCell.xib */,
 				A1EB058B1D9568AB008659C1 /* FrequentCell.xib */,
+				A18BCB3A1DDF3EFD004D81D8 /* test */,
 			);
 			name = send;
 			sourceTree = "<group>";
@@ -594,9 +628,13 @@
 			files = (
 				A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */,
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
+				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
+				A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */,
+				A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */,
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
+				A18BCB3B1DDF3EFD004D81D8 /* test in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
 				A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */,
@@ -761,6 +799,7 @@
 				A135CF221DD4BDD1007E3C29 /* PGPUser.m in Sources */,
 				A135CF031DD4BDD1007E3C29 /* NSData+PGPUtils.m in Sources */,
 				A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */,
+				A17A18F51DDCB5580058D934 /* KeyHandler.swift in Sources */,
 				A135CF171DD4BDD1007E3C29 /* PGPPublicKeyRSA.m in Sources */,
 				A135CF181DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m in Sources */,
 				A135CF141DD4BDD1007E3C29 /* PGPPKCSEmsa.m in Sources */,
@@ -780,13 +819,16 @@
 				A135CF041DD4BDD1007E3C29 /* NSValue+PGPUtils.m in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
+				A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */,
 				A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */,
+				A17A18F21DDCA4450058D934 /* KeychainWrapper.m in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,
-				A1EB05781D956817008659C1 /* ImageExtension.swift in Sources */,
+				A1EB05781D956817008659C1 /* ContactExtension.swift in Sources */,
 				A135CF1F1DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
 				A135CF211DD4BDD1007E3C29 /* PGPTrustPacket.m in Sources */,
 				A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */,
+				A17A18F71DDCBE530058D934 /* KeyWrapper.swift in Sources */,
 				A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,

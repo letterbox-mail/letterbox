@@ -221,8 +221,33 @@ class ReadViewController : UITableViewController {
                 }
             }
             
-            messageBody.text = m.body
-            print(messageBody.text)
+            //print("-----".commonPrefixWithString(m.body!, options: NSStringCompareOptions.CaseInsensitiveSearch))
+            
+            //in-line PGP
+            if m.isEncrypted {
+                CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
+            
+                let content = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+                print("read")
+                print(String(data: content!, encoding: NSUTF8StringEncoding))
+            
+                var signed : ObjCBool = false
+                var valid : ObjCBool = false
+                var integrityProtected : ObjCBool = false
+            
+                print(m.sender?.mailbox)
+                let decBody = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr((m.sender?.mailbox)!)!.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected)
+                
+                if decBody != nil {
+                    messageBody.text = String(data: decBody!, encoding: NSUTF8StringEncoding)
+                }
+                
+                print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
+            
+            }
+            else {
+                messageBody.text = m.body
+            }
             // NavigationBar Icon
             let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 38))
             iconView.contentMode = .ScaleAspectFit

@@ -12,7 +12,7 @@ import UIKit.UIImage
 
 class AddressHandler {
     
-    static var addresses : [String] = ["jakob.bode@fu-berlin.de", "oliver.wiese@fu-berlin.de", "jo.lausch@fu-berlin.de", "test"]
+    static var addresses : [String] = []//["jakob.bode@fu-berlin.de", "oliver.wiese@fu-berlin.de", "jo.lausch@fu-berlin.de", "test"]
     static var freqAlgorithm : [String] -> [(UIImage, String, String, UIImage?, UIColor)] = {
         (inserted : [String]) -> [(UIImage, String, String, UIImage?, UIColor)] in
             /*do{
@@ -83,7 +83,7 @@ class AddressHandler {
         if addresses.contains((s as String).lowercaseString){
             return true
         }
-        return inContacts(s as String)
+        return KeyHandler.createHandler().addrHasKey(s as String)//inContacts(s as String)
         //return false
     }
     

@@ -66,7 +66,46 @@ extension CNContact {
     
     func getColor() -> UIColor{
         // Overflow?!
-        let hash = abs((self.emailAddresses.last!.value as! String).hash) % Int(UInt32.max)
-        return UIColor(hue: CGFloat(hash) / CGFloat(INT_MAX), saturation: 1, brightness: 0.75, alpha: 1)
+        let hash = (abs((self.emailAddresses.first!.value as! String).hash)) % 653
+        return UIColor(hue: CGFloat(hash) / CGFloat(653), saturation: 1, brightness: 0.75, alpha: 1)
+    }
+    
+    func hasKey() -> Bool {
+        let handler = KeyHandler.createHandler()
+        for mail in self.emailAddresses {
+            if handler.addrHasKey(mail.value as! String) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    //TODO check expiration date
+    //TODO add ability to choose different keys
+    func getKey() -> KeyWrapper? {
+        let handler = KeyHandler.createHandler()
+        for mail in self.emailAddresses {
+            if handler.addrHasKey(mail.value as! String) {
+                return handler.getKeyByAddr(mail.value as! String)
+            }
+        }
+        return nil
+    }
+    
+    func getKey(mailaddress: String) -> KeyWrapper? {
+        let mail = mailaddress.lowercaseString
+        let handler = KeyHandler.createHandler()
+        return handler.getKeyByAddr(mail)
+    }
+    
+    //TODO fertigmachen
+    func addKey(key: PGPKey, mailaddress: String){
+        let handler = KeyHandler.createHandler()
+        //handler.addKeyForMailaddress(mailaddress, key: key)
+    }
+    
+    func addPGPKey(key: KeyWrapper, mailaddress: String){
+        let handler = KeyHandler.createHandler()
+        handler.addKeyForMailaddress(mailaddress, keyWrapper: key)
     }
 }

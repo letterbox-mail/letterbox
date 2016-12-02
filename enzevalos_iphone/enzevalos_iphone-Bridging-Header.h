@@ -7,7 +7,6 @@
 //
 
 #import <MailCore/MailCore.h>
-//#import <ObjectivePGP/ObjectivePGP.h>
 #import <BZipCompression/BZipCompression.h>
-//#import <ObjectivePGP/ObjectivePGP.h>
 #import "ObjectivePGP.h"
+#import "KeychainWrapper.h"

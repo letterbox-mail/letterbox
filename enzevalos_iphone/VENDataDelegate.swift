@@ -31,7 +31,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
    
     func tokenField(tokenField: VENTokenField, colorSchemeForTokenAtIndex index: UInt) -> UIColor {
         //if AddressHandler.proveAddress(tokenField.textTokens[Int(index)] as! NSString) {
-        if AddressHandler.proveAddress(tokenField.mailTokens[Int(index)] as! NSString) {
+        if KeyHandler.createHandler().addrHasKey(tokenField.mailTokens[Int(index)] as! String){//AddressHandler.proveAddress(tokenField.mailTokens[Int(index)] as! NSString) {
             return UIColor.init(red: 0, green: 122.0/255.0, blue: 1, alpha: 1)
         }
         return UIColor.orangeColor()
@@ -116,7 +116,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     func isSecure(tokenField: VENTokenField) -> Bool {
         var secure = true
         for entry in tokenField.mailTokens{
-            secure = secure && AddressHandler.proveAddress(entry as! NSString)
+            secure = secure && KeyHandler.createHandler().addrHasKey(entry as! String)//AddressHandler.proveAddress(entry as! NSString)
         }
         return secure
     }

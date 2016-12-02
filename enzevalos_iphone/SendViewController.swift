@@ -9,6 +9,7 @@
 import UIKit
 import VENTokenField
 import Contacts
+import KeychainAccess
 
 class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecognizerDelegate, VENTokenFieldDelegate{
     
@@ -155,14 +156,85 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //LogHandler.printLogs()
         
         //LogHandler.printLogs()
-        var handler = CryptoHandler.getHandler()
-        handler.pgp.importKeysFromFile("alice2005-2.gpg", allowDuplicates: false)
+        //var handler = CryptoHandler.getHandler()
+        //handler.pgp.importKeysFromFile("alice2005-2.gpg", allowDuplicates: false)
+        
+        //var pubKey = "-----BEGIN PUBLIC KEY-----\n"+"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmET/fC2VqlTBg0X4 0TR\n"+"obDFsWQAdAXYDYnYEa83H6pzex5Wg E/0 YKV5n9fh4NsO1ma1yMAJ3MIBnr9PuL\n"+"yI/67rqXd5YJENgtDIUHMr85CzW6UJIelVIf3QXMc7vbWXSLVbeX5mCNc8pQ5QPr\n"+"fmFgHeqGQR7pRKYP4humJHjexW4fJbz774KgL4nzskGAxGBSY6VC9s7xlXJB99w7\n"+"xXMPu2ZwEDNjqukK2lxx3EvhX8HvmueA0kU0Hf/7XLyp2lF/GiD3ZE/yNRcrh50\n"+"AXwP34U7lv2NEv/oUTOocFlOte iaUXvdYx1UZPFdaJD/asnjcerSdqqfXS8LN55\n"+"zQIDAQAB\n"+"-----END PUBLIC KEY-----"
+        
+        //var url = NSURL.fileURLWithPath("alice2005-2.gpg")
+        //let path = NSBundle.mainBundle().pathForResource("alice2005-2", ofType: "gpg")
+        //var path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg")    // <----
+        //var url = NSBundle.mainBundle().URLForResource("test", withExtension: "")
+        //print("url",url)
+        
+        
+        //var data = "Hallo".dataUsingEncoding(NSUTF8StringEncoding)
+        //print("data",data)
+        /*do {
+            try data?.writeToURL(url!, options: NSDataWritingOptions.AtomicWrite)
+        } catch var c {
+            print(c)
+        }*/
+        
+        //print("content",NSData(contentsOfURL: url!))
+        //print(url.absoluteString)
+        //print(path)
+        
+        //handler.pgp.importKeysFromFile(path!, allowDuplicates: false)
+        
+        
+        //path = NSBundle.mainBundle().pathForResource("jabo", ofType: "asc")
+        //handler.pgp.importKeysFromFile(path!, allowDuplicates: false)   // <----
+        //KeyHandler.createHandler().reset("spam_jabo@web.de")
+        //KeyHandler.createHandler().addKey(handler.pgp.keys[0])          // <----
+        //KeyHandler.createHandler().addPrivateKey(handler.pgp.keys[0])   // <---- PRIVATE
+        //print(KeyHandler.createHandler().getKeyByAddr("jakob.bode@fu-berlin.de"))     // <----
+        //print(KeyHandler.createHandler().getPrivateKey()) // <---- PRIVATE
+        /*do {
+            textView.text = String(data: try handler.pgp.encryptData("Hallo Welt".dataUsingEncoding(NSUTF8StringEncoding)!, usingPublicKeys: handler.pgp.keys, armored: true), encoding: NSUTF8StringEncoding)
+        } catch _ {
+        
+        }*/
+        //print(handler.pgp.importKeysFromData(pubKey.dataUsingEncoding(NSUTF8StringEncoding)!, allowDuplicates: false))
+        
         //print(handler.pgp.importKeysFromData("-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmET/fC2VqlTBg0X4 0TRobDFsWQAdAXYDYnYEa83H6pzex5Wg E/0 YKV5n9fh4NsO1ma1yMAJ3MIBnr9PuLyI/67rqXd5YJENgtDIUHMr85CzW6UJIelVIf3QXMc7vbWXSLVbeX5mCNc8pQ5QPrfmFgHeqGQR7pRKYP4humJHjexW4fJbz774KgL4nzskGAxGBSY6VC9s7xlXJB99w7xXMPu2ZwEDNjqukK2lxx3EvhX8HvmueA0kU0Hf/7XLyp2lF/GiD3ZE/yNRcrh50AXwP34U7lv2NEv/oUTOocFlOte iaUXvdYx1UZPFdaJD/asnjcerSdqqfXS8LN55zQIDAQAB-----END PUBLIC KEY-----".dataUsingEncoding(NSUTF8StringEncoding)!, allowDuplicates: false))
         
         
         //print(handler.pgp.getKeysForUserID("Alice Bob <alice2005@web.de>"))
-        print(handler.pgp.getKeysOfType(PGPKeyType.Public))
-        handler.pgp.im
+        
+        
+        //print(handler.pgp.getKeysOfType(PGPKeyType.Public))
+        //print(handler.pgp.keys)
+        
+        /*let keychain = Keychain()
+        var data = try? keychain.getData("spam_jabo@web.de-index")
+        print(keychain[attributes: "spam_jabo@web.de-index"]?.creationDate)
+        var index: Int = 0*/
+        /*do {
+            try keychain.set(NSData(bytes: &index, length: sizeof(Int)), key: "spam_jabo@web.de-index")
+        }
+        catch let error {
+            print(error)
+        }*/
+        /*data = try? keychain.getData("spam_jabo@web.de-index")
+        print(keychain[attributes: "spam_jabo@web.de-index"]?.creationDate)
+        print(data!)
+        data!!.getBytes(&index, length: sizeof(Int))
+        print(index)
+        do{
+            var data = try? handler.pgp.keys[0].export()
+            //print(data)
+            print(handler.pgp.keysFromData(data!))
+        }
+        catch _ {
+            
+        }
+        var coder = NSCoder()
+        coder.encodeObject(handler.pgp.keys[0], forKey: "test")
+        print(coder.decodeObjectForKey("test") as! PGPKey)*/
+        //KeyHandler.createHandler().addKey(handler.pgp.keys[0])
+        
+        //print(pubKey.dataUsingEncoding(NSUTF8StringEncoding)!)
     }
     
     override func viewDidAppear(animated: Bool){
