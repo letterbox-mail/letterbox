@@ -43,7 +43,7 @@ class ReadViewController : UITableViewController {
         self.tableView.estimatedRowHeight = 44.0
         
         // not possible to set in IB
-        SeperatorConstraint.constant = 0.5
+        SeperatorConstraint.constant = 1 / UIScreen.mainScreen().scale
         infoCell.layoutMargins = UIEdgeInsetsZero
 
         setUItoMail()
