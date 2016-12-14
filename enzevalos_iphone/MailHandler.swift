@@ -201,7 +201,7 @@ class MailHandler {
 
                          */
                         
-                        CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
+                        /*CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
                         
                         let content = try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
                         print(content)
@@ -210,20 +210,46 @@ class MailHandler {
                         var valid : ObjCBool = false
                         var integrityProtected : ObjCBool = false
                         
-                        print(try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr(header.from.mailbox)?.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))
+                        print(try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr(header.from.mailbox)?.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))*/
                         
                         
                         var enc = false
                         var ver = false
                         var troub = false
+                        var decBody : String? = nil
                         
                         //gute Wahl?
                         //in-line PGP
                         if body.commonPrefixWithString("-----BEGIN PGP MESSAGE-----", options: NSStringCompareOptions.CaseInsensitiveSearch) == "-----BEGIN PGP MESSAGE-----" {
                             enc = true
                         }
+                        
+                        /*if enc {
+                            if !CryptoHandler.getHandler().pgp.keys.contains((KeyHandler.createHandler().getPrivateKey()?.key)!) {
+                                CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
+                            }
+                            do {
+                                var signed : ObjCBool = false
+                                var valid : ObjCBool = false
+                                var integrityProtected : ObjCBool = false
+                                
+                                //verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr(header.from.mailbox)?.key
+                                if (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected) as NSData?) != nil && ((try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))! as NSData?) != nil{
+                                    
+                                    decBody = String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))! as NSData, encoding: NSUTF8StringEncoding)
+                                    //print(String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected), encoding: NSUTF8StringEncoding)))
+                                }
+                                //print(try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))
+                                //let content = try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+                                //print(content)
+                            } catch _ {
+                                
+                                troub = true
+                                print("error while decrypting")
+                            }
+                        }*/ //now done in the MailObject itself
                             
-                        if header.subject != nil {
+                        /*if header.subject != nil {
                             if header.subject == "Schlüssel" {
                                 enc = true
                             }
@@ -245,8 +271,8 @@ class MailHandler {
                             if header.subject == "jetzt du"{
                                 enc = true
                             }
-                        }
-                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, isEncrypted: enc, isVerified: ver, trouble: troub, isUnread: !messageRead, flags: message.flags)
+                        }*/
+                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, decryptedBody: decBody, isEncrypted: enc, isVerified: ver, trouble: troub, isUnread: !messageRead, flags: message.flags)
                         /*Jakob prototypeänderung Ende*/
                         self.delegate?.addNewMail(mail)
                         

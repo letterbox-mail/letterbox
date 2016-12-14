@@ -106,15 +106,29 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             textView.text = NSLocalizedString("mail from", comment: "describing who send the mail")+" "
             textView.text.appendContentsOf((answerTo?.sender?.mailbox!)!)
             textView.text.appendContentsOf(" "+NSLocalizedString("sent at", comment: "describing when the mail was send")+" "+(answerTo?.timeString)!)
-            textView.text.appendContentsOf("\n"+NSLocalizedString("to", comment: "describing adressee")+": "+ccText.mailTokens.componentsJoinedByString(", "))
+            textView.text.appendContentsOf("\n"+NSLocalizedString("to", comment: "describing adressee")+": ")
+            textView.text.appendContentsOf(mailHandler.useraddr)
+            if ccText.mailTokens.count > 0 {
+                textView.text.appendContentsOf(", ")
+            }
+            textView.text.appendContentsOf(ccText.mailTokens.componentsJoinedByString(", "))
             textView.text.appendContentsOf("\n"+NSLocalizedString("subject", comment:"describing what subject was choosen")+": "+(answerTo?.subject!)!)
-            textView.text.appendContentsOf("\n--------------------\n\n"+(answerTo?.body)!) //textView.text.appendContentsOf("\n"+NSLocalizedString("original message", comment: "describing contents of the original message")+": \n\n"+(answerTo?.body)!)
+            if answerTo!.isEncrypted {
+                answerTo?.decryptIfPossible()
+                if answerTo?.decryptedBody != nil {
+                    textView.text.appendContentsOf("\n--------------------\n\n"+(answerTo?.decryptedBody)!)
+                }
+            }
+            else {
+                textView.text.appendContentsOf("\n--------------------\n\n"+(answerTo?.body)!) //textView.text.appendContentsOf("\n"+NSLocalizedString("original message", comment: "describing contents of the original message")+": \n\n"+(answerTo?.body)!)
+            }
             textView.text = TextFormatter.insertBeforeEveryLine("> ", text: textView.text)
         }
         
-        seperator1Height.constant = 0.5
-        seperator2Height.constant = 0.5
-        seperator3Height.constant = 0.5
+        let sepConst:CGFloat = 1/UIScreen.mainScreen().scale
+        seperator1Height.constant = sepConst//0.5
+        seperator2Height.constant = sepConst//0.5
+        seperator3Height.constant = sepConst//0.5
         
         
         seperator1Leading.constant += toText.horizontalInset
@@ -156,14 +170,14 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //LogHandler.printLogs()
         
         //LogHandler.printLogs()
-        //var handler = CryptoHandler.getHandler()
+        //var handler = CryptoHandler.getHandler() // <----
         //handler.pgp.importKeysFromFile("alice2005-2.gpg", allowDuplicates: false)
         
         //var pubKey = "-----BEGIN PUBLIC KEY-----\n"+"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmET/fC2VqlTBg0X4 0TR\n"+"obDFsWQAdAXYDYnYEa83H6pzex5Wg E/0 YKV5n9fh4NsO1ma1yMAJ3MIBnr9PuL\n"+"yI/67rqXd5YJENgtDIUHMr85CzW6UJIelVIf3QXMc7vbWXSLVbeX5mCNc8pQ5QPr\n"+"fmFgHeqGQR7pRKYP4humJHjexW4fJbz774KgL4nzskGAxGBSY6VC9s7xlXJB99w7\n"+"xXMPu2ZwEDNjqukK2lxx3EvhX8HvmueA0kU0Hf/7XLyp2lF/GiD3ZE/yNRcrh50\n"+"AXwP34U7lv2NEv/oUTOocFlOte iaUXvdYx1UZPFdaJD/asnjcerSdqqfXS8LN55\n"+"zQIDAQAB\n"+"-----END PUBLIC KEY-----"
         
         //var url = NSURL.fileURLWithPath("alice2005-2.gpg")
         //let path = NSBundle.mainBundle().pathForResource("alice2005-2", ofType: "gpg")
-        //var path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg")    // <----
+        //var path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")    // <----
         //var url = NSBundle.mainBundle().URLForResource("test", withExtension: "")
         //print("url",url)
         
@@ -557,8 +571,14 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
                 imageView.image = UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!
                 UIView.animateWithDuration(0.5, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn/*, UIViewAnimationOptions.Autoreverse*/] ,animations: {
                     self.navigationController?.navigationBar.barTintColor = UIColor.orangeColor()//UIColor.init(red: 1, green: 0.7, blue: 0.5, alpha: 1)
-                    }, completion: nil)
-                /*UIView.animateWithDuration(0.5, delay: 0.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
+                    }, completion: {(_ : Bool) in
+                        print("orange!!!!!!!!!")
+                        sleep(1)
+                        UIView.animateWithDuration(0.5, delay: 1.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
+                            self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()
+                            }, completion: nil)
+                })
+                /*UIView.animateWithDuration(0.5, delay: 1.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
                     self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()
                     }, completion: nil)*/
             }

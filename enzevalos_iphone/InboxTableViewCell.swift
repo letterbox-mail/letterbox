@@ -85,11 +85,20 @@ class InboxTableViewCell: UITableViewCell {
                 firstSubjectLabel.text = mail.subjectWithFlagsString
                 
                 // Reducing message to one line and truncating to 50
-                let message: String
-                if mail.body?.characters.count > 50 {
-                    message = mail.body!.substringToIndex(mail.body!.startIndex.advancedBy(50))
-                } else {
+                var message: String = ""
+                if mail.isEncrypted {
+                    if mail.decryptedBody == nil {
+                        mail.decryptIfPossible()
+                    }
+                    if mail.decryptedBody != nil {
+                        message = mail.decryptedBody!
+                    }
+                }
+                else if mail.body != nil {
                     message = mail.body!
+                }
+                if message.characters.count > 50 {
+                    message = message.substringToIndex(message.startIndex.advancedBy(50))
                 }
                 let messageArray = message.componentsSeparatedByString("\n")
                 firstMessageLabel.text = messageArray.joinWithSeparator(" ")
@@ -111,11 +120,26 @@ class InboxTableViewCell: UITableViewCell {
                 secondSubjectLabel.text = mail.subjectWithFlagsString
 
                 // Reducing message to one line and truncating to 50
-                let message: String
+                /*let message: String
                 if mail.body?.characters.count > 50 {
                     message = mail.body!.substringToIndex(mail.body!.startIndex.advancedBy(50))
                 } else {
                     message = mail.body!
+                }*/
+                var message: String = ""
+                if mail.isEncrypted {
+                    if mail.decryptedBody == nil {
+                        mail.decryptIfPossible()
+                    }
+                    if mail.decryptedBody != nil && !mail.trouble{
+                        message = mail.decryptedBody!
+                    }
+                }
+                else if mail.body != nil {
+                    message = mail.body!
+                }
+                if message.characters.count > 50 {
+                    message = message.substringToIndex(message.startIndex.advancedBy(50))
                 }
                 let messageArray = message.componentsSeparatedByString("\n")
                 secondMessageLabel.text = messageArray.joinWithSeparator(" ")

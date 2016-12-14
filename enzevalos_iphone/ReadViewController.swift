@@ -225,24 +225,32 @@ class ReadViewController : UITableViewController {
             
             //in-line PGP
             if m.isEncrypted {
-                CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
+                //CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
             
-                let content = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
-                print("read")
-                print(String(data: content!, encoding: NSUTF8StringEncoding))
+                //let content = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+                //print("read")
+                //print(String(data: content!, encoding: NSUTF8StringEncoding))
             
-                var signed : ObjCBool = false
-                var valid : ObjCBool = false
-                var integrityProtected : ObjCBool = false
+                //var signed : ObjCBool = false
+                //var valid : ObjCBool = false
+                //var integrityProtected : ObjCBool = false
             
-                print(m.sender?.mailbox)
-                let decBody = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr((m.sender?.mailbox)!)!.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected)
+                //print(m.sender?.mailbox)
+                //let decBody = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr((m.sender?.mailbox)!)!.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected)
                 
-                if decBody != nil {
-                    messageBody.text = String(data: decBody!, encoding: NSUTF8StringEncoding)
+                //if decBody != nil {
+                //    messageBody.text = String(data: decBody!, encoding: NSUTF8StringEncoding)
+                //}
+                
+                //print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
+                m.decryptIfPossible()
+                messageBody.text = m.decryptedBody
+                print(m.decryptedBody)
+                if KeyHandler.createHandler().addrHasKey((m.sender?.mailbox)!) {
+                    let signatureKey = KeyHandler.createHandler().getKeyByAddr((m.sender?.mailbox)!)?.key
+                    print(signatureKey)
                 }
-                
-                print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
+                print("verified: ",m.isVerified)
             
             }
             else {

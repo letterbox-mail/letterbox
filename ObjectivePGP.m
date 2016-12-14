@@ -215,7 +215,8 @@
 - (NSData *) decryptData:(NSData *)messageDataToDecrypt passphrase:(NSString *)passphrase verifyWithPublicKey:(PGPKey *)publicKey signed:(BOOL*)isSigned valid:(BOOL*)isValid integrityProtected:(BOOL*)isIntegrityProtected error:(NSError * __autoreleasing *)error
 {
     NSData *binaryMessageToDecrypt = [self convertArmoredMessage2BinaryWhenNecessary:messageDataToDecrypt];
-    NSAssert(binaryMessageToDecrypt != nil, @"Invalid input data");
+    printf("jakob auskommentierte Assertion line 218 ObjectivePGP.m");
+    //NSAssert(binaryMessageToDecrypt != nil, @"Invalid input data");
     if (!binaryMessageToDecrypt) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Invalid input data"}];
@@ -264,7 +265,8 @@
         return nil;
     }
     
-    NSAssert(eskPacket, @"Valid PublicKeyEncryptedSessionKeyPacket not found");
+    printf("jakob auskommentierte Assertion in line 267 ObjectivePGP.m");
+    //NSAssert(eskPacket, @"Valid PublicKeyEncryptedSessionKeyPacket not found");
     if (!eskPacket) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Valid PublicKeyEncryptedSessionKeyPacket not found"}];
