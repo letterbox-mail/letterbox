@@ -43,7 +43,7 @@ class ReadViewController : UITableViewController {
         self.tableView.estimatedRowHeight = 44.0
         
         // not possible to set in IB
-        SeperatorConstraint.constant = 0.5
+        SeperatorConstraint.constant = 1 / UIScreen.mainScreen().scale
         infoCell.layoutMargins = UIEdgeInsetsZero
 
         setUItoMail()
@@ -257,7 +257,9 @@ class ReadViewController : UITableViewController {
                 messageBody.text = m.body
             }
             // NavigationBar Icon
-            let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 38))
+            let iconView = UIImageView()
+//            let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 38))
+            iconView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
             iconView.contentMode = .ScaleAspectFit
             var icon: UIImage
             if m.trouble {

@@ -79,6 +79,9 @@ class Mail: Comparable {
             subj = subject!
         }
         var returnString: String = ""
+        if trouble {
+            returnString.appendContentsOf("❗️ ")
+        }
         if isUnread {
             returnString.appendContentsOf("🔵 ")
         }
@@ -91,8 +94,7 @@ class Mail: Comparable {
         if MCOMessageFlag.Flagged.isSubsetOf(flags) {
             returnString.appendContentsOf("⭐️ ")
         }
-        let ret = "\(returnString)\(subj)"
-        return ret
+        return "\(returnString)\(subj)"
     }
 
     init(uid: UInt32, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate?, received: Bool, subject: String?, body: String?, decryptedBody: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool, flags: MCOMessageFlag) {

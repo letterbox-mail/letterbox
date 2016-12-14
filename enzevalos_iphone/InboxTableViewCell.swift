@@ -24,6 +24,8 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var secondDateLabel: UILabel!
     @IBOutlet weak var secondButton: UIButton!
     @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var seperator: NSLayoutConstraint!
+    @IBOutlet weak var seperator2: NSLayoutConstraint!
     
     @IBAction func firstButtonPressed(sender: AnyObject) {
         if let delegate = delegate where firstMail != nil {
@@ -53,6 +55,8 @@ class InboxTableViewCell: UITableViewCell {
         firstButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchDragExit, .TouchCancel])
         secondButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
         secondButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchDragExit, .TouchCancel])
+        seperator.constant = 1 / UIScreen.mainScreen().scale
+        seperator2.constant = 1 / UIScreen.mainScreen().scale
     }
     
     var enzContact: EnzevalosContact? {

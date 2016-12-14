@@ -457,7 +457,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ucv-8n-UVn"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Inbox" id="5GZ-GC-SZf">
-                        <barButtonItem key="rightBarButtonItem" title="write" id="j5W-eH-o1q">
+                        <barButtonItem key="rightBarButtonItem" title="New Mail" id="j5W-eH-o1q">
                             <connections>
                                 <segue destination="4Ey-v4-VeB" kind="show" id="j4Q-k1-ud3"/>
                             </connections>
