@@ -1,0 +1,69 @@
+
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "0Jo-em-nbD"; */
+"0Jo-em-nbD.title" = "Cancel";
+
+/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "2IZ-1g-KCZ"; */
+"2IZ-1g-KCZ.title" = "Send";
+
+/* Class = "UIBarButtonItem"; title = "Unread"; ObjectID = "2JJ-ZX-lDs"; */
+"2JJ-ZX-lDs.title" = "Unread";
+
+/* Class = "UILabel"; text = "!"; ObjectID = "4Fp-ob-0Ch"; */
+"4Fp-ob-0Ch.text" = "!";
+
+/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "5GZ-GC-SZf"; */
+"5GZ-GC-SZf.title" = "Inbox";
+
+/* Class = "UILabel"; text = "Achtung!"; ObjectID = "7LX-pr-0Pd"; */
+"7LX-pr-0Pd.text" = "Achtung!";
+
+/* Class = "UIButton"; normalTitle = "Answer"; ObjectID = "9Io-ch-Bl3"; */
+"9Io-ch-Bl3.normalTitle" = "Answer";
+
+/* Class = "UIButton"; normalTitle = "Trotzdem anzeigen"; ObjectID = "I7i-jf-aSX"; */
+"I7i-jf-aSX.normalTitle" = "Trotzdem anzeigen";
+
+/* Class = "UIBarButtonItem"; title = "Delete"; ObjectID = "Mac-KZ-4YQ"; */
+"Mac-KZ-4YQ.title" = "Delete";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "Sdq-CE-2Do"; */
+"Sdq-CE-2Do.text" = "Detail";
+
+/* Class = "UILabel"; text = "Absender"; ObjectID = "YIc-GU-Crs"; */
+"YIc-GU-Crs.text" = "Absender";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "Yii-bz-1Cd"; */
+"Yii-bz-1Cd.text" = "From:";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "Ywe-G2-0wJ"; */
+"Ywe-G2-0wJ.text" = "Subject";
+
+/* Class = "UILabel"; text = "Message"; ObjectID = "djb-A5-Dwe"; */
+"djb-A5-Dwe.text" = "Message";
+
+/* Class = "UILabel"; text = "Body"; ObjectID = "e1n-Yc-Ceu"; */
+"e1n-Yc-Ceu.text" = "Body";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "e81-vT-F9X"; */
+"e81-vT-F9X.text" = "Subject";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "fqo-qg-NcY"; */
+"fqo-qg-NcY.text" = "Date";
+
+/* Class = "UILabel"; text = "Diese E-Mail könnte verändert worden sein! Bitte misstrauen Sie dem Inhalt, falls Sie ihn trotzdem lesen möchten. "; ObjectID = "lYr-bv-gD0"; */
+"lYr-bv-gD0.text" = "Diese E-Mail könnte verändert worden sein! Bitte misstrauen Sie dem Inhalt, falls Sie ihn trotzdem lesen möchten. ";
+
+/* Class = "UIBarButtonItem"; title = "last Update"; ObjectID = "mki-ya-mz8"; */
+"mki-ya-mz8.title" = "last Update";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "okf-3B-Nb6"; */
+"okf-3B-Nb6.text" = "Title";
+
+/* Class = "UIButton"; normalTitle = "Ignorieren"; ObjectID = "qTi-rO-CH3"; */
+"qTi-rO-CH3.normalTitle" = "Ignorieren";
+
+/* Class = "UITextView"; accessibilityLabel = "test"; ObjectID = "quA-hP-Xkp"; */
+"quA-hP-Xkp.accessibilityLabel" = "test";
+
+/* Class = "UIBarButtonItem"; title = "Archive"; ObjectID = "tGx-Pm-eAc"; */
+"tGx-Pm-eAc.title" = "Archive";
