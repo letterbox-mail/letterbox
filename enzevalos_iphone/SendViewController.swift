@@ -177,6 +177,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         
         //var url = NSURL.fileURLWithPath("alice2005-2.gpg")
         //let path = NSBundle.mainBundle().pathForResource("alice2005-2", ofType: "gpg")
+        //let path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg") // <---- PRIVATE
         //var path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")    // <----
         //var url = NSBundle.mainBundle().URLForResource("test", withExtension: "")
         //print("url",url)
@@ -203,6 +204,13 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //KeyHandler.createHandler().addKey(handler.pgp.keys[0])          // <----
         //KeyHandler.createHandler().addPrivateKey(handler.pgp.keys[0])   // <---- PRIVATE
         //print(KeyHandler.createHandler().getKeyByAddr("jakob.bode@fu-berlin.de"))     // <----
+        /*KeyHandler.createHandler().resetPrivateKey()
+        print(KeyHandler.createHandler().getPrivateKey())
+        KeyHandler.createHandler().resetPrivateKey()
+        print(KeyHandler.createHandler().getPrivateKey())
+        KeyHandler.createHandler().resetPrivateKey()
+        print(KeyHandler.createHandler().getPrivateKey())
+        KeyHandler.createHandler().resetPrivateKey()*/
         //print(KeyHandler.createHandler().getPrivateKey()) // <---- PRIVATE
         /*do {
             textView.text = String(data: try handler.pgp.encryptData("Hallo Welt".dataUsingEncoding(NSUTF8StringEncoding)!, usingPublicKeys: handler.pgp.keys, armored: true), encoding: NSUTF8StringEncoding)
