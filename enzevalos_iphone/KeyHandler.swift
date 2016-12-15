@@ -176,6 +176,28 @@ class KeyHandler {
         return nil
     }
     
+    /**
+     * remove last privateKey
+     */
+    func resetPrivateKey(){
+        let mail = MailHandler.getAddr().lowercaseString
+        
+        var index : Int16 = 0
+        
+        if (try? keychain.getData(mail+"-private-index")) != nil {
+            if let indexData = (try? keychain.getData(mail+"-private-index"))!{
+                indexData.getBytes(&index, length: sizeof(Int16))
+            }
+        }
+        
+        if index >= 0 {
+            keychain[data: mail+"-private-"+String(index)] = nil
+            index -= 1
+            keychain[data: mail+"-private-index"] = NSData(bytes: &index, length: sizeof(Int16))
+        }
+        
+    }
+    
     func reset(addr: String){
         let mail = addr.lowercaseString
         if (try? keychain.getData(mail+"-index")) != nil {//kchain.myObjectForKey(mail+"-index").integerValue{
