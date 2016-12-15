@@ -152,6 +152,10 @@ class KeyHandler {
             }
         }
         
+        if index < 0 {
+            index = 0
+        }
+        
         index += 1
         keychain[data: mail+"-private-index"] = NSData(bytes: &index, length: sizeof(Int16))
         keychain[data: mail+"-private-"+String(index)] = NSKeyedArchiver.archivedDataWithRootObject(KeyWrapper(key: key, mailaddress: mail))
@@ -190,7 +194,7 @@ class KeyHandler {
             }
         }
         
-        if index >= 0 {
+        if index > 0 {
             keychain[data: mail+"-private-"+String(index)] = nil
             index -= 1
             keychain[data: mail+"-private-index"] = NSData(bytes: &index, length: sizeof(Int16))
