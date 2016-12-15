@@ -21,6 +21,7 @@ class Mail: Comparable {
     var decryptedBody: String? //TODO: bei der Serialisierung auf nil setzen
     var isVerified = false
     var isEncrypted = false
+    var unableToDecrypt = false
     var showMessage = true
     var isUnread: Bool {
         didSet{
@@ -122,6 +123,10 @@ class Mail: Comparable {
     func decryptIfPossible(){
         if body != nil {
             if self.isEncrypted {
+                if KeyHandler.createHandler().getPrivateKey() == nil {
+                    self.unableToDecrypt = true
+                    return
+                }
                 if !CryptoHandler.getHandler().pgp.keys.contains((KeyHandler.createHandler().getPrivateKey()?.key)!) {
                     CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
                 }
