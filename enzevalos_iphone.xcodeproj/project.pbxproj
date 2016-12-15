@@ -257,6 +257,7 @@
 		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
+		F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -343,6 +344,7 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
+				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
 				A11E733A1E019AB5006574DD /* init */,
 				A1EB05761D9567F2008659C1 /* read */,
@@ -598,6 +600,11 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 4377G946WP;
 						LastSwiftMigration = 0800;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					A135268B1D955BE000D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -1040,6 +1047,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
@@ -1087,6 +1095,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
