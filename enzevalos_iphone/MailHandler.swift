@@ -273,6 +273,7 @@ class MailHandler {
                             }
                         }*/
                         let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, decryptedBody: decBody, isEncrypted: enc, isVerified: ver, trouble: troub, isUnread: !messageRead, flags: message.flags)
+                        mail.decryptIfPossible()
                         /*Jakob prototypeänderung Ende*/
                         self.delegate?.addNewMail(mail)
                         
