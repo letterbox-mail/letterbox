@@ -91,9 +91,9 @@ class InboxTableViewCell: UITableViewCell {
                 // Reducing message to one line and truncating to 50
                 var message: String = ""
                 if mail.isEncrypted {
-                    if mail.decryptedBody == nil {
+                    /*if mail.decryptedBody == nil {
                         mail.decryptIfPossible()
-                    }
+                    }*/
                     if mail.decryptedBody != nil {
                         message = mail.decryptedBody!
                     }
@@ -132,9 +132,9 @@ class InboxTableViewCell: UITableViewCell {
                 }*/
                 var message: String = ""
                 if mail.isEncrypted {
-                    if mail.decryptedBody == nil {
+                    /*if mail.decryptedBody == nil {
                         mail.decryptIfPossible()
-                    }
+                    }*/
                     if mail.decryptedBody != nil && !mail.trouble{
                         message = mail.decryptedBody!
                     }
