@@ -75,7 +75,7 @@ class LogHandler {
         print("LoggingSession ",session)
         print(defaults.objectForKey(String(session)+"-date"))
         print()
-        for var i in 0 ..< defaults.integerForKey(String(session)+"-index")+1{
+        for i in 0 ..< defaults.integerForKey(String(session)+"-index")+1{
             if let entry = defaults.objectForKey(String(session)+"-"+String(i)) {
                     print(String(entry))
             }
@@ -90,7 +90,7 @@ class LogHandler {
     }
     
     static func printLogs(){
-        for var i in 1 ..< defaults.integerForKey("Session")+1 {
+        for i in 1 ..< defaults.integerForKey("Session")+1 {
             printLog(i)
         }
     }
@@ -98,7 +98,7 @@ class LogHandler {
     static func getLog(session : Int) -> String{
         var log = "\n--------------------LOG OUTPUT--------------------\nLoggingSession "+String(session)+"\n"+String(defaults.objectForKey(String(session)+"-date"))+"\n\n"
         
-        for var i in 0 ..< defaults.integerForKey(String(session)+"-index")+1{
+        for  i in 0 ..< defaults.integerForKey(String(session)+"-index")+1{
             if let entry = defaults.objectForKey(String(session)+"-"+String(i)) {
                 log.appendContentsOf(String(entry)+"\n")
             }
@@ -113,7 +113,7 @@ class LogHandler {
     
     static func getLogs() -> String {
         var logs = ""
-        for var i in 1 ..< defaults.integerForKey("Session")+1 {
+        for i in 1 ..< defaults.integerForKey("Session")+1 {
             logs.appendContentsOf(getLog(i))
         }
         return logs
@@ -125,7 +125,7 @@ class LogHandler {
             print("not deleting anything, active logging at the moment")
             return
         }
-        for var i in 0 ..< defaults.integerForKey(String(session)+"-index")+1{
+        for i in 0 ..< defaults.integerForKey(String(session)+"-index")+1{
             defaults.removeObjectForKey(String(session)+"-"+String(i))
         }
         defaults.removeObjectForKey(String(session)+"-index")
@@ -136,7 +136,7 @@ class LogHandler {
             print("not deleting anything, active logging at the moment")
             return
         }
-        for var i in 1 ..< defaults.integerForKey("Session")+1 {
+        for i in 1 ..< defaults.integerForKey("Session")+1 {
             deleteLog(i)
         }
         defaults.setInteger(0, forKey: "Session")

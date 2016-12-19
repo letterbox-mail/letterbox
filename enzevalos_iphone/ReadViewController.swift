@@ -29,9 +29,9 @@ class ReadViewController : UITableViewController {
     @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
     
     var mail: Mail? = nil
-    let red = UIColor(red: 255/255, green: 99/255, blue: 99/255, alpha: 1.0)
-    let green = UIColor(red: 115/255, green: 229/255, blue: 105/255, alpha: 1.0)
-    let orange = UIColor(red: 247/255, green: 185/255, blue: 0/255, alpha: 1.0)
+    let troubleColor = ThemeManager.troubleMessageColor()
+    let encryptColor = ThemeManager.encryptedMessageColor()
+    let uncryptColor = ThemeManager.uncryptedMessageColor()
     let defaultColor = UIColor.groupTableViewBackgroundColor() // UIColor(red: 242/255, green: 242/255, blue: 246/255, alpha: 1.0)
 
     
@@ -53,11 +53,11 @@ class ReadViewController : UITableViewController {
         // NavigationBar color
         if let m = mail {
             if m.trouble {
-                self.navigationController?.navigationBar.barTintColor = self.red
+                self.navigationController?.navigationBar.barTintColor = self.troubleColor
             } else if m.isEncrypted {
-                self.navigationController?.navigationBar.barTintColor = self.green
+                self.navigationController?.navigationBar.barTintColor = self.encryptColor
             } else {
-                self.navigationController?.navigationBar.barTintColor = self.orange
+                self.navigationController?.navigationBar.barTintColor = self.uncryptColor
             }
         }
     }
