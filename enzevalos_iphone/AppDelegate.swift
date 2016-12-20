@@ -21,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
         let launchedBefore = NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")
         
+        
+        
         let theme = ThemeManager.currentTheme()
         //ThemeManager.applyTheme(theme)
         

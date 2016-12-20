@@ -8,7 +8,7 @@
 
 import UIKit
 
-let SelectedThemeKey = "SelectedTheme"
+let SelectedThemeKey = "security_indicator"
 var defaultColor = UIColor.groupTableViewBackgroundColor()
 
 enum Theme: Int{
@@ -81,7 +81,7 @@ struct ThemeManager{
         if let storedTheme = NSUserDefaults.standardUserDefaults().valueForKey(SelectedThemeKey)?.integerValue {
             return Theme(rawValue: storedTheme)!
         } else {
-            return .Very_strong_security_indicator
+            return .No_security_indicator
         }
     }
     
