@@ -37,12 +37,36 @@ class MailHandler {
     
     //Anpassen:
     //Einstellungen in UserDefaults ablegen
-    static func getAddr() -> String{
-        return "alice2005@web.de"
+    func getAddr() -> String{
+        return useraddr
+    }
+    
+    static func getAddr()->String{
+        
+    }
+    
+    
+    func getAutocrypt_type() -> String{
+        return "p"
+    }
+    
+    func getPrefEncryption() -> String{
+        return "yes"
+    }
+    
+    func getPublicKey()->String {
+        return "ABCOISDOEOEKDSNF"
     }
     
     //TODO: signatur hinzufügen
     
+    
+    func add_autocrypt_header(builder: MCOMessageBuilder){
+        // Autocrypt-ENCRYPTION: to=aaa@bbb.cc; [type=(p|...);] [prefer-encrypted=(yes|no);] key=BASE64 
+        let autocrypt = "Autocrypt-ENCRYPTION: to="+getAddr()+"; type="+getAutocrypt_type()+"; prefer-encrypted="+getPrefEncryption()+"; key="+getPublicKey()
+        
+        builder.header.setExtraHeaderValue(autocrypt, forName: "autocrypt")
+    }
     
     //return if send successfully
     func send(toEntrys : [String], ccEntrys : [String], bccEntrys : [String], subject : String, message : String, callback : (NSError?) -> Void){
@@ -80,6 +104,8 @@ class MailHandler {
             useraddr)
         
         builder.header.subject = subject
+        
+        add_autocrypt_header(builder)
         
         builder.textBody = message //htmlBody = message
         
