@@ -94,7 +94,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         toText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         ccText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         
-        //toText.delegate?.tokenField!(toText, didEnterText: "jakob.bode@fu-berlin.de")
         if answerTo != nil {
             toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.sender?.mailbox!)!)
             for r in (answerTo?.receivers)!{
@@ -162,6 +161,8 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         ccCollectionview.tag = UIViewResolver.ccCollectionview.rawValue
         subjectText.tag = UIViewResolver.subjectText.rawValue
         scrollview.tag = UIViewResolver.scrollview.rawValue
+        
+        updateNavigationBar()
         
         
         //LogHandler.printLogs()
@@ -259,6 +260,15 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //print(pubKey.dataUsingEncoding(NSUTF8StringEncoding)!)
     }
     
+    
+    override func willMoveToParentViewController(parent: UIViewController?) {
+        super.willMoveToParentViewController(parent)
+        
+        if parent == nil {
+            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()})
+        }
+    }
+    
     override func viewDidAppear(animated: Bool){
         
     }
@@ -324,9 +334,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func tokenFieldDidEndEditing(tokenField: VENTokenField) {}
     
-    /*func tapped(sender: AnyObject){
-        print("anything")
-    }*/
     
     func editName(tokenField : VENTokenField){
         if let inText = tokenField.inputText(){
@@ -445,6 +452,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func newInput(tokenField: VENTokenField){
         animateIfNeeded()
+    
         collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
         toCollectionview.reloadData()
         ccCollectionview.reloadData()
@@ -550,6 +558,24 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     
+    func getContemporarySecurityState() -> Bool {
+        toSecure = toText.dataSource!.isSecure!(toText)
+        ccSecure = ccText.dataSource!.isSecure!(ccText)
+        return toSecure && ccSecure
+    }
+    
+    func updateNavigationBar(){
+        if(getContemporarySecurityState()){
+            imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")
+            self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
+        }
+        else{
+            imageView.image = UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!
+            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+        }
+    }
+    
+    
     func animateIfNeeded(secure : Bool){
         if secure != self.secureState {
             setAnimation(secure)
@@ -565,67 +591,39 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     func animateIfNeeded(){
-        toSecure = toText.dataSource!.isSecure!(toText)
-        ccSecure = ccText.dataSource!.isSecure!(ccText)
-        if (toSecure && ccSecure) != self.secureState {
-            setAnimation()
-            if toSecure && ccSecure {
-                imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!
-                UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
-                    self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()
+        let contemporarySecureState = getContemporarySecurityState()
+        if (contemporarySecureState) != self.secureState {
+            if(ThemeManager.animation()){
+                setAnimation()
+                if contemporarySecureState{
+                    imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!
+                    UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
+                        self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
                     }, completion: nil)
-            }
-            else {
-                imageView.image = UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!
-                UIView.animateWithDuration(0.5, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn/*, UIViewAnimationOptions.Autoreverse*/] ,animations: {
-                    self.navigationController?.navigationBar.barTintColor = UIColor.orangeColor()//UIColor.init(red: 1, green: 0.7, blue: 0.5, alpha: 1)
-                    }, completion: {(_ : Bool) in
-                        print("orange!!!!!!!!!")
-                        sleep(1)
-                        UIView.animateWithDuration(0.5, delay: 1.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
-                            self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()
+                }
+                else {
+                    imageView.image = UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!
+                    UIView.animateWithDuration(0.5, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn/*, UIViewAnimationOptions.Autoreverse*/] ,animations: {
+                        self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+                        }, completion: {(_ : Bool) in
+                            sleep(1)
+                            UIView.animateWithDuration(0.5, delay: 1.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
+                                self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
                             }, completion: nil)
-                })
+                    })
                 /*UIView.animateWithDuration(0.5, delay: 1.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
                     self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()
                     }, completion: nil)*/
+                }
+                imageView.startAnimating()
             }
-            imageView.startAnimating()
-            self.secureState = toSecure && ccSecure
         }
+        updateNavigationBar()
+        self.secureState = getContemporarySecurityState()
     }
     
     func setAnimation(){
-        var images: [UIImage] = []
-        images = []
-        
-        //after animation the letter will be shown
-        if toSecure && ccSecure{
-            //set animation images in the right order here
-            images.append(UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-006_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-005_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-004_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-003_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-002_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!)
-        }
-            
-            //Postcard will be shown after the animation
-        else{
-            //set animation images here
-            images.append(UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-002_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-003_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-004_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-005_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-006_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!)
-        }
-        
-        imageView.animationImages = images
-        imageView.animationDuration = 0.75
-        imageView.animationRepeatCount = 1
+        setAnimation(getContemporarySecurityState())
     }
     
     //secure - state after animation
