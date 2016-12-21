@@ -51,7 +51,7 @@
 "fqo-qg-NcY.text" = "Date";
 
 /* Class = "UILabel"; text = "Diese E-Mail könnte verändert worden sein! Bitte misstrauen Sie dem Inhalt, falls Sie ihn trotzdem lesen möchten. "; ObjectID = "lYr-bv-gD0"; */
-"lYr-bv-gD0.text" = "This E-Mail may be modified! Mistrust it's Content, if you read it though ";
+"lYr-bv-gD0.text" = "This E-Mail may have been modified! If you want to read it anyways, please be weary of its content.";
 
 /* Class = "UIBarButtonItem"; title = "last Update"; ObjectID = "mki-ya-mz8"; */
 "mki-ya-mz8.title" = "last Update";
