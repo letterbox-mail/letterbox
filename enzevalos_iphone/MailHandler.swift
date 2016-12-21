@@ -214,9 +214,9 @@ class MailHandler {
                         
                         
                         var enc = false
-                        var ver = false
-                        var troub = false
-                        var decBody : String? = nil
+                        let ver = false
+                        let troub = false
+                        let decBody : String? = nil
                         
                         //gute Wahl?
                         //in-line PGP

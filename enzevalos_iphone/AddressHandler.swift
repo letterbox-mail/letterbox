@@ -115,6 +115,27 @@ class AddressHandler {
         return false
     }
     
+    static func getContact(name : String) -> [CNContact]{
+        AppDelegate.getAppDelegate().requestForAccess({access in
+            print(access)
+        })
+        let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
+        if authorizationStatus == CNAuthorizationStatus.Authorized {
+            do {
+                let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName(name), keysToFetch: [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactImageDataKey])
+                return conList
+            }
+            catch {
+                print("exception")
+            }
+            print("contacts done")
+        }
+        else {
+            print("no Access!")
+        }
+        return []
+    }
+    
     static func frequentAddresses (inserted : [String]) -> [(UIImage, String, String, UIImage?, UIColor)] {
                                     /*[insertedEmail]             -> [(contactImage, name, address, emailLabelImage, backgroundcolor)]*/
         //(persistente) liste von Kontakten abfragen
