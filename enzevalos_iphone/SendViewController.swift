@@ -171,8 +171,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //LogHandler.printLogs()
         
         //LogHandler.printLogs()
-       // var handler = CryptoHandler.getHandler() // <----
-        //handler.pgp.importKeysFromFile("alice2005-2.gpg", allowDuplicates: false)
+        //var handler = CryptoHandler.getHandler() // <----
         
         //let path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg") // <---- PRIVATE
         //var path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")    // <----
