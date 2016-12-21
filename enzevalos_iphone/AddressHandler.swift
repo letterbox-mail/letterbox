@@ -122,7 +122,7 @@ class AddressHandler {
         let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
         if authorizationStatus == CNAuthorizationStatus.Authorized {
             do {
-                let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName(name), keysToFetch: [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactImageDataKey])
+                let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName(name), keysToFetch: [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
                 return conList
             }
             catch {

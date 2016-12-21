@@ -56,24 +56,55 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
 //            return
 //        }
         
+        
         // New contact has to be added
-        let con = CNMutableContact()
-        let name = mail.sender?.displayName
-        if let n = name {
-            let nameArray = n.characters.split(" ").map(String.init)
-            switch nameArray.count {
-            case 1:
-                con.givenName = nameArray.first!
-            case 2..<20: // who has more than two names?!
-                con.givenName = nameArray.first!
-                con.familyName = nameArray.last!
-            default:
-                con.givenName = "NO"
-                con.familyName = "NAME"
+
+        let displayName: String
+        
+        if mail.sender?.displayName != nil {
+            displayName = mail.sender!.displayName!
+        } else {
+            let split = mail.sender!.mailbox.componentsSeparatedByString("@")
+            var temp = split[0].stringByReplacingOccurrencesOfString(".", withString: " ")
+            temp = temp.stringByReplacingOccurrencesOfString("_", withString: " ")
+            temp = temp.stringByReplacingOccurrencesOfString("-", withString: " ")
+            displayName = temp
+        }
+        
+        let contactsFromBook = AddressHandler.getContact(displayName)
+        var foundContact: CNContact? = nil
+        
+        for contact in contactsFromBook {
+            for address in contact.emailAddresses {
+                if address.value as? String == mail.sender?.mailbox {
+                    foundContact = contact
+                    break
+                }
             }
         }
-        con.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: mail.sender!.mailbox)]
-        contacts.append(EnzevalosContact(contact: con, mails: [mail]))
+        
+        if foundContact == nil {
+            
+            let con = CNMutableContact()
+            let name = mail.sender?.displayName
+            if let n = name {
+                let nameArray = n.characters.split(" ").map(String.init)
+                switch nameArray.count {
+                case 1:
+                    con.givenName = nameArray.first!
+                case 2..<20: // who has more than two names?!
+                    con.givenName = nameArray.first!
+                    con.familyName = nameArray.last!
+                default:
+                    con.givenName = "NO"
+                    con.familyName = "NAME"
+                }
+            }
+            con.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: mail.sender!.mailbox)]
+
+            foundContact = con
+        }
+        contacts.append(EnzevalosContact(contact: foundContact!, mails: [mail]))
     }
     
     override func viewDidLoad() {
