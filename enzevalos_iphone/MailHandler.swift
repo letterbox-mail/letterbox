@@ -9,8 +9,118 @@
 import Foundation
 import Contacts
 
-class MailHandler {
+
+let EXTRAHEADERS = ["Inbome","Autocrypt-ENCRYPTION"]
+let TO = "to"
+let TYPE = "type"
+let ENCRYPTION = "prefer-encrypted"
+let KEY = "key"
+
+
+class AutocryptContact{
+    enum AutocryptType: Int{
+        case OPENPGP, ERROR
+        var string:String{
+            switch self{
+            case .OPENPGP:
+                return "p"
+            default:
+                return "error"
+            }
+        }
+        static func getType(type:String) ->AutocryptType{
+            switch type{
+                case "p":
+                    return AutocryptType.OPENPGP
+                case "":
+                    return AutocryptType.OPENPGP
+            default:
+                return ERROR
+            }
+        }
+    }
     
+    var addr: String = ""
+    var type: AutocryptType = .OPENPGP
+    var prefer_encryption: Bool = false
+    var key: String = ""
+    
+    init(addr: String, type: String, prefer_encryption: String, key: String){
+        self.addr = addr
+        self.type = AutocryptType.getType(type)
+        setPrefer_encryption(prefer_encryption)
+        self.key = key
+    }
+    
+    
+    convenience init(header: MCOMessageHeader){
+        let autocrypt = header.extraHeaderValueForName(EXTRAHEADERS[0])
+        var field: [String]
+        var addr = ""
+        var type = ""
+        var pref = ""
+        var key = ""
+        
+        if(autocrypt != nil){
+            let autocrypt_fields = autocrypt.componentsSeparatedByString(";")
+            for f in autocrypt_fields{
+                field = f.componentsSeparatedByString("=")
+                if field.count > 1{
+                    let flag = field[0].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                    var value = field[1]
+                    if field.count > 2 {
+                        for i in 2...(field.count - 1){
+                            value = value + field[i]
+                        }
+                    }
+                    switch flag{
+                    case TO:
+                        addr = value
+                        break
+                    case TYPE:
+                        type = value
+                        break
+                    case ENCRYPTION:
+                        pref = value
+                        break
+                    case KEY:
+                        key = value
+                        break
+                    default:
+                        break
+                    }
+                }
+            }
+        }
+        self.init(addr: addr, type: type, prefer_encryption: pref, key: key)
+    }
+    
+    func validateContact()->Bool{
+        if addr != "" && type != .ERROR && key != ""{
+            return true
+        }
+        return false
+    }
+    
+    func setPrefer_encryption(input:String)->Bool{
+        if input == "yes" || input == "YES" || input == "Yes"{
+            prefer_encryption = true
+            return true
+        }
+        else if input == "no" || input == "NO" || input == "No"{
+            prefer_encryption = false
+            return true
+        }
+        return false
+    }
+    
+    func toString()->String{
+        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption) | key: \(key)"
+    }
+}
+
+class MailHandler {
+
     var delegate: MailHandlerDelegator?
     var lastUID: UInt64 = 1
     
@@ -37,37 +147,6 @@ class MailHandler {
         builder.header.setExtraHeaderValue(autocrypt, forName: "Autocrypt-ENCRYPTION")
         print(builder.header.description)
     }
-    
-    func read_autocrypt_header(header: MCOMessageHeader)-> Bool{
-        let autocrypt = header.extraHeaderValueForName("X-Mailer")//"Inbome")//Autocrypt-ENCRYPTION")
-        let headers = header.allExtraHeadersNames()
-        
-        if headers == nil {
-            print("no custom headers")
-            return false
-        }
-        
-        print ("Count headers: \(headers.count)")
-        
-        for h in headers {
-            print (h as! String)
-        }
-        
-        if(autocrypt != nil){
-            let autocrypt_fields = autocrypt.componentsSeparatedByString(";")
-            if autocrypt_fields.count == 0{
-                print ("Autocrypt header exists but no fields")
-                return false
-            }
-            for s in autocrypt_fields{
-                print(s)
-            }
-            print ("Autocrypt header exists")
-            return true
-        }
-        return false
-    }
-    
     
     //return if send successfully
     func send(toEntrys : [String], ccEntrys : [String], bccEntrys : [String], subject : String, message : String, callback : (NSError?) -> Void){
@@ -181,6 +260,8 @@ class MailHandler {
         let folder = "INBOX"
         let uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
         let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
+        fetchOperation.extraHeaders = EXTRAHEADERS
+        
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
                 print("Error while fetching inbox: \(err)")
@@ -211,11 +292,17 @@ class MailHandler {
                         body.appendContentsOf("\n")
                         var rec: [MCOAddress] = []
                         var cc: [MCOAddress] = []
+                        
                         let header = message.header
                         let messageRead = MCOMessageFlag.Seen.isSubsetOf(message.flags)
                         
                         
-                        self.read_autocrypt_header(header)
+                        
+                        if (header.extraHeaderValueForName(EXTRAHEADERS[0]) != nil){
+                            let autocrypt_contact = AutocryptContact(header: header)
+                            print(autocrypt_contact.toString())
+                        }
+                        
                         
                         if let to = header.to {
                             for r in to {
