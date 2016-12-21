@@ -13,7 +13,6 @@
 		9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */; };
 		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
 		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
-		A11E733C1E019AE3006574DD /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
 		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
 		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
@@ -55,7 +54,7 @@
 		A135CF231DD4BDD1007E3C29 /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFD1DD4BDD1007E3C29 /* PGPUserAttributePacket.m */; };
 		A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */; };
 		A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */; };
-		A17A18F21DDCA4450058D934 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F11DDCA4450058D934 /* KeychainWrapper.m */; };
+		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A17A18F51DDCB5580058D934 /* KeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F41DDCB5580058D934 /* KeyHandler.swift */; };
 		A17A18F71DDCBE530058D934 /* KeyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F61DDCBE530058D934 /* KeyWrapper.swift */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
@@ -67,6 +66,7 @@
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
 		A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C09FC71DF052FF0006B783 /* importKeys.swift */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
+		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB05781D956817008659C1 /* ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05771D956817008659C1 /* ContactExtension.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
@@ -212,8 +212,7 @@
 		A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeSubpacket.m; sourceTree = "<group>"; };
 		A135CF001DD4BDD1007E3C29 /* PGPUserIDPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserIDPacket.h; sourceTree = "<group>"; };
 		A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserIDPacket.m; sourceTree = "<group>"; };
-		A17A18F01DDCA43B0058D934 /* KeychainWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
-		A17A18F11DDCA4450058D934 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
+		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A17A18F41DDCB5580058D934 /* KeyHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyHandler.swift; sourceTree = "<group>"; };
 		A17A18F61DDCBE530058D934 /* KeyWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyWrapper.swift; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JakobBode.asc; sourceTree = "<group>"; };
@@ -354,7 +353,6 @@
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
 				A11E733A1E019AB5006574DD /* init */,
 				A1EB05761D9567F2008659C1 /* read */,
-				A17A18F31DDCA4B60058D934 /* KeychainWrapper */,
 				A1EB05751D956748008659C1 /* send */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
 				476142071E07E52B00FD5E4F /* Theme.swift */,
@@ -365,6 +363,7 @@
 				476373C11E09BA88004D5EFE /* UserData.swift */,
 				A1EB05911D95692A008659C1 /* MailObject.swift */,
 				A1EB059D1D956963008659C1 /* EnzevalosContact.swift */,
+				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				A17A18F41DDCB5580058D934 /* KeyHandler.swift */,
 				A1EB05771D956817008659C1 /* ContactExtension.swift */,
@@ -480,15 +479,6 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		A17A18F31DDCA4B60058D934 /* KeychainWrapper */ = {
-			isa = PBXGroup;
-			children = (
-				A17A18F01DDCA43B0058D934 /* KeychainWrapper.h */,
-				A17A18F11DDCA4450058D934 /* KeychainWrapper.m */,
-			);
-			name = KeychainWrapper;
-			sourceTree = "<group>";
-		};
 		A1EB05751D956748008659C1 /* send */ = {
 			isa = PBXGroup;
 			children = (
@@ -601,6 +591,9 @@
 		A135266D1D955BDF00D3BFE1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					MailCoreRessources,
+				);
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "fu-berlin";
@@ -657,6 +650,7 @@
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
 				4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */,
 				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
+				A16BA2121E0439B6005E29E3 /* providers.json in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
 				A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */,
@@ -850,7 +844,6 @@
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
 				A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */,
 				A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */,
-				A17A18F21DDCA4450058D934 /* KeychainWrapper.m in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,
 				A1EB05781D956817008659C1 /* ContactExtension.swift in Sources */,
@@ -874,7 +867,7 @@
 				A135CF0B1DD4BDD1007E3C29 /* PGPKey.m in Sources */,
 				A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
-				A11E733C1E019AE3006574DD /* InitViewController.swift in Sources */,
+				A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */,
 				A135CF101DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,

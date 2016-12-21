@@ -30,20 +30,20 @@ class KeyWrapper : NSObject {
     
     var revoked: Bool{
         didSet {
-            let handler = KeyHandler.createHandler()
+            let handler = KeyHandler.getHandler()
             handler.updateKey(self)
         }
     }
     //choose Int8 here?
     var trustlevel: Int{
         didSet {
-            let handler = KeyHandler.createHandler()
+            let handler = KeyHandler.getHandler()
             handler.updateKey(self)
         }
     } //negative misstrust; zero neutral; positive trust
     var verified: Bool{
         didSet {
-            let handler = KeyHandler.createHandler()
+            let handler = KeyHandler.getHandler()
             handler.updateKey(self)
         }
     }

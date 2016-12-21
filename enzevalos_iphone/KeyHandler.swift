@@ -12,15 +12,15 @@ import KeychainAccess
 class KeyHandler {
     private static var handler:KeyHandler? = nil
     
-    private var kchain: KeychainWrapper
+    //private var kchain: KeychainWrapper
     private var keychain: Keychain
     
     private init(){
-        kchain = KeychainWrapper()
+        //kchain = KeychainWrapper()
         keychain = Keychain(service: "Enzevalos").accessibility(.WhenUnlocked)
     }
     
-    static func createHandler() -> KeyHandler{
+    static func getHandler() -> KeyHandler{
         if KeyHandler.handler == nil {
             KeyHandler.handler = KeyHandler.init()
         }
@@ -67,7 +67,7 @@ class KeyHandler {
     }
     
     func updateKey(keyWrapper: KeyWrapper){
-        if let index = kchain.myObjectForKey(keyWrapper.address+"-index").integerValue{
+        /*if let index = kchain.myObjectForKey(keyWrapper.address+"-index").integerValue{
             if index >= 1 {
                 if let key = kchain.myObjectForKey(keyWrapper.address+"-"+String(index)) {
                     if (key as! KeyWrapper).key.primaryKeyPacket.bodyData == keyWrapper.key.primaryKeyPacket.bodyData {
@@ -76,15 +76,15 @@ class KeyHandler {
                     }
                 }
             }
-        }
+        }*/
     }
     
     /*only the PGPKey will be used to compare*/
     func getAddrsByKey(key : KeyWrapper) -> [String] {
-        let addrs = kchain.myObjectForKey(key.key.primaryKeyPacket.bodyData!) as? [String]
+        /*let addrs = kchain.myObjectForKey(key.key.primaryKeyPacket.bodyData!) as? [String]
         if addrs != nil {
             return addrs!
-        }
+        }*/
         return []
     }
     
@@ -216,7 +216,7 @@ class KeyHandler {
     
     //TODO convert to use of keychain instead of kchain
     func addKeyForMailaddress(address: String, keyWrapper: KeyWrapper) {
-        let mail = address.lowercaseString
+        /*let mail = address.lowercaseString
         var index = 0
         if kchain.myObjectForKey(mail+"-index") != nil && kchain.myObjectForKey(mail+"-index").integerValue >= 1{
             index = kchain.myObjectForKey(mail+"-index").integerValue
@@ -233,7 +233,7 @@ class KeyHandler {
         kchain.mySetObject(index, forKey: mail+"-index")
         kchain.mySetObject(keyWrapper, forKey: mail+"-"+String(index))
         kchain.mySetObject(addrsByKey, forKey: keyWrapper.key.primaryKeyPacket.bodyData!)
-        kchain.writeToKeychain()
+        kchain.writeToKeychain()*/
     }
     
     func addrHasKey(address: String) -> Bool {

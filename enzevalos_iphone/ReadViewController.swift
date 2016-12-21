@@ -247,8 +247,8 @@ class ReadViewController : UITableViewController {
                 m.decryptIfPossible()
                 messageBody.text = m.decryptedBody
                 print(m.decryptedBody)
-                if KeyHandler.createHandler().addrHasKey((m.sender?.mailbox)!) {
-                    let signatureKey = KeyHandler.createHandler().getKeyByAddr((m.sender?.mailbox)!)?.key
+                if KeyHandler.getHandler().addrHasKey((m.sender?.mailbox)!) {
+                    let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.sender?.mailbox)!)?.key
                     print(signatureKey)
                 }
                 print("verified: ",m.isVerified)

@@ -83,7 +83,7 @@ class AddressHandler {
         if addresses.contains((s as String).lowercaseString){
             return true
         }
-        return KeyHandler.createHandler().addrHasKey(s as String)//inContacts(s as String)
+        return KeyHandler.getHandler().addrHasKey(s as String)//inContacts(s as String)
         //return false
     }
     
@@ -113,6 +113,27 @@ class AddressHandler {
             print("no Access!")
         }
         return false
+    }
+    
+    static func getContact(name : String) -> [CNContact]{
+        AppDelegate.getAppDelegate().requestForAccess({access in
+            print(access)
+        })
+        let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
+        if authorizationStatus == CNAuthorizationStatus.Authorized {
+            do {
+                let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName(name), keysToFetch: [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactImageDataKey])
+                return conList
+            }
+            catch {
+                print("exception")
+            }
+            print("contacts done")
+        }
+        else {
+            print("no Access!")
+        }
+        return []
     }
     
     static func frequentAddresses (inserted : [String]) -> [(UIImage, String, String, UIImage?, UIColor)] {
