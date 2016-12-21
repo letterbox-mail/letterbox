@@ -20,7 +20,7 @@ class KeyHandler {
         keychain = Keychain(service: "Enzevalos").accessibility(.WhenUnlocked)
     }
     
-    static func createHandler() -> KeyHandler{
+    static func getHandler() -> KeyHandler{
         if KeyHandler.handler == nil {
             KeyHandler.handler = KeyHandler.init()
         }

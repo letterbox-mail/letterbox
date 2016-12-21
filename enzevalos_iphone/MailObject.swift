@@ -123,12 +123,12 @@ class Mail: Comparable {
     func decryptIfPossible(){
         if body != nil {
             if self.isEncrypted {
-                if KeyHandler.createHandler().getPrivateKey() == nil {
+                if KeyHandler.getHandler().getPrivateKey() == nil {
                     self.unableToDecrypt = true
                     return
                 }
-                if !CryptoHandler.getHandler().pgp.keys.contains((KeyHandler.createHandler().getPrivateKey()?.key)!) {
-                    CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
+                if !CryptoHandler.getHandler().pgp.keys.contains((KeyHandler.getHandler().getPrivateKey()?.key)!) {
+                    CryptoHandler.getHandler().pgp.keys.append((KeyHandler.getHandler().getPrivateKey()?.key)!)
                 }
                 do {
                     var signed : ObjCBool = false
@@ -138,8 +138,8 @@ class Mail: Comparable {
                     var signatureKey : PGPKey? = nil
                     
                     if self.sender != nil && self.sender?.mailbox != nil {
-                        if KeyHandler.createHandler().addrHasKey((self.sender?.mailbox)!) {
-                            signatureKey = KeyHandler.createHandler().getKeyByAddr((self.sender?.mailbox)!)?.key
+                        if KeyHandler.getHandler().addrHasKey((self.sender?.mailbox)!) {
+                            signatureKey = KeyHandler.getHandler().getKeyByAddr((self.sender?.mailbox)!)?.key
                         }
                     }
                 

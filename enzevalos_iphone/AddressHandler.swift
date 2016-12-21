@@ -83,7 +83,7 @@ class AddressHandler {
         if addresses.contains((s as String).lowercaseString){
             return true
         }
-        return KeyHandler.createHandler().addrHasKey(s as String)//inContacts(s as String)
+        return KeyHandler.getHandler().addrHasKey(s as String)//inContacts(s as String)
         //return false
     }
     

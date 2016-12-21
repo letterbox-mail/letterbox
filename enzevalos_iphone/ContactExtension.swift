@@ -71,7 +71,7 @@ extension CNContact {
     }
     
     func hasKey() -> Bool {
-        let handler = KeyHandler.createHandler()
+        let handler = KeyHandler.getHandler()
         for mail in self.emailAddresses {
             if handler.addrHasKey(mail.value as! String) {
                 return true
@@ -83,7 +83,7 @@ extension CNContact {
     //TODO check expiration date
     //TODO add ability to choose different keys
     func getKey() -> KeyWrapper? {
-        let handler = KeyHandler.createHandler()
+        let handler = KeyHandler.getHandler()
         for mail in self.emailAddresses {
             if handler.addrHasKey(mail.value as! String) {
                 return handler.getKeyByAddr(mail.value as! String)
@@ -94,18 +94,18 @@ extension CNContact {
     
     func getKey(mailaddress: String) -> KeyWrapper? {
         let mail = mailaddress.lowercaseString
-        let handler = KeyHandler.createHandler()
+        let handler = KeyHandler.getHandler()
         return handler.getKeyByAddr(mail)
     }
     
     //TODO fertigmachen
     func addKey(key: PGPKey, mailaddress: String){
-        let handler = KeyHandler.createHandler()
+        let handler = KeyHandler.getHandler()
         //handler.addKeyForMailaddress(mailaddress, key: key)
     }
     
     func addPGPKey(key: KeyWrapper, mailaddress: String){
-        let handler = KeyHandler.createHandler()
+        let handler = KeyHandler.getHandler()
         handler.addKeyForMailaddress(mailaddress, keyWrapper: key)
     }
 }

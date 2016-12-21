@@ -91,7 +91,7 @@ class MailHandler {
         
         var enc : [MCOAddress] = []
         var unenc : [MCOAddress] = []
-        let handler = KeyHandler.createHandler()
+        let handler = KeyHandler.getHandler()
         let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
         var keys : [PGPKey] = []
         
@@ -100,7 +100,7 @@ class MailHandler {
                 enc.append(MCOAddress(displayName: "", mailbox: rec))
                 //let sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(CryptoHandler.getHandler().pgp.encryptData(message.dataUsingEncoding(NSUTF8StringEncoding)!, usingPublicKeys: )), from: userID, recipients: ["jakob.bode@fu-berlin.de"])//session.sendOperationWithData(rfc822Data)
                 //sendOperation.start(callback)
-                if let key = KeyHandler.createHandler().getKeyByAddr(rec) {
+                if let key = KeyHandler.getHandler().getKeyByAddr(rec) {
                     if !keys.contains(key.key) {
                         keys.append(key.key)
                     }
@@ -118,7 +118,7 @@ class MailHandler {
         }
         //TODO: handle different cases
         do {
-            var sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(try CryptoHandler.getHandler().pgp.encryptData(("\n"+message).dataUsingEncoding(NSUTF8StringEncoding)!, usingPublicKeys: keys, signWithSecretKey: KeyHandler.createHandler().getPrivateKey()?.key, passphrase: nil, armored: true)), from: userID, recipients: enc) //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+            var sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(try CryptoHandler.getHandler().pgp.encryptData(("\n"+message).dataUsingEncoding(NSUTF8StringEncoding)!, usingPublicKeys: keys, signWithSecretKey: KeyHandler.getHandler().getPrivateKey()?.key, passphrase: nil, armored: true)), from: userID, recipients: enc) //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
             //print("message to be encrypted:")
             //print(String(data: message.dataUsingEncoding(NSUTF8StringEncoding)!, encoding: NSUTF8StringEncoding))
         
