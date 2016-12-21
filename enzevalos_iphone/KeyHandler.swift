@@ -142,7 +142,7 @@ class KeyHandler {
     }
     
     func addPrivateKey(key: PGPKey) {
-        let mail = MailHandler.getAddr().lowercaseString
+        let mail = (UserManager.loadUserValue(Attribute.UserAddr) as! String).lowercaseString
         
         var index : Int16 = 0
         
@@ -162,7 +162,7 @@ class KeyHandler {
     }
     
     func getPrivateKey() -> KeyWrapper? {
-        let mail = MailHandler.getAddr().lowercaseString
+        let mail = (UserManager.loadUserValue(Attribute.UserAddr) as! String).lowercaseString
         
         var index : Int16 = 0
         
@@ -184,7 +184,7 @@ class KeyHandler {
      * remove last privateKey
      */
     func resetPrivateKey(){
-        let mail = MailHandler.getAddr().lowercaseString
+        let mail = (UserManager.loadUserValue(Attribute.UserAddr) as! String).lowercaseString
         
         var index : Int16 = 0
         

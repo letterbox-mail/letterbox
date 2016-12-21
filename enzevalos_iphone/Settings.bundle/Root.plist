@@ -12,6 +12,12 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
+			<string>User preferences</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
 			<string>Security preferences</string>
 		</dict>
 		<dict>
