@@ -1,0 +1,25 @@
+{
+    "web":{
+        "servers":{
+            "imap:"[
+                {
+                    "port":993,
+                    "hostname":"imap.web.de",
+                    "ssl":true
+                }
+            ],
+            "smtp":[
+                {
+                    "port":587
+                    "hostname":"smtp.web.de"
+                    "starttls":true
+                }
+            ]
+        },
+        "domain-match":[
+            //"web\\.de",
+            "web\\.de"
+        ]
+    }
+    
+}

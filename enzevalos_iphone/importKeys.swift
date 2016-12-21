@@ -18,7 +18,7 @@ func importPrivateKey(){
 
 func importPublicKey(){
     var handler = CryptoHandler.getHandler()
-    var path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg")
+    var path = NSBundle.mainBundle().pathForResource("alice2005-2", ofType: "gpg")
     handler.pgp.importKeysFromFile(path!, allowDuplicates: true/*false*/)
     KeyHandler.createHandler().addKey(handler.pgp.keys[0])
     //KeyHandler.createHandler().addPrivateKey(handler.pgp.keys[0])
