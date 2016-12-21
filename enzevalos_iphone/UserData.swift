@@ -46,7 +46,7 @@ enum Attribute: Int{
                 //TODO: Create Key?!
             }
             
-            return "NO KEY"
+            return ""
         }
     }
     
