@@ -97,7 +97,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         if answerTo != nil {
             toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.sender?.mailbox!)!)
             for r in (answerTo?.receivers)!{
-                if r.mailbox! != mailHandler.useraddr{
+                if r.mailbox! != UserManager.loadUserValue(Attribute.UserAddr) as! String{
                     ccText.delegate?.tokenField!(ccText, didEnterText: r.mailbox!)
                 }
             }
@@ -106,7 +106,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             textView.text.appendContentsOf((answerTo?.sender?.mailbox!)!)
             textView.text.appendContentsOf(" "+NSLocalizedString("sent at", comment: "describing when the mail was send")+" "+(answerTo?.timeString)!)
             textView.text.appendContentsOf("\n"+NSLocalizedString("to", comment: "describing adressee")+": ")
-            textView.text.appendContentsOf(mailHandler.useraddr)
+            textView.text.appendContentsOf(UserManager.loadUserValue(Attribute.UserAddr) as! String)
             if ccText.mailTokens.count > 0 {
                 textView.text.appendContentsOf(", ")
             }
@@ -185,6 +185,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         
         //print(handler.pgp.getKeysForUserID("Alice Bob <alice2005@web.de>"))
         //InitViewController().getDefaultSettings()
+        print(AddressHandler.inContacts(""))
     }
     
     
@@ -474,14 +475,19 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     func mailSend(error : NSError?){
         if (error != nil) {
             NSLog("Error sending email: \(error)")
-            AppDelegate.getAppDelegate().showMessage("An error occured")
+            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
         } else {
             NSLog("Send!")
             if (self.answerTo != nil) {
                 AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64((self.answerTo?.uid)!), flags: MCOMessageFlag.Answered)
             }
-            AppDelegate.getAppDelegate().showMessage("Send successfully")
+            //AppDelegate.getAppDelegate().showMessage("Send successfully", completion: self.sendCompleted)
+            self.sendCompleted()
         }
+    }
+    
+    func sendCompleted() {
+        navigationController?.popViewControllerAnimated(true)
     }
     
     

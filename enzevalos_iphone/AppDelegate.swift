@@ -21,8 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
         let launchedBefore = NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")
         
-        
-        
         let theme = ThemeManager.currentTheme()
         //ThemeManager.applyTheme(theme)
         
@@ -57,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    func showMessage(message: String) {
+    func showMessage(message: String, completion: (() -> Void)? ) {
         let alertController = UIAlertController(title: "enzevalos-send", message: message, preferredStyle: UIAlertControllerStyle.Alert)
         
         let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (action) -> Void in
@@ -68,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pushedViewControllers = (self.window?.rootViewController as! UINavigationController).viewControllers
         let presentedViewController = pushedViewControllers[pushedViewControllers.count - 1]
         
-        presentedViewController.presentViewController(alertController, animated: true, completion: nil)
+        presentedViewController.presentViewController(alertController, animated: true, completion: completion)
     }
     
     
@@ -88,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     if authorizationStatus == CNAuthorizationStatus.Denied {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts through the Settings."
-                            self.showMessage(message)
+                            self.showMessage(message, completion: nil)
                         })
                     }
                 }
