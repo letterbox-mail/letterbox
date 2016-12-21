@@ -10,15 +10,6 @@ import Foundation
 import Contacts
 
 class MailHandler {
-    var user = "Alice"
-    var useraddr = "alice2005@web.de"
-    var pw = "WJ$CE:EtUo3E$"
-    
-    var hostname = "smtp.web.de"
-    var port : UInt32 = 587
-    
-    var IMAPHostname = "imap.web.de"
-    var IMAPPort: UInt32 = 993
     
     var delegate: MailHandlerDelegator?
     var lastUID: UInt64 = 1
@@ -35,48 +26,61 @@ class MailHandler {
         }
     }
     
-    //Anpassen:
-    //Einstellungen in UserDefaults ablegen
-    func getAddr() -> String{
-        return useraddr
-    }
-    
-    static func getAddr()->String{
-        
-    }
-    
-    
-    func getAutocrypt_type() -> String{
-        return "p"
-    }
-    
-    func getPrefEncryption() -> String{
-        return "yes"
-    }
-    
-    func getPublicKey()->String {
-        return "ABCOISDOEOEKDSNF"
-    }
     
     //TODO: signatur hinzufügen
     
     
     func add_autocrypt_header(builder: MCOMessageBuilder){
         // Autocrypt-ENCRYPTION: to=aaa@bbb.cc; [type=(p|...);] [prefer-encrypted=(yes|no);] key=BASE64 
-        let autocrypt = "Autocrypt-ENCRYPTION: to="+getAddr()+"; type="+getAutocrypt_type()+"; prefer-encrypted="+getPrefEncryption()+"; key="+getPublicKey()
+        let autocrypt = "to="+(UserManager.loadUserValue(Attribute.UserAddr) as! String)+"; type="+(UserManager.loadUserValue(Attribute.AutocryptType) as! String)+"; prefer-encrypted="+(UserManager.loadUserValue(Attribute.PrefEncryption) as! String)+"; key="+(UserManager.loadUserValue(Attribute.PublicKey) as! String)
         
-        builder.header.setExtraHeaderValue(autocrypt, forName: "autocrypt")
+        builder.header.setExtraHeaderValue(autocrypt, forName: "Autocrypt-ENCRYPTION")
+        print(builder.header.description)
     }
+    
+    func read_autocrypt_header(header: MCOMessageHeader)-> Bool{
+        let autocrypt = header.extraHeaderValueForName("X-Mailer")//"Inbome")//Autocrypt-ENCRYPTION")
+        let headers = header.allExtraHeadersNames()
+        
+        if headers == nil {
+            print("no custom headers")
+            return false
+        }
+        
+        print ("Count headers: \(headers.count)")
+        
+        for h in headers {
+            print (h as! String)
+        }
+        
+        if(autocrypt != nil){
+            let autocrypt_fields = autocrypt.componentsSeparatedByString(";")
+            if autocrypt_fields.count == 0{
+                print ("Autocrypt header exists but no fields")
+                return false
+            }
+            for s in autocrypt_fields{
+                print(s)
+            }
+            print ("Autocrypt header exists")
+            return true
+        }
+        return false
+    }
+    
     
     //return if send successfully
     func send(toEntrys : [String], ccEntrys : [String], bccEntrys : [String], subject : String, message : String, callback : (NSError?) -> Void){
         //http://stackoverflow.com/questions/31485359/sending-mailcore2-plain-emails-in-swift
         
+        let useraddr = (UserManager.loadUserValue(Attribute.UserAddr) as! String)
+        let username = UserManager.loadUserValue(Attribute.UserName) as! String
+        
         let session =  MCOSMTPSession()
-        session.hostname = hostname
-        session.port = port
+        session.hostname = UserManager.loadUserValue(Attribute.SMTPHostname) as! String
+        session.port = UInt32(UserManager.loadUserValue(Attribute.SMTPPort) as! Int)
         session.username = useraddr
-        session.password = pw
+        session.password = UserManager.loadUserValue(Attribute.UserPW) as! String
         session.authType = MCOAuthType.SASLPlain
         session.connectionType = MCOConnectionType.StartTLS
         
@@ -100,8 +104,7 @@ class MailHandler {
         }
         builder.header.bcc = bccReady
         
-        builder.header.from = MCOAddress(displayName: user, mailbox:
-            useraddr)
+        builder.header.from = MCOAddress(displayName: username , mailbox: useraddr)
         
         builder.header.subject = subject
         
@@ -164,10 +167,10 @@ class MailHandler {
     
     func setupIMAPSession() {
         let imapsession = MCOIMAPSession()
-        imapsession.hostname = IMAPHostname
-        imapsession.port = IMAPPort
-        imapsession.username = useraddr
-        imapsession.password = pw
+        imapsession.hostname = UserManager.loadUserValue(Attribute.IMAPHostname) as! String
+        imapsession.port = UInt32(UserManager.loadUserValue(Attribute.IMAPPort) as! Int)
+        imapsession.username = UserManager.loadUserValue(Attribute.UserAddr) as! String
+        imapsession.password = UserManager.loadUserValue(Attribute.UserPW) as! String
         imapsession.authType = MCOAuthType.SASLPlain
         imapsession.connectionType = MCOConnectionType.TLS
         self.IMAPSes = imapsession
@@ -210,6 +213,10 @@ class MailHandler {
                         var cc: [MCOAddress] = []
                         let header = message.header
                         let messageRead = MCOMessageFlag.Seen.isSubsetOf(message.flags)
+                        
+                        
+                        self.read_autocrypt_header(header)
+                        
                         if let to = header.to {
                             for r in to {
                                 rec.append(r as! MCOAddress)

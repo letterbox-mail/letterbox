@@ -97,7 +97,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         if answerTo != nil {
             toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.sender?.mailbox!)!)
             for r in (answerTo?.receivers)!{
-                if r.mailbox! != mailHandler.useraddr{
+                if r.mailbox! != UserManager.loadUserValue(Attribute.UserAddr) as! String{
                     ccText.delegate?.tokenField!(ccText, didEnterText: r.mailbox!)
                 }
             }
@@ -106,7 +106,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             textView.text.appendContentsOf((answerTo?.sender?.mailbox!)!)
             textView.text.appendContentsOf(" "+NSLocalizedString("sent at", comment: "describing when the mail was send")+" "+(answerTo?.timeString)!)
             textView.text.appendContentsOf("\n"+NSLocalizedString("to", comment: "describing adressee")+": ")
-            textView.text.appendContentsOf(mailHandler.useraddr)
+            textView.text.appendContentsOf(UserManager.loadUserValue(Attribute.UserAddr) as! String)
             if ccText.mailTokens.count > 0 {
                 textView.text.appendContentsOf(", ")
             }

@@ -22,10 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let launchedBefore = NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")
         
         
-        
-        let theme = ThemeManager.currentTheme()
-        //ThemeManager.applyTheme(theme)
-        
+        //TODO: REMOVE!
+        UserManager.resetUserValues()
         return true
     }
     

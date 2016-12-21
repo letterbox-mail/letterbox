@@ -198,7 +198,8 @@ class ReadViewController : UITableViewController {
             }
             
             sender.text = m.sender?.mailbox
-            if m.receivers.count == 1 && m.receivers.first?.mailbox == AppDelegate.getAppDelegate().mailHandler.useraddr && m.cc.count > 0 {
+            let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
+            if m.receivers.count == 1 && m.receivers.first?.mailbox == useraddr && m.cc.count > 0 {
                 receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
                 for c in m.cc {
                     receivers.text?.appendContentsOf(c.mailbox)
