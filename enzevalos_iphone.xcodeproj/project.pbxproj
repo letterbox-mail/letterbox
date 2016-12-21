@@ -54,7 +54,6 @@
 		A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */; };
 		A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
-		A17A18F21DDCA4450058D934 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F11DDCA4450058D934 /* KeychainWrapper.m */; };
 		A17A18F51DDCB5580058D934 /* KeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F41DDCB5580058D934 /* KeyHandler.swift */; };
 		A17A18F71DDCBE530058D934 /* KeyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F61DDCBE530058D934 /* KeyWrapper.swift */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
@@ -212,8 +211,6 @@
 		A135CF001DD4BDD1007E3C29 /* PGPUserIDPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserIDPacket.h; sourceTree = "<group>"; };
 		A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserIDPacket.m; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
-		A17A18F01DDCA43B0058D934 /* KeychainWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
-		A17A18F11DDCA4450058D934 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
 		A17A18F41DDCB5580058D934 /* KeyHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyHandler.swift; sourceTree = "<group>"; };
 		A17A18F61DDCBE530058D934 /* KeyWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyWrapper.swift; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JakobBode.asc; sourceTree = "<group>"; };
@@ -354,7 +351,6 @@
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
 				A11E733A1E019AB5006574DD /* init */,
 				A1EB05761D9567F2008659C1 /* read */,
-				A17A18F31DDCA4B60058D934 /* KeychainWrapper */,
 				A1EB05751D956748008659C1 /* send */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
 				476142071E07E52B00FD5E4F /* Theme.swift */,
@@ -478,15 +474,6 @@
 			);
 			name = ObjectivePGP;
 			path = ..;
-			sourceTree = "<group>";
-		};
-		A17A18F31DDCA4B60058D934 /* KeychainWrapper */ = {
-			isa = PBXGroup;
-			children = (
-				A17A18F01DDCA43B0058D934 /* KeychainWrapper.h */,
-				A17A18F11DDCA4450058D934 /* KeychainWrapper.m */,
-			);
-			name = KeychainWrapper;
 			sourceTree = "<group>";
 		};
 		A1EB05751D956748008659C1 /* send */ = {
@@ -854,7 +841,6 @@
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
 				A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */,
 				A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */,
-				A17A18F21DDCA4450058D934 /* KeychainWrapper.m in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,
 				A1EB05781D956817008659C1 /* ContactExtension.swift in Sources */,
