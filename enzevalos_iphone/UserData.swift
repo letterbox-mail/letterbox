@@ -37,12 +37,16 @@ enum Attribute: Int{
             return "p" // only openpgp 
             
         case .PublicKey:
-             return "ABCBDEFGJSJ"
-            //let a = KeyHandler.createHandler().getKeyByAddr(UserManager.loadUserValue(.UserAddr) as! String)
+            let pgpkey = KeyHandler.createHandler().getKeyByAddr(UserManager.loadUserValue(.UserAddr)as! String)
+            do{
+                let export = try pgpkey?.key.export()
+                return export?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.EncodingEndLineWithCarriageReturn)
+            } catch _ {
+                print("No key")
+                //TODO: Create Key?!
+            }
             
-            
-            //if (a == nil){ return "NOKEY!!!!1111111"}
-            //else{ return a}
+            return "NO KEY"
         }
     }
     

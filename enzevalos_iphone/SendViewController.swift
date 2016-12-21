@@ -171,7 +171,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //LogHandler.printLogs()
         
         //LogHandler.printLogs()
-        //var handler = CryptoHandler.getHandler() // <----
+       // var handler = CryptoHandler.getHandler() // <----
         //handler.pgp.importKeysFromFile("alice2005-2.gpg", allowDuplicates: false)
         
         //var pubKey = "-----BEGIN PUBLIC KEY-----\n"+"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmET/fC2VqlTBg0X4 0TR\n"+"obDFsWQAdAXYDYnYEa83H6pzex5Wg E/0 YKV5n9fh4NsO1ma1yMAJ3MIBnr9PuL\n"+"yI/67rqXd5YJENgtDIUHMr85CzW6UJIelVIf3QXMc7vbWXSLVbeX5mCNc8pQ5QPr\n"+"fmFgHeqGQR7pRKYP4humJHjexW4fJbz774KgL4nzskGAxGBSY6VC9s7xlXJB99w7\n"+"xXMPu2ZwEDNjqukK2lxx3EvhX8HvmueA0kU0Hf/7XLyp2lF/GiD3ZE/yNRcrh50\n"+"AXwP34U7lv2NEv/oUTOocFlOte iaUXvdYx1UZPFdaJD/asnjcerSdqqfXS8LN55\n"+"zQIDAQAB\n"+"-----END PUBLIC KEY-----"
