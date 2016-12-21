@@ -185,6 +185,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         
         //print(handler.pgp.getKeysForUserID("Alice Bob <alice2005@web.de>"))
         //InitViewController().getDefaultSettings()
+        print(AddressHandler.inContacts(""))
     }
     
     
@@ -474,14 +475,19 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     func mailSend(error : NSError?){
         if (error != nil) {
             NSLog("Error sending email: \(error)")
-            AppDelegate.getAppDelegate().showMessage("An error occured")
+            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
         } else {
             NSLog("Send!")
             if (self.answerTo != nil) {
                 AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64((self.answerTo?.uid)!), flags: MCOMessageFlag.Answered)
             }
-            AppDelegate.getAppDelegate().showMessage("Send successfully")
+            //AppDelegate.getAppDelegate().showMessage("Send successfully", completion: self.sendCompleted)
+            self.sendCompleted()
         }
+    }
+    
+    func sendCompleted() {
+        navigationController?.popViewControllerAnimated(true)
     }
     
     
