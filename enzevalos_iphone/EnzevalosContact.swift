@@ -11,17 +11,26 @@ import Contacts
 
 class EnzevalosContact: Comparable {
     let contact: CNContact
+    let isSecure: Bool
     var mails: [Mail] {
         didSet {
             self.mails.sortInPlace()
         }
     }
     
-    var isVerified: Bool
+    var isVerified: Bool {
+        didSet {
+            if !isSecure { // only secure mails can be verified
+                isVerified = false
+            }
+        }
+    }
     
-    init(contact: CNContact, mails: [Mail]) {
+    init(contact: CNContact, mails: [Mail], isSecure: Bool) {
         self.contact = contact
         self.mails = mails.sort()
+        self.isSecure = isSecure
+
         self.isVerified = false
     }
 }

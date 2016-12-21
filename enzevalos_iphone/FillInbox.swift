@@ -44,7 +44,7 @@ func generateMail() -> [EnzevalosContact] {
 //            mails.append(mail)
         }
         
-        contacts.append(EnzevalosContact(contact: con, mails: mails))
+        contacts.append(EnzevalosContact(contact: con, mails: mails, isSecure: mails[0].isSecure))
     }
     
     return contacts

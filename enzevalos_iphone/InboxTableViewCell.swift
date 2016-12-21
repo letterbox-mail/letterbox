@@ -72,6 +72,12 @@ class InboxTableViewCell: UITableViewCell {
                     secondMessageLabel.text = NSLocalizedString("NoFurtherMessages", comment: "There is only one message from this sender.")
                     secondButton.enabled = false
                 }
+                if con.isSecure {
+                    iconView.image = UIImage(named: "letter_small_2")!
+                } else {
+                    iconView.image = UIImage(named: "postcard_small")!
+                }
+
                 self.contact = con.contact
             }
         }
@@ -162,13 +168,6 @@ class InboxTableViewCell: UITableViewCell {
                 faceView.image = con.getImageOrDefault()
                 faceView.layer.cornerRadius = faceView.frame.height / 2
                 faceView.clipsToBounds = true
-                if let m = firstMail {
-                    if m.isEncrypted {
-                        iconView.image = UIImage(named: "letter_small_2")!
-                    } else {
-                        iconView.image = UIImage(named: "postcard_small")!
-                    }
-                }
             }
         }
     }

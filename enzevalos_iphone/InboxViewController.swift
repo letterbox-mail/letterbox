@@ -39,13 +39,15 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
 
     func addNewMail(mail: Mail) {
         for contact in contacts {
-            for address in contact.contact.emailAddresses {
-                if address.value as? String == mail.sender?.mailbox {
-                    // Kontakt existiert bereits
-                    if !contact.mails.contains(mail) {
-                        contact.mails.append(mail)
+            if contact.isSecure == mail.isSecure {
+                for address in contact.contact.emailAddresses {
+                    if address.value as? String == mail.sender?.mailbox {
+                        // Kontakt existiert bereits
+                        if !contact.mails.contains(mail) {
+                            contact.mails.append(mail)
+                        }
+                        return
                     }
-                    return
                 }
             }
         }
@@ -61,7 +63,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
 
         let displayName: String
         
-        if mail.sender?.displayName != nil {
+        if mail.sender?.displayName != nil && mail.sender?.displayName.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) != "" {
             displayName = mail.sender!.displayName!
         } else {
             let split = mail.sender!.mailbox.componentsSeparatedByString("@")
@@ -104,7 +106,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
 
             foundContact = con
         }
-        contacts.append(EnzevalosContact(contact: foundContact!, mails: [mail]))
+        contacts.append(EnzevalosContact(contact: foundContact!, mails: [mail], isSecure: mail.isSecure))
     }
     
     override func viewDidLoad() {

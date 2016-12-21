@@ -23,6 +23,7 @@ class Mail: Comparable {
     var isEncrypted = false
     var unableToDecrypt = false
     var showMessage = true
+    
     var isUnread: Bool {
         didSet{
             guard isUnread != oldValue else {
@@ -33,6 +34,12 @@ class Mail: Comparable {
             } else {
                 AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64(self.uid), flags: flags.union(MCOMessageFlag.Seen))
             }
+        }
+    }
+    
+    var isSecure: Bool {
+        get {
+            return isVerified && isEncrypted && !trouble
         }
     }
 
