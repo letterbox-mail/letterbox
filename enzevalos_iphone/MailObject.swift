@@ -5,14 +5,14 @@
 //  Created by Joscha on 22.07.16.
 //  Copyright © 2016 Joscha. All rights reserved.
 //
-
+/*
 import Foundation
 
-class Mail: Comparable {
+class Mail_old: Comparable {
     let uid: UInt32
-    var sender: MCOAddress?
-    var receivers = [MCOAddress]()
-    var cc = [MCOAddress]()
+    var sender: EnzevalosContact_old
+    var receivers = [EnzevalosContact_old]()
+    var cc = [EnzevalosContact_old]()
     let time: NSDate?
     let received: Bool
     let flags: MCOMessageFlag
@@ -158,21 +158,7 @@ class Mail: Comparable {
                         }
                     }
                     
-                    /*if (try? CryptoHandler.getHandler().pgp.decryptData(body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected) as NSData?) != nil && ((try? CryptoHandler.getHandler().pgp.decryptData(body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))! as NSData?) != nil{
-                    
-                        self.decryptedBody = String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: signatureKey, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))! as NSData, encoding: NSUTF8StringEncoding)
-                    //print(String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected), encoding: NSUTF8StringEncoding)))
-                        self.isVerified = Bool(valid)
-                        
-                        print(" signed: ",signed," valid: ",valid, " integrityProtected: ",integrityProtected)
-                        
-                        if signatureKey != nil && !valid && signed {
-                            self.trouble = true
-                        }
-                    }*/
-                //print(try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))
-                //let content = try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
-                //print(content)
+                  
                 } catch _ {
                 
                     self.trouble = true
@@ -190,3 +176,4 @@ func ==(lhs: Mail, rhs: Mail) -> Bool {
 func <(lhs: Mail, rhs: Mail) -> Bool {
     return lhs.time > rhs.time
 }
+*/

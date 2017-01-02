@@ -62,9 +62,9 @@ class InboxTableViewCell: UITableViewCell {
     var enzContact: EnzevalosContact? {
         didSet {
             if let con = enzContact {
-                firstMail = con.mails.first
-                if con.mails.count > 1 {
-                    secondMail = con.mails[1]
+                firstMail = con.getFromMails().first
+                if con.getFromMails().count > 1 {
+                    secondMail = con.getFromMails()[1]
                     secondButton.enabled = true
                 } else {
                     secondDateLabel.text = ""
@@ -72,7 +72,7 @@ class InboxTableViewCell: UITableViewCell {
                     secondMessageLabel.text = NSLocalizedString("NoFurtherMessages", comment: "There is only one message from this sender.")
                     secondButton.enabled = false
                 }
-                self.contact = con.contact
+                self.contact = con.getContact()
             }
         }
     }
@@ -80,13 +80,13 @@ class InboxTableViewCell: UITableViewCell {
     var firstMail: Mail? {
         didSet {
             if let mail = firstMail {
-                if mail.isUnread {
+                if mail.isUnread() {
                     firstSubjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
                 } else {
                     firstSubjectLabel.font = UIFont.systemFontOfSize(17.0)
                 }
                 
-                firstSubjectLabel.text = mail.subjectWithFlagsString
+                firstSubjectLabel.text = mail.getSubjectWithFlagsString()
                 
                 // Reducing message to one line and truncating to 50
                 var message: String = ""
@@ -94,8 +94,8 @@ class InboxTableViewCell: UITableViewCell {
                     /*if mail.decryptedBody == nil {
                         mail.decryptIfPossible()
                     }*/
-                    if mail.decryptedBody != nil {
-                        message = mail.decryptedBody!
+                    if mail.isEncrypted {
+                        message = mail.getDecryptedMessage()
                     }
                 }
                 else if mail.body != nil {
@@ -115,13 +115,13 @@ class InboxTableViewCell: UITableViewCell {
     var secondMail: Mail? {
         didSet {
             if let mail = secondMail {
-                if mail.isUnread {
+                if mail.isUnread() {
                     secondSubjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
                 } else {
                     secondSubjectLabel.font = UIFont.systemFontOfSize(17.0)
                 }
                 
-                secondSubjectLabel.text = mail.subjectWithFlagsString
+                secondSubjectLabel.text = mail.getSubjectWithFlagsString()
 
                 // Reducing message to one line and truncating to 50
                 /*let message: String
@@ -135,8 +135,9 @@ class InboxTableViewCell: UITableViewCell {
                     /*if mail.decryptedBody == nil {
                         mail.decryptIfPossible()
                     }*/
-                    if mail.decryptedBody != nil && !mail.trouble{
-                        message = mail.decryptedBody!
+                    
+                    if !mail.trouble{
+                        message = mail.getDecryptedMessage()
                     }
                 }
                 else if mail.body != nil {

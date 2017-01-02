@@ -15,7 +15,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     
     var contacts: [EnzevalosContact] = [] {
         didSet {
-            self.contacts.sortInPlace()
+            self.contacts.sortInPlace({$0 < $1})
             if oldValue.count < contacts.count {
                 self.tableView.insertSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
             } else if oldValue.count > contacts.count {
@@ -39,42 +39,18 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
 
     func addNewMail(mail: Mail) {
         for contact in contacts {
-            for address in contact.contact.emailAddresses {
-                if address.value as? String == mail.sender?.mailbox {
-                    // Kontakt existiert bereits
-                    if !contact.mails.contains(mail) {
-                        contact.mails.append(mail)
+            for address in contact.getContact().emailAddresses {
+                if address.value as? String == mail.from!.mail_address {
+                    // contact exists
+                    if !contact.getFromMails().contains(mail) {
+                       // TODO: Whats that???? Should not happen!
+                        // contact.getFromMails().append(mail)
                     }
                     return
                 }
             }
         }
-        // TODO: Check if contact exists in address book
-//        let contactFromBook = AddressHandler.contactByEmail((mail.sender?.mailbox)!)
-//        if let con = contactFromBook {
-//            contacts.append(EnzevalosContact(contact: con, mails: [mail]))
-//            return
-//        }
-        
-        // New contact has to be added
-        let con = CNMutableContact()
-        let name = mail.sender?.displayName
-        if let n = name {
-            let nameArray = n.characters.split(" ").map(String.init)
-            switch nameArray.count {
-            case 1:
-                con.givenName = nameArray.first!
-            case 2..<20: // who has more than two names?!
-                con.givenName = nameArray.first!
-                con.familyName = nameArray.last!
-            default:
-                con.givenName = "NO"
-                con.familyName = "NAME"
-            }
-        }
-        con.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: mail.sender!.mailbox)]
-        contacts.append(EnzevalosContact(contact: con, mails: [mail]))
-    }
+          }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,7 +89,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
             lastUpdate = NSDate()
             rc.endRefreshing()
             lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.stringFromDate(lastUpdate!))"
-            self.contacts.sortInPlace()
+            self.contacts.sortInPlace({$0 < $1})
             self.tableView.reloadData()
         }
     }
@@ -157,6 +133,8 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     func callSegueFromCell(mail: Mail?) {
         performSegueWithIdentifier("readMailSegue", sender: mail)
     }
+    
+    //TODO: Whats that? What is the error?
     
     func callSegueFromCell(contact: EnzevalosContact?) {
         performSegueWithIdentifier("mailListSegue", sender: contact)

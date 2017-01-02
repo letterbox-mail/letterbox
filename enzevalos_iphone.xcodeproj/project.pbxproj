@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		472F38FD1E126CFB009260FB /* test_store_data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F38FC1E126CFB009260FB /* test_store_data.swift */; };
+		472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
+		472F392B1E1277D2009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39271E1277D2009260FB /* EnzevalosContact+CoreDataProperties.swift */; };
+		472F392C1E1277D2009260FB /* Mail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39281E1277D2009260FB /* Mail+CoreDataClass.swift */; };
+		472F392D1E1277D2009260FB /* Mail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39291E1277D2009260FB /* Mail+CoreDataProperties.swift */; };
+		472F396E1E14F384009260FB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472F396D1E14F384009260FB /* CoreData.framework */; };
+		472F39701E14F75C009260FB /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F396F1E14F75C009260FB /* DataHandler.swift */; };
 		476142081E07E52B00FD5E4F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476142071E07E52B00FD5E4F /* Theme.swift */; };
 		4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 476142091E082F9C00FD5E4F /* Settings.bundle */; };
 		476373C21E09BA88004D5EFE /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
@@ -86,7 +93,7 @@
 		A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05971D956947008659C1 /* InboxViewController.swift */; };
 		A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05991D95694E008659C1 /* FillInbox.swift */; };
 		A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
-		A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059D1D956963008659C1 /* EnzevalosContact.swift */; };
+		A1EB059E1D956963008659C1 /* EnzevalosContact_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059D1D956963008659C1 /* EnzevalosContact_old.swift */; };
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
@@ -117,6 +124,13 @@
 
 /* Begin PBXFileReference section */
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
+		472F38FC1E126CFB009260FB /* test_store_data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test_store_data.swift; sourceTree = "<group>"; };
+		472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnzevalosContact+CoreDataClass.swift"; sourceTree = "<group>"; };
+		472F39271E1277D2009260FB /* EnzevalosContact+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnzevalosContact+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		472F39281E1277D2009260FB /* Mail+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mail+CoreDataClass.swift"; sourceTree = "<group>"; };
+		472F39291E1277D2009260FB /* Mail+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mail+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		472F396D1E14F384009260FB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		472F396F1E14F75C009260FB /* DataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
 		476142071E07E52B00FD5E4F /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		476142091E082F9C00FD5E4F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		476373C11E09BA88004D5EFE /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
@@ -244,7 +258,7 @@
 		A1EB05971D956947008659C1 /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
 		A1EB05991D95694E008659C1 /* FillInbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillInbox.swift; sourceTree = "<group>"; };
 		A1EB059B1D956957008659C1 /* NSDateCompare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateCompare.swift; sourceTree = "<group>"; };
-		A1EB059D1D956963008659C1 /* EnzevalosContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnzevalosContact.swift; sourceTree = "<group>"; };
+		A1EB059D1D956963008659C1 /* EnzevalosContact_old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnzevalosContact_old.swift; sourceTree = "<group>"; };
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -270,6 +284,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				472F396E1E14F384009260FB /* CoreData.framework in Frameworks */,
 				9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,6 +324,7 @@
 		78280F99990BFF65543B7F0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				472F396D1E14F384009260FB /* CoreData.framework */,
 				4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */,
 				C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */,
 				48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */,
@@ -327,6 +343,10 @@
 		A135266C1D955BDF00D3BFE1 = {
 			isa = PBXGroup;
 			children = (
+				472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */,
+				472F39271E1277D2009260FB /* EnzevalosContact+CoreDataProperties.swift */,
+				472F39281E1277D2009260FB /* Mail+CoreDataClass.swift */,
+				472F39291E1277D2009260FB /* Mail+CoreDataProperties.swift */,
 				A13526771D955BDF00D3BFE1 /* enzevalos_iphone */,
 				A135268F1D955BE000D3BFE1 /* enzevalos_iphoneTests */,
 				A135269A1D955BE000D3BFE1 /* enzevalos_iphoneUITests */,
@@ -349,12 +369,14 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
+				472F38FC1E126CFB009260FB /* test_store_data.swift */,
 				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
 				A11E733A1E019AB5006574DD /* init */,
 				A1EB05761D9567F2008659C1 /* read */,
 				A1EB05751D956748008659C1 /* send */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
+				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				476142071E07E52B00FD5E4F /* Theme.swift */,
 				A1EB05871D956879008659C1 /* AddressHandler.swift */,
 				A1C09FC71DF052FF0006B783 /* importKeys.swift */,
@@ -362,7 +384,7 @@
 				A17A18F61DDCBE530058D934 /* KeyWrapper.swift */,
 				476373C11E09BA88004D5EFE /* UserData.swift */,
 				A1EB05911D95692A008659C1 /* MailObject.swift */,
-				A1EB059D1D956963008659C1 /* EnzevalosContact.swift */,
+				A1EB059D1D956963008659C1 /* EnzevalosContact_old.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				A17A18F41DDCB5580058D934 /* KeyHandler.swift */,
@@ -829,21 +851,25 @@
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
 				A135CF0F1DD4BDD1007E3C29 /* PGPMPI.m in Sources */,
+				472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */,
 				A135CF191DD4BDD1007E3C29 /* PGPS2K.m in Sources */,
 				A135CF061DD4BDD1007E3C29 /* PGPArmor.m in Sources */,
 				A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */,
 				A135CF0C1DD4BDD1007E3C29 /* PGPKeyID.m in Sources */,
 				A135CF021DD4BDD1007E3C29 /* NSData+compression.m in Sources */,
+				472F392B1E1277D2009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */,
 				476142081E07E52B00FD5E4F /* Theme.swift in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
 				A135CF1E1DD4BDD1007E3C29 /* PGPSubKey.m in Sources */,
+				472F392C1E1277D2009260FB /* Mail+CoreDataClass.swift in Sources */,
 				A135CF0D1DD4BDD1007E3C29 /* PGPLiteralPacket.m in Sources */,
 				A135CF1D1DD4BDD1007E3C29 /* PGPSignatureSubpacket.m in Sources */,
 				A135CF041DD4BDD1007E3C29 /* NSValue+PGPUtils.m in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
+				472F38FD1E126CFB009260FB /* test_store_data.swift in Sources */,
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
 				A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */,
-				A1EB059E1D956963008659C1 /* EnzevalosContact.swift in Sources */,
+				A1EB059E1D956963008659C1 /* EnzevalosContact_old.swift in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,
 				A1EB05781D956817008659C1 /* ContactExtension.swift in Sources */,
@@ -853,6 +879,7 @@
 				A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */,
 				A17A18F71DDCBE530058D934 /* KeyWrapper.swift in Sources */,
 				A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */,
+				472F392D1E1277D2009260FB /* Mail+CoreDataProperties.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				A1EB05921D95692A008659C1 /* MailObject.swift in Sources */,
@@ -866,6 +893,7 @@
 				A135CF161DD4BDD1007E3C29 /* PGPPublicKeyPacket.m in Sources */,
 				A135CF0B1DD4BDD1007E3C29 /* PGPKey.m in Sources */,
 				A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */,
+				472F39701E14F75C009260FB /* DataHandler.swift in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
 				A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */,
 				A135CF101DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m in Sources */,
@@ -1057,6 +1085,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1105,6 +1134,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

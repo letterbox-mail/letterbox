@@ -145,7 +145,6 @@ class MailHandler {
         let autocrypt = "to="+(UserManager.loadUserValue(Attribute.UserAddr) as! String)+"; type="+(UserManager.loadUserValue(Attribute.AutocryptType) as! String)+"; prefer-encrypted="+(UserManager.loadUserValue(Attribute.PrefEncryption) as! String)+"; key="+(UserManager.loadUserValue(Attribute.PublicKey) as! String)
         
         builder.header.setExtraHeaderValue(autocrypt, forName: "Autocrypt-ENCRYPTION")
-        print(builder.header.description)
     }
     
     //return if send successfully
@@ -314,24 +313,6 @@ class MailHandler {
                                 cc.append(r as! MCOAddress)
                             }
                         }
-                        /*Jakob prototypeänderung anfang*/
-                        /*ursprünglicher Code :
-                         
-                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, isEncrypted: false, isVerified: false, trouble: false, isUnread: !messageRead, flags: message.flags)
-
-                         */
-                        
-                        /*CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
-                        
-                        let content = try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
-                        print(content)
-                        
-                        var signed : ObjCBool = false
-                        var valid : ObjCBool = false
-                        var integrityProtected : ObjCBool = false
-                        
-                        print(try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr(header.from.mailbox)?.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))*/
-                        
                         
                         var enc = false
                         let ver = false
@@ -343,57 +324,12 @@ class MailHandler {
                         if body.commonPrefixWithString("-----BEGIN PGP MESSAGE-----", options: NSStringCompareOptions.CaseInsensitiveSearch) == "-----BEGIN PGP MESSAGE-----" {
                             enc = true
                         }
+                        //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
+                        // TODO: Fix decryption
                         
-                        /*if enc {
-                            if !CryptoHandler.getHandler().pgp.keys.contains((KeyHandler.createHandler().getPrivateKey()?.key)!) {
-                                CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
-                            }
-                            do {
-                                var signed : ObjCBool = false
-                                var valid : ObjCBool = false
-                                var integrityProtected : ObjCBool = false
-                                
-                                //verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr(header.from.mailbox)?.key
-                                if (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected) as NSData?) != nil && ((try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))! as NSData?) != nil{
-                                    
-                                    decBody = String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))! as NSData, encoding: NSUTF8StringEncoding)
-                                    //print(String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected), encoding: NSUTF8StringEncoding)))
-                                }
-                                //print(try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))
-                                //let content = try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
-                                //print(content)
-                            } catch _ {
-                                
-                                troub = true
-                                print("error while decrypting")
-                            }
-                        }*/ //now done in the MailObject itself
-                            
-                        /*if header.subject != nil {
-                            if header.subject == "Schlüssel" {
-                                enc = true
-                            }
-                            if header.subject == "Re: Prüfung"{
-                                enc = true
-                                troub = true
-                            }
-                            if header.subject == "Test4" {
-                                ver = true
-                                enc = true
-                            }
-                            if header.subject == "Multiple"{
-                                enc = true
-                            }
-                            if header.subject == "Noch ein Test"{
-                                enc = true
-                                ver = true
-                            }
-                            if header.subject == "jetzt du"{
-                                enc = true
-                            }
-                        }*/
-                        let mail = Mail(uid: message.uid, sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, decryptedBody: decBody, isEncrypted: enc, isVerified: ver, trouble: troub, isUnread: !messageRead, flags: message.flags)
-                        mail.decryptIfPossible()
+                        
+                        let mail = DataHandler.getDataHandler().createMail(Int64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, decryptedBody: decBody, isEncrypted: enc, isVerified: ver, trouble: troub, isUnread: !messageRead, flags: message.flags)
+                      //  mail.decryptIfPossible()
                         /*Jakob prototypeänderung Ende*/
                         self.delegate?.addNewMail(mail)
                         
