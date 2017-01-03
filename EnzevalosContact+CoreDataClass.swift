@@ -96,11 +96,35 @@ public class EnzevalosContact: NSManagedObject {
     }
 }
 
+private func isEmpty(contact: EnzevalosContact)-> Bool{
+    if(contact.getFromMails().count == 0){
+        return true
+    }
+    return false
+
+}
+
 func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
+    if isEmpty(lhs){
+        return false
+    }
+    if isEmpty(rhs){
+        return false
+    }
+    
     return lhs.getFromMails().first!.date == rhs.getFromMails().first!.date
 }
 
 func <(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
+    print("LHS "+lhs.displayname!)
+    print("RHS"+rhs.displayname!)
+    if isEmpty(lhs){
+        return true
+    }
+    if isEmpty(rhs){
+        return false
+    }
+    print("\(lhs.getFromMails().first!.timeString) >? \( rhs.getFromMails().first!.timeString)")
     return lhs.getFromMails().first!.date > rhs.getFromMails().first!.date
 }
 

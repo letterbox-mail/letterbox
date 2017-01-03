@@ -69,8 +69,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
         lastUpdateLabel.textColor = UIColor.blackColor()
         lastUpdateButton.customView = lastUpdateLabel
         
-//        random mail generation
-//        contacts = generateMail()
+        contacts = DataHandler.getDataHandler().getContacts()
         
         AppDelegate.getAppDelegate().mailHandler.delegate = self
         

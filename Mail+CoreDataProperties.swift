@@ -19,8 +19,10 @@ remove optional fields
  bcc/cc flied in Mail
  mail_address in EC
 
+Mail UID = UInt64....
 
-
+ MaxUID speichern
+ eigenen EnzevalosContact speichern (nicht in Inbox)
  
  */
 

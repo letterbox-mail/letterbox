@@ -11,7 +11,12 @@ import CoreData
 class DataHandler: NSObject {
     private static var handler: DataHandler? = nil
 
-    var managedObjectContext: NSManagedObjectContext
+    private var managedObjectContext: NSManagedObjectContext
+    private var maxUid: UInt64
+    private var mails: [Mail]
+    private var isLoadMails: Bool
+    private var contacts: [EnzevalosContact]
+    private var isLoadContacts: Bool
     
     override  init() {
 
@@ -38,6 +43,12 @@ class DataHandler: NSObject {
         } catch {
             fatalError("Error migrating store: \(error)")
         }
+        maxUid = 0
+        mails = [Mail]()
+        isLoadMails = false
+        contacts = [EnzevalosContact]()
+        isLoadContacts = false
+        
         print("Finish init of DataHandler")
     }
     
@@ -74,6 +85,18 @@ class DataHandler: NSObject {
 
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         fReq.predicate = NSPredicate(format:"\(type) CONTAINS '\(search)' ")
+        let result: [AnyObject]?
+        do {
+            result = try self.managedObjectContext.executeFetchRequest(fReq)
+        } catch _ as NSError{
+            result = nil
+            return nil
+        }
+        return result
+    }
+    
+    func findAll(entityName:String)->[AnyObject]?{
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         let result: [AnyObject]?
         do {
             result = try self.managedObjectContext.executeFetchRequest(fReq)
@@ -183,6 +206,7 @@ class DataHandler: NSObject {
                 mail.body = body
             }
  */
+            print("Create new Mail")
             mail.body = body
             mail.date = time
             mail.subject = subject
@@ -195,25 +219,89 @@ class DataHandler: NSObject {
             
         }
         else{
+            print ("request old mail")
             return finding![0] as! Mail
-        }        
+        }
         handleFromAddress(sender, fromMail: mail)
         handleToAddresses(receivers, mail: mail)
         handleCCAddresses(cc, mail: mail)
         
         save()
+        /*
+        if(maxUid < UInt64(mail.uid)){
+            maxUid = UInt64(mail.uid)
+        }
+        mails.append(mail)
+ */
         return mail
     }
     
     
     func readMail(mail: Mail)->Bool{
         //TODO: FIX ME
+        save()
         return true
     
     }
     
     func markMailAsUnread(mail:Mail)->Bool{
         //TODO: FIX ME
+        save()
         return true
     }
+    
+    private func loadMails(){
+        mails = [Mail]()
+        let result = findAll("Mail")
+        if(result != nil){
+            for r in result!{
+                let m = r as! Mail
+                mails.append(m)
+                if maxUid < UInt64(m.uid){
+                    maxUid = UInt64(m.uid)
+                }
+            }
+        }
+        isLoadMails = true
+    }
+    
+    func readMaxUid()->UInt64{
+        if !isLoadMails {
+            loadMails()
+        }
+        if mails.count < 20 { //TODO Fix here Init? how many mails schould be loaded???
+            print("MaxUID: \(maxUid)-> return 0")
+            return 0
+        }
+        return maxUid
+    }
+    
+    func readMails()->[Mail]{
+        if(!isLoadMails){
+            loadMails()
+        }
+        return mails
+    }
+    
+    private func loadContacts(){
+        contacts = [EnzevalosContact]()
+        let result = findAll("EnzevalosContact")
+        if(result != nil){
+            for r in result!{
+                let c = r as! EnzevalosContact
+                if(c.getFromMails().count > 0){
+                    contacts.append(c)
+                }
+            }
+        }
+        isLoadContacts = true
+    }
+    
+    func getContacts()->[EnzevalosContact]{
+        if !isLoadContacts {
+            loadContacts()
+        }
+        return contacts
+    }
+    
 }

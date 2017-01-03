@@ -122,7 +122,7 @@ class AutocryptContact{
 class MailHandler {
 
     var delegate: MailHandlerDelegator?
-    var lastUID: UInt64 = 1
+    var lastUID: UInt64 = DataHandler.getDataHandler().readMaxUid()
     
     var IMAPSes: MCOIMAPSession?
     
@@ -257,6 +257,7 @@ class MailHandler {
     func recieve() {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
         let folder = "INBOX"
+        print("LastUID: \(lastUID)")
         let uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
         let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = EXTRAHEADERS
@@ -267,6 +268,7 @@ class MailHandler {
                 return
             }
             if let msgs = msg {
+                print("#msgs: \(msgs.count)")
                 var biggest = self.lastUID
                 let dispatchGroup = dispatch_group_create()
                 for m in msgs {
@@ -326,7 +328,7 @@ class MailHandler {
                         //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
                         // TODO: Fix decryption
                         
-                        
+                        print(message.uid)
                         let mail = DataHandler.getDataHandler().createMail(Int64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, decryptedBody: decBody, isEncrypted: enc, isVerified: ver, trouble: troub, isUnread: !messageRead, flags: message.flags)
                       //  mail.decryptIfPossible()
                         /*Jakob prototypeänderung Ende*/
