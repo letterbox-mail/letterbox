@@ -79,10 +79,10 @@ public class EnzevalosContact: NSManagedObject {
             }
         }
         con.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: self.mail_address!)]
-        contacts.append(self)
+        //contacts.append(self.mail_address!) TODO: ???????
         return con
     }
-
+    
     
 }
 

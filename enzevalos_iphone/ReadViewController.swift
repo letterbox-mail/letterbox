@@ -152,7 +152,7 @@ class ReadViewController : UITableViewController {
     }
     
     @IBAction func markUnreadButton(sender: AnyObject) {
-        mail?.isUnread = true
+        DataHandler.getDataHandler().readMail(mail!)
         navigationController?.popViewControllerAnimated(true)
     }
     
@@ -191,24 +191,24 @@ class ReadViewController : UITableViewController {
                 if let viewControllers = self.navigationController?.viewControllers {
                     for viewController in viewControllers {
                         if viewController.isKindOfClass(ReadViewController) {
-                            m.isUnread = false
+                            DataHandler.getDataHandler().markMailAsUnread(m) // TODO: check here
                         }
                     }
                 }
             }
             
-            sender.text = m.sender?.mailbox
+            sender.text = m.getFromAddress()
             let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
-            if m.receivers.count == 1 && m.receivers.first?.mailbox == useraddr && m.cc.count > 0 {
+            if m.getReceivers().count == 1 && m.getCCs().count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
                 receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
-                for c in m.cc {
-                    receivers.text?.appendContentsOf(c.mailbox)
+                for c in m.getCCs(){
+                    receivers.text?.appendContentsOf(c.mail_address!)
                     receivers.text?.appendContentsOf(" ")
                 }
             } else {
                 receivers.text = NSLocalizedString("To", comment: "To label") + ": "
-                for r in m.receivers {
-                    receivers.text?.appendContentsOf(r.mailbox)
+                for r in m.getReceivers() {
+                    receivers.text?.appendContentsOf(r.mail_address!)
                     receivers.text?.appendContentsOf(" ")
                 }
             }
@@ -244,11 +244,10 @@ class ReadViewController : UITableViewController {
                 //}
                 
                 //print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
-                m.decryptIfPossible()
-                messageBody.text = m.decryptedBody
-                print(m.decryptedBody)
-                if KeyHandler.getHandler().addrHasKey((m.sender?.mailbox)!) {
-                    let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.sender?.mailbox)!)?.key
+                messageBody.text = m.getDecryptedMessage()
+                print(m.getDecryptedMessage())
+                if KeyHandler.getHandler().addrHasKey((m.getFromAddress())) {
+                    let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.getFromAddress()))?.key
                     print(signatureKey)
                 }
                 print("verified: ",m.isVerified)

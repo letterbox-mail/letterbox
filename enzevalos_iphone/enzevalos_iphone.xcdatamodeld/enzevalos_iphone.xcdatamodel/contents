@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Entity" representedClassName="Entity" syncable="YES" codeGenerationType="class"/>
-    <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES" codeGenerationType="class">
+    <entity name="Entity" representedClassName="Entity" syncable="YES"/>
+    <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mail_address" attributeType="String" syncable="YES"/>
@@ -9,7 +9,7 @@
         <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" syncable="YES"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" syncable="YES"/>
     </entity>
-    <entity name="Mail" representedClassName="Mail" syncable="YES" codeGenerationType="class">
+    <entity name="Mail" representedClassName="Mail" syncable="YES">
         <attribute name="body" attributeType="String" syncable="YES"/>
         <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="flag" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -23,16 +23,16 @@
         <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" syncable="YES"/>
         <relationship name="to" toMany="YES" deletionRule="Nullify" destinationEntity="EnzevalosContact" syncable="YES"/>
     </entity>
-    <entity name="MailContact" representedClassName="MailContact" syncable="YES" codeGenerationType="class"/>
-    <entity name="MailHandler" representedClassName="MailHandler" syncable="YES" codeGenerationType="class">
+    <entity name="MailContact" representedClassName="MailContact" syncable="YES"/>
+    <entity name="MailHandler" representedClassName="MailHandler" syncable="YES">
         <attribute name="maxID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="mails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Mail" syncable="YES"/>
     </entity>
     <elements>
-        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="133"/>
-        <element name="Mail" positionX="-416" positionY="-189" width="128" height="223"/>
+        <element name="Entity" positionX="-146" positionY="-135" width="128" height="45"/>
+        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="135"/>
+        <element name="Mail" positionX="-416" positionY="-189" width="128" height="225"/>
         <element name="MailContact" positionX="25" positionY="-171" width="128" height="45"/>
         <element name="MailHandler" positionX="-243" positionY="-306" width="128" height="75"/>
-        <element name="Entity" positionX="-146" positionY="-135" width="128" height="45"/>
     </elements>
 </model>

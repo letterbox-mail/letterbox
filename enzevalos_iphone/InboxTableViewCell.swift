@@ -43,7 +43,7 @@ class InboxTableViewCell: UITableViewCell {
     
     @IBAction func moreButtonPressed(sender: AnyObject) {
         if let delegate = delegate {
-            delegate.callSegueFromCell(enzContact)
+            delegate.callSegueFromCell2(enzContact)
         }
     }
 

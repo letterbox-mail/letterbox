@@ -44,7 +44,11 @@ func generateMail() -> [EnzevalosContact] {
 //            mails.append(mail)
         }
         
-        contacts.append(EnzevalosContact(contact: con, mails: mails))
+        let contact = DataHandler.getDataHandler().getContactByAddress((con.emailAddresses.first?.valueForKey(CNLabelWork))! as! String) // TODO Fix me
+        
+        contacts.append(contact)  //TODO: Add mails
+        
+        //contacts.append(EnzevalosContact(contact: con, mails: mails)) TODO: FIX ME
     }
     
     return contacts

@@ -14,8 +14,11 @@ import CoreData
  Fixes for next iteration:
 flags -> Int (previously int16)
  new Field: unread
+remove optional fields
  
- bcc/cc flied in enezvalosContact
+ bcc/cc flied in Mail
+ mail_address in EC
+
 
 
  

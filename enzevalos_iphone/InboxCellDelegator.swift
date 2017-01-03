@@ -8,5 +8,5 @@
 
 protocol InboxCellDelegator {
     func callSegueFromCell(mail: Mail?)
-    func callSegueFromCell(contact: EnzevalosContact?)
+    func callSegueFromCell2(contact: EnzevalosContact?)
 }

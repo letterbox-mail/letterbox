@@ -136,7 +136,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     
     //TODO: Whats that? What is the error?
     
-    func callSegueFromCell(contact: EnzevalosContact?) {
+    func callSegueFromCell2(contact: EnzevalosContact?) {
         performSegueWithIdentifier("mailListSegue", sender: contact)
     }
     

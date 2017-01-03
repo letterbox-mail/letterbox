@@ -12,7 +12,7 @@ import Foundation
 class ListViewController: UITableViewController {
     var contact: EnzevalosContact? {
         didSet {
-            if let con = contact?.contact {
+            if let con = contact?.getContact() {
                 self.title = con.givenName + " " + con.familyName
             }
         }
@@ -23,7 +23,7 @@ class ListViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let count = contact?.mails.count {
+        if let count = contact?.getFromMails().count {
             return count
         } else {
             return 0
@@ -33,13 +33,13 @@ class ListViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ListCell") as! ListViewCell!
         
-        if let mail = contact?.mails[indexPath.row] {
-            if mail.isUnread {
+        if let mail = contact?.getFromMails()[indexPath.row] {
+            if mail.isUnread() {
                 cell.subjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
             } else {
                 cell.subjectLabel.font = UIFont.systemFontOfSize(17.0)
             }
-            cell.subjectLabel.text = mail.subjectWithFlagsString
+            cell.subjectLabel.text = mail.getSubjectWithFlagsString()
             cell.bodyLabel.text = mail.body
             cell.dateLabel.text = mail.timeString
         }
@@ -48,7 +48,7 @@ class ListViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("readMailSegue", sender: contact?.mails[indexPath.row])
+        performSegueWithIdentifier("readMailSegue", sender: contact?.getFromMails()[indexPath.row])
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -14,6 +14,8 @@ class DataHandler: NSObject {
     var managedObjectContext: NSManagedObjectContext
     
     override  init() {
+        print("Start init of DataHandler")
+
         // This resource is the same name as your xcdatamodeld contained in your project.
         guard let modelURL = NSBundle.mainBundle().URLForResource("enzevalos_iphone", withExtension:"momd") else {
             fatalError("Error loading model from bundle")
@@ -37,7 +39,7 @@ class DataHandler: NSObject {
         } catch {
             fatalError("Error migrating store: \(error)")
         }
-        
+        print("Finish init of DataHandler")
     }
     
     static func getDataHandler()->DataHandler{
@@ -47,6 +49,9 @@ class DataHandler: NSObject {
         return handler!
     }
     
+    func terminate(){
+        save()
+    }
     
     private func save()->Bool{
         do{
@@ -186,5 +191,17 @@ class DataHandler: NSObject {
         
         save()
         return mail
+    }
+    
+    
+    func readMail(mail: Mail)->Bool{
+        //TODO: FIX ME
+        return true
+    
+    }
+    
+    func markMailAsUnread(mail:Mail)->Bool{
+        //TODO: FIX ME
+        return true
     }
 }

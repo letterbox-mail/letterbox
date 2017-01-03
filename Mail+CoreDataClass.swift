@@ -15,7 +15,7 @@ import CoreData
 public class Mail: NSManagedObject, Comparable {
     
     
-    var showmessage = false //TODO: Fix Me
+    var showMessage = false //TODO: Fix Me
     
     var timeString: String {
         var returnString = ""
@@ -50,20 +50,49 @@ public class Mail: NSManagedObject, Comparable {
         }
     }
     
-    func addReceiversMCO(receivers: [MCOAddress]){
-        // If enzevalos contact exits-> connect mail and enzevalos contact
-        
-        // Otherwise create new EnezvalosContact
-        
-        
+    func getReceivers()->[EnzevalosContact]{
+        var receivers = [EnzevalosContact] ()
+        if to != nil{
+            for obj in to!{
+                receivers.append(obj as! EnzevalosContact)
+            }
+        }
+        return receivers
     }
     
+    //TODO: Optimize, only cast once
+    
+    func getCCs()->[EnzevalosContact]{
+        var receivers = [EnzevalosContact] ()
+        if to != nil{
+            for obj in cc!{
+                receivers.append(obj as! EnzevalosContact)
+            }
+        }
+        return receivers
+    }
+    
+    func getBCCs()->[EnzevalosContact]{
+        var receivers = [EnzevalosContact] ()
+        if to != nil{
+            for obj in bcc!{
+                receivers.append(obj as! EnzevalosContact)
+            }
+        }
+        return receivers
+    }
+    
+    func getFromAddress()->String{
+        return (from?.mail_address)!
+    }
     
     func addCC(cc: [EnzevalosContact]){
         for ec in cc{
             self.addToCc(ec)
         }
     }
+    
+    
     
     //TODO FIX US
     func isUnread()->Bool{
