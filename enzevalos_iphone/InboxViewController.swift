@@ -102,7 +102,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
                     con.familyName = "NAME"
                 }
             }
-            con.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: mail.sender!.mailbox)]
+            con.emailAddresses = [CNLabeledValue(label: nil, value: mail.sender!.mailbox)]
 
             foundContact = con
         }
