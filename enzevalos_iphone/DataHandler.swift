@@ -14,7 +14,6 @@ class DataHandler: NSObject {
     var managedObjectContext: NSManagedObjectContext
     
     override  init() {
-        print("Start init of DataHandler")
 
         // This resource is the same name as your xcdatamodeld contained in your project.
         guard let modelURL = NSBundle.mainBundle().URLForResource("enzevalos_iphone", withExtension:"momd") else {
@@ -54,13 +53,14 @@ class DataHandler: NSObject {
     }
     
     private func save()->Bool{
+        var succ = false
         do{
             try getContextManager().save()
-            return true
+            succ = true
         } catch{
             fatalError("Failure to save context\(error)")
         }
-        return false
+        return succ
     }
     
     // Save, load, search
@@ -71,7 +71,8 @@ class DataHandler: NSObject {
     }
     
     func find(entityName: String, type:String, search: String) -> [AnyObject]?{
-        let fReq: NSFetchRequest = NSFetchRequest(entityName: "entity")
+
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         fReq.predicate = NSPredicate(format:"\(type) CONTAINS '\(search)' ")
         let result: [AnyObject]?
         do {
@@ -95,7 +96,7 @@ class DataHandler: NSObject {
         if (search == nil || search!.count == 0){
             contact = NSEntityDescription.insertNewObjectForEntityForName("EnzevalosContact", inManagedObjectContext: managedObjectContext) as! EnzevalosContact
             contact.setAddress(address)
-            //TODO: Set Defaulvalues
+            contact.update(address, key: "", prefer_enc: false)
         }
         else{
             contact = search! [0] as! EnzevalosContact
@@ -113,18 +114,22 @@ class DataHandler: NSObject {
     }
     
     func getContacts(receivers: [MCOAddress])-> [EnzevalosContact]{
-        var contacts: [EnzevalosContact] = [EnzevalosContact]()
+        var contacts = [EnzevalosContact]()
         var contact: EnzevalosContact
         for r in receivers{
             contact = getContactByMCOAddress(r)
             contacts.append(contact)
+
         }
         return contacts
     }
     
     func getContactByMCOAddress(address: MCOAddress)-> EnzevalosContact{
         let contact =  getContactByAddress(address.mailbox!)
-        contact.setDisplayName(address.displayName)
+        if(address.displayName != nil){
+            contact.setDisplayName(address.displayName)
+        }
+        //save()
         return contact
     }
     // -------- End Access to contact(s) --------
@@ -134,7 +139,7 @@ class DataHandler: NSObject {
     private func handleFromAddress(sender: MCOAddress, fromMail: Mail){
         let contact = getContactByMCOAddress(sender)
         contact.addFromMail(fromMail)
-        fromMail.from = contact
+        fromMail.addFrom(contact)
     }
     
     private func handleToAddresses(receivers: [MCOAddress], mail: Mail)
@@ -160,18 +165,25 @@ class DataHandler: NSObject {
     // -------- End handle to, cc, from addresses --------
 
     func createMail(uid: Int64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate?, received: Bool, subject: String?, body: String?, decryptedBody: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool, flags: MCOMessageFlag)-> Mail{
+        
         let finding = find("Mail", type: "uid", search: String(uid))
         let mail: Mail
         
+        
+        
         if(finding == nil || finding!.count == 0){
            // create new mail object
+            
             mail  = NSEntityDescription.insertNewObjectForEntityForName("Mail", inManagedObjectContext: managedObjectContext) as! Mail
+            /*
             if(isEncrypted) {
                 mail.body =  decryptedBody
             }
             else{
                 mail.body = body
             }
+ */
+            mail.body = body
             mail.date = time
             mail.subject = subject
             mail.isEncrypted = isEncrypted
@@ -179,12 +191,12 @@ class DataHandler: NSObject {
             // TODO: mail.isUnread = isUnread
             mail.uid = uid
             mail.trouble = trouble
-            mail.flag = flags.rawValue
+            mail.setFlags(flags)
             
         }
         else{
             return finding![0] as! Mail
-        }
+        }        
         handleFromAddress(sender, fromMail: mail)
         handleToAddresses(receivers, mail: mail)
         handleCCAddresses(cc, mail: mail)

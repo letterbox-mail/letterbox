@@ -37,20 +37,21 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     
     var lastUpdate: NSDate?
 
+    
     func addNewMail(mail: Mail) {
-        for contact in contacts {
-            for address in contact.getContact().emailAddresses {
-                if address.value as? String == mail.from!.mail_address {
-                    // contact exists
-                    if !contact.getFromMails().contains(mail) {
-                       // TODO: Whats that???? Should not happen!
-                        // contact.getFromMails().append(mail)
-                    }
+        for c in contacts {
+            for address in c.getMailAddresses() {
+                if address == mail.getFromAddress() {
                     return
                 }
             }
         }
-          }
+        contacts.append(mail.getFrom())
+    }
+
+ 
+    
+ 
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -37,7 +37,7 @@ public class EnzevalosContact: NSManagedObject {
     }
     
     func addCCMail(mail: Mail){
-        //self.addToCc(mail)
+       // self.addToCc(mail)
     }
     
     func setDisplayName(name: String){
@@ -83,7 +83,17 @@ public class EnzevalosContact: NSManagedObject {
         return con
     }
     
+    func toString()->String{
+        if(mail_address != nil){
+            return self.mail_address!
+        }
+        return "NO NAME"
+    }
     
+    func getMailAddresses()->[String]{
+        return [self.mail_address!] //TODO ADD CNCONTACT
+        
+    }
 }
 
 func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {

@@ -43,6 +43,13 @@ public class Mail: NSManagedObject, Comparable {
         return returnString
     }
     
+    func addFrom(from: EnzevalosContact){
+        self.from = from
+    }
+    
+    func getFrom()->EnzevalosContact{
+        return from!
+    }
     
     func addReceivers(receivers: [EnzevalosContact]){
         for ec in receivers{
@@ -92,6 +99,9 @@ public class Mail: NSManagedObject, Comparable {
         }
     }
     
+    func setFlags(flags: MCOMessageFlag){
+        flag = 0 //TODO FIx Me
+    }
     
     
     //TODO FIX US

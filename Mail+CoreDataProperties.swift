@@ -32,7 +32,7 @@ extension Mail {
 
     @NSManaged public var body: String?
     @NSManaged public var date: NSDate?
-    @NSManaged public var flag: Int
+    @NSManaged public var flag: Int16
     @NSManaged public var isEncrypted: Bool
     @NSManaged public var isVerified: Bool
     @NSManaged public var subject: String?
