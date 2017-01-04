@@ -195,6 +195,10 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
         performSegueWithIdentifier("mailListSegue", sender: contact)
     }
     
+    func callSegueToContact(contact: EnzevalosContact?) {
+        performSegueWithIdentifier("contactSegue", sender: contact)
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "readMailSegue" {
             if let mail = sender as? Mail {
@@ -204,6 +208,11 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
         } else if segue.identifier == "mailListSegue" {
             if let contact = sender as? EnzevalosContact {
                 let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
+                DestinationViewController.contact = contact
+            }
+        } else if segue.identifier == "contactSegue" {
+            if let contact = sender as? EnzevalosContact {
+                let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
                 DestinationViewController.contact = contact
             }
         }

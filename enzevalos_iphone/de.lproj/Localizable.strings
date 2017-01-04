@@ -62,3 +62,8 @@
 "NoFurtherMessages" = "Keine weiteren Nachrichten...";
 "Updating" = "Aktualisiere...";
 "LastUpdate" = "Letzte Aktualisierung";
+"notVerified" = "Kontakt ist noch nicht verifiziert";
+"noEncryption" = "Kontakt nutzt noch keine Verschlüsselung";
+"Verified" = "Kontakt ist verifiziert";
+"verifyNow" = "Jetzt verifizieren";
+"invite" = "Kontakt einladen Verschlüsselung zu nutzen";

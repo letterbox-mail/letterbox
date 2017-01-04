@@ -62,3 +62,8 @@
 "NoFurtherMessages" = "No further messages...";
 "Updating" = "Updating...";
 "LastUpdate" = "Last Update";
+"notVerified" = "Contact is not verified jet";
+"noEncryption" = "Contact is not jet using encryption";
+"Verified" = "Contact is verified";
+"verifyNow" = "Verify now";
+"invite" = "Invide contact to use encryption";
