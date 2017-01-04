@@ -95,6 +95,7 @@
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
+		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
 		F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -263,6 +264,7 @@
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
 		F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
+		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -369,6 +371,7 @@
 				A1EB05771D956817008659C1 /* ContactExtension.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
 				A1F9922B1DA7C9100073BF1B /* Main.storyboard */,
+				F1ACF21D1E0C290500C1B843 /* contactView */,
 				A1123E6C1DA682850069551C /* Localizable.strings */,
 				A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */,
 				A1EB05A31D956E32008659C1 /* Assets.xcassets */,
@@ -519,6 +522,14 @@
 				A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */,
 			);
 			name = read;
+			sourceTree = "<group>";
+		};
+		F1ACF21D1E0C290500C1B843 /* contactView */ = {
+			isa = PBXGroup;
+			children = (
+				F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */,
+			);
+			name = contactView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -826,6 +837,7 @@
 				A135CF181DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m in Sources */,
 				A135CF141DD4BDD1007E3C29 /* PGPPKCSEmsa.m in Sources */,
 				A135CF051DD4BDD1007E3C29 /* ObjectivePGP.m in Sources */,
+				F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
 				A135CF0F1DD4BDD1007E3C29 /* PGPMPI.m in Sources */,

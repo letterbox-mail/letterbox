@@ -46,6 +46,12 @@ class InboxTableViewCell: UITableViewCell {
             delegate.callSegueFromCell(enzContact)
         }
     }
+    
+    @IBAction func contactButtonPressed(sender: AnyObject) {
+        if let delegate = delegate {
+            delegate.callSegueToContact(enzContact)
+        }
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -165,6 +171,7 @@ class InboxTableViewCell: UITableViewCell {
         didSet {
             if let con = contact {
                 nameLabel.text = con.givenName + " " + con.familyName
+//                nameLabel.text = CNContactFormatter.stringFromContact(con, style: .FullName)
                 faceView.image = con.getImageOrDefault()
                 faceView.layer.cornerRadius = faceView.frame.height / 2
                 faceView.clipsToBounds = true
