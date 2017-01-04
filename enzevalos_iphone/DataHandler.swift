@@ -271,7 +271,7 @@ class DataHandler: NSObject {
         }
         if mails.count < 20 { //TODO Fix here Init? how many mails schould be loaded???
             print("MaxUID: \(maxUid)-> return 0")
-            return 0
+            return 1
         }
         return maxUid
     }

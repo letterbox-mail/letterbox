@@ -18,13 +18,13 @@ enum Attribute: Int{
         case .Accountname:
             return "Alice"
         case .UserName:
-            return "Alice"
+            return "Alice2005"
         case .UserAddr:
             return "alice2005@web.de"
         case .UserPW:
-            return "WJ$CE:EtUo3E$"
+           return "WJ$CE:EtUo3E$"
         case .SMTPHostname:
-            return "smtp.web.de"
+           return "smtp.web.de"
         case .SMTPPort:
             return 587
         case .IMAPHostname:
@@ -45,7 +45,6 @@ enum Attribute: Int{
                 print("No key")
                 //TODO: Create Key?!
             }
-            
             return ""
         }
     }
