@@ -12,17 +12,13 @@ import CoreData
 
 /* 
  Fixes for next iteration:
-flags -> Int (previously int16)
- new Field: unread
 remove optional fields
  
- bcc/cc flied in Mail
+ bcc/cc field in Mail
  mail_address in EC
 
 Mail UID = UInt64....
 
- MaxUID speichern
- eigenen EnzevalosContact speichern (nicht in Inbox)
  
  */
 
