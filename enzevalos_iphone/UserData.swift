@@ -62,7 +62,6 @@ struct UserManager{
     }
     
     static func loadUserValue(attribute: Attribute) -> AnyObject?{
-        // TODO: Cache data
         let value = NSUserDefaults.standardUserDefaults().valueForKey("\(attribute.hashValue)")
         if((value) != nil){
             return value

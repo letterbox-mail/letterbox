@@ -86,13 +86,11 @@
 		A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05891D956890008659C1 /* ContactCell.xib */; };
 		A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB058B1D9568AB008659C1 /* FrequentCell.xib */; };
 		A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB058F1D956923008659C1 /* ReadViewController.swift */; };
-		A1EB05921D95692A008659C1 /* MailObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05911D95692A008659C1 /* MailObject.swift */; };
 		A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05931D956931008659C1 /* InboxCellDelegator.swift */; };
 		A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05951D956939008659C1 /* InboxTableViewCell.swift */; };
 		A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05971D956947008659C1 /* InboxViewController.swift */; };
 		A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05991D95694E008659C1 /* FillInbox.swift */; };
 		A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
-		A1EB059E1D956963008659C1 /* EnzevalosContact_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059D1D956963008659C1 /* EnzevalosContact_old.swift */; };
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
@@ -250,13 +248,11 @@
 		A1EB05891D956890008659C1 /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		A1EB058B1D9568AB008659C1 /* FrequentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FrequentCell.xib; sourceTree = "<group>"; };
 		A1EB058F1D956923008659C1 /* ReadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadViewController.swift; sourceTree = "<group>"; };
-		A1EB05911D95692A008659C1 /* MailObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailObject.swift; sourceTree = "<group>"; };
 		A1EB05931D956931008659C1 /* InboxCellDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxCellDelegator.swift; sourceTree = "<group>"; };
 		A1EB05951D956939008659C1 /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05971D956947008659C1 /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
 		A1EB05991D95694E008659C1 /* FillInbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillInbox.swift; sourceTree = "<group>"; };
 		A1EB059B1D956957008659C1 /* NSDateCompare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateCompare.swift; sourceTree = "<group>"; };
-		A1EB059D1D956963008659C1 /* EnzevalosContact_old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnzevalosContact_old.swift; sourceTree = "<group>"; };
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -380,8 +376,6 @@
 				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
 				A17A18F61DDCBE530058D934 /* KeyWrapper.swift */,
 				476373C11E09BA88004D5EFE /* UserData.swift */,
-				A1EB05911D95692A008659C1 /* MailObject.swift */,
-				A1EB059D1D956963008659C1 /* EnzevalosContact_old.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				A17A18F41DDCB5580058D934 /* KeyHandler.swift */,
@@ -865,7 +859,6 @@
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
 				A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */,
-				A1EB059E1D956963008659C1 /* EnzevalosContact_old.swift in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,
 				A1EB05781D956817008659C1 /* ContactExtension.swift in Sources */,
@@ -878,7 +871,6 @@
 				472F392D1E1277D2009260FB /* Mail+CoreDataProperties.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
-				A1EB05921D95692A008659C1 /* MailObject.swift in Sources */,
 				A135CF131DD4BDD1007E3C29 /* PGPPKCSEme.m in Sources */,
 				A1B8C0181DD5CDC60044A358 /* CryptoHandler.swift in Sources */,
 				A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */,

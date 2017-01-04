@@ -81,7 +81,7 @@ class DataHandler: NSObject {
         return managedObjectContext
     }
     
-    func find(entityName: String, type:String, search: String) -> [AnyObject]?{
+    private func find(entityName: String, type:String, search: String) -> [AnyObject]?{
 
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         fReq.predicate = NSPredicate(format:"\(type) CONTAINS '\(search)' ")
@@ -95,7 +95,7 @@ class DataHandler: NSObject {
         return result
     }
     
-    func findAll(entityName:String)->[AnyObject]?{
+    private func findAll(entityName:String)->[AnyObject]?{
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         let result: [AnyObject]?
         do {
@@ -124,7 +124,6 @@ class DataHandler: NSObject {
         else{
             contact = search! [0] as! EnzevalosContact
         }
-        //save()
         return contact
     }
 
@@ -152,7 +151,6 @@ class DataHandler: NSObject {
         if(address.displayName != nil){
             contact.setDisplayName(address.displayName)
         }
-        //save()
         return contact
     }
     // -------- End Access to contact(s) --------
@@ -196,7 +194,6 @@ class DataHandler: NSObject {
         
         if(finding == nil || finding!.count == 0){
            // create new mail object
-            
             mail  = NSEntityDescription.insertNewObjectForEntityForName("Mail", inManagedObjectContext: managedObjectContext) as! Mail
             /*
             if(isEncrypted) {
@@ -227,12 +224,12 @@ class DataHandler: NSObject {
         handleCCAddresses(cc, mail: mail)
         
         save()
-        /*
-        if(maxUid < UInt64(mail.uid)){
+        
+        if (maxUid < UInt64(mail.uid)){
             maxUid = UInt64(mail.uid)
         }
         mails.append(mail)
- */
+ 
         return mail
     }
     
@@ -245,7 +242,7 @@ class DataHandler: NSObject {
     }
     
     func markMailAsUnread(mail:Mail)->Bool{
-        //TODO: FIX ME
+        //TODO: Fix ME
         save()
         return true
     }
@@ -267,7 +264,7 @@ class DataHandler: NSObject {
     
     func readMaxUid()->UInt64{
         if !isLoadMails {
-            loadMails()
+            loadMails() //TODO Better way! 0!
         }
         if mails.count < 20 { //TODO Fix here Init? how many mails schould be loaded???
             print("MaxUID: \(maxUid)-> return 0")
@@ -276,7 +273,7 @@ class DataHandler: NSObject {
         return maxUid
     }
     
-    func readMails()->[Mail]{
+    private func readMails()->[Mail]{
         if(!isLoadMails){
             loadMails()
         }

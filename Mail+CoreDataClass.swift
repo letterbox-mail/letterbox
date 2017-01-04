@@ -15,8 +15,6 @@ import CoreData
 public class Mail: NSManagedObject, Comparable {
     
     
-    var showMessage = false //TODO: Fix Me
-    
     var timeString: String {
         var returnString = ""
         let dateFormatter = NSDateFormatter()
@@ -100,21 +98,118 @@ public class Mail: NSManagedObject, Comparable {
     }
     
     func setFlags(flags: MCOMessageFlag){
-        flag = 0 //TODO FIx Me
+       // flag = flags.rawValue
     }
     
+    func showMessage()->Bool{
+        return !trouble
+    }
     
     //TODO FIX US
     func isUnread()->Bool{
         return true
     }
     
-    func getDecryptedMessage()-> String{
-        return body!
+    
+    func markMessageAsRead(read: Bool){
+        if read != isUnread(){
+            //TODO save state
+            let flags: MCOMessageFlag
+            if !read {
+                AppDelegate.getAppDelegate().mailHandler.removeFlag(UInt64(self.uid), flags: MCOMessageFlag.Seen)
+                //TODO Remove flag
+            } else {
+                AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64(self.uid), flags: (MCOMessageFlag.Seen))
+                flags = MCOMessageFlag.init(rawValue: flag).union(MCOMessageFlag.Seen)
+            }
+            flag = flags.rawValue()
+            // TODO: Test save??? Datenhandler
+
+            
+        }
+    
     }
     
+    func getDecryptedMessage()-> String{
+        return body!
+        
+        /*
+ func decryptIfPossible(){
+ if body != nil {
+ if self.isEncrypted {
+ if KeyHandler.getHandler().getPrivateKey() == nil {
+ self.unableToDecrypt = true
+ return
+ }
+ if !CryptoHandler.getHandler().pgp.keys.contains((KeyHandler.getHandler().getPrivateKey()?.key)!) {
+ CryptoHandler.getHandler().pgp.keys.append((KeyHandler.getHandler().getPrivateKey()?.key)!)
+ }
+ do {
+ var signed : ObjCBool = false
+ var valid : ObjCBool = false
+ var integrityProtected : ObjCBool = false
+ 
+ var signatureKey : PGPKey? = nil
+ 
+ if self.sender != nil && self.sender?.mailbox != nil {
+ if KeyHandler.getHandler().addrHasKey((self.sender?.mailbox)!) {
+ signatureKey = KeyHandler.getHandler().getKeyByAddr((self.sender?.mailbox)!)?.key
+ }
+ }
+ 
+ //verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr(header.from.mailbox)?.key
+ 
+ let decTrash = (try? CryptoHandler.getHandler().pgp.decryptData(body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: signatureKey, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))
+ if decTrash != nil {
+ self.decryptedBody = String(data: decTrash!, encoding: NSUTF8StringEncoding)//String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: signatureKey, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))! as NSData, encoding: NSUTF8StringEncoding)
+ //print(String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected), encoding: NSUTF8StringEncoding)))
+ self.isVerified = Bool(valid)
+ 
+ print(" signed: ",signed," valid: ",valid, " integrityProtected: ",integrityProtected)
+ 
+ if signatureKey != nil && !valid && signed {
+ self.trouble = true
+ }
+ }
+ 
+ 
+ } catch _ {
+ 
+ self.trouble = true
+ print("error while decrypting")
+ }
+ }
+ }
+ }
+*/
+    }
+ 
     func getSubjectWithFlagsString()-> String{
-        return subject!
+        let subj: String
+        let flags = MCOMessageFlag.init(rawValue: flag)
+        var returnString: String = ""
+
+        if self.subject == nil || (self.subject?.isEmpty)! {
+            subj = NSLocalizedString("SubjectNo", comment: "This email has no subject")
+        } else {
+            subj = subject!
+        }
+        if trouble {
+            returnString.appendContentsOf("❗️ ")
+        }
+        if isUnread() {
+            returnString.appendContentsOf("🔵 ")
+        }
+        if MCOMessageFlag.Answered.isSubsetOf(flags) {
+            returnString.appendContentsOf("↩️ ")
+        }
+        if MCOMessageFlag.Forwarded.isSubsetOf(flags) {
+            returnString.appendContentsOf("➡️ ")
+        }
+        if MCOMessageFlag.Flagged.isSubsetOf(flags) {
+            returnString.appendContentsOf("⭐️ ")
+        }
+        return "\(returnString)\(subj)"
     }
     
 }
