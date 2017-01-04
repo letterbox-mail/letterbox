@@ -12,14 +12,14 @@ class DataHandler: NSObject {
     private static var handler: DataHandler? = nil
 
     private var managedObjectContext: NSManagedObjectContext
-    private var maxUid: UInt64
     private var mails: [Mail]
     private var isLoadMails: Bool
     private var contacts: [EnzevalosContact]
     private var isLoadContacts: Bool
+    private var currentstate: State
+    private var isLoadState: Bool
     
     override  init() {
-
         // This resource is the same name as your xcdatamodeld contained in your project.
         guard let modelURL = NSBundle.mainBundle().URLForResource("enzevalos_iphone", withExtension:"momd") else {
             fatalError("Error loading model from bundle")
@@ -43,12 +43,11 @@ class DataHandler: NSObject {
         } catch {
             fatalError("Error migrating store: \(error)")
         }
-        maxUid = 0
         mails = [Mail]()
         isLoadMails = false
         contacts = [EnzevalosContact]()
         isLoadContacts = false
-        
+        isLoadState = false
         print("Finish init of DataHandler")
     }
     
@@ -185,7 +184,7 @@ class DataHandler: NSObject {
     
     // -------- End handle to, cc, from addresses --------
 
-    func createMail(uid: Int64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate?, received: Bool, subject: String?, body: String?, decryptedBody: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool, flags: MCOMessageFlag)-> Mail{
+    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, decryptedBody: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, isUnread: Bool, flags: MCOMessageFlag)-> Mail{
         
         let finding = find("Mail", type: "uid", search: String(uid))
         let mail: Mail
@@ -210,7 +209,7 @@ class DataHandler: NSObject {
             mail.isEncrypted = isEncrypted
             mail.isVerified = isVerified
             // TODO: mail.isUnread = isUnread
-            mail.uid = uid
+            mail.uid = NSDecimalNumber.init(unsignedLongLong: uid)
             mail.trouble = trouble
             mail.setFlags(flags)
             
@@ -225,8 +224,8 @@ class DataHandler: NSObject {
         
         save()
         
-        if (maxUid < UInt64(mail.uid)){
-            maxUid = UInt64(mail.uid)
+        if currentstate.getMaxUid() < mail.uid.unsignedLongLongValue{
+            currentstate.setMaxUid(mail.uid.unsignedLongLongValue)
         }
         mails.append(mail)
  
@@ -235,14 +234,14 @@ class DataHandler: NSObject {
     
     
     func readMail(mail: Mail)->Bool{
-        //TODO: FIX ME
+        mail.markMessageAsRead(true)
         save()
         return true
     
     }
     
     func markMailAsUnread(mail:Mail)->Bool{
-        //TODO: Fix ME
+        mail.markMessageAsRead(false)
         save()
         return true
     }
@@ -254,8 +253,8 @@ class DataHandler: NSObject {
             for r in result!{
                 let m = r as! Mail
                 mails.append(m)
-                if maxUid < UInt64(m.uid){
-                    maxUid = UInt64(m.uid)
+                if  currentstate.getMaxUid() < m.uid.unsignedLongLongValue{
+                    currentstate.setMaxUid(m.uid.unsignedLongLongValue)
                 }
             }
         }
@@ -263,14 +262,7 @@ class DataHandler: NSObject {
     }
     
     func readMaxUid()->UInt64{
-        if !isLoadMails {
-            loadMails() //TODO Better way! 0!
-        }
-        if mails.count < 20 { //TODO Fix here Init? how many mails schould be loaded???
-            print("MaxUID: \(maxUid)-> return 0")
-            return 1
-        }
-        return maxUid
+       return  getCurrentState().getMaxUid()
     }
     
     private func readMails()->[Mail]{
@@ -299,6 +291,25 @@ class DataHandler: NSObject {
             loadContacts()
         }
         return contacts
+    }
+    
+    
+    func getCurrentState()->State{
+        if !isLoadState {
+            let result = findAll("State")
+            if(result != nil || result?.count > 0){
+                currentstate =  result?.first as! State
+            }
+            else{
+                currentstate  = NSEntityDescription.insertNewObjectForEntityForName("State", inManagedObjectContext: managedObjectContext) as! State
+                currentstate.setNumberOfContacts(getContacts().count)
+                currentstate.setNumberOfMails(readMails().count)
+                currentstate.setMaxUid(1)
+                save()
+            }
+        }
+        return currentstate
+    
     }
     
 }

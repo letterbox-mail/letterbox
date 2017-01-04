@@ -13,7 +13,7 @@
     </entity>
     <entity name="Mail" representedClassName="Mail" syncable="YES">
         <attribute name="body" attributeType="String" syncable="YES"/>
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="date" attributeType="Date" defaultDateTimeInterval="-31582140" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="flag" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -29,7 +29,7 @@
     <entity name="State" representedClassName="State" syncable="YES">
         <attribute name="currentContacts" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="currentMails" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="maxUID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxUID" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="178"/>

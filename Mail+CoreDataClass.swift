@@ -14,15 +14,23 @@ import CoreData
 @objc(Mail)
 public class Mail: NSManagedObject, Comparable {
     
-    
+    var showMessage:Bool{
+        get{
+            return self.showMessage
+        }
+        set{
+            self.showMessage = newValue
+        }
+        
+    }
     var timeString: String {
         var returnString = ""
         let dateFormatter = NSDateFormatter()
         dateFormatter.locale = NSLocale.currentLocale()
-        if let mailTime = self.date {
-            let interval = NSDate().timeIntervalSinceDate(mailTime)
-            switch interval {
-            case -1..<55:
+        let mailTime = self.date
+        let interval = NSDate().timeIntervalSinceDate(mailTime)
+        switch interval {
+            case -55..<55:
                 returnString = NSLocalizedString("Now", comment: "New email")
             case 55..<120:
                 returnString = NSLocalizedString("OneMinuteAgo", comment: "Email came one minute ago")
@@ -37,7 +45,6 @@ public class Mail: NSManagedObject, Comparable {
                 dateFormatter.dateStyle = .ShortStyle
                 returnString = dateFormatter.stringFromDate(mailTime)
             }
-        }
         return returnString
     }
     
@@ -64,6 +71,7 @@ public class Mail: NSManagedObject, Comparable {
         }
         return receivers
     }
+
     
     //TODO: Optimize, only cast once
     
@@ -98,34 +106,38 @@ public class Mail: NSManagedObject, Comparable {
     }
     
     func setFlags(flags: MCOMessageFlag){
-       // flag = flags.rawValue
+       flag = Int32(flags.rawValue)
     }
     
-    func showMessage()->Bool{
-        return !trouble
+    func getFlags()->MCOMessageFlag{
+        return MCOMessageFlag.init(rawValue:Int(flag))
     }
     
-    //TODO FIX US
+    
+    func changeTrouble(trouble: Bool){
+            self.trouble = trouble
+            showMessage = !trouble
+    }
+    
     func isUnread()->Bool{
-        return true
+        return isRead
     }
     
     
     func markMessageAsRead(read: Bool){
         if read != isUnread(){
-            //TODO save state
-            let flags: MCOMessageFlag
+            isRead = read
+            var flags: MCOMessageFlag
+            flags = getFlags()
             if !read {
-                AppDelegate.getAppDelegate().mailHandler.removeFlag(UInt64(self.uid), flags: MCOMessageFlag.Seen)
-                //TODO Remove flag
+                AppDelegate.getAppDelegate().mailHandler.removeFlag(self.getUID(), flags: MCOMessageFlag.Seen)
+                flags = flags.remove(MCOMessageFlag.Seen)!
             } else {
-                AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64(self.uid), flags: (MCOMessageFlag.Seen))
-                flags = MCOMessageFlag.init(rawValue: flag).union(MCOMessageFlag.Seen)
+                AppDelegate.getAppDelegate().mailHandler.addFlag(self.getUID(), flags: (MCOMessageFlag.Seen))
+                flags = flags.union(MCOMessageFlag.Seen)
             }
-            flag = flags.rawValue()
+            setFlags(flags)
             // TODO: Test save??? Datenhandler
-
-            
         }
     
     }
@@ -183,10 +195,15 @@ public class Mail: NSManagedObject, Comparable {
  }
 */
     }
- 
+    
+    func getUID()->UInt64{
+        return self.uid.unsignedLongLongValue
+    }
+    
+
     func getSubjectWithFlagsString()-> String{
         let subj: String
-        let flags = MCOMessageFlag.init(rawValue: flag)
+        let flags = getFlags()
         var returnString: String = ""
 
         if self.subject == nil || (self.subject?.isEmpty)! {

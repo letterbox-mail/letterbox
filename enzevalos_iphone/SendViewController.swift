@@ -477,7 +477,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         } else {
             NSLog("Send!")
             if (self.answerTo != nil) {
-                AppDelegate.getAppDelegate().mailHandler.addFlag(UInt64((self.answerTo?.uid)!), flags: MCOMessageFlag.Answered)
+                AppDelegate.getAppDelegate().mailHandler.addFlag((self.answerTo?.getUID())!, flags: MCOMessageFlag.Answered)
             }
             AppDelegate.getAppDelegate().showMessage("Send successfully")
         }

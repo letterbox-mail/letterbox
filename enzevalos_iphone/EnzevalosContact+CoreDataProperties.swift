@@ -2,9 +2,8 @@
 //  EnzevalosContact+CoreDataProperties.swift
 //  enzevalos_iphone
 //
-//  Created by Oliver Wiese on 27/12/16.
-//  Copyright © 2016 fu-berlin. All rights reserved.
-//  This file was automatically generated and should not be edited.
+//  Created by Oliver Wiese on 04/01/17.
+//  Copyright © 2017 fu-berlin. All rights reserved.
 //
 
 import Foundation
@@ -21,8 +20,11 @@ extension EnzevalosContact {
     @NSManaged public var key: String?
     @NSManaged public var mail_address: String?
     @NSManaged public var prefer_encryption: Bool
+    @NSManaged public var cncontact: String?
     @NSManaged public var from: NSSet?
     @NSManaged public var to: NSSet?
+    @NSManaged public var cc: Mail?
+    @NSManaged public var bcc: Mail?
 
 }
 

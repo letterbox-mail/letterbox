@@ -98,7 +98,7 @@ class InboxTableViewCell: UITableViewCell {
                         message = mail.getDecryptedMessage()
                     }
                 }
-                else if mail.body != nil {
+                else if mail.body == nil {
                     message = mail.body!
                 }
                 if message.characters.count > 50 {

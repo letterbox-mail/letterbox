@@ -2,25 +2,13 @@
 //  Mail+CoreDataProperties.swift
 //  enzevalos_iphone
 //
-//  Created by Oliver Wiese on 27/12/16.
-//  Copyright © 2016 fu-berlin. All rights reserved.
-//  This file was automatically generated and should not be edited.
+//  Created by Oliver Wiese on 04/01/17.
+//  Copyright © 2017 fu-berlin. All rights reserved.
 //
 
 import Foundation
 import CoreData
 
-/* 
- Fixes for next iteration:
-remove optional fields
- 
- bcc/cc field in Mail
- mail_address in EC
-
-Mail UID = UInt64....
-
- 
- */
 
 extension Mail {
 
@@ -29,13 +17,14 @@ extension Mail {
     }
 
     @NSManaged public var body: String?
-    @NSManaged public var date: NSDate?
-    @NSManaged public var flag: Int16
+    @NSManaged public var date: NSDate
+    @NSManaged public var flag: Int32
     @NSManaged public var isEncrypted: Bool
     @NSManaged public var isVerified: Bool
     @NSManaged public var subject: String?
     @NSManaged public var trouble: Bool
-    @NSManaged public var uid: Int64
+    @NSManaged public var uid: NSDecimalNumber
+    @NSManaged public var isRead: Bool
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var from: EnzevalosContact?

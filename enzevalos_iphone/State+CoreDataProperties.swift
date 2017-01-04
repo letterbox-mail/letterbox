@@ -12,12 +12,12 @@ import CoreData
 
 extension State {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<State> {
-        return NSFetchRequest<State>(entityName: "State");
+    @nonobjc public override class func fetchRequest() -> NSFetchRequest {
+        return NSFetchRequest(entityName: "State");
     }
 
     @NSManaged public var currentMails: Int64
     @NSManaged public var currentContacts: Int64
-    @NSManaged public var maxUID: Int64
+    @NSManaged public var maxUID: NSDecimalNumber
 
 }
