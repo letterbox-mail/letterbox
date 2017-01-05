@@ -29,6 +29,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
     @IBOutlet weak var allEMailsCell: UITableViewCell!
     
     @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var statusImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +51,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             contactImage.layer.cornerRadius = contactImage.frame.height / 2
             contactImage.clipsToBounds = true
             self.title = "\(con.contact.givenName) \(con.contact.familyName)"
-            //self.title = CNContactFormatter.stringFromContact(con.contact, style: .FullName)
+//            self.title = CNContactFormatter.stringFromContact(con.contact, style: .FullName)
             
             if !con.isSecure {
                 statusLabel.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
@@ -63,6 +64,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             }
             
             prepareContactSheet()
+            drawStatusCircle()
         }
     }
     
@@ -89,6 +91,52 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             addButton.addTarget(self, action: #selector(ContactViewController.showContact), forControlEvents: .TouchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
         }
+    }
+    
+    func drawStatusCircle() {
+        guard contact != nil else {
+            return
+        }
+        var myBounds = CGRect()
+        myBounds.size.width = 70
+        myBounds.size.height = 70
+        UIGraphicsBeginImageContextWithOptions(myBounds.size, false, 2) //try 200 here
+        
+        let context = UIGraphicsGetCurrentContext()
+        
+        //
+        // Clip context to a circle
+        //
+        let path = CGPathCreateWithEllipseInRect(myBounds, nil);
+        CGContextAddPath(context!, path);
+        CGContextClip(context!);
+        
+        
+        //
+        // Fill background of context
+        //
+        var bgColor: CGColor = UIColor.groupTableViewBackgroundColor().CGColor
+        if contact!.isVerified {
+            bgColor = Theme.Very_strong_security_indicator.encryptedVerifiedMessageColor.CGColor
+        } else if !contact!.isSecure {
+            bgColor = Theme.Very_strong_security_indicator.uncryptedMessageColor.CGColor
+        }
+        CGContextSetFillColorWithColor(context!, bgColor)
+        CGContextFillRect(context!, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
+        
+        let iconSize = CGFloat(50)
+        let frame = CGRectMake(myBounds.size.width/2 - iconSize/2, myBounds.size.height/2 - iconSize/2, iconSize, iconSize)
+
+        if contact!.isSecure {
+            IconsStyleKit.drawLetter(frame: frame, fillBackground: true)
+        } else if contact!.isVerified {
+            IconsStyleKit.drawLetter(frame: frame, color: UIColor.whiteColor())
+        } else {
+            IconsStyleKit.drawPostcard(frame: frame, resizing: .AspectFit, color: UIColor.whiteColor())
+        }
+        
+        statusImage.image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
     }
     
     func showContact() {
