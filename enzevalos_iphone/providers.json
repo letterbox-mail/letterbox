@@ -18,7 +18,13 @@
         },
         "domain-match":[
             //"web\\.de",
-            "web\\.de"
+            "web\\.de",
+            "web"
+        ],
+        "mx-match": [
+            "web",
+            "web.de",
+            ""
         ]
     }
     
