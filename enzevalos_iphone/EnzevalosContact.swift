@@ -11,7 +11,7 @@ import Contacts
 
 class EnzevalosContact: Comparable {
     let contact: CNContact
-    let isSecure: Bool
+    let isSecure: Bool // has key associated to it
     var mails: [Mail] {
         didSet {
             self.mails.sortInPlace()

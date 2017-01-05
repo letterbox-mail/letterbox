@@ -264,11 +264,14 @@ class ReadViewController : UITableViewController {
             iconView.contentMode = .ScaleAspectFit
             var icon: UIImage
             if m.trouble {
-                icon = UIImage(named: "letter_corrupted")!
+                icon = IconsStyleKit.imageOfLetterCorrupted
+//                icon = UIImage(named: "letter_corrupted")!
             } else if m.isEncrypted {
-                icon = UIImage(named: "letter_open")!
+                icon = IconsStyleKit.imageOfLetterOpen
+//                icon = UIImage(named: "letter_open")!
             } else {
-                icon = UIImage(named: "postcard")!
+                icon = IconsStyleKit.imageOfPostcard
+//                icon = UIImage(named: "postcard")!
             }
             iconView.image = icon
             iconButton.setImage(icon, forState: UIControlState.Normal)

@@ -95,6 +95,8 @@
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
+		F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D711E1D327200804E1E /* IconsStyleKit.swift */; };
+		F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
 		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
 		F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 /* End PBXBuildFile section */
@@ -263,6 +265,8 @@
 		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
+		F1984D711E1D327200804E1E /* IconsStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconsStyleKit.swift; sourceTree = "<group>"; };
+		F1984D731E1E92B300804E1E /* LabelStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelStyleKit.swift; sourceTree = "<group>"; };
 		F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
 		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -365,12 +369,14 @@
 				476373C11E09BA88004D5EFE /* UserData.swift */,
 				A1EB05911D95692A008659C1 /* MailObject.swift */,
 				A1EB059D1D956963008659C1 /* EnzevalosContact.swift */,
+				F1984D711E1D327200804E1E /* IconsStyleKit.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				A17A18F41DDCB5580058D934 /* KeyHandler.swift */,
 				A1EB05771D956817008659C1 /* ContactExtension.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
 				A1F9922B1DA7C9100073BF1B /* Main.storyboard */,
+				F1984D731E1E92B300804E1E /* LabelStyleKit.swift */,
 				F1ACF21D1E0C290500C1B843 /* contactView */,
 				A1123E6C1DA682850069551C /* Localizable.strings */,
 				A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */,
@@ -829,6 +835,7 @@
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
 				A135CF231DD4BDD1007E3C29 /* PGPUserAttributePacket.m in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
+				F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */,
 				A135CF221DD4BDD1007E3C29 /* PGPUser.m in Sources */,
 				A135CF031DD4BDD1007E3C29 /* NSData+PGPUtils.m in Sources */,
 				A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */,
@@ -882,6 +889,7 @@
 				A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */,
 				A135CF101DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
+				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
 				A135CF091DD4BDD1007E3C29 /* PGPCryptoUtils.m in Sources */,
 				A135CF1A1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m in Sources */,

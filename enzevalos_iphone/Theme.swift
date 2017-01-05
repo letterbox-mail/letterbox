@@ -32,7 +32,6 @@ enum Theme: Int{
             // orange
             return UIColor(red: 247/255, green: 185/255, blue: 0/255, alpha: 1.0)
         }
-    
     }
     
     var encryptedMessageColor: UIColor{
@@ -56,7 +55,6 @@ enum Theme: Int{
         default:
             // green
             return UIColor(red: 115/255, green: 229/255, blue: 105/255, alpha: 1.0)
-
         }
     }
     
@@ -72,7 +70,6 @@ enum Theme: Int{
             
         }
     }
- 
 }
 
 
@@ -109,7 +106,5 @@ struct ThemeManager{
         NSUserDefaults.standardUserDefaults().setValue(theme.rawValue, forKey: SelectedThemeKey)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
-    
 }
-    
-    
+
