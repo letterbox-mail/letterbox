@@ -17,9 +17,25 @@ import UIKit
 
 public class LabelStyleKit : NSObject {
 
+    //// Cache
+
+    private struct Cache {
+        static let black: UIColor = UIColor.blackColor()
+        static var imageOfHome: UIImage?
+        static var homeTargets: [AnyObject]?
+        static var imageOfWork: UIImage?
+        static var workTargets: [AnyObject]?
+        static var imageOfOther: UIImage?
+        static var otherTargets: [AnyObject]?
+    }
+
+    //// Colors
+
+    public dynamic class var black: UIColor { return Cache.black }
+
     //// Drawing Methods
 
-    public dynamic class func drawHome(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 28, height: 28), resizing: ResizingBehavior = .AspectFit) {
+    public dynamic class func drawHome(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 28, height: 28), resizing: ResizingBehavior = .AspectFit, color: UIColor = LabelStyleKit.black) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
@@ -30,10 +46,6 @@ public class LabelStyleKit : NSObject {
         CGContextScaleCTM(context, resizedFrame.width / 28, resizedFrame.height / 28)
 
 
-        //// Color Declarations
-        let black = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000)
-
-        //// home.svg Group
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
         bezierPath.moveToPoint(CGPoint(x: 21.2, y: 13))
@@ -46,7 +58,7 @@ public class LabelStyleKit : NSObject {
         bezierPath.addLineToPoint(CGPoint(x: 24, y: 15.8))
         bezierPath.addCurveToPoint(CGPoint(x: 21.2, y: 13), controlPoint1: CGPoint(x: 24.1, y: 14.3), controlPoint2: CGPoint(x: 22.8, y: 13))
         bezierPath.closePath()
-        black.setFill()
+        color.setFill()
         bezierPath.fill()
 
 
@@ -57,9 +69,9 @@ public class LabelStyleKit : NSObject {
         bezier2Path.addLineToPoint(CGPoint(x: 2.5, y: 14.2))
         bezier2Path.addLineToPoint(CGPoint(x: 14.3, y: 2.4))
         bezier2Path.closePath()
-        black.setFill()
+        color.setFill()
         bezier2Path.fill()
-        black.setStroke()
+        color.setStroke()
         bezier2Path.lineWidth = 3
         bezier2Path.lineJoinStyle = .Round
         bezier2Path.stroke()
@@ -67,120 +79,85 @@ public class LabelStyleKit : NSObject {
 
         //// Bezier 3 Drawing
         let bezier3Path = UIBezierPath()
-        bezier3Path.moveToPoint(CGPoint(x: 21.9, y: 11.6))
-        bezier3Path.addLineToPoint(CGPoint(x: 20.8, y: 11.6))
-        bezier3Path.addCurveToPoint(CGPoint(x: 19.9, y: 10.7), controlPoint1: CGPoint(x: 20.3, y: 11.6), controlPoint2: CGPoint(x: 19.9, y: 11.2))
-        bezier3Path.addLineToPoint(CGPoint(x: 19.9, y: 5.7))
-        bezier3Path.addCurveToPoint(CGPoint(x: 20.8, y: 4.8), controlPoint1: CGPoint(x: 19.9, y: 5.2), controlPoint2: CGPoint(x: 20.3, y: 4.8))
-        bezier3Path.addLineToPoint(CGPoint(x: 21.9, y: 4.8))
-        bezier3Path.addCurveToPoint(CGPoint(x: 22.8, y: 5.7), controlPoint1: CGPoint(x: 22.4, y: 4.8), controlPoint2: CGPoint(x: 22.8, y: 5.2))
-        bezier3Path.addLineToPoint(CGPoint(x: 22.8, y: 10.8))
-        bezier3Path.addCurveToPoint(CGPoint(x: 21.9, y: 11.6), controlPoint1: CGPoint(x: 22.7, y: 11.2), controlPoint2: CGPoint(x: 22.3, y: 11.6))
+        bezier3Path.moveToPoint(CGPoint(x: 21.9, y: 10.6))
+        bezier3Path.addLineToPoint(CGPoint(x: 20.8, y: 10.6))
+        bezier3Path.addCurveToPoint(CGPoint(x: 19.9, y: 9.7), controlPoint1: CGPoint(x: 20.3, y: 10.6), controlPoint2: CGPoint(x: 19.9, y: 10.2))
+        bezier3Path.addLineToPoint(CGPoint(x: 19.9, y: 4.7))
+        bezier3Path.addCurveToPoint(CGPoint(x: 20.8, y: 3.8), controlPoint1: CGPoint(x: 19.9, y: 4.2), controlPoint2: CGPoint(x: 20.3, y: 3.8))
+        bezier3Path.addLineToPoint(CGPoint(x: 21.9, y: 3.8))
+        bezier3Path.addCurveToPoint(CGPoint(x: 22.8, y: 4.7), controlPoint1: CGPoint(x: 22.4, y: 3.8), controlPoint2: CGPoint(x: 22.8, y: 4.2))
+        bezier3Path.addLineToPoint(CGPoint(x: 22.8, y: 9.8))
+        bezier3Path.addCurveToPoint(CGPoint(x: 21.9, y: 10.6), controlPoint1: CGPoint(x: 22.7, y: 10.2), controlPoint2: CGPoint(x: 22.3, y: 10.6))
         bezier3Path.closePath()
-        black.setFill()
+        color.setFill()
         bezier3Path.fill()
         
         CGContextRestoreGState(context)
 
     }
 
-    public dynamic class func drawWork(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 251, height: 227), resizing: ResizingBehavior = .AspectFit) {
+    public dynamic class func drawWork(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 148, height: 134), resizing: ResizingBehavior = .AspectFit, color: UIColor = LabelStyleKit.black) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
         //// Resize to Target Frame
         CGContextSaveGState(context)
-        let resizedFrame: CGRect = resizing.apply(rect: CGRect(x: 0, y: 0, width: 251, height: 227), target: targetFrame)
+        let resizedFrame: CGRect = resizing.apply(rect: CGRect(x: 0, y: 0, width: 148, height: 134), target: targetFrame)
         CGContextTranslateCTM(context, resizedFrame.minX, resizedFrame.minY)
-        CGContextScaleCTM(context, resizedFrame.width / 251, resizedFrame.height / 227)
+        CGContextScaleCTM(context, resizedFrame.width / 148, resizedFrame.height / 134)
 
 
-        //// Color Declarations
-        let black = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000)
-        let white = UIColor(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000)
-
-        //// work.svg Group
-        //// Group 2
-        //// Group 3
-        //// Bezier Drawing
-        let bezierPath = UIBezierPath()
-        bezierPath.moveToPoint(CGPoint(x: 228.24, y: 40.4))
-        bezierPath.addLineToPoint(CGPoint(x: 22.88, y: 40.4))
-        bezierPath.addCurveToPoint(CGPoint(x: 1.7, y: 62.16), controlPoint1: CGPoint(x: 10.91, y: 40.4), controlPoint2: CGPoint(x: 1.7, y: 49.86))
-        bezierPath.addLineToPoint(CGPoint(x: 1.7, y: 203.14))
-        bezierPath.addCurveToPoint(CGPoint(x: 22.88, y: 224.9), controlPoint1: CGPoint(x: 1.7, y: 215.44), controlPoint2: CGPoint(x: 10.91, y: 224.9))
-        bezierPath.addLineToPoint(CGPoint(x: 227.32, y: 224.9))
-        bezierPath.addCurveToPoint(CGPoint(x: 248.5, y: 203.14), controlPoint1: CGPoint(x: 239.29, y: 224.9), controlPoint2: CGPoint(x: 248.5, y: 215.44))
-        bezierPath.addLineToPoint(CGPoint(x: 248.5, y: 61.22))
-        bezierPath.addCurveToPoint(CGPoint(x: 228.24, y: 40.4), controlPoint1: CGPoint(x: 248.5, y: 49.86), controlPoint2: CGPoint(x: 239.29, y: 40.4))
-        bezierPath.closePath()
-        black.setFill()
-        bezierPath.fill()
-
-
-
-
-
-
-        //// Group 4
-        //// Group 5
-        //// Bezier 2 Drawing
-        let bezier2Path = UIBezierPath()
-        bezier2Path.moveToPoint(CGPoint(x: 138.78, y: 9.8))
-        bezier2Path.addLineToPoint(CGPoint(x: 112.52, y: 9.8))
-        bezier2Path.addCurveToPoint(CGPoint(x: 88.8, y: 36.7), controlPoint1: CGPoint(x: 98.97, y: 9.8), controlPoint2: CGPoint(x: 88.8, y: 22.29))
-        bezier2Path.addLineToPoint(CGPoint(x: 88.8, y: 58.8))
-        bezier2Path.addCurveToPoint(CGPoint(x: 112.52, y: 85.7), controlPoint1: CGPoint(x: 88.8, y: 74.17), controlPoint2: CGPoint(x: 99.81, y: 85.7))
-        bezier2Path.addLineToPoint(CGPoint(x: 138.78, y: 85.7))
-        bezier2Path.addCurveToPoint(CGPoint(x: 162.5, y: 58.8), controlPoint1: CGPoint(x: 152.33, y: 85.7), controlPoint2: CGPoint(x: 162.5, y: 73.21))
-        bezier2Path.addLineToPoint(CGPoint(x: 162.5, y: 36.7))
-        bezier2Path.addCurveToPoint(CGPoint(x: 138.78, y: 9.8), controlPoint1: CGPoint(x: 162.5, y: 22.29), controlPoint2: CGPoint(x: 151.49, y: 9.8))
-        bezier2Path.closePath()
-        black.setStroke()
-        bezier2Path.lineWidth = 15
-        bezier2Path.stroke()
-
-
-
-
-
-
-        //// Group 6
-        //// Group 7
         //// Bezier 3 Drawing
         let bezier3Path = UIBezierPath()
-        bezier3Path.moveToPoint(CGPoint(x: 130.23, y: 120.7))
-        bezier3Path.addCurveToPoint(CGPoint(x: 2, y: 105), controlPoint1: CGPoint(x: 56.31, y: 120.7), controlPoint2: CGPoint(x: 2.92, y: 105))
-        bezier3Path.addLineToPoint(CGPoint(x: 1.8, y: 104.76))
-        bezier3Path.addLineToPoint(CGPoint(x: 1.8, y: 95.9))
-        bezier3Path.addLineToPoint(CGPoint(x: 2, y: 96))
-        bezier3Path.addCurveToPoint(CGPoint(x: 248.58, y: 95.9), controlPoint1: CGPoint(x: 2.92, y: 96), controlPoint2: CGPoint(x: 127.54, y: 131.33))
-        bezier3Path.addLineToPoint(CGPoint(x: 248.5, y: 95.9))
-        bezier3Path.addLineToPoint(CGPoint(x: 248.5, y: 104.76))
-        bezier3Path.addLineToPoint(CGPoint(x: 248.58, y: 104.76))
-        bezier3Path.addCurveToPoint(CGPoint(x: 130.23, y: 120.7), controlPoint1: CGPoint(x: 207, y: 118.04), controlPoint2: CGPoint(x: 167.19, y: 120.7))
+        bezier3Path.moveToPoint(CGPoint(x: 79.9, y: 72.4))
+        bezier3Path.addLineToPoint(CGPoint(x: 79.9, y: 76.5))
+        bezier3Path.addCurveToPoint(CGPoint(x: 73.5, y: 82.9), controlPoint1: CGPoint(x: 79.9, y: 80), controlPoint2: CGPoint(x: 77, y: 82.9))
+        bezier3Path.addLineToPoint(CGPoint(x: 73.5, y: 82.9))
+        bezier3Path.addCurveToPoint(CGPoint(x: 67.1, y: 76.5), controlPoint1: CGPoint(x: 70, y: 82.9), controlPoint2: CGPoint(x: 67.1, y: 80))
+        bezier3Path.addLineToPoint(CGPoint(x: 67.1, y: 72.2))
+        bezier3Path.addCurveToPoint(CGPoint(x: 2.8, y: 63), controlPoint1: CGPoint(x: 29.8, y: 71), controlPoint2: CGPoint(x: 3.2, y: 63.2))
+        bezier3Path.addLineToPoint(CGPoint(x: 2.8, y: 119))
+        bezier3Path.addCurveToPoint(CGPoint(x: 14.8, y: 131), controlPoint1: CGPoint(x: 2.8, y: 125.6), controlPoint2: CGPoint(x: 8.2, y: 131))
+        bezier3Path.addLineToPoint(CGPoint(x: 132.8, y: 131))
+        bezier3Path.addCurveToPoint(CGPoint(x: 144.8, y: 119), controlPoint1: CGPoint(x: 139.4, y: 131), controlPoint2: CGPoint(x: 144.8, y: 125.6))
+        bezier3Path.addLineToPoint(CGPoint(x: 144.8, y: 63))
+        bezier3Path.addCurveToPoint(CGPoint(x: 79.9, y: 72.4), controlPoint1: CGPoint(x: 122.2, y: 69.9), controlPoint2: CGPoint(x: 100.3, y: 72.2))
         bezier3Path.closePath()
-        white.setFill()
+        color.setFill()
         bezier3Path.fill()
-
-
-
-
 
 
         //// Bezier 4 Drawing
         let bezier4Path = UIBezierPath()
-        bezier4Path.moveToPoint(CGPoint(x: 125.1, y: 139.23))
-        bezier4Path.addLineToPoint(CGPoint(x: 125.1, y: 139.23))
-        bezier4Path.addCurveToPoint(CGPoint(x: 114.05, y: 128.06), controlPoint1: CGPoint(x: 118.65, y: 139.23), controlPoint2: CGPoint(x: 114.05, y: 134.58))
-        bezier4Path.addLineToPoint(CGPoint(x: 114.05, y: 105.71))
-        bezier4Path.addCurveToPoint(CGPoint(x: 125.1, y: 94.54), controlPoint1: CGPoint(x: 114.05, y: 99.19), controlPoint2: CGPoint(x: 118.65, y: 94.54))
-        bezier4Path.addLineToPoint(CGPoint(x: 125.1, y: 94.54))
-        bezier4Path.addCurveToPoint(CGPoint(x: 136.15, y: 105.71), controlPoint1: CGPoint(x: 131.55, y: 94.54), controlPoint2: CGPoint(x: 136.15, y: 99.19))
-        bezier4Path.addLineToPoint(CGPoint(x: 136.15, y: 128.06))
-        bezier4Path.addCurveToPoint(CGPoint(x: 125.1, y: 139.23), controlPoint1: CGPoint(x: 136.15, y: 134.58), controlPoint2: CGPoint(x: 130.63, y: 139.23))
+        bezier4Path.moveToPoint(CGPoint(x: 132.8, y: 28.1))
+        bezier4Path.addLineToPoint(CGPoint(x: 102.3, y: 28.1))
+        bezier4Path.addLineToPoint(CGPoint(x: 102.3, y: 24.1))
+        bezier4Path.addCurveToPoint(CGPoint(x: 81.9, y: 3.8), controlPoint1: CGPoint(x: 102.3, y: 12.9), controlPoint2: CGPoint(x: 93.2, y: 3.8))
+        bezier4Path.addLineToPoint(CGPoint(x: 65.8, y: 3.8))
+        bezier4Path.addCurveToPoint(CGPoint(x: 45.4, y: 24.1), controlPoint1: CGPoint(x: 54.6, y: 3.8), controlPoint2: CGPoint(x: 45.4, y: 12.9))
+        bezier4Path.addLineToPoint(CGPoint(x: 45.4, y: 28.1))
+        bezier4Path.addLineToPoint(CGPoint(x: 14.8, y: 28.1))
+        bezier4Path.addCurveToPoint(CGPoint(x: 2.8, y: 40.1), controlPoint1: CGPoint(x: 8.2, y: 28.1), controlPoint2: CGPoint(x: 2.8, y: 33.5))
+        bezier4Path.addLineToPoint(CGPoint(x: 2.8, y: 57.7))
+        bezier4Path.addCurveToPoint(CGPoint(x: 67.1, y: 66.9), controlPoint1: CGPoint(x: 3.2, y: 57.8), controlPoint2: CGPoint(x: 30.3, y: 65.7))
+        bezier4Path.addLineToPoint(CGPoint(x: 67.1, y: 63.6))
+        bezier4Path.addCurveToPoint(CGPoint(x: 73.5, y: 57.2), controlPoint1: CGPoint(x: 67.1, y: 60.1), controlPoint2: CGPoint(x: 70, y: 57.2))
+        bezier4Path.addLineToPoint(CGPoint(x: 73.5, y: 57.2))
+        bezier4Path.addCurveToPoint(CGPoint(x: 79.9, y: 63.6), controlPoint1: CGPoint(x: 77, y: 57.2), controlPoint2: CGPoint(x: 79.9, y: 60.1))
+        bezier4Path.addLineToPoint(CGPoint(x: 79.9, y: 67))
+        bezier4Path.addCurveToPoint(CGPoint(x: 144.9, y: 57.6), controlPoint1: CGPoint(x: 100.2, y: 66.8), controlPoint2: CGPoint(x: 122.7, y: 64.4))
+        bezier4Path.addLineToPoint(CGPoint(x: 144.9, y: 40.1))
+        bezier4Path.addCurveToPoint(CGPoint(x: 132.8, y: 28.1), controlPoint1: CGPoint(x: 144.8, y: 33.5), controlPoint2: CGPoint(x: 139.5, y: 28.1))
         bezier4Path.closePath()
-        white.setFill()
+        bezier4Path.moveToPoint(CGPoint(x: 91.7, y: 28.1))
+        bezier4Path.addLineToPoint(CGPoint(x: 56.1, y: 28.1))
+        bezier4Path.addLineToPoint(CGPoint(x: 56.1, y: 24.1))
+        bezier4Path.addCurveToPoint(CGPoint(x: 65.8, y: 14.4), controlPoint1: CGPoint(x: 56.1, y: 18.7), controlPoint2: CGPoint(x: 60.5, y: 14.4))
+        bezier4Path.addLineToPoint(CGPoint(x: 82, y: 14.4))
+        bezier4Path.addCurveToPoint(CGPoint(x: 91.7, y: 24.1), controlPoint1: CGPoint(x: 87.4, y: 14.4), controlPoint2: CGPoint(x: 91.7, y: 18.8))
+        bezier4Path.addLineToPoint(CGPoint(x: 91.7, y: 28.1))
+        bezier4Path.closePath()
+        color.setFill()
         bezier4Path.fill()
         
         CGContextRestoreGState(context)
@@ -198,9 +175,6 @@ public class LabelStyleKit : NSObject {
         CGContextScaleCTM(context, resizedFrame.width / 86, resizedFrame.height / 82)
 
 
-        //// Color Declarations
-        let black = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000)
-
         //// Star Drawing
         let starPath = UIBezierPath()
         starPath.moveToPoint(CGPoint(x: 43, y: 1))
@@ -214,11 +188,87 @@ public class LabelStyleKit : NSObject {
         starPath.addLineToPoint(CGPoint(x: 1.15, y: 31.4))
         starPath.addLineToPoint(CGPoint(x: 30.81, y: 28.22))
         starPath.closePath()
-        black.setFill()
+        color.setFill()
         starPath.fill()
         
         CGContextRestoreGState(context)
 
+    }
+
+    //// Generated Images
+
+    public dynamic class var imageOfHome: UIImage {
+        if Cache.imageOfHome != nil {
+            return Cache.imageOfHome!
+        }
+
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 28, height: 28), false, 0)
+            LabelStyleKit.drawHome()
+
+        Cache.imageOfHome = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+
+        return Cache.imageOfHome!
+    }
+
+    public dynamic class var imageOfWork: UIImage {
+        if Cache.imageOfWork != nil {
+            return Cache.imageOfWork!
+        }
+
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 148, height: 134), false, 0)
+            LabelStyleKit.drawWork()
+
+        Cache.imageOfWork = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+
+        return Cache.imageOfWork!
+    }
+
+    public dynamic class var imageOfOther: UIImage {
+        if Cache.imageOfOther != nil {
+            return Cache.imageOfOther!
+        }
+
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 86, height: 82), false, 0)
+            LabelStyleKit.drawOther()
+
+        Cache.imageOfOther = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+
+        return Cache.imageOfOther!
+    }
+
+    //// Customization Infrastructure
+
+    @IBOutlet dynamic var homeTargets: [AnyObject]! {
+        get { return Cache.homeTargets }
+        set {
+            Cache.homeTargets = newValue
+            for target: AnyObject in newValue {
+                target.performSelector(NSSelectorFromString("setImage:"), withObject: LabelStyleKit.imageOfHome)
+            }
+        }
+    }
+
+    @IBOutlet dynamic var workTargets: [AnyObject]! {
+        get { return Cache.workTargets }
+        set {
+            Cache.workTargets = newValue
+            for target: AnyObject in newValue {
+                target.performSelector(NSSelectorFromString("setImage:"), withObject: LabelStyleKit.imageOfWork)
+            }
+        }
+    }
+
+    @IBOutlet dynamic var otherTargets: [AnyObject]! {
+        get { return Cache.otherTargets }
+        set {
+            Cache.otherTargets = newValue
+            for target: AnyObject in newValue {
+                target.performSelector(NSSelectorFromString("setImage:"), withObject: LabelStyleKit.imageOfOther)
+            }
+        }
     }
 
 
