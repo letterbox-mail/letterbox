@@ -1,4 +1,4 @@
-//
+////
 //  LabelStyleKit.swift
 //  enzevalos
 //
@@ -188,7 +188,7 @@ public class LabelStyleKit : NSObject {
         starPath.addLineToPoint(CGPoint(x: 1.15, y: 31.4))
         starPath.addLineToPoint(CGPoint(x: 30.81, y: 28.22))
         starPath.closePath()
-        color.setFill()
+        //color.setFill() TODO: ????
         starPath.fill()
         
         CGContextRestoreGState(context)
