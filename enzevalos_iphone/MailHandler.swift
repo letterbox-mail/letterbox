@@ -294,9 +294,6 @@ class MailHandler {
                         var cc: [MCOAddress] = []
                         
                         let header = message.header
-                        let messageRead = MCOMessageFlag.Seen.isSubsetOf(message.flags)
-                        
-                        
                         
                         // TODO: Handle here autocrypt
                         
@@ -325,7 +322,7 @@ class MailHandler {
                         //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
                         // TODO: Fix decryption
                         
-                        let mail = DataHandler.getDataHandler().createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, decryptedBody: decBody, isEncrypted: enc, isVerified: ver, trouble: troub, isUnread: !messageRead, flags: message.flags)
+                        let mail = DataHandler.getDataHandler().createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, decryptedBody: decBody, isEncrypted: enc, isVerified: ver, trouble: troub, flags: message.flags)
                       //  mail.decryptIfPossible()
                         /*Jakob prototypeänderung Ende*/
                         self.delegate?.addNewMail(mail)
