@@ -87,6 +87,7 @@ public class KeyRecord: Record{
         if mail.isEncrypted == self.isSecure{
             if getContact().getAddress(mail.getFrom().address) != nil{
                 mails.append(mail)
+                mails.sortInPlace()
                 return true
             }
         }

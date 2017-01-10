@@ -48,6 +48,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
         let r: KeyRecord
         r = KeyRecord(mail: mail)
         contacts.append(r)
+        contacts.sortInPlace()
     }
 
  
