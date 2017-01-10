@@ -202,13 +202,13 @@ class ReadViewController : UITableViewController {
             if m.getReceivers().count == 1 && m.getCCs().count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
                 receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
                 for c in m.getCCs(){
-                    receivers.text?.appendContentsOf(c.mail_address!)
+                    receivers.text?.appendContentsOf(c.address)
                     receivers.text?.appendContentsOf(" ")
                 }
             } else {
                 receivers.text = NSLocalizedString("To", comment: "To label") + ": "
                 for r in m.getReceivers() {
-                    receivers.text?.appendContentsOf(r.mail_address!)
+                    receivers.text?.appendContentsOf(r.address)
                     receivers.text?.appendContentsOf(" ")
                 }
             }
@@ -250,7 +250,6 @@ class ReadViewController : UITableViewController {
                     let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.getFromAddress()))?.key
                     print(signatureKey)
                 }
-                print("verified: ",m.isVerified)
             
             }
             else {

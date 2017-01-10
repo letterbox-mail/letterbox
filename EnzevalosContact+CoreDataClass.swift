@@ -18,14 +18,12 @@ import Contacts
 @objc(EnzevalosContact)
 public class EnzevalosContact: NSManagedObject {
     
-    func update(name: String, key: String, prefer_enc: Bool){
-        setDisplayName(name)
-        self.key = key
-        self.prefer_encryption = prefer_enc
-    }
     
-    func setAddress(address: String){
-        self.mail_address = address
+       
+    func update(name: String){
+        setDisplayName(name)
+      //TODO Find address and update preferences
+        
     }
     
     func addFromMail(fromMail: Mail){
@@ -37,7 +35,10 @@ public class EnzevalosContact: NSManagedObject {
     }
     
     func addCCMail(mail: Mail){
-       // self.addToCc(mail)
+       self.addToCC(mail)
+    }
+    func addBCCMail(mail: Mail){
+        self.addToBCC(mail)
     }
     
     func setDisplayName(name: String){
@@ -54,7 +55,7 @@ public class EnzevalosContact: NSManagedObject {
     }
     
     //TODO: FIX ME
-    func getContact()->CNContact{
+    func getContact()->CNContact?{
         // TODO: Check if contact exists in address book
         //        let contactFromBook = AddressHandler.contactByEmail((mail.sender?.mailbox)!)
         //        if let con = contactFromBook {
@@ -78,23 +79,39 @@ public class EnzevalosContact: NSManagedObject {
                 con.familyName = "NAME"
             }
         }
-        con.emailAddresses = [CNLabeledValue(label: CNLabelHome, value: self.mail_address!)]
+        
+        let adr: Mail_Address
+        adr = self.addresses?.anyObject() as! Mail_Address
+        con.emailAddresses.append(CNLabeledValue(label: adr.address, value: CNLabelHome))
+        
         return con
     }
     
-    func toString()->String{
-        if(mail_address != nil){
-            return self.mail_address!
+    func getAddress(address: String)-> Mail_Address?{
+        //TODO: DB request???
+        var addr: Mail_Address
+        if addresses != nil {
+            for obj in addresses! {
+                addr = obj as! Mail_Address
+                if(addr.address == address){
+                    return addr
+                }
+        
+            }
         }
-        return "NO NAME"
+        return nil
     }
     
-    func getMailAddresses()->[String]{
-        return [self.mail_address!] //TODO ADD CNCONTACT
-        
+    func getAddressByMCOAddress(mcoaddress: MCOAddress)-> Mail_Address?{
+        return getAddress(mcoaddress.mailbox!)
+    }
+    
+    
+    
+    func getMailAddresses()->[Mail_Address]{
+       return self.addresses!.allObjects as! [Mail_Address]
     }
 }
-
 private func isEmpty(contact: EnzevalosContact)-> Bool{
     if(contact.getFromMails().count == 0){
         return true

@@ -15,6 +15,10 @@
 		472F39741E1D09C4009260FB /* State+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */; };
 		472F397C1E1D0B0B009260FB /* Mail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39781E1D0B0B009260FB /* Mail+CoreDataProperties.swift */; };
 		472F397E1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */; };
+		472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */; };
+		472F39821E1E5347009260FB /* Mail_Address+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */; };
+		472F39861E1FA34E009260FB /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39851E1FA34E009260FB /* Record.swift */; };
+		472F39881E1FA377009260FB /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39871E1FA377009260FB /* KeyRecord.swift */; };
 		476142081E07E52B00FD5E4F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476142071E07E52B00FD5E4F /* Theme.swift */; };
 		4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 476142091E082F9C00FD5E4F /* Settings.bundle */; };
 		476373C21E09BA88004D5EFE /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
@@ -91,7 +95,6 @@
 		A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05931D956931008659C1 /* InboxCellDelegator.swift */; };
 		A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05951D956939008659C1 /* InboxTableViewCell.swift */; };
 		A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05971D956947008659C1 /* InboxViewController.swift */; };
-		A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05991D95694E008659C1 /* FillInbox.swift */; };
 		A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
@@ -101,6 +104,7 @@
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
+		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
 		F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -131,6 +135,10 @@
 		472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "State+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		472F39781E1D0B0B009260FB /* Mail+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mail+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnzevalosContact+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mail_Address+CoreDataClass.swift"; sourceTree = "<group>"; };
+		472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mail_Address+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		472F39851E1FA34E009260FB /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		472F39871E1FA377009260FB /* KeyRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyRecord.swift; sourceTree = "<group>"; };
 		476142071E07E52B00FD5E4F /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		476142091E082F9C00FD5E4F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		476373C11E09BA88004D5EFE /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
@@ -255,7 +263,6 @@
 		A1EB05931D956931008659C1 /* InboxCellDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxCellDelegator.swift; sourceTree = "<group>"; };
 		A1EB05951D956939008659C1 /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05971D956947008659C1 /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
-		A1EB05991D95694E008659C1 /* FillInbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillInbox.swift; sourceTree = "<group>"; };
 		A1EB059B1D956957008659C1 /* NSDateCompare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateCompare.swift; sourceTree = "<group>"; };
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -275,6 +282,7 @@
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
 		F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
+		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -382,18 +390,23 @@
 				A1EB05771D956817008659C1 /* ContactExtension.swift */,
 				472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */,
 				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
+				472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */,
+				472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */,
 				472F39281E1277D2009260FB /* Mail+CoreDataClass.swift */,
 				472F39781E1D0B0B009260FB /* Mail+CoreDataProperties.swift */,
 				472F39711E1D09C4009260FB /* State+CoreDataClass.swift */,
 				472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
 				A1F9922B1DA7C9100073BF1B /* Main.storyboard */,
+				F1ACF21D1E0C290500C1B843 /* contactView */,
 				A1123E6C1DA682850069551C /* Localizable.strings */,
 				A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */,
 				A1EB05A31D956E32008659C1 /* Assets.xcassets */,
 				476142091E082F9C00FD5E4F /* Settings.bundle */,
 				A13526871D955BDF00D3BFE1 /* Info.plist */,
 				A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */,
+				472F39871E1FA377009260FB /* KeyRecord.swift */,
+				472F39851E1FA34E009260FB /* Record.swift */,
 			);
 			path = enzevalos_iphone;
 			sourceTree = "<group>";
@@ -533,11 +546,18 @@
 				A1EB05951D956939008659C1 /* InboxTableViewCell.swift */,
 				A1EB05971D956947008659C1 /* InboxViewController.swift */,
 				F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */,
-				A1EB05991D95694E008659C1 /* FillInbox.swift */,
 				A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */,
 				A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */,
 			);
 			name = read;
+			sourceTree = "<group>";
+		};
+		F1ACF21D1E0C290500C1B843 /* contactView */ = {
+			isa = PBXGroup;
+			children = (
+				F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */,
+			);
+			name = contactView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -826,12 +846,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				472F39861E1FA34E009260FB /* Record.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				A135CF121DD4BDD1007E3C29 /* PGPPacketFactory.m in Sources */,
 				A135CF111DD4BDD1007E3C29 /* PGPPacket.m in Sources */,
+				472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
 				A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
@@ -839,12 +861,13 @@
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
 				A135CF221DD4BDD1007E3C29 /* PGPUser.m in Sources */,
 				A135CF031DD4BDD1007E3C29 /* NSData+PGPUtils.m in Sources */,
-				A1EB059A1D95694E008659C1 /* FillInbox.swift in Sources */,
 				A17A18F51DDCB5580058D934 /* KeyHandler.swift in Sources */,
 				A135CF171DD4BDD1007E3C29 /* PGPPublicKeyRSA.m in Sources */,
 				A135CF181DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m in Sources */,
+				472F39881E1FA377009260FB /* KeyRecord.swift in Sources */,
 				A135CF141DD4BDD1007E3C29 /* PGPPKCSEmsa.m in Sources */,
 				A135CF051DD4BDD1007E3C29 /* ObjectivePGP.m in Sources */,
+				F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
 				A135CF0F1DD4BDD1007E3C29 /* PGPMPI.m in Sources */,
@@ -869,6 +892,7 @@
 				A1EB05781D956817008659C1 /* ContactExtension.swift in Sources */,
 				A135CF1F1DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
 				A135CF211DD4BDD1007E3C29 /* PGPTrustPacket.m in Sources */,
+				472F39821E1E5347009260FB /* Mail_Address+CoreDataProperties.swift in Sources */,
 				476373C21E09BA88004D5EFE /* UserData.swift in Sources */,
 				A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */,
 				A17A18F71DDCBE530058D934 /* KeyWrapper.swift in Sources */,

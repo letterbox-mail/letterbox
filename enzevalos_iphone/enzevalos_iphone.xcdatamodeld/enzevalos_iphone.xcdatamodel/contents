@@ -3,13 +3,11 @@
     <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
         <attribute name="cncontact" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
-        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="mail_address" attributeType="String" syncable="YES"/>
-        <attribute name="prefer_encryption" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="bcc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Mail" syncable="YES"/>
-        <relationship name="cc" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Mail" syncable="YES"/>
-        <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" syncable="YES"/>
-        <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" syncable="YES"/>
+        <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
+        <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Mail" syncable="YES"/>
+        <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Mail" syncable="YES"/>
+        <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Mail" syncable="YES"/>
+        <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Mail" syncable="YES"/>
     </entity>
     <entity name="Mail" representedClassName="Mail" syncable="YES">
         <attribute name="body" attributeType="String" syncable="YES"/>
@@ -17,23 +15,29 @@
         <attribute name="flag" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isVerified" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="subject" attributeType="String" syncable="YES"/>
         <attribute name="trouble" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uid" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
-        <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EnzevalosContact" syncable="YES"/>
-        <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EnzevalosContact" syncable="YES"/>
-        <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" syncable="YES"/>
-        <relationship name="to" toMany="YES" deletionRule="Nullify" destinationEntity="EnzevalosContact" syncable="YES"/>
+        <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
+        <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
+        <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
+        <relationship name="to" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
+    </entity>
+    <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
+        <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
+        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="prefer_encryption" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="contact" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" syncable="YES"/>
     </entity>
     <entity name="State" representedClassName="State" syncable="YES">
-        <attribute name="currentContacts" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="currentMails" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="maxUID" optional="YES" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="currentContacts" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="currentMails" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxUID" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
     </entity>
     <elements>
-        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="178"/>
-        <element name="Mail" positionX="-416" positionY="-189" width="128" height="238"/>
-        <element name="State" positionX="-306" positionY="-27" width="128" height="88"/>
+        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="150"/>
+        <element name="Mail" positionX="-416" positionY="-189" width="128" height="225"/>
+        <element name="State" positionX="-306" positionY="-27" width="128" height="90"/>
+        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="105"/>
     </elements>
 </model>

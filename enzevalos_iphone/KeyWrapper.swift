@@ -8,7 +8,7 @@
 
 import Foundation
 
-class KeyWrapper : NSObject {
+public class KeyWrapper : NSObject {
     
     let key: PGPKey /*{
         set (newKey) {

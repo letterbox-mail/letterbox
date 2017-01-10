@@ -16,8 +16,13 @@ class DataHandler: NSObject {
     private var isLoadMails: Bool
     private var contacts: [EnzevalosContact]
     private var isLoadContacts: Bool
-    private var currentstate: State
+    private var currentstate: State?
     private var isLoadState: Bool
+    
+    private let MaxRecords = 50
+    private let MaxMails = 50
+    
+    
     
     override  init() {
         // This resource is the same name as your xcdatamodeld contained in your project.
@@ -105,6 +110,30 @@ class DataHandler: NSObject {
         }
         return result
     }
+    // -------- Handle mail addresses ---------
+    
+    func getMailAddress(address: String)-> Mail_Address{
+        let search  = find("Mail_Address", type: "address", search: address)
+        var mail_address: Mail_Address
+        if(search == nil || search!.count == 0){
+            mail_address =  NSEntityDescription.insertNewObjectForEntityForName("Mail_Address",inManagedObjectContext: managedObjectContext) as! Mail_Address
+            mail_address.address = address
+            mail_address.key = ""
+            mail_address.prefer_encryption = false
+        }
+        else{
+            mail_address = search! [0] as! Mail_Address
+        }
+        return mail_address
+    }
+    
+    func getMailAddressByMCOAddress(address: MCOAddress)->Mail_Address{
+        return getMailAddress(address.mailbox!)
+    }
+    
+    
+    
+    
     
     // -------- Start Access to contact(s) --------
     // Find one or a list of enzevalos contacts
@@ -113,12 +142,14 @@ class DataHandler: NSObject {
     
     func getContactByAddress(address: String) -> EnzevalosContact{
         // Core function
-        let search = find("EnzevalosContact", type: "mail_address", search: address)
+        let search = find("EnzevalosContact", type: "addresses", search: address)
         var contact: EnzevalosContact
         if (search == nil || search!.count == 0){
             contact = NSEntityDescription.insertNewObjectForEntityForName("EnzevalosContact", inManagedObjectContext: managedObjectContext) as! EnzevalosContact
-            contact.setAddress(address)
-            contact.update(address, key: "", prefer_enc: false)
+            contact.update(address)
+            let adr = getMailAddress(address)
+            contact.addToAddresses(adr)
+            adr.contact = contact
         }
         else{
             contact = search! [0] as! EnzevalosContact
@@ -129,7 +160,9 @@ class DataHandler: NSObject {
     
     func getContact(name: String, address: String, key: String, prefer_enc: Bool)->EnzevalosContact{
         let contact = getContactByAddress(address)
-        contact.update(name, key: key, prefer_enc: prefer_enc)
+        contact.update(name)
+        contact.getAddress(address)?.key = key
+        contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
         save()
         return contact
     }
@@ -159,7 +192,10 @@ class DataHandler: NSObject {
     private func handleFromAddress(sender: MCOAddress, fromMail: Mail){
         let contact = getContactByMCOAddress(sender)
         contact.addFromMail(fromMail)
-        fromMail.addFrom(contact)
+        let adr: Mail_Address
+        adr = contact.getAddressByMCOAddress(sender)!
+        fromMail.addFrom(adr)
+
     }
     
     private func handleToAddresses(receivers: [MCOAddress], mail: Mail)
@@ -168,7 +204,7 @@ class DataHandler: NSObject {
         for c in contacts{
             c.addToMail(mail)
         }
-        mail.addReceivers(contacts)
+       // TODO mail.addReceivers(contacts)
     }
     
     private func handleCCAddresses(cc: [MCOAddress], mail: Mail)
@@ -177,7 +213,8 @@ class DataHandler: NSObject {
         for c in contacts{
             c.addCCMail(mail)
         }
-        mail.addCC(contacts)
+        //TODO ERROR HIER: Fix-> Überprüfung mit Datenlayout
+      // mail.addCC(contacts)
     }
     
     // TODO: handle BCC
@@ -202,17 +239,18 @@ class DataHandler: NSObject {
                 mail.body = body
             }
  */
-            print("Create new Mail")
             mail.body = body
             mail.date = time
             mail.subject = subject
             mail.isEncrypted = isEncrypted
-            mail.isVerified = isVerified
+
             // TODO: mail.isUnread = isUnread
             mail.uid = NSDecimalNumber.init(unsignedLongLong: uid)
+
             mail.trouble = trouble
+
             mail.setFlags(flags)
-            
+
         }
         else{
             print ("request old mail")
@@ -220,15 +258,13 @@ class DataHandler: NSObject {
         }
         handleFromAddress(sender, fromMail: mail)
         handleToAddresses(receivers, mail: mail)
-        handleCCAddresses(cc, mail: mail)
+        // TODO FIX handleCCAddresses(cc, mail: mail)
         
         save()
-        
-        if currentstate.getMaxUid() < mail.uid.unsignedLongLongValue{
-            currentstate.setMaxUid(mail.uid.unsignedLongLongValue)
+        if getCurrentState().getMaxUid() < mail.uid.unsignedLongLongValue{
+            getCurrentState().setMaxUid(mail.uid.unsignedLongLongValue)
         }
         mails.append(mail)
- 
         return mail
     }
     
@@ -253,8 +289,8 @@ class DataHandler: NSObject {
             for r in result!{
                 let m = r as! Mail
                 mails.append(m)
-                if  currentstate.getMaxUid() < m.uid.unsignedLongLongValue{
-                    currentstate.setMaxUid(m.uid.unsignedLongLongValue)
+                if  getCurrentState().getMaxUid() < m.uid.unsignedLongLongValue{
+                    getCurrentState().setMaxUid(m.uid.unsignedLongLongValue)
                 }
             }
         }
@@ -262,7 +298,10 @@ class DataHandler: NSObject {
     }
     
     func readMaxUid()->UInt64{
-       return  getCurrentState().getMaxUid()
+        let state = getCurrentState()
+        let max = state.getMaxUid()
+        print("MaxUid: \(max)")
+       return  max
     }
     
     private func readMails()->[Mail]{
@@ -294,21 +333,55 @@ class DataHandler: NSObject {
     }
     
     
+    func getRecords()->[KeyRecord]{
+        
+        //TODO Fix here!
+        
+        var records = [KeyRecord] ()
+        let mails = readMails()
+        for m in mails {
+            var found = false
+            for r in records {
+                if r.updateMails(m){
+                    found = true
+                    break
+                }
+            }
+            if !found {
+                records.append(KeyRecord(mail: m))
+            }
+        }
+        
+        for r in records {
+            r.mails.sortInPlace()
+            r.showInfos()
+        }
+        
+        records.sortInPlace()
+        
+        for r in records {
+            r.showInfos()
+        }
+        print("# records: \(records.count) | #mails: \(mails.count)")
+        return records
+    }
+    
     func getCurrentState()->State{
         if !isLoadState {
             let result = findAll("State")
-            if(result != nil || result?.count > 0){
-                currentstate =  result?.first as! State
+            if(result != nil && result?.count > 0){
+                currentstate =  result?.first as? State
             }
             else{
-                currentstate  = NSEntityDescription.insertNewObjectForEntityForName("State", inManagedObjectContext: managedObjectContext) as! State
-                currentstate.setNumberOfContacts(getContacts().count)
-                currentstate.setNumberOfMails(readMails().count)
-                currentstate.setMaxUid(1)
+                currentstate  = NSEntityDescription.insertNewObjectForEntityForName("State", inManagedObjectContext: managedObjectContext) as? State
+                currentstate!.setNumberOfContacts(getContacts().count)
+                currentstate!.setNumberOfMails(readMails().count)
+                currentstate!.setMaxUid(1)
                 save()
             }
+            isLoadState = true
         }
-        return currentstate
+        return currentstate!
     
     }
     

@@ -10,14 +10,12 @@ import UIKit
 import Foundation
 
 class ListViewController: UITableViewController {
-    var contact: EnzevalosContact? {
+    var contact: KeyRecord? {
         didSet {
-            if let con = contact?.getContact() {
-                self.title = con.givenName + " " + con.familyName
-            }
+                self.title = contact!.name
         }
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
     }

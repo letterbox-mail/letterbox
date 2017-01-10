@@ -48,26 +48,24 @@ public class Mail: NSManagedObject, Comparable {
         return returnString
     }
     
-    func addFrom(from: EnzevalosContact){
+    func addFrom(from: Mail_Address){
         self.from = from
     }
     
-    func getFrom()->EnzevalosContact{
-        return from!
+    func getFrom()->Mail_Address{
+        return from
     }
     
-    func addReceivers(receivers: [EnzevalosContact]){
+    func addReceivers(receivers: [Mail_Address]){
         for ec in receivers{
             self.addToTo(ec)
         }
     }
     
-    func getReceivers()->[EnzevalosContact]{
-        var receivers = [EnzevalosContact] ()
-        if to != nil{
-            for obj in to!{
-                receivers.append(obj as! EnzevalosContact)
-            }
+    func getReceivers()->[Mail_Address]{
+        var receivers = [Mail_Address] ()
+        for obj in to{
+            receivers.append(obj as! Mail_Address)
         }
         return receivers
     }
@@ -75,31 +73,27 @@ public class Mail: NSManagedObject, Comparable {
     
     //TODO: Optimize, only cast once
     
-    func getCCs()->[EnzevalosContact]{
-        var receivers = [EnzevalosContact] ()
-        if to != nil{
-            for obj in cc!{
-                receivers.append(obj as! EnzevalosContact)
-            }
+    func getCCs()->[Mail_Address]{
+        var receivers = [Mail_Address] ()
+        for obj in cc!{
+            receivers.append(obj as! Mail_Address)
         }
         return receivers
     }
     
-    func getBCCs()->[EnzevalosContact]{
-        var receivers = [EnzevalosContact] ()
-        if to != nil{
-            for obj in bcc!{
-                receivers.append(obj as! EnzevalosContact)
-            }
+    func getBCCs()->[Mail_Address]{
+        var receivers = [Mail_Address] ()
+        for obj in bcc!{
+            receivers.append(obj as! Mail_Address)
         }
         return receivers
     }
     
     func getFromAddress()->String{
-        return (from?.mail_address)!
+        return (from.address)
     }
     
-    func addCC(cc: [EnzevalosContact]){
+    func addCC(cc: [Mail_Address]){
         for ec in cc{
             self.addToCc(ec)
         }

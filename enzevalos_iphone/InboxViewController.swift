@@ -13,7 +13,7 @@ import Contacts
 class InboxViewController : UITableViewController, InboxCellDelegator, MailHandlerDelegator {
     let dateFormatter = NSDateFormatter()
     
-    var contacts: [EnzevalosContact] = [] {
+    var contacts: [KeyRecord] = [] {
         didSet {
             self.contacts.sortInPlace({$0 < $1})
             if oldValue.count < contacts.count {
@@ -38,15 +38,16 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     var lastUpdate: NSDate?
 
     
-    func addNewMail(mail: Mail) {
+    func addNewMail(mail: Mail) { // Records durchgehen. Einsortieren.
+        print("Mail Uid: \(mail.uid) MaxUid: \(DataHandler.getDataHandler().readMaxUid())")
         for c in contacts {
-            for address in c.getMailAddresses() {
-                if address == mail.getFromAddress() {
-                    return
-                }
+            if c.updateMails(mail){
+                return
             }
         }
-        contacts.append(mail.getFrom())
+        let r: KeyRecord
+        r = KeyRecord(mail: mail)
+        contacts.append(r)
     }
 
  
@@ -69,7 +70,8 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
         lastUpdateLabel.textColor = UIColor.blackColor()
         lastUpdateButton.customView = lastUpdateLabel
         
-        contacts = DataHandler.getDataHandler().getContacts()
+        // contacts = DataHandler.getDataHandler().getContacts() TODO: Load and store Records
+        contacts = DataHandler.getDataHandler().getRecords()
         
         AppDelegate.getAppDelegate().mailHandler.delegate = self
         
@@ -136,8 +138,12 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     
     //TODO: Whats that? What is the error?
     
-    func callSegueFromCell2(contact: EnzevalosContact?) {
+    func callSegueFromCell2(contact: KeyRecord?) {
         performSegueWithIdentifier("mailListSegue", sender: contact)
+    }    
+    
+    func callSegueToContact(contact: KeyRecord?) {
+        performSegueWithIdentifier("contactSegue", sender: contact)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -147,8 +153,13 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
                 DestinationViewController.mail = mail
             }
         } else if segue.identifier == "mailListSegue" {
-            if let contact = sender as? EnzevalosContact {
+            if let contact = sender as? KeyRecord {
                 let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
+                DestinationViewController.contact = contact
+            }
+        } else if segue.identifier == "contactSegue" {
+            if let contact = sender as? KeyRecord {
+                let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
                 DestinationViewController.contact = contact
             }
         }

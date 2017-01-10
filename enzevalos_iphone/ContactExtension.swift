@@ -30,7 +30,7 @@ extension CNContact {
         }
         //size.width = floorf(size.width * scale) / scale;
         //size.height = floorf(size.height * scale) / scale;
-        
+
         var myBounds = CGRect()
         myBounds.size.width = 70
         myBounds.size.height = 70
@@ -45,12 +45,12 @@ extension CNContact {
         CGContextAddPath(context!, path);
         CGContextClip(context!);
         
-        
         //
         // Fill background of context
         //
         CGContextSetFillColorWithColor(context!, self.getColor().CGColor)
         CGContextFillRect(context!, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
+        
         
         //
         // Draw text in the context
@@ -59,6 +59,7 @@ extension CNContact {
         
         text.drawInRect(CGRectMake(myBounds.size.width/2 - textSize.width/2, myBounds.size.height/2 - textSize.height/2,textSize.width, textSize.height))
         
+        
         let snapshot = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return snapshot!
@@ -66,7 +67,9 @@ extension CNContact {
     
     func getColor() -> UIColor{
         // Overflow?!
-        let hash = (abs((self.emailAddresses.first!.value as! String).hash)) % 653
+        print(self.emailAddresses.first!.label?.capitalizedString)
+        let hash = (abs((self.emailAddresses.first!.label?.capitalizedString)!.hash)) % 653 //TODO Why is mail Addresses?
+        
         return UIColor(hue: CGFloat(hash) / CGFloat(653), saturation: 1, brightness: 0.75, alpha: 1)
     }
     

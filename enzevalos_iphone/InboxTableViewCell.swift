@@ -46,6 +46,12 @@ class InboxTableViewCell: UITableViewCell {
             delegate.callSegueFromCell2(enzContact)
         }
     }
+    
+    @IBAction func contactButtonPressed(sender: AnyObject) {
+        if let delegate = delegate {
+            delegate.callSegueToContact(enzContact)
+        }
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -59,8 +65,9 @@ class InboxTableViewCell: UITableViewCell {
         seperator2.constant = 1 / UIScreen.mainScreen().scale
     }
     
-    var enzContact: EnzevalosContact? {
+    var enzContact: KeyRecord? {
         didSet {
+        //   let con: KeyRecord
             if let con = enzContact {
                 firstMail = con.getFromMails().first
                 if con.getFromMails().count > 1 {
@@ -72,7 +79,13 @@ class InboxTableViewCell: UITableViewCell {
                     secondMessageLabel.text = NSLocalizedString("NoFurtherMessages", comment: "There is only one message from this sender.")
                     secondButton.enabled = false
                 }
-                self.contact = con.getContact()
+                if con.isSecure {
+                    iconView.image = UIImage(named: "letter_small_2")!
+                } else {
+                    iconView.image = UIImage(named: "postcard_small")!
+                }
+
+                self.contact = con.getContact().getContact()
             }
         }
     }
@@ -160,16 +173,10 @@ class InboxTableViewCell: UITableViewCell {
         didSet {
             if let con = contact {
                 nameLabel.text = con.givenName + " " + con.familyName
+//                nameLabel.text = CNContactFormatter.stringFromContact(con, style: .FullName)
                 faceView.image = con.getImageOrDefault()
                 faceView.layer.cornerRadius = faceView.frame.height / 2
                 faceView.clipsToBounds = true
-                if let m = firstMail {
-                    if m.isEncrypted {
-                        iconView.image = UIImage(named: "letter_small_2")!
-                    } else {
-                        iconView.image = UIImage(named: "postcard_small")!
-                    }
-                }
             }
         }
     }
