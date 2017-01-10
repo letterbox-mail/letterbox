@@ -80,9 +80,11 @@ class InboxTableViewCell: UITableViewCell {
                     secondButton.enabled = false
                 }
                 if con.isSecure {
-                    iconView.image = UIImage(named: "letter_small_2")!
+                    iconView.image = IconsStyleKit.imageOfLetter
+//                    iconView.image = UIImage(named: "letter_small_2")!
                 } else {
-                    iconView.image = UIImage(named: "postcard_small")!
+                    iconView.image = IconsStyleKit.imageOfPostcard
+//                    iconView.image = UIImage(named: "postcard_small")!
                 }
 
                 self.contact = con.getContact().getContact()
