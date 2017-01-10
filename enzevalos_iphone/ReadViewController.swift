@@ -198,7 +198,7 @@ class ReadViewController : UITableViewController {
             }
             
             sender.text = m.getFromAddress()
-            let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
+             //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
             if m.getReceivers().count == 1 && m.getCCs().count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
                 receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
                 for c in m.getCCs(){

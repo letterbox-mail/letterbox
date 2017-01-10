@@ -21,10 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
-        let launchedBefore = NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")
+        NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")
         
-        let theme = ThemeManager.currentTheme()
-        //ThemeManager.applyTheme(theme)
+        ThemeManager.currentTheme()
         
         return true
     }

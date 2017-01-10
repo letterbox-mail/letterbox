@@ -298,9 +298,7 @@ class MailHandler {
                         
                         
                         
-                        if (header.extraHeaderValueForName(EXTRAHEADERS[0]) != nil){
-                            let autocrypt_contact = AutocryptContact(header: header)
-                        }
+                        // TODO: Handle here autocrypt
                         
                         
                         if let to = header.to {
