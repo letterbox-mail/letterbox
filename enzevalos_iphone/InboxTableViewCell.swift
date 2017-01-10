@@ -67,7 +67,6 @@ class InboxTableViewCell: UITableViewCell {
     
     var enzContact: KeyRecord? {
         didSet {
-        //   let con: KeyRecord
             if let con = enzContact {
                 firstMail = con.getFromMails().first
                 if con.getFromMails().count > 1 {
@@ -88,6 +87,10 @@ class InboxTableViewCell: UITableViewCell {
                 }
 
                 self.contact = con.getContact().getContact()
+                nameLabel.text = con.name
+                faceView.image = con.getImageOrDefault()
+                faceView.layer.cornerRadius = faceView.frame.height / 2
+                faceView.clipsToBounds = true
             }
         }
     }
@@ -171,17 +174,7 @@ class InboxTableViewCell: UITableViewCell {
         }
     }
     
-    var contact: CNContact? {
-        didSet {
-            if let con = contact {
-                nameLabel.text = con.givenName + " " + con.familyName
-//                nameLabel.text = CNContactFormatter.stringFromContact(con, style: .FullName)
-                faceView.image = con.getImageOrDefault()
-                faceView.layer.cornerRadius = faceView.frame.height / 2
-                faceView.clipsToBounds = true
-            }
-        }
-    }
+    var contact: CNContact?
     
     func cellTouched(sender: AnyObject) {
         if let button = sender as? UIButton {

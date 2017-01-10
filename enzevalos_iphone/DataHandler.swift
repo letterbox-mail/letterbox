@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import Contacts
+
 class DataHandler: NSObject {
     private static var handler: DataHandler? = nil
 
@@ -331,6 +333,38 @@ class DataHandler: NSObject {
         return contacts
     }
     
+    func getContactsWithCNContacts()->[EnzevalosContact]{
+        var contacts = getContacts()
+        do{
+            try AppDelegate.getAppDelegate().contactStore.enumerateContactsWithFetchRequest(CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey]), usingBlock: {
+                (let cn : CNContact, let stop) -> Void in
+                //                    print(c)
+                // Add or not?
+                var new: Bool
+                new = true
+                if cn.emailAddresses.count == 0{
+                    return
+                }
+                for ec in contacts{
+                    if let eccn = ec.getContact(){
+                        if eccn.identifier == cn.identifier{
+                            new = false
+                            break
+                        }
+                    }
+                
+                }
+                if new {
+                    var ec: EnzevalosContact
+                    ec = EnzevalosContact()
+                }
+                
+            })
+        }
+        catch {}
+        return contacts
+    }
+    
     
     func getRecords()->[KeyRecord]{
         
@@ -382,5 +416,8 @@ class DataHandler: NSObject {
         return currentstate!
     
     }
+    
+    
+    
     
 }

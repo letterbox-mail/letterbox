@@ -47,7 +47,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             return
         }
         if let con = contact {
-            contactImage.image = con.getContact().getContact()!.getImageOrDefault()
+            contactImage.image = con.getImageOrDefault()
             contactImage.layer.cornerRadius = contactImage.frame.height / 2
             contactImage.clipsToBounds = true
             self.title = con.name

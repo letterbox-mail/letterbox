@@ -8,6 +8,7 @@
 
 import Foundation
 import Contacts
+import UIKit
 
 public class KeyRecord: Record{
     /*
@@ -93,6 +94,14 @@ public class KeyRecord: Record{
         }
         return false
 
+    }
+    
+    public func getImageOrDefault() -> UIImage {
+        return contact.getImageOrDefault()
+    }
+    
+    public func getColor() -> UIColor {
+        return contact.getColor()
     }
 }
 
