@@ -12,16 +12,10 @@ import UIKit.UIImage
 
 class AddressHandler {
     
-    static var addresses : [String] = []//["jakob.bode@fu-berlin.de", "oliver.wiese@fu-berlin.de", "jo.lausch@fu-berlin.de", "test"]
+    static var addresses : [String] = []
+    
     static var freqAlgorithm : [String] -> [(UIImage, String, String, UIImage?, UIColor)] = {
         (inserted : [String]) -> [(UIImage, String, String, UIImage?, UIColor)] in
-            /*do{
-                var cont = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName("Jakob Bode"), keysToFetch: [/*CNContactGivenNameKey, CNContactFamilyNameKey, CNContactMiddleNameKey*/CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
-                return [(cont[cont.startIndex].getImageOrDefault(),"Jakob", "jakob.bode@fu-berlin.de"), (cont[cont.startIndex].getImageOrDefault(),"Jakob Bode", "jakob.bode@fu-berlin.de"), (cont[cont.startIndex].getImageOrDefault(),"Jakob B.", "jakob.bode@fu-berlin.de"), (cont[cont.startIndex].getImageOrDefault(),"Jakob Simon Bode", "jakob.bode@fu-berlin.de"), (cont[cont.startIndex].getImageOrDefault(),"Jakob", "jakob.bode@fu-berlin.de"), (cont[cont.startIndex].getImageOrDefault(),"Jakob Bode", "jakob.bode@fu-berlin.de"), (cont[cont.startIndex].getImageOrDefault(),"Jakob B.", "jakob.bode@fu-berlin.de"), (cont[cont.startIndex].getImageOrDefault(),"Jakob Simon Bode", "jakob.bode@fu-berlin.de")]
-            }
-            catch {
-                return []
-            }*/
         var cons : [(UIImage,String,String,UIImage?,UIColor)] = []
             do{
                 

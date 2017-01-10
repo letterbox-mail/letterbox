@@ -12,10 +12,30 @@ import CoreData
 import Contacts
 
 @objc(Mail_Address)
-public class Mail_Address: NSManagedObject {
+public class Mail_Address: NSManagedObject, MailAddress {
     
+    public var mailAddress: String{
+        get{
+            return address
+        }
+    }
     
-    var label: String = "Private"
-
+   public var label: CNLabeledValue{
+        get{
+            return CNLabeledValue.init(label: address, value: CNLabelHome)
+        }
+    }
+    
+    public var prefEnc: Bool{
+        get{
+            return prefer_encryption
+        }
+    }
+    
+    public var hasKey: Bool{
+        get{
+            return key != nil
+        }
+    }
     
 }

@@ -119,6 +119,7 @@ public class Mail: NSManagedObject, Comparable {
     
     
     func markMessageAsRead(read: Bool){
+        print("mark")
         if read != isUnread(){
             var flags: MCOMessageFlag
             flags = getFlags()

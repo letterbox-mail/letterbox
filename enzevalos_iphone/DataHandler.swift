@@ -22,7 +22,7 @@ class DataHandler: NSObject {
     private var isLoadState: Bool
     
     private let MaxRecords = 50
-    private let MaxMails = 50
+    private let MaxMailsPerRecord = 100
     
     
     
@@ -78,6 +78,22 @@ class DataHandler: NSObject {
             fatalError("Failure to save context\(error)")
         }
         return succ
+    }
+    
+    
+    private func cleanUp(){
+        if countedContacts() > MaxRecords{
+            //var contacts.
+        }
+    
+    }
+    
+    func countedMails()->Int{
+        return readMails().count
+    }
+    
+    func countedContacts()-> Int{
+        return getContacts().count
     }
     
     // Save, load, search
@@ -206,7 +222,7 @@ class DataHandler: NSObject {
         for c in contacts{
             c.addToMail(mail)
         }
-       // TODO mail.addReceivers(contacts)
+       // TODO FIX mail.addReceivers(contacts)
     }
     
     private func handleCCAddresses(cc: [MCOAddress], mail: Mail)
@@ -333,35 +349,10 @@ class DataHandler: NSObject {
         return contacts
     }
     
-    func getContactsWithCNContacts()->[EnzevalosContact]{
-        var contacts = getContacts()
-        do{
-            try AppDelegate.getAppDelegate().contactStore.enumerateContactsWithFetchRequest(CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey]), usingBlock: {
-                (let cn : CNContact, let stop) -> Void in
-                //                    print(c)
-                // Add or not?
-                var new: Bool
-                new = true
-                if cn.emailAddresses.count == 0{
-                    return
-                }
-                for ec in contacts{
-                    if let eccn = ec.getContact(){
-                        if eccn.identifier == cn.identifier{
-                            new = false
-                            break
-                        }
-                    }
-                
-                }
-                if new {
-                    var ec: EnzevalosContact
-                    ec = EnzevalosContact()
-                }
-                
-            })
-        }
-        catch {}
+    func getContactsWithCNContacts()->[Contact]{
+        var econtacts = getContacts()
+        //var cncontacts = AddressHandler.
+        //TODO Sample of CNContacts
         return contacts
     }
     
@@ -369,6 +360,7 @@ class DataHandler: NSObject {
     func getRecords()->[KeyRecord]{
         
         //TODO Fix here!
+        //TODO Double entries
         
         var records = [KeyRecord] ()
         let mails = readMails()

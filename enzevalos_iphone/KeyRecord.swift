@@ -87,6 +87,14 @@ public class KeyRecord: Record{
     public func updateMails(mail: Mail)->Bool{
         if mail.isEncrypted == self.isSecure{
             if getContact().getAddress(mail.getFrom().address) != nil{
+                for m in mails{
+                  if m.uid.compare(mail.uid) == NSComparisonResult.OrderedSame{
+                       return true
+                  }
+                  else if m.uid.compare(mail.uid) == NSComparisonResult.OrderedAscending {
+                    break
+                    }
+                }
                 mails.append(mail)
                 mails.sortInPlace()
                 return true
