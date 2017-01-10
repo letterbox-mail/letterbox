@@ -253,7 +253,6 @@ class DataHandler: NSObject {
 
         }
         else{
-            print ("request old mail")
             return finding![0] as! Mail
         }
         handleFromAddress(sender, fromMail: mail)
@@ -362,7 +361,6 @@ class DataHandler: NSObject {
         for r in records {
             r.showInfos()
         }
-        print("# records: \(records.count) | #mails: \(mails.count)")
         return records
     }
     

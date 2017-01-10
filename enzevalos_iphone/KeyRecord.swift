@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import Contacts
+
 public class KeyRecord: Record{
     /*
      A record contains a signing key (or none because of insecure communication), a contact (inlucding mail-addresses) and mails.
@@ -20,12 +22,7 @@ public class KeyRecord: Record{
     
     public var name: String{
         get{
-            let con = contact.getContact()
-            print(contact.displayname)
-            if con != nil{
-                return con!.givenName + " " + con!.familyName
-            }
-            return contact.displayname!
+            return contact.getName()
         }
     }
     public var isSecure: Bool
@@ -79,6 +76,9 @@ public class KeyRecord: Record{
         return contact
     }
     
+    public func getCNContact() -> CNContact? {
+        return contact.getContact()
+    }
     
     public func getFromMails()->[Mail]{
         return mails

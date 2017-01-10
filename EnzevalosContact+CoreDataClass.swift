@@ -45,6 +45,26 @@ public class EnzevalosContact: NSManagedObject {
         self.displayname = name
     }
     
+    func getName()-> String{
+        var name: String
+        name = String()
+        if let cnc = self.getContact(){
+            if cnc.givenName.characters.count > 0 {
+                name += cnc.givenName
+            }
+            if cnc.familyName.characters.count > 0 {
+                if name.characters.count > 0 {
+                    name += " "
+                }
+                name += cnc.familyName
+            }
+        }
+        if name.characters.count == 0 {
+            return displayname!
+        }
+        return name
+    }
+    
     
     // TODO: Sort Onetime!
     func getFromMails()-> [Mail]{

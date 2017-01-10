@@ -39,7 +39,6 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
 
     
     func addNewMail(mail: Mail) { // Records durchgehen. Einsortieren.
-        print("Mail Uid: \(mail.uid) MaxUid: \(DataHandler.getDataHandler().readMaxUid())")
         for c in contacts {
             if c.updateMails(mail){
                 return
