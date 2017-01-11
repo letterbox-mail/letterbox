@@ -58,6 +58,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
                 actionButton.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), forState: UIControlState.Normal)
             } else {
                 statusLabel.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
+                actionButton.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), forState: UIControlState.Normal)
             }
             if con.isVerified {
                 statusLabel.text = NSLocalizedString("Verified", comment: "Contact is verified")
@@ -75,6 +76,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
                 ui = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(contact!.contact.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
             } catch {
                 //contact doesn't exist or we don't have authorization
+                //TODO: handle missing authorization
             }
         }
         if let conUI = ui {
