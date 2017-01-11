@@ -16,7 +16,7 @@ import Contacts
 //TODO: add CNContact
 
 @objc(EnzevalosContact)
-public class EnzevalosContact: NSManagedObject, Contact {
+public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     
     public var name:String{
         get{
@@ -75,6 +75,8 @@ public class EnzevalosContact: NSManagedObject, Contact {
         return name
     }
     
+    
+   
     
     // TODO: Sort Onetime!
     func getFromMails()-> [Mail]{
@@ -167,7 +169,7 @@ func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     return lhs.getFromMails().first!.date == rhs.getFromMails().first!.date
 }
 
-func <(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
+public  func <(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     if isEmpty(lhs){
         return true
     }

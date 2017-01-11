@@ -257,7 +257,6 @@ class MailHandler {
     func recieve() {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
         let folder = "INBOX"
-        print("LastUID: \(lastUID)")
         let uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
         let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = EXTRAHEADERS

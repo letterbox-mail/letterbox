@@ -21,8 +21,8 @@ class DataHandler: NSObject {
     private var currentstate: State?
     private var isLoadState: Bool
     
-    private let MaxRecords = 50
-    private let MaxMailsPerRecord = 100
+    private let MaxRecords = 10
+    private let MaxMailsPerRecord = 20
     
     
     
@@ -66,6 +66,8 @@ class DataHandler: NSObject {
     }
     
     func terminate(){
+        cleanContacts()
+        cleanMails()
         save()
     }
     
@@ -81,10 +83,66 @@ class DataHandler: NSObject {
     }
     
     
-    private func cleanUp(){
+    private func cleanContacts(){
+        print("clean contacts")
+        print("\(countedContacts()) > \(MaxRecords)")
+        
+        print("existing mails: \(countedMails())")
         if countedContacts() > MaxRecords{
-            //var contacts.
+            var contacts = getContacts()
+            contacts.sortInPlace()
+            print("Remove: \(countedContacts() - MaxRecords)")
+            var cm: Int
+            cm = 0
+            for _ in  0...(countedContacts() - MaxRecords){
+                let c = contacts.removeLast()
+                if c.from != nil{
+                    //print ("#Mails: \(c.from!.count)")
+                    for m in c.from!{
+                        getContextManager().deleteObject(m as! NSManagedObject)
+                        cm += 1
+                    }
+                    c.from = nil
+                }
+                else{
+                    print ("\(c.displayname) has no mails")
+                }
+                getContextManager().deleteObject(c)
+            }
+            isLoadMails = false
+            print("Deleted mails: \(cm) | ")
+            print("existing mails: \(countedMails())")
         }
+        isLoadContacts = false
+        isLoadMails = false
+        print("\(countedContacts()) > \(MaxRecords)")
+        contacts = getContacts()
+        for c in contacts{
+            print("\(c.displayname) | \(c.from!.count)")
+        }
+
+    }
+    
+    
+    private func cleanMails(){
+        print("Before Mails: \(countedMails())")
+        if countedMails() > (MaxMailsPerRecord * countedContacts()) {
+            for c in getContacts() {
+                if c.getFromMails().count > MaxMailsPerRecord{
+                    for _ in  0...(c.getFromMails().count - MaxMailsPerRecord){
+                        let last = c.getFromMails().last
+                        c.removeFromFrom(last!)
+                        
+                        getContextManager().deleteObject(last!)
+                    }
+                    print("\(c.getFromMails().count) > \(MaxMailsPerRecord)")
+                }
+            }
+        
+        }
+        isLoadContacts = false
+        isLoadMails = false
+        print("After Mails: \(countedMails())")
     
     }
     
@@ -160,6 +218,17 @@ class DataHandler: NSObject {
     
     func getContactByAddress(address: String) -> EnzevalosContact{
         // Core function
+        for c in contacts{
+            if c.addresses != nil{
+                for adr in c.addresses!{
+                    let a = adr as! MailAddress
+                    if a.mailAddress ==  address{
+                        return c
+                    }
+                }
+            }
+        }
+        
         let search = find("EnzevalosContact", type: "addresses", search: address)
         var contact: EnzevalosContact
         if (search == nil || search!.count == 0){
@@ -168,9 +237,11 @@ class DataHandler: NSObject {
             let adr = getMailAddress(address)
             contact.addToAddresses(adr)
             adr.contact = contact
+            contacts.append(contact)
         }
         else{
             contact = search! [0] as! EnzevalosContact
+            contacts.append(contact)
         }
         return contact
     }
@@ -181,7 +252,7 @@ class DataHandler: NSObject {
         contact.update(name)
         contact.getAddress(address)?.key = key
         contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
-        save()
+       // save()
         return contact
     }
     
@@ -317,8 +388,8 @@ class DataHandler: NSObject {
     func readMaxUid()->UInt64{
         let state = getCurrentState()
         let max = state.getMaxUid()
-        print("MaxUid: \(max)")
-       return  max
+        print("MaxUID: \(max) | #Mails: \(self.countedMails()) | #Contacts: \(self.countedContacts())")
+        return  max
     }
     
     private func readMails()->[Mail]{
@@ -336,6 +407,7 @@ class DataHandler: NSObject {
                 let c = r as! EnzevalosContact
                 if(c.getFromMails().count > 0){
                     contacts.append(c)
+                    print("\(c.displayname) | \(c.getFromMails().count)")
                 }
             }
         }
@@ -360,7 +432,6 @@ class DataHandler: NSObject {
     func getRecords()->[KeyRecord]{
         
         //TODO Fix here!
-        //TODO Double entries
         
         var records = [KeyRecord] ()
         let mails = readMails()

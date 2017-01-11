@@ -64,7 +64,7 @@ public class KeyWrapper : NSObject {
             return self.addresses
         }
     }*/
-    let timestamp: NSDate
+    let timestamp: NSDate // creation date of keywrapper object
     
     init(key: PGPKey, mailaddress: String){
         self.key = key

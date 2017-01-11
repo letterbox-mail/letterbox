@@ -25,7 +25,6 @@ extension Contact{
             tag = String(name.characters.first!)
         }
         
-        
         text = NSAttributedString(string: tag.capitalizedString, attributes: [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(32.2)])
         
         var myBounds = CGRect()
