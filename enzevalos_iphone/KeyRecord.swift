@@ -41,7 +41,7 @@ public class KeyRecord: Record{
         self.mails = [Mail] ()
         if (key != nil) {
             self.isSecure = true
-            self.isVerified = (key?.verified)!
+            self.isVerified = key!.verified
         }
         else{
             self.isSecure = false

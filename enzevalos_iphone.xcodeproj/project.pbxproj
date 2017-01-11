@@ -70,6 +70,8 @@
 		A135CF231DD4BDD1007E3C29 /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFD1DD4BDD1007E3C29 /* PGPUserAttributePacket.m */; };
 		A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */; };
 		A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */; };
+		A1416C191E268EFB001809F3 /* EncryptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1416C181E268EFB001809F3 /* EncryptionHandler.swift */; };
+		A1416C1B1E268F1A001809F3 /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1416C1A1E268F1A001809F3 /* Encryption.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A17A18F51DDCB5580058D934 /* KeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F41DDCB5580058D934 /* KeyHandler.swift */; };
 		A17A18F71DDCBE530058D934 /* KeyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F61DDCBE530058D934 /* KeyWrapper.swift */; };
@@ -243,6 +245,8 @@
 		A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeSubpacket.m; sourceTree = "<group>"; };
 		A135CF001DD4BDD1007E3C29 /* PGPUserIDPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserIDPacket.h; sourceTree = "<group>"; };
 		A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserIDPacket.m; sourceTree = "<group>"; };
+		A1416C181E268EFB001809F3 /* EncryptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionHandler.swift; sourceTree = "<group>"; };
+		A1416C1A1E268F1A001809F3 /* Encryption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A17A18F41DDCB5580058D934 /* KeyHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyHandler.swift; sourceTree = "<group>"; };
 		A17A18F61DDCBE530058D934 /* KeyWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyWrapper.swift; sourceTree = "<group>"; };
@@ -388,7 +392,9 @@
 				A1EB05751D956748008659C1 /* send */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
 				472F396F1E14F75C009260FB /* DataHandler.swift */,
+				A1416C181E268EFB001809F3 /* EncryptionHandler.swift */,
 				476142071E07E52B00FD5E4F /* Theme.swift */,
+				A1416C1A1E268F1A001809F3 /* Encryption.swift */,
 				A1EB05871D956879008659C1 /* AddressHandler.swift */,
 				A1C09FC71DF052FF0006B783 /* importKeys.swift */,
 				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
@@ -906,6 +912,7 @@
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
 				A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
+				A1416C191E268EFB001809F3 /* EncryptionHandler.swift in Sources */,
 				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,
 				A135CF1F1DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
 				A135CF211DD4BDD1007E3C29 /* PGPTrustPacket.m in Sources */,
@@ -916,6 +923,7 @@
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
 				472F39731E1D09C4009260FB /* State+CoreDataClass.swift in Sources */,
 				A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */,
+				A1416C1B1E268F1A001809F3 /* Encryption.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
 				472F397C1E1D0B0B009260FB /* Mail+CoreDataProperties.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
