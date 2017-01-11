@@ -10,8 +10,8 @@
             ],
             "smtp":[
                 {
-                    "port":587
-                    "hostname":"smtp.web.de"
+                    "port":587,
+                    "hostname":"smtp.web.de",
                     "starttls":true
                 }
             ]
@@ -26,6 +26,35 @@
             "web.de",
             ""
         ]
+    },
+    "aol":{
+        "servers":{
+            "imap:"[
+                    {
+                    "port":993,
+                    "hostname":"imap.aol.com",
+                    "ssl":true
+                    }
+                    ],
+            "smtp":[
+                    {
+                    "port":587,
+                    "hostname":"smtp.aol.com",
+                    "starttls":true
+                    }
+                    ]
+        },
+        "domain-match":[
+                        //"web\\.de",
+                        "aol\\.com",
+                        "aol"
+                        ],
+        "mx-match": [
+                     "aol",
+                     "aol.com",
+                     ""
+                     ]
     }
     
 }
+
