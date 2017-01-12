@@ -23,6 +23,7 @@ public class Mail: NSManagedObject, Comparable {
         }
         
     }
+    
     var timeString: String {
         var returnString = ""
         let dateFormatter = NSDateFormatter()
@@ -119,7 +120,6 @@ public class Mail: NSManagedObject, Comparable {
     
     
     func markMessageAsRead(read: Bool){
-        print("mark")
         if read != isUnread(){
             var flags: MCOMessageFlag
             flags = getFlags()

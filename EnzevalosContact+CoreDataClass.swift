@@ -13,7 +13,6 @@ import UIKit
 import Contacts
 
 
-//TODO: add CNContact
 
 @objc(EnzevalosContact)
 public class EnzevalosContact: NSManagedObject, Contact, Comparable {
@@ -32,8 +31,6 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     
     func update(name: String){
         setDisplayName(name)
-      //TODO Find address and update preferences
-        
     }
     
     func addFromMail(fromMail: Mail){
@@ -78,7 +75,6 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     
    
     
-    // TODO: Sort Onetime!
     func getFromMails()-> [Mail]{
         var fromMails: [Mail]
         fromMails = self.from!.allObjects as! [Mail]
@@ -86,15 +82,14 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         return fromMails
     }
     
-    //TODO: FIX ME
     func getContact()->CNContact?{
-        // TODO: Check if contact exists in address book
-        //        let contactFromBook = AddressHandler.contactByEmail((mail.sender?.mailbox)!)
-        //        if let con = contactFromBook {
-        //            contacts.append(EnzevalosContact(contact: con, mails: [mail]))
-        //            return
-        //        }
         
+        let contactFromBook = AddressHandler.findContact(self)
+        if contactFromBook.count > 0 {
+            let con = contactFromBook.first
+            self.cnidentifier = con?.identifier
+            return con!
+        }
         // New contact has to be added
         let con = CNMutableContact()
         let name = self.displayname
@@ -114,13 +109,12 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         
         let adr: Mail_Address
         adr = self.addresses?.anyObject() as! Mail_Address
-        con.emailAddresses.append(CNLabeledValue(label: adr.address, value: CNLabelHome))
+        con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address))
         
         return con
     }
     
     func getAddress(address: String)-> Mail_Address?{
-        //TODO: DB request???
         var addr: Mail_Address
         if addresses != nil {
             for obj in addresses! {
@@ -128,7 +122,6 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
                 if(addr.address == address){
                     return addr
                 }
-        
             }
         }
         return nil
@@ -141,11 +134,22 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     
     
     func getMailAddresses()->[Mail_Address]{
-       return self.addresses!.allObjects as! [Mail_Address]
+        if self.addresses != nil {
+            return self.addresses!.allObjects as! [Mail_Address]
+        }
+        return []
+       
     }
     
     public func getMailAddresses()->[MailAddress]{
-        return getMailAddresses()
+        var adr = [MailAddress] ()
+        if self.addresses != nil {
+            for a in addresses!{
+                let b = a as! Mail_Address
+                adr.append(b)
+            }
+        }
+        return adr
     }
     
 

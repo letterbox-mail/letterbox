@@ -337,6 +337,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		472F39921E279792009260FB /* protocols */ = {
+			isa = PBXGroup;
+			children = (
+				472F398D1E251B8D009260FB /* MailAddress.swift */,
+				472F39851E1FA34E009260FB /* Record.swift */,
+				472F39891E251787009260FB /* Contact.swift */,
+			);
+			name = protocols;
+			sourceTree = "<group>";
+		};
 		78280F99990BFF65543B7F0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -381,6 +391,7 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
+				472F39921E279792009260FB /* protocols */,
 				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
 				A11E733A1E019AB5006574DD /* init */,
@@ -399,8 +410,6 @@
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				A17A18F41DDCB5580058D934 /* KeyHandler.swift */,
 				472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */,
-				472F39891E251787009260FB /* Contact.swift */,
-				472F398D1E251B8D009260FB /* MailAddress.swift */,
 				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
 				472F398F1E252470009260FB /* CNMailAddressesExtension.swift */,
 				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
@@ -421,7 +430,6 @@
 				A13526871D955BDF00D3BFE1 /* Info.plist */,
 				A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */,
 				472F39871E1FA377009260FB /* KeyRecord.swift */,
-				472F39851E1FA34E009260FB /* Record.swift */,
 			);
 			path = enzevalos_iphone;
 			sourceTree = "<group>";

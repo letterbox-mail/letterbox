@@ -20,7 +20,7 @@ class AddressHandler {
             do{
                 
                 try AppDelegate.getAppDelegate().contactStore.enumerateContactsWithFetchRequest(CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey]), usingBlock: {
-                    (let c : CNContact, let stop) -> Void in
+                    ( c : CNContact, let stop) -> Void in
 //                    print(c)
                     for email in c.emailAddresses {
                         let addr = email.value as! String
@@ -77,8 +77,7 @@ class AddressHandler {
         if addresses.contains((s as String).lowercaseString){
             return true
         }
-        return KeyHandler.getHandler().addrHasKey(s as String)//inContacts(s as String)
-        //return false
+        return KeyHandler.getHandler().addrHasKey(s as String)
     }
     
     static func inContacts( name : String) -> Bool{
@@ -109,10 +108,11 @@ class AddressHandler {
         return false
     }
     
+    
+    
+    
     static func getContact(name : String) -> [CNContact]{
-        AppDelegate.getAppDelegate().requestForAccess({access in
-            print(access)
-        })
+        AppDelegate.getAppDelegate().requestForAccess({access in})
         let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
         if authorizationStatus == CNAuthorizationStatus.Authorized {
             do {
@@ -130,25 +130,71 @@ class AddressHandler {
         return []
     }
     
+    
+    static func getContactByID(identifier : String) -> [CNContact]{
+        AppDelegate.getAppDelegate().requestForAccess({access in})
+        let ids = [identifier]
+        let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
+        if authorizationStatus == CNAuthorizationStatus.Authorized {
+            do {
+                let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsWithIdentifiers(ids), keysToFetch: [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
+                return conList
+            }
+            catch {
+                print("exception")
+            }
+            print("contacts done")
+        }
+        else {
+            print("no Access!")
+        }
+        return []
+    }
+
+    /*          [insertedEmail] -> [(contactImage, name, address, emailLabelImage, backgroundcolor)] */
     static func frequentAddresses (inserted : [String]) -> [(UIImage, String, String, UIImage?, UIColor)] {
-                                    /*[insertedEmail]             -> [(contactImage, name, address, emailLabelImage, backgroundcolor)]*/
-        //(persistente) liste von Kontakten abfragen
         return freqAlgorithm(inserted)
     }
     
-//    static func contactByEmail(email: String) -> CNContact? {
-//        var contacts: [CNContact] = []
-//        let predicate = NSPredicate { (evaluatedObject, bindings) -> Bool in
-//            guard let evaluatedContact = evaluatedObject as? CNContact else {
-//                return false
-//            }
-//            return Set(evaluatedContact.emailAddresses.map{$0.identifier}).contains(email)
-//        }
-//        do{
-//            try contacts = AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(predicate, keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
-//        }
-//        catch {}
-//        print(contacts)
-//        return contacts.first
-//    }
+    static func findContact(econtact: EnzevalosContact)-> [CNContact]{
+        var result: [CNContact]
+        result = [CNContact]()
+        if let identifier = econtact.cnidentifier {
+            // 1. Look up identifier string
+            result = getContactByID(identifier)
+        }
+        if result.count == 0{
+            if let name = econtact.displayname{
+                // 2. look for name
+                result = getContact(name)
+            }
+        }
+        if result.count == 0 {
+            // 3. look for mail addresses
+            result = contactByEmail(econtact.getMailAddresses())
+        }
+        return result
+    }
+    
+    static func contactByEmail(mailaddreses: [MailAddress]) -> [CNContact] {
+        var contacts: [CNContact] = []
+        let predicate = NSPredicate { (evaluatedObject, bindings) -> Bool in
+            guard let evaluatedContact = evaluatedObject as? CNContact else {
+               return false
+            }
+            var exists: Bool
+            exists = false
+            for adr in mailaddreses{
+                let contains = Set(evaluatedContact.emailAddresses.map{$0.identifier}).contains(adr.mailAddress)
+                exists = (exists || contains)
+
+            }
+            return exists
+        }
+        do{
+            try contacts = AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(predicate, keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
+        }
+        catch {}
+        return contacts
+    }
 }

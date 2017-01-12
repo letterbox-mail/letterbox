@@ -25,12 +25,12 @@ public class Mail_Address: NSManagedObject, MailAddress {
             
             if let cnc = self.contact.getContact(){
                 for adr in cnc.emailAddresses{
-                    if adr.label == address{
+                    if adr.value as! String == address{
                         return adr
                     }
                 }
             }
-            return CNLabeledValue.init(label: address, value: CNLabelOther)
+            return CNLabeledValue.init(label: CNLabelOther, value: address)
         }
     }
     

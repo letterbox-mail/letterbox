@@ -50,8 +50,6 @@ public class KeyRecord: Record{
     }
     
     public init(mail: Mail){
-        
-        //TODO: Create Record in datahandler!
         self.contact = mail.getFrom().contact
         self.mails = [Mail] ()
         //TODO: KEY?????
