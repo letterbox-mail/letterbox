@@ -54,7 +54,7 @@ class ReadViewController : UITableViewController {
         if let m = mail {
             if m.trouble {
                 self.navigationController?.navigationBar.barTintColor = self.troubleColor
-            } else if m.isEncrypted {
+            } else if m.isSecure {
                 self.navigationController?.navigationBar.barTintColor = self.encryptColor
             } else {
                 self.navigationController?.navigationBar.barTintColor = self.uncryptColor
@@ -167,7 +167,7 @@ class ReadViewController : UITableViewController {
             if m.trouble {
                 alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.", preferredStyle: UIAlertControllerStyle.Alert)
                 url = "https://enzevalos.de/infos/corrupted"
-            } else if m.isEncrypted {
+            } else if m.isSecure {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: UIAlertControllerStyle.Alert)
                 url = "https://enzevalos.de/infos/letter"
             } else {
@@ -264,7 +264,7 @@ class ReadViewController : UITableViewController {
             if m.trouble {
                 icon = IconsStyleKit.imageOfLetterCorrupted
 //                icon = UIImage(named: "letter_corrupted")!
-            } else if m.isEncrypted {
+            } else if m.isSecure {
                 icon = IconsStyleKit.imageOfLetterOpen
 //                icon = UIImage(named: "letter_open")!
             } else {
