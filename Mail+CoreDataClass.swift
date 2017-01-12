@@ -24,6 +24,12 @@ public class Mail: NSManagedObject, Comparable {
         
     }
     
+    var isSecure: Bool{
+        return isEncrypted && !trouble
+        //TODO: FIX after encryption handler.
+        
+    }
+    
     var timeString: String {
         var returnString = ""
         let dateFormatter = NSDateFormatter()

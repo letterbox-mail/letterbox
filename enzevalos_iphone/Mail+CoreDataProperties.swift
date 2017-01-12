@@ -20,6 +20,8 @@ extension Mail {
     @NSManaged public var date: NSDate
     @NSManaged public var flag: Int32
     @NSManaged public var isEncrypted: Bool
+    @NSManaged public var isSigned: Bool
+    @NSManaged public var unableToDecrypt: Bool
     @NSManaged public var subject: String?
     @NSManaged public var trouble: Bool
     @NSManaged public var uid: NSDecimalNumber

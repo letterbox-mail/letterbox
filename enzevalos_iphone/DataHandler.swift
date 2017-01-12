@@ -287,7 +287,7 @@ class DataHandler: NSObject {
     
     // -------- End handle to, cc, from addresses --------
 
-    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, decryptedBody: String?, isEncrypted: Bool, isVerified: Bool, trouble: Bool, flags: MCOMessageFlag)-> Mail{
+    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag)-> Mail{
         
         let finding = find("Mail", type: "uid", search: String(uid))
         let mail: Mail
@@ -308,14 +308,16 @@ class DataHandler: NSObject {
             mail.body = body
             mail.date = time
             mail.subject = subject
-            mail.isEncrypted = isEncrypted
-
+           
             mail.isRead = flags.contains(MCOMessageFlag.Seen)
             mail.uid = NSDecimalNumber.init(unsignedLongLong: uid)
 
-            mail.trouble = trouble
-
             mail.setFlags(flags)
+            
+            mail.isSigned = false
+            mail.isEncrypted = false
+            mail.trouble = false
+            mail.unableToDecrypt = true
 
         }
         else{
