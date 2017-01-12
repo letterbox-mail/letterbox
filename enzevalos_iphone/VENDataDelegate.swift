@@ -14,6 +14,10 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         //print ("hallo")
     }
     
+    //Used later to show enzevalos-Contacts
+    //Have a look at tokenField(... didTappedTokenTwice ...)
+    //var doubleTapFunc
+    
     override init() {
         super.init()
     }
@@ -119,5 +123,9 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
             secure = secure && KeyHandler.getHandler().addrHasKey(entry as! String)//AddressHandler.proveAddress(entry as! NSString)
         }
         return secure
+    }
+    
+    func tokenField(tokenField: VENTokenField, didTappedTokenTwice index: UInt){
+        print("doppel Tap")
     }
 }

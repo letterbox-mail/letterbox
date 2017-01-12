@@ -303,6 +303,29 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             }
         }
     }
+    //HALLO
+    /*func callSegueToContact(contact: EnzevalosContact?) {
+        performSegueWithIdentifier("contactSegue", sender: contact)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "readMailSegue" {
+            if let mail = sender as? Mail {
+                let DestinationViewController: ReadViewController = segue.destinationViewController as! ReadViewController
+                DestinationViewController.mail = mail
+            }
+        } else if segue.identifier == "mailListSegue" {
+            if let contact = sender as? EnzevalosContact {
+                let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
+                DestinationViewController.contact = contact
+            }
+        } else if segue.identifier == "contactSegue" {
+            if let contact = sender as? EnzevalosContact {
+                let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
+                DestinationViewController.contact = contact
+            }
+        }
+    }*/
     
     func searchContacts(prefix: String){
         AppDelegate.getAppDelegate().requestForAccess({access in
