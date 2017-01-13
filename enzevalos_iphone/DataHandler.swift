@@ -185,6 +185,14 @@ class DataHandler: NSObject {
         return getMailAddress(address.mailbox!)
     }
     
+    func getMailAddressesByMCOAddresses(addresses: [MCOAddress])->[Mail_Address]{
+        var mailaddresses = [Mail_Address]()
+        for adr in addresses{
+            mailaddresses.append(getMailAddressByMCOAddress(adr))
+        }
+        return mailaddresses
+    }
+    
     
     
     
@@ -270,7 +278,7 @@ class DataHandler: NSObject {
         for c in contacts{
             c.addToMail(mail)
         }
-       // TODO FIX mail.addReceivers(contacts)
+        mail.addReceivers(getMailAddressesByMCOAddresses(receivers))
     }
     
     private func handleCCAddresses(cc: [MCOAddress], mail: Mail)
@@ -279,8 +287,7 @@ class DataHandler: NSObject {
         for c in contacts{
             c.addCCMail(mail)
         }
-        //TODO ERROR HIER: Fix-> Überprüfung mit Datenlayout
-      // mail.addCC(contacts)
+        mail.addCC(getMailAddressesByMCOAddresses(cc))
     }
     
     // TODO: handle BCC
@@ -323,7 +330,7 @@ class DataHandler: NSObject {
         }
         handleFromAddress(sender, fromMail: mail)
         handleToAddresses(receivers, mail: mail)
-        // TODO FIX handleCCAddresses(cc, mail: mail)
+        handleCCAddresses(cc, mail: mail)
         
         save()
         if getCurrentState().getMaxUid() < mail.uid.unsignedLongLongValue{
