@@ -87,7 +87,7 @@ class InboxTableViewCell: UITableViewCell {
 //                    iconView.image = UIImage(named: "postcard_small")!
                 }
 
-                self.contact = con.getContact().getContact()
+                self.contact = con.getCNContact()
                 nameLabel.text = con.name
                 faceView.image = con.getImageOrDefault()
                 faceView.layer.cornerRadius = faceView.frame.height / 2

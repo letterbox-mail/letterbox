@@ -23,7 +23,7 @@ public class Mail_Address: NSManagedObject, MailAddress {
    public var label: CNLabeledValue{
         get{
             
-            if let cnc = self.contact.getContact(){
+            if let cnc = self.contact.cnContact{
                 for adr in cnc.emailAddresses{
                     if adr.value as! String == address{
                         return adr

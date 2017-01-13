@@ -18,7 +18,7 @@ extension EnzevalosContact {
 
     @NSManaged public var displayname: String?
     @NSManaged public var cnidentifier: String?
-    @NSManaged public var from: NSSet?
+    @NSManaged public var from: NSOrderedSet?
     @NSManaged public var to: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var bcc: NSSet?

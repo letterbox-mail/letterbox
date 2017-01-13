@@ -126,7 +126,7 @@ public class Mail: NSManagedObject, Comparable {
     
     func setFlags(flags: MCOMessageFlag){
         if flags.rawValue != Int(flag){
-            AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid.unsignedLongLongValue, flags: flags)
+            AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid, flags: flags)
         }
        flag = Int32(flags.rawValue)
 
@@ -197,10 +197,11 @@ public class Mail: NSManagedObject, Comparable {
  }
 */
     }
-    
+    /*
     func getUID()->UInt64{
         return self.uid.unsignedLongLongValue
     }
+ */
     
 
     func getSubjectWithFlagsString()-> String{

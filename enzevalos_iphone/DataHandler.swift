@@ -86,7 +86,6 @@ class DataHandler: NSObject {
     private func cleanContacts(){
         if countedContacts() > MaxRecords{
             var contacts = getContacts()
-            contacts.sortInPlace()
             var cm: Int
             cm = 0
             for _ in  0...(countedContacts() - MaxRecords){
@@ -111,11 +110,13 @@ class DataHandler: NSObject {
     private func cleanMails(){
         if countedMails() > (MaxMailsPerRecord * countedContacts()) {
             for c in getContacts() {
-                if c.getFromMails().count > MaxMailsPerRecord{
-                    for _ in  0...(c.getFromMails().count - MaxMailsPerRecord){
-                        let last = c.getFromMails().last
-                        c.removeFromFrom(last!)
-                        getContextManager().deleteObject(last!)
+                if let ms = c.from{
+                    if ms.count > MaxMailsPerRecord{
+                        for _ in  0...(ms.count - MaxMailsPerRecord){
+                            let last = ms.firstObject as! Mail
+                            c.removeFromFrom(last)
+                            getContextManager().deleteObject(last)
+                        }
                     }
                 }
             }
@@ -155,6 +156,7 @@ class DataHandler: NSObject {
     
     private func findAll(entityName:String)->[AnyObject]?{
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
+       // fReq.sortDescriptors = [NSSortDescriptor(key: "from", ascending: false)]
         let result: [AnyObject]?
         do {
             result = try self.managedObjectContext.executeFetchRequest(fReq)
@@ -219,7 +221,7 @@ class DataHandler: NSObject {
         var contact: EnzevalosContact
         if (search == nil || search!.count == 0){
             contact = NSEntityDescription.insertNewObjectForEntityForName("EnzevalosContact", inManagedObjectContext: managedObjectContext) as! EnzevalosContact
-            contact.update(address)
+            contact.displayname = address
             let adr = getMailAddress(address)
             contact.addToAddresses(adr)
             adr.contact = contact
@@ -235,7 +237,7 @@ class DataHandler: NSObject {
     
     func getContact(name: String, address: String, key: String, prefer_enc: Bool)->EnzevalosContact{
         let contact = getContactByAddress(address)
-        contact.update(name)
+        contact.displayname = name
         contact.getAddress(address)?.key = key
         contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
         return contact
@@ -255,7 +257,7 @@ class DataHandler: NSObject {
     func getContactByMCOAddress(address: MCOAddress)-> EnzevalosContact{
         let contact =  getContactByAddress(address.mailbox!)
         if(address.displayName != nil){
-            contact.setDisplayName(address.displayName)
+            contact.displayname = address.displayName
         }
         return contact
     }
@@ -265,7 +267,7 @@ class DataHandler: NSObject {
     // -------- Start handle to, cc, from addresses --------
     private func handleFromAddress(sender: MCOAddress, fromMail: Mail){
         let contact = getContactByMCOAddress(sender)
-        contact.addFromMail(fromMail)
+        contact.addToFrom(fromMail)
         let adr: Mail_Address
         adr = contact.getAddressByMCOAddress(sender)!
         fromMail.addFrom(adr)
@@ -276,23 +278,18 @@ class DataHandler: NSObject {
     {
         let contacts = getContacts(receivers)
         for c in contacts{
-            c.addToMail(mail)
+            c.addToTo(mail)
         }
         mail.addReceivers(getMailAddressesByMCOAddresses(receivers))
     }
     
     private func handleCCAddresses(cc: [MCOAddress], mail: Mail)
     {
-        if(cc.count > 0){
-        print ("Handle CC for mail with subject: \(mail.subject)")
         let contacts = getContacts(cc)
-        print("CC contacts found")
         for c in contacts{
-            c.addCCMail(mail)
+            c.addToCc(mail)
         }
-        print("add ccs to mail object")
         mail.addCC(getMailAddressesByMCOAddresses(cc))
-        }
     }
     
     // TODO: handle BCC
@@ -321,7 +318,7 @@ class DataHandler: NSObject {
             mail.date = time
             mail.subject = subject
            
-            mail.uid = NSDecimalNumber.init(unsignedLongLong: uid)
+            mail.uid = uid
 
             mail.setFlags(flags)
             
@@ -339,8 +336,8 @@ class DataHandler: NSObject {
         handleCCAddresses(cc, mail: mail)
         
         save()
-        if getCurrentState().getMaxUid() < mail.uid.unsignedLongLongValue{
-            getCurrentState().setMaxUid(mail.uid.unsignedLongLongValue)
+        if getCurrentState().getMaxUid() < mail.uid{
+            getCurrentState().setMaxUid(mail.uid)
         }
         mails.append(mail)
         return mail
@@ -355,8 +352,8 @@ class DataHandler: NSObject {
             for r in result!{
                 let m = r as! Mail
                 mails.append(m)
-                if  getCurrentState().getMaxUid() < m.uid.unsignedLongLongValue{
-                    getCurrentState().setMaxUid(m.uid.unsignedLongLongValue)
+                if  getCurrentState().getMaxUid() < m.uid{
+                    getCurrentState().setMaxUid(m.uid)
                 }
             }
         }
@@ -382,8 +379,10 @@ class DataHandler: NSObject {
         if(result != nil){
             for r in result!{
                 let c = r as! EnzevalosContact
-                if(c.getFromMails().count > 0){
-                    contacts.append(c)
+                if let ms = c.from{
+                    if(ms.count > 0){
+                        contacts.append(c)
+                    }
                 }
             }
         }

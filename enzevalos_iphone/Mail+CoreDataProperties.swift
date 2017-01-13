@@ -24,7 +24,21 @@ extension Mail {
     @NSManaged public var unableToDecrypt: Bool
     @NSManaged public var subject: String?
     @NSManaged public var trouble: Bool
-    @NSManaged public var uid: NSDecimalNumber
+    //@NSManaged public var uid: NSDecimalNumber
+    public var uid: UInt64{
+    
+        set {
+            self.willChangeValueForKey("uid")
+            self.setPrimitiveValue(NSDecimalNumber.init(unsignedLongLong: newValue), forKey: "uid")
+            self.didChangeValueForKey("uid")
+        }
+        get {
+            self.willAccessValueForKey("uid")
+            let text = (self.primitiveValueForKey("uid") as? NSDecimalNumber)?.unsignedLongLongValue
+            self.didAccessValueForKey("uid")
+            return text!
+        }
+    }
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var from: Mail_Address

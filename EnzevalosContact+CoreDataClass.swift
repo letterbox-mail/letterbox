@@ -25,38 +25,41 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     
     public var cnContact: CNContact?{
         get{
-            return getContact()
+            let contactFromBook = AddressHandler.findContact(self)
+            if contactFromBook.count > 0 {
+                let con = contactFromBook.first
+                self.cnidentifier = con?.identifier
+                return con!
+            }
+            // New contact has to be added
+            let con = CNMutableContact()
+            let name = self.displayname
+            if let n = name {
+                let nameArray = n.characters.split(" ").map(String.init)
+                switch nameArray.count {
+                case 1:
+                    con.givenName = nameArray.first!
+                case 2..<20: // who has more than two names?!
+                    con.givenName = nameArray.first!
+                    con.familyName = nameArray.last!
+                default:
+                    con.givenName = "NO"
+                    con.familyName = "NAME"
+                }
+            }
+            
+            let adr: Mail_Address
+            adr = self.addresses?.anyObject() as! Mail_Address
+            con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address))
+            
+            return con
         }
     }
-    
-    func update(name: String){
-        setDisplayName(name)
-    }
-    
-    func addFromMail(fromMail: Mail){
-        self.addToFrom(fromMail)
-    }
-    
-    func addToMail(mail: Mail){
-        self.addToTo(mail)
-    }
-    
-    func addCCMail(mail: Mail){
-        print("add \(mail.subject) to \(self.displayname) as cc")
-       self.addToCc(mail)
-    }
-    func addBCCMail(mail: Mail){
-        self.addToBCC(mail)
-    }
-    
-    func setDisplayName(name: String){
-        self.displayname = name
-    }
-    
+        
     func getName()-> String{
         var name: String
         name = String()
-        if let cnc = self.getContact(){
+        if let cnc = cnContact{
             if cnc.givenName.characters.count > 0 {
                 name += cnc.givenName
             }
@@ -67,52 +70,15 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
                 name += cnc.familyName
             }
         }
-        if name.characters.count == 0 {
-            return displayname!
-        }
-        return name
-    }
-    
-    
-   
-    
-    func getFromMails()-> [Mail]{
-        var fromMails: [Mail]
-        fromMails = self.from!.allObjects as! [Mail]
-        fromMails.sortInPlace({$0 < $1})
-        return fromMails
-    }
-    
-    func getContact()->CNContact?{
-        
-        let contactFromBook = AddressHandler.findContact(self)
-        if contactFromBook.count > 0 {
-            let con = contactFromBook.first
-            self.cnidentifier = con?.identifier
-            return con!
-        }
-        // New contact has to be added
-        let con = CNMutableContact()
-        let name = self.displayname
-        if let n = name {
-            let nameArray = n.characters.split(" ").map(String.init)
-            switch nameArray.count {
-            case 1:
-                con.givenName = nameArray.first!
-            case 2..<20: // who has more than two names?!
-                con.givenName = nameArray.first!
-                con.familyName = nameArray.last!
-            default:
-                con.givenName = "NO"
-                con.familyName = "NAME"
+        if name.characters.count == 0{
+            if displayname != nil{
+                return displayname!
+            }
+            else{
+                return "No name"
             }
         }
-        
-        let adr: Mail_Address
-        adr = self.addresses?.anyObject() as! Mail_Address
-        con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address))
-        
-        return con
+        return name
     }
     
     func getAddress(address: String)-> Mail_Address?{
@@ -134,14 +100,6 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     
     
     
-    func getMailAddresses()->[Mail_Address]{
-        if self.addresses != nil {
-            return self.addresses!.allObjects as! [Mail_Address]
-        }
-        return []
-       
-    }
-    
     public func getMailAddresses()->[MailAddress]{
         var adr = [MailAddress] ()
         if self.addresses != nil {
@@ -152,15 +110,19 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
         return adr
     }
+ 
     
 
 }
     
 private func isEmpty(contact: EnzevalosContact)-> Bool{
-    if(contact.getFromMails().count == 0){
-        return true
+    if let mails = contact.from{
+        if(mails.count == 0){
+            return true
+        }
+        return false
     }
-    return false
+    return true
 }
 
 func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
@@ -170,8 +132,10 @@ func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     if isEmpty(rhs){
         return false
     }
-    
-    return lhs.getFromMails().first!.date == rhs.getFromMails().first!.date
+    let mailLHS = lhs.from?.lastObject as! Mail
+    let mailRHS = rhs.from?.lastObject as! Mail
+
+    return mailLHS == mailRHS
 }
 
 public  func <(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
@@ -181,7 +145,10 @@ public  func <(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     if isEmpty(rhs){
         return false
     }
-    return lhs.getFromMails().first!.date > rhs.getFromMails().first!.date
+    let mailLHS = lhs.from?.lastObject as! Mail
+    let mailRHS = rhs.from?.lastObject as! Mail
+    
+    return mailLHS < mailRHS
 }
 
 

@@ -66,7 +66,7 @@ public class KeyRecord: Record{
     public func showInfos(){
         print("-----------------")
         print("Name: \(contact.displayname) | State: \(isSecure) | #Mails: \(mails.count)")
-        print("First mail: \(mails.first?.getUID()) | Adr: \(mails.first?.getFrom().address) | date: \(mails.first?.date.description) ")
+        print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.getFrom().address) | date: \(mails.first?.date.description) ")
         print("subj: \(mails.first?.subject?.capitalizedString)")
     
     }
@@ -76,7 +76,7 @@ public class KeyRecord: Record{
     }
     
     public func getCNContact() -> CNContact? {
-        return contact.getContact()
+        return contact.cnContact
     }
     
     public func getFromMails()->[Mail]{
@@ -86,10 +86,10 @@ public class KeyRecord: Record{
         if mail.isEncrypted == self.isSecure{
             if getContact().getAddress(mail.getFrom().address) != nil{
                 for m in mails{
-                  if m.uid.compare(mail.uid) == NSComparisonResult.OrderedSame{
+                  if m.uid == mail.uid{
                        return true
                   }
-                  else if m.uid.compare(mail.uid) == NSComparisonResult.OrderedAscending {
+                  else if m.uid < mail.uid { //TODO CHECK!!!
                     break
                     }
                 }
