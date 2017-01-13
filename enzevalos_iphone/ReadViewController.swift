@@ -152,7 +152,6 @@ class ReadViewController : UITableViewController {
     }
     
     @IBAction func markUnreadButton(sender: AnyObject) {
-        print("Mark \(mail?.subject) as unread via button")
         mail?.isRead = false
         navigationController?.popViewControllerAnimated(true)
     }
@@ -192,7 +191,6 @@ class ReadViewController : UITableViewController {
                 if let viewControllers = self.navigationController?.viewControllers {
                     for viewController in viewControllers {
                         if viewController.isKindOfClass(ReadViewController) {
-                            print("Mark \(m.subject) as read")
                             m.isRead = true
                             
                         }

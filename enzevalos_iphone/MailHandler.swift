@@ -345,8 +345,6 @@ class MailHandler {
         op.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
-            } else {
-                print("Succsessfully updated flags!")
             }
         }
     }

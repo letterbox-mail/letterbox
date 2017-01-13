@@ -36,7 +36,6 @@ public class Mail: NSManagedObject, Comparable {
             return value
         }
         set {
-           // print("\(self.subject) is marked as read: \(newValue)")
             var flags: MCOMessageFlag
             flags = getFlags()
             if !newValue {
@@ -45,7 +44,7 @@ public class Mail: NSManagedObject, Comparable {
                 flags.insert(MCOMessageFlag.Seen)
             }
             setFlags(flags)
-                       DataHandler.getDataHandler().save()
+            DataHandler.getDataHandler().save()
         }
     }
     
@@ -126,6 +125,9 @@ public class Mail: NSManagedObject, Comparable {
     }
     
     func setFlags(flags: MCOMessageFlag){
+        if flags.rawValue != Int(flag){
+            AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid.unsignedLongLongValue, flags: flags)
+        }
        flag = Int32(flags.rawValue)
 
     }
