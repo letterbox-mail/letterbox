@@ -311,6 +311,7 @@ class MailHandler {
                         var enc = false
                         let ver = false
                         let troub = false
+                        let sig = false
                         let decBody : String? = nil
                         
                         //gute Wahl?
@@ -321,7 +322,7 @@ class MailHandler {
                         //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
                         // TODO: Fix decryption
                         
-                        let mail = DataHandler.getDataHandler().createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, decryptedBody: decBody, isEncrypted: enc, isVerified: ver, trouble: troub, flags: message.flags)
+                        let mail = DataHandler.getDataHandler().createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, flags: message.flags)
                       //  mail.decryptIfPossible()
                         /*Jakob prototypeänderung Ende*/
                         self.delegate?.addNewMail(mail)
@@ -344,8 +345,6 @@ class MailHandler {
         op.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
-            } else {
-                print("Succsessfully updated flags!")
             }
         }
     }

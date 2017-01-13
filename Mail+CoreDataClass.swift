@@ -24,6 +24,30 @@ public class Mail: NSManagedObject, Comparable {
         
     }
     
+    var isSecure: Bool{
+        get{
+            return isEncrypted && isSigned && !unableToDecrypt && !trouble
+        }
+    }
+    
+    var isRead: Bool{
+        get{
+            let value = getFlags().contains(MCOMessageFlag.Seen)
+            return value
+        }
+        set {
+            var flags: MCOMessageFlag
+            flags = getFlags()
+            if !newValue {
+                flags.remove(MCOMessageFlag.Seen)
+            } else {
+                flags.insert(MCOMessageFlag.Seen)
+            }
+            setFlags(flags)
+            DataHandler.getDataHandler().save()
+        }
+    }
+    
     var timeString: String {
         var returnString = ""
         let dateFormatter = NSDateFormatter()
@@ -101,7 +125,11 @@ public class Mail: NSManagedObject, Comparable {
     }
     
     func setFlags(flags: MCOMessageFlag){
+        if flags.rawValue != Int(flag){
+            AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid.unsignedLongLongValue, flags: flags)
+        }
        flag = Int32(flags.rawValue)
+
     }
     
     func getFlags()->MCOMessageFlag{
@@ -114,27 +142,7 @@ public class Mail: NSManagedObject, Comparable {
             showMessage = !trouble
     }
     
-    func isUnread()->Bool{
-        return getFlags().contains(MCOMessageFlag.Seen)
-    }
     
-    
-    func markMessageAsRead(read: Bool){
-        if read != isUnread(){
-            var flags: MCOMessageFlag
-            flags = getFlags()
-            if !read {
-                AppDelegate.getAppDelegate().mailHandler.removeFlag(self.getUID(), flags: MCOMessageFlag.Seen)
-                flags = flags.remove(MCOMessageFlag.Seen)!
-            } else {
-                AppDelegate.getAppDelegate().mailHandler.addFlag(self.getUID(), flags: (MCOMessageFlag.Seen))
-                flags = flags.union(MCOMessageFlag.Seen)
-            }
-            setFlags(flags)
-            // TODO: Test save??? Datenhandler
-        }
-    
-    }
     
     func getDecryptedMessage()-> String{
         return body!
@@ -205,10 +213,10 @@ public class Mail: NSManagedObject, Comparable {
         } else {
             subj = subject!
         }
-        if trouble {
+        if self.trouble {
             returnString.appendContentsOf("❗️ ")
         }
-        if isUnread() {
+        if !self.isRead {
             returnString.appendContentsOf("🔵 ")
         }
         if MCOMessageFlag.Answered.isSubsetOf(flags) {

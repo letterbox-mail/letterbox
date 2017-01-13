@@ -14,10 +14,11 @@
         <attribute name="date" attributeType="Date" defaultDateTimeInterval="-31582140" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="flag" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isSigned" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="subject" attributeType="String" syncable="YES"/>
         <attribute name="trouble" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uid" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="unableToDecrypt" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
         <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
@@ -36,7 +37,7 @@
     </entity>
     <elements>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="150"/>
-        <element name="Mail" positionX="-416" positionY="-189" width="128" height="225"/>
+        <element name="Mail" positionX="-416" positionY="-189" width="128" height="240"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="105"/>
         <element name="State" positionX="-306" positionY="-27" width="128" height="90"/>
     </elements>
