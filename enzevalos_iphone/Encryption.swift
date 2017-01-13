@@ -8,10 +8,15 @@
 
 public protocol Encryption {
     
+    var encryptionHandler: EncryptionHandler {get}
+    var encryptionType: EncryptionType {get}
+    
+    init(encHandler: EncryptionHandler)
+    
     func isUsed(mail: Mail) -> Bool
     func isUsed(text: String, key: KeyWrapper) -> Bool
     func isUsedForEncryption(mail: Mail) -> Bool
-    func isUsedForEncrption(text: String, key: KeyWrapper) -> Bool
+    func isUsedForEncryption(text: String, key: KeyWrapper) -> Bool
     func isUsedSignature(mail: Mail) -> Bool
     func isUsedSignature(text: String, key: KeyWrapper) -> Bool
     func decrypt(mail: Mail)
@@ -22,4 +27,15 @@ public protocol Encryption {
     func encrypt(text: String, key: KeyWrapper) -> String
     func sign(mail: Mail)
     func sign(text: String, key: KeyWrapper) -> String
+    
+    func addKey(keyData: NSData, callBack: ((success: Bool) -> Void)?)
+    func addKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
+    func hasKey(enzContact: EnzevalosContact) -> Bool
+    func getKeyID(enzContact: EnzevalosContact) -> Int64?
+    func removeKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
+    
+    
+    func keyOfThisEncryption(keyData: NSData) -> Bool
+    func encryptedWithThisEncryption(mail: Mail) -> Bool
+    
 }
