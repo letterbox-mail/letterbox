@@ -283,11 +283,16 @@ class DataHandler: NSObject {
     
     private func handleCCAddresses(cc: [MCOAddress], mail: Mail)
     {
+        if(cc.count > 0){
+        print ("Handle CC for mail with subject: \(mail.subject)")
         let contacts = getContacts(cc)
+        print("CC contacts found")
         for c in contacts{
             c.addCCMail(mail)
         }
+        print("add ccs to mail object")
         mail.addCC(getMailAddressesByMCOAddresses(cc))
+        }
     }
     
     // TODO: handle BCC

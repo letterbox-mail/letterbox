@@ -42,7 +42,8 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     }
     
     func addCCMail(mail: Mail){
-       self.addToCC(mail)
+        print("add \(mail.subject) to \(self.displayname) as cc")
+       self.addToCc(mail)
     }
     func addBCCMail(mail: Mail){
         self.addToBCC(mail)
