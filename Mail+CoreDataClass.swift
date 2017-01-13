@@ -25,9 +25,28 @@ public class Mail: NSManagedObject, Comparable {
     }
     
     var isSecure: Bool{
-        return isEncrypted && !trouble
-        //TODO: FIX after encryption handler.
-        
+        get{
+            return isEncrypted && isSigned && !unableToDecrypt && !trouble
+        }
+    }
+    
+    var isRead: Bool{
+        get{
+            let value = getFlags().contains(MCOMessageFlag.Seen)
+            return value
+        }
+        set {
+           // print("\(self.subject) is marked as read: \(newValue)")
+            var flags: MCOMessageFlag
+            flags = getFlags()
+            if !newValue {
+                flags.remove(MCOMessageFlag.Seen)
+            } else {
+                flags.insert(MCOMessageFlag.Seen)
+            }
+            setFlags(flags)
+                       DataHandler.getDataHandler().save()
+        }
     }
     
     var timeString: String {
@@ -108,6 +127,7 @@ public class Mail: NSManagedObject, Comparable {
     
     func setFlags(flags: MCOMessageFlag){
        flag = Int32(flags.rawValue)
+
     }
     
     func getFlags()->MCOMessageFlag{
@@ -120,27 +140,7 @@ public class Mail: NSManagedObject, Comparable {
             showMessage = !trouble
     }
     
-    func isUnread()->Bool{
-        return getFlags().contains(MCOMessageFlag.Seen)
-    }
     
-    
-    func markMessageAsRead(read: Bool){
-        if read != isUnread(){
-            var flags: MCOMessageFlag
-            flags = getFlags()
-            if !read {
-                AppDelegate.getAppDelegate().mailHandler.removeFlag(self.getUID(), flags: MCOMessageFlag.Seen)
-                flags = flags.remove(MCOMessageFlag.Seen)!
-            } else {
-                AppDelegate.getAppDelegate().mailHandler.addFlag(self.getUID(), flags: (MCOMessageFlag.Seen))
-                flags = flags.union(MCOMessageFlag.Seen)
-            }
-            setFlags(flags)
-            // TODO: Test save??? Datenhandler
-        }
-    
-    }
     
     func getDecryptedMessage()-> String{
         return body!
@@ -211,10 +211,10 @@ public class Mail: NSManagedObject, Comparable {
         } else {
             subj = subject!
         }
-        if trouble {
+        if self.trouble {
             returnString.appendContentsOf("❗️ ")
         }
-        if isUnread() {
+        if !self.isRead {
             returnString.appendContentsOf("🔵 ")
         }
         if MCOMessageFlag.Answered.isSubsetOf(flags) {

@@ -32,7 +32,7 @@ class ListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("ListCell") as! ListViewCell!
         
         if let mail = contact?.getFromMails()[indexPath.row] {
-            if mail.isUnread() {
+            if !mail.isRead {
                 cell.subjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
             } else {
                 cell.subjectLabel.font = UIFont.systemFontOfSize(17.0)

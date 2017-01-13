@@ -71,7 +71,7 @@ class DataHandler: NSObject {
         save()
     }
     
-    private func save()->Bool{
+    func save()->Bool{
         var succ = false
         do{
             try getContextManager().save()
@@ -309,7 +309,6 @@ class DataHandler: NSObject {
             mail.date = time
             mail.subject = subject
            
-            mail.isRead = flags.contains(MCOMessageFlag.Seen)
             mail.uid = NSDecimalNumber.init(unsignedLongLong: uid)
 
             mail.setFlags(flags)
@@ -336,18 +335,6 @@ class DataHandler: NSObject {
     }
     
     
-    func readMail(mail: Mail)->Bool{
-        mail.markMessageAsRead(true)
-        save()
-        return true
-    
-    }
-    
-    func markMailAsUnread(mail:Mail)->Bool{
-        mail.markMessageAsRead(false)
-        save()
-        return true
-    }
     
     private func loadMails(){
         mails = [Mail]()

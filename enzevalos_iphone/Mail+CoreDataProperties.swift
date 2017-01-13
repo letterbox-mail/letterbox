@@ -25,7 +25,6 @@ extension Mail {
     @NSManaged public var subject: String?
     @NSManaged public var trouble: Bool
     @NSManaged public var uid: NSDecimalNumber
-    @NSManaged public var isRead: Bool
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var from: Mail_Address
