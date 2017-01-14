@@ -24,6 +24,18 @@ class DataHandler: NSObject {
     private let MaxRecords = 10
     private let MaxMailsPerRecord = 20
     
+    var countMails:Int{
+        get{
+         return readMails().count
+        }
+    }
+    
+    var countContacts: Int{
+        get{
+            return getContacts().count
+        }
+    }
+    
     
     
     override  init() {
@@ -77,11 +89,11 @@ class DataHandler: NSObject {
     
     
     private func cleanContacts(){
-        if countedContacts() > MaxRecords{
+        if countContacts > MaxRecords{
             var contacts = getContacts()
             var cm: Int
             cm = 0
-            for _ in  0...(countedContacts() - MaxRecords){
+            for _ in  0...(countContacts - MaxRecords){
                 let c = contacts.last! as EnzevalosContact
                 if  !c.hasKey{
                     if c.from != nil{
@@ -104,7 +116,7 @@ class DataHandler: NSObject {
     
     
     private func cleanMails(){
-        if countedMails() > (MaxMailsPerRecord * countedContacts()) {
+        if countMails > (MaxMailsPerRecord * countContacts) {
             for c in getContacts() {
                 if let ms = c.from{
                     if ms.count > MaxMailsPerRecord{
@@ -122,13 +134,6 @@ class DataHandler: NSObject {
         isLoadMails = false
     }
     
-    func countedMails()->Int{
-        return readMails().count
-    }
-    
-    func countedContacts()-> Int{
-        return getContacts().count
-    }
     
     // Save, load, search
     
