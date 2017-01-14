@@ -69,9 +69,9 @@ class InboxTableViewCell: UITableViewCell {
     var enzContact: KeyRecord? {
         didSet {
             if let con = enzContact {
-                firstMail = con.getFromMails().first
-                if con.getFromMails().count > 1 {
-                    secondMail = con.getFromMails()[1]
+                firstMail = con.mails.first
+                if con.mails.count > 1 {
+                    secondMail = con.mails[1]
                     secondButton.enabled = true
                 } else {
                     secondDateLabel.text = ""
@@ -87,7 +87,7 @@ class InboxTableViewCell: UITableViewCell {
 //                    iconView.image = UIImage(named: "postcard_small")!
                 }
 
-                self.contact = con.getCNContact()
+                self.contact = con.cnContact
                 nameLabel.text = con.name
                 faceView.image = con.getImageOrDefault()
                 faceView.layer.cornerRadius = faceView.frame.height / 2

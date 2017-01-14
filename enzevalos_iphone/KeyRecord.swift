@@ -18,27 +18,62 @@ public class KeyRecord: Record{
      */
     
     
-    private let contact: EnzevalosContact
     let key: KeyWrapper?
     
     public var name: String{
         get{
-            return contact.name
+            return ezContact.name
         }
     }
     public var isSecure: Bool
     
     public var isVerified: Bool
     
-    var mails: [Mail]
+    
+    private var fromMails: [Mail]
+    public var mails: [Mail]{
+        get{
+            return self.fromMails
+        }
+        set{
+            self.fromMails = newValue
+        }
+    }
+    
+    
+    private var enzevalosContact: EnzevalosContact
+    
+    public var ezContact: EnzevalosContact{
+        get{
+            return self.enzevalosContact
+        }
+    }
+    
+    public var cnContact: CNContact?{
+        get{
+            return ezContact.cnContact
+        }
+    }
+    
+    public var color: UIColor{
+        get{
+            return ezContact.getColor()
+        }
+    }
+    
+    public var image: UIImage{
+        get{
+            return ezContact.getImageOrDefault()
+        }
+    }
+    
     
     
     
     
     public init(contact: EnzevalosContact, key: KeyWrapper?){
-        self.contact = contact
         self.key = key
-        self.mails = [Mail] ()
+        self.enzevalosContact = contact
         if (key != nil) {
             self.isSecure = true
             self.isVerified = (key?.verified)!
@@ -47,16 +82,17 @@ public class KeyRecord: Record{
             self.isSecure = false
             self.isVerified = false
         }
+        self.fromMails = [Mail] ()
     }
     
     public init(mail: Mail){
-        self.contact = mail.from.contact
-        self.mails = [Mail] ()
         //TODO: KEY?????
-        key = nil
+        self.key = nil
+        self.enzevalosContact = mail.from.contact
         self.isSecure = mail.isEncrypted
         self.isVerified = false //TODO FIX
         
+        self.fromMails = [Mail] ()
         self.updateMails(mail)
     }
     
@@ -65,26 +101,17 @@ public class KeyRecord: Record{
     
     public func showInfos(){
         print("-----------------")
-        print("Name: \(contact.displayname) | State: \(isSecure) | #Mails: \(mails.count)")
+        print("Name: \(ezContact.displayname) | State: \(isSecure) | #Mails: \(mails.count)")
         print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.from.address) | date: \(mails.first?.date.description) ")
         print("subj: \(mails.first?.subject?.capitalizedString)")
     
     }
+
     
-    public func getContact()->EnzevalosContact{
-        return contact
-    }
     
-    public func getCNContact() -> CNContact? {
-        return contact.cnContact
-    }
-    
-    public func getFromMails()->[Mail]{
-        return mails
-    }
     public func updateMails(mail: Mail)->Bool{
         if mail.isEncrypted == self.isSecure{
-            if getContact().getAddress(mail.from.address) != nil{
+            if ezContact.getAddress(mail.from.address) != nil{
                 for m in mails{
                   if m.uid == mail.uid{
                        return true
@@ -103,18 +130,18 @@ public class KeyRecord: Record{
     }
     
     public func getImageOrDefault() -> UIImage {
-        return contact.getImageOrDefault()
+        return ezContact.getImageOrDefault()
     }
     
     public func getColor() -> UIColor {
-        return contact.getColor()
+        return ezContact.getColor()
     }
 }
 
 
 
 private func isEmpty(contact: KeyRecord)-> Bool{
-    if(contact.getFromMails().count == 0){
+    if(contact.mails.count == 0){
         return true
     }
     return false
@@ -130,7 +157,7 @@ public func ==(lhs: KeyRecord, rhs: KeyRecord) -> Bool {
         return false
     }
     
-    return lhs.getFromMails().first!.date == rhs.getFromMails().first!.date
+    return lhs.mails.first!.date == rhs.mails.first!.date
 }
 
 public func <(lhs: KeyRecord, rhs: KeyRecord) -> Bool {
@@ -140,5 +167,5 @@ public func <(lhs: KeyRecord, rhs: KeyRecord) -> Bool {
     if isEmpty(rhs){
         return false
     }
-    return lhs.getFromMails().first!.date > rhs.getFromMails().first!.date
+    return lhs.mails.first!.date > rhs.mails.first!.date
 }

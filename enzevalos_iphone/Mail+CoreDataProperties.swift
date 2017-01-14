@@ -45,7 +45,6 @@ extension Mail {
             self.willChangeValueForKey("trouble")
             self.setPrimitiveValue(newValue, forKey: "trouble")
             self.didChangeValueForKey("trouble")
-            self.showMessage != trouble
         }
         get {
             self.willAccessValueForKey("trouble")

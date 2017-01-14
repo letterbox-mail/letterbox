@@ -15,13 +15,13 @@ public protocol Record: Comparable {
     var name: String{get}
     var isSecure: Bool{get}
     var isVerified: Bool {get}
-    func getContact()-> EnzevalosContact
-    func getFromMails()->[Mail]
-    func updateMails(mail:Mail)->Bool
-    func getCNContact()-> CNContact?
-    func getColor()-> UIColor
-    func getImageOrDefault()-> UIImage
+    var ezContact: EnzevalosContact{get}
+    var mails: [Mail]{get}
+    var cnContact: CNContact?{get}
+    var color: UIColor {get}
+    var image: UIImage {get}
     
+    func updateMails(mail:Mail)->Bool    
 }
 
 extension Record {

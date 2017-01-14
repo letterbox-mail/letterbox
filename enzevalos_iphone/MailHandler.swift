@@ -308,7 +308,6 @@ class MailHandler {
                             }
                         }
                         
-                        var enc = false
                         let ver = false
                         let troub = false
                         let sig = false
@@ -317,7 +316,6 @@ class MailHandler {
                         //gute Wahl?
                         //in-line PGP
                         if body.commonPrefixWithString("-----BEGIN PGP MESSAGE-----", options: NSStringCompareOptions.CaseInsensitiveSearch) == "-----BEGIN PGP MESSAGE-----" {
-                            enc = true
                         }
                         //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
                         // TODO: Fix decryption

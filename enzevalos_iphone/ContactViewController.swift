@@ -73,7 +73,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
         if authorizationStatus == CNAuthorizationStatus.Authorized {
             do {
-                ui = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(contact!.getCNContact()!.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
+                ui = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(contact!.cnContact!.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
             } catch {
                 //contact doesn't exist or we don't have authorization
                 //TODO: handle missing authorization
@@ -87,7 +87,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: infoButton)
         } else {
             let addButton = UIButton(type: .ContactAdd)
-            vc = CNContactViewController(forNewContact: contact!.getCNContact())
+            vc = CNContactViewController(forNewContact: contact!.cnContact)
             vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
             vc!.delegate = self
             addButton.addTarget(self, action: #selector(ContactViewController.showContact), forControlEvents: .TouchUpInside)

@@ -21,7 +21,7 @@ class ListViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let count = contact?.getFromMails().count {
+        if let count = contact?.mails.count {
             return count
         } else {
             return 0
@@ -31,7 +31,7 @@ class ListViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ListCell") as! ListViewCell!
         
-        if let mail = contact?.getFromMails()[indexPath.row] {
+        if let mail = contact?.mails[indexPath.row] {
             if !mail.isRead {
                 cell.subjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
             } else {
@@ -46,7 +46,7 @@ class ListViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        performSegueWithIdentifier("readMailSegue", sender: contact?.getFromMails()[indexPath.row])
+        performSegueWithIdentifier("readMailSegue", sender: contact?.mails[indexPath.row])
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
