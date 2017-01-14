@@ -89,15 +89,18 @@ class DataHandler: NSObject {
             var cm: Int
             cm = 0
             for _ in  0...(countedContacts() - MaxRecords){
-                let c = contacts.removeLast()
-                if c.from != nil{
-                    for m in c.from!{
-                        getContextManager().deleteObject(m as! NSManagedObject)
-                        cm += 1
+                let c = contacts.last! as EnzevalosContact
+                if  !c.hasKey{
+                    if c.from != nil{
+                        for m in c.from!{
+                            getContextManager().deleteObject(m as! NSManagedObject)
+                            cm += 1
+                        }
+                        c.from = nil
                     }
-                    c.from = nil
+                    contacts.removeLast()
+                    getContextManager().deleteObject(c)
                 }
-                getContextManager().deleteObject(c)
             }
             isLoadMails = false
             
@@ -156,7 +159,6 @@ class DataHandler: NSObject {
     
     private func findAll(entityName:String)->[AnyObject]?{
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
-       // fReq.sortDescriptors = [NSSortDescriptor(key: "from", ascending: false)]
         let result: [AnyObject]?
         do {
             result = try self.managedObjectContext.executeFetchRequest(fReq)

@@ -23,6 +23,19 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     }
     
+    public var hasKey: Bool{
+        get {
+            for item in addresses!{
+                let adr = item as! MailAddress
+                if adr.hasKey{
+                    return true
+                }
+            }
+            return false
+        
+        }
+    }
+    
     public var cnContact: CNContact?{
         get{
             let contactFromBook = AddressHandler.findContact(self)
