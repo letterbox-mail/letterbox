@@ -11,8 +11,8 @@ import CoreData
 import Contacts
 
 class DataHandler: NSObject {
-    private static var handler: DataHandler? = nil
-
+    static let handler: DataHandler = DataHandler()
+    
     private var managedObjectContext: NSManagedObjectContext
     private var mails: [Mail]
     private var isLoadMails: Bool
@@ -56,13 +56,6 @@ class DataHandler: NSObject {
         isLoadContacts = false
         isLoadState = false
         print("Finish init of DataHandler")
-    }
-    
-    static func getDataHandler()->DataHandler{
-        if handler == nil{
-            handler = DataHandler.init()
-        }
-        return handler!
     }
     
     func terminate(){

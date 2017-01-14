@@ -122,7 +122,7 @@ class AutocryptContact{
 class MailHandler {
 
     var delegate: MailHandlerDelegator?
-    var lastUID: UInt64 = DataHandler.getDataHandler().readMaxUid()
+    var lastUID: UInt64 = DataHandler.handler.readMaxUid()
     
     var IMAPSes: MCOIMAPSession?
     
@@ -322,7 +322,7 @@ class MailHandler {
                         //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
                         // TODO: Fix decryption
                         
-                        let mail = DataHandler.getDataHandler().createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, flags: message.flags)
+                        let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, flags: message.flags)
                       //  mail.decryptIfPossible()
                         /*Jakob prototypeänderung Ende*/
                         self.delegate?.addNewMail(mail)

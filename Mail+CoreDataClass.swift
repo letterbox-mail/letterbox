@@ -44,7 +44,7 @@ public class Mail: NSManagedObject, Comparable {
                 flags.insert(MCOMessageFlag.Seen)
             }
             setFlags(flags)
-            DataHandler.getDataHandler().save()
+            DataHandler.handler.save()
         }
     }
     
