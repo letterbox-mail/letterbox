@@ -67,7 +67,7 @@ class DataHandler: NSObject {
     func save()->Bool{
         var succ = false
         do{
-            try getContextManager().save()
+            try managedObjectContext.save()
             succ = true
         } catch{
             fatalError("Failure to save context\(error)")
@@ -86,13 +86,13 @@ class DataHandler: NSObject {
                 if  !c.hasKey{
                     if c.from != nil{
                         for m in c.from!{
-                            getContextManager().deleteObject(m as! NSManagedObject)
+                            managedObjectContext.deleteObject(m as! NSManagedObject)
                             cm += 1
                         }
                         c.from = nil
                     }
                     contacts.removeLast()
-                    getContextManager().deleteObject(c)
+                    managedObjectContext.deleteObject(c)
                 }
             }
             isLoadMails = false
@@ -111,7 +111,7 @@ class DataHandler: NSObject {
                         for _ in  0...(ms.count - MaxMailsPerRecord){
                             let last = ms.firstObject as! Mail
                             c.removeFromFrom(last)
-                            getContextManager().deleteObject(last)
+                            managedObjectContext.deleteObject(last)
                         }
                     }
                 }
@@ -131,11 +131,6 @@ class DataHandler: NSObject {
     }
     
     // Save, load, search
-    
-    
-    func getContextManager() -> NSManagedObjectContext{
-        return managedObjectContext
-    }
     
     private func find(entityName: String, type:String, search: String) -> [AnyObject]?{
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
