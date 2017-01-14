@@ -21,6 +21,12 @@ class DataHandler: NSObject {
     private let MaxRecords = 10
     private let MaxMailsPerRecord = 20
     
+    var maxUID:UInt64{
+        get{
+            return currentstate.maxUID
+        }
+    }
+    
     var countMails:Int{
         get{
          return readMails().count
@@ -318,19 +324,14 @@ class DataHandler: NSObject {
         handleCCAddresses(cc, mail: mail)
         
         save()
-        if getCurrentState().getMaxUid() < mail.uid{
-            getCurrentState().setMaxUid(mail.uid)
+        if getCurrentState().maxUID < mail.uid{
+            getCurrentState().maxUID = mail.uid
         }
         mails.append(mail)
         return mail
     }
     
     
-    func readMaxUid()->UInt64{
-        let state = getCurrentState()
-        let max = state.getMaxUid()
-        return  max
-    }
     
     private func readMails()->[Mail]{
         var mails = [Mail]()
@@ -339,8 +340,8 @@ class DataHandler: NSObject {
             for r in result!{
                 let m = r as! Mail
                 mails.append(m)
-                if  getCurrentState().getMaxUid() < m.uid{
-                    getCurrentState().setMaxUid(m.uid)
+                if  getCurrentState().maxUID < m.uid{
+                    getCurrentState().maxUID = m.uid
                 }
             }
         }
@@ -395,9 +396,9 @@ class DataHandler: NSObject {
             }
             else{
                 currentstate  = (NSEntityDescription.insertNewObjectForEntityForName("State", inManagedObjectContext: managedObjectContext) as? State)!
-                currentstate.setNumberOfContacts(contacts.count)
-                currentstate.setNumberOfMails(mails.count)
-                currentstate.setMaxUid(1)
+                currentstate.currentContacts = contacts.count
+                currentstate.currentMails = mails.count
+                currentstate.maxUID = 1
                 save()
             }
         return currentstate

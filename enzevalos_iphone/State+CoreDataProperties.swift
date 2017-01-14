@@ -16,8 +16,53 @@ extension State {
         return NSFetchRequest(entityName: "State");
     }
 
-    @NSManaged public var currentMails: Int64
-    @NSManaged public var currentContacts: Int64
-    @NSManaged public var maxUID: NSDecimalNumber
+    public var currentMails: Int{
+        set {
+            let name = "currentMails"
+            self.willChangeValueForKey(name)
+            self.setPrimitiveValue(newValue, forKey: name)
+            self.didChangeValueForKey(name)
+        }
+        get {
+            let name = "currentMails"
+            self.willAccessValueForKey(name)
+            let result = Int(self.primitiveValueForKey(name) as! Int64)
+            self.didAccessValueForKey(name)
+            return result
+        }
+    }
+    
+    public var currentContacts: Int{
+        set {
+            let name = "currentContacts"
+            self.willChangeValueForKey(name)
+            self.setPrimitiveValue(newValue, forKey: name)
+            self.didChangeValueForKey(name)
+        }
+        get {
+            let name = "currentContacts"
+            self.willAccessValueForKey(name)
+            let result = Int(self.primitiveValueForKey(name) as! Int64)
+            self.didAccessValueForKey(name)
+            return result
+        }
+    }
+    
+    public var maxUID: UInt64{
+        set {
+            let name = "maxUID"
+            self.willChangeValueForKey(name)
+            self.setPrimitiveValue(NSDecimalNumber(unsignedLongLong: newValue), forKey: name)
+            self.didChangeValueForKey(name)
+        }
+        get {
+            let name = "maxUID"
+            self.willAccessValueForKey(name)
+            let result = (self.primitiveValueForKey(name) as! NSDecimalNumber).unsignedLongLongValue
+            self.didAccessValueForKey(name)
+            return result
+        }
+
+    }
 
 }

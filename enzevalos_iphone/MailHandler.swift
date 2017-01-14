@@ -122,7 +122,7 @@ class AutocryptContact{
 class MailHandler {
 
     var delegate: MailHandlerDelegator?
-    var lastUID: UInt64 = DataHandler.handler.readMaxUid()
+    var lastUID: UInt64 = DataHandler.handler.maxUID
     
     var IMAPSes: MCOIMAPSession?
     
