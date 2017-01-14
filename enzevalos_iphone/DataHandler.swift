@@ -14,12 +14,9 @@ class DataHandler: NSObject {
     static let handler: DataHandler = DataHandler()
     
     private var managedObjectContext: NSManagedObjectContext
-    private var mails: [Mail]
-    private var isLoadMails: Bool
-    private var contacts: [EnzevalosContact]
-    private var isLoadContacts: Bool
-    private var currentstate: State?
-    private var isLoadState: Bool
+    lazy var mails: [Mail] = self.readMails()
+    lazy var contacts: [EnzevalosContact] = self.getContacts()
+    lazy var currentstate: State = self.getCurrentState()
     
     private let MaxRecords = 10
     private let MaxMailsPerRecord = 20
@@ -62,11 +59,6 @@ class DataHandler: NSObject {
         } catch {
             fatalError("Error migrating store: \(error)")
         }
-        mails = [Mail]()
-        isLoadMails = false
-        contacts = [EnzevalosContact]()
-        isLoadContacts = false
-        isLoadState = false
         print("Finish init of DataHandler")
     }
     
@@ -90,16 +82,15 @@ class DataHandler: NSObject {
     
     private func cleanContacts(){
         if countContacts > MaxRecords{
-            var contacts = getContacts()
-            var cm: Int
-            cm = 0
             for _ in  0...(countContacts - MaxRecords){
                 let c = contacts.last! as EnzevalosContact
                 if  !c.hasKey{
                     if c.from != nil{
                         for m in c.from!{
                             managedObjectContext.deleteObject(m as! NSManagedObject)
-                            cm += 1
+                            if let index = mails.indexOf(m as! Mail) {
+                                mails.removeAtIndex(index)
+                            }
                         }
                         c.from = nil
                     }
@@ -107,31 +98,28 @@ class DataHandler: NSObject {
                     managedObjectContext.deleteObject(c)
                 }
             }
-            isLoadMails = false
-            
+            //TODO update mail list?
         }
-        isLoadContacts = false
-        isLoadMails = false
     }
     
     
     private func cleanMails(){
         if countMails > (MaxMailsPerRecord * countContacts) {
-            for c in getContacts() {
+            for c in contacts {
                 if let ms = c.from{
                     if ms.count > MaxMailsPerRecord{
                         for _ in  0...(ms.count - MaxMailsPerRecord){
                             let last = ms.firstObject as! Mail
                             c.removeFromFrom(last)
                             managedObjectContext.deleteObject(last)
+                            if let index = mails.indexOf(last) {
+                                mails.removeAtIndex(index)
+                            }
                         }
                     }
                 }
             }
-        
         }
-        isLoadContacts = false
-        isLoadMails = false
     }
     
     
@@ -339,9 +327,14 @@ class DataHandler: NSObject {
     }
     
     
+    func readMaxUid()->UInt64{
+        let state = getCurrentState()
+        let max = state.getMaxUid()
+        return  max
+    }
     
-    private func loadMails(){
-        mails = [Mail]()
+    private func readMails()->[Mail]{
+        var mails = [Mail]()
         let result = findAll("Mail")
         if(result != nil){
             for r in result!{
@@ -352,24 +345,11 @@ class DataHandler: NSObject {
                 }
             }
         }
-        isLoadMails = true
-    }
-    
-    func readMaxUid()->UInt64{
-        let state = getCurrentState()
-        let max = state.getMaxUid()
-        return  max
-    }
-    
-    private func readMails()->[Mail]{
-        if(!isLoadMails){
-            loadMails()
-        }
         return mails
     }
     
-    private func loadContacts(){
-        contacts = [EnzevalosContact]()
+    private func getContacts()->[EnzevalosContact]{
+        var contacts = [EnzevalosContact]()
         let result = findAll("EnzevalosContact")
         if(result != nil){
             for r in result!{
@@ -380,13 +360,6 @@ class DataHandler: NSObject {
                     }
                 }
             }
-        }
-        isLoadContacts = true
-    }
-    
-    func getContacts()->[EnzevalosContact]{
-        if !isLoadContacts {
-            loadContacts()
         }
         return contacts
     }
@@ -417,21 +390,18 @@ class DataHandler: NSObject {
     }
     
     func getCurrentState()->State{
-        if !isLoadState {
             let result = findAll("State")
             if(result != nil && result?.count > 0){
-                currentstate =  result?.first as? State
+                currentstate =  (result?.first as? State)!
             }
             else{
-                currentstate  = NSEntityDescription.insertNewObjectForEntityForName("State", inManagedObjectContext: managedObjectContext) as? State
-                currentstate!.setNumberOfContacts(getContacts().count)
-                currentstate!.setNumberOfMails(readMails().count)
-                currentstate!.setMaxUid(1)
+                currentstate  = (NSEntityDescription.insertNewObjectForEntityForName("State", inManagedObjectContext: managedObjectContext) as? State)!
+                currentstate.setNumberOfContacts(getContacts().count)
+                currentstate.setNumberOfMails(readMails().count)
+                currentstate.setMaxUid(1)
                 save()
             }
-            isLoadState = true
-        }
-        return currentstate!
+        return currentstate
     
     }
     
