@@ -95,7 +95,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         ccText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         
         if answerTo != nil {
-            toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.getFromAddress())!)
+            toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.from.address)!)
             for r in (answerTo?.getReceivers())!{
                 if r.address != UserManager.loadUserValue(Attribute.UserAddr) as! String{
                     ccText.delegate?.tokenField!(ccText, didEnterText: r.address)
@@ -103,7 +103,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             }
             subjectText.setText(NSLocalizedString("Re", comment: "prefix for subjects of answered mails")+": "+(answerTo?.subject!)!)
             textView.text = NSLocalizedString("mail from", comment: "describing who send the mail")+" "
-            textView.text.appendContentsOf((answerTo?.getFromAddress())!)
+            textView.text.appendContentsOf((answerTo?.from.address)!)
             textView.text.appendContentsOf(" "+NSLocalizedString("sent at", comment: "describing when the mail was send")+" "+(answerTo?.timeString)!)
             textView.text.appendContentsOf("\n"+NSLocalizedString("to", comment: "describing adressee")+": ")
             textView.text.appendContentsOf(UserManager.loadUserValue(Attribute.UserAddr) as! String)
@@ -113,8 +113,8 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             textView.text.appendContentsOf(ccText.mailTokens.componentsJoinedByString(", "))
             textView.text.appendContentsOf("\n"+NSLocalizedString("subject", comment:"describing what subject was choosen")+": "+(answerTo?.subject!)!)
             if answerTo!.isEncrypted {
-                if answerTo?.getDecryptedMessage() != nil {
-                    textView.text.appendContentsOf("\n--------------------\n\n"+(answerTo?.getDecryptedMessage())!)
+                if answerTo?.decryptedMessage != nil {
+                    textView.text.appendContentsOf("\n--------------------\n\n"+(answerTo?.decryptedMessage)!)
                 }
             }
             else {

@@ -69,7 +69,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     }
         
-    func getName()-> String{
+    private func getName()-> String{
         var name: String
         name = String()
         if let cnc = cnContact{

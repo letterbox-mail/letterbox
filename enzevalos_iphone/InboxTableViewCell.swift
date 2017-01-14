@@ -114,7 +114,7 @@ class InboxTableViewCell: UITableViewCell {
                         mail.decryptIfPossible()
                     }*/
                     if mail.isEncrypted {
-                        message = mail.getDecryptedMessage()
+                        message = mail.decryptedMessage!
                     }
                 }
                 else if mail.body == nil {
@@ -156,7 +156,7 @@ class InboxTableViewCell: UITableViewCell {
                     }*/
                     
                     if !mail.trouble{
-                        message = mail.getDecryptedMessage()
+                        message = mail.decryptedMessage!
                     }
                 }
                 else if mail.body != nil {

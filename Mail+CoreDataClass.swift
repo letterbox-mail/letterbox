@@ -32,18 +32,15 @@ public class Mail: NSManagedObject, Comparable {
     
     var isRead: Bool{
         get{
-            let value = getFlags().contains(MCOMessageFlag.Seen)
+            let value = flag.contains(MCOMessageFlag.Seen)
             return value
         }
         set {
-            var flags: MCOMessageFlag
-            flags = getFlags()
             if !newValue {
-                flags.remove(MCOMessageFlag.Seen)
+                flag.remove(MCOMessageFlag.Seen)
             } else {
-                flags.insert(MCOMessageFlag.Seen)
+                flag.insert(MCOMessageFlag.Seen)
             }
-            setFlags(flags)
             DataHandler.handler.save()
         }
     }
@@ -73,17 +70,12 @@ public class Mail: NSManagedObject, Comparable {
         return returnString
     }
     
-    func addFrom(from: Mail_Address){
-        self.from = from
-    }
-    
-    func getFrom()->Mail_Address{
-        return from
-    }
-    
-    func addReceivers(receivers: [Mail_Address]){
-        for ec in receivers{
-            self.addToTo(ec)
+    var decryptedMessage: String?{
+        get{
+            return self.body
+        }
+        set{
+            self.body = newValue
         }
     }
     
@@ -96,7 +88,6 @@ public class Mail: NSManagedObject, Comparable {
     }
 
     
-    //TODO: Optimize, only cast once
     
     func getCCs()->[Mail_Address]{
         var receivers = [Mail_Address] ()
@@ -113,40 +104,8 @@ public class Mail: NSManagedObject, Comparable {
         }
         return receivers
     }
-    
-    func getFromAddress()->String{
-        return (from.address)
-    }
-    
-    func addCC(cc: [Mail_Address]){
-        for ec in cc{
-            self.addToCc(ec)
-        }
-    }
-    
-    func setFlags(flags: MCOMessageFlag){
-        if flags.rawValue != Int(flag){
-            AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid, flags: flags)
-        }
-       flag = Int32(flags.rawValue)
 
-    }
-    
-    func getFlags()->MCOMessageFlag{
-        return MCOMessageFlag.init(rawValue:Int(flag))
-    }
-    
-    
-    func changeTrouble(trouble: Bool){
-            self.trouble = trouble
-            showMessage = !trouble
-    }
-    
-    
-    
-    func getDecryptedMessage()-> String{
-        return body!
-        
+
         /*
  func decryptIfPossible(){
  if body != nil {
@@ -196,17 +155,11 @@ public class Mail: NSManagedObject, Comparable {
  }
  }
 */
-    }
-    /*
-    func getUID()->UInt64{
-        return self.uid.unsignedLongLongValue
-    }
- */
+
     
 
     func getSubjectWithFlagsString()-> String{
         let subj: String
-        let flags = getFlags()
         var returnString: String = ""
 
         if self.subject == nil || (self.subject?.isEmpty)! {
@@ -220,13 +173,13 @@ public class Mail: NSManagedObject, Comparable {
         if !self.isRead {
             returnString.appendContentsOf("🔵 ")
         }
-        if MCOMessageFlag.Answered.isSubsetOf(flags) {
+        if MCOMessageFlag.Answered.isSubsetOf(flag) {
             returnString.appendContentsOf("↩️ ")
         }
-        if MCOMessageFlag.Forwarded.isSubsetOf(flags) {
+        if MCOMessageFlag.Forwarded.isSubsetOf(flag) {
             returnString.appendContentsOf("➡️ ")
         }
-        if MCOMessageFlag.Flagged.isSubsetOf(flags) {
+        if MCOMessageFlag.Flagged.isSubsetOf(flag) {
             returnString.appendContentsOf("⭐️ ")
         }
         return "\(returnString)\(subj)"

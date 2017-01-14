@@ -23,7 +23,7 @@ public class KeyRecord: Record{
     
     public var name: String{
         get{
-            return contact.getName()
+            return contact.name
         }
     }
     public var isSecure: Bool
@@ -50,7 +50,7 @@ public class KeyRecord: Record{
     }
     
     public init(mail: Mail){
-        self.contact = mail.getFrom().contact
+        self.contact = mail.from.contact
         self.mails = [Mail] ()
         //TODO: KEY?????
         key = nil
@@ -66,7 +66,7 @@ public class KeyRecord: Record{
     public func showInfos(){
         print("-----------------")
         print("Name: \(contact.displayname) | State: \(isSecure) | #Mails: \(mails.count)")
-        print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.getFrom().address) | date: \(mails.first?.date.description) ")
+        print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.from.address) | date: \(mails.first?.date.description) ")
         print("subj: \(mails.first?.subject?.capitalizedString)")
     
     }
@@ -84,12 +84,12 @@ public class KeyRecord: Record{
     }
     public func updateMails(mail: Mail)->Bool{
         if mail.isEncrypted == self.isSecure{
-            if getContact().getAddress(mail.getFrom().address) != nil{
+            if getContact().getAddress(mail.from.address) != nil{
                 for m in mails{
                   if m.uid == mail.uid{
                        return true
                   }
-                  else if m.uid < mail.uid { //TODO CHECK!!!
+                  else if m.uid < mail.uid {
                     break
                     }
                 }

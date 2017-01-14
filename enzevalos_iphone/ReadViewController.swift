@@ -198,7 +198,7 @@ class ReadViewController : UITableViewController {
                 }
             }
             
-            sender.text = m.getFromAddress()
+            sender.text = m.from.address
              //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
             if m.getReceivers().count == 1 && m.getCCs().count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
                 receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
@@ -245,10 +245,11 @@ class ReadViewController : UITableViewController {
                 //}
                 
                 //print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
-                messageBody.text = m.getDecryptedMessage()
-                print(m.getDecryptedMessage())
-                if KeyHandler.getHandler().addrHasKey((m.getFromAddress())) {
-                    let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.getFromAddress()))?.key
+                messageBody.text = m.decryptedMessage
+                print(m.decryptedMessage)
+               // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
+                if m.from.hasKey{
+                    let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.from.address))?.key
                     print(signatureKey)
                 }
             

@@ -98,7 +98,6 @@ class DataHandler: NSObject {
                     managedObjectContext.deleteObject(c)
                 }
             }
-            //TODO update mail list?
         }
     }
     
@@ -253,7 +252,7 @@ class DataHandler: NSObject {
         contact.addToFrom(fromMail)
         let adr: Mail_Address
         adr = contact.getAddressByMCOAddress(sender)!
-        fromMail.addFrom(adr)
+        fromMail.from = adr
 
     }
     
@@ -263,7 +262,7 @@ class DataHandler: NSObject {
         for c in contacts{
             c.addToTo(mail)
         }
-        mail.addReceivers(getMailAddressesByMCOAddresses(receivers))
+        mail.addToTo(NSSet(array: getMailAddressesByMCOAddresses(receivers)))
     }
     
     private func handleCCAddresses(cc: [MCOAddress], mail: Mail)
@@ -272,7 +271,7 @@ class DataHandler: NSObject {
         for c in contacts{
             c.addToCc(mail)
         }
-        mail.addCC(getMailAddressesByMCOAddresses(cc))
+        mail.addToCc(NSSet(array: getMailAddressesByMCOAddresses(cc)))
     }
     
     // TODO: handle BCC
@@ -303,7 +302,7 @@ class DataHandler: NSObject {
            
             mail.uid = uid
 
-            mail.setFlags(flags)
+            mail.flag = flags
             
             mail.isSigned = false
             mail.isEncrypted = false
@@ -396,8 +395,8 @@ class DataHandler: NSObject {
             }
             else{
                 currentstate  = (NSEntityDescription.insertNewObjectForEntityForName("State", inManagedObjectContext: managedObjectContext) as? State)!
-                currentstate.setNumberOfContacts(getContacts().count)
-                currentstate.setNumberOfMails(readMails().count)
+                currentstate.setNumberOfContacts(contacts.count)
+                currentstate.setNumberOfMails(mails.count)
                 currentstate.setMaxUid(1)
                 save()
             }
