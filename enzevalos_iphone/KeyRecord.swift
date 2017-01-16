@@ -68,9 +68,6 @@ public class KeyRecord: Record{
     }
     
     
-    
-    
-    
     public init(contact: EnzevalosContact, key: KeyWrapper?){
         self.key = key
         self.enzevalosContact = contact
@@ -113,11 +110,11 @@ public class KeyRecord: Record{
         if mail.isEncrypted == self.isSecure{
             if ezContact.getAddress(mail.from.address) != nil{
                 for m in mails{
-                  if m.uid == mail.uid{
-                       return true
-                  }
-                  else if m.uid < mail.uid {
-                    break
+                    if m.uid == mail.uid{
+                        return true
+                    }
+                    else if m.uid < mail.uid {
+                        break
                     }
                 }
                 mails.append(mail)
@@ -126,7 +123,6 @@ public class KeyRecord: Record{
             }
         }
         return false
-
     }
     
     public func getImageOrDefault() -> UIImage {

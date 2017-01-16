@@ -157,8 +157,7 @@ class AddressHandler {
     }
     
     static func findContact(econtact: EnzevalosContact)-> [CNContact]{
-        var result: [CNContact]
-        result = [CNContact]()
+        var result = [CNContact]()
         if let identifier = econtact.cnidentifier {
             // 1. Look up identifier string
             result = getContactByID(identifier)
