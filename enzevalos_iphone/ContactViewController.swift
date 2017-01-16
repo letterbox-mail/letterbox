@@ -38,12 +38,13 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         self.tableView.estimatedRowHeight = 44.0
         
 //        headerCell.layoutMargins = UIEdgeInsetsZero
+        print(contact?.cnContact?.getMailAddresses().count)
         
         setUI()
     }
     
     func setUI() {
-        guard (contact != nil) else {
+        guard contact != nil else {
             return
         }
         if let con = contact {
@@ -158,7 +159,16 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
                     return 2
                 }
             }
+        } else if section == 1 {
+            if let con = contact {
+                if let addresses = con.ezContact.addresses {
+                    return addresses.count
+                } else {
+                    return 0
+                }
+            }
         }
+        
         return 1
     }
     
@@ -170,7 +180,12 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
                 return actionCell
             }
         } else if indexPath.section == 1 {
-            return eMailCell
+            if let cell = tableView.dequeueReusableCellWithIdentifier("mailCell") {
+                cell.detailTextLabel?.text = "test"
+                return cell
+            } else {
+                return eMailCell
+            }
         } else if indexPath.section == 2 {
             return newEMailCell
         }
