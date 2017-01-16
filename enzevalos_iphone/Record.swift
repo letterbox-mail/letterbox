@@ -21,7 +21,7 @@ public protocol Record: Comparable {
     var color: UIColor {get}
     var image: UIImage {get}
     
-    func updateMails(mail:Mail)->Bool    
+    func addNewMail(mail:Mail)->Bool
 }
 
 extension Record {

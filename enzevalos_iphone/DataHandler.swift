@@ -371,7 +371,7 @@ class DataHandler: NSObject {
         for m in mails {
             var found = false
             for r in records {
-                if r.updateMails(m){
+                if r.addNewMail(m){
                     found = true
                     break
                 }

@@ -84,7 +84,7 @@ public class KeyRecord: Record{
         self.isVerified = false //TODO FIX
         
         self.mails = [Mail] ()
-        self.updateMails(mail)
+        self.addNewMail(mail)
     }
     
     
@@ -100,7 +100,7 @@ public class KeyRecord: Record{
 
     
     
-    public func updateMails(mail: Mail)->Bool{
+    public func addNewMail(mail: Mail)->Bool{
         if mail.isEncrypted == self.isSecure{
             if ezContact.getAddress(mail.from.address) != nil{
                 for m in mails{

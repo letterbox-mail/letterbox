@@ -40,7 +40,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     
     func addNewMail(mail: Mail) { // Records durchgehen. Einsortieren.
         for c in contacts {
-            if c.updateMails(mail){
+            if c.addNewMail(mail){
                 return
             }
         }
