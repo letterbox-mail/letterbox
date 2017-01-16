@@ -13,17 +13,11 @@ public class CNMailAddressExtension: MailAddress{
 
     public var mailAddress:String{
         get{
-            return label.label!
+            return label.value as! String
         }
     }
-    public var label: CNLabeledValue{
-        get{
-            return self.label
-        }
-        set{
-            self.label = newValue
-        }
-    }
+    public var label: CNLabeledValue
+    
     public var prefEnc: Bool{
         get{
             return false
