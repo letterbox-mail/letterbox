@@ -37,6 +37,8 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
         
+        
+        print(self.contact?.cnContact?.getMailAddresses())
 //        headerCell.layoutMargins = UIEdgeInsetsZero
         
         setUI()

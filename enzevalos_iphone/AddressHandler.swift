@@ -166,7 +166,13 @@ class AddressHandler {
         if result.count == 0{
             if let name = econtact.displayname{
                 // 2. look for name
-                result = getContact(name)
+                let query = getContact(name)
+                for res in query{
+                    if (proveMatching(res, addresses: econtact.getMailAddresses())){
+                        result.append(res)
+                    }
+                }
+                
             }
         }
         if result.count == 0 {
@@ -175,6 +181,25 @@ class AddressHandler {
         }
         return result
     }
+    
+    
+    static func proveMatching(result: CNContact, addresses: [MailAddress])-> Bool{
+        var match: Bool = false
+        for email in result.emailAddresses{
+            for adr in addresses{
+                let adrRest = email.value as! String
+                if adrRest.lowercaseString == adr.mailAddress.lowercaseString {
+                    match = true
+                    break
+                }
+            }
+            if match{
+                break
+            }
+        }
+        return match
+    }
+    
     
     static func contactByEmail(mailaddreses: [MailAddress]) -> [CNContact] {
         var contacts: [CNContact] = []
