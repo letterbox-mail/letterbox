@@ -6,6 +6,25 @@
 //  Copyright © 2016 jakobsbode. All rights reserved.
 //
 
+
+/*
+ TODO:
+ get  MaxUID from server
+ Load new Messages
+ (Paramete: none, person, threadID, Mailbox, #Mails)
+ Load older messages
+ (Paramete: none, person, threadID, Mailbox, #Mails)
+
+ 
+ load for spefic thread -> thread ID, see: https://github.com/MailCore/mailcore2/issues/555
+ 
+ Detect encrypted messages
+ Autocryptmessages
+ 
+ 
+ */
+
+
 import Foundation
 import Contacts
 
@@ -254,9 +273,8 @@ class MailHandler {
         self.IMAPSes = imapsession
     }
     
-    func recieve() {
+    func recieve(folder: String = "INBOX") {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
-        let folder = "INBOX"
         let uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
         let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = EXTRAHEADERS
@@ -357,5 +375,109 @@ class MailHandler {
                 print("Succsessfully updated flags!")
             }
         }
+    }
+    
+    
+    func findMaxUID(folder: String = "INBOX")->UInt64{
+        //TODO: NSP!!!
+        var maxUID: UInt64 = 0
+        let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue)
+        let uids = MCOIndexSet(range: MCORangeMake(0, UINT64_MAX))
+        let dispatchGroup = dispatch_group_create()
+        dispatch_group_enter(dispatchGroup)
+
+        let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
+        fetchOperation.start { (err, msg, vanished) -> Void in
+            guard err == nil else {
+                print("Error while fetching inbox: \(err)")
+                return
+            }
+            if let msgs = msg {
+                for m in msgs{
+                    let message: MCOIMAPMessage = m as! MCOIMAPMessage
+                    let id = UInt64(message.uid)
+                    if id > maxUID{
+                        maxUID = id
+                    }
+                }
+            }
+        }
+        dispatch_group_leave(dispatchGroup)
+
+        return maxUID
+    }
+    
+    /*
+     Parameters:
+     ---------------
+     
+     Folder = ["INBOX"] (Default)
+     #mails = 200 (Default)
+     Look forspefic mail addreses (of Contacts) (optional) -> more folders?
+     Look for spefic threadID (optional) -> more folders?
+     Look for spefic date (optional) -> more folders
+     Look for unread messages (optional)
+     */
+    func lookForMailAddresses(mailaddresses: [String]?, startDate: NSDate?, endDate: NSDate?, folders: [String] = ["INBOX"], maxMails: Int = 200){
+        let dispatchGroup = dispatch_group_create()
+        if let mailadr = mailaddresses{
+            for adr in mailadr{
+                dispatch_group_enter(dispatchGroup)
+                lookForMailAddress(adr, startDate: startDate, endDate: endDate, folders: folders)
+                dispatch_group_leave(dispatchGroup)
+            }
+        }
+        else{
+            dispatch_group_enter(dispatchGroup)
+            lookForDate(startDate: startDate, endDate: endDate, folders: folders)
+            dispatch_group_leave(dispatchGroup)
+
+        }
+        //TODO: Collect requests
+        
+    }
+    
+    private func lookForDate(expr: MCOIMAPSearchExpression? = nil, startDate: NSDate?, endDate: NSDate?, folders: [String]){
+        if expr == nil && startDate == nil && endDate == nil{
+            return
+        }
+        var ids: MCOIndexSet?
+        var searchExpr: MCOIMAPSearchExpression
+        
+        if expr != nil{
+            searchExpr = expr!
+        }
+        else {
+            searchExpr = MCOIMAPSearchExpression()
+        }
+        if startDate != nil {
+            let exprStartDate: MCOIMAPSearchExpression = MCOIMAPSearchExpression.searchSinceReceivedDate(startDate)
+            searchExpr = MCOIMAPSearchExpression.searchAnd(searchExpr, other: exprStartDate)
+        }
+        if endDate != nil {
+            let exprEndDate: MCOIMAPSearchExpression = MCOIMAPSearchExpression.searchBeforeDate(endDate)
+            searchExpr = MCOIMAPSearchExpression.searchAnd(searchExpr, other: exprEndDate)
+        }
+        let searchOperation: MCOIMAPSearchOperation = self.IMAPSession.searchExpressionOperationWithFolder(folders[0], expression: searchExpr)
+        searchOperation.start { (err, indices) -> Void  in
+            guard err == nil else {
+                return
+            }
+            ids = indices as MCOIndexSet?
+            if let x = indices{
+                for a in x.nsIndexSet() {
+                    print(a)
+                }
+            
+            }
+        }
+    }
+    
+    
+    private func lookForMailAddress(mailaddress: String, startDate: NSDate?, endDate: NSDate?, folders: [String]){
+        print(mailaddress)
+        let searchExpr: MCOIMAPSearchExpression = MCOIMAPSearchExpression.searchFrom(mailaddress)
+        lookForDate(searchExpr, startDate: startDate, endDate: endDate, folders: folders)
+       
     }
 }
