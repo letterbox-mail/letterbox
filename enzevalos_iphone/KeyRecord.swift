@@ -30,16 +30,7 @@ public class KeyRecord: Record{
     public var isVerified: Bool
     
     
-    private var fromMails: [Mail]
-    public var mails: [Mail]{
-        get{
-            return self.fromMails
-        }
-        set{
-            self.fromMails = newValue
-        }
-    }
-    
+    public var mails: [Mail]
     
     private var enzevalosContact: EnzevalosContact
     
@@ -82,7 +73,7 @@ public class KeyRecord: Record{
             self.isSecure = false
             self.isVerified = false
         }
-        self.fromMails = [Mail] ()
+        self.mails = [Mail] ()
     }
     
     public init(mail: Mail){
@@ -92,7 +83,7 @@ public class KeyRecord: Record{
         self.isSecure = mail.isEncrypted
         self.isVerified = false //TODO FIX
         
-        self.fromMails = [Mail] ()
+        self.mails = [Mail] ()
         self.updateMails(mail)
     }
     

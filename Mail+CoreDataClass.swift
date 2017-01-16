@@ -14,15 +14,7 @@ import CoreData
 @objc(Mail)
 public class Mail: NSManagedObject, Comparable {
     
-    var showMessage:Bool{
-        get{
-            return self.showMessage
-        }
-        set{
-            self.showMessage = newValue
-        }
-        
-    }
+    var showMessage:Bool = true
     
     var isSecure: Bool{
         get{
