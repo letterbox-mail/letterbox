@@ -202,4 +202,16 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         }
         return tableView.dequeueReusableCellWithIdentifier("MailCell", forIndexPath: indexPath)
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "newMail"{
+            let navigationController = segue.destinationViewController as? UINavigationController
+            let controller = navigationController?.topViewController as? SendViewController
+            let indexPath = tableView.indexPathForSelectedRow
+            if controller != nil {
+                // TODO: add address to SendView
+//                controller?.toText.delegate?.tokenField!((controller?.toText)!, didEnterText: (contact?.ezContact.getMailAddresses()[(indexPath?.row)!].mailAddress)!)
+            }
+        }
+    }
 }
