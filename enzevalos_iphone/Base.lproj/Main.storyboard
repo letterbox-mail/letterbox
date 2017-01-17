@@ -639,6 +639,26 @@
                                     <segue destination="olx-gF-WdV" kind="presentation" identifier="newMail" id="3Wb-uL-BB5"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="allMails" textLabel="VTZ-4w-fot" style="IBUITableViewCellStyleDefault" id="dM9-jb-EcN">
+                                <rect key="frame" x="0.0" y="252" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dM9-jb-EcN" id="tvN-re-z1Z">
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VTZ-4w-fot">
+                                            <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="ooe-0X-glz" kind="show" identifier="mailList" id="D6m-L0-5AB"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>
@@ -974,7 +994,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2340" y="-296"/>
+            <point key="canvasLocation" x="2382" y="-296"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Yhz-iC-twy">
@@ -996,7 +1016,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="GWh-iO-bPb"/>
-        <segue reference="j4Q-k1-ud3"/>
+        <segue reference="3Wb-uL-BB5"/>
+        <segue reference="D6m-L0-5AB"/>
+        <segue reference="ecN-Wn-7S0"/>
     </inferredMetricsTieBreakers>
 </document>

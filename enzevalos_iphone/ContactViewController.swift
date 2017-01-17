@@ -123,7 +123,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -199,6 +199,10 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             
             return cell
             
+        } else if indexPath.section == 2 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("allMails", forIndexPath: indexPath)
+            cell.textLabel?.text = NSLocalizedString("allMessages", comment: "show all messages")
+            return cell
         }
         return tableView.dequeueReusableCellWithIdentifier("MailCell", forIndexPath: indexPath)
     }
@@ -212,6 +216,9 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
                 // TODO: add address to SendView
 //                controller?.toText.delegate?.tokenField!((controller?.toText)!, didEnterText: (contact?.ezContact.getMailAddresses()[(indexPath?.row)!].mailAddress)!)
             }
+        } else if segue.identifier == "mailList" {
+            let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
+            DestinationViewController.contact = contact
         }
     }
 }
