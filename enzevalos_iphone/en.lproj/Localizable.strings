@@ -35,6 +35,7 @@
 "Re" = "Re";
 "Receive" = "Receive";
 "ReceiveError" = "An error occured"; //mehr spezifizieren?
+"ReceiveDamagedInfo" = "Something is wrong with this message. It might have been tempered with.";
 "ReceiveSecureInfo" = "This message was properly closed. It can not be read by third parties. The identity of the sender has beed checked.";
 "ReceiveInsecureInfo" = "This message was not encrypted so it was possible for everyone on the way to read its content. The identity of the sender can not be ensured.";
 "Refresh" = "Refresh";
@@ -67,3 +68,6 @@
 "Verified" = "Contact is verified";
 "verifyNow" = "Verify now";
 "invite" = "Invide contact to use encryption";
+"discard" = "Discard message?";
+"discardText" = "The information you have entered will be lost.";
+"discardButton" = "Discard";

@@ -468,10 +468,10 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         let alert: UIAlertController
         let url: String
         if !m {
-            alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+            alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: .Alert)
             url = "https://enzevalos.org/infos/postcard"
         } else {
-            alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+            alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .Alert)
             url = "https://enzevalos.org/infos/letter"
         }
         alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
@@ -482,7 +482,19 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     @IBAction func pressCancel(sender: AnyObject) {
-        navigationController?.popViewControllerAnimated(true)
+        var alert: UIAlertController
+        if textView.text == "" && toText.mailTokens.count == 0 && ccText.mailTokens.count == 0 && subjectText.inputText() == "" {
+            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            alert = UIAlertController(title: NSLocalizedString("discard", comment: "discard"), message: NSLocalizedString("discardText", comment: ""), preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "cancel"), style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .Destructive, handler: {(action:UIAlertAction!) -> Void in
+                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            }))
+            dispatch_async(dispatch_get_main_queue(), {
+                self.presentViewController(alert, animated: true, completion: nil)
+            })
+        }
     }
     
     @IBAction func pressSend(sender: AnyObject) {
@@ -499,7 +511,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             NSLog("Error sending email: \(error)")
             AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
         } else {
-            NSLog("Send!")
+            NSLog("Send successful!")
             if (self.answerTo != nil) {
                 AppDelegate.getAppDelegate().mailHandler.addFlag((self.answerTo?.uid)!, flags: MCOMessageFlag.Answered)
             }
@@ -509,7 +521,8 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     func sendCompleted() {
-        navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+//        navigationController?.popViewControllerAnimated(true)
     }
     
     

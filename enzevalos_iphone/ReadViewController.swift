@@ -165,17 +165,17 @@ class ReadViewController : UITableViewController {
             let alert: UIAlertController
             let url: String
             if m.trouble {
-                alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: NSLocalizedString("ReceiveDamagedInfo", comment: "Modefied email infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/corrupted"
             } else if m.isSecure {
-                alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+                alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/letter"
             } else {
-                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/postcard"
             }
             alert.addAction(UIAlertAction(title: "Mehr Informationen", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
             dispatch_async(dispatch_get_main_queue(), {
                 self.presentViewController(alert, animated: true, completion: nil)
             })
@@ -280,7 +280,8 @@ class ReadViewController : UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "answerTo"{
-            let controller = segue.destinationViewController as? SendViewController
+            let navigationController = segue.destinationViewController as? UINavigationController
+            let controller = navigationController?.topViewController as? SendViewController
             if controller != nil {
                 controller?.answerTo = mail
             }
