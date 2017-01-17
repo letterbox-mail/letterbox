@@ -16,21 +16,6 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
     private var ui: CNContact? = nil
     private var vc: CNContactViewController? = nil
     
-    @IBOutlet weak var contactImage: UIImageView!
-    @IBOutlet weak var iconImage: UIImageView!
-    @IBOutlet weak var contactStatus: UILabel!
-    
-    @IBOutlet weak var actionCell: UITableViewCell!
-    @IBOutlet weak var actionButton: UIButton!
-    
-    @IBOutlet weak var headerCell: UITableViewCell!
-    @IBOutlet weak var eMailCell: UITableViewCell!
-    @IBOutlet weak var newEMailCell: UITableViewCell!
-    @IBOutlet weak var allEMailsCell: UITableViewCell!
-    
-    @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var statusImage: UIImageView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,7 +23,6 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         self.tableView.estimatedRowHeight = 44.0
         
 //        headerCell.layoutMargins = UIEdgeInsetsZero
-        print(contact?.cnContact?.getMailAddresses().count)
         
         setUI()
     }
@@ -48,25 +32,10 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             return
         }
         if let con = contact {
-            contactImage.image = con.getImageOrDefault()
-            contactImage.layer.cornerRadius = contactImage.frame.height / 2
-            contactImage.clipsToBounds = true
             self.title = con.name
-            //self.title = CNContactFormatter.stringFromContact(con.contact, style: .FullName)
-            
-            if !con.isSecure {
-                statusLabel.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
-                actionButton.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), forState: UIControlState.Normal)
-            } else {
-                statusLabel.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
-                actionButton.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), forState: UIControlState.Normal)
-            }
-            if con.isVerified {
-                statusLabel.text = NSLocalizedString("Verified", comment: "Contact is verified")
-            }
+//            self.title = CNContactFormatter.stringFromContact(con.ezContact.cnContact, style: .FullName)
             
             prepareContactSheet()
-            drawStatusCircle()
         }
     }
     
@@ -96,9 +65,9 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         }
     }
     
-    func drawStatusCircle() {
+    func drawStatusCircle() -> UIImage? {
         guard contact != nil else {
-            return
+            return nil
         }
         var myBounds = CGRect()
         myBounds.size.width = 70
@@ -138,8 +107,9 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             IconsStyleKit.drawPostcard(frame: frame, resizing: .AspectFit, color: UIColor.whiteColor())
         }
         
-        statusImage.image = UIGraphicsGetImageFromCurrentImageContext();
+        let img = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
+        return img
     }
     
     func showContact() {
@@ -147,9 +117,12 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
     }
     
     func contactViewController(viewController: CNContactViewController, didCompleteWithContact contact: CNContact?) {
-//        self.dismissViewControllerAnimated(true, completion: nil)
         self.navigationController?.popViewControllerAnimated(true)
         prepareContactSheet()
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -171,25 +144,44 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         
         return 1
     }
-    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                return headerCell
+                let cell = tableView.dequeueReusableCellWithIdentifier("ContactViewCell") as! ContactViewCell
+                cell.contactImage.image = contact!.cnContact!.getImageOrDefault()
+                cell.contactImage.layer.cornerRadius = cell.contactImage.frame.height / 2
+                cell.contactImage.clipsToBounds = true
+                cell.iconImage.image = drawStatusCircle()
+                if contact!.isVerified {
+                    cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
+                } else if contact!.isSecure {
+                    cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
+                } else {
+                    cell.contactStatus.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
+                }
+                return cell
             } else if indexPath.row == 1 {
+                let actionCell = tableView.dequeueReusableCellWithIdentifier("ActionCell", forIndexPath: indexPath) as! ActionCell
+                if contact!.isSecure {
+                    actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), forState: .Normal)
+                } else {
+                    actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), forState: .Normal)
+                }
                 return actionCell
             }
         } else if indexPath.section == 1 {
-            if let cell = tableView.dequeueReusableCellWithIdentifier("mailCell") {
-                cell.detailTextLabel?.text = "test"
-                return cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("MailCell") as! MailCell
+            cell.detailLabel.text = contact!.cnContact?.getMailAddresses()[indexPath.item].mailAddress
+            if let label = contact?.cnContact?.getMailAddresses()[indexPath.item].label.label {
+                cell.titleLabel.text = CNLabeledValue.localizedStringForLabel(label)
             } else {
-                return eMailCell
+                cell.titleLabel.text = ""
             }
-        } else if indexPath.section == 2 {
-            return newEMailCell
+            
+            return cell
+            
         }
-        
-        return allEMailsCell
+        return tableView.dequeueReusableCellWithIdentifier("MailCell", forIndexPath: indexPath)
     }
 }
