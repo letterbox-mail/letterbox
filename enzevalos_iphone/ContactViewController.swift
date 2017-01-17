@@ -146,6 +146,23 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         return 1
     }
 
+    override func tableView(tableView: UITableView, shouldShowMenuForRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if indexPath.section == 1 {
+            return true
+        }
+        return false
+    }
+    
+    override func tableView(tableView: UITableView, canPerformAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+        return action == #selector(copy(_:))
+    }
+    
+    override func tableView(tableView: UITableView, performAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
+        if indexPath.section == 1 {
+            UIPasteboard.generalPasteboard().string = contact!.ezContact.getMailAddresses()[indexPath.row].mailAddress
+        }
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
