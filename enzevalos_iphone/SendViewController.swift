@@ -192,7 +192,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         super.willMoveToParentViewController(parent)
         
         if parent == nil {
-            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()})
+            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor})
         }
     }
     

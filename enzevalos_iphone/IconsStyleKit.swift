@@ -22,10 +22,12 @@ public class IconsStyleKit : NSObject {
     private struct Cache {
         static let strokeColor: UIColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000)
         static var imageOfLetter: UIImage?
+        static var imageOfLetterBG: UIImage?
         static var letterTargets: [AnyObject]?
         static var imageOfLetterCorrupted: UIImage?
         static var letterCorruptedTargets: [AnyObject]?
         static var imageOfPostcard: UIImage?
+        static var imageOfPostcardBG: UIImage?
         static var postcardTargets: [AnyObject]?
         static var imageOfLetterOpen: UIImage?
         static var letterOpenTargets: [AnyObject]?
@@ -460,6 +462,20 @@ public class IconsStyleKit : NSObject {
         return Cache.imageOfLetter!
     }
 
+    public dynamic class var imageOfLetterBG: UIImage {
+        if Cache.imageOfLetterBG != nil {
+            return Cache.imageOfLetterBG!
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 50, height: 35), false, 0)
+        IconsStyleKit.drawLetter(fillBackground: true)
+        
+        Cache.imageOfLetter = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        return Cache.imageOfLetter!
+    }
+    
     public dynamic class var imageOfLetterCorrupted: UIImage {
         if Cache.imageOfLetterCorrupted != nil {
             return Cache.imageOfLetterCorrupted!
@@ -485,6 +501,20 @@ public class IconsStyleKit : NSObject {
         Cache.imageOfPostcard = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
 
+        return Cache.imageOfPostcard!
+    }
+    
+    public dynamic class var imageOfPostcardBG: UIImage {
+        if Cache.imageOfPostcardBG != nil {
+            return Cache.imageOfPostcardBG!
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 49, height: 34), false, 0)
+        IconsStyleKit.drawPostcard(fillBackground: true)
+        
+        Cache.imageOfPostcard = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
         return Cache.imageOfPostcard!
     }
     

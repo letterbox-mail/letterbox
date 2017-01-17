@@ -32,7 +32,7 @@ class ReadViewController : UITableViewController {
     let troubleColor = ThemeManager.troubleMessageColor()
     let encryptColor = ThemeManager.encryptedMessageColor()
     let uncryptColor = ThemeManager.uncryptedMessageColor()
-    let defaultColor = UIColor.groupTableViewBackgroundColor() // UIColor(red: 242/255, green: 242/255, blue: 246/255, alpha: 1.0)
+//    let defaultColor = UIColor.groupTableViewBackgroundColor() // UIColor(red: 242/255, green: 242/255, blue: 246/255, alpha: 1.0)
 
     
     
@@ -66,7 +66,7 @@ class ReadViewController : UITableViewController {
         super.willMoveToParentViewController(parent)
         
         if parent == nil {
-            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = self.defaultColor})
+            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor})
         }
     }
     

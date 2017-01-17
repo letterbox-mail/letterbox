@@ -57,6 +57,8 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
+        
         tableView.sectionHeaderHeight = 1
         tableView.sectionFooterHeight = 0
         

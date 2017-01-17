@@ -24,14 +24,6 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         
         
 //        headerCell.layoutMargins = UIEdgeInsetsZero
-        
-        setUI()
-    }
-    
-    func setUI() {
-        guard contact != nil else {
-            return
-        }
         if let con = contact {
             self.title = con.name
 //            self.title = CNContactFormatter.stringFromContact(con.ezContact.cnContact, style: .FullName)
@@ -88,7 +80,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         //
         // Fill background of context
         //
-        var bgColor: CGColor = UIColor.groupTableViewBackgroundColor().CGColor
+        var bgColor: CGColor = ThemeManager.defaultColor.CGColor
         if contact!.isVerified {
             bgColor = Theme.Very_strong_security_indicator.encryptedVerifiedMessageColor.CGColor
         } else if !contact!.isSecure {

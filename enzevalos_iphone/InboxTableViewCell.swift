@@ -26,6 +26,7 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var seperator: NSLayoutConstraint!
     @IBOutlet weak var seperator2: NSLayoutConstraint!
+    @IBOutlet weak var contactButton: UIButton!
     
     @IBAction func firstButtonPressed(sender: AnyObject) {
         if let delegate = delegate where firstMail != nil {
@@ -56,6 +57,13 @@ class InboxTableViewCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        // prevent two buttons being pressed at the same time
+        firstButton.exclusiveTouch = true
+        secondButton.exclusiveTouch = true
+        moreButton.exclusiveTouch = true
+        contactButton.exclusiveTouch = true
+        
         firstButton.backgroundColor = UIColor.clearColor()
         secondButton.backgroundColor = UIColor.clearColor()
         firstButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
@@ -80,10 +88,10 @@ class InboxTableViewCell: UITableViewCell {
                     secondButton.enabled = false
                 }
                 if con.isSecure {
-                    iconView.image = IconsStyleKit.imageOfLetter
+                    iconView.image = IconsStyleKit.imageOfLetterBG
 //                    iconView.image = UIImage(named: "letter_small_2")!
                 } else {
-                    iconView.image = IconsStyleKit.imageOfPostcard
+                    iconView.image = IconsStyleKit.imageOfPostcardBG
 //                    iconView.image = UIImage(named: "postcard_small")!
                 }
 
