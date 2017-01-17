@@ -141,7 +141,14 @@ class AutocryptContact{
 class MailHandler {
 
     var delegate: MailHandlerDelegator?
+    
+    
+    
+    private let concurrentMailServer = dispatch_queue_create(
+        "com.enzevalos.mailserverQueue", DISPATCH_QUEUE_CONCURRENT)
+    
     var lastUID: UInt64 = DataHandler.handler.maxUID
+    
     
     var IMAPSes: MCOIMAPSession?
     
@@ -348,6 +355,7 @@ class MailHandler {
                     self.lastUID = biggest
                 }
                 dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
+                    print("Receive finish")
                     self.delegate?.getMailCompleted()
                     self.IMAPSession.disconnectOperation().start({_ in })
                 }
@@ -418,28 +426,53 @@ class MailHandler {
      Look for spefic date (optional) -> more folders
      Look for unread messages (optional)
      */
-    func lookForMailAddresses(mailaddresses: [String]?, startDate: NSDate?, endDate: NSDate?, folders: [String] = ["INBOX"], maxMails: Int = 200){
+    func lookForMailAddresses(mailaddresses: [String]?, startDate: NSDate?, endDate: NSDate?, folders: [String] = ["INBOX"], maxMails: Int = 10){
+        let qualityOfServiceClass = QOS_CLASS_BACKGROUND
+        let backgroundQueue = dispatch_get_global_queue(qualityOfServiceClass, 0)
+        dispatch_async(backgroundQueue, {
+            
         let dispatchGroup = dispatch_group_create()
+        var ids = MCOIndexSet()
+
         if let mailadr = mailaddresses{
             for adr in mailadr{
                 dispatch_group_enter(dispatchGroup)
-                lookForMailAddress(adr, startDate: startDate, endDate: endDate, folders: folders)
-                dispatch_group_leave(dispatchGroup)
+                self.lookForMailAddress(adr, startDate: startDate, endDate: endDate, folders: folders, dispatchGroup: dispatchGroup, idPool: ids)
             }
         }
         else{
             dispatch_group_enter(dispatchGroup)
-            lookForDate(startDate: startDate, endDate: endDate, folders: folders)
-            dispatch_group_leave(dispatchGroup)
-
+            self.lookForDate(startDate: startDate, endDate: endDate, folders: folders, dispatchGroup: dispatchGroup, idPool: ids)
+        }
+        dispatch_group_notify(dispatchGroup, self.concurrentMailServer) {
+            print("Work finished!")
+            for x in ids.nsIndexSet(){
+                print(x)
+            }
+            print("############")
+            var idArray = Array(arrayLiteral: ids)
+            for x in idArray{
+                print(x)
+            }
+            print("--------")
+            var dif = idArray.count - maxMails
+            
+            
+            print("-------")
+            for x in idArray{
+                print(x)
+            }
+            
         }
         //TODO: Collect requests
+        } )
+        
         
     }
     
-    private func lookForDate(expr: MCOIMAPSearchExpression? = nil, startDate: NSDate?, endDate: NSDate?, folders: [String]){
+    private func lookForDate(expr: MCOIMAPSearchExpression? = nil, startDate: NSDate?, endDate: NSDate?, folders: [String], dispatchGroup: dispatch_group_t, idPool: MCOIndexSet){
         if expr == nil && startDate == nil && endDate == nil{
-            return
+            //return nil
         }
         var ids: MCOIndexSet?
         var searchExpr: MCOIMAPSearchExpression
@@ -459,25 +492,26 @@ class MailHandler {
             searchExpr = MCOIMAPSearchExpression.searchAnd(searchExpr, other: exprEndDate)
         }
         let searchOperation: MCOIMAPSearchOperation = self.IMAPSession.searchExpressionOperationWithFolder(folders[0], expression: searchExpr)
+
         searchOperation.start { (err, indices) -> Void  in
             guard err == nil else {
                 return
             }
             ids = indices as MCOIndexSet?
-            if let x = indices{
-                for a in x.nsIndexSet() {
-                    print(a)
-                }
+            //TODO Make thread safe!!!
+            idPool.addIndexSet(ids)
             
-            }
+            dispatch_group_leave(dispatchGroup)
+ 
         }
+        
     }
     
     
-    private func lookForMailAddress(mailaddress: String, startDate: NSDate?, endDate: NSDate?, folders: [String]){
+    private func lookForMailAddress(mailaddress: String, startDate: NSDate?, endDate: NSDate?, folders: [String], dispatchGroup: dispatch_group_t, idPool: MCOIndexSet){
         print(mailaddress)
         let searchExpr: MCOIMAPSearchExpression = MCOIMAPSearchExpression.searchFrom(mailaddress)
-        lookForDate(searchExpr, startDate: startDate, endDate: endDate, folders: folders)
+        lookForDate(searchExpr, startDate: startDate, endDate: endDate, folders: folders, dispatchGroup: dispatchGroup, idPool: idPool)
        
     }
 }
