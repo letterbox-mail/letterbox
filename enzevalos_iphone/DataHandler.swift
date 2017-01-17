@@ -203,6 +203,17 @@ class DataHandler: NSObject {
                     }
                 }
             }
+            if let cnContact = c.cnContact{
+                for adr in cnContact.emailAddresses{
+                    let name = adr.value as! String
+                    if name == address {
+                        let adr = getMailAddress(address)
+                        c.addToAddresses(adr)
+                        adr.contact = c
+                        return c
+                    }
+                }
+            }
         }
         
         let search = find("EnzevalosContact", type: "addresses", search: address)
