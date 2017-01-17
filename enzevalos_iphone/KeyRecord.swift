@@ -30,16 +30,7 @@ public class KeyRecord: Record{
     public var isVerified: Bool
     
     
-    private var fromMails: [Mail]
-    public var mails: [Mail]{
-        get{
-            return self.fromMails
-        }
-        set{
-            self.fromMails = newValue
-        }
-    }
-    
+    public var mails: [Mail]
     
     private var enzevalosContact: EnzevalosContact
     
@@ -79,7 +70,7 @@ public class KeyRecord: Record{
             self.isSecure = false
             self.isVerified = false
         }
-        self.fromMails = [Mail] ()
+        self.mails = [Mail] ()
     }
     
     public init(mail: Mail){
@@ -89,8 +80,8 @@ public class KeyRecord: Record{
         self.isSecure = mail.isEncrypted
         self.isVerified = false //TODO FIX
         
-        self.fromMails = [Mail] ()
-        self.updateMails(mail)
+        self.mails = [Mail] ()
+        self.addNewMail(mail)
     }
     
     
@@ -106,7 +97,7 @@ public class KeyRecord: Record{
 
     
     
-    public func updateMails(mail: Mail)->Bool{
+    public func addNewMail(mail: Mail)->Bool{
         if mail.isEncrypted == self.isSecure{
             if ezContact.getAddress(mail.from.address) != nil{
                 for m in mails{

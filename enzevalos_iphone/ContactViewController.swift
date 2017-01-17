@@ -22,6 +22,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
         
+        
 //        headerCell.layoutMargins = UIEdgeInsetsZero
         
         setUI()
