@@ -470,10 +470,10 @@ public class IconsStyleKit : NSObject {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 50, height: 35), false, 0)
         IconsStyleKit.drawLetter(fillBackground: true)
         
-        Cache.imageOfLetter = UIGraphicsGetImageFromCurrentImageContext()!
+        Cache.imageOfLetterBG = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        return Cache.imageOfLetter!
+        return Cache.imageOfLetterBG!
     }
     
     public dynamic class var imageOfLetterCorrupted: UIImage {
@@ -512,10 +512,10 @@ public class IconsStyleKit : NSObject {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 49, height: 34), false, 0)
         IconsStyleKit.drawPostcard(fillBackground: true)
         
-        Cache.imageOfPostcard = UIGraphicsGetImageFromCurrentImageContext()!
+        Cache.imageOfPostcardBG = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        return Cache.imageOfPostcard!
+        return Cache.imageOfPostcardBG!
     }
     
     public dynamic class var imageOfLetterOpen: UIImage {
