@@ -565,11 +565,13 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="Rho-9E-ThM" secondAttribute="trailing" id="KIf-Vh-TVu"/>
                                         <constraint firstItem="lXU-0n-bPI" firstAttribute="centerY" secondItem="x9d-DW-WTy" secondAttribute="centerY" id="RaE-bT-c0e"/>
                                         <constraint firstItem="lXU-0n-bPI" firstAttribute="centerX" secondItem="x9d-DW-WTy" secondAttribute="centerX" id="T5v-rQ-9rJ"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="8Bg-PX-E3I" secondAttribute="bottom" id="aH0-ZP-WDz"/>
                                         <constraint firstItem="Rho-9E-ThM" firstAttribute="leading" secondItem="lXU-0n-bPI" secondAttribute="trailing" constant="8" id="bT4-0z-CQT"/>
                                         <constraint firstItem="lXU-0n-bPI" firstAttribute="top" secondItem="x9d-DW-WTy" secondAttribute="topMargin" priority="250" constant="25" id="dcx-WX-TsM"/>
                                         <constraint firstItem="Rho-9E-ThM" firstAttribute="top" secondItem="x9d-DW-WTy" secondAttribute="topMargin" constant="1" id="kZg-1r-fof"/>
                                         <constraint firstItem="lXU-0n-bPI" firstAttribute="leading" secondItem="8Bg-PX-E3I" secondAttribute="trailing" constant="8" id="myS-Fj-eRq"/>
                                         <constraint firstAttribute="topMargin" secondItem="8Bg-PX-E3I" secondAttribute="top" constant="-1" id="v2k-qh-cq4"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Rho-9E-ThM" secondAttribute="bottom" id="wP2-iE-Je8"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="8Bg-PX-E3I" secondAttribute="leading" id="wbp-m7-kF3"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -684,7 +686,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="sij-Oe-ann">
-                                <rect key="frame" x="1" y="0.0" width="376" height="623"/>
+                                <rect key="frame" x="1" y="0.0" width="376" height="667"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KMI-R1-Q95">
                                         <rect key="frame" x="0.0" y="44" width="373" height="100"/>
@@ -912,6 +914,7 @@
                         <outlet property="toCollectionviewHeight" destination="k38-La-Ttc" id="akM-GJ-3DP"/>
                         <outlet property="toHeight" destination="CIk-PS-cBx" id="J4L-8a-qeq"/>
                         <outlet property="toText" destination="zgt-Nh-yna" id="VXM-m0-UCm"/>
+                        <segue destination="8Di-x2-cWQ" kind="show" identifier="showContact" id="DcR-GX-scc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lv5-U9-uUg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1016,8 +1019,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="bUY-Me-dje"/>
+        <segue reference="DcR-GX-scc"/>
+        <segue reference="3Wb-uL-BB5"/>
+        <segue reference="D6m-L0-5AB"/>
         <segue reference="GWh-iO-bPb"/>
-        <segue reference="rhW-cI-4c4"/>
     </inferredMetricsTieBreakers>
 </document>
