@@ -51,6 +51,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     var recognizer : UIGestureRecognizer = UIGestureRecognizer.init()
     
     var answerTo: Mail? = nil
+    var toField: String? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +95,10 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         toText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         ccText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         
-        if answerTo != nil {
+        if let to = toField {
+            let ezCon = DataHandler.handler.getContactByAddress(to)
+            toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
+        } else if answerTo != nil {
             toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.from.address)!)
             for r in (answerTo?.getReceivers())!{
                 if r.address != UserManager.loadUserValue(Attribute.UserAddr) as! String{

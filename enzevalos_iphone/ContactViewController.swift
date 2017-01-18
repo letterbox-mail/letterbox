@@ -206,6 +206,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             let indexPath = tableView.indexPathForSelectedRow
             if controller != nil {
                 // TODO: add address to SendView
+                controller!.toField = contact!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
 //                controller?.toText.delegate?.tokenField!((controller?.toText)!, didEnterText: (contact?.ezContact.getMailAddresses()[(indexPath?.row)!].mailAddress)!)
             }
         } else if segue.identifier == "mailList" {

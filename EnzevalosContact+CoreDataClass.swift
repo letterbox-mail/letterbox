@@ -32,7 +32,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
                 }
             }
             return false
-        
+            
         }
     }
     
@@ -68,7 +68,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
             return con
         }
     }
-        
+    
     private func getName()-> String{
         var name: String
         name = String()
@@ -111,8 +111,6 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         return getAddress(mcoaddress.mailbox!)
     }
     
-    
-    
     public func getMailAddresses()->[MailAddress]{
         var adr = [MailAddress] ()
         if self.addresses != nil {
@@ -123,11 +121,8 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
         return adr
     }
- 
-    
-
 }
-    
+
 private func isEmpty(contact: EnzevalosContact)-> Bool{
     if let mails = contact.from{
         if(mails.count == 0){
@@ -147,7 +142,7 @@ func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     }
     let mailLHS = lhs.from?.lastObject as! Mail
     let mailRHS = rhs.from?.lastObject as! Mail
-
+    
     return mailLHS == mailRHS
 }
 
@@ -163,6 +158,3 @@ public  func <(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     
     return mailLHS < mailRHS
 }
-
-
-

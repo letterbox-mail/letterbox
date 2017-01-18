@@ -684,7 +684,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="sij-Oe-ann">
-                                <rect key="frame" x="1" y="0.0" width="376" height="667"/>
+                                <rect key="frame" x="1" y="0.0" width="376" height="623"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KMI-R1-Q95">
                                         <rect key="frame" x="0.0" y="44" width="373" height="100"/>
@@ -1016,8 +1016,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="j4Q-k1-ud3"/>
-        <segue reference="GWh-iO-bPb"/>
         <segue reference="bUY-Me-dje"/>
+        <segue reference="GWh-iO-bPb"/>
+        <segue reference="rhW-cI-4c4"/>
     </inferredMetricsTieBreakers>
 </document>

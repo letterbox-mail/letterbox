@@ -17,8 +17,8 @@
 /* Class = "UILabel"; text = "Achtung!"; ObjectID = "7LX-pr-0Pd"; */
 "7LX-pr-0Pd.text" = "Attention!";
 
-/* Class = "UIButton"; normalTitle = "Answer"; ObjectID = "9Io-ch-Bl3"; */
-"9Io-ch-Bl3.normalTitle" = "Answer";
+/* Class = "UIButton"; normalTitle = "Answer"; ObjectID = "gd7-4L-kZs"; */
+"gd7-4L-kZs.normalTitle" = "Answer";
 
 /* Class = "UIButton"; normalTitle = "Trotzdem anzeigen"; ObjectID = "I7i-jf-aSX"; */
 "I7i-jf-aSX.normalTitle" = "Show anyway";

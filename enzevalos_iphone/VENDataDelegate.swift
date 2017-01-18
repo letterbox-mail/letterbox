@@ -36,7 +36,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     func tokenField(tokenField: VENTokenField, colorSchemeForTokenAtIndex index: UInt) -> UIColor {
         //if AddressHandler.proveAddress(tokenField.textTokens[Int(index)] as! NSString) {
         if KeyHandler.getHandler().addrHasKey(tokenField.mailTokens[Int(index)] as! String){//AddressHandler.proveAddress(tokenField.mailTokens[Int(index)] as! NSString) {
-            return UIColor.init(red: 0, green: 122.0/255.0, blue: 1, alpha: 1)
+            return tokenField.tintColor
         }
         return UIColor.orangeColor()
     }
