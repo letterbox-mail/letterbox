@@ -40,6 +40,19 @@ class DataHandler: NSObject {
     }
     
     
+    func cleanCache(){
+        for m in mails{
+            managedObjectContext.deleteObject(m)
+        }
+        for c in contacts{
+            managedObjectContext.deleteObject(c)
+        }
+        mails.removeAll()
+        contacts.removeAll()
+        currentstate.maxUID = 1
+        save()
+    }
+    
     
     override  init() {
         // This resource is the same name as your xcdatamodeld contained in your project.
