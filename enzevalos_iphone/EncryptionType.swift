@@ -6,7 +6,6 @@
 //  Copyright © 2017 fu-berlin. All rights reserved.
 //
 
-public enum EncryptionType {
-    case unknown
-    case PGP
+public enum EncryptionType : String {
+    case unknown = "unknown", PGP = "PGP"
 }

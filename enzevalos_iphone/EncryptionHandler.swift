@@ -11,6 +11,8 @@ import Foundation
 public protocol EncryptionHandler {
     //var keychain
     
+    
+    
     //handle entrys in keychain for different Encryptions
     func addPersistentData(data: NSData, searchKey: String, encryptionType: EncryptionType, callBack: ((success: Bool) -> Void)?)
     //for all encryptions

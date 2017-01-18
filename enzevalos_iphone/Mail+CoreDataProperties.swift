@@ -17,6 +17,8 @@ extension Mail {
     }
 
     @NSManaged public var body: String?
+    @NSManaged public var visibleBody: String?
+    @NSManaged public var decryptedBody: String?
     @NSManaged public var date: NSDate
     @NSManaged public var flag: Int32
     @NSManaged public var isEncrypted: Bool

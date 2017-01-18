@@ -10,12 +10,13 @@ import Foundation
 
 public protocol KeyWrapper {
     
-    var revoked: Bool
-    var revokeTime: NSDate
-    var trustlevel: Int
-    var verified: Bool
-    var trustTime: NSDate
-    var discoveryTime: NSDate
+    var revoked: Bool {get set}
+    var revokeTime: NSDate {get}
+    var trustlevel: Int {get set}
+    var verified: Bool {get set}
+    var trustTime: NSDate {get}
+    var discoveryTime: NSDate {get}
+    var type: EncryptionType {get}
     
     init(coder: NSCoder)
     

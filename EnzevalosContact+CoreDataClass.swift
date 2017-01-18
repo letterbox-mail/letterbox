@@ -18,6 +18,8 @@ import Contacts
 @objc(EnzevalosContact)
 public class EnzevalosContact: NSManagedObject, Contact {
     
+    //addKeyRecords
+    
     public var name:String{
         get{
             return getName()
