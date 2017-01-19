@@ -308,11 +308,6 @@ class MailHandler {
                             }
                         }
                         
-                        let ver = false
-                        let troub = false
-                        let sig = false
-                        let decBody : String? = nil
-                        
                         //gute Wahl?
                         //in-line PGP
                         if body.commonPrefixWithString("-----BEGIN PGP MESSAGE-----", options: NSStringCompareOptions.CaseInsensitiveSearch) == "-----BEGIN PGP MESSAGE-----" {

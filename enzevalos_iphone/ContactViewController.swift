@@ -83,7 +83,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         var bgColor: CGColor = ThemeManager.defaultColor.CGColor
         if contact!.isVerified {
             bgColor = Theme.Very_strong_security_indicator.encryptedVerifiedMessageColor.CGColor
-        } else if !contact!.isSecure {
+        } else if !contact!.hasKey {
             bgColor = Theme.Very_strong_security_indicator.uncryptedMessageColor.CGColor
         }
         CGContextSetFillColorWithColor(context!, bgColor)
@@ -92,7 +92,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         let iconSize = CGFloat(50)
         let frame = CGRectMake(myBounds.size.width/2 - iconSize/2, myBounds.size.height/2 - iconSize/2, iconSize, iconSize)
 
-        if contact!.isSecure {
+        if contact!.hasKey {
             IconsStyleKit.drawLetter(frame: frame, fillBackground: true)
         } else if contact!.isVerified {
             IconsStyleKit.drawLetter(frame: frame, color: UIColor.whiteColor())
@@ -165,7 +165,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
                 cell.iconImage.image = drawStatusCircle()
                 if contact!.isVerified {
                     cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
-                } else if contact!.isSecure {
+                } else if contact!.hasKey {
                     cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
                 } else {
                     cell.contactStatus.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
@@ -173,7 +173,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
                 return cell
             } else if indexPath.row == 1 {
                 let actionCell = tableView.dequeueReusableCellWithIdentifier("ActionCell", forIndexPath: indexPath) as! ActionCell
-                if contact!.isSecure {
+                if contact!.hasKey {
                     actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), forState: .Normal)
                 } else {
                     actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), forState: .Normal)
@@ -207,7 +207,6 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             if controller != nil {
                 // TODO: add address to SendView
                 controller!.toField = contact!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
-//                controller?.toText.delegate?.tokenField!((controller?.toText)!, didEnterText: (contact?.ezContact.getMailAddresses()[(indexPath?.row)!].mailAddress)!)
             }
         } else if segue.identifier == "mailList" {
             let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController

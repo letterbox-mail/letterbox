@@ -87,7 +87,7 @@ class InboxTableViewCell: UITableViewCell {
                     secondMessageLabel.text = NSLocalizedString("NoFurtherMessages", comment: "There is only one message from this sender.")
                     secondButton.enabled = false
                 }
-                if con.isSecure {
+                if con.hasKey {
                     iconView.image = IconsStyleKit.imageOfLetterBG
 //                    iconView.image = UIImage(named: "letter_small_2")!
                 } else {

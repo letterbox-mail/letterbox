@@ -411,10 +411,11 @@
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				A17A18F41DDCB5580058D934 /* KeyHandler.swift */,
-				472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */,
+				472F39871E1FA377009260FB /* KeyRecord.swift */,
 				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
 				472F398F1E252470009260FB /* CNMailAddressesExtension.swift */,
 				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
+				472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */,
 				472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */,
 				472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */,
 				472F39281E1277D2009260FB /* Mail+CoreDataClass.swift */,
@@ -431,7 +432,6 @@
 				476142091E082F9C00FD5E4F /* Settings.bundle */,
 				A13526871D955BDF00D3BFE1 /* Info.plist */,
 				A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */,
-				472F39871E1FA377009260FB /* KeyRecord.swift */,
 			);
 			path = enzevalos_iphone;
 			sourceTree = "<group>";

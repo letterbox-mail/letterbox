@@ -269,13 +269,23 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     func tokenFieldDidEndEditing(tokenField: VENTokenField) {}
     
     func showContact(email: String) {
-        performSegueWithIdentifier("showContact", sender: DataHandler.handler.getContactByAddress(email))
+        let records = DataHandler.handler.getContactByAddress(email).records
+        for r in records {
+            for address in r.addresses {
+                if address.mailAddress == email && address.prefEnc == r.hasKey {
+                    performSegueWithIdentifier("showContact", sender: r)
+                    return
+                }
+            }
+        }
+        
+        performSegueWithIdentifier("showContact", sender: records.first)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showContact" {
             let destinationVC = segue.destinationViewController as! ContactViewController
-//            destinationVC.contact = DataHandler.handler.ge
+            destinationVC.contact = (sender as! KeyRecord)
         }
     }
     

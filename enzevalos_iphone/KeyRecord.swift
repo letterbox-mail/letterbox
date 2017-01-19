@@ -27,9 +27,13 @@ public class KeyRecord: Record{
             return ezContact.name
         }
     }
-    public var isSecure: Bool
+    public var hasKey: Bool {
+        return key != nil
+    }
     
-    public var isVerified: Bool
+    public var isVerified: Bool {
+        return false
+    }
     
     
     public var mails: [Mail] = [Mail]()
@@ -61,14 +65,6 @@ public class KeyRecord: Record{
         self.key = key
         self.ezContact = contact
 
-        if (key != nil) {
-            self.isSecure = true
-            self.isVerified = (key?.verified)!
-        }
-        else{
-            self.isSecure = false
-            self.isVerified = false
-        }
         self.ezContact.records.append(self)
 
     }
@@ -77,8 +73,6 @@ public class KeyRecord: Record{
         //TODO: KEY?????
         self.key = nil
         self.ezContact = mail.from.contact
-        self.isSecure = mail.isEncrypted
-        self.isVerified = false //TODO FIX
         self.ezContact.records.append(self)
         self.addNewMail(mail)
     }
@@ -88,7 +82,7 @@ public class KeyRecord: Record{
     
     public func showInfos(){
         print("-----------------")
-        print("Name: \(ezContact.displayname) | State: \(isSecure) | #Mails: \(mails.count)")
+        print("Name: \(ezContact.displayname) | State: \(hasKey) | #Mails: \(mails.count)")
         print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.from.address) | date: \(mails.first?.date.description) ")
         print("subj: \(mails.first?.subject?.capitalizedString)")
     
@@ -96,7 +90,7 @@ public class KeyRecord: Record{
 
     public func addNewAddress(adr: MailAddress) -> Bool {
         for a in addresses {
-            if a.mailAddress == adr.mailAddress{
+            if a.mailAddress == adr.mailAddress {
                 return false
             }
         }
@@ -104,11 +98,11 @@ public class KeyRecord: Record{
         return true
     }
     
-    public func addNewMail(mail: Mail)->Bool{
-        if mail.isEncrypted == self.isSecure{
-            if ezContact.getAddress(mail.from.address) != nil{
-                for m in mails{
-                    if m.uid == mail.uid{
+    public func addNewMail(mail: Mail)->Bool {
+        if mail.isEncrypted == self.hasKey { //TODO: FIX ME!
+            if ezContact.getAddress(mail.from.address) != nil {
+                for m in mails {
+                    if m.uid == mail.uid {
                         return true
                     }
                     else if m.uid < mail.uid {

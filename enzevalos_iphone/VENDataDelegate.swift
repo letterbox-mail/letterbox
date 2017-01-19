@@ -113,7 +113,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
                 tokenField(tokenF, didEnterText: last)
             }
         }
-        
     }
     
     /*func tokenStrings(tokenField: VENTokenField) -> [String]{
@@ -129,11 +128,8 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenField(tokenField: VENTokenField, didTappedTokenTwice index: UInt){
-        print("doppel Tap")
         if let fun = tappedWhenSelectedFunc {
             fun(tokenField.mailTokens[Int(index)] as! String)
         }
     }
-    
-    
 }
