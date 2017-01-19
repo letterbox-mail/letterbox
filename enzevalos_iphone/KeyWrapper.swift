@@ -14,9 +14,11 @@ public protocol KeyWrapper {
     var revokeTime: NSDate {get}
     var trustlevel: Int {get set}
     var verified: Bool {get set}
-    var trustTime: NSDate {get}
+    var verifyTime: NSDate {get}
     var discoveryTime: NSDate {get}
+    var discoveryMailUID: UInt64? {get}
     var type: EncryptionType {get}
+    var keyID: String {get}
     
     init(coder: NSCoder)
     

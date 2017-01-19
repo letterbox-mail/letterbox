@@ -69,9 +69,10 @@ public protocol Encryption {
     func hasKey(enzContact: EnzevalosContact) -> Bool
     func getKeyIDs(enzContact: EnzevalosContact) -> [Int64]?
     func getKey(keyID: Int64) -> KeyWrapper?
+    func updateKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
     func removeKey(key: KeyWrapper?, keyRecord: KeyRecord, callBack: ((success: Bool) -> Void)?)
     
     
     
-    func keyOfThisEncryption(keyData: NSData) -> Bool
+    func keyOfThisEncryption(keyData: NSData) -> Bool?
 }

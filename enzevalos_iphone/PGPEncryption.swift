@@ -10,6 +10,7 @@ class PGPEncryption : Encryption {
     
     
     internal let encryptionHandler: EncryptionHandler
+    //internal let keyIDs : []
     
     var encryptionType: EncryptionType {
         get {
@@ -114,18 +115,58 @@ class PGPEncryption : Encryption {
         
     }
     
-    func signAndEncrypt(text: String, key: KeyWrapper) -> String
+    func signAndEncrypt(text: String, key: KeyWrapper) -> String {
+        
+    }
     
-    func addKey(keyData: NSData, forContact: KeyRecord?, callBack: ((success: Bool) -> Void)?)
-    func addKey(key: KeyWrapper, forContact: KeyRecord?, callBack: ((success: Bool) -> Void)?)
-    func hasKey(enzContact: EnzevalosContact) -> Bool
-    func getKeyIDs(enzContact: EnzevalosContact) -> [Int64]?
-    func getKey(keyID: Int64) -> KeyWrapper?
-    func removeKey(key: KeyWrapper, keyRecord: KeyRecord, callBack: ((success: Bool) -> Void)?)
+    func addKey(keyData: NSData, forContact: KeyRecord?, callBack: ((success: Bool) -> Void)?) -> String?{
+        
+    }
+    
+    func addKey(key: PGPKeyWrapper, forContact: KeyRecord?, callBack: ((success: Bool) -> Void)?) -> String?{
+        let data = NSKeyedArchiver.archivedDataWithRootObject(key)
+        encryptionHandler.addPersistentData(data, searchKey: key.keyID, encryptionType: self.encryptionType, callBack: callBack)
+    }
+    
+    func getMaxIndex(fingerprint: String) -> Int64 {
+        var index : Int64 = 0
+        if let indexData = encryptionHandler.getPersistentData(fingerprint+"-index", encryptionType: self.encryptionType){
+            indexData.getBytes(&index, length: sizeof(Int64))
+        }
+        
+        return index
+    }
+    
+    func hasKey(enzContact: EnzevalosContact) -> Bool {
+        
+    }
+    
+    func getKeyIDs(enzContact: EnzevalosContact) -> [Int64]? {
+        
+    }
+    
+    func getKey(keyID: String) -> KeyWrapper? {
+        if let data = (encryptionHandler.getPersistentData(String(keyID), encryptionType: self.encryptionType)) {
+            let keywrapper = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? KeyWrapper
+            return keywrapper
+        }
+        return nil
+        
+    }
+    
+    func updateKey(key: PGPKeyWrapper, callBack: ((success: Bool) -> Void)?) {
+        
+    }
+    
+    func removeKey(key: KeyWrapper, keyRecord: KeyRecord, callBack: ((success: Bool) -> Void)?) {
+        
+    }
     
     
     
-    func keyOfThisEncryption(keyData: NSData) -> Bool
+    func keyOfThisEncryption(keyData: NSData) -> Bool? {
+        
+    }
     
     
 }

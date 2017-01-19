@@ -54,24 +54,45 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
             }
             return
         }
-        //keychain[data: ] = data
+        keychain[data: encryptionType.rawValue+"-"+searchKey] = data
+        if let cb = callBack{
+            cb(success: true)
+        }
     }
     
     //for all encryptions
-    func getPersistentData(searchKey: String) -> NSData? {
+    /*func getPersistentData(searchKey: String) -> NSData? {
         
-    }
+    }*/
     
     //for given encryption
     func getPersistentData(searchKey: String, encryptionType: EncryptionType) -> NSData? {
-        
+        return (try! keychain.getData(encryptionType.rawValue+"-"+searchKey))
     }
     
     func replacePersistentData(searchKey: String, replacementData: NSData, encryptionType: EncryptionType, callBack: ((success: Bool) -> Void)?) {
-        
+        if (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)) == nil {
+            if let cb = callBack{
+                cb(success: false)
+            }
+            return
+        }
+        keychain[data: encryptionType.rawValue+"-"+searchKey] = replacementData
+        if let cb = callBack{
+            cb(success: true)
+        }
     }
     
     func deletePersistentData(searchKey: String, encryptionType: EncryptionType, callBack: ((success: Bool) -> Void)?) {
-        
+        if (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)) == nil {
+            if let cb = callBack{
+                cb(success: false)
+            }
+            return
+        }
+        keychain[data: encryptionType.rawValue+"-"+searchKey] = nil
+        if let cb = callBack{
+            cb(success: true)
+        }
     }
 }
