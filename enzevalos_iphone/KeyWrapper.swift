@@ -20,6 +20,9 @@ public protocol KeyWrapper {
     var type: EncryptionType {get}
     var keyID: String {get}
     
+    //maybe not in this interface?
+    var mailAddresses: [String]? {get}
+    
     init(coder: NSCoder)
     
     func encodeWithCoder(coder: NSCoder)

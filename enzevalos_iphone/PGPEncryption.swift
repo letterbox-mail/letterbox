@@ -10,6 +10,7 @@ class PGPEncryption : Encryption {
     
     
     internal let encryptionHandler: EncryptionHandler
+    internal let keyManager: PGPKeyManagement
     //internal let keyIDs : []
     
     var encryptionType: EncryptionType {
@@ -20,6 +21,7 @@ class PGPEncryption : Encryption {
     
     required init(encHandler: EncryptionHandler) {
         self.encryptionHandler = encHandler
+        self.keyManager = PGPKeyManagement(encryption: self, encryptionHandler: self.encryptionHandler)
     }
     
     func isUsed(mail: Mail) -> Bool {
@@ -123,12 +125,26 @@ class PGPEncryption : Encryption {
         
     }
     
-    func addKey(key: PGPKeyWrapper, forContact: KeyRecord?, callBack: ((success: Bool) -> Void)?) -> String?{
-        let data = NSKeyedArchiver.archivedDataWithRootObject(key)
-        encryptionHandler.addPersistentData(data, searchKey: key.keyID, encryptionType: self.encryptionType, callBack: callBack)
+    //TODO maybe remove here. used in keyWrapper
+    //forMailAddress has to be set (not nil)
+    func addKey(key: PGPKeyWrapper, forMailAddress: String?, callBack: ((success: Bool) -> Void)?){
+        if forMailAddress == nil {
+            if let cb = callBack {
+                cb(success: false)
+            }
+            return
+        }
+        self.keyManager.addKey(key, forMailAddresses: [forMailAddress!], callBack: nil)
+        //überprüfen, ob key in dictionary der email zugeordnet
+        /*if  == nil {
+            if let cb = callBack {
+                cb(success: false)
+            }
+            return
+        }*/
     }
     
-    func getMaxIndex(fingerprint: String) -> Int64 {
+    private func getMaxIndex(fingerprint: String) -> Int64 {
         var index : Int64 = 0
         if let indexData = encryptionHandler.getPersistentData(fingerprint+"-index", encryptionType: self.encryptionType){
             indexData.getBytes(&index, length: sizeof(Int64))
@@ -162,7 +178,13 @@ class PGPEncryption : Encryption {
         
     }
     
+    func addMailAddressForKey(mailAddress: String, keyID: String) {
+        self.addMailAddressesForKey([mailAddress], keyID: keyID)
+    }
     
+    func addMailAddressesForKey(mailAddresses: [String], keyID: String) {
+        self.keyManager.addMailAddressesForKey(mailAddresses, keyID: keyID)
+    }
     
     func keyOfThisEncryption(keyData: NSData) -> Bool? {
         

@@ -64,15 +64,15 @@ public protocol Encryption {
     func signAndEncrypt(mail: Mail, forContact: KeyRecord)
     func signAndEncrypt(text: String, key: KeyWrapper) -> String
     
-    func addKey(keyData: NSData, forContact: KeyRecord?, callBack: ((success: Bool) -> Void)?)
-    func addKey(key: KeyWrapper, forContact: KeyRecord?, callBack: ((success: Bool) -> Void)?)
+    func addKey(keyData: NSData, forMailAddress: String?, callBack: ((success: Bool) -> Void)?)
+    func addKey(key: KeyWrapper, forMailAddress: String?, callBack: ((success: Bool) -> Void)?)
     func hasKey(enzContact: EnzevalosContact) -> Bool
     func getKeyIDs(enzContact: EnzevalosContact) -> [Int64]?
     func getKey(keyID: Int64) -> KeyWrapper?
     func updateKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
     func removeKey(key: KeyWrapper?, keyRecord: KeyRecord, callBack: ((success: Bool) -> Void)?)
     
-    
+    func addMailAddressForKey(mailAddress: String, keyID: String)
     
     func keyOfThisEncryption(keyData: NSData) -> Bool?
 }

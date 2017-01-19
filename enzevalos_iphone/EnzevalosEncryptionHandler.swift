@@ -46,6 +46,10 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
         keychain = Keychain(service: "Enzevalos").accessibility(.WhenUnlocked)
     }
     
+    func hasPersistentData(searchKey: String, encryptionType: EncryptionType) -> Bool {
+        return getPersistentData(searchKey, encryptionType: encryptionType) != nil
+    }
+    
     //handle entrys in keychain for different Encryptions
     func addPersistentData(data: NSData, searchKey: String, encryptionType: EncryptionType, callBack: ((success: Bool) -> Void)?) {
         if (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)) != nil {
