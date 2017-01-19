@@ -34,13 +34,9 @@ public class KeyRecord: Record{
     
     public var mails: [Mail] = [Mail]()
     
-    private var enzevalosContact: EnzevalosContact
     
-    public var ezContact: EnzevalosContact{
-        get{
-            return self.enzevalosContact
-        }
-    }
+    public var ezContact: EnzevalosContact
+       
     
     public var cnContact: CNContact?{
         get{
@@ -63,7 +59,8 @@ public class KeyRecord: Record{
     
     public init(contact: EnzevalosContact, key: KeyWrapper?){
         self.key = key
-        self.enzevalosContact = contact
+        self.ezContact = contact
+
         if (key != nil) {
             self.isSecure = true
             self.isVerified = (key?.verified)!
@@ -72,15 +69,17 @@ public class KeyRecord: Record{
             self.isSecure = false
             self.isVerified = false
         }
+        self.ezContact.records.append(self)
+
     }
     
     public init(mail: Mail){
         //TODO: KEY?????
         self.key = nil
-        self.enzevalosContact = mail.from.contact
+        self.ezContact = mail.from.contact
         self.isSecure = mail.isEncrypted
         self.isVerified = false //TODO FIX
-        
+        self.ezContact.records.append(self)
         self.addNewMail(mail)
     }
     

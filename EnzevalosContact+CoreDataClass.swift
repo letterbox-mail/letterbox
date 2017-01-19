@@ -23,6 +23,8 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     }
     
+    public var records: [KeyRecord] = [KeyRecord]() //TODO: Handle duplicates
+    
     public var hasKey: Bool{
         get {
             for item in addresses!{
