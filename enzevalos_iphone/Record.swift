@@ -20,7 +20,10 @@ public protocol Record: Comparable {
     var cnContact: CNContact?{get}
     var color: UIColor {get}
     var image: UIImage {get}
+    var addresses: [MailAddress]{get}
     
+    
+    func addNewAddress(adr: MailAddress)->Bool
     func addNewMail(mail:Mail)->Bool
 }
 

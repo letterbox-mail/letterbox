@@ -20,6 +20,8 @@ public class KeyRecord: Record{
     
     let key: KeyWrapper?
     
+    public var addresses: [MailAddress] = [MailAddress]()
+    
     public var name: String{
         get{
             return ezContact.name
@@ -30,7 +32,7 @@ public class KeyRecord: Record{
     public var isVerified: Bool
     
     
-    public var mails: [Mail]
+    public var mails: [Mail] = [Mail]()
     
     private var enzevalosContact: EnzevalosContact
     
@@ -70,7 +72,6 @@ public class KeyRecord: Record{
             self.isSecure = false
             self.isVerified = false
         }
-        self.mails = [Mail] ()
     }
     
     public init(mail: Mail){
@@ -80,7 +81,6 @@ public class KeyRecord: Record{
         self.isSecure = mail.isEncrypted
         self.isVerified = false //TODO FIX
         
-        self.mails = [Mail] ()
         self.addNewMail(mail)
     }
     
@@ -95,7 +95,15 @@ public class KeyRecord: Record{
     
     }
 
-    
+    public func addNewAddress(adr: MailAddress) -> Bool {
+        for a in addresses {
+            if a.mailAddress == adr.mailAddress{
+                return false
+            }
+        }
+        addresses.append(adr)
+        return true
+    }
     
     public func addNewMail(mail: Mail)->Bool{
         if mail.isEncrypted == self.isSecure{
@@ -110,6 +118,7 @@ public class KeyRecord: Record{
                 }
                 mails.append(mail)
                 mails.sortInPlace()
+                addNewAddress(mail.from)
                 return true
             }
         }
