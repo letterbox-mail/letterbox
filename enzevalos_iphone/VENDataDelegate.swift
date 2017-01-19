@@ -10,9 +10,11 @@ import VENTokenField
 
 class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegate {
     
-    var changeFunc : (VENTokenField -> Void) = {(_ : VENTokenField) -> Void in
+    var changeFunc: (VENTokenField -> Void) = {(_ : VENTokenField) -> Void in
         //print ("hallo")
     }
+    
+    var tappedWhenSelectedFunc: (String -> Void)? = nil
     
     //Used later to show enzevalos-Contacts
     //Have a look at tokenField(... didTappedTokenTwice ...)
@@ -22,8 +24,9 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         super.init()
     }
     
-    init(changeFunc: (VENTokenField -> Void)){
+    init(changeFunc: (VENTokenField -> Void), tappedWhenSelectedFunc: (String -> Void)?){
         self.changeFunc = changeFunc
+        self.tappedWhenSelectedFunc = tappedWhenSelectedFunc
         super.init()
     }
     
@@ -127,5 +130,10 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     
     func tokenField(tokenField: VENTokenField, didTappedTokenTwice index: UInt){
         print("doppel Tap")
+        if let fun = tappedWhenSelectedFunc {
+            fun(tokenField.mailTokens[Int(index)] as! String)
+        }
     }
+    
+    
 }

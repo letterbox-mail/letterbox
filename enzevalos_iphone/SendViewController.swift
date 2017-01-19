@@ -55,7 +55,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataDelegate = VENDataDelegate(changeFunc: self.editName)
+        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact)
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
         imageView.contentMode = .ScaleAspectFit
@@ -191,6 +191,9 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         print(AddressHandler.inContacts(""))
     }
     
+    override func viewWillAppear(animated: Bool) {
+        updateNavigationBar()
+    }
     
     override func willMoveToParentViewController(parent: UIViewController?) {
         super.willMoveToParentViewController(parent)
@@ -265,6 +268,16 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func tokenFieldDidEndEditing(tokenField: VENTokenField) {}
     
+    func showContact(email: String) {
+        performSegueWithIdentifier("showContact", sender: DataHandler.handler.getContactByAddress(email))
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showContact" {
+            let destinationVC = segue.destinationViewController as! ContactViewController
+//            destinationVC.contact = DataHandler.handler.ge
+        }
+    }
     
     func editName(tokenField : VENTokenField){
         if let inText = tokenField.inputText(){
@@ -306,29 +319,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             }
         }
     }
-    //HALLO
-    /*func callSegueToContact(contact: EnzevalosContact?) {
-        performSegueWithIdentifier("contactSegue", sender: contact)
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "readMailSegue" {
-            if let mail = sender as? Mail {
-                let DestinationViewController: ReadViewController = segue.destinationViewController as! ReadViewController
-                DestinationViewController.mail = mail
-            }
-        } else if segue.identifier == "mailListSegue" {
-            if let contact = sender as? EnzevalosContact {
-                let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
-                DestinationViewController.contact = contact
-            }
-        } else if segue.identifier == "contactSegue" {
-            if let contact = sender as? EnzevalosContact {
-                let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
-                DestinationViewController.contact = contact
-            }
-        }
-    }*/
     
     func searchContacts(prefix: String){
         AppDelegate.getAppDelegate().requestForAccess({access in

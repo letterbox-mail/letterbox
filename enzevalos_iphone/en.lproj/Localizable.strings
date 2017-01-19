@@ -71,5 +71,5 @@
 "discard" = "Discard message?";
 "discardText" = "The information you have entered will be lost.";
 "discardButton" = "Discard";
-"allMessages" = "All Messages from this contact";
+"allMessages" = "All associated messages";
 

@@ -13,7 +13,7 @@ import ContactsUI
 
 class ContactViewController: UITableViewController, CNContactViewControllerDelegate {
     var contact: KeyRecord? = nil
-    private var ui: CNContact? = nil
+    private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
     
     override func viewDidLoad() {
@@ -22,7 +22,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
         
-        
+        self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
 //        headerCell.layoutMargins = UIEdgeInsetsZero
         if let con = contact {
             self.title = con.name
@@ -36,13 +36,13 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
         if authorizationStatus == CNAuthorizationStatus.Authorized {
             do {
-                ui = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(contact!.cnContact!.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
+                uiContact = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(contact!.cnContact!.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
             } catch {
                 //contact doesn't exist or we don't have authorization
                 //TODO: handle missing authorization
             }
         }
-        if let conUI = ui {
+        if let conUI = uiContact {
             let infoButton = UIButton(type: .InfoLight)
             vc = CNContactViewController(forContact: conUI)
             vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
@@ -156,7 +156,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        if indexPath.section == 0 && contact != nil {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCellWithIdentifier("ContactViewCell") as! ContactViewCell
                 cell.contactImage.image = contact!.cnContact!.getImageOrDefault()
@@ -180,7 +180,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
                 }
                 return actionCell
             }
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == 1 && contact != nil {
             let cell = tableView.dequeueReusableCellWithIdentifier("MailCell") as! MailCell
             cell.detailLabel.text = contact!.cnContact?.getMailAddresses()[indexPath.item].mailAddress
             if let label = contact?.cnContact?.getMailAddresses()[indexPath.item].label.label {
@@ -191,7 +191,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
             
             return cell
             
-        } else if indexPath.section == 2 {
+        } else if indexPath.section == 2 && contact != nil {
             let cell = tableView.dequeueReusableCellWithIdentifier("allMails", forIndexPath: indexPath)
             cell.textLabel?.text = NSLocalizedString("allMessages", comment: "show all messages")
             return cell

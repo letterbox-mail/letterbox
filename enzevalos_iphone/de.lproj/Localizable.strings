@@ -71,4 +71,4 @@
 "discard" = "Nachricht verwerfen?";
 "discardText" = "Die eingegebenen Informationen werden nicht gespeichert.";
 "discardButton" = "Verwerfen";
-"allMessages" = "Alle Nachrichten von diesem Kontakt";
+"allMessages" = "Alle verknüpften Nachrichten";

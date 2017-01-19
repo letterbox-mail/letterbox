@@ -279,7 +279,7 @@ class ReadViewController : UITableViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "answerTo"{
+        if segue.identifier == "answerTo" {
             let navigationController = segue.destinationViewController as? UINavigationController
             let controller = navigationController?.topViewController as? SendViewController
             if controller != nil {
