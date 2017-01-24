@@ -115,26 +115,40 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if contact?.ezContact.records.count > 2 {
+            return 4
+        }
         return 3
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            if let con = contact {
+        if let con = contact {
+            switch section {
+            case 0:
                 if !con.isVerified {
                     return 2
                 }
-            }
-        } else if section == 1 {
-            if let con = contact {
+            case 1:
                 if let addresses = con.ezContact.addresses {
                     return addresses.count
                 } else {
                     return 0
                 }
+            case 3:
+                let record = contact?.ezContact.records//.filter(){
+//                    if $0 == contact {
+//                        return false
+//                    }
+//                    return true
+//                }
+                if let rec = record {
+                    return rec.count
+                }
+                return 0
+            default:
+                break
             }
         }
-        
         return 1
     }
 
@@ -155,46 +169,81 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
         }
     }
     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 1:
+            return NSLocalizedString("connectedAddresses", comment: "All addresses connected to this keyrecord")
+        case 3:
+            return NSLocalizedString("otherKeys", comment: "Other keys for this contact")
+        default:
+            return nil
+        }
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == 0 && contact != nil {
-            if indexPath.row == 0 {
-                let cell = tableView.dequeueReusableCellWithIdentifier("ContactViewCell") as! ContactViewCell
-                cell.contactImage.image = contact!.cnContact!.getImageOrDefault()
-                cell.contactImage.layer.cornerRadius = cell.contactImage.frame.height / 2
-                cell.contactImage.clipsToBounds = true
-                cell.iconImage.image = drawStatusCircle()
-                if contact!.isVerified {
-                    cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
-                } else if contact!.hasKey {
-                    cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
-                } else {
-                    cell.contactStatus.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
+        if contact != nil {
+            switch indexPath.section {
+            case 0:
+                if indexPath.row == 0 {
+                    let cell = tableView.dequeueReusableCellWithIdentifier("ContactViewCell") as! ContactViewCell
+                    cell.contactImage.image = contact!.cnContact!.getImageOrDefault()
+                    cell.contactImage.layer.cornerRadius = cell.contactImage.frame.height / 2
+                    cell.contactImage.clipsToBounds = true
+                    cell.iconImage.image = drawStatusCircle()
+                    if contact!.isVerified {
+                        cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
+                    } else if contact!.hasKey {
+                        cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
+                    } else {
+                        cell.contactStatus.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
+                    }
+                    return cell
+                } else if indexPath.row == 1 {
+                    let actionCell = tableView.dequeueReusableCellWithIdentifier("ActionCell", forIndexPath: indexPath) as! ActionCell
+                    if contact!.hasKey {
+                        actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), forState: .Normal)
+                    } else {
+                        actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), forState: .Normal)
+                    }
+                    return actionCell
                 }
+            case 1:
+                let cell = tableView.dequeueReusableCellWithIdentifier("MailCell") as! MailCell
+                cell.detailLabel.text = contact!.cnContact?.getMailAddresses()[indexPath.item].mailAddress
+                if let label = contact?.cnContact?.getMailAddresses()[indexPath.item].label.label {
+                    cell.titleLabel.text = CNLabeledValue.localizedStringForLabel(label)
+                } else {
+                    cell.titleLabel.text = ""
+                }
+                
                 return cell
-            } else if indexPath.row == 1 {
-                let actionCell = tableView.dequeueReusableCellWithIdentifier("ActionCell", forIndexPath: indexPath) as! ActionCell
-                if contact!.hasKey {
-                    actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), forState: .Normal)
-                } else {
-                    actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), forState: .Normal)
+            case 2:
+                let cell = tableView.dequeueReusableCellWithIdentifier("AllMails", forIndexPath: indexPath)
+                cell.textLabel?.text = NSLocalizedString("allMessages", comment: "show all messages")
+                return cell
+            case 3:
+                let cell = tableView.dequeueReusableCellWithIdentifier("RecordCell", forIndexPath: indexPath) as! RecordCell
+//                let record = contact?.ezContact.records.filter(){
+//                    if $0 == contact {
+//                        return false
+//                    }
+//                    return true
+//                }
+//                let r = record![indexPath.row]
+                let r = contact?.ezContact.records
+                cell.label.text = r?[indexPath.row].addresses.first?.mailAddress
+                if r?[indexPath.row].addresses.first?.label.label == "_$!<Work>!$_" {
+                    cell.iconImage.image = LabelStyleKit.imageOfWork
+                } else if r?[indexPath.row].addresses.first?.label.label == "_$!<Home>!$_" {
+                    cell.iconImage.image = LabelStyleKit.imageOfHome
                 }
-                return actionCell
+//                else if r?[indexPath.row].addresses.first?.label.label?.containsString("other") {
+//                    cell.iconImage.image = LabelStyleKit.imageOfOther
+//                }
+                return cell
+            default:
+                break
             }
-        } else if indexPath.section == 1 && contact != nil {
-            let cell = tableView.dequeueReusableCellWithIdentifier("MailCell") as! MailCell
-            cell.detailLabel.text = contact!.cnContact?.getMailAddresses()[indexPath.item].mailAddress
-            if let label = contact?.cnContact?.getMailAddresses()[indexPath.item].label.label {
-                cell.titleLabel.text = CNLabeledValue.localizedStringForLabel(label)
-            } else {
-                cell.titleLabel.text = ""
-            }
-            
-            return cell
-            
-        } else if indexPath.section == 2 && contact != nil {
-            let cell = tableView.dequeueReusableCellWithIdentifier("allMails", forIndexPath: indexPath)
-            cell.textLabel?.text = NSLocalizedString("allMessages", comment: "show all messages")
-            return cell
         }
         return tableView.dequeueReusableCellWithIdentifier("MailCell", forIndexPath: indexPath)
     }

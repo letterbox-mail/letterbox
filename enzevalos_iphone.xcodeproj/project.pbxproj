@@ -103,6 +103,7 @@
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
+		F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */; };
 		F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
@@ -286,6 +287,7 @@
 		AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedSendIcon.swift; sourceTree = "<group>"; };
 		F12041FA1DA3FBF7002E4940 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
+				F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */,
 				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
 				A19C12461DE602FF007F72E7 /* jabo.asc */,
 				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
@@ -913,6 +916,7 @@
 				472F392C1E1277D2009260FB /* Mail+CoreDataClass.swift in Sources */,
 				A135CF0D1DD4BDD1007E3C29 /* PGPLiteralPacket.m in Sources */,
 				A135CF1D1DD4BDD1007E3C29 /* PGPSignatureSubpacket.m in Sources */,
+				F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */,
 				A135CF041DD4BDD1007E3C29 /* NSValue+PGPUtils.m in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,

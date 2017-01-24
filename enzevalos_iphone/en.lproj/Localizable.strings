@@ -72,4 +72,6 @@
 "discardText" = "The information you have entered will be lost.";
 "discardButton" = "Discard";
 "allMessages" = "All associated messages";
+"otherKeys" = "Other keys of this contact";
+"connectedAddresses" = "Associated addresses";
 

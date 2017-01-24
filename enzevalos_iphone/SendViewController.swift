@@ -15,6 +15,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 5, width: 200, height: 45))
     @IBOutlet weak var button: UIBarButtonItem!
+    @IBOutlet weak var iconButton: UIButton!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var toText: VENTokenField!
     @IBOutlet weak var toHeight: NSLayoutConstraint!
@@ -36,8 +37,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     @IBOutlet weak var seperator2Leading: NSLayoutConstraint!
     @IBOutlet weak var seperator3Leading: NSLayoutConstraint!
     @IBOutlet weak var textViewLeading: NSLayoutConstraint!
-    
-    
+        
     var keyboardOpened = false
     var keyboardY : CGFloat = 0
     var reducedSize : CGFloat = 0
@@ -58,14 +58,14 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact)
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
-        imageView.contentMode = .ScaleAspectFit
-        imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90")!
+//        imageView.contentMode = .ScaleAspectFit
+//        imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90")!
         setAnimation(false)
-        self.navigationItem.titleView = imageView
+//        self.navigationItem.titleView = imageView
         //recognizer = UIGestureRecognizer(target: self, action: #selector(self.tapped(_:)))
         //self.view.addGestureRecognizer(recognizer)
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.iconButton(_:))))
-        imageView.userInteractionEnabled = true
+//        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.iconButton(_:))))
+//        imageView.userInteractionEnabled = true
         
         textView.delegate = self
         textView.font = UIFont.systemFontOfSize(17)
@@ -73,6 +73,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label")+": "
         
+        iconButton.addSubview(AnimatedSendIcon())
         toText.delegate = dataDelegate
         toText.dataSource = dataDelegate
         toText.inputTextFieldKeyboardType = UIKeyboardType.EmailAddress
@@ -201,6 +202,10 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         if parent == nil {
             UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor})
         }
+    }
+    
+    @IBAction func iconButtonPressed(sender: AnyObject) {
+        iconButton(sender)
     }
     
     override func viewDidAppear(animated: Bool){
@@ -600,37 +605,41 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     //secure - state after animation
     func setAnimation(secure : Bool){
-        var images: [UIImage] = []
-        images = []
-        
-        //after animation the letter will be shown
-        if secure{
-            //set animation images in the right order here
-            images.append(UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-006_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-005_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-004_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-003_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-002_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!)
+        //        var images: [UIImage] = []
+        //        images = []
+        //
+        //        //after animation the letter will be shown
+        //        if secure{
+        //            //set animation images in the right order here
+        //            images.append(UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-006_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-005_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-004_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-003_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-002_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!)
+        //        }
+        //
+        //            //Postcard will be shown after the animation
+        //        else{
+        //            //set animation images here
+        //            images.append(UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-002_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-003_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-004_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-005_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-006_alpha_verschoben-90.png")!)
+        //            images.append(UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!)
+        //        }
+        //
+        //        imageView.animationImages = images
+        //        imageView.animationDuration = 0.75
+        //        imageView.animationRepeatCount = 1
+        //    }
+        if let view = iconButton.subviews.first as? AnimatedSendIcon {
+            print("hurtz")
+            view.switchIcons()
         }
-            
-            //Postcard will be shown after the animation
-        else{
-            //set animation images here
-            images.append(UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-002_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-003_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-004_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-005_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-006_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!)
-        }
-        
-        imageView.animationImages = images
-        imageView.animationDuration = 0.75
-        imageView.animationRepeatCount = 1
     }
-    
 }
 

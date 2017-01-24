@@ -23,3 +23,8 @@ class MailCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
 }
+
+class RecordCell: UITableViewCell {
+    @IBOutlet weak var iconImage: UIImageView!
+    @IBOutlet weak var label: UILabel!
+}
