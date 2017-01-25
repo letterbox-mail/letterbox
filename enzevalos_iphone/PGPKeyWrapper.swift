@@ -55,7 +55,9 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
     public let discoveryTime: NSDate
     
     //TODO
-    //public let discoveryMailUID: UInt64?
+    public let discoveryMailUID: UInt64?
+    
+    public let type: EncryptionType = EncryptionType.PGP
 
     public private(set) var keyID: String
     
@@ -65,42 +67,66 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
         get {
             return self.keyManager.getMailAddressesForKeyID(self.keyID)
         }
-        /*set(newArray) {
+        set(newArray) {
             var added: [String] = []
             var deleted: [String] = []
-            var remained: [String] = []
-            for entry in newArray {
-                if entry
+            
+            if var arr = newArray {
+                if var addrs = mailAddresses {
+                    for entry in arr {
+                        if addrs.contains(entry){
+                            addrs.removeAtIndex(addrs.indexOf(entry)!)
+                            arr.removeAtIndex(arr.indexOf(entry)!)
+                        }
+                    }
+                    deleted = addrs
+                }
+                added = arr
             }
-        }*/
+            else {
+                if let addrs = mailAddresses {
+                    deleted = addrs
+                }
+            }
+            keyManager.addMailAddressesForKey(added, keyID: self.keyID)
+            keyManager.removeMailAddressesForKey(deleted, keyID: self.keyID)
+        }
     }
     
     //TODO
     //KeyIDs from previous keys, that signed the actual key
     //public var predecessorsKeyID: [String]?
     
-    init(key: PGPKey, mailAddresses: [String], discoveryMailUID: UInt64, keyManager: PGPKeyManagement){
+    init(key: PGPKey, mailAddresses: [String], discoveryMailUID: UInt64?, keyManager: PGPKeyManagement){
         self.key = key
         self.keyManager = keyManager
         self.discoveryTime = NSDate.init()
+        self.discoveryMailUID = discoveryMailUID
         self.keyID = ""
         revoked = false
         trustlevel = 0
         verified = false
+        super.init()
         
         self.keyManager.addKey(self, forMailAddresses: mailAddresses, callBack: nil)
     }
     
     required public init(coder: NSCoder){
-        key = CryptoHandler.getHandler().pgp.keysFromData(coder.decodeObjectForKey("key") as! NSData)![0]
+        key = keyManager.pgp.keysFromData(coder.decodeObjectForKey("key") as! NSData)![0]
         revoked = coder.decodeBoolForKey("revoked")
         revokeTime = coder.decodeObjectForKey("revokeTime") as! NSDate?
         trustlevel = coder.decodeIntegerForKey("trustlevel")
         verified = coder.decodeBoolForKey("verified")
         verifyTime = coder.decodeObjectForKey("verifyTime") as! NSDate?
         keyID = coder.decodeObjectForKey("keyID") as! String
-        
-        
+        if let dmailUID = coder.decodeObjectForKey("discoveryMailUID"){
+            self.discoveryMailUID = (dmailUID as! NSNumber).unsignedLongLongValue
+        }
+        else {
+            self.discoveryMailUID = nil
+        }
+        discoveryTime = coder.decodeObjectForKey("discoveryTime") as! NSDate
+        keyManager = coder.decodeObjectForKey("keyManager") as! PGPKeyManagement
     }
     
     public func setOnceKeyID (keyID: String) {
@@ -116,9 +142,12 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
         coder.encodeInteger(trustlevel, forKey: "trustlevel")
         coder.encodeBool(verified, forKey: "verified")
         coder.encodeObject(verifyTime, forKey: "verifyTime")
-        //coder.encodeObject(NSNumber(unsignedLongLong: keyID), forKey: "keyID")
+        if let dmailUID = discoveryMailUID {
+            coder.encodeObject(NSNumber.init(unsignedLongLong: dmailUID), forKey: "discoveryMailUID")
+        }
         coder.encodeObject(keyID, forKey: "keyID")
         coder.encodeObject(discoveryTime, forKey: "discoveryTime")
+        coder.encodeObject(keyManager, forKey: "keyManager")
     }
     
 }

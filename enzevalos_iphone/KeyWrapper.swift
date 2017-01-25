@@ -11,17 +11,17 @@ import Foundation
 public protocol KeyWrapper {
     
     var revoked: Bool {get set}
-    var revokeTime: NSDate {get}
+    var revokeTime: NSDate? {get}
     var trustlevel: Int {get set}
     var verified: Bool {get set}
-    var verifyTime: NSDate {get}
+    var verifyTime: NSDate? {get}
     var discoveryTime: NSDate {get}
     var discoveryMailUID: UInt64? {get}
     var type: EncryptionType {get}
     var keyID: String {get}
     
     //maybe not in this interface?
-    var mailAddresses: [String]? {get}
+    var mailAddresses: [String]? {get set}
     
     init(coder: NSCoder)
     

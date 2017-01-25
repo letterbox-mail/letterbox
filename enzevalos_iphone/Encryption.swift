@@ -64,13 +64,25 @@ public protocol Encryption {
     func signAndEncrypt(mail: Mail, forContact: KeyRecord)
     func signAndEncrypt(text: String, key: KeyWrapper) -> String
     
-    func addKey(keyData: NSData, forMailAddress: String?, callBack: ((success: Bool) -> Void)?)
-    func addKey(key: KeyWrapper, forMailAddress: String?, callBack: ((success: Bool) -> Void)?)
+    func addKey(keyData: NSData, forMailAddresses: [String]?, callBack: ((keyID: String?) -> Void)?)
+    
+    func addKey(keyData: NSData, forMailAddresses: [String]?, discoveryMailUID: UInt64? , callBack: ((keyID: String?) -> Void)?)
+    
+    //key is connected to the senders address, if discoveryMail is set
+    func addKey(keyData: NSData, discoveryMail: Mail? , callBack: ((keyID: String?) -> Void)?)
+    
+    //will be maybe deleted... because keyWrapper will be added when constructed
+    //func addKey(key: KeyWrapper, forMailAddress: [String]?, callBack: ((success: Bool) -> Void)?)
+    
     func hasKey(enzContact: EnzevalosContact) -> Bool
-    func getKeyIDs(enzContact: EnzevalosContact) -> [Int64]?
-    func getKey(keyID: Int64) -> KeyWrapper?
-    func updateKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
-    func removeKey(key: KeyWrapper?, keyRecord: KeyRecord, callBack: ((success: Bool) -> Void)?)
+    func getKeyIDs(enzContact: EnzevalosContact) -> [String]?
+    func getKey(keyID: String) -> KeyWrapper?
+    
+    //internaly done; update is done when a keyWrapper is manipulated
+    //func updateKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
+    func removeKey(keyID: String, callBack: ((success: Bool) -> Void)?)
+    
+    func removeKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
     
     func addMailAddressForKey(mailAddress: String, keyID: String)
     

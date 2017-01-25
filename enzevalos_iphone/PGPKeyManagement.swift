@@ -12,6 +12,7 @@ class PGPKeyManagement {
     let encryptionHandler: EncryptionHandler
     private var keyIDs : [String : [String]] = [:] //[mailAddress: keyIDs]
     private var addresses : [String: [String]] = [:] //[keyID : mailAddresses]
+    private let pgp: ObjectivePGP
     
     init(encryption: PGPEncryption, encryptionHandler: EncryptionHandler) {
         self.encryption = encryption
@@ -33,6 +34,7 @@ class PGPKeyManagement {
             data = NSKeyedArchiver.archivedDataWithRootObject(addresses)
             self.encryptionHandler.addPersistentData(data!, searchKey: "addresses", encryptionType: self.encryption.encryptionType, callBack: nil)
         }
+        self.pgp = ObjectivePGP.init()
     }
     
     func getMaxIndex(fingerprint: String) -> Int64 {
@@ -136,8 +138,25 @@ class PGPKeyManagement {
         return keyIDs[mailAddress]
     }
     
+    func getKey(keyID: String) -> PGPKeyWrapper? {
+        if let data = (encryptionHandler.getPersistentData(keyID, encryptionType: self.encryption.encryptionType)) {
+            let keywrapper = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? PGPKeyWrapper
+            return keywrapper
+        }
+        return nil
+    }
+    
     func getMailAddressesForKeyID(keyID: String) -> [String]?{
         return addresses[keyID]
+    }
+    
+    func removeKey(keyID: String, callBack: ((success: Bool) -> Void)?) {
+        var addrs: [String] = []
+        if let addrss = addresses[keyID] {
+            addrs = addrss
+        }
+        self.removeMailAddressesForKey(addrs, keyID: keyID)
+        encryptionHandler.deletePersistentData(keyID, encryptionType: EncryptionType.PGP, callBack: callBack)
     }
     
     private func saveDictionarys(){
