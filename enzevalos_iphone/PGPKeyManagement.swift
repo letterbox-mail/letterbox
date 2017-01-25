@@ -8,38 +8,38 @@
 
 class PGPKeyManagement {
     
-    let encryption: PGPEncryption
+    let encryptionType: EncryptionType
     let encryptionHandler: EncryptionHandler
+    let pgp: ObjectivePGP
     private var keyIDs : [String : [String]] = [:] //[mailAddress: keyIDs]
     private var addresses : [String: [String]] = [:] //[keyID : mailAddresses]
-    private let pgp: ObjectivePGP
     
-    init(encryption: PGPEncryption, encryptionHandler: EncryptionHandler) {
-        self.encryption = encryption
+    init(encryptionHandler: EncryptionHandler) {
+        self.encryptionType = EncryptionType.PGP
         self.encryptionHandler = encryptionHandler
         //get or create keyIDs
-        var data = self.encryptionHandler.getPersistentData("keyIDs", encryptionType: self.encryption.encryptionType)
+        var data = self.encryptionHandler.getPersistentData("keyIDs", encryptionType: self.encryptionType)
         if let unwrappedData = data {
             self.keyIDs = NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as! [String: [String]]
         }
         else {
             data = NSKeyedArchiver.archivedDataWithRootObject(keyIDs)
-            self.encryptionHandler.addPersistentData(data!, searchKey: "keyIDs", encryptionType: self.encryption.encryptionType, callBack: nil)
+            self.encryptionHandler.addPersistentData(data!, searchKey: "keyIDs", encryptionType: self.encryptionType, callBack: nil)
         }
-        data = self.encryptionHandler.getPersistentData("addresses", encryptionType: self.encryption.encryptionType)
+        data = self.encryptionHandler.getPersistentData("addresses", encryptionType: self.encryptionType)
         if let unwrappedData = data {
             self.addresses = NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as! [String: [String]]
         }
         else {
             data = NSKeyedArchiver.archivedDataWithRootObject(addresses)
-            self.encryptionHandler.addPersistentData(data!, searchKey: "addresses", encryptionType: self.encryption.encryptionType, callBack: nil)
+            self.encryptionHandler.addPersistentData(data!, searchKey: "addresses", encryptionType: self.encryptionType, callBack: nil)
         }
         self.pgp = ObjectivePGP.init()
     }
     
     func getMaxIndex(fingerprint: String) -> Int64 {
         var index : Int64 = 0
-        if let indexData = encryptionHandler.getPersistentData(fingerprint+"-index", encryptionType: self.encryption.encryptionType){
+        if let indexData = encryptionHandler.getPersistentData(fingerprint+"-index", encryptionType: self.encryptionType){
             indexData.getBytes(&index, length: sizeof(Int64))
         }
         
@@ -50,7 +50,7 @@ class PGPKeyManagement {
         var index : Int64 = 0
         let searchKey = key.key.keyID.longKeyString+"-index"
         var existent = false
-        if let indexData = encryptionHandler.getPersistentData(searchKey, encryptionType: self.encryption.encryptionType){
+        if let indexData = encryptionHandler.getPersistentData(searchKey, encryptionType: self.encryptionType){
             existent = true
             indexData.getBytes(&index, length: sizeof(Int64))
         }
@@ -58,17 +58,17 @@ class PGPKeyManagement {
         index += 1
         let indexData = NSData(bytes: &index, length: sizeof(Int64))
         if !existent {
-            encryptionHandler.addPersistentData(indexData, searchKey: searchKey, encryptionType: self.encryption.encryptionType, callBack: nil)
+            encryptionHandler.addPersistentData(indexData, searchKey: searchKey, encryptionType: self.encryptionType, callBack: nil)
         }
         else {
-            encryptionHandler.replacePersistentData(searchKey, replacementData: indexData, encryptionType: self.encryption.encryptionType, callBack: nil)
+            encryptionHandler.replacePersistentData(searchKey, replacementData: indexData, encryptionType: self.encryptionType, callBack: nil)
         }
         
         let keyID = key.key.keyID.longKeyString+"-"+String(index)
         key.setOnceKeyID(keyID)
         
         let data = NSKeyedArchiver.archivedDataWithRootObject(key)
-        encryptionHandler.addPersistentData(data, searchKey: key.keyID, encryptionType: self.encryption.encryptionType, callBack: callBack)
+        encryptionHandler.addPersistentData(data, searchKey: key.keyID, encryptionType: self.encryptionType, callBack: callBack)
         
         addMailAddressesForKey(forMailAddresses, keyID: keyID)
         
@@ -76,9 +76,9 @@ class PGPKeyManagement {
     }
     
     func updateKey(key: PGPKeyWrapper, callBack: ((success: Bool) -> Void)?) {
-        if encryptionHandler.hasPersistentData(key.keyID, encryptionType: self.encryption.encryptionType) {
+        if encryptionHandler.hasPersistentData(key.keyID, encryptionType: self.encryptionType) {
             let keyData = NSKeyedArchiver.archivedDataWithRootObject(key)
-            encryptionHandler.replacePersistentData(key.keyID, replacementData: keyData, encryptionType: self.encryption.encryptionType, callBack: callBack)
+            encryptionHandler.replacePersistentData(key.keyID, replacementData: keyData, encryptionType: self.encryptionType, callBack: callBack)
             return
         }
         if let cb = callBack {
@@ -139,7 +139,7 @@ class PGPKeyManagement {
     }
     
     func getKey(keyID: String) -> PGPKeyWrapper? {
-        if let data = (encryptionHandler.getPersistentData(keyID, encryptionType: self.encryption.encryptionType)) {
+        if let data = (encryptionHandler.getPersistentData(keyID, encryptionType: self.encryptionType)) {
             let keywrapper = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? PGPKeyWrapper
             return keywrapper
         }
@@ -161,8 +161,8 @@ class PGPKeyManagement {
     
     private func saveDictionarys(){
         var data = NSKeyedArchiver.archivedDataWithRootObject(keyIDs)
-        encryptionHandler.replacePersistentData("keyIDs", replacementData: data, encryptionType: self.encryption.encryptionType, callBack: nil)
+        encryptionHandler.replacePersistentData("keyIDs", replacementData: data, encryptionType: self.encryptionType, callBack: nil)
         data = NSKeyedArchiver.archivedDataWithRootObject(addresses)
-        encryptionHandler.replacePersistentData("addresses", replacementData: data, encryptionType: self.encryption.encryptionType, callBack: nil)
+        encryptionHandler.replacePersistentData("addresses", replacementData: data, encryptionType: self.encryptionType, callBack: nil)
     }
 }

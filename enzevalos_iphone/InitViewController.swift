@@ -30,4 +30,5 @@ class InitViewController : UIViewController {
         print(manager.providerForIdentifier("aol") == nil)
         print(manager.providerForIdentifier("aol.com") == nil)
     }
+    
 }

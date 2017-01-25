@@ -112,6 +112,7 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
     }
     
     required public init(coder: NSCoder){
+        keyManager = coder.decodeObjectForKey("keyManager") as! PGPKeyManagement
         key = keyManager.pgp.keysFromData(coder.decodeObjectForKey("key") as! NSData)![0]
         revoked = coder.decodeBoolForKey("revoked")
         revokeTime = coder.decodeObjectForKey("revokeTime") as! NSDate?
@@ -126,7 +127,6 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
             self.discoveryMailUID = nil
         }
         discoveryTime = coder.decodeObjectForKey("discoveryTime") as! NSDate
-        keyManager = coder.decodeObjectForKey("keyManager") as! PGPKeyManagement
     }
     
     public func setOnceKeyID (keyID: String) {

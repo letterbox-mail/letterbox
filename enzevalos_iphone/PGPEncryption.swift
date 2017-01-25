@@ -21,7 +21,7 @@ class PGPEncryption : Encryption {
     
     required init(encHandler: EncryptionHandler) {
         self.encryptionHandler = encHandler
-        self.keyManager = PGPKeyManagement(encryption: self, encryptionHandler: self.encryptionHandler)
+        self.keyManager = PGPKeyManagement(encryptionHandler: self.encryptionHandler)
     }
     
     func isUsed(mail: Mail) -> Bool {
@@ -236,8 +236,9 @@ class PGPEncryption : Encryption {
         self.keyManager.addMailAddressesForKey(mailAddresses, keyID: keyID)
     }
     
+    //TODO
     func keyOfThisEncryption(keyData: NSData) -> Bool? {
-        
+        return nil
     }
     
     
