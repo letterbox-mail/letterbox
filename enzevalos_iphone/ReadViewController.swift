@@ -261,19 +261,15 @@ class ReadViewController : UITableViewController {
             }
             // NavigationBar Icon
             let iconView = UIImageView()
-//            let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 38))
             iconView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
             iconView.contentMode = .ScaleAspectFit
             var icon: UIImage
             if m.trouble {
                 icon = IconsStyleKit.imageOfLetterCorrupted
-//                icon = UIImage(named: "letter_corrupted")!
             } else if m.isSecure {
                 icon = IconsStyleKit.imageOfLetterOpen
-//                icon = UIImage(named: "letter_open")!
             } else {
                 icon = IconsStyleKit.imageOfPostcard
-//                icon = UIImage(named: "postcard")!
             }
             iconView.image = icon
             iconButton.setImage(icon, forState: UIControlState.Normal)
