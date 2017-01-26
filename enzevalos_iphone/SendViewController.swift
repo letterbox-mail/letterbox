@@ -284,7 +284,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             }
         }
         
-        performSegueWithIdentifier("showContact", sender: records.first)
+//        performSegueWithIdentifier("showContact", sender: records.first)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

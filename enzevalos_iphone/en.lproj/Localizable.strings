@@ -74,4 +74,5 @@
 "allMessages" = "All associated messages";
 "otherKeys" = "Other keys of this contact";
 "connectedAddresses" = "Associated addresses";
-
+"CC" = "To/CC";
+"All" = "All";

@@ -200,13 +200,15 @@ class ReadViewController : UITableViewController {
             
             sender.text = m.from.address
              //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
-            if m.getReceivers().count == 1 && m.getCCs().count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
+            if m.getReceivers().count == 1 && m.cc?.count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
                 receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
-                for c in m.getCCs(){
-                    receivers.text?.appendContentsOf(c.address)
-                    receivers.text?.appendContentsOf(" ")
+                if let cc = m.cc {
+                    for c in cc {
+                        receivers.text?.appendContentsOf(c.address)
+                        receivers.text?.appendContentsOf(" ")
+                    }
                 }
-            } else {
+            } else {  //TODO: Fix all this by replacing it with VENTokenField
                 receivers.text = NSLocalizedString("To", comment: "To label") + ": "
                 for r in m.getReceivers() {
                     receivers.text?.appendContentsOf(r.address)
