@@ -28,6 +28,15 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
         return nil
     }
     
+    static func hasKey(enzContact: EnzevalosContact) -> Bool {
+        for (_, enc) in encryptions {
+            if enc.hasKey(enzContact) {
+                return true
+            }
+        }
+        return false
+    }
+    
     static func getEncryptionForMail(mail: Mail) -> EncryptionType {
         for (type, enc) in encryptions {
             if enc.isUsed(mail) {
@@ -51,17 +60,11 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
     }
     
     //handle entrys in keychain for different Encryptions
-    func addPersistentData(data: NSData, searchKey: String, encryptionType: EncryptionType, callBack: ((success: Bool) -> Void)?) {
+    func addPersistentData(data: NSData, searchKey: String, encryptionType: EncryptionType) {
         if (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)) != nil {
-            if let cb = callBack{
-                cb(success: false)
-            }
             return
         }
         keychain[data: encryptionType.rawValue+"-"+searchKey] = data
-        if let cb = callBack{
-            cb(success: true)
-        }
     }
     
     //for all encryptions
@@ -74,29 +77,17 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
         return (try! keychain.getData(encryptionType.rawValue+"-"+searchKey))
     }
     
-    func replacePersistentData(searchKey: String, replacementData: NSData, encryptionType: EncryptionType, callBack: ((success: Bool) -> Void)?) {
+    func replacePersistentData(searchKey: String, replacementData: NSData, encryptionType: EncryptionType) {
         if (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)) == nil {
-            if let cb = callBack{
-                cb(success: false)
-            }
             return
         }
         keychain[data: encryptionType.rawValue+"-"+searchKey] = replacementData
-        if let cb = callBack{
-            cb(success: true)
-        }
     }
     
-    func deletePersistentData(searchKey: String, encryptionType: EncryptionType, callBack: ((success: Bool) -> Void)?) {
+    func deletePersistentData(searchKey: String, encryptionType: EncryptionType) {
         if (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)) == nil {
-            if let cb = callBack{
-                cb(success: false)
-            }
             return
         }
         keychain[data: encryptionType.rawValue+"-"+searchKey] = nil
-        if let cb = callBack{
-            cb(success: true)
-        }
     }
 }

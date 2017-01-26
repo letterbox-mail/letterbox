@@ -75,13 +75,61 @@ class PGPEncryption : Encryption {
     //TODO
     //decrypt the mails body. the decryted body will be saved in the mail object.
     func decrypt(mail: Mail){
-        
+        /*if self.isUsed(mail) {
+            //sortInPlace auf keyRecords, um Reihnfolge für signature keys zu bekommen.
+            var signed = false
+            var valid = false
+            var integrityProtected = false
+            let verificationKey = keyManager.getKey(keyManager.)
+            var data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: )
+            if data == nil {
+                self.keyManager.useAllPrivateKeys()
+                //TODO add oldKeyUsed attribute in Mail object
+                data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+                self.keyManager.useOnlyActualPrivateKey()
+                if data != nil {
+                    mail.oldKeyUsed = true
+                }
+            }
+            if let unwrappedData = data {
+                mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
+            }
+        }*/
     }
     
-    //TODO
+    func decryptAndSignatureCheck(mail: Mail) {
+        if self.isUsed(mail) {
+            var data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+            if data == nil {
+                self.keyManager.useAllPrivateKeys()
+                //TODO add oldKeyUsed attribute in Mail object
+                data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+                self.keyManager.useOnlyActualPrivateKey()
+                if data != nil {
+                    mail.oldKeyUsed = true
+                }
+            }
+            if let unwrappedData = data {
+                mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
+            }
+        }
+    }
+    
     //decrypt the text with the given key and return it.
-    func decrypt(text: String, key: KeyWrapper) -> String{
-        return ""
+    func decrypt(text: String, keyID: String) -> String?{
+        if let privKeys = keyManager.getAllPrivateKeyIDs() {
+            if !privKeys.contains(keyID) {
+                return nil
+            }
+        }
+        if let key = keyManager.getKey(keyID) {
+            let pgp = ObjectivePGP.init()
+            pgp.keys.append(key.key)
+            if let decr = try? pgp.decryptData(text.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil) {
+                return String(data: decr, encoding: NSUTF8StringEncoding)
+            }
+        }
+        return nil
     }
     
     //TODO
@@ -132,46 +180,41 @@ class PGPEncryption : Encryption {
     }
     
     //chooses first key in data. others will be ignored
-    func addKey(keyData: NSData, forMailAddress: String?, callBack: ((keyID: String?) -> Void)?){
+    func addKey(keyData: NSData, forMailAddress: String?) -> String? {
         var addrs : [String] = []
         if let addr = forMailAddress {
             addrs = [addr]
         }
-        self.addKey(keyData, forMailAddresses: addrs, callBack: callBack)
+        return self.addKey(keyData, forMailAddresses: addrs)
     }
     
     //chooses first key in data. others will be ignored
-    func addKey(keyData: NSData, forMailAddresses: [String]?, callBack: ((keyID: String?) -> Void)?){
-        self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: nil, callBack: callBack)
+    func addKey(keyData: NSData, forMailAddresses: [String]?) -> String?{
+        return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: nil)
     }
     
     //chooses first key in data. others will be ignored
-    func addKey(keyData: NSData, forMailAddresses: [String]?, discoveryMailUID: UInt64?, callBack: ((keyID: String?) -> Void)?){
-        if let tmpKey = CryptoHandler.getHandler().pgp.keysFromData(keyData) {
+    func addKey(keyData: NSData, forMailAddresses: [String]?, discoveryMailUID: UInt64?) -> String? {
+        if let tmpKey = self.keyManager.pgp.keysFromData(keyData) {
             var addrs : [String] = []
             if let addr = forMailAddresses {
                 addrs = addr
             }
             let key = PGPKeyWrapper.init(key: tmpKey[0], mailAddresses: addrs, discoveryMailUID: discoveryMailUID, keyManager: self.keyManager)
-            if let cb = callBack {
-                cb(keyID: key.keyID)
-            }
-            return
+            return key.keyID
         }
-        if let cb = callBack {
-            cb(keyID: nil)
-        }
+        return nil
     }
     
     //chooses first key in data. others will be ignored
-    func addKey(keyData: NSData, discoveryMail: Mail?, callBack: ((keyID: String?) -> Void)?){
+    func addKey(keyData: NSData, discoveryMail: Mail?) -> String? {
         var discoveryMailUID: UInt64? = nil
         var forMailAddresses: [String]? = nil
         if let mail = discoveryMail {
             discoveryMailUID = mail.getUID()
             forMailAddresses = [mail.getFrom().address]
         }
-        self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: discoveryMailUID, callBack: callBack)
+        return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: discoveryMailUID)
     }
     
     //TODO maybe remove here. used in keyWrapper
@@ -220,12 +263,12 @@ class PGPEncryption : Encryption {
         
     }*/
     
-    func removeKey(keyID: String, callBack: ((success: Bool) -> Void)?){
-        self.keyManager.removeKey(keyID, callBack: callBack)
+    func removeKey(keyID: String){
+        self.keyManager.removeKey(keyID)
     }
     
-    func removeKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?) {
-        self.removeKey(key.keyID, callBack: callBack)
+    func removeKey(key: KeyWrapper) {
+        self.removeKey(key.keyID)
     }
     
     func addMailAddressForKey(mailAddress: String, keyID: String) {

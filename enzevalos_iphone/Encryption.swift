@@ -39,8 +39,12 @@ public protocol Encryption {
     //decrypt the mails body. the decryted body will be saved in the mail object.
     func decrypt(mail: Mail)
     
+    //decrypt the mails body. the decryted body will be saved in the mail object.
+    //Signaturechecking included. will be set in mail object too.
+    func decryptAndSignatureCheck(mail: Mail)
+    
     //decrypt the text with the given key and return it.
-    func decrypt(text: String, key: KeyWrapper) -> String
+    func decrypt(text: String, keyID: String) -> String?
     
     //check whether the mail is correctly signed with this encryption. nil is returned, if there is no answer to be made at the moment.
     func isCorrectlySigned(mail: Mail) -> Bool?
@@ -64,12 +68,12 @@ public protocol Encryption {
     func signAndEncrypt(mail: Mail, forContact: KeyRecord)
     func signAndEncrypt(text: String, key: KeyWrapper) -> String
     
-    func addKey(keyData: NSData, forMailAddresses: [String]?, callBack: ((keyID: String?) -> Void)?)
+    func addKey(keyData: NSData, forMailAddresses: [String]?) -> String?
     
-    func addKey(keyData: NSData, forMailAddresses: [String]?, discoveryMailUID: UInt64? , callBack: ((keyID: String?) -> Void)?)
+    func addKey(keyData: NSData, forMailAddresses: [String]?, discoveryMailUID: UInt64?) -> String?
     
     //key is connected to the senders address, if discoveryMail is set
-    func addKey(keyData: NSData, discoveryMail: Mail? , callBack: ((keyID: String?) -> Void)?)
+    func addKey(keyData: NSData, discoveryMail: Mail?) -> String?
     
     //will be maybe deleted... because keyWrapper will be added when constructed
     //func addKey(key: KeyWrapper, forMailAddress: [String]?, callBack: ((success: Bool) -> Void)?)
@@ -80,9 +84,9 @@ public protocol Encryption {
     
     //internaly done; update is done when a keyWrapper is manipulated
     //func updateKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
-    func removeKey(keyID: String, callBack: ((success: Bool) -> Void)?)
+    func removeKey(keyID: String) //-> Bool
     
-    func removeKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
+    func removeKey(key: KeyWrapper) //-> Bool
     
     func addMailAddressForKey(mailAddress: String, keyID: String)
     

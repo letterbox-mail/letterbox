@@ -31,7 +31,7 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
     public var revoked: Bool{
         didSet {
             self.revokeTime = NSDate.init()
-            self.keyManager.updateKey(self, callBack: nil)
+            self.keyManager.updateKey(self)
         }
     }
     
@@ -40,14 +40,14 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
     //choose Int8 here?
     public var trustlevel: Int{
         didSet {
-            self.keyManager.updateKey(self, callBack: nil)
+            self.keyManager.updateKey(self)
         }
     } //negative misstrust; zero neutral; positive trust
     
     public var verified: Bool{
         didSet {
             self.verifyTime = NSDate.init()
-            self.keyManager.updateKey(self, callBack: nil)
+            self.keyManager.updateKey(self)
         }
     }
     
@@ -108,7 +108,7 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
         verified = false
         super.init()
         
-        self.keyManager.addKey(self, forMailAddresses: mailAddresses, callBack: nil)
+        self.keyManager.addKey(self, forMailAddresses: mailAddresses)
     }
     
     required public init(coder: NSCoder){
