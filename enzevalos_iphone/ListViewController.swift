@@ -52,7 +52,6 @@ class ListViewController: UITableViewController {
                 if !returnValue && mail.cc?.count > 0 {
                     if let result = mail.cc?.contains({cc -> Bool in
                         if let mail = cc as? MailAddress {
-                            print(mail.mailAddress)
                             return mail.mailAddress.containsString(searchText.lowercaseString)
                         }
                         return false
@@ -77,7 +76,6 @@ class ListViewController: UITableViewController {
                 if !returnValue && mail.cc?.count > 0 {
                     if let res = mail.cc?.contains({cc -> Bool in
                         if let mail = cc as? MailAddress {
-                            print(mail.mailAddress)
                             return mail.mailAddress.containsString(searchText.lowercaseString)
                         }
                         return false
