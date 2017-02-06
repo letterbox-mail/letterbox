@@ -193,7 +193,7 @@ class InboxTableViewCell: UITableViewCell {
     
     func clearCell(sender: AnyObject) {
         if let button = sender as? UIButton {
-            button.backgroundColor = UIColor.clearColor()
+            UIView.animateWithDuration(0.5, animations: {button.backgroundColor = UIColor.clearColor()})
         }
     }
 }

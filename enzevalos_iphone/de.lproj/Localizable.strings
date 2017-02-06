@@ -75,4 +75,5 @@
 "otherKeys" = "Andere Schlüssel dieses Kontakts";
 "connectedAddresses" = "Verknüpfte E-Mail-Adressen";
 "CC" = "An/CC";
-"All" = "Alle";
+"All" = "Alles";
+"Body" = "Nachricht";
