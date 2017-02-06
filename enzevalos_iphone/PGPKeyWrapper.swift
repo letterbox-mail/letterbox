@@ -59,7 +59,7 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
     
     public let type: EncryptionType = EncryptionType.PGP
 
-    public private(set) var keyID: String
+    public private(set) var keyID: String //will look like key.longKeyString+"-1" for the key with this longKeyString at index 1
     
     private let keyManager: PGPKeyManagement
     

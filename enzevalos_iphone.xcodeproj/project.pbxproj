@@ -85,7 +85,6 @@
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
-		A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C09FC71DF052FF0006B783 /* importKeys.swift */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
@@ -264,7 +263,6 @@
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jabo.asc; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-private.gpg"; sourceTree = "<group>"; };
-		A1C09FC71DF052FF0006B783 /* importKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = importKeys.swift; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -416,7 +414,6 @@
 				476142071E07E52B00FD5E4F /* Theme.swift */,
 				A1230BD81E2F881E006642C7 /* Encryption */,
 				A1EB05871D956879008659C1 /* AddressHandler.swift */,
-				A1C09FC71DF052FF0006B783 /* importKeys.swift */,
 				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
 				476373C11E09BA88004D5EFE /* UserData.swift */,
 				F1984D711E1D327200804E1E /* IconsStyleKit.swift */,
@@ -554,11 +551,11 @@
 			isa = PBXGroup;
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
-				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
 				A19C12461DE602FF007F72E7 /* jabo.asc */,
 				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
 				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
 				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
+				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
 				A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */,
 				A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */,
@@ -928,7 +925,6 @@
 				A135CF041DD4BDD1007E3C29 /* NSValue+PGPUtils.m in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
-				A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				A1416C191E268EFB001809F3 /* EncryptionHandler.swift in Sources */,
 				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,

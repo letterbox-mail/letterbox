@@ -75,6 +75,22 @@ class PGPEncryption : Encryption {
     //TODO
     //decrypt the mails body. the decryted body will be saved in the mail object.
     func decrypt(mail: Mail){
+        if self.isUsed(mail) {
+            let bodyData = mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!
+            var data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
+            if data == nil {
+                self.keyManager.useAllPrivateKeys()
+                //TODO add oldKeyUsed attribute in Mail object
+                data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+                self.keyManager.useOnlyActualPrivateKey()
+                if data != nil {
+                    mail.oldPrivateKeyUsed = true
+                }
+            }
+            if let unwrappedData = data {
+                mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
+            }
+        }
         /*if self.isUsed(mail) {
             //sortInPlace auf keyRecords, um Reihnfolge für signature keys zu bekommen.
             var signed = false
@@ -99,14 +115,15 @@ class PGPEncryption : Encryption {
     
     func decryptAndSignatureCheck(mail: Mail) {
         if self.isUsed(mail) {
-            var data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+            let bodyData = mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!
+            var data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
             if data == nil {
                 self.keyManager.useAllPrivateKeys()
                 //TODO add oldKeyUsed attribute in Mail object
                 data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
                 self.keyManager.useOnlyActualPrivateKey()
                 if data != nil {
-                    mail.oldKeyUsed = true
+                    mail.oldPrivateKeyUsed = true
                 }
             }
             if let unwrappedData = data {
