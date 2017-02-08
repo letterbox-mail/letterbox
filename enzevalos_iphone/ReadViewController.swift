@@ -250,10 +250,11 @@ class ReadViewController : UITableViewController {
                 messageBody.text = m.decryptedMessage
                 print(m.decryptedMessage)
                // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
-                if m.from.hasKey{
+                //AFTERMERGE
+                /*if m.from.hasKey{
                     let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.from.address))?.key
                     print(signatureKey)
-                }
+                }*/
             
             }
             else {

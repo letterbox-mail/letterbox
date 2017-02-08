@@ -196,51 +196,41 @@ class MailHandler {
         allRec.appendContentsOf(toEntrys)
         allRec.appendContentsOf(ccEntrys)
         
-        var enc : [MCOAddress] = []
-        var unenc : [MCOAddress] = []
-        let handler = KeyHandler.getHandler()
-        let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
-        var keys : [PGPKey] = []
+        //TODO add support for different Encryptions here
+        //edit sortMailaddressesByEncryptionMCOAddress and sortMailaddressesByEncryption because a mailaddress can be found in multiple Encryptions
+        let ordered = EnzevalosEncryptionHandler.sortMailaddressesByEncryptionMCOAddress(allRec)
         
-        for rec in allRec{
-            if handler.addrHasKey(rec) {
-                enc.append(MCOAddress(displayName: "", mailbox: rec))
-                //let sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(CryptoHandler.getHandler().pgp.encryptData(message.dataUsingEncoding(NSUTF8StringEncoding)!, usingPublicKeys: )), from: userID, recipients: ["jakob.bode@fu-berlin.de"])//session.sendOperationWithData(rfc822Data)
-                //sendOperation.start(callback)
-                if let key = KeyHandler.getHandler().getKeyByAddr(rec) {
-                    if !keys.contains(key.key) {
-                        keys.append(key.key)
-                    }
-                }
-                //TODO: error in callback senden
-                else {
-                    print("ERROR NO KEY!!! MailHandler line 102")
-                    //unenc.append(MCOAddress(displayName: "", mailbox: rec))
-                }
+        let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
+        
+        var encryption : Encryption
+        var sendData : NSData
+        let orderedString = EnzevalosEncryptionHandler.sortMailaddressesByEncryption(allRec)
+        var sendOperation: MCOSMTPSendOperation
+            
+        if let encPGP = ordered[EncryptionType.PGP] {
+            encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
+            //TODO use encryptAndSign instead of encrypt
+            if let encData = encryption.encrypt("\n"+message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+                sendData = encData
+                sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(sendData), from: userID, recipients: encPGP)
+                //TODO handle different callbacks
+                sendOperation.start(callback)
             }
             else {
-                unenc.append(MCOAddress(displayName: "", mailbox: rec))
-                print(unenc)
+                //TODO do it better
+                callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
             }
         }
-        //TODO: handle different cases
-        do {
-            var sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(try CryptoHandler.getHandler().pgp.encryptData(("\n"+message).dataUsingEncoding(NSUTF8StringEncoding)!, usingPublicKeys: keys, signWithSecretKey: KeyHandler.getHandler().getPrivateKey()?.key, passphrase: nil, armored: true)), from: userID, recipients: enc) //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
-            //print("message to be encrypted:")
-            //print(String(data: message.dataUsingEncoding(NSUTF8StringEncoding)!, encoding: NSUTF8StringEncoding))
         
-            if enc != [] {
-                sendOperation.start(callback)
-            }
-            if unenc != [] {
-                let rfc822Data = builder.data()
-                sendOperation = session.sendOperationWithData(rfc822Data, from: userID, recipients: unenc)
-                sendOperation.start(callback)
-            }
+        //TODO add new encryptions here
+            
+        if let unenc = ordered[EncryptionType.unknown] {
+            sendData = builder.data()
+            sendOperation = session.sendOperationWithData(sendData, from: userID, recipients: unenc)
+            //TODO handle different callbacks
+            sendOperation.start(callback)
         }
-        catch _ {
-            print("Error while sending; MailHandler, line 125")
-        }
+        
     }
     
     func setupIMAPSession() {

@@ -32,6 +32,9 @@ public class KeyRecord: Record{
     }
     
     public var isVerified: Bool {
+        if let key = self.key{
+            return key.verified
+        }
         return false
     }
     
@@ -40,16 +43,17 @@ public class KeyRecord: Record{
     
     
     public var ezContact: EnzevalosContact
-       
+
+    public var cnContact: CNContact? {
+        get{
+            return ezContact.cnContact
+        }
+    }
     
     public init(contact: EnzevalosContact, key: KeyWrapper?){
-        self.contact = contact
+        self.ezContact = contact
         self.key = key
         self.mails = [Mail] ()
-        if (key != nil) {
-            self.isSecure = true
-            self.isVerified = key!.verified
-        }
     }
     
     public var image: UIImage{
@@ -57,15 +61,12 @@ public class KeyRecord: Record{
             return ezContact.getImageOrDefault()
         }
     }
-    
-    
-    public init(contact: EnzevalosContact, key: KeyWrapper?){
-        self.key = key
-        self.ezContact = contact
-
-        self.ezContact.records.append(self)
-
+    public var color: UIColor {
+        get{
+            return ezContact.getColor()
+        }
     }
+  
     
     public init(mail: Mail){
         //TODO: KEY?????
@@ -120,9 +121,7 @@ public class KeyRecord: Record{
         return ezContact.getImageOrDefault()
     }
     
-    public func getColor() -> UIColor {
-        return ezContact.getColor()
-    }
+    
 }
 
 

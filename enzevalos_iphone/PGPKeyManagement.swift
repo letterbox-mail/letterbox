@@ -180,6 +180,13 @@ class PGPKeyManagement {
         return addresses[keyID]
     }
     
+    func keyIDExists(keyID: String) -> Bool {
+        if let addr = addresses[keyID] {
+            return addr != []
+        }
+        return false
+    }
+    
     //if the actualPrivateKey is removed a old key is set as actualPrivateKey, if availiable
     func removeKey(keyID: String) {
         removePrivateKey(keyID)

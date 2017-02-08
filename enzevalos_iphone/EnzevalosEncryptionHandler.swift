@@ -37,6 +37,17 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
         return false
     }
     
+    static func hasKey(mailAddress: String) -> Bool {
+        for (_, enc) in encryptions {
+            if enc.hasKey(mailAddress) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    
+    
     static func getEncryptionTypeForMail(mail: Mail) -> EncryptionType {
         for (type, enc) in encryptions {
             if enc.isUsed(mail) {
@@ -44,6 +55,66 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
             }
         }
         return EncryptionType.unknown
+    }
+    
+    //a mailaddress can be found in multiple encryptionTypes
+    static func sortMailaddressesByEncryption(mailaddresses: [String]) -> [EncryptionType : [String]] {
+        //TODO add different Encryptions here. This may be done via an attribute Mail_Address, setting the preffered encryption
+        var returnValue : [EncryptionType : [String]] = [:]
+        var inserted : Bool
+        for addr in mailaddresses {
+            inserted = false
+            for (_, enc) in encryptions {
+                if let array = enc.getKeyIDs(addr) {
+                    if array != [] {
+                        if returnValue[enc.encryptionType] == nil {
+                            returnValue[enc.encryptionType] = [addr]
+                        } else {
+                            returnValue[enc.encryptionType]!.append(addr)
+                        }
+                        inserted = true
+                    }
+                }
+            }
+            if !inserted {
+                if returnValue[EncryptionType.unknown] == nil {
+                    returnValue[EncryptionType.unknown] = [addr]
+                } else {
+                    returnValue[EncryptionType.unknown]!.append(addr)
+                }
+            }
+        }
+        return returnValue
+    }
+    
+    //a mailaddress can be found multiple encryptionTypes
+    static func sortMailaddressesByEncryptionMCOAddress(mailaddresses: [String]) -> [EncryptionType : [MCOAddress]] {
+        //TODO add different Encryptions here. This may be done via an attribute Mail_Address, setting the preffered encryption
+        var returnValue : [EncryptionType : [MCOAddress]] = [:]
+        var inserted : Bool
+        for addr in mailaddresses {
+            inserted = false
+            for (_, enc) in encryptions {
+                if let array = enc.getKeyIDs(addr) {
+                    if array != [] {
+                        if returnValue[enc.encryptionType] == nil {
+                            returnValue[enc.encryptionType] = [MCOAddress(displayName: "", mailbox: addr)]
+                        } else {
+                            returnValue[enc.encryptionType]!.append(MCOAddress(displayName: "", mailbox: addr))
+                        }
+                        inserted = true
+                    }
+                }
+            }
+            if !inserted {
+                if returnValue[EncryptionType.unknown] == nil {
+                    returnValue[EncryptionType.unknown] = [MCOAddress(displayName: "", mailbox: addr)]
+                } else {
+                    returnValue[EncryptionType.unknown]!.append(MCOAddress(displayName: "", mailbox: addr))
+                }
+            }
+        }
+        return returnValue
     }
     
     //-----------------------------------------------------------------------------------------

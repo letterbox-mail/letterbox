@@ -40,9 +40,48 @@ public class Mail_Address: NSManagedObject, MailAddress {
         }
     }
     
+    //TODO think about it!
+    public var keyID : String? {
+        get {
+            if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType){
+                if let ids = encryption.getKeyIDs(self.mailAddress) {
+                    //TODO add other policy here
+                    if let id = ids.last {
+                        return id
+                    }
+                }
+            }
+            return nil
+        }
+        set (newID){
+            if let id = newID {
+                if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType){
+                    if encryption.keyIDExists(id) {
+                        if let currentID = self.keyID {
+                            encryption.removeMailAddressForKey(self.mailAddress, keyID: currentID)
+                        }
+                        encryption.addMailAddressForKey(mailAddress, keyID: id)
+                    }
+                }
+            }
+            else {
+                if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
+                    if let currentID = self.keyID {
+                        encryption.removeMailAddressForKey(self.mailAddress, keyID: currentID)
+                    }
+                }
+            }
+        }
+    }
+    
+    public var encryptionType: EncryptionType = EncryptionType.PGP
+    
     public var hasKey: Bool{
         get{
-            return key != nil
+            if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
+                return encryption.hasKey(self.mailAddress)
+            }
+            return false
         }
     }
     

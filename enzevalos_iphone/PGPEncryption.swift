@@ -169,12 +169,46 @@ class PGPEncryption : Encryption {
     
     //TODO
     //encrypt text with key
-    func encrypt(text: String, keyIDs: KeyWrapper) -> String {
-        return ""
+    func encrypt(text: String, keyIDs: [String]) -> NSData? {
+        var encData : NSData? = nil
+        var keys : [PGPKey] = []
+        for id in keyIDs {
+            if let key = keyManager.getKey(id) {
+                keys.append(key.key)
+            }
+            else {
+                print("PGPEncryption.encrypt: No key found for keyID "+id)
+                return nil
+            }
+        }
+        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+            encData = try? keyManager.pgp.encryptData(data, usingPublicKeys: keys, armored: true)
+        }
+        else {
+            print("PGPEncryption.encrypt: text has to be in UTF8Encoding")
+        }
+        return encData
     }
     
-    func encrypt(text: String, mailaddresses: [String]) -> String {
-        return ""
+    func encrypt(text: String, mailaddresses: [String]) -> NSData? {
+        var keyIDs : [String] = []
+        for addr in mailaddresses {
+            if let ids = keyManager.getKeyIDsForMailAddress(addr) {
+                if ids != [] {
+                    keyIDs.append(ids.last!)
+                }
+                else {
+                    print("PGPEncryption.encrypt: no keyID for mailaddress "+addr+" found")
+                    return nil
+                }
+            }
+            else {
+                print("PGPEncryption.encrypt: no keyID for mailaddress "+addr+" found")
+                return nil
+            }
+        }
+        
+        return encrypt(text, keyIDs: keyIDs)
     }
     
     //TODO
@@ -232,8 +266,8 @@ class PGPEncryption : Encryption {
         var discoveryMailUID: UInt64? = nil
         var forMailAddresses: [String]? = nil
         if let mail = discoveryMail {
-            discoveryMailUID = mail.getUID()
-            forMailAddresses = [mail.getFrom().address]
+            discoveryMailUID = mail.uid
+            forMailAddresses = [mail.from.address]
         }
         return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: discoveryMailUID)
     }
@@ -270,9 +304,20 @@ class PGPEncryption : Encryption {
         return false
     }
     
+    func hasKey(mailaddress: String) -> Bool {
+        if let ids = keyManager.getKeyIDsForMailAddress(mailaddress) {
+            return ids != []
+        }
+        return false
+    }
+    
     //TODO
     func getKeyIDs(enzContact: EnzevalosContact) -> [String]? {
         return nil
+    }
+    
+    func getKeyIDs(mailaddress: String) -> [String]?{
+        return keyManager.getKeyIDsForMailAddress(mailaddress)
     }
     
     func getKey(keyID: String) -> KeyWrapper? {
@@ -298,6 +343,18 @@ class PGPEncryption : Encryption {
     
     func addMailAddressesForKey(mailAddresses: [String], keyID: String) {
         self.keyManager.addMailAddressesForKey(mailAddresses, keyID: keyID)
+    }
+    
+    func removeMailAddressForKey(mailaddress: String, keyID: String){
+        self.removeMailAddressesForKey([mailaddress], keyID: keyID)
+    }
+    
+    func removeMailAddressesForKey(mailaddresses: [String], keyID: String){
+        self.keyManager.removeMailAddressesForKey(mailaddresses, keyID: keyID)
+    }
+    
+    func keyIDExists(keyID: String) -> Bool {
+        return self.keyManager.keyIDExists(keyID)
     }
     
     //TODO

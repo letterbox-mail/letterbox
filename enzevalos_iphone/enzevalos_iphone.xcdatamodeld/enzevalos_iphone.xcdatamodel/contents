@@ -19,6 +19,7 @@
         <attribute name="subject" attributeType="String" syncable="YES"/>
         <attribute name="trouble" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uid" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
+        <attribute name="unableToDecrypt" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="visibleBody" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
@@ -38,7 +39,7 @@
     </entity>
     <elements>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="150"/>
-        <element name="Mail" positionX="-416" positionY="-189" width="128" height="255"/>
+        <element name="Mail" positionX="-416" positionY="-189" width="128" height="270"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="105"/>
         <element name="State" positionX="-306" positionY="-27" width="128" height="90"/>
     </elements>

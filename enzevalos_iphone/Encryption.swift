@@ -55,10 +55,10 @@ public protocol Encryption {
     //encrypt mail for contact
     func encrypt(mail: Mail)
     
-    func encrypt(text: String, mailaddresses: [String]) -> String
+    func encrypt(text: String, mailaddresses: [String]) -> NSData?
     
     //encrypt text with key
-    func encrypt(text: String, keyIDs: [String]) -> String
+    func encrypt(text: String, keyIDs: [String]) -> NSData?
     
     //sign mail
     func sign(mail: Mail)
@@ -81,7 +81,12 @@ public protocol Encryption {
     //func addKey(key: KeyWrapper, forMailAddress: [String]?, callBack: ((success: Bool) -> Void)?)
     
     func hasKey(enzContact: EnzevalosContact) -> Bool
+    func hasKey(mailaddress: String) -> Bool
     func getKeyIDs(enzContact: EnzevalosContact) -> [String]?
+    func getKeyIDs(mailaddress: String) -> [String]?
+    
+    func keyIDExists(keyID: String) -> Bool
+    
     func getKey(keyID: String) -> KeyWrapper?
     
     //internaly done; update is done when a keyWrapper is manipulated
@@ -91,6 +96,8 @@ public protocol Encryption {
     func removeKey(key: KeyWrapper) //-> Bool
     
     func addMailAddressForKey(mailAddress: String, keyID: String)
+    
+    func removeMailAddressForKey(mailaddress: String, keyID: String)
     
     func keyOfThisEncryption(keyData: NSData) -> Bool?
 }
