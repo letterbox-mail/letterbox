@@ -53,10 +53,12 @@ public protocol Encryption {
     func isCorrectlySigned(text: String, key: KeyWrapper) -> Bool?
     
     //encrypt mail for contact
-    func encrypt(mail: Mail, forContact: KeyRecord?)
+    func encrypt(mail: Mail)
+    
+    func encrypt(text: String, mailaddresses: [String]) -> String
     
     //encrypt text with key
-    func encrypt(text: String, key: KeyWrapper) -> String
+    func encrypt(text: String, keyIDs: [String]) -> String
     
     //sign mail
     func sign(mail: Mail)

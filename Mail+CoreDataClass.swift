@@ -48,6 +48,8 @@ public class Mail: NSManagedObject, Comparable {
         return returnString
     }
     
+    var decryptedWithOldPrivateKey: Bool = false
+    
     func addFrom(from: Mail_Address){
         self.from = from
     }

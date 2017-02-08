@@ -84,7 +84,7 @@ class PGPEncryption : Encryption {
                 data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
                 self.keyManager.useOnlyActualPrivateKey()
                 if data != nil {
-                    mail.oldPrivateKeyUsed = true
+                    mail.decryptedWithOldPrivateKey = true
                 }
             }
             if let unwrappedData = data {
@@ -123,7 +123,7 @@ class PGPEncryption : Encryption {
                 data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
                 self.keyManager.useOnlyActualPrivateKey()
                 if data != nil {
-                    mail.oldPrivateKeyUsed = true
+                    mail.decryptedWithOldPrivateKey = true
                 }
             }
             if let unwrappedData = data {
@@ -163,13 +163,17 @@ class PGPEncryption : Encryption {
     
     //TODO
     //encrypt mail for contact
-    func encrypt(mail: Mail, forContact: KeyRecord?){
+    func encrypt(mail: Mail){
         
     }
     
     //TODO
     //encrypt text with key
-    func encrypt(text: String, key: KeyWrapper) -> String{
+    func encrypt(text: String, keyIDs: KeyWrapper) -> String {
+        return ""
+    }
+    
+    func encrypt(text: String, mailaddresses: [String]) -> String {
         return ""
     }
     
