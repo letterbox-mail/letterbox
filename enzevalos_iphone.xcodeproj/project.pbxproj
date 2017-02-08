@@ -434,9 +434,8 @@
 				F1984D711E1D327200804E1E /* IconsStyleKit.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
-				472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */,
-				472F39891E251787009260FB /* Contact.swift */,
-				472F398D1E251B8D009260FB /* MailAddress.swift */,
+				A17A18F41DDCB5580058D934 /* KeyHandler.swift */,
+				472F39871E1FA377009260FB /* KeyRecord.swift */,
 				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
 				472F398F1E252470009260FB /* CNMailAddressesExtension.swift */,
 				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
@@ -565,6 +564,8 @@
 			isa = PBXGroup;
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
+				F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */,
+				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
 				A19C12461DE602FF007F72E7 /* jabo.asc */,
 				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
 				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,

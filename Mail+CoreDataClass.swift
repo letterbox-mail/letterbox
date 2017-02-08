@@ -64,17 +64,12 @@ public class Mail: NSManagedObject, Comparable {
     
     var decryptedWithOldPrivateKey: Bool = false
     
-    func addFrom(from: Mail_Address){
-        self.from = from
-    }
-    
-    func getFrom()->Mail_Address{
-        return from
-    }
-    
-    func addReceivers(receivers: [Mail_Address]){
-        for ec in receivers{
-            self.addToTo(ec)
+    var decryptedMessage: String?{
+        get{
+            return self.body
+        }
+        set{
+            self.body = newValue
         }
     }
     
