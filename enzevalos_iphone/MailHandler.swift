@@ -301,13 +301,18 @@ class MailHandler {
                         //gute Wahl?
                         //in-line PGP
                         if body.commonPrefixWithString("-----BEGIN PGP MESSAGE-----", options: NSStringCompareOptions.CaseInsensitiveSearch) == "-----BEGIN PGP MESSAGE-----" {
+                            
                         }
                         //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
                         // TODO: Fix decryption
                         
                         let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, flags: message.flags)
                       //  mail.decryptIfPossible()
-                        /*Jakob prototypeänderung Ende*/
+                        
+                        if EnzevalosEncryptionHandler.getEncryptionTypeForMail(mail) != EncryptionType.unknown {
+                            mail.isEncrypted = true
+                            mail.decryptIfPossible()
+                        }
                         self.delegate?.addNewMail(mail)
                         
                         dispatch_group_leave(dispatchGroup)

@@ -33,7 +33,7 @@ class PGPEncryption : Encryption {
     
     //key is unused
     func isUsed(text: String, key: KeyWrapper?) -> Bool {
-        return (text.hasPrefix("-----BEGIN PGP MESSAGE-----") && text.hasSuffix("-----END PGP MESSAGE-----")) || (text.hasPrefix("-----BEGIN PGP SIGNED MESSAGE-----") && text.hasSuffix("-----END PGP SIGNATURE-----"))
+        return (text.hasPrefix("-----BEGIN PGP MESSAGE-----") && text.hasSuffix("-----END PGP MESSAGE-----\n")) || (text.hasPrefix("-----BEGIN PGP SIGNED MESSAGE-----") && text.hasSuffix("-----END PGP SIGNATURE-----\n"))
     }
     
     //check whether this encryption is used in this mail for encryption. nil is returned, if there is no answer to be made at the moment.

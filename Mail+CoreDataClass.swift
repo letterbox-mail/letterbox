@@ -150,6 +150,9 @@ public class Mail: NSManagedObject, Comparable {
  }
 */
 
+    func decryptIfPossible() {
+        
+    }
     
 
     func getSubjectWithFlagsString()-> String{
