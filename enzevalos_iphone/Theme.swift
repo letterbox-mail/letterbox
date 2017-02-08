@@ -9,7 +9,8 @@
 import UIKit
 
 let SelectedThemeKey = "security_indicator"
-var defaultColor = UIColor.groupTableViewBackgroundColor()
+//var defaultColor = UIColor.groupTableViewBackgroundColor()
+let defaultColor = ThemeManager.defaultColor
 
 enum Theme: Int{
     /*
@@ -106,5 +107,7 @@ struct ThemeManager{
         NSUserDefaults.standardUserDefaults().setValue(theme.rawValue, forKey: SelectedThemeKey)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
+    
+    static var defaultColor: UIColor = UIColor(red: 249/255, green: 249/255, blue: 249/255, alpha: 1.0)
 }
 

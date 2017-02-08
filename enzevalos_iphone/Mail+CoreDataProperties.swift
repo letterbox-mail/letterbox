@@ -20,12 +20,56 @@ extension Mail {
     @NSManaged public var visibleBody: String?
     @NSManaged public var decryptedBody: String?
     @NSManaged public var date: NSDate
-    @NSManaged public var flag: Int32
+    public var flag: MCOMessageFlag{
+        set {
+            if newValue != flag{
+                AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid, flags: newValue)
+                self.willChangeValueForKey("flag")
+                self.setPrimitiveValue(newValue.rawValue, forKey: "flag")
+                self.didChangeValueForKey("flag")
+            }
+            
+        }
+        get {
+            self.willAccessValueForKey("flag")
+            let text = MCOMessageFlag(rawValue: (self.primitiveValueForKey("flag") as? Int)!)
+            self.didAccessValueForKey("flag")
+            return text
+        }
+
+    }
     @NSManaged public var isEncrypted: Bool
+    @NSManaged public var isSigned: Bool
+    @NSManaged public var unableToDecrypt: Bool
     @NSManaged public var subject: String?
-    @NSManaged public var trouble: Bool
-    @NSManaged public var uid: NSDecimalNumber
-    @NSManaged public var isRead: Bool
+    public var trouble: Bool{
+        set {
+            self.willChangeValueForKey("trouble")
+            self.setPrimitiveValue(newValue, forKey: "trouble")
+            self.didChangeValueForKey("trouble")
+        }
+        get {
+            self.willAccessValueForKey("trouble")
+            let text = self.primitiveValueForKey("trouble") as? Bool
+            self.didAccessValueForKey("trouble")
+            return text!
+        }
+    
+    }
+    public var uid: UInt64{
+    
+        set {
+            self.willChangeValueForKey("uid")
+            self.setPrimitiveValue(NSDecimalNumber.init(unsignedLongLong: newValue), forKey: "uid")
+            self.didChangeValueForKey("uid")
+        }
+        get {
+            self.willAccessValueForKey("uid")
+            let text = (self.primitiveValueForKey("uid") as? NSDecimalNumber)?.unsignedLongLongValue
+            self.didAccessValueForKey("uid")
+            return text!
+        }
+    }
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var from: Mail_Address

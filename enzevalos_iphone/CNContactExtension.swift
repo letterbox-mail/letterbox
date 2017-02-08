@@ -27,13 +27,9 @@ extension CNContact: Contact{
             }
             name += self.familyName
         }
-        if name.characters.count == 0 {
-            if name == (self.emailAddresses.first?.label)! {
-                return name
-            }
-            else{
-                return "No Name"
-            }
+        if name.characters.count == 0 && self.emailAddresses.count > 0{
+            let adr = (self.emailAddresses.first?.value) as! String
+            return adr
         }
         return name
     }

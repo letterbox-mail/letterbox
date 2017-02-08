@@ -122,7 +122,7 @@ class AutocryptContact{
 class MailHandler {
 
     var delegate: MailHandlerDelegator?
-    var lastUID: UInt64 = DataHandler.getDataHandler().readMaxUid()
+    var lastUID: UInt64 = DataHandler.handler.maxUID
     
     var IMAPSes: MCOIMAPSession?
     
@@ -257,7 +257,6 @@ class MailHandler {
     func recieve() {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
         let folder = "INBOX"
-        print("LastUID: \(lastUID)")
         let uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
         let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = EXTRAHEADERS
@@ -309,20 +308,14 @@ class MailHandler {
                             }
                         }
                         
-                        var enc = false
-                        let ver = false
-                        let troub = false
-                        let decBody : String? = nil
-                        
                         //gute Wahl?
                         //in-line PGP
                         if body.commonPrefixWithString("-----BEGIN PGP MESSAGE-----", options: NSStringCompareOptions.CaseInsensitiveSearch) == "-----BEGIN PGP MESSAGE-----" {
-                            enc = true
                         }
                         //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
                         // TODO: Fix decryption
                         
-                        let mail = DataHandler.getDataHandler().createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, decryptedBody: decBody, isEncrypted: enc, isVerified: ver, trouble: troub, flags: message.flags)
+                        let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject, body: body, flags: message.flags)
                       //  mail.decryptIfPossible()
                         /*Jakob prototypeänderung Ende*/
                         self.delegate?.addNewMail(mail)
@@ -345,8 +338,6 @@ class MailHandler {
         op.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
-            } else {
-                print("Succsessfully updated flags!")
             }
         }
     }

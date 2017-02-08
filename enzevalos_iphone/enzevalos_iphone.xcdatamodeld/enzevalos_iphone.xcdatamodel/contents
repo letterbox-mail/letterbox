@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G1217" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
-        <attribute name="cncontact" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
         <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Mail" syncable="YES"/>
@@ -15,7 +15,7 @@
         <attribute name="decryptedBody" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flag" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isSigned" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="subject" attributeType="String" syncable="YES"/>
         <attribute name="trouble" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uid" attributeType="Decimal" defaultValueString="0" syncable="YES"/>

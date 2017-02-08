@@ -32,7 +32,7 @@ class ReadViewController : UITableViewController {
     let troubleColor = ThemeManager.troubleMessageColor()
     let encryptColor = ThemeManager.encryptedMessageColor()
     let uncryptColor = ThemeManager.uncryptedMessageColor()
-    let defaultColor = UIColor.groupTableViewBackgroundColor() // UIColor(red: 242/255, green: 242/255, blue: 246/255, alpha: 1.0)
+//    let defaultColor = UIColor.groupTableViewBackgroundColor() // UIColor(red: 242/255, green: 242/255, blue: 246/255, alpha: 1.0)
 
     
     
@@ -54,7 +54,7 @@ class ReadViewController : UITableViewController {
         if let m = mail {
             if m.trouble {
                 self.navigationController?.navigationBar.barTintColor = self.troubleColor
-            } else if m.isEncrypted {
+            } else if m.isSecure {
                 self.navigationController?.navigationBar.barTintColor = self.encryptColor
             } else {
                 self.navigationController?.navigationBar.barTintColor = self.uncryptColor
@@ -66,7 +66,7 @@ class ReadViewController : UITableViewController {
         super.willMoveToParentViewController(parent)
         
         if parent == nil {
-            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = self.defaultColor})
+            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor})
         }
     }
     
@@ -152,7 +152,7 @@ class ReadViewController : UITableViewController {
     }
     
     @IBAction func markUnreadButton(sender: AnyObject) {
-        DataHandler.getDataHandler().readMail(mail!)
+        mail?.isRead = false
         navigationController?.popViewControllerAnimated(true)
     }
     
@@ -165,17 +165,17 @@ class ReadViewController : UITableViewController {
             let alert: UIAlertController
             let url: String
             if m.trouble {
-                alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: NSLocalizedString("ReceiveDamagedInfo", comment: "Modefied email infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/corrupted"
-            } else if m.isEncrypted {
-                alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+            } else if m.isSecure {
+                alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/letter"
             } else {
-                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/postcard"
             }
             alert.addAction(UIAlertAction(title: "Mehr Informationen", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
             dispatch_async(dispatch_get_main_queue(), {
                 self.presentViewController(alert, animated: true, completion: nil)
             })
@@ -191,21 +191,24 @@ class ReadViewController : UITableViewController {
                 if let viewControllers = self.navigationController?.viewControllers {
                     for viewController in viewControllers {
                         if viewController.isKindOfClass(ReadViewController) {
-                            DataHandler.getDataHandler().markMailAsUnread(m) // TODO: check here
+                            m.isRead = true
+                            
                         }
                     }
                 }
             }
             
-            sender.text = m.getFromAddress()
+            sender.text = m.from.address
              //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
-            if m.getReceivers().count == 1 && m.getCCs().count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
+            if m.getReceivers().count == 1 && m.cc?.count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
                 receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
-                for c in m.getCCs(){
-                    receivers.text?.appendContentsOf(c.address)
-                    receivers.text?.appendContentsOf(" ")
+                if let cc = m.cc {
+                    for c in cc {
+                        receivers.text?.appendContentsOf(c.address)
+                        receivers.text?.appendContentsOf(" ")
+                    }
                 }
-            } else {
+            } else {  //TODO: Fix all this by replacing it with VENTokenField
                 receivers.text = NSLocalizedString("To", comment: "To label") + ": "
                 for r in m.getReceivers() {
                     receivers.text?.appendContentsOf(r.address)
@@ -244,10 +247,11 @@ class ReadViewController : UITableViewController {
                 //}
                 
                 //print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
-                messageBody.text = m.getDecryptedMessage()
-                print(m.getDecryptedMessage())
-                if KeyHandler.getHandler().addrHasKey((m.getFromAddress())) {
-                    let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.getFromAddress()))?.key
+                messageBody.text = m.decryptedMessage
+                print(m.decryptedMessage)
+               // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
+                if m.from.hasKey{
+                    let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.from.address))?.key
                     print(signatureKey)
                 }
             
@@ -257,19 +261,15 @@ class ReadViewController : UITableViewController {
             }
             // NavigationBar Icon
             let iconView = UIImageView()
-//            let iconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 38))
             iconView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
             iconView.contentMode = .ScaleAspectFit
             var icon: UIImage
             if m.trouble {
                 icon = IconsStyleKit.imageOfLetterCorrupted
-//                icon = UIImage(named: "letter_corrupted")!
-            } else if m.isEncrypted {
+            } else if m.isSecure {
                 icon = IconsStyleKit.imageOfLetterOpen
-//                icon = UIImage(named: "letter_open")!
             } else {
                 icon = IconsStyleKit.imageOfPostcard
-//                icon = UIImage(named: "postcard")!
             }
             iconView.image = icon
             iconButton.setImage(icon, forState: UIControlState.Normal)
@@ -277,8 +277,9 @@ class ReadViewController : UITableViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "answerTo"{
-            let controller = segue.destinationViewController as? SendViewController
+        if segue.identifier == "answerTo" {
+            let navigationController = segue.destinationViewController as? UINavigationController
+            let controller = navigationController?.topViewController as? SendViewController
             if controller != nil {
                 controller?.answerTo = mail
             }

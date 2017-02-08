@@ -11,7 +11,7 @@ import Contacts
 import UIKit
 
 
-public protocol Contact { // TODO: Comparable??
+public protocol Contact {
     var name: String{get}
     var cnContact: CNContact? {get}
     func getMailAddresses()-> [MailAddress]
@@ -24,7 +24,6 @@ extension Contact{
         if name.characters.count > 0 {
             tag = String(name.characters.first!)
         }
-        
         
         text = NSAttributedString(string: tag.capitalizedString, attributes: [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(32.2)])
         
@@ -77,7 +76,7 @@ extension Contact{
         let prim: Int
         prim = 653
         
-        let hash = (abs(self.name.hash)) % prim //TODO Why is mail Addresses?
+        let hash = (abs(self.name.hash)) % prim
         return UIColor(hue: CGFloat(hash) / CGFloat(prim), saturation: 1, brightness: 0.75, alpha: 1)
     }
 }

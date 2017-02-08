@@ -17,7 +17,7 @@ class InitViewController : UIViewController {
     }
     
     func getDefaultSettings(){
-        let manager = MCOMailProvidersManager.init() //sharedManager()
+        let manager = MCOMailProvidersManager.sharedManager()//.init() //sharedManager()
         print(manager)
         let path = NSBundle.mainBundle().pathForResource("providers", ofType: "json")
         print(path)
@@ -26,6 +26,10 @@ class InitViewController : UIViewController {
         print(manager.providerForEmail("alice2005@aol.com") == nil)
         print(manager.providerForEmail("aol.com") == nil)
         print(manager.providerForMX("imap.aol.com") == nil)
+        print(manager.providerForMX("web") == nil)
+        print(manager.providerForMX("web.de") == nil)
+        print(manager.providerForIdentifier("web") == nil)
+        print(manager.providerForIdentifier("web.de") == nil)
         print(manager.providerForIdentifier("alice2005@aol.com") == nil)
         print(manager.providerForIdentifier("aol") == nil)
         print(manager.providerForIdentifier("aol.com") == nil)

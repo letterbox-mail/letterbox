@@ -35,6 +35,7 @@
 "Re" = "AW";
 "Receive" = "Empfangen";
 "ReceiveError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
+"ReceiveDamagedInfo" = "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.";
 "ReceiveSecureInfo" = "Diese Nachricht war ordnungsgemäß verschlossen. Sie kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt";
 "ReceiveInsecureInfo" = "Diese Nachricht wurde unverschlüsselt gesendet und konnte somit von Allen am Weg mitgelesen werden. Auch kann die Identität des Absenders nicht bestätigt werden.";
 "Refresh" = "Erneut laden";
@@ -67,3 +68,12 @@
 "Verified" = "Kontakt ist verifiziert";
 "verifyNow" = "Jetzt verifizieren";
 "invite" = "Kontakt einladen Verschlüsselung zu nutzen";
+"discard" = "Nachricht verwerfen?";
+"discardText" = "Die eingegebenen Informationen werden nicht gespeichert.";
+"discardButton" = "Verwerfen";
+"allMessages" = "Alle verknüpften Nachrichten";
+"otherKeys" = "Andere Schlüssel dieses Kontakts";
+"connectedAddresses" = "Verknüpfte E-Mail-Adressen";
+"CC" = "An/CC";
+"All" = "Alles";
+"Body" = "Nachricht";

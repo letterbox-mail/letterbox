@@ -18,22 +18,29 @@ public class KeyRecord: Record{
      */
     
     
-    private let contact: EnzevalosContact
     let key: KeyWrapper?
+    
+    public var addresses: [MailAddress] = [MailAddress]()
     
     public var name: String{
         get{
-            return contact.getName()
+            return ezContact.name
         }
     }
-    public var isSecure: Bool
+    public var hasKey: Bool {
+        return key != nil
+    }
     
-    public var isVerified: Bool
+    public var isVerified: Bool {
+        return false
+    }
     
-    var mails: [Mail]
+    
+    public var mails: [Mail] = [Mail]()
     
     
-    
+    public var ezContact: EnzevalosContact
+       
     
     public init(contact: EnzevalosContact, key: KeyWrapper?){
         self.contact = contact
@@ -43,23 +50,29 @@ public class KeyRecord: Record{
             self.isSecure = true
             self.isVerified = key!.verified
         }
-        else{
-            self.isSecure = false
-            self.isVerified = false
+    }
+    
+    public var image: UIImage{
+        get{
+            return ezContact.getImageOrDefault()
         }
     }
     
+    
+    public init(contact: EnzevalosContact, key: KeyWrapper?){
+        self.key = key
+        self.ezContact = contact
+
+        self.ezContact.records.append(self)
+
+    }
+    
     public init(mail: Mail){
-        
-        //TODO: Create Record in datahandler!
-        self.contact = mail.getFrom().contact
-        self.mails = [Mail] ()
         //TODO: KEY?????
-        key = nil
-        self.isSecure = mail.isEncrypted
-        self.isVerified = false //TODO FIX
-        
-        self.updateMails(mail)
+        self.key = nil
+        self.ezContact = mail.from.contact
+        self.ezContact.records.append(self)
+        self.addNewMail(mail)
     }
     
     
@@ -67,56 +80,55 @@ public class KeyRecord: Record{
     
     public func showInfos(){
         print("-----------------")
-        print("Name: \(contact.displayname) | State: \(isSecure) | #Mails: \(mails.count)")
-        print("First mail: \(mails.first?.getUID()) | Adr: \(mails.first?.getFrom().address) | date: \(mails.first?.date.description) ")
+        print("Name: \(ezContact.displayname) | State: \(hasKey) | #Mails: \(mails.count)")
+        print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.from.address) | date: \(mails.first?.date.description) ")
         print("subj: \(mails.first?.subject?.capitalizedString)")
     
     }
-    
-    public func getContact()->EnzevalosContact{
-        return contact
+
+    public func addNewAddress(adr: MailAddress) -> Bool {
+        for a in addresses {
+            if a.mailAddress == adr.mailAddress {
+                return false
+            }
+        }
+        addresses.append(adr)
+        return true
     }
     
-    public func getCNContact() -> CNContact? {
-        return contact.getContact()
-    }
-    
-    public func getFromMails()->[Mail]{
-        return mails
-    }
-    public func updateMails(mail: Mail)->Bool{
-        if mail.isEncrypted == self.isSecure{
-            if getContact().getAddress(mail.getFrom().address) != nil{
-                for m in mails{
-                  if m.uid.compare(mail.uid) == NSComparisonResult.OrderedSame{
-                       return true
-                  }
-                  else if m.uid.compare(mail.uid) == NSComparisonResult.OrderedAscending {
-                    break
+    public func addNewMail(mail: Mail)->Bool {
+        if mail.isEncrypted == self.hasKey { //TODO: FIX ME!
+            if ezContact.getAddress(mail.from.address) != nil {
+                for m in mails {
+                    if m.uid == mail.uid {
+                        return true
+                    }
+                    else if m.uid < mail.uid {
+                        break
                     }
                 }
                 mails.append(mail)
                 mails.sortInPlace()
+                addNewAddress(mail.from)
                 return true
             }
         }
         return false
-
     }
     
     public func getImageOrDefault() -> UIImage {
-        return contact.getImageOrDefault()
+        return ezContact.getImageOrDefault()
     }
     
     public func getColor() -> UIColor {
-        return contact.getColor()
+        return ezContact.getColor()
     }
 }
 
 
 
 private func isEmpty(contact: KeyRecord)-> Bool{
-    if(contact.getFromMails().count == 0){
+    if(contact.mails.count == 0){
         return true
     }
     return false
@@ -132,7 +144,7 @@ public func ==(lhs: KeyRecord, rhs: KeyRecord) -> Bool {
         return false
     }
     
-    return lhs.getFromMails().first!.date == rhs.getFromMails().first!.date
+    return lhs.mails.first!.date == rhs.mails.first!.date
 }
 
 public func <(lhs: KeyRecord, rhs: KeyRecord) -> Bool {
@@ -142,5 +154,5 @@ public func <(lhs: KeyRecord, rhs: KeyRecord) -> Bool {
     if isEmpty(rhs){
         return false
     }
-    return lhs.getFromMails().first!.date > rhs.getFromMails().first!.date
+    return lhs.mails.first!.date > rhs.mails.first!.date
 }

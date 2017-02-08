@@ -9,7 +9,7 @@
 import Foundation
 import Contacts
 
-public protocol MailAddress { // TODO: Comparable??
+public protocol MailAddress { 
     var mailAddress:String{get}
     var label: CNLabeledValue{get}
     var prefEnc: Bool{get}

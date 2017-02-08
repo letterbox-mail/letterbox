@@ -17,8 +17,8 @@ extension EnzevalosContact {
     }
 
     @NSManaged public var displayname: String?
-    @NSManaged public var cncontact: String?
-    @NSManaged public var from: NSSet?
+    @NSManaged public var cnidentifier: String?
+    @NSManaged public var from: NSOrderedSet?
     @NSManaged public var to: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var bcc: NSSet?
@@ -63,17 +63,17 @@ extension EnzevalosContact {
 // MARK: Generated accessors for cc
 extension EnzevalosContact {
     
-    @objc(addCCObject:)
-    @NSManaged public func addToCC(value: Mail)
+    @objc(addCcObject:)
+    @NSManaged public func addToCc(value: Mail)
     
-    @objc(removeCCObject:)
-    @NSManaged public func removeFromCC(value: Mail)
+    @objc(removeCcObject:)
+    @NSManaged public func removeFromCc(value: Mail)
     
-    @objc(addCC:)
-    @NSManaged public func addToCC(values: NSSet)
+    @objc(addCc:)
+    @NSManaged public func addToCc(values: NSSet)
     
-    @objc(removeCC:)
-    @NSManaged public func removeFromCC(values: NSSet)
+    @objc(removeCc:)
+    @NSManaged public func removeFromCc(values: NSSet)
     
 }
 

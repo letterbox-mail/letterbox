@@ -40,7 +40,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     
     func addNewMail(mail: Mail) { // Records durchgehen. Einsortieren.
         for c in contacts {
-            if c.updateMails(mail){
+            if c.addNewMail(mail){
                 return
             }
         }
@@ -57,6 +57,8 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
+        
         tableView.sectionHeaderHeight = 1
         tableView.sectionFooterHeight = 0
         
@@ -70,9 +72,11 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
         lastUpdateLabel.textColor = UIColor.blackColor()
         lastUpdateButton.customView = lastUpdateLabel
         
-        // contacts = DataHandler.getDataHandler().getContacts() TODO: Load and store Records
-        contacts = DataHandler.getDataHandler().getRecords()
-        
+        contacts = DataHandler.handler.getRecords()
+
+       // DataHandler.getDataHandler().terminate() //TODO Remove
+       // contacts = DataHandler.getDataHandler().getRecords()
+
         AppDelegate.getAppDelegate().mailHandler.delegate = self
         
         dateFormatter.locale = NSLocale.currentLocale()
@@ -98,6 +102,7 @@ class InboxViewController : UITableViewController, InboxCellDelegator, MailHandl
     
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
+        contacts = DataHandler.handler.getRecords()
         if lastUpdate == nil || NSDate().timeIntervalSinceDate(lastUpdate!) > 30 {
             self.refreshControl?.beginRefreshingManually()
         }

@@ -26,10 +26,12 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var seperator: NSLayoutConstraint!
     @IBOutlet weak var seperator2: NSLayoutConstraint!
+    @IBOutlet weak var contactButton: UIButton!
     
     @IBAction func firstButtonPressed(sender: AnyObject) {
         if let delegate = delegate where firstMail != nil {
             firstButton.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
+            print("Open mail \(firstMail?.subject) | read status: \(firstMail?.isRead)")
             delegate.callSegueFromCell(firstMail)
         }
     }
@@ -55,6 +57,13 @@ class InboxTableViewCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        // prevent two buttons being pressed at the same time
+        firstButton.exclusiveTouch = true
+        secondButton.exclusiveTouch = true
+        moreButton.exclusiveTouch = true
+        contactButton.exclusiveTouch = true
+        
         firstButton.backgroundColor = UIColor.clearColor()
         secondButton.backgroundColor = UIColor.clearColor()
         firstButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
@@ -68,9 +77,9 @@ class InboxTableViewCell: UITableViewCell {
     var enzContact: KeyRecord? {
         didSet {
             if let con = enzContact {
-                firstMail = con.getFromMails().first
-                if con.getFromMails().count > 1 {
-                    secondMail = con.getFromMails()[1]
+                firstMail = con.mails.first
+                if con.mails.count > 1 {
+                    secondMail = con.mails[1]
                     secondButton.enabled = true
                 } else {
                     secondDateLabel.text = ""
@@ -78,15 +87,15 @@ class InboxTableViewCell: UITableViewCell {
                     secondMessageLabel.text = NSLocalizedString("NoFurtherMessages", comment: "There is only one message from this sender.")
                     secondButton.enabled = false
                 }
-                if con.isSecure {
-                    iconView.image = IconsStyleKit.imageOfLetter
+                if con.hasKey {
+                    iconView.image = IconsStyleKit.imageOfLetterBG
 //                    iconView.image = UIImage(named: "letter_small_2")!
                 } else {
-                    iconView.image = IconsStyleKit.imageOfPostcard
+                    iconView.image = IconsStyleKit.imageOfPostcardBG
 //                    iconView.image = UIImage(named: "postcard_small")!
                 }
 
-                self.contact = con.getContact().getContact()
+                self.contact = con.cnContact
                 nameLabel.text = con.name
                 faceView.image = con.getImageOrDefault()
                 faceView.layer.cornerRadius = faceView.frame.height / 2
@@ -98,7 +107,7 @@ class InboxTableViewCell: UITableViewCell {
     var firstMail: Mail? {
         didSet {
             if let mail = firstMail {
-                if mail.isUnread() {
+                if !mail.isRead {
                     firstSubjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
                 } else {
                     firstSubjectLabel.font = UIFont.systemFontOfSize(17.0)
@@ -113,7 +122,7 @@ class InboxTableViewCell: UITableViewCell {
                         mail.decryptIfPossible()
                     }*/
                     if mail.isEncrypted {
-                        message = mail.getDecryptedMessage()
+                        message = mail.decryptedMessage!
                     }
                 }
                 else if mail.body == nil {
@@ -133,7 +142,7 @@ class InboxTableViewCell: UITableViewCell {
     var secondMail: Mail? {
         didSet {
             if let mail = secondMail {
-                if mail.isUnread() {
+                if !mail.isRead {
                     secondSubjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
                 } else {
                     secondSubjectLabel.font = UIFont.systemFontOfSize(17.0)
@@ -155,7 +164,7 @@ class InboxTableViewCell: UITableViewCell {
                     }*/
                     
                     if !mail.trouble{
-                        message = mail.getDecryptedMessage()
+                        message = mail.decryptedMessage!
                     }
                 }
                 else if mail.body != nil {
@@ -184,7 +193,7 @@ class InboxTableViewCell: UITableViewCell {
     
     func clearCell(sender: AnyObject) {
         if let button = sender as? UIButton {
-            button.backgroundColor = UIColor.clearColor()
+            UIView.animateWithDuration(0.5, animations: {button.backgroundColor = UIColor.clearColor()})
         }
     }
 }

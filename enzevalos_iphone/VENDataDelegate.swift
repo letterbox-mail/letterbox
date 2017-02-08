@@ -10,16 +10,23 @@ import VENTokenField
 
 class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegate {
     
-    var changeFunc : (VENTokenField -> Void) = {(_ : VENTokenField) -> Void in
+    var changeFunc: (VENTokenField -> Void) = {(_ : VENTokenField) -> Void in
         //print ("hallo")
     }
+    
+    var tappedWhenSelectedFunc: (String -> Void)? = nil
+    
+    //Used later to show enzevalos-Contacts
+    //Have a look at tokenField(... didTappedTokenTwice ...)
+    //var doubleTapFunc
     
     override init() {
         super.init()
     }
     
-    init(changeFunc: (VENTokenField -> Void)){
+    init(changeFunc: (VENTokenField -> Void), tappedWhenSelectedFunc: (String -> Void)?){
         self.changeFunc = changeFunc
+        self.tappedWhenSelectedFunc = tappedWhenSelectedFunc
         super.init()
     }
     
@@ -105,7 +112,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
                 tokenField(tokenF, didEnterText: last)
             }
         }
-        
     }
     
     /*func tokenStrings(tokenField: VENTokenField) -> [String]{
@@ -118,5 +124,11 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
             secure = secure && EnzevalosEncryptionHandler.hasKey(DataHandler.getDataHandler().getContactByAddress(entry as! String)) //KeyHandler.getHandler().addrHasKey(entry as! String)//AddressHandler.proveAddress(entry as! NSString)
         }
         return secure
+    }
+    
+    func tokenField(tokenField: VENTokenField, didTappedTokenTwice index: UInt){
+        if let fun = tappedWhenSelectedFunc {
+            fun(tokenField.mailTokens[Int(index)] as! String)
+        }
     }
 }
