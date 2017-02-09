@@ -144,6 +144,7 @@ class DataHandler: NSObject {
     // Save, load, search
     
     private func find(entityName: String, type:String, search: String) -> [AnyObject]?{
+      //  print("Start find: \(entityName) for \(type) \(search)")
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         fReq.predicate = NSPredicate(format:"\(type) CONTAINS '\(search)' ")
         let result: [AnyObject]?
@@ -153,8 +154,24 @@ class DataHandler: NSObject {
             result = nil
             return nil
         }
+       // print("### finish find #####")
         return result
     }
+    
+    private func findNum (entityName: String, type:String, search: UInt64) -> [AnyObject]?{
+      //  print("Start find: \(entityName) for \(type) \(search)")
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
+        fReq.predicate = NSPredicate(format:"\(type) = %D ",search)
+        let result: [AnyObject]?
+        do {
+            result = try self.managedObjectContext.executeFetchRequest(fReq)
+        } catch _ as NSError{
+            result = nil
+            return nil
+        }
+        return result
+    }
+
     
     private func findAll(entityName:String)->[AnyObject]?{
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
@@ -310,7 +327,7 @@ class DataHandler: NSObject {
 
     func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag)-> Mail{
         
-        let finding = find("Mail", type: "uid", search: String(uid))
+        let finding = findNum("Mail", type: "uid", search: uid)
         let mail: Mail
         
         
@@ -385,6 +402,7 @@ class DataHandler: NSObject {
                 }
             }
         }
+        print("All contacts: \(contacts.count)")
         return contacts
     }
     
