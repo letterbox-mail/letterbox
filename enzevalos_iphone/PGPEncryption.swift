@@ -47,7 +47,7 @@ class PGPEncryption : Encryption {
     //check whether this encryption is used in this text for encryption. the key is not known to be used. nil is returned, if there is no answer to be made at the moment.
     //key unused
     func isUsedForEncryption(text: String, key: KeyWrapper?) -> Bool?{
-        return text.hasPrefix("-----BEGIN PGP MESSAGE-----") && text.hasSuffix("-----END PGP MESSAGE-----")
+        return text.hasPrefix("-----BEGIN PGP MESSAGE-----") && text.hasSuffix("-----END PGP MESSAGE-----\n")
     }
     
     //check whether this encryption is used in this mail for signing. nil is returned, if there is no answer to be made at the moment.
@@ -67,7 +67,7 @@ class PGPEncryption : Encryption {
     //key unused
     func isUsedForSignature(text: String, key: KeyWrapper?) -> Bool? {
         if !isUsedForEncryption(text, key: nil)! {
-            return text.hasPrefix("-----BEGIN PGP SIGNED MESSAGE-----") && text.hasSuffix("-----END PGP SIGNATURE-----")
+            return text.hasPrefix("-----BEGIN PGP SIGNED MESSAGE-----") && text.hasSuffix("-----END PGP SIGNATURE-----\n")
         }
         return nil
     }
@@ -116,11 +116,14 @@ class PGPEncryption : Encryption {
     func decryptAndSignatureCheck(mail: Mail) {
         if self.isUsed(mail) {
             let bodyData = mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!
-            var data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
+            var data: NSData?
+            data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
+            print("hallo")
             if data == nil {
                 self.keyManager.useAllPrivateKeys()
                 //TODO add oldKeyUsed attribute in Mail object
-                data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
+                data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
+                //data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
                 self.keyManager.useOnlyActualPrivateKey()
                 if data != nil {
                     mail.decryptedWithOldPrivateKey = true
@@ -128,6 +131,9 @@ class PGPEncryption : Encryption {
             }
             if let unwrappedData = data {
                 mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
+            }
+            else {
+                mail.unableToDecrypt = true
             }
         }
     }

@@ -337,7 +337,7 @@ class DataHandler: NSObject {
             mail.isSigned = false
             mail.isEncrypted = false
             mail.trouble = false
-            mail.unableToDecrypt = true
+            mail.unableToDecrypt = false
 
         }
         else{
