@@ -218,10 +218,10 @@ class ReadViewController : UITableViewController {
             receivedTime.text = m.timeString
             
             if let subj = m.subject {
-                if subj != "" && subj != " " {
+                if subj.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).characters.count > 0 {
                     subject.text = subj
                 } else {
-                    subject.text = "(Kein Betreff)"
+                    subject.text = NSLocalizedString("SubjectNo", comment: "This mail has no subject")
                 }
             }
             
