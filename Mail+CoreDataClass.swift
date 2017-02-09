@@ -150,8 +150,24 @@ public class Mail: NSManagedObject, Comparable {
  }
 */
 
+    //decrypt and/or check signature
     func decryptIfPossible() {
-        
+        let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
+        if let encryption = EnzevalosEncryptionHandler.getEncryption(encType) {
+            if encryption.isUsedForEncryption(self) == true {
+                self.isEncrypted = true
+                //decrypt
+                encryption.decryptAndSignatureCheck(self)
+            }
+            if encryption.isUsedForSignature(self) == true {
+                //TODO
+                //check signature
+                if let correctSignature = encryption.isCorrectlySigned(self) {
+                    self.isSigned = true
+                }
+            }
+            
+        }
     }
     
 
