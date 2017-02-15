@@ -12,8 +12,6 @@ import CoreData
 import UIKit
 import Contacts
 
-
-
 @objc(EnzevalosContact)
 public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     
@@ -36,7 +34,6 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
                 }
             }
             return false
-            
         }
     }
     

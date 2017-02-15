@@ -31,7 +31,9 @@ enum Theme: Int{
                 return defaultColor
         default:
             // orange
-            return UIColor(red: 247/255, green: 185/255, blue: 0/255, alpha: 1.0)
+//            return UIColor(red: 247/255, green: 185/255, blue: 0/255, alpha: 1.0)
+            return UIColor(red: 255/255, green: 204/255, blue: 0/255, alpha: 1.0)
+
         }
     }
     
@@ -43,7 +45,8 @@ enum Theme: Int{
             return defaultColor
         default:
             // green
-            return UIColor(red: 115/255, green: 229/255, blue: 105/255, alpha: 1.0)
+//            return UIColor(red: 115/255, green: 229/255, blue: 105/255, alpha: 1.0)
+            return UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1.0)
         }
     }
     
@@ -55,7 +58,7 @@ enum Theme: Int{
             return defaultColor
         default:
             // green
-            return UIColor(red: 115/255, green: 229/255, blue: 105/255, alpha: 1.0)
+            return UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1.0)
         }
     }
     
@@ -67,7 +70,8 @@ enum Theme: Int{
             return defaultColor
         default:
             // red
-            return UIColor(red: 255/255, green: 99/255, blue: 99/255, alpha: 1.0)
+//            return UIColor(red: 255/255, green: 99/255, blue: 99/255, alpha: 1.0)
+            return UIColor(red: 255/255, green: 59/255, blue: 48/255, alpha: 1.0)
             
         }
     }
