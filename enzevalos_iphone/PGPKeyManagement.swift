@@ -22,7 +22,7 @@ class PGPKeyManagement {
         //get or create keyIDs
         var data = self.encryptionHandler.getPersistentData("keyIDs", encryptionType: self.encryptionType)
         if let unwrappedData = data {
-            self.keyIDs = NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as! [String: [String]]
+            self.keyIDs = (NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as! NSDictionary) as! [String: [String]]
         }
         else {
             data = NSKeyedArchiver.archivedDataWithRootObject(keyIDs)
@@ -30,7 +30,7 @@ class PGPKeyManagement {
         }
         data = self.encryptionHandler.getPersistentData("addresses", encryptionType: self.encryptionType)
         if let unwrappedData = data {
-            self.addresses = NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as! [String: [String]]
+            self.addresses = (NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as! NSDictionary) as! [String: [String]]
         }
         else {
             data = NSKeyedArchiver.archivedDataWithRootObject(addresses)
@@ -86,6 +86,7 @@ class PGPKeyManagement {
         key.setOnceKeyID(keyID)
         
         let data = NSKeyedArchiver.archivedDataWithRootObject(key)
+        //key-ID should be created once
         encryptionHandler.addPersistentData(data, searchKey: key.keyID, encryptionType: self.encryptionType)
         
         addMailAddressesForKey(forMailAddresses, keyID: keyID)
@@ -214,9 +215,9 @@ class PGPKeyManagement {
     }
     
     private func saveDictionarys(){
-        var data = NSKeyedArchiver.archivedDataWithRootObject(keyIDs)
+        var data = NSKeyedArchiver.archivedDataWithRootObject(keyIDs as NSDictionary)
         encryptionHandler.replacePersistentData("keyIDs", replacementData: data, encryptionType: self.encryptionType)
-        data = NSKeyedArchiver.archivedDataWithRootObject(addresses)
+        data = NSKeyedArchiver.archivedDataWithRootObject(addresses as NSDictionary)
         encryptionHandler.replacePersistentData("addresses", replacementData: data, encryptionType: self.encryptionType)
     }
     

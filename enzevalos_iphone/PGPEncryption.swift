@@ -24,6 +24,10 @@ class PGPEncryption : Encryption {
         self.keyManager = PGPKeyManagement(encryptionHandler: self.encryptionHandler)
     }
     
+    func getPGPKeyManagement() -> PGPKeyManagement {
+        return keyManager
+    }
+    
     func isUsed(mail: Mail) -> Bool {
         if let plain = mail.body {
             return isUsed(plain, key: nil)

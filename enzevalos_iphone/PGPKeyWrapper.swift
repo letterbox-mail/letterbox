@@ -112,7 +112,8 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
     }
     
     required public init(coder: NSCoder){
-        keyManager = coder.decodeObjectForKey("keyManager") as! PGPKeyManagement
+        let enc : PGPEncryption = EnzevalosEncryptionHandler.getEncryption(self.type)! as! PGPEncryption
+        keyManager = (enc as PGPEncryption).getPGPKeyManagement()//coder.decodeObjectForKey("keyManager") as! PGPKeyManagement
         key = keyManager.pgp.keysFromData(coder.decodeObjectForKey("key") as! NSData)![0]
         revoked = coder.decodeBoolForKey("revoked")
         revokeTime = coder.decodeObjectForKey("revokeTime") as! NSDate?
@@ -147,7 +148,6 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
         }
         coder.encodeObject(keyID, forKey: "keyID")
         coder.encodeObject(discoveryTime, forKey: "discoveryTime")
-        coder.encodeObject(keyManager, forKey: "keyManager")
     }
     
 }
