@@ -391,24 +391,44 @@ class DataHandler: NSObject {
     }
     
     func getRecords() -> [KeyRecord] {
+        print("get Records")
         var records = [KeyRecord]()
         let mails = readMails()
         for m in mails {
+            
             var found = false
+            var usedRecord: KeyRecord? = nil
             for r in records {
                 if r.addNewMail(m) {
                     found = true
+                    usedRecord = r
                     break
                 }
             }
             if !found {
-                records.append(KeyRecord(mail: m))
+                usedRecord = KeyRecord(mail: m)
+                records.append(usedRecord!)
+               // print("Add record: \(records.last?.ezContact.name) for mail: \(m.from.address) is secure: \(m.isEncrypted)" )
+            }
+            if m.isEncrypted {
+                print("Encrypted mail matches to: \(m.from.address)! equal signed mails: \(usedRecord!.mails.count)")
             }
         }
         
         for r in records {
             r.mails.sortInPlace()
         }
+        var empty = 0
+        for r in records{
+            if r.mails.count == 0{
+                print ("Empty Record: \(r.ezContact.name)")
+                empty = empty + 1
+                
+            }
+        }
+        
+        print ("Empty records: \(empty)")
+        
         
         records.sortInPlace()
         return records
