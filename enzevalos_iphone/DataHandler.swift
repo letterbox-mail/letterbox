@@ -394,16 +394,22 @@ class DataHandler: NSObject {
         var records = [KeyRecord]()
         let mails = readMails()
         for m in mails {
+            
             var found = false
+            var usedRecord: KeyRecord? = nil
             for r in records {
                 if r.addNewMail(m) {
                     found = true
+                    usedRecord = r
                     break
                 }
             }
             if !found {
-                records.append(KeyRecord(mail: m))
+                usedRecord = KeyRecord(mail: m)
+                records.append(usedRecord!)
+               
             }
+    
         }
         
         for r in records {

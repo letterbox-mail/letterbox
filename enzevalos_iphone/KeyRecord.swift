@@ -17,8 +17,7 @@ public class KeyRecord: Record{
      Each mail is signed with the key or unsigned. The contact contains the ''from-'' mail-addresses of signed mails (or unsigned).
      */
     
-    
-    let key: KeyWrapper?
+    let key: String?
     
     public var addresses: [MailAddress] = [MailAddress]()
     
@@ -33,7 +32,10 @@ public class KeyRecord: Record{
     
     public var isVerified: Bool {
         if let key = self.key{
-            return key.verified
+            if let keywrapper = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)?.getKey(key){
+                return keywrapper.verified
+            }
+        
         }
         return false
     }
@@ -50,7 +52,7 @@ public class KeyRecord: Record{
         }
     }
     
-    public init(contact: EnzevalosContact, key: KeyWrapper?){
+    public init(contact: EnzevalosContact, key: String?){
         self.ezContact = contact
         self.key = key
         self.mails = [Mail] ()
@@ -69,8 +71,7 @@ public class KeyRecord: Record{
   
     
     public init(mail: Mail){
-        //TODO: KEY?????
-        self.key = nil
+        self.key = mail.from.keyID
         self.ezContact = mail.from.contact
         self.ezContact.records.append(self)
         self.addNewMail(mail)
@@ -98,21 +99,33 @@ public class KeyRecord: Record{
     }
     
     public func addNewMail(mail: Mail)->Bool {
-        if mail.isEncrypted == self.hasKey { //TODO: FIX ME!
-            if ezContact.getAddress(mail.from.address) != nil {
-                for m in mails {
-                    if m.uid == mail.uid {
-                        return true
-                    }
-                    else if m.uid < mail.uid {
-                        break
-                    }
-                }
+        //TODO: signed only mails are dropped ??
+        if mail.isSecure && self.hasKey{
+            if mail.from.keyID == self.key{
                 mails.append(mail)
                 mails.sortInPlace()
                 addNewAddress(mail.from)
                 return true
             }
+            return false
+            
+        }
+        else if mail.isSecure && !self.hasKey || !mail.isSecure && self.hasKey{
+            return false
+        }
+        if ezContact.getAddress(mail.from.address) != nil {
+            for m in mails {
+                if m.uid == mail.uid {
+                    return true
+                }
+                else if m.uid < mail.uid {
+                    break
+                }
+            }
+            mails.append(mail)
+            mails.sortInPlace()
+            addNewAddress(mail.from)
+            return true
         }
         return false
     }
