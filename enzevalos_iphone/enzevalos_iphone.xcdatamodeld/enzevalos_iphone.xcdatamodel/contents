@@ -28,7 +28,6 @@
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
-        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="prefer_encryption" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="contact" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" syncable="YES"/>
     </entity>
@@ -40,7 +39,7 @@
     <elements>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="150"/>
         <element name="Mail" positionX="-416" positionY="-189" width="128" height="270"/>
-        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="105"/>
+        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="90"/>
         <element name="State" positionX="-306" positionY="-27" width="128" height="90"/>
     </elements>
 </model>
