@@ -41,7 +41,7 @@ public class Mail_Address: NSManagedObject, MailAddress {
     }
     
     //TODO think about it!
-    public var keyID : String? {
+    public var keyID : String? /*{
         get {
             if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType){
                 if let ids = encryption.getKeyIDs(self.mailAddress) {
@@ -53,7 +53,7 @@ public class Mail_Address: NSManagedObject, MailAddress {
             }
             return nil
         }
-        set (newID){
+        /*set (newID){
             if let id = newID {
                 if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType){
                     if encryption.keyIDExists(id) {
@@ -71,8 +71,8 @@ public class Mail_Address: NSManagedObject, MailAddress {
                     }
                 }
             }
-        }
-    }
+        }*/
+    }*/
     
     public var encryptionType: EncryptionType = EncryptionType.PGP
     
