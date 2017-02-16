@@ -18,7 +18,7 @@ public class Mail: NSManagedObject, Comparable {
     
     var isSecure: Bool{
         get{
-            return isEncrypted && isSigned && !unableToDecrypt && !trouble
+            return isEncrypted && isSigned && isCorrectlySigned && !unableToDecrypt && !trouble
         }
     }
     

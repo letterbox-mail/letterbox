@@ -6,4 +6,16 @@
 //  Copyright © 2017 fu-berlin. All rights reserved.
 //
 
-import Foundation
+
+class PGPTemporaryDecryptionObject {
+    let onePassSignaturePacket: PGPOnePassSignaturePacket
+    let signaturePacket: PGPSignaturePacket
+    let plaintextData: NSData?
+    
+    init(onePassSignaturePacket: PGPOnePassSignaturePacket, signaturePacket: PGPSignaturePacket, plaintextData: NSData?){
+        self.onePassSignaturePacket = onePassSignaturePacket
+        self.signaturePacket = signaturePacket
+        self.plaintextData = plaintextData
+    }
+    
+}

@@ -37,7 +37,10 @@ class PGPEncryption : Encryption {
     
     //key is unused
     func isUsed(text: String, key: KeyWrapper?) -> Bool {
-        return (text.hasPrefix("-----BEGIN PGP MESSAGE-----") && text.hasSuffix("-----END PGP MESSAGE-----\n")) || (text.hasPrefix("-----BEGIN PGP SIGNED MESSAGE-----") && text.hasSuffix("-----END PGP SIGNATURE-----\n"))
+        if let usedForSignature = self.isUsedForSignature(text, key: key) where usedForSignature {
+            return true
+        }
+        return self.isUsedForEncryption(text, key: key)!
     }
     
     //check whether this encryption is used in this mail for encryption. nil is returned, if there is no answer to be made at the moment.
@@ -51,7 +54,7 @@ class PGPEncryption : Encryption {
     //check whether this encryption is used in this text for encryption. the key is not known to be used. nil is returned, if there is no answer to be made at the moment.
     //key unused
     func isUsedForEncryption(text: String, key: KeyWrapper?) -> Bool?{
-        return text.hasPrefix("-----BEGIN PGP MESSAGE-----") && text.hasSuffix("-----END PGP MESSAGE-----\n")
+        return text.hasPrefix("-----BEGIN PGP MESSAGE-----") && (text.hasSuffix("-----END PGP MESSAGE-----\n") || text.hasSuffix("-----END PGP MESSAGE-----"))
     }
     
     //check whether this encryption is used in this mail for signing. nil is returned, if there is no answer to be made at the moment.
@@ -71,7 +74,7 @@ class PGPEncryption : Encryption {
     //key unused
     func isUsedForSignature(text: String, key: KeyWrapper?) -> Bool? {
         if !isUsedForEncryption(text, key: nil)! {
-            return text.hasPrefix("-----BEGIN PGP SIGNED MESSAGE-----") && text.hasSuffix("-----END PGP SIGNATURE-----\n")
+            return text.hasPrefix("-----BEGIN PGP SIGNED MESSAGE-----") && (text.hasSuffix("-----END PGP SIGNATURE-----\n") || text.hasSuffix("-----END PGP SIGNATURE-----"))
         }
         return nil
     }
@@ -121,25 +124,43 @@ class PGPEncryption : Encryption {
         if self.isUsed(mail) {
             let bodyData = mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!
             var data: NSData?
-            data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
-            print("hallo")
-            if data == nil {
-                self.keyManager.useAllPrivateKeys()
-                //TODO add oldKeyUsed attribute in Mail object
-                data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
-                //data = try? keyManager.pgp.decryptData(mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
-                self.keyManager.useOnlyActualPrivateKey()
-                if data != nil {
-                    mail.decryptedWithOldPrivateKey = true
+            var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
+            var maybeUsedKeys: [String] = []
+            var signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            signed[0] = false
+            var valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            valid[0] = false
+            do {
+                data = temp.plaintextData
+                if data == nil {
+                    self.keyManager.useAllPrivateKeys()
+                    temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
+                    data = temp.plaintextData
+                    self.keyManager.useOnlyActualPrivateKey()
+                    if data != nil {
+                        mail.decryptedWithOldPrivateKey = true
+                    }
+                }
+                if let unwrappedData = data {
+                    mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
+                    if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(mail.from.address), theirKeyID = temp.incompleteKeyID {
+                        maybeUsedKeys = self.getLibaryKeyIDOverlap(theirKeyID, ourKeyIDs: allKeyIDs)
+                    }
+                    for maybeUsedKey in maybeUsedKeys {
+                        if let key = self.keyManager.getKey(maybeUsedKey) {
+                            let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: nil)[0])
+                            if done {
+                                mail.isSigned = signed.memory.boolValue
+                                mail.isCorrectlySigned = valid.memory.boolValue
+                            }
+                        }
+                    }
+                    return
                 }
             }
-            if let unwrappedData = data {
-                mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
-            }
-            else {
-                mail.unableToDecrypt = true
-            }
+            catch _ {}
         }
+        mail.unableToDecrypt = true
     }
     
     //decrypt the text with the given key and return it.
@@ -330,6 +351,11 @@ class PGPEncryption : Encryption {
         return keyManager.getKeyIDsForMailAddress(mailaddress)
     }
     
+    func getActualKeyID(mailaddress: String) -> String? {
+        return self.keyManager.getActualKeyIDForMailaddress(mailaddress)
+    }
+    
+    
     func getKey(keyID: String) -> KeyWrapper? {
         return self.keyManager.getKey(keyID)
     }
@@ -372,5 +398,15 @@ class PGPEncryption : Encryption {
         return nil
     }
     
+    //the libary (ObjectivePGP) we use has a different definition of keyID than we have. their keyID is calculated outof the key. We take their keyID and add a index in the end to handle collisions
+    private func getLibaryKeyIDOverlap(libaryKeyID: String, ourKeyIDs: [String]) -> [String] {
+        var returnValue: [String] = []
+        for ourKeyID in ourKeyIDs {
+            if ourKeyID.hasPrefix(libaryKeyID) {
+                returnValue.append(ourKeyID)
+            }
+        }
+        return returnValue
+    }
     
 }

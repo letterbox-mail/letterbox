@@ -156,6 +156,10 @@ class PGPKeyManagement {
         return keyIDs[mailAddress]
     }
     
+    func getActualKeyIDForMailaddress(mailaddress: String) -> String? {
+        return keyIDs[mailaddress]?.last
+    }
+    
     //keyID of the current used privateKey
     func getPrivateKeyID() -> String? {
         return actualPrivateKey
