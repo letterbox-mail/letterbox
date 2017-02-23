@@ -132,10 +132,11 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
     
     //handle entrys in keychain for different Encryptions
     func addPersistentData(data: NSData, searchKey: String, encryptionType: EncryptionType) {
-        if (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)) != nil {
-            return
+        let testData = try? keychain.getData(encryptionType.rawValue+"-"+searchKey)
+        if let tmp = testData where tmp == nil {
+            keychain[data: encryptionType.rawValue+"-"+searchKey] = data
         }
-        keychain[data: encryptionType.rawValue+"-"+searchKey] = data
+        
     }
     
     //for all encryptions
@@ -149,14 +150,15 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
     }
     
     func replacePersistentData(searchKey: String, replacementData: NSData, encryptionType: EncryptionType) {
-        if (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)) == nil {
+        if !self.hasPersistentData(searchKey, encryptionType: encryptionType){//let tmp = (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)), _ = tmp {
             return
         }
         keychain[data: encryptionType.rawValue+"-"+searchKey] = replacementData
     }
     
     func deletePersistentData(searchKey: String, encryptionType: EncryptionType) {
-        if (try? keychain.getData(encryptionType.rawValue+"-"+searchKey)) == nil {
+        let testData = try? keychain.getData(encryptionType.rawValue+"-"+searchKey)
+        if let tmp = testData where tmp == nil {
             return
         }
         keychain[data: encryptionType.rawValue+"-"+searchKey] = nil

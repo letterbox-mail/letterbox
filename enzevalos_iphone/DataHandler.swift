@@ -188,7 +188,7 @@ class DataHandler: NSObject {
         if search == nil || search!.count == 0 {
             mail_address =  NSEntityDescription.insertNewObjectForEntityForName("Mail_Address",inManagedObjectContext: managedObjectContext) as! Mail_Address
             mail_address.address = address
-            mail_address.keyID = nil
+            //mail_address.keyID = nil
             mail_address.prefer_encryption = false
         }
         else {
@@ -253,14 +253,6 @@ class DataHandler: NSObject {
             contact = search! [0] as! EnzevalosContact
             contacts.append(contact)
         }
-        return contact
-    }
-    
-    func getContact(name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
-        let contact = getContactByAddress(address)
-        contact.displayname = name
-        contact.getAddress(address)?.keyID = key
-        contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
         return contact
     }
     

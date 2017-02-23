@@ -85,6 +85,8 @@ public protocol Encryption {
     func getKeyIDs(enzContact: EnzevalosContact) -> [String]?
     func getKeyIDs(mailaddress: String) -> [String]?
     
+    func getActualKeyID(mailaddress: String) -> String?
+    
     func keyIDExists(keyID: String) -> Bool
     
     func getKey(keyID: String) -> KeyWrapper?

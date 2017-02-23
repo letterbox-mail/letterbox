@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G1217" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G1217" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
@@ -14,6 +14,7 @@
         <attribute name="date" attributeType="Date" defaultDateTimeInterval="-31582140" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="decryptedBody" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flag" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isCorrectlySigned" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isSigned" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="subject" attributeType="String" syncable="YES"/>
@@ -28,7 +29,6 @@
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
-        <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="prefer_encryption" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="contact" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" syncable="YES"/>
     </entity>
@@ -39,8 +39,8 @@
     </entity>
     <elements>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="150"/>
-        <element name="Mail" positionX="-416" positionY="-189" width="128" height="270"/>
-        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="105"/>
+        <element name="Mail" positionX="-416" positionY="-189" width="128" height="285"/>
+        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="90"/>
         <element name="State" positionX="-306" positionY="-27" width="128" height="90"/>
     </elements>
 </model>

@@ -225,7 +225,7 @@ class ReadViewController: UITableViewController {
             //print("-----".commonPrefixWithString(m.body!, options: NSStringCompareOptions.CaseInsensitiveSearch))
 
             //in-line PGP
-            if m.isEncrypted {
+            if m.isEncrypted && !m.unableToDecrypt {
                 //CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
 
                 //let content = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
@@ -244,9 +244,11 @@ class ReadViewController: UITableViewController {
                 //}
 
                 //print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
-                messageBody.text = m.decryptedMessage
-                print(m.decryptedMessage)
-                // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
+
+                messageBody.text = m.decryptedBody
+                //print(m.decryptedMessage)
+               // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
+
                 //AFTERMERGE
                 /*if m.from.hasKey{
                     let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.from.address))?.key
