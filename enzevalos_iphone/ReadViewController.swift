@@ -9,13 +9,13 @@
 import UIKit
 import Foundation
 
-class ReadViewController : UITableViewController {
+class ReadViewController: UITableViewController {
     @IBOutlet weak var sender: UILabel!
     @IBOutlet weak var receivers: UILabel!
     @IBOutlet weak var receivedTime: UILabel!
     @IBOutlet weak var subject: UILabel!
     @IBOutlet weak var messageBody: UILabel!
-    
+
     // Cells
     @IBOutlet weak var senderCell: UITableViewCell!
     @IBOutlet weak var receiversCell: UITableViewCell!
@@ -23,32 +23,30 @@ class ReadViewController : UITableViewController {
     @IBOutlet weak var infoCell: UITableViewCell!
     @IBOutlet weak var infoButtonCell: UITableViewCell!
     @IBOutlet weak var messageCell: MessageBodyTableViewCell!
-        
+
     @IBOutlet weak var iconButton: UIButton!
-    
+
     @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
-    
+
     var mail: Mail? = nil
     let troubleColor = ThemeManager.troubleMessageColor()
     let encryptColor = ThemeManager.encryptedMessageColor()
     let uncryptColor = ThemeManager.uncryptedMessageColor()
-//    let defaultColor = UIColor.groupTableViewBackgroundColor() // UIColor(red: 242/255, green: 242/255, blue: 246/255, alpha: 1.0)
 
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
-        
+
         // not possible to set in IB
         SeperatorConstraint.constant = 1 / UIScreen.mainScreen().scale
         infoCell.layoutMargins = UIEdgeInsetsZero
 
         setUItoMail()
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         // NavigationBar color
         if let m = mail {
@@ -61,15 +59,15 @@ class ReadViewController : UITableViewController {
             }
         }
     }
-    
+
     override func willMoveToParentViewController(parent: UIViewController?) {
         super.willMoveToParentViewController(parent)
-        
+
         if parent == nil {
-            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor})
+            UIView.animateWithDuration(0.3, animations: { self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor })
         }
     }
-    
+
     // set top seperator height
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
@@ -77,21 +75,21 @@ class ReadViewController : UITableViewController {
         }
         return tableView.sectionHeaderHeight
     }
-    
+
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
-    
+
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if mail != nil {
             if mail!.trouble && mail!.showMessage {
                 return 3
             }
         }
-        
+
         return 2
     }
-    
+
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 3
@@ -105,10 +103,10 @@ class ReadViewController : UITableViewController {
                 }
             }
         }
-        
+
         return 1
     }
-    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             switch indexPath.row {
@@ -133,33 +131,33 @@ class ReadViewController : UITableViewController {
                 return messageCell
             }
         }
-        
+
         return messageCell
     }
-    
+
     @IBAction func showEmailButton(sender: UIButton) {
         mail!.showMessage = true
-        
+
         self.tableView.beginUpdates()
         let path = NSIndexPath(forRow: 1, inSection: 1)
         self.tableView.deleteRowsAtIndexPaths([path], withRowAnimation: .Fade)
         self.tableView.insertSections(NSIndexSet(index: 2), withRowAnimation: .Fade)
         self.tableView.endUpdates()
     }
-    
+
     @IBAction func ignoreEmailButton(sender: AnyObject) {
         navigationController?.popViewControllerAnimated(true)
     }
-    
+
     @IBAction func markUnreadButton(sender: AnyObject) {
         mail?.isRead = false
         navigationController?.popViewControllerAnimated(true)
     }
-    
+
     @IBAction func deleteButton(sender: AnyObject) {
         navigationController?.popViewControllerAnimated(true)
     }
-    
+
     @IBAction func iconButton(sender: AnyObject) {
         if let m = mail {
             let alert: UIAlertController
@@ -174,17 +172,17 @@ class ReadViewController : UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/postcard"
             }
-            alert.addAction(UIAlertAction(title: "Mehr Informationen", style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
+            alert.addAction(UIAlertAction(title: "Mehr Informationen", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!) }))
             alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
             dispatch_async(dispatch_get_main_queue(), {
                 self.presentViewController(alert, animated: true, completion: nil)
             })
         }
     }
-    
+
     func setUItoMail() {
         if let m = mail {
-            
+
             // mark mail as read if viewcontroller is open for more than 1.5 sec
             let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(1.5 * Double(NSEC_PER_SEC)))
             dispatch_after(delay, dispatch_get_main_queue()) {
@@ -192,14 +190,13 @@ class ReadViewController : UITableViewController {
                     for viewController in viewControllers {
                         if viewController.isKindOfClass(ReadViewController) {
                             m.isRead = true
-                            
                         }
                     }
                 }
             }
-            
+
             sender.text = m.from.address
-             //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
+            //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
             if m.getReceivers().count == 1 && m.cc?.count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
                 receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
                 if let cc = m.cc {
@@ -208,7 +205,7 @@ class ReadViewController : UITableViewController {
                         receivers.text?.appendContentsOf(" ")
                     }
                 }
-            } else {  //TODO: Fix all this by replacing it with VENTokenField
+            } else { //TODO: Fix all this by replacing it with VENTokenField
                 receivers.text = NSLocalizedString("To", comment: "To label") + ": "
                 for r in m.getReceivers() {
                     receivers.text?.appendContentsOf(r.address)
@@ -216,7 +213,7 @@ class ReadViewController : UITableViewController {
                 }
             }
             receivedTime.text = m.timeString
-            
+
             if let subj = m.subject {
                 if subj != "" && subj != " " {
                     subject.text = subj
@@ -224,40 +221,40 @@ class ReadViewController : UITableViewController {
                     subject.text = "(Kein Betreff)"
                 }
             }
-            
+
             //print("-----".commonPrefixWithString(m.body!, options: NSStringCompareOptions.CaseInsensitiveSearch))
-            
+
             //in-line PGP
             if m.isEncrypted {
                 //CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
-            
+
                 //let content = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
                 //print("read")
                 //print(String(data: content!, encoding: NSUTF8StringEncoding))
-            
+
                 //var signed : ObjCBool = false
                 //var valid : ObjCBool = false
                 //var integrityProtected : ObjCBool = false
-            
+
                 //print(m.sender?.mailbox)
                 //let decBody = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr((m.sender?.mailbox)!)!.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected)
-                
+
                 //if decBody != nil {
                 //    messageBody.text = String(data: decBody!, encoding: NSUTF8StringEncoding)
                 //}
-                
+
                 //print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
                 messageBody.text = m.decryptedMessage
                 print(m.decryptedMessage)
-               // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
+                // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
                 //AFTERMERGE
                 /*if m.from.hasKey{
                     let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.from.address))?.key
                     print(signatureKey)
                 }*/
-            
+
             }
-            else {
+                else {
                 messageBody.text = m.body
             }
             // NavigationBar Icon
@@ -276,7 +273,7 @@ class ReadViewController : UITableViewController {
             iconButton.setImage(icon, forState: UIControlState.Normal)
         }
     }
-    
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "answerTo" {
             let navigationController = segue.destinationViewController as? UINavigationController

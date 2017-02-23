@@ -11,7 +11,7 @@ import Contacts
 
 class InboxTableViewCell: UITableViewCell {
     var delegate: InboxCellDelegator?
-    
+
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var faceView: UIImageView!
     @IBOutlet weak var iconView: UIImageView!
@@ -27,28 +27,28 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var seperator: NSLayoutConstraint!
     @IBOutlet weak var seperator2: NSLayoutConstraint!
     @IBOutlet weak var contactButton: UIButton!
-    
+
     @IBAction func firstButtonPressed(sender: AnyObject) {
         if let delegate = delegate where firstMail != nil {
-            firstButton.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
+            firstButton.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
             print("Open mail \(firstMail?.subject) | read status: \(firstMail?.isRead)")
             delegate.callSegueFromCell(firstMail)
         }
     }
-    
+
     @IBAction func secondButtonPressed(sender: AnyObject) {
         if let delegate = delegate where secondMail != nil {
-            secondButton.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
+            secondButton.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
             delegate.callSegueFromCell(secondMail)
         }
     }
-    
+
     @IBAction func moreButtonPressed(sender: AnyObject) {
         if let delegate = delegate {
             delegate.callSegueFromCell2(enzContact)
         }
     }
-    
+
     @IBAction func contactButtonPressed(sender: AnyObject) {
         if let delegate = delegate {
             delegate.callSegueToContact(enzContact)
@@ -57,13 +57,13 @@ class InboxTableViewCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         // prevent two buttons being pressed at the same time
         firstButton.exclusiveTouch = true
         secondButton.exclusiveTouch = true
         moreButton.exclusiveTouch = true
         contactButton.exclusiveTouch = true
-        
+
         firstButton.backgroundColor = UIColor.clearColor()
         secondButton.backgroundColor = UIColor.clearColor()
         firstButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
@@ -73,7 +73,7 @@ class InboxTableViewCell: UITableViewCell {
         seperator.constant = 1 / UIScreen.mainScreen().scale
         seperator2.constant = 1 / UIScreen.mainScreen().scale
     }
-    
+
     var enzContact: KeyRecord? {
         didSet {
             if let con = enzContact {
@@ -103,7 +103,7 @@ class InboxTableViewCell: UITableViewCell {
             }
         }
     }
-    
+
     var firstMail: Mail? {
         didSet {
             if let mail = firstMail {
@@ -112,9 +112,9 @@ class InboxTableViewCell: UITableViewCell {
                 } else {
                     firstSubjectLabel.font = UIFont.systemFontOfSize(17.0)
                 }
-                
+
                 firstSubjectLabel.text = mail.getSubjectWithFlagsString()
-                
+
                 // Reducing message to one line and truncating to 50
                 var message: String = ""
                 if mail.isEncrypted {
@@ -125,7 +125,7 @@ class InboxTableViewCell: UITableViewCell {
                         message = mail.decryptedMessage!
                     }
                 }
-                else if mail.body == nil {
+                    else if mail.body == nil {
                     message = mail.body!
                 }
                 if message.characters.count > 50 {
@@ -133,12 +133,12 @@ class InboxTableViewCell: UITableViewCell {
                 }
                 let messageArray = message.componentsSeparatedByString("\n")
                 firstMessageLabel.text = messageArray.joinWithSeparator(" ")
-                
+
                 firstDateLabel.text = mail.timeString
             }
         }
     }
-    
+
     var secondMail: Mail? {
         didSet {
             if let mail = secondMail {
@@ -147,7 +147,7 @@ class InboxTableViewCell: UITableViewCell {
                 } else {
                     secondSubjectLabel.font = UIFont.systemFontOfSize(17.0)
                 }
-                
+
                 secondSubjectLabel.text = mail.getSubjectWithFlagsString()
 
                 // Reducing message to one line and truncating to 50
@@ -162,12 +162,12 @@ class InboxTableViewCell: UITableViewCell {
                     /*if mail.decryptedBody == nil {
                         mail.decryptIfPossible()
                     }*/
-                    
-                    if !mail.trouble{
+
+                    if !mail.trouble {
                         message = mail.decryptedMessage!
                     }
                 }
-                else if mail.body != nil {
+                    else if mail.body != nil {
                     message = mail.body!
                 }
                 if message.characters.count > 50 {
@@ -175,25 +175,25 @@ class InboxTableViewCell: UITableViewCell {
                 }
                 let messageArray = message.componentsSeparatedByString("\n")
                 secondMessageLabel.text = messageArray.joinWithSeparator(" ")
-                
+
                 secondDateLabel.text = mail.timeString
-                
+
                 moreButton.enabled = true
             }
         }
     }
-    
+
     var contact: CNContact?
-    
+
     func cellTouched(sender: AnyObject) {
         if let button = sender as? UIButton {
-            button.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
+            button.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
         }
     }
-    
+
     func clearCell(sender: AnyObject) {
         if let button = sender as? UIButton {
-            UIView.animateWithDuration(0.5, animations: {button.backgroundColor = UIColor.clearColor()})
+            UIView.animateWithDuration(0.5, animations: { button.backgroundColor = UIColor.clearColor() })
         }
     }
 }
