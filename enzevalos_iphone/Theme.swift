@@ -83,7 +83,7 @@ struct ThemeManager{
         if let storedTheme = NSUserDefaults.standardUserDefaults().valueForKey(SelectedThemeKey)?.integerValue {
             return Theme(rawValue: storedTheme)!
         } else {
-            return .No_security_indicator
+            return .Very_strong_security_indicator
         }
     }
     
