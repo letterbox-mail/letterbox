@@ -256,6 +256,7 @@ class DataHandler: NSObject {
         return contact
     }
     
+    
     func getContact(name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
         let contact = getContactByAddress(address)
         contact.displayname = name
@@ -263,6 +264,8 @@ class DataHandler: NSObject {
         contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
         return contact
     }
+ 
+
     
     func getContacts(receivers: [MCOAddress]) -> [EnzevalosContact] {
         var contacts = [EnzevalosContact]()
