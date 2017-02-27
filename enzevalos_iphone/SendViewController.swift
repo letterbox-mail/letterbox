@@ -173,7 +173,14 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //var path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")    // <----
         
         
-        
+        /*let pgp = ObjectivePGP.init()
+        pgp.importKeysFromFile(path!, allowDuplicates: false)
+        let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+        do {
+            let data = try pgp.keys[0].export()
+            enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])
+        }
+        catch _ {}*/
         //handler.pgp.importKeysFromFile(path!, allowDuplicates: false)   // <----
         //KeyHandler.createHandler().addKey(handler.pgp.keys[0])          // <----
         //KeyHandler.createHandler().addPrivateKey(handler.pgp.keys[0])   // <---- PRIVATE

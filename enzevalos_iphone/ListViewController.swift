@@ -17,11 +17,11 @@ class ListViewController: UITableViewController {
             self.title = contact!.name
         }
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         searchController.searchResultsUpdater = self
@@ -30,10 +30,10 @@ class ListViewController: UITableViewController {
         tableView.tableHeaderView = searchController.searchBar
         searchController.searchBar.scopeButtonTitles = [NSLocalizedString("Subject", comment: ""), NSLocalizedString("Body", comment: ""), NSLocalizedString("CC", comment: ""), NSLocalizedString("All", comment: "")]
         searchController.searchBar.delegate = self
-        
+
         tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
     }
-    
+
     func filterContentForSearchText(searchText: String, scope: Int = 0) {
         filteredMails = contact!.mails.filter { mail in
             var returnValue = false
@@ -50,7 +50,7 @@ class ListViewController: UITableViewController {
                 }
             case 2:
                 if !returnValue && mail.cc?.count > 0 {
-                    if let result = mail.cc?.contains({cc -> Bool in
+                    if let result = mail.cc?.contains({ cc -> Bool in
                         if let mail = cc as? MailAddress {
                             return mail.mailAddress.containsString(searchText.lowercaseString)
                         }
@@ -60,7 +60,7 @@ class ListViewController: UITableViewController {
                     }
                 }
                 if !returnValue && mail.getReceivers().count > 1 {
-                    returnValue = mail.getReceivers().contains({rec -> Bool in
+                    returnValue = mail.getReceivers().contains({ rec -> Bool in
                         return rec.mailAddress.containsString(searchText.lowercaseString)
                     })
                 }
@@ -74,7 +74,7 @@ class ListViewController: UITableViewController {
                     returnValue = mail.body!.lowercaseString.containsString(searchText.lowercaseString)
                 }
                 if !returnValue && mail.cc?.count > 0 {
-                    if let res = mail.cc?.contains({cc -> Bool in
+                    if let res = mail.cc?.contains({ cc -> Bool in
                         if let mail = cc as? MailAddress {
                             return mail.mailAddress.containsString(searchText.lowercaseString)
                         }
@@ -84,17 +84,17 @@ class ListViewController: UITableViewController {
                     }
                 }
                 if !returnValue && mail.getReceivers().count > 1 {
-                    returnValue = mail.getReceivers().contains({rec -> Bool in
+                    returnValue = mail.getReceivers().contains({ rec -> Bool in
                         return rec.mailAddress.containsString(searchText.lowercaseString)
                     })
                 }
             }
             return returnValue
         }
-        
+
         tableView.reloadData()
     }
-    
+
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.active && searchController.searchBar.text != "" {
             return filteredMails.count
@@ -105,17 +105,17 @@ class ListViewController: UITableViewController {
             return 0
         }
     }
-    
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ListCell") as! ListViewCell!
         let mail: Mail?
-        
+
         if searchController.active && searchController.searchBar.text != "" {
             mail = filteredMails[indexPath.row]
         } else {
             mail = contact?.mails[indexPath.row]
         }
-        
+
         if mail != nil && !mail!.isRead {
             cell.subjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
         } else {
@@ -124,13 +124,13 @@ class ListViewController: UITableViewController {
         cell.subjectLabel.text = mail?.getSubjectWithFlagsString()
         cell.bodyLabel.text = mail?.body
         cell.dateLabel.text = mail?.timeString
-        
+
         return cell
     }
-    
+
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let mail: Mail?
-        
+
         if searchController.active && searchController.searchBar.text != "" {
             mail = filteredMails[indexPath.row]
         } else {
@@ -138,7 +138,7 @@ class ListViewController: UITableViewController {
         }
         performSegueWithIdentifier("readMailSegue", sender: mail)
     }
-    
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "readMailSegue" {
             if let mail = sender as? Mail {

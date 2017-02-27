@@ -44,12 +44,7 @@ public class Mail_Address: NSManagedObject, MailAddress {
     public var keyID : String? {
         get {
             if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType){
-                if let ids = encryption.getKeyIDs(self.mailAddress) {
-                    //TODO add other policy here
-                    if let id = ids.last {
-                        return id
-                    }
-                }
+                return encryption.getActualKeyID(self.address)
             }
             return nil
         }

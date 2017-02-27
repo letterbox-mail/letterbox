@@ -188,7 +188,7 @@ class DataHandler: NSObject {
         if search == nil || search!.count == 0 {
             mail_address =  NSEntityDescription.insertNewObjectForEntityForName("Mail_Address",inManagedObjectContext: managedObjectContext) as! Mail_Address
             mail_address.address = address
-            mail_address.keyID = nil
+            //mail_address.keyID = nil
             mail_address.prefer_encryption = false
         }
         else {
