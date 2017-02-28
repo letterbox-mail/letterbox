@@ -7,4 +7,4 @@ Please try to adhere to the [Github Swift Style Guide](https://github.com/github
 You can use the [Swimat Plugin](https://github.com/Jintin/Swimat) to do parts of that automatically.
 
 ## Links for conversion from Swift 2 to Swift 3
-- (https://www.avanderlee.com/swift/swift-3-conversion-refactoring-project/)
+- https://www.avanderlee.com/swift/swift-3-conversion-refactoring-project/
