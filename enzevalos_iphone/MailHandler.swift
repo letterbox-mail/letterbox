@@ -298,29 +298,18 @@ class MailHandler {
                             }
                         }
                         
-                        //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
                         // TODO: Fix decryption
                         
                         let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags)
-                      //  mail.decryptIfPossible()
                         
-                        /*let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(mail)
-                        if  encType != EncryptionType.unknown {
-                            let encryption = EnzevalosEncryptionHandler.getEncryption(encType)
-                            if let encUsed = encryption?.isUsedForEncryption(mail) {
-                                if encUsed {
-                                    mail.isEncrypted = true
-                                    mail.decryptIfPossible()
-                                }
-                            }
-                            else if let encUsed = encryption?.isUsedForSignature(mail) {
-                                if encUsed {
-                                    mail.isSigned = true
-                                    mail.decryptIfPossible()
-                                }
-                            }
-                        }*/
-                        mail.decryptIfPossible()
+                        if mail.isEncrypted{
+                            print("----------------")
+                            print("Encrypted mail! Is Secure?: \(mail.isSecure)")
+                            print("Mail is encrypted? \(mail.isEncrypted) Can decrypt? \(!mail.unableToDecrypt) Is signed? \(mail.isSigned) Has no trouble? \(!mail.trouble)")
+                            print("Record: \(mail.from.contact.name) key: \(mail.from.contact.hasKey)")
+                            print("Text: \(mail.decryptedBody)" )
+                        }
+
                         self.delegate?.addNewMail(mail)
                         
                         dispatch_group_leave(dispatchGroup)

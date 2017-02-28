@@ -18,7 +18,7 @@ class DataHandler {
     lazy var contacts: [EnzevalosContact] = self.getContacts()
     lazy var currentstate: State = self.getCurrentState()
     
-    private let MaxRecords = 10
+    private let MaxRecords = 50
     private let MaxMailsPerRecord = 20
     
     var receiverRecords = [KeyRecord]()
@@ -328,14 +328,7 @@ class DataHandler {
         if finding == nil || finding!.count == 0 {
             // create new mail object
             mail  = NSEntityDescription.insertNewObjectForEntityForName("Mail", inManagedObjectContext: managedObjectContext) as! Mail
-            /*
-             if(isEncrypted) {
-             mail.body =  decryptedBody
-             }
-             else{
-             mail.body = body
-             }
-             */
+          
             mail.body = body
             mail.date = time
             mail.subject = subject
@@ -349,6 +342,7 @@ class DataHandler {
             mail.trouble = false
 
             mail.unableToDecrypt = false
+            mail.decryptIfPossible()
         }
         else {
             return finding![0] as! Mail

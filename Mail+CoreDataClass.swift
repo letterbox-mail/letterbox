@@ -17,7 +17,7 @@ public class Mail: NSManagedObject, Comparable {
     var showMessage: Bool = true
 
     var isSecure: Bool {
-            return isEncrypted && isSigned && !unableToDecrypt && !trouble
+        return isEncrypted && isSigned && !unableToDecrypt && !trouble
     }
 
     var isRead: Bool {
@@ -98,55 +98,7 @@ public class Mail: NSManagedObject, Comparable {
     }
 
 
-    /*
- func decryptIfPossible(){
- if body != nil {
- if self.isEncrypted {
- if KeyHandler.getHandler().getPrivateKey() == nil {
- self.unableToDecrypt = true
- return
- }
- if !CryptoHandler.getHandler().pgp.keys.contains((KeyHandler.getHandler().getPrivateKey()?.key)!) {
- CryptoHandler.getHandler().pgp.keys.append((KeyHandler.getHandler().getPrivateKey()?.key)!)
- }
- do {
- var signed : ObjCBool = false
- var valid : ObjCBool = false
- var integrityProtected : ObjCBool = false
- 
- var signatureKey : PGPKey? = nil
- 
- if self.sender != nil && self.sender?.mailbox != nil {
- if KeyHandler.getHandler().addrHasKey((self.sender?.mailbox)!) {
- signatureKey = KeyHandler.getHandler().getKeyByAddr((self.sender?.mailbox)!)?.key
- }
- }
- 
- //verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr(header.from.mailbox)?.key
- 
- let decTrash = (try? CryptoHandler.getHandler().pgp.decryptData(body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: signatureKey, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))
- if decTrash != nil {
- self.decryptedBody = String(data: decTrash!, encoding: NSUTF8StringEncoding)//String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: signatureKey, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))! as NSData, encoding: NSUTF8StringEncoding)
- //print(String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected), encoding: NSUTF8StringEncoding)))
- self.isVerified = Bool(valid)
- 
- print(" signed: ",signed," valid: ",valid, " integrityProtected: ",integrityProtected)
- 
- if signatureKey != nil && !valid && signed {
- self.trouble = true
- }
- }
- 
- 
- } catch _ {
- 
- self.trouble = true
- print("error while decrypting")
- }
- }
- }
- }
-*/
+
 
     //decrypt and/or check signature
     func decryptIfPossible() {
@@ -156,6 +108,7 @@ public class Mail: NSManagedObject, Comparable {
                 self.isEncrypted = true
                 //decrypt
                 encryption.decryptAndSignatureCheck(self)
+                
             }
             if encryption.isUsedForSignature(self) == true {
                 //TODO
@@ -168,6 +121,27 @@ public class Mail: NSManagedObject, Comparable {
         }
     }
 
+    
+    func liveDecrypt()-> String?{
+        let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
+        if let encryption = EnzevalosEncryptionHandler.getEncryption(encType) {
+            if encryption.isUsedForEncryption(self) == true {
+                self.isEncrypted = true
+                //decrypt
+                encryption.decryptAndSignatureCheck(self)
+                return encryption.decrypt(self)
+            }
+            if encryption.isUsedForSignature(self) == true {
+                //TODO
+                //check signature
+                if let correctSignature = encryption.isCorrectlySigned(self) {
+                    self.isSigned = true
+                }
+            }
+            
+        }
+        return nil
+    }
 
     func getSubjectWithFlagsString() -> String {
         let subj: String

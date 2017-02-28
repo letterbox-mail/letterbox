@@ -37,7 +37,7 @@ public protocol Encryption {
     func isUsedForSignature(text: String, key: KeyWrapper?) -> Bool?
     
     //decrypt the mails body. the decryted body will be saved in the mail object.
-    func decrypt(mail: Mail)
+    func decrypt(mail: Mail) -> String?
     
     //decrypt the mails body. the decryted body will be saved in the mail object.
     //Signaturechecking included. will be set in mail object too.

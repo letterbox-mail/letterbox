@@ -81,7 +81,7 @@ class PGPEncryption : Encryption {
     
     //TODO
     //decrypt the mails body. the decryted body will be saved in the mail object.
-    func decrypt(mail: Mail){
+    func decrypt(mail: Mail)-> String?{
         if self.isUsed(mail) {
             let bodyData = mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!
             var data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
@@ -96,6 +96,7 @@ class PGPEncryption : Encryption {
             }
             if let unwrappedData = data {
                 mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
+                return String(data: unwrappedData, encoding: NSUTF8StringEncoding)
             }
         }
         /*if self.isUsed(mail) {
@@ -118,6 +119,7 @@ class PGPEncryption : Encryption {
                 mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
             }
         }*/
+        return nil
     }
     
     func decryptAndSignatureCheck(mail: Mail) {
@@ -126,9 +128,9 @@ class PGPEncryption : Encryption {
             var data: NSData?
             var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
             var maybeUsedKeys: [String] = []
-            var signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            let signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
             signed[0] = false
-            var valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            let valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
             valid[0] = false
             do {
                 data = temp.plaintextData
@@ -141,6 +143,7 @@ class PGPEncryption : Encryption {
                         mail.decryptedWithOldPrivateKey = true
                     }
                 }
+                print("Decrypt and sign decrypted data: \(data)")
                 if let unwrappedData = data {
                     mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
                     if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(mail.from.address), theirKeyID = temp.incompleteKeyID {

@@ -48,8 +48,15 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
         r = KeyRecord(mail: mail)
         contacts.append(r)
         contacts.sortInPlace()
+        
+        if mail.isEncrypted{
+            print("----------------")
+            print("Encrypted mail! Is Secure?: \(mail.isSecure)")
+            print("Record: \(r.ezContact.name) key: \(r.key)")
+        }
     }
 
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
 
