@@ -13,17 +13,15 @@ import CoreData
 
 @objc(Mail)
 public class Mail: NSManagedObject, Comparable {
-    
-    var showMessage:Bool = true
-    
-    var isSecure: Bool{
-        get{
-            return isEncrypted && isSigned && isCorrectlySigned && !unableToDecrypt && !trouble
-        }
+
+    var showMessage: Bool = true
+
+    var isSecure: Bool {
+            return isEncrypted && isSigned && !unableToDecrypt && !trouble
     }
-    
-    var isRead: Bool{
-        get{
+
+    var isRead: Bool {
+        get {
             let value = flag.contains(MCOMessageFlag.Seen)
             return value
         }
@@ -36,7 +34,7 @@ public class Mail: NSManagedObject, Comparable {
             DataHandler.handler.save()
         }
     }
-    
+
     var timeString: String {
         var returnString = ""
         let dateFormatter = NSDateFormatter()
@@ -44,63 +42,63 @@ public class Mail: NSManagedObject, Comparable {
         let mailTime = self.date
         let interval = NSDate().timeIntervalSinceDate(mailTime)
         switch interval {
-            case -55..<55:
-                returnString = NSLocalizedString("Now", comment: "New email")
-            case 55..<120:
-                returnString = NSLocalizedString("OneMinuteAgo", comment: "Email came one minute ago")
-            case 120..<24*60*60:
-                dateFormatter.timeStyle = .ShortStyle
-                returnString = dateFormatter.stringFromDate(mailTime)
-            case 24*60*60..<48*60*60:
-                returnString = NSLocalizedString("Yesterday", comment: "Email came yesterday")
-            case 48*60*60..<72*60*60:
-                returnString = NSLocalizedString("TwoDaysAgo", comment: "Email came two days ago")
-            default:
-                dateFormatter.dateStyle = .ShortStyle
-                returnString = dateFormatter.stringFromDate(mailTime)
-            }
+        case -55..<55:
+            returnString = NSLocalizedString("Now", comment: "New email")
+        case 55..<120:
+            returnString = NSLocalizedString("OneMinuteAgo", comment: "Email came one minute ago")
+        case 120..<24 * 60 * 60:
+            dateFormatter.timeStyle = .ShortStyle
+            returnString = dateFormatter.stringFromDate(mailTime)
+        case 24 * 60 * 60..<48 * 60 * 60:
+            returnString = NSLocalizedString("Yesterday", comment: "Email came yesterday")
+        case 48 * 60 * 60..<72 * 60 * 60:
+            returnString = NSLocalizedString("TwoDaysAgo", comment: "Email came two days ago")
+        default:
+            dateFormatter.dateStyle = .ShortStyle
+            returnString = dateFormatter.stringFromDate(mailTime)
+        }
         return returnString
     }
-    
+
     var decryptedWithOldPrivateKey: Bool = false
-    
-    var decryptedMessage: String?{
-        get{
+
+    var decryptedMessage: String? {
+        get {
             return self.body
         }
-        set{
+        set {
             self.body = newValue
         }
     }
-    
-    func getReceivers()->[Mail_Address]{
-        var receivers = [Mail_Address] ()
-        for obj in to{
-            receivers.append(obj as! Mail_Address)
-        }
-        return receivers
-    }
 
-    
-    
-    func getCCs()->[Mail_Address]{
+    func getReceivers() -> [Mail_Address] {
         var receivers = [Mail_Address] ()
-        for obj in cc!{
-            receivers.append(obj as! Mail_Address)
-        }
-        return receivers
-    }
-    
-    func getBCCs()->[Mail_Address]{
-        var receivers = [Mail_Address] ()
-        for obj in bcc!{
+        for obj in to {
             receivers.append(obj as! Mail_Address)
         }
         return receivers
     }
 
 
-        /*
+
+    func getCCs() -> [Mail_Address] {
+        var receivers = [Mail_Address] ()
+        for obj in cc! {
+            receivers.append(obj as! Mail_Address)
+        }
+        return receivers
+    }
+
+    func getBCCs() -> [Mail_Address] {
+        var receivers = [Mail_Address] ()
+        for obj in bcc! {
+            receivers.append(obj as! Mail_Address)
+        }
+        return receivers
+    }
+
+
+    /*
  func decryptIfPossible(){
  if body != nil {
  if self.isEncrypted {
@@ -166,12 +164,12 @@ public class Mail: NSManagedObject, Comparable {
                     self.isSigned = true
                 }
             }
-            
+
         }
     }
-    
 
-    func getSubjectWithFlagsString()-> String{
+
+    func getSubjectWithFlagsString() -> String {
         let subj: String
         var returnString: String = ""
 
@@ -197,14 +195,14 @@ public class Mail: NSManagedObject, Comparable {
         }
         return "\(returnString)\(subj)"
     }
-    
+
 }
 
-public func ==(lhs: Mail, rhs: Mail) -> Bool {
+public func == (lhs: Mail, rhs: Mail) -> Bool {
     return lhs.date == rhs.date && lhs.uid == rhs.uid
 }
 
-public func <(lhs: Mail, rhs: Mail) -> Bool {
+public func < (lhs: Mail, rhs: Mail) -> Bool {
     return lhs.date > rhs.date
 }
 
