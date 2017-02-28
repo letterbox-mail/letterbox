@@ -68,10 +68,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
         lastUpdateLabel.textColor = UIColor.blackColor()
         lastUpdateButton.customView = lastUpdateLabel
 
-        contacts = DataHandler.handler.getRecords()
-
-        // DataHandler.getDataHandler().terminate() //TODO Remove
-        // contacts = DataHandler.getDataHandler().getRecords()
+        contacts = DataHandler.handler.receiverRecords
 
         AppDelegate.getAppDelegate().mailHandler.delegate = self
 
@@ -98,7 +95,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
 
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
-        contacts = DataHandler.handler.getRecords()
+        contacts = DataHandler.handler.receiverRecords
         if lastUpdate == nil || NSDate().timeIntervalSinceDate(lastUpdate!) > 30 {
             self.refreshControl?.beginRefreshingManually()
         }

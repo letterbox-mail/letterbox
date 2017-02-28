@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import Contacts
 
-class DataHandler: NSObject {
+class DataHandler {
     static let handler: DataHandler = DataHandler()
     
     private var managedObjectContext: NSManagedObjectContext
@@ -20,6 +20,8 @@ class DataHandler: NSObject {
     
     private let MaxRecords = 10
     private let MaxMailsPerRecord = 20
+    
+    var receiverRecords = [KeyRecord]()
     
     var maxUID:UInt64 {
         get {
@@ -52,7 +54,7 @@ class DataHandler: NSObject {
         save()
     }
     
-    override  init() {
+    init() {
         // This resource is the same name as your xcdatamodeld contained in your project.
         guard let modelURL = NSBundle.mainBundle().URLForResource("enzevalos_iphone", withExtension:"momd") else {
             fatalError("Error loading model from bundle")
@@ -76,6 +78,7 @@ class DataHandler: NSObject {
         } catch {
             fatalError("Error migrating store: \(error)")
         }
+        receiverRecords = self.getRecords()
         print("Finish init of DataHandler")
     }
     
@@ -114,6 +117,7 @@ class DataHandler: NSObject {
                     managedObjectContext.deleteObject(c)
                 }
             }
+            receiverRecords = getRecords()
         }
     }
     
@@ -358,6 +362,9 @@ class DataHandler: NSObject {
             getCurrentState().maxUID = mail.uid
         }
         mails.append(mail)
+        
+       
+        
         return mail
     }
 
@@ -393,26 +400,11 @@ class DataHandler: NSObject {
         return contacts
     }
     
-    func getRecords() -> [KeyRecord] {
+    private func getRecords() -> [KeyRecord] {
         var records = [KeyRecord]()
         let mails = readMails()
         for m in mails {
-            
-            var found = false
-            var usedRecord: KeyRecord? = nil
-            for r in records {
-                if r.addNewMail(m) {
-                    found = true
-                    usedRecord = r
-                    break
-                }
-            }
-            if !found {
-                usedRecord = KeyRecord(mail: m)
-                records.append(usedRecord!)
-               
-            }
-    
+            isInRecords(m,records: &records)
         }
         
         for r in records {
@@ -422,6 +414,29 @@ class DataHandler: NSObject {
         records.sortInPlace()
         return records
     }
+    
+    private func isInRecords(m:Mail, inout records: [KeyRecord] ){
+    
+        var found = false
+        var usedRecord: KeyRecord? = nil
+        for r in records {
+            if r.addNewMail(m) {
+                found = true
+                usedRecord = r
+                break
+            }
+        }
+        if !found {
+            usedRecord = KeyRecord(mail: m)
+            records.append(usedRecord!)
+        }
+
+    }
+    
+    private func isInReceiverRecords(m: Mail){
+        isInRecords(m, records: &receiverRecords)
+    }
+    
     
     func getCurrentState() -> State {
         let result = findAll("State")
