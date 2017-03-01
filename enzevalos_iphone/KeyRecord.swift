@@ -71,10 +71,19 @@ public class KeyRecord: Record{
   
     
     public init(mail: Mail){
-        self.key = mail.from.keyID
+        if(mail.isSecure){
+            self.key = mail.from.keyID
+        }
+        else{
+            self.key = nil
+        }
         self.ezContact = mail.from.contact
         self.ezContact.records.append(self)
-        self.addNewMail(mail)
+        mails.append(mail)
+        mails.sortInPlace()
+        addNewAddress(mail.from)
+       
+
     }
     
     
@@ -100,11 +109,10 @@ public class KeyRecord: Record{
     
     public func addNewMail(mail: Mail)->Bool {
         //TODO: signed only mails are dropped ??
-        if mail.isEncrypted {
-            print("Mail receiver key: \(mail.from.keyID) records key: \(self.key)")
-
-        }
-        if mail.isSecure{
+       
+        
+        
+        if mail.isSecure && self.hasKey{
             print("Mail receiver key: \(mail.from.keyID) records key: \(self.key)")
             if mail.from.keyID == self.key{
                 mails.append(mail)
@@ -118,6 +126,7 @@ public class KeyRecord: Record{
         else if mail.isSecure && !self.hasKey || !mail.isSecure && self.hasKey{
             return false
         }
+        
         if ezContact.getAddress(mail.from.address) != nil {
             for m in mails {
                 if m.uid == mail.uid {
@@ -127,6 +136,8 @@ public class KeyRecord: Record{
                     break
                 }
             }
+            
+            
             mails.append(mail)
             mails.sortInPlace()
             addNewAddress(mail.from)

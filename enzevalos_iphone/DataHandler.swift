@@ -386,6 +386,8 @@ class DataHandler {
                 if let ms = c.from {
                     if ms.count > 0 {
                         contacts.append(c)
+                        let adr = c.addresses?.anyObject() as! MailAddress
+                        print("\(adr.mailAddress) #adr: \(c.addresses?.count)")
                     }
                 }
             }
@@ -422,6 +424,9 @@ class DataHandler {
         }
         if !found {
             usedRecord = KeyRecord(mail: m)
+            if(usedRecord?.addresses.count == 0){
+                print("Error: Empty record. \(m.from.address) is encrypted: \(m.isEncrypted) is secure?: \(m.isSecure)")
+            }
             records.append(usedRecord!)
         }
 

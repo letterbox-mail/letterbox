@@ -115,6 +115,7 @@ public class Mail: NSManagedObject, Comparable {
                 //check signature
                 if let correctSignature = encryption.isCorrectlySigned(self) {
                     self.isSigned = true
+                    print("From \(self.from.address) mail is signed!")
                 }
             }
 
