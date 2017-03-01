@@ -169,10 +169,11 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //LogHandler.printLogs()
         //var handler = CryptoHandler.getHandler() // <----
         
-        let path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg") // <---- PRIVATE
-        //var path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")    // <----
-        
-        
+
+        //---------------------------------------
+        //Import private Key BEGIN
+        /*
+        let path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg")        //<---- Schlüsseldatei
         let pgp = ObjectivePGP.init()
         pgp.importKeysFromFile(path!, allowDuplicates: false)
         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
@@ -181,15 +182,24 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             enc?.addKey(data, forMailAddresses: [])
         }
         catch _ {}
-        
-        //handler.pgp.importKeysFromFile(path!, allowDuplicates: false)   // <----
-        //KeyHandler.createHandler().addKey(handler.pgp.keys[0])          // <----
-        //KeyHandler.createHandler().addPrivateKey(handler.pgp.keys[0])   // <---- PRIVATE
-        //print(KeyHandler.createHandler().getKeyByAddr("jakob.bode@fu-berlin.de"))     // <----
-        
-        //print(handler.pgp.getKeysForUserID("Alice Bob <alice2005@web.de>"))
-        //InitViewController().getDefaultSettings()
-        print(AddressHandler.inContacts(""))
+        */
+        //Import private key END
+        //---------------------------------------
+        //---------------------------------------
+        //Import public Key BEGIN
+        /*
+         let path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")               //<---- Schlüsseldatei
+         let pgp = ObjectivePGP.init()
+         pgp.importKeysFromFile(path!, allowDuplicates: false)
+         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+         do {
+         let data = try pgp.keys[0].export()
+         enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])                           //<---- Emailadresse
+         }
+         catch _ {}
+        */
+        //Import public key END
+        //---------------------------------------
     }
     
     override func viewWillAppear(animated: Bool) {

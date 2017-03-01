@@ -100,7 +100,12 @@ public class KeyRecord: Record{
     
     public func addNewMail(mail: Mail)->Bool {
         //TODO: signed only mails are dropped ??
-        if mail.isSecure && self.hasKey{
+        if mail.isEncrypted {
+            print("Mail receiver key: \(mail.from.keyID) records key: \(self.key)")
+
+        }
+        if mail.isSecure{
+            print("Mail receiver key: \(mail.from.keyID) records key: \(self.key)")
             if mail.from.keyID == self.key{
                 mails.append(mail)
                 mails.sortInPlace()

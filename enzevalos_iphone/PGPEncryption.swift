@@ -333,8 +333,16 @@ class PGPEncryption : Encryption {
         return index
     }
     
-    //TODO
     func hasKey(enzContact: EnzevalosContact) -> Bool {
+        if let addrs = enzContact.addresses {
+            if let mailaddrs : [Mail_Address] = (addrs.allObjects as? [Mail_Address]) {
+                for mail in mailaddrs {
+                    if self.hasKey(mail.address) {
+                        return true
+                    }
+                }
+            }
+        }
         return false
     }
     
