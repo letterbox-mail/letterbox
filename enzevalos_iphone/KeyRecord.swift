@@ -17,8 +17,7 @@ public class KeyRecord: Record{
      Each mail is signed with the key or unsigned. The contact contains the ''from-'' mail-addresses of signed mails (or unsigned).
      */
     
-    
-    let key: KeyWrapper?
+    let key: String?
     
     public var addresses: [MailAddress] = [MailAddress]()
     
@@ -32,6 +31,12 @@ public class KeyRecord: Record{
     }
     
     public var isVerified: Bool {
+        if let key = self.key{
+            if let keywrapper = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)?.getKey(key){
+                return keywrapper.verified
+            }
+        
+        }
         return false
     }
     
@@ -40,18 +45,17 @@ public class KeyRecord: Record{
     
     
     public var ezContact: EnzevalosContact
-       
-    
-    public var cnContact: CNContact?{
+
+    public var cnContact: CNContact? {
         get{
             return ezContact.cnContact
         }
     }
     
-    public var color: UIColor{
-        get{
-            return ezContact.getColor()
-        }
+    public init(contact: EnzevalosContact, key: String?){
+        self.ezContact = contact
+        self.key = key
+        self.mails = [Mail] ()
     }
     
     public var image: UIImage{
@@ -59,22 +63,27 @@ public class KeyRecord: Record{
             return ezContact.getImageOrDefault()
         }
     }
-    
-    
-    public init(contact: EnzevalosContact, key: KeyWrapper?){
-        self.key = key
-        self.ezContact = contact
-
-        self.ezContact.records.append(self)
-
+    public var color: UIColor {
+        get{
+            return ezContact.getColor()
+        }
     }
+  
     
     public init(mail: Mail){
-        //TODO: KEY?????
-        self.key = nil
+        if(mail.isSecure){
+            self.key = mail.from.keyID
+        }
+        else{
+            self.key = nil
+        }
         self.ezContact = mail.from.contact
         self.ezContact.records.append(self)
-        self.addNewMail(mail)
+        mails.append(mail)
+        mails.sortInPlace()
+        addNewAddress(mail.from)
+       
+
     }
     
     
@@ -99,21 +108,40 @@ public class KeyRecord: Record{
     }
     
     public func addNewMail(mail: Mail)->Bool {
-        if mail.isEncrypted == self.hasKey { //TODO: FIX ME!
-            if ezContact.getAddress(mail.from.address) != nil {
-                for m in mails {
-                    if m.uid == mail.uid {
-                        return true
-                    }
-                    else if m.uid < mail.uid {
-                        break
-                    }
-                }
+        //TODO: signed only mails are dropped ??
+       
+        
+        
+        if mail.isSecure && self.hasKey{
+            print("Mail receiver key: \(mail.from.keyID) records key: \(self.key)")
+            if mail.from.keyID == self.key{
                 mails.append(mail)
                 mails.sortInPlace()
                 addNewAddress(mail.from)
                 return true
             }
+            return false
+            
+        }
+        else if mail.isSecure && !self.hasKey || !mail.isSecure && self.hasKey{
+            return false
+        }
+        
+        if ezContact.getAddress(mail.from.address) != nil {
+            for m in mails {
+                if m.uid == mail.uid {
+                    return true
+                }
+                else if m.uid < mail.uid {
+                    break
+                }
+            }
+            
+            
+            mails.append(mail)
+            mails.sortInPlace()
+            addNewAddress(mail.from)
+            return true
         }
         return false
     }
@@ -122,9 +150,7 @@ public class KeyRecord: Record{
         return ezContact.getImageOrDefault()
     }
     
-    public func getColor() -> UIColor {
-        return ezContact.getColor()
-    }
+    
 }
 
 

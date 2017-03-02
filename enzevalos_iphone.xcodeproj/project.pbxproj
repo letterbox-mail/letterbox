@@ -29,6 +29,8 @@
 		9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */; };
 		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
 		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
+		A1182C571E30F45C0024D389 /* PGPKeyManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1182C561E30F45C0024D389 /* PGPKeyManagement.swift */; };
+		A1230BD71E2F8818006642C7 /* PGPEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1230BD61E2F8818006642C7 /* PGPEncryption.swift */; };
 		A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
 		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
 		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
@@ -70,17 +72,21 @@
 		A135CF231DD4BDD1007E3C29 /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFD1DD4BDD1007E3C29 /* PGPUserAttributePacket.m */; };
 		A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */; };
 		A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */; };
+		A1416C191E268EFB001809F3 /* EncryptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1416C181E268EFB001809F3 /* EncryptionHandler.swift */; };
+		A1416C1B1E268F1A001809F3 /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1416C1A1E268F1A001809F3 /* Encryption.swift */; };
+		A15B7BE41E29306D0024E499 /* EnzevalosEncryptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15B7BE31E29306D0024E499 /* EnzevalosEncryptionHandler.swift */; };
+		A15B7BE61E2931AD0024E499 /* KeyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15B7BE51E2931AD0024E499 /* KeyWrapper.swift */; };
+		A15B7BE81E2934CB0024E499 /* EncryptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15B7BE71E2934CB0024E499 /* EncryptionType.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
-		A17A18F51DDCB5580058D934 /* KeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F41DDCB5580058D934 /* KeyHandler.swift */; };
-		A17A18F71DDCBE530058D934 /* KeyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F61DDCBE530058D934 /* KeyWrapper.swift */; };
+		A172F90D1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A172F90C1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift */; };
+		A17A18F71DDCBE530058D934 /* PGPKeyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F61DDCBE530058D934 /* PGPKeyWrapper.swift */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
+		A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
 		A18BCB3B1DDF3EFD004D81D8 /* test in Resources */ = {isa = PBXBuildFile; fileRef = A18BCB3A1DDF3EFD004D81D8 /* test */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
-		A1B8C0181DD5CDC60044A358 /* CryptoHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
-		A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C09FC71DF052FF0006B783 /* importKeys.swift */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
@@ -160,7 +166,9 @@
 		9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A1123E6B1DA682850069551C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A1182C561E30F45C0024D389 /* PGPKeyManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPKeyManagement.swift; sourceTree = "<group>"; };
 		A11E733B1E019AE3006574DD /* InitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitViewController.swift; sourceTree = "<group>"; };
+		A1230BD61E2F8818006642C7 /* PGPEncryption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPEncryption.swift; sourceTree = "<group>"; };
 		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = enzevalos_iphone.xcdatamodel; sourceTree = "<group>"; };
@@ -245,18 +253,23 @@
 		A135CEFF1DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeSubpacket.m; sourceTree = "<group>"; };
 		A135CF001DD4BDD1007E3C29 /* PGPUserIDPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserIDPacket.h; sourceTree = "<group>"; };
 		A135CF011DD4BDD1007E3C29 /* PGPUserIDPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserIDPacket.m; sourceTree = "<group>"; };
+		A1416C181E268EFB001809F3 /* EncryptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionHandler.swift; sourceTree = "<group>"; };
+		A1416C1A1E268F1A001809F3 /* Encryption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
+		A15B7BE31E29306D0024E499 /* EnzevalosEncryptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnzevalosEncryptionHandler.swift; sourceTree = "<group>"; };
+		A15B7BE51E2931AD0024E499 /* KeyWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyWrapper.swift; sourceTree = "<group>"; };
+		A15B7BE71E2934CB0024E499 /* EncryptionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionType.swift; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
-		A17A18F41DDCB5580058D934 /* KeyHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyHandler.swift; sourceTree = "<group>"; };
-		A17A18F61DDCBE530058D934 /* KeyWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyWrapper.swift; sourceTree = "<group>"; };
+		A172F90C1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPTemporaryDecryptionObject.swift; sourceTree = "<group>"; };
+		A17A18F61DDCBE530058D934 /* PGPKeyWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPKeyWrapper.swift; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JakobBode.asc; sourceTree = "<group>"; };
+		A17BEB371E55E21700403EBE /* PGPTemporaryDecryptionObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PGPTemporaryDecryptionObject.h; sourceTree = "<group>"; };
+		A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPTemporaryDecryptionObject.m; sourceTree = "<group>"; };
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
 		A18BCB3A1DDF3EFD004D81D8 /* test */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jabo.asc; sourceTree = "<group>"; };
-		A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHandler.swift; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-private.gpg"; sourceTree = "<group>"; };
-		A1C09FC71DF052FF0006B783 /* importKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = importKeys.swift; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -370,6 +383,24 @@
 			name = init;
 			sourceTree = "<group>";
 		};
+		A1230BD81E2F881E006642C7 /* Encryption */ = {
+			isa = PBXGroup;
+			children = (
+				A15B7BE71E2934CB0024E499 /* EncryptionType.swift */,
+				A1416C181E268EFB001809F3 /* EncryptionHandler.swift */,
+				A15B7BE31E29306D0024E499 /* EnzevalosEncryptionHandler.swift */,
+				A1182C561E30F45C0024D389 /* PGPKeyManagement.swift */,
+				A1416C1A1E268F1A001809F3 /* Encryption.swift */,
+				A1230BD61E2F8818006642C7 /* PGPEncryption.swift */,
+				A17A18F61DDCBE530058D934 /* PGPKeyWrapper.swift */,
+				A15B7BE51E2931AD0024E499 /* KeyWrapper.swift */,
+				A172F90C1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift */,
+				A17BEB371E55E21700403EBE /* PGPTemporaryDecryptionObject.h */,
+				A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */,
+			);
+			name = Encryption;
+			sourceTree = "<group>";
+		};
 		A135266C1D955BDF00D3BFE1 = {
 			isa = PBXGroup;
 			children = (
@@ -404,15 +435,13 @@
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
 				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				476142071E07E52B00FD5E4F /* Theme.swift */,
+				A1230BD81E2F881E006642C7 /* Encryption */,
 				A1EB05871D956879008659C1 /* AddressHandler.swift */,
-				A1C09FC71DF052FF0006B783 /* importKeys.swift */,
 				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
-				A17A18F61DDCBE530058D934 /* KeyWrapper.swift */,
 				476373C11E09BA88004D5EFE /* UserData.swift */,
 				F1984D711E1D327200804E1E /* IconsStyleKit.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
-				A17A18F41DDCB5580058D934 /* KeyHandler.swift */,
 				472F39871E1FA377009260FB /* KeyRecord.swift */,
 				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
 				472F398F1E252470009260FB /* CNMailAddressesExtension.swift */,
@@ -543,12 +572,11 @@
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
 				F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */,
-				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
 				A19C12461DE602FF007F72E7 /* jabo.asc */,
 				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
 				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
-				A1B8C0171DD5CDC60044A358 /* CryptoHandler.swift */,
 				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
+				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
 				A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */,
 				A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */,
@@ -878,8 +906,10 @@
 				472F398A1E251787009260FB /* Contact.swift in Sources */,
 				472F39861E1FA34E009260FB /* Record.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
+				A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
+				A15B7BE61E2931AD0024E499 /* KeyWrapper.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				A135CF121DD4BDD1007E3C29 /* PGPPacketFactory.m in Sources */,
 				A135CF111DD4BDD1007E3C29 /* PGPPacket.m in Sources */,
@@ -888,12 +918,12 @@
 				A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
 				A135CF231DD4BDD1007E3C29 /* PGPUserAttributePacket.m in Sources */,
+				A1230BD71E2F8818006642C7 /* PGPEncryption.swift in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
 				F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */,
 				A135CF221DD4BDD1007E3C29 /* PGPUser.m in Sources */,
 				A135CF031DD4BDD1007E3C29 /* NSData+PGPUtils.m in Sources */,
 				472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */,
-				A17A18F51DDCB5580058D934 /* KeyHandler.swift in Sources */,
 				A135CF171DD4BDD1007E3C29 /* PGPPublicKeyRSA.m in Sources */,
 				A135CF181DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m in Sources */,
 				472F39881E1FA377009260FB /* KeyRecord.swift in Sources */,
@@ -920,23 +950,24 @@
 				A135CF041DD4BDD1007E3C29 /* NSValue+PGPUtils.m in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
-				A1C09FC81DF052FF0006B783 /* importKeys.swift in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
+				A1416C191E268EFB001809F3 /* EncryptionHandler.swift in Sources */,
 				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,
 				A135CF1F1DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
 				A135CF211DD4BDD1007E3C29 /* PGPTrustPacket.m in Sources */,
 				472F39821E1E5347009260FB /* Mail_Address+CoreDataProperties.swift in Sources */,
 				476373C21E09BA88004D5EFE /* UserData.swift in Sources */,
 				A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */,
-				A17A18F71DDCBE530058D934 /* KeyWrapper.swift in Sources */,
+				A17A18F71DDCBE530058D934 /* PGPKeyWrapper.swift in Sources */,
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
 				472F39731E1D09C4009260FB /* State+CoreDataClass.swift in Sources */,
 				A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */,
+				A1416C1B1E268F1A001809F3 /* Encryption.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
+				A15B7BE41E29306D0024E499 /* EnzevalosEncryptionHandler.swift in Sources */,
 				472F397C1E1D0B0B009260FB /* Mail+CoreDataProperties.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				A135CF131DD4BDD1007E3C29 /* PGPPKCSEme.m in Sources */,
-				A1B8C0181DD5CDC60044A358 /* CryptoHandler.swift in Sources */,
 				A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */,
 				A135CF151DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
 				472F39741E1D09C4009260FB /* State+CoreDataProperties.swift in Sources */,
@@ -945,6 +976,7 @@
 				A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */,
 				A135CF161DD4BDD1007E3C29 /* PGPPublicKeyPacket.m in Sources */,
 				A135CF0B1DD4BDD1007E3C29 /* PGPKey.m in Sources */,
+				A1182C571E30F45C0024D389 /* PGPKeyManagement.swift in Sources */,
 				A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */,
 				472F39701E14F75C009260FB /* DataHandler.swift in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
@@ -953,6 +985,7 @@
 				A135CF101DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
 				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
+				A15B7BE81E2934CB0024E499 /* EncryptionType.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
 				A135CF091DD4BDD1007E3C29 /* PGPCryptoUtils.m in Sources */,
 				A135CF1A1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m in Sources */,
@@ -960,6 +993,7 @@
 				A135CF201DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
 				472F397E1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */,
 				A135CF1B1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.m in Sources */,
+				A172F90D1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift in Sources */,
 				A135CF071DD4BDD1007E3C29 /* PGPCompressedPacket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1141,7 +1175,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1190,7 +1224,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

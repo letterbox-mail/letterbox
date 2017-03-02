@@ -77,7 +77,8 @@ class AddressHandler {
         if addresses.contains((s as String).lowercaseString){
             return true
         }
-        return KeyHandler.getHandler().addrHasKey(s as String)
+        return EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress((s as String).lowercaseString))//KeyHandler.getHandler().addrHasKey(s as String)//inContacts(s as String)
+        //return false
     }
     
     static func inContacts( name : String) -> Bool{

@@ -12,10 +12,10 @@ import CoreData
 import UIKit
 import Contacts
 
-
-
 @objc(EnzevalosContact)
 public class EnzevalosContact: NSManagedObject, Contact, Comparable {
+    
+    //addKeyRecords
     
     public var name:String{
         get{
@@ -34,7 +34,6 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
                 }
             }
             return false
-            
         }
     }
     

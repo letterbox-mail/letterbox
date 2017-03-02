@@ -17,6 +17,8 @@ extension Mail {
     }
 
     @NSManaged public var body: String?
+    @NSManaged public var visibleBody: String?
+    @NSManaged public var decryptedBody: String?
     @NSManaged public var date: NSDate
     public var flag: MCOMessageFlag{
         set {
@@ -38,6 +40,7 @@ extension Mail {
     }
     @NSManaged public var isEncrypted: Bool
     @NSManaged public var isSigned: Bool
+    @NSManaged public var isCorrectlySigned: Bool
     @NSManaged public var unableToDecrypt: Bool
     @NSManaged public var subject: String?
     public var trouble: Bool{
