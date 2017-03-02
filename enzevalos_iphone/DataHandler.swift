@@ -144,7 +144,6 @@ class DataHandler {
     // Save, load, search
     
     private func find(entityName: String, type:String, search: String) -> [AnyObject]?{
-      //  print("Start find: \(entityName) for \(type) \(search)")
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         fReq.predicate = NSPredicate(format:"\(type) CONTAINS '\(search)' ")
         let result: [AnyObject]?
@@ -154,12 +153,10 @@ class DataHandler {
             result = nil
             return nil
         }
-       // print("### finish find #####")
         return result
     }
     
     private func findNum (entityName: String, type:String, search: UInt64) -> [AnyObject]?{
-      //  print("Start find: \(entityName) for \(type) \(search)")
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         fReq.predicate = NSPredicate(format:"\(type) = %D ",search)
         let result: [AnyObject]?
@@ -192,7 +189,6 @@ class DataHandler {
         if search == nil || search!.count == 0 {
             mail_address =  NSEntityDescription.insertNewObjectForEntityForName("Mail_Address",inManagedObjectContext: managedObjectContext) as! Mail_Address
             mail_address.address = address
-            //mail_address.keyID = nil
             mail_address.prefer_encryption = false
         }
         else {
@@ -386,13 +382,10 @@ class DataHandler {
                 if let ms = c.from {
                     if ms.count > 0 {
                         contacts.append(c)
-                        let adr = c.addresses?.anyObject() as! MailAddress
-                        print("\(adr.mailAddress) #adr: \(c.addresses?.count)")
                     }
                 }
             }
         }
-        print("All contacts: \(contacts.count)")
         return contacts
     }
     
@@ -402,11 +395,9 @@ class DataHandler {
         for m in mails {
             isInRecords(m,records: &records)
         }
-        
         for r in records {
             r.mails.sortInPlace()
         }
-        
         records.sortInPlace()
         return records
     }
@@ -424,9 +415,6 @@ class DataHandler {
         }
         if !found {
             usedRecord = KeyRecord(mail: m)
-            if(usedRecord?.addresses.count == 0){
-                print("Error: Empty record. \(m.from.address) is encrypted: \(m.isEncrypted) is secure?: \(m.isSecure)")
-            }
             records.append(usedRecord!)
         }
 
