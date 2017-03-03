@@ -337,16 +337,17 @@ class DataHandler {
             mail.isEncrypted = false
             mail.trouble = false
 
+            handleFromAddress(sender, fromMail: mail)
+            handleToAddresses(receivers, mail: mail)
+            handleCCAddresses(cc, mail: mail)
+            
             mail.unableToDecrypt = false
             mail.decryptIfPossible()
         }
         else {
             return finding![0] as! Mail
         }
-        handleFromAddress(sender, fromMail: mail)
-        handleToAddresses(receivers, mail: mail)
-        handleCCAddresses(cc, mail: mail)
-        
+            
         save()
         if getCurrentState().maxUID < mail.uid {
             getCurrentState().maxUID = mail.uid
