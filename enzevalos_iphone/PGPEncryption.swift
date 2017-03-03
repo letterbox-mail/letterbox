@@ -128,9 +128,9 @@ class PGPEncryption : Encryption {
             var data: NSData?
             var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
             var maybeUsedKeys: [String] = []
-            let signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            var signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
             signed[0] = false
-            let valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            var valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
             valid[0] = false
             do {
                 data = temp.plaintextData
@@ -153,6 +153,7 @@ class PGPEncryption : Encryption {
                         if let key = self.keyManager.getKey(maybeUsedKey) {
                             let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: nil)[0])
                             if done {
+                                print("Set signed to: \(signed.memory.boolValue)")
                                 mail.isSigned = signed.memory.boolValue
                                 mail.isCorrectlySigned = valid.memory.boolValue
                             }
