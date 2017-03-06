@@ -36,8 +36,11 @@
 "Receive" = "Receive";
 "ReceiveError" = "An error occured"; //mehr spezifizieren?
 "ReceiveDamagedInfo" = "Something is wrong with this message. It might have been tempered with.";
-"ReceiveSecureInfo" = "This message was properly closed. It can not be read by third parties. The identity of the sender has beed checked.";
-"ReceiveInsecureInfo" = "This message was not encrypted so it was possible for everyone on the way to read its content. The identity of the sender can not be ensured.";
+"ReceiveSecureInfo" = "This message was properly closed. It cannot be read by third parties. The identity of the sender has beed checked.";
+"ReceiveInsecureInfo" = "This message was not encrypted so it was possible for everyone on the way to read its content. The identity of the sender can not verified and the content of the message might have been manipulated.";
+"ReceiveInsecureInfoVerified" = "This message was not encrypted so it was possible for everyone on the way to read its content. The identity of the sender was verified and the content of the message was not changed.";
+"ReceiveInsecureInfoEncrypted" = "This message was encrypted, but the identity of the sender could not be verified.";
+"ReceiveInsecureInfoDecryptionFailed" = "This message is encrypted, but it could not be decrypted. This may be because an old key was used or something shady might have happened.";
 "Refresh" = "Refresh";
 "Reply" = "Reply";
 "SaveToDrafts" = "Save to drafts";

@@ -168,6 +168,15 @@ class ReadViewController: UITableViewController {
             } else if m.isSecure {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/letter"
+            } else if m.isCorrectlySigned {
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .Alert)
+                url = "https://enzevalos.de/infos/postcard_verified"
+            } else if m.isEncrypted && !m.unableToDecrypt {
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoEncrypted", comment: "Postcard infotext"), preferredStyle: .Alert)
+                url = "https://enzevalos.de/infos/postcard_encrypted"
+            } else if m.isEncrypted && m.unableToDecrypt {
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoDecryptionFailed", comment: "Postcard infotext"), preferredStyle: .Alert)
+                url = "https://enzevalos.de/infos/postcard_decryption_failed"
             } else {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/postcard"
