@@ -77,13 +77,35 @@ public class KeyRecord: Record{
         else{
             self.key = nil
         }
-        self.ezContact = mail.from.contact
-        self.ezContact.records.append(self)
         mails.append(mail)
         mails.sortInPlace()
+        self.ezContact = mail.from.contact
         addNewAddress(mail.from)
-       
-
+        //if(!isInRecords(ezContact.records)){
+            // self.ezContact.records.append(self)
+        //}
+    }
+    
+    
+    private func isInRecords(records: [KeyRecord])->Bool{
+        for r in records{
+            if (matchAddresses(r) && r.hasKey == self.hasKey && r.key == self.key){
+                return true
+            }
+        }
+        return false
+    }
+    
+    
+    private func matchAddresses(record: KeyRecord)-> Bool{
+        for adr1 in record.addresses{
+            for adr2 in self.addresses{
+                if adr1.mailAddress ==  adr2.mailAddress{
+                    return true
+                }
+            }
+        }
+        return false
     }
     
     
@@ -94,7 +116,6 @@ public class KeyRecord: Record{
         print("Name: \(ezContact.displayname) | State: \(hasKey) | #Mails: \(mails.count)")
         print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.from.address) | date: \(mails.first?.date.description) ")
         print("subj: \(mails.first?.subject?.capitalizedString)")
-    
     }
 
     public func addNewAddress(adr: MailAddress) -> Bool {
@@ -113,7 +134,6 @@ public class KeyRecord: Record{
         
         
         if mail.isSecure && self.hasKey{
-            print("Mail receiver key: \(mail.from.keyID) records key: \(self.key)")
             if mail.from.keyID == self.key{
                 mails.append(mail)
                 mails.sortInPlace()

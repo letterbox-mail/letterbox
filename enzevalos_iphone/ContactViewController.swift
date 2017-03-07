@@ -115,7 +115,7 @@ class ContactViewController: UITableViewController, CNContactViewControllerDeleg
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if contact?.ezContact.records.count > 2 {
+        if contact?.ezContact.records.count > 1{
             return 4
         }
         return 3

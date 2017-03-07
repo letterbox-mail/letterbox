@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Contacts
 
+
 class DataHandler {
     static let handler: DataHandler = DataHandler()
     
@@ -21,7 +22,7 @@ class DataHandler {
     private let MaxRecords = 50
     private let MaxMailsPerRecord = 20
     
-    var receiverRecords = [KeyRecord]()
+    var receiverRecords: [KeyRecord]
     
     var maxUID:UInt64 {
         get {
@@ -78,8 +79,8 @@ class DataHandler {
         } catch {
             fatalError("Error migrating store: \(error)")
         }
+        receiverRecords = [KeyRecord] ()
         receiverRecords = self.getRecords()
-        print("Finish init of DataHandler")
     }
     
     func terminate() {
@@ -353,7 +354,7 @@ class DataHandler {
             getCurrentState().maxUID = mail.uid
         }
         mails.append(mail)
-        
+        isInReceiverRecords(mail)
        
         
         return mail

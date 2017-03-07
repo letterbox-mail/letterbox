@@ -302,7 +302,7 @@ class MailHandler {
                         
                         let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags)
                         
-                        if mail.isEncrypted{
+                        if false && mail.isEncrypted{
                             print("----------------")
                             print("Encrypted mail! Is Secure?: \(mail.isSecure)")
                             print("Mail is encrypted? \(mail.isEncrypted) Can decrypt? \(!mail.unableToDecrypt) Is signed? \(mail.isSigned) Has no trouble? \(!mail.trouble)")

@@ -143,7 +143,6 @@ class PGPEncryption : Encryption {
                         mail.decryptedWithOldPrivateKey = true
                     }
                 }
-                print("Decrypt and sign decrypted data: \(data)")
                 if let unwrappedData = data {
                     mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
                     if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(mail.from.address), theirKeyID = temp.incompleteKeyID {
@@ -153,7 +152,6 @@ class PGPEncryption : Encryption {
                         if let key = self.keyManager.getKey(maybeUsedKey) {
                             let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: nil)[0])
                             if done {
-                                print("Set signed to: \(signed.memory.boolValue)")
                                 mail.isSigned = signed.memory.boolValue
                                 mail.isCorrectlySigned = valid.memory.boolValue
                             }
