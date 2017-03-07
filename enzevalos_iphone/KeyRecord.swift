@@ -86,20 +86,35 @@ public class KeyRecord: Record{
         //}
     }
     
+    public static func deleteRecordFromRecordArray(records: [KeyRecord], delRecord: KeyRecord)->[KeyRecord]{
+        var myrecords = [KeyRecord](records)
+        let index = indexInRecords(myrecords,record: delRecord)
+        if index >= 0{
+            myrecords.removeAtIndex(index)
+        }
+        return myrecords
+    }
+    
+    public static func indexInRecords(records: [KeyRecord], record: KeyRecord)-> Int{
+        for (index, r) in records.enumerate(){
+            if (matchAddresses(r, record2: record) && r.hasKey == record.hasKey && r.key == record.key){
+                return index
+            }
+        }
+        return -1
+    }
     
     private func isInRecords(records: [KeyRecord])->Bool{
-        for r in records{
-            if (matchAddresses(r) && r.hasKey == self.hasKey && r.key == self.key){
-                return true
-            }
+        if KeyRecord.indexInRecords(records, record: self) >= 0{
+            return true
         }
         return false
     }
     
-    
-    private func matchAddresses(record: KeyRecord)-> Bool{
-        for adr1 in record.addresses{
-            for adr2 in self.addresses{
+
+    private static func matchAddresses(record1: KeyRecord, record2: KeyRecord)-> Bool{
+        for adr1 in record1.addresses{
+            for adr2 in record2.addresses{
                 if adr1.mailAddress ==  adr2.mailAddress{
                     return true
                 }
