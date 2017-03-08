@@ -68,8 +68,10 @@
 "LastUpdate" = "Last Update";
 "notVerified" = "Contact is not verified jet";
 "noEncryption" = "Contact is not jet using encryption";
+"otherEncryption" = "This is the unsafe tray with this Contact";
 "Verified" = "Contact is verified";
 "verifyNow" = "Verify now";
+"toEncrypted" = "Switch to secure tray";
 "invite" = "Invide contact to use encryption";
 "discard" = "Discard message?";
 "discardText" = "The information you have entered will be lost.";

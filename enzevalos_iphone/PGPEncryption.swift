@@ -128,9 +128,9 @@ class PGPEncryption : Encryption {
             var data: NSData?
             var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
             var maybeUsedKeys: [String] = []
-            let signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            var signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
             signed[0] = false
-            let valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            var valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
             valid[0] = false
             do {
                 data = temp.plaintextData
@@ -143,7 +143,6 @@ class PGPEncryption : Encryption {
                         mail.decryptedWithOldPrivateKey = true
                     }
                 }
-                print("Decrypt and sign decrypted data: \(data)")
                 if let unwrappedData = data {
                     mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
                     if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(mail.from.address), theirKeyID = temp.incompleteKeyID {

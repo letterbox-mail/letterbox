@@ -197,7 +197,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
          enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])                           //<---- Emailadresse
          }
          catch _ {}
-        */
+         */
         //Import public key END
         //---------------------------------------
     }

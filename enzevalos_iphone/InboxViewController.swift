@@ -103,6 +103,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
         contacts = DataHandler.handler.receiverRecords
+
         if lastUpdate == nil || NSDate().timeIntervalSinceDate(lastUpdate!) > 30 {
             self.refreshControl?.beginRefreshingManually()
         }
