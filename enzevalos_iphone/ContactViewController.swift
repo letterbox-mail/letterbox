@@ -32,6 +32,7 @@ class ContactViewController: UITableViewController {
 //            self.title = CNContactFormatter.stringFromContact(con.ezContact.cnContact, style: .FullName)
 
             prepareContactSheet()
+
             otherRecords = con.ezContact.records.filter({ $0 != contact }) // TODO: add unencrypted records to filter
         }
     }
@@ -275,7 +276,7 @@ class ContactViewController: UITableViewController {
 }
 
 extension ContactViewController: CNContactViewControllerDelegate {
-    
+
 }
 
 extension ContactViewController: UINavigationControllerDelegate {
