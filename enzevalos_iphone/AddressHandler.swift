@@ -77,7 +77,8 @@ class AddressHandler {
         if addresses.contains((s as String).lowercaseString){
             return true
         }
-        return KeyHandler.getHandler().addrHasKey(s as String)
+        return EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress((s as String).lowercaseString))//KeyHandler.getHandler().addrHasKey(s as String)//inContacts(s as String)
+        //return false
     }
     
     static func inContacts( name : String) -> Bool{
@@ -157,8 +158,7 @@ class AddressHandler {
     }
     
     static func findContact(econtact: EnzevalosContact)-> [CNContact]{
-        var result: [CNContact]
-        result = [CNContact]()
+        var result = [CNContact]()
         if let identifier = econtact.cnidentifier {
             // 1. Look up identifier string
             result = getContactByID(identifier)
@@ -166,7 +166,13 @@ class AddressHandler {
         if result.count == 0{
             if let name = econtact.displayname{
                 // 2. look for name
-                result = getContact(name)
+                let query = getContact(name)
+                for res in query{
+                    if (proveMatching(res, addresses: econtact.getMailAddresses())){
+                        result.append(res)
+                    }
+                }
+                
             }
         }
         if result.count == 0 {
@@ -175,6 +181,25 @@ class AddressHandler {
         }
         return result
     }
+    
+    
+    static func proveMatching(result: CNContact, addresses: [MailAddress])-> Bool{
+        var match: Bool = false
+        for email in result.emailAddresses{
+            for adr in addresses{
+                let adrRest = email.value as! String
+                if adrRest.lowercaseString == adr.mailAddress.lowercaseString {
+                    match = true
+                    break
+                }
+            }
+            if match{
+                break
+            }
+        }
+        return match
+    }
+    
     
     static func contactByEmail(mailaddreses: [MailAddress]) -> [CNContact] {
         var contacts: [CNContact] = []

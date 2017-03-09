@@ -15,6 +15,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 5, width: 200, height: 45))
     @IBOutlet weak var button: UIBarButtonItem!
+    @IBOutlet weak var iconButton: UIButton!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var toText: VENTokenField!
     @IBOutlet weak var toHeight: NSLayoutConstraint!
@@ -37,7 +38,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     @IBOutlet weak var seperator3Leading: NSLayoutConstraint!
     @IBOutlet weak var textViewLeading: NSLayoutConstraint!
     
-    
     var keyboardOpened = false
     var keyboardY : CGFloat = 0
     var reducedSize : CGFloat = 0
@@ -51,20 +51,14 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     var recognizer : UIGestureRecognizer = UIGestureRecognizer.init()
     
     var answerTo: Mail? = nil
-
+    var toField: String? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataDelegate = VENDataDelegate(changeFunc: self.editName)
+        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact)
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
-        imageView.contentMode = .ScaleAspectFit
-        imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90")!
-        setAnimation(false)
-        self.navigationItem.titleView = imageView
-        //recognizer = UIGestureRecognizer(target: self, action: #selector(self.tapped(_:)))
-        //self.view.addGestureRecognizer(recognizer)
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.iconButton(_:))))
-        imageView.userInteractionEnabled = true
+        setAnimation()
         
         textView.delegate = self
         textView.font = UIFont.systemFontOfSize(17)
@@ -72,6 +66,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label")+": "
         
+        iconButton.addSubview(AnimatedSendIcon())
         toText.delegate = dataDelegate
         toText.dataSource = dataDelegate
         toText.inputTextFieldKeyboardType = UIKeyboardType.EmailAddress
@@ -94,7 +89,10 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         toText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         ccText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
         
-        if answerTo != nil {
+        if let to = toField {
+            let ezCon = DataHandler.handler.getContactByAddress(to)
+            toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
+        } else if answerTo != nil {
             toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.from.address)!)
             for r in (answerTo?.getReceivers())!{
                 if r.address != UserManager.loadUserValue(Attribute.UserAddr) as! String{
@@ -128,13 +126,12 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         seperator2Height.constant = sepConst//0.5
         seperator3Height.constant = sepConst//0.5
         
-        
         seperator1Leading.constant += toText.horizontalInset
         seperator2Leading.constant += ccText.horizontalInset
         seperator3Leading.constant += subjectText.horizontalInset
         
         textViewLeading.constant = seperator3Leading.constant-4
-    
+        
         ccText.inputTextFieldKeyboardType = UIKeyboardType.EmailAddress
         scrollview.clipsToBounds = true
         
@@ -172,32 +169,53 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //LogHandler.printLogs()
         //var handler = CryptoHandler.getHandler() // <----
         
-        //let path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg") // <---- PRIVATE
-        //var path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")    // <----
-        
-        
-        
-        //handler.pgp.importKeysFromFile(path!, allowDuplicates: false)   // <----
-        //KeyHandler.createHandler().addKey(handler.pgp.keys[0])          // <----
-        //KeyHandler.createHandler().addPrivateKey(handler.pgp.keys[0])   // <---- PRIVATE
-        //print(KeyHandler.createHandler().getKeyByAddr("jakob.bode@fu-berlin.de"))     // <----
-        
-        //print(handler.pgp.getKeysForUserID("Alice Bob <alice2005@web.de>"))
-        //InitViewController().getDefaultSettings()
-        print(AddressHandler.inContacts(""))
+
+        //---------------------------------------
+        //Import private Key BEGIN
+        /*
+        let path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg")        //<---- Schlüsseldatei
+        let pgp = ObjectivePGP.init()
+        pgp.importKeysFromFile(path!, allowDuplicates: false)
+        let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+        do {
+            let data = try pgp.keys[0].export()
+            enc?.addKey(data, forMailAddresses: [])
+        }
+        catch _ {}
+        */
+        //Import private key END
+        //---------------------------------------
+        //---------------------------------------
+        //Import public Key BEGIN
+        /*
+         let path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")               //<---- Schlüsseldatei
+         let pgp = ObjectivePGP.init()
+         pgp.importKeysFromFile(path!, allowDuplicates: false)
+         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+         do {
+         let data = try pgp.keys[0].export()
+         enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])                           //<---- Emailadresse
+         }
+         catch _ {}
+         */
+        //Import public key END
+        //---------------------------------------
     }
     
+    override func viewWillAppear(animated: Bool) {
+        updateNavigationBar()
+    }
     
     override func willMoveToParentViewController(parent: UIViewController?) {
         super.willMoveToParentViewController(parent)
         
         if parent == nil {
-            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()})
+            UIView.animateWithDuration(0.3, animations: {self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor})
         }
     }
     
-    override func viewDidAppear(animated: Bool){
-        
+    @IBAction func iconButtonPressed(sender: AnyObject) {
+        iconButton(sender)
     }
     
     override func didReceiveMemoryWarning() {
@@ -215,7 +233,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         if LogHandler.logging {
             LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "tap", point: sender.locationOfTouch(sender.numberOfTouches()-1, inView: self.view), /*debugDescription: sender.view.debugDescription,*/ comment: "")
         }
-        
     }
     
     @IBAction func panned(sender: UIPanGestureRecognizer) {
@@ -246,10 +263,10 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             LogHandler.doLog(UIViewResolver.resolve(subjectText.tag), interaction: "changeText", point: CGPoint(x:0, y:0), comment: subjectText.inputText()!)
         }
         if text == "log"{
-                LogHandler.stopLogging()
-                textView.text = LogHandler.getLogs()
-                LogHandler.deleteLogs()
-                LogHandler.newLog()
+            LogHandler.stopLogging()
+            textView.text = LogHandler.getLogs()
+            LogHandler.deleteLogs()
+            LogHandler.newLog()
         }
     }
     
@@ -261,6 +278,26 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func tokenFieldDidEndEditing(tokenField: VENTokenField) {}
     
+    func showContact(email: String) {
+        let records = DataHandler.handler.getContactByAddress(email).records
+        for r in records {
+            for address in r.addresses {
+                if address.mailAddress == email && address.prefEnc == r.hasKey {
+                    performSegueWithIdentifier("showContact", sender: r)
+                    return
+                }
+            }
+        }
+        
+        //        performSegueWithIdentifier("showContact", sender: records.first)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showContact" {
+            let destinationVC = segue.destinationViewController as! ContactViewController
+            destinationVC.contact = (sender as! KeyRecord)
+        }
+    }
     
     func editName(tokenField : VENTokenField){
         if let inText = tokenField.inputText(){
@@ -279,7 +316,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
                 scrollview.scrollEnabled = true
                 tableviewHeight.constant = 0
                 if tokenField == toText {
-//toCollectionviewHeight.constant = 100
+                    //toCollectionviewHeight.constant = 100
                 }
                 else {
                     //ccCollectionviewHeight.constant = 100
@@ -302,29 +339,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             }
         }
     }
-    //HALLO
-    /*func callSegueToContact(contact: EnzevalosContact?) {
-        performSegueWithIdentifier("contactSegue", sender: contact)
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "readMailSegue" {
-            if let mail = sender as? Mail {
-                let DestinationViewController: ReadViewController = segue.destinationViewController as! ReadViewController
-                DestinationViewController.mail = mail
-            }
-        } else if segue.identifier == "mailListSegue" {
-            if let contact = sender as? EnzevalosContact {
-                let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
-                DestinationViewController.contact = contact
-            }
-        } else if segue.identifier == "contactSegue" {
-            if let contact = sender as? EnzevalosContact {
-                let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
-                DestinationViewController.contact = contact
-            }
-        }
-    }*/
     
     func searchContacts(prefix: String){
         AppDelegate.getAppDelegate().requestForAccess({access in
@@ -359,7 +373,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
                 for (i=tableDataDelegate.contacts.count; i < tableview.numberOfRowsInSection(0); i+=1){
                     indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
                     if i+1 == tableview.numberOfRowsInSection(0) {
-                            tableview.deleteRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
+                        tableview.deleteRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
                     }
                 }
                 for (i=tableview.numberOfRowsInSection(0); i < tableDataDelegate.contacts.count; i+=1){
@@ -378,7 +392,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         else {
             print("no Access!")
         }
-
     }
     
     func doContact(){
@@ -402,22 +415,21 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func newInput(tokenField: VENTokenField){
         animateIfNeeded()
-    
+        
         collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
         toCollectionview.reloadData()
         ccCollectionview.reloadData()
     }
-   
     
     func keyboardOpen(notification: NSNotification) {
         //if reducedSize == 0{
         LogHandler.doLog("keyboard", interaction: "open", point: CGPoint(x: 0,y: 0), comment: "")
-            var info = notification.userInfo!
-            let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
-            reducedSize = keyboardFrame.size.height
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        reducedSize = keyboardFrame.size.height
         
-            keyboardY = keyboardFrame.origin.y
-            //print("keyboard ", keyboardY)
+        keyboardY = keyboardFrame.origin.y
+        //print("keyboard ", keyboardY)
         
         if toText.isFirstResponder() {
             toCollectionview.reloadData()
@@ -434,11 +446,11 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             ccCollectionviewHeight.constant = 0
         }
         
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
-                
-                let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.0, self.reducedSize, 0.0)
-                self.scrollview!.contentInset = contentInsets
-            })
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            
+            let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.0, self.reducedSize, 0.0)
+            self.scrollview!.contentInset = contentInsets
+        })
     }
     
     func keyboardClose(notification: NSNotification) {
@@ -462,16 +474,16 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //print(sender.absoluteString)
         //print(recognizer.locationOfTouch(recognizer.numberOfTouches()-1, inView: imageView))
         /*for var i in 1 ..< recognizer.numberOfTouches(){
-            print(recognizer.locationOfTouch(i, inView: self.view))
-        }*/
+         print(recognizer.locationOfTouch(i, inView: self.view))
+         }*/
         let m = self.secureState
         let alert: UIAlertController
         let url: String
         if !m {
-            alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+            alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: .Alert)
             url = "https://enzevalos.org/infos/postcard"
         } else {
-            alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: UIAlertControllerStyle.Alert)
+            alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .Alert)
             url = "https://enzevalos.org/infos/letter"
         }
         alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
@@ -482,7 +494,19 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     @IBAction func pressCancel(sender: AnyObject) {
-        navigationController?.popViewControllerAnimated(true)
+        var alert: UIAlertController
+        if textView.text == "" && toText.mailTokens.count == 0 && ccText.mailTokens.count == 0 && subjectText.inputText() == "" {
+            self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            alert = UIAlertController(title: NSLocalizedString("discard", comment: "discard"), message: NSLocalizedString("discardText", comment: ""), preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "cancel"), style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .Destructive, handler: {(action:UIAlertAction!) -> Void in
+                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            }))
+            dispatch_async(dispatch_get_main_queue(), {
+                self.presentViewController(alert, animated: true, completion: nil)
+            })
+        }
     }
     
     @IBAction func pressSend(sender: AnyObject) {
@@ -499,7 +523,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             NSLog("Error sending email: \(error)")
             AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
         } else {
-            NSLog("Send!")
+            NSLog("Send successful!")
             if (self.answerTo != nil) {
                 AppDelegate.getAppDelegate().mailHandler.addFlag((self.answerTo?.uid)!, flags: MCOMessageFlag.Answered)
             }
@@ -509,9 +533,8 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     func sendCompleted() {
-        navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
-    
     
     func getContemporarySecurityState() -> Bool {
         toSecure = toText.dataSource!.isSecure!(toText)
@@ -521,29 +544,27 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func updateNavigationBar(){
         if(getContemporarySecurityState()){
-            imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")
             self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
         }
         else{
-            imageView.image = UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!
             self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
         }
     }
     
-    
-    func animateIfNeeded(secure : Bool){
-        if secure != self.secureState {
-            setAnimation(secure)
-            if secure {
-                imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!
-            }
-            else {
-                imageView.image = UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!
-            }
-            imageView.startAnimating()
-            self.secureState = secure
-        }
-    }
+    // TODO: remove if not necessary anymore
+    //    func animateIfNeeded(secure : Bool){
+    //        if secure != self.secureState {
+    //            setAnimation(secure)
+    //            if secure {
+    //                imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!
+    //            }
+    //            else {
+    //                imageView.image = UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!
+    //            }
+    //            imageView.startAnimating()
+    //            self.secureState = secure
+    //        }
+    //    }
     
     func animateIfNeeded(){
         let contemporarySecureState = getContemporarySecurityState()
@@ -551,24 +572,22 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             if(ThemeManager.animation()){
                 setAnimation()
                 if contemporarySecureState{
-                    imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!
                     UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
                         self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
-                    }, completion: nil)
+                        }, completion: nil)
                 }
                 else {
-                    imageView.image = UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!
                     UIView.animateWithDuration(0.5, delay: 0, options: [UIViewAnimationOptions.CurveEaseIn/*, UIViewAnimationOptions.Autoreverse*/] ,animations: {
                         self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
                         }, completion: {(_ : Bool) in
                             sleep(1)
                             UIView.animateWithDuration(0.5, delay: 1.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
                                 self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
-                            }, completion: nil)
+                                }, completion: nil)
                     })
-                /*UIView.animateWithDuration(0.5, delay: 1.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
-                    self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()
-                    }, completion: nil)*/
+                    /*UIView.animateWithDuration(0.5, delay: 1.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
+                     self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()
+                     }, completion: nil)*/
                 }
                 imageView.startAnimating()
             }
@@ -578,42 +597,9 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     func setAnimation(){
-        setAnimation(getContemporarySecurityState())
-    }
-    
-    //secure - state after animation
-    func setAnimation(secure : Bool){
-        var images: [UIImage] = []
-        images = []
-        
-        //after animation the letter will be shown
-        if secure{
-            //set animation images in the right order here
-            images.append(UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-006_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-005_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-004_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-003_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-002_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!)
+        if let view = iconButton.subviews.first as? AnimatedSendIcon {
+            view.switchIcons()
         }
-            
-            //Postcard will be shown after the animation
-        else{
-            //set animation images here
-            images.append(UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-002_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-003_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-004_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-005_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-006_alpha_verschoben-90.png")!)
-            images.append(UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!)
-        }
-        
-        imageView.animationImages = images
-        imageView.animationDuration = 0.75
-        imageView.animationRepeatCount = 1
     }
-    
 }
 

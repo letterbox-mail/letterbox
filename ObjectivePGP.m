@@ -27,6 +27,8 @@
 #import "PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h"
 #import "PGPMPI.h"
 
+#import "PGPTemporaryDecryptionObject.h"
+
 @implementation ObjectivePGP
 
 - (NSArray<PGPKey *> *)keys
@@ -355,6 +357,163 @@
     }
     return plaintextData;
 }
+
+//--------------------- Jakob -------------------------
+
+- (PGPTemporaryDecryptionObject *) decryptDataFirstPart:(NSData *)messageDataToDecrypt passphrase:(NSString *)passphrase integrityProtected:(BOOL*)isIntegrityProtected error:(NSError * __autoreleasing *)error
+{
+    NSData *binaryMessageToDecrypt = [self convertArmoredMessage2BinaryWhenNecessary:messageDataToDecrypt];
+    printf("jakob auskommentierte Assertion line 218 ObjectivePGP.m");
+    //NSAssert(binaryMessageToDecrypt != nil, @"Invalid input data");
+    if (!binaryMessageToDecrypt) {
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Invalid input data"}];
+        }
+        return nil;
+    }
+    
+    // parse packets
+    NSArray *packets = [self readPacketsFromData:binaryMessageToDecrypt];
+    
+    PGPSymmetricAlgorithm sessionKeyAlgorithm = 0;
+    PGPSecretKeyPacket *decryptionSecretKeyPacket = nil; // found secret key to used to decrypt
+    
+    // 1. search for valid and known (do I have specified key?) ESK
+    PGPPublicKeyEncryptedSessionKeyPacket *eskPacket = nil;
+    for (PGPPacket *packet in packets) {
+        if (packet.tag == PGPPublicKeyEncryptedSessionKeyPacketTag) {
+            PGPPublicKeyEncryptedSessionKeyPacket *pkESKPacket = (PGPPublicKeyEncryptedSessionKeyPacket *)packet;
+            PGPKey *decryptionSecretKey = [self getKeyForKeyID:pkESKPacket.keyID type:PGPKeySecret];
+            if (!decryptionSecretKey) {
+                continue;
+            }
+            
+            decryptionSecretKeyPacket = (PGPSecretKeyPacket *)[decryptionSecretKey decryptionKeyPacketWithID:pkESKPacket.keyID error:error];
+            
+            // decrypt key with passphrase if encrypted
+            if (decryptionSecretKeyPacket.isEncryptedWithPassword) {
+                
+                if (!passphrase) {
+                    if (error) {
+                        *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorPassphraseRequired userInfo:@{NSLocalizedDescriptionKey: @"Password is required for key"}];
+                    }
+                    return nil;
+                }
+                
+                decryptionSecretKeyPacket = [decryptionSecretKeyPacket decryptedKeyPacket:passphrase error:error];
+                if (error && *error) {
+                    return nil;
+                }
+            }
+            eskPacket = pkESKPacket;
+        }
+    }
+    
+    if (error && *error) {
+        return nil;
+    }
+    
+    printf("jakob auskommentierte Assertion in line 267 ObjectivePGP.m");
+    //NSAssert(eskPacket, @"Valid PublicKeyEncryptedSessionKeyPacket not found");
+    if (!eskPacket) {
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Valid PublicKeyEncryptedSessionKeyPacket not found"}];
+        }
+        return nil;
+    }
+    
+    NSAssert(decryptionSecretKeyPacket, @"Decryption secret key packet not found");
+    if (!decryptionSecretKeyPacket) {
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Unable to find secret key"}];
+        }
+        return nil;
+    }
+    
+    
+    NSData *sessionKeyData = [eskPacket decryptSessionKeyData:decryptionSecretKeyPacket sessionKeyAlgorithm:&sessionKeyAlgorithm error:error];
+    NSAssert(sessionKeyAlgorithm > 0, @"Invalid session key algorithm");
+    
+    NSAssert(sessionKeyData, @"Missing session key data");
+    if (!sessionKeyData) {
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Missing session key data"}];
+        }
+        return nil;
+    }
+    
+    // 2
+    for (PGPPacket *packet in packets) {
+        switch (packet.tag) {
+            case PGPSymmetricallyEncryptedIntegrityProtectedDataPacketTag:
+            {
+                // decrypt PGPSymmetricallyEncryptedIntegrityProtectedDataPacket
+                PGPSymmetricallyEncryptedIntegrityProtectedDataPacket *symEncryptedDataPacket = (PGPSymmetricallyEncryptedIntegrityProtectedDataPacket *)packet;
+                packets = [symEncryptedDataPacket decryptWithSecretKeyPacket:decryptionSecretKeyPacket sessionKeyAlgorithm:sessionKeyAlgorithm sessionKeyData:sessionKeyData isIntegrityProtected:isIntegrityProtected error:error];
+                if (!packets) {
+                    return nil;
+                }
+            }
+                break;
+            default:
+                
+                break;
+        }
+    }
+    
+    PGPLiteralPacket *literalPacket;
+    PGPSignaturePacket *signaturePacket;
+    //PGPOnePassSignaturePacket *onePassPacket;
+    NSData *plaintextData = nil;
+    for (PGPPacket *packet in packets)
+    {
+        switch (packet.tag) {
+            case PGPCompressedDataPacketTag:
+                //break;
+            case PGPOnePassSignaturePacketTag:
+                //onePassPacket = (PGPOnePassSignaturePacket *)packet;
+                break;
+            case PGPLiteralDataPacketTag:
+                literalPacket = (PGPLiteralPacket *)packet;
+                plaintextData = literalPacket.literalRawData;
+                break;
+            case PGPSignaturePacketTag:
+                signaturePacket = (PGPSignaturePacket *)packet;
+                break;
+            default:
+                if (error) {
+                    *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Unknown packet (expected literal or compressed)"}];
+                }
+                return nil;
+                break;
+        }
+    }
+    
+    PGPTemporaryDecryptionObject* returnValue = [[PGPTemporaryDecryptionObject alloc] init:signaturePacket plaintextData:plaintextData];
+    return returnValue;
+}
+
+- (BOOL *) decryptDataSecondPart:(PGPTemporaryDecryptionObject *)temporaryDecryptionObject verifyWithPublicKey:(PGPKey *)publicKey signed:(BOOL*)isSigned valid:(BOOL*)isValid error:(NSError * __autoreleasing *)error
+{
+    
+    BOOL _signed = temporaryDecryptionObject.signaturePacket != nil;
+    BOOL _valid = NO;
+    if (temporaryDecryptionObject.signaturePacket && publicKey)
+    {
+        _valid = [self verifyData:temporaryDecryptionObject.plaintextData withSignature:temporaryDecryptionObject.signaturePacket.packetData usingKey:publicKey error:nil];
+    }
+    if (isSigned)
+    {
+        *isSigned = _signed;
+    }
+    if (isValid)
+    {
+        *isValid = _valid;
+    }
+    return isValid;
+}
+
+//--------------------- Jakob -------------------------
 
 - (NSData *) encryptData:(NSData *)dataToEncrypt usingPublicKey:(PGPKey *)publicKey armored:(BOOL)armored error:(NSError * __autoreleasing *)error
 {

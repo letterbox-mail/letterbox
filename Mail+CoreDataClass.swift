@@ -13,25 +13,15 @@ import CoreData
 
 @objc(Mail)
 public class Mail: NSManagedObject, Comparable {
-    
-    var showMessage:Bool{
-        get{
-            return self.showMessage
-        }
-        set{
-            self.showMessage = newValue
-        }
-        
+
+    var showMessage: Bool = true
+
+    var isSecure: Bool {
+        return isEncrypted && isSigned && !unableToDecrypt && !trouble
     }
-    
-    var isSecure: Bool{
-        get{
-            return isEncrypted && isSigned && !unableToDecrypt && !trouble
-        }
-    }
-    
-    var isRead: Bool{
-        get{
+
+    var isRead: Bool {
+        get {
             let value = flag.contains(MCOMessageFlag.Seen)
             return value
         }
@@ -44,7 +34,7 @@ public class Mail: NSManagedObject, Comparable {
             DataHandler.handler.save()
         }
     }
-    
+
     var timeString: String {
         var returnString = ""
         let dateFormatter = NSDateFormatter()
@@ -52,113 +42,109 @@ public class Mail: NSManagedObject, Comparable {
         let mailTime = self.date
         let interval = NSDate().timeIntervalSinceDate(mailTime)
         switch interval {
-            case -55..<55:
-                returnString = NSLocalizedString("Now", comment: "New email")
-            case 55..<120:
-                returnString = NSLocalizedString("OneMinuteAgo", comment: "Email came one minute ago")
-            case 120..<24*60*60:
-                dateFormatter.timeStyle = .ShortStyle
-                returnString = dateFormatter.stringFromDate(mailTime)
-            case 24*60*60..<48*60*60:
-                returnString = NSLocalizedString("Yesterday", comment: "Email came yesterday")
-            case 48*60*60..<72*60*60:
-                returnString = NSLocalizedString("TwoDaysAgo", comment: "Email came two days ago")
-            default:
-                dateFormatter.dateStyle = .ShortStyle
-                returnString = dateFormatter.stringFromDate(mailTime)
-            }
+        case -55..<55:
+            returnString = NSLocalizedString("Now", comment: "New email")
+        case 55..<120:
+            returnString = NSLocalizedString("OneMinuteAgo", comment: "Email came one minute ago")
+        case 120..<24 * 60 * 60:
+            dateFormatter.timeStyle = .ShortStyle
+            returnString = dateFormatter.stringFromDate(mailTime)
+        case 24 * 60 * 60..<48 * 60 * 60:
+            returnString = NSLocalizedString("Yesterday", comment: "Email came yesterday")
+        case 48 * 60 * 60..<72 * 60 * 60:
+            returnString = NSLocalizedString("TwoDaysAgo", comment: "Email came two days ago")
+        default:
+            dateFormatter.dateStyle = .ShortStyle
+            returnString = dateFormatter.stringFromDate(mailTime)
+        }
         return returnString
     }
-    
-    var decryptedMessage: String?{
-        get{
+
+    var decryptedWithOldPrivateKey: Bool = false
+
+    var decryptedMessage: String? {
+        get {
             return self.body
         }
-        set{
+        set {
             self.body = newValue
         }
     }
-    
-    func getReceivers()->[Mail_Address]{
-        var receivers = [Mail_Address] ()
-        for obj in to{
-            receivers.append(obj as! Mail_Address)
-        }
-        return receivers
-    }
 
-    
-    
-    func getCCs()->[Mail_Address]{
+    func getReceivers() -> [Mail_Address] {
         var receivers = [Mail_Address] ()
-        for obj in cc!{
-            receivers.append(obj as! Mail_Address)
-        }
-        return receivers
-    }
-    
-    func getBCCs()->[Mail_Address]{
-        var receivers = [Mail_Address] ()
-        for obj in bcc!{
+        for obj in to {
             receivers.append(obj as! Mail_Address)
         }
         return receivers
     }
 
 
-        /*
- func decryptIfPossible(){
- if body != nil {
- if self.isEncrypted {
- if KeyHandler.getHandler().getPrivateKey() == nil {
- self.unableToDecrypt = true
- return
- }
- if !CryptoHandler.getHandler().pgp.keys.contains((KeyHandler.getHandler().getPrivateKey()?.key)!) {
- CryptoHandler.getHandler().pgp.keys.append((KeyHandler.getHandler().getPrivateKey()?.key)!)
- }
- do {
- var signed : ObjCBool = false
- var valid : ObjCBool = false
- var integrityProtected : ObjCBool = false
- 
- var signatureKey : PGPKey? = nil
- 
- if self.sender != nil && self.sender?.mailbox != nil {
- if KeyHandler.getHandler().addrHasKey((self.sender?.mailbox)!) {
- signatureKey = KeyHandler.getHandler().getKeyByAddr((self.sender?.mailbox)!)?.key
- }
- }
- 
- //verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr(header.from.mailbox)?.key
- 
- let decTrash = (try? CryptoHandler.getHandler().pgp.decryptData(body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: signatureKey, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))
- if decTrash != nil {
- self.decryptedBody = String(data: decTrash!, encoding: NSUTF8StringEncoding)//String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: signatureKey, signed: &signed, valid: &valid, integrityProtected: &integrityProtected))! as NSData, encoding: NSUTF8StringEncoding)
- //print(String(data: (try? CryptoHandler.getHandler().pgp.decryptData(body.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: nil, signed: &signed, valid: &valid, integrityProtected: &integrityProtected), encoding: NSUTF8StringEncoding)))
- self.isVerified = Bool(valid)
- 
- print(" signed: ",signed," valid: ",valid, " integrityProtected: ",integrityProtected)
- 
- if signatureKey != nil && !valid && signed {
- self.trouble = true
- }
- }
- 
- 
- } catch _ {
- 
- self.trouble = true
- print("error while decrypting")
- }
- }
- }
- }
-*/
+
+    func getCCs() -> [Mail_Address] {
+        var receivers = [Mail_Address] ()
+        for obj in cc! {
+            receivers.append(obj as! Mail_Address)
+        }
+        return receivers
+    }
+
+    func getBCCs() -> [Mail_Address] {
+        var receivers = [Mail_Address] ()
+        for obj in bcc! {
+            receivers.append(obj as! Mail_Address)
+        }
+        return receivers
+    }
+
+
+
+
+    //decrypt and/or check signature
+    func decryptIfPossible() {
+        let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
+        if let encryption = EnzevalosEncryptionHandler.getEncryption(encType) {
+            if encryption.isUsedForEncryption(self) == true {
+                self.isEncrypted = true
+                //decrypt
+                encryption.decryptAndSignatureCheck(self)
+                
+            }
+            if encryption.isUsedForSignature(self) == true {
+                //TODO
+                //check signature
+                if let correctSignature = encryption.isCorrectlySigned(self) {
+                    self.isSigned = true
+                    print("From \(self.from.address) mail is signed!")
+                }
+            }
+
+        }
+    }
 
     
+    func liveDecrypt()-> String?{
+        let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
+        if let encryption = EnzevalosEncryptionHandler.getEncryption(encType) {
+            if encryption.isUsedForEncryption(self) == true {
+                self.isEncrypted = true
+                //decrypt
+                encryption.decryptAndSignatureCheck(self)
+                return encryption.decrypt(self)
+            }
+            if encryption.isUsedForSignature(self) == true {
+                //TODO
+                //check signature
+                if let correctSignature = encryption.isCorrectlySigned(self) {
+                    self.isSigned = true
+                }
+            }
+            
+        }
+        return nil
+    }
 
-    func getSubjectWithFlagsString()-> String{
+    func getSubjectWithFlagsString() -> String {
         let subj: String
         var returnString: String = ""
 
@@ -184,14 +170,14 @@ public class Mail: NSManagedObject, Comparable {
         }
         return "\(returnString)\(subj)"
     }
-    
+
 }
 
-public func ==(lhs: Mail, rhs: Mail) -> Bool {
+public func == (lhs: Mail, rhs: Mail) -> Bool {
     return lhs.date == rhs.date && lhs.uid == rhs.uid
 }
 
-public func <(lhs: Mail, rhs: Mail) -> Bool {
+public func < (lhs: Mail, rhs: Mail) -> Bool {
     return lhs.date > rhs.date
 }
 

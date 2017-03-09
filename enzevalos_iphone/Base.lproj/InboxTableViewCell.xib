@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -29,18 +29,18 @@
                             <action selector="contactButtonPressed:" destination="CFu-ns-kay" eventType="touchUpInside" id="x7L-L7-Xgn"/>
                         </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uDO-9h-a86" userLabel="Icon View">
-                        <rect key="frame" x="64" y="8" width="30" height="30"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="30" id="Zf5-eH-DtF"/>
-                            <constraint firstAttribute="height" constant="30" id="n7I-Eu-a0k"/>
-                        </constraints>
-                    </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WNp-Ty-Hv1">
                         <rect key="frame" x="16" y="16" width="70" height="70"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="70" id="Bei-PK-STi"/>
                             <constraint firstAttribute="width" constant="70" id="Tid-sz-S35"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uDO-9h-a86" userLabel="Icon View">
+                        <rect key="frame" x="64" y="8" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="Zf5-eH-DtF"/>
+                            <constraint firstAttribute="height" constant="30" id="n7I-Eu-a0k"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ixt-EX-9TM">
@@ -204,6 +204,7 @@
                 </variation>
             </tableViewCellContentView>
             <connections>
+                <outlet property="contactButton" destination="Klo-Po-J7v" id="xoJ-G4-AW3"/>
                 <outlet property="faceView" destination="WNp-Ty-Hv1" id="Ssc-6w-kf8"/>
                 <outlet property="firstButton" destination="Woe-Z6-TzX" id="Ahx-bF-jSu"/>
                 <outlet property="firstDateLabel" destination="Nu7-tF-hGe" id="VJA-Yx-I96"/>

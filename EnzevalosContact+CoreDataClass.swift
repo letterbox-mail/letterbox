@@ -12,17 +12,28 @@ import CoreData
 import UIKit
 import Contacts
 
-
-
 @objc(EnzevalosContact)
 public class EnzevalosContact: NSManagedObject, Contact, Comparable {
-    
+        
     public var name:String{
         get{
             return getName()
         }
     }
     
+    public var records: [KeyRecord] {
+        get{
+            var myrecords = [KeyRecord]()
+            for r in DataHandler.handler.receiverRecords{
+                if r.ezContact == self{
+                    myrecords.append(r)
+                }
+            }
+            return myrecords
+        
+        }
+    
+    }
     public var hasKey: Bool{
         get {
             for item in addresses!{
@@ -32,7 +43,6 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
                 }
             }
             return false
-        
         }
     }
     
@@ -68,7 +78,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
             return con
         }
     }
-        
+    
     private func getName()-> String{
         var name: String
         name = String()
@@ -111,8 +121,6 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         return getAddress(mcoaddress.mailbox!)
     }
     
-    
-    
     public func getMailAddresses()->[MailAddress]{
         var adr = [MailAddress] ()
         if self.addresses != nil {
@@ -123,11 +131,8 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
         return adr
     }
- 
-    
-
 }
-    
+
 private func isEmpty(contact: EnzevalosContact)-> Bool{
     if let mails = contact.from{
         if(mails.count == 0){
@@ -147,7 +152,7 @@ func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     }
     let mailLHS = lhs.from?.lastObject as! Mail
     let mailRHS = rhs.from?.lastObject as! Mail
-
+    
     return mailLHS == mailRHS
 }
 
@@ -163,6 +168,3 @@ public  func <(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     
     return mailLHS < mailRHS
 }
-
-
-

@@ -18,7 +18,6 @@ extension Mail_Address {
     }
 
     @NSManaged public var address: String
-    @NSManaged public var key: String?
     @NSManaged public var prefer_encryption: Bool
     @NSManaged public var contact: EnzevalosContact
 
