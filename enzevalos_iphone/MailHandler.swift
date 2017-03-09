@@ -338,4 +338,8 @@ class MailHandler {
             }
         }
     }
+    
+    func loadMoreMails(record: KeyRecord, callback: ((Error: Bool) -> ())) {
+        
+    }
 }
