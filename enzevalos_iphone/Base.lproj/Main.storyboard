@@ -154,14 +154,14 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="0.0" rowHeight="44" id="sfU-SD-QZO">
                                         <rect key="frame" x="0.0" y="220" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="sfU-SD-QZO" id="yxQ-bD-mBC">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sfU-SD-QZO" id="yxQ-bD-mBC">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" tag="2" contentMode="scaleToFill" semanticContentAttribute="spatial" ambiguous="YES" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3eI-t6-Pay">
+                                                <stackView opaque="NO" tag="2" contentMode="scaleToFill" semanticContentAttribute="spatial" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3eI-t6-Pay">
                                                     <rect key="frame" x="8" y="0.0" width="359" height="44"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7i-jf-aSX">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7i-jf-aSX">
                                                             <rect key="frame" x="0.0" y="0.0" width="179" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="44" id="81H-Ed-3bH"/>
@@ -174,7 +174,7 @@
                                                                 <action selector="showEmailButton:" destination="Ouw-WD-EV6" eventType="touchUpInside" id="mAB-ts-7mq"/>
                                                             </connections>
                                                         </button>
-                                                        <view autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cap-Ul-t1I">
+                                                        <view autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cap-Ul-t1I">
                                                             <rect key="frame" x="179" y="0.0" width="1" height="44"/>
                                                             <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <accessibility key="accessibilityConfiguration">
@@ -185,7 +185,7 @@
                                                                 <constraint firstAttribute="height" constant="44" id="Y6y-Pl-hUw"/>
                                                             </constraints>
                                                         </view>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTi-rO-CH3">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTi-rO-CH3">
                                                             <rect key="frame" x="180" y="0.0" width="179" height="44"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="44" id="voC-CF-ncN"/>
@@ -1072,7 +1072,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="olx-gF-WdV" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wwS-7W-6ti">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wwS-7W-6ti">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
