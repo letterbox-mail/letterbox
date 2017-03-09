@@ -287,17 +287,7 @@ class MailHandler {
     }
     
     func receive(folders: [String] = ["INBOX"], ids: MCOIndexSet?, maxMails: Int = MAXMAILS){
-        let uids: MCOIndexSet
-        if ids == nil{
-            uids = findUids()
-            print("#UIDs:\(uids.count())")
-        }
-        else{
-            uids = cutIndexSet(ids!)
-        }
-        
-    
-    }
+           }
     
    
     
@@ -361,11 +351,6 @@ class MailHandler {
                             }
                         }
                         
-                        //gute Wahl?
-                        //in-line PGP
-                        if body.commonPrefixWithString("-----BEGIN PGP MESSAGE-----", options: NSStringCompareOptions.CaseInsensitiveSearch) == "-----BEGIN PGP MESSAGE-----" {
-                        }
-                        //TODO: Fix UID -> UInt64, Int64, UInt 32...??????
                         // TODO: Fix decryption
                         
                         let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags)
@@ -410,45 +395,8 @@ class MailHandler {
         }
     }
     
-    func findUids(folder: String = "INBOX", maxIds: Int = MAXMAILS)->MCOIndexSet{
-        let result = MCOIndexSet()
-        let max = UInt64(maxIds)
-        var maxID = findMaxUID(folder)
-        let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue)
-        var dif = max - UInt64(result.count())
-        print("My last id: \(self.lastUID)")
-        while dif > 0 {
-            var minID: UInt64 = UInt64.subtractWithOverflow(maxID, dif)
-            print("next ID: \(minID)")
-            if self.lastUID > minID {
-                minID = self.lastUID
-            }
-            
-            let uids = MCOIndexSet(range: MCORangeMake(minID, maxID))
-            let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
-            fetchOperation.start { (err, msg, vanished) -> Void in
-                guard err == nil else {
-                    print("Error while fetching inbox: \(err)")
-                    return
-                }
-                if let msgs = msg {
-                    for m in msgs{
-                        let message: MCOIMAPMessage = m as! MCOIMAPMessage
-                        let id = UInt64(message.uid)
-                        result.addIndex(id)
-                    }
-                }
-            }
-            maxID = minID
-            if(maxID <= self.lastUID){
-                break
-            }
-            dif = maxID - UInt64(result.count())
-        }
-        return result
-    }
     
-    func findMaxUID(folder: String = "INBOX")->UInt64{
+    func findMaxUID(folder: String = "INBOX", callback: ((UInt64)-> void)){
         //TODO: NSP!!!
         var maxUID: UInt64 = 0
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue)
@@ -471,10 +419,12 @@ class MailHandler {
                     }
                 }
             }
+            dispatch_group_leave(dispatchGroup)
         }
-        dispatch_group_leave(dispatchGroup)
+        dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
+           callback(maxUID)
+        }
 
-        return maxUID
     }
     
     /*
