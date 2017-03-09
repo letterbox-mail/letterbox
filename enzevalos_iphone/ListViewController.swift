@@ -17,7 +17,7 @@ class ListViewController: UITableViewController {
             self.title = contact!.name
             if contact!.mails.count < 20 {
                 loading = true
-                AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, callback: doneLoading)
+                AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, newMailCallback: addNewMail, completionCallback: doneLoading)
             }
         }
     }
@@ -47,6 +47,10 @@ class ListViewController: UITableViewController {
         } else {
             tableView.reloadData()
         }
+    }
+    
+    func addNewMail() {
+        tableView.reloadData()
     }
 
     func filterContentForSearchText(searchText: String, scope: Int = 0) {
@@ -170,7 +174,7 @@ class ListViewController: UITableViewController {
         if y > h + reload_distance && !loading {
             print("loading new mail because we scrolled to the bottom")
             loading = true
-            AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, callback: doneLoading)
+            AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, newMailCallback: addNewMail, completionCallback: doneLoading)
             tableView.reloadData()
         }
     }
