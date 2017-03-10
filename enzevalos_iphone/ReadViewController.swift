@@ -181,7 +181,7 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .Alert)
                 url = "https://enzevalos.de/infos/postcard"
             }
-            alert.addAction(UIAlertAction(title: "Mehr Informationen", style: UIAlertActionStyle.Default, handler: { (action: UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!) }))
+            alert.addAction(UIAlertAction(title: "Mehr Informationen", style: .Default, handler: { (action: UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!) }))
             alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
             dispatch_async(dispatch_get_main_queue(), {
                 self.presentViewController(alert, animated: true, completion: nil)

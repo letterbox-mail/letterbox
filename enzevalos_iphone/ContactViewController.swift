@@ -40,6 +40,12 @@ class ContactViewController: UIViewController {
             otherRecords = con.ezContact.records.filter({ $0 != contact })
         }
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        if let row = tableView.indexPathForSelectedRow {
+            tableView.deselectRowAtIndexPath(row, animated: false)
+        }
+    }
 
     func prepareContactSheet() {
         let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
