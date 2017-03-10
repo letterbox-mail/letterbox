@@ -150,8 +150,7 @@ class MailHandler {
         "com.enzevalos.mailserverQueue", DISPATCH_QUEUE_CONCURRENT)
     
     var lastUID: UInt64 = DataHandler.handler.maxUID
-    
-    
+
     var IMAPSes: MCOIMAPSession?
 
     var IMAPSession: MCOIMAPSession {
@@ -288,50 +287,14 @@ class MailHandler {
     
    
     
-    func recieve(folder: String = "INBOX") {
-        let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
+    func receiveAll(folder: String = "INBOX", newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ())) {
         let uids: MCOIndexSet
-        let ids: MCOIndexSet? = nil
-        if ids != nil{
-            uids = ids!
-        }
-        else{
-            uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
-        }
-        let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
-        fetchOperation.extraHeaders = EXTRAHEADERS
-
-        fetchOperation.start { (err, msg, vanished) -> Void in
-            guard err == nil else {
-                print("Error while fetching inbox: \(err)")
-                return
-            }
-            if let msgs = msg {
-                var biggest = self.lastUID
-                let dispatchGroup = dispatch_group_create()
-                for m in msgs {
-                    let message: MCOIMAPMessage = m as! MCOIMAPMessage
-                    if UInt64(message.uid) > biggest {
-                        biggest = UInt64(message.uid)
-                    }
-                    dispatch_group_enter(dispatchGroup)
-                    let op = self.IMAPSession.fetchParsedMessageOperationWithFolder(folder, uid: message.uid)
-                    op.start {err,data in self.makeMailParser(err, parser: data, message: message)
-                        dispatch_group_leave(dispatchGroup)
-                    }
-
-                }
-                dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
-                        print("Receive finish")
-                        self.delegate?.getMailCompleted()
-                        self.IMAPSession.disconnectOperation().start({_ in })
-                }
-            }
-        }
+        uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
+        loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
 
-    func addFlag(uid: UInt64, flags: MCOMessageFlag) {
-        let op = self.IMAPSession.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Set, flags: flags)
+    func addFlag(uid: UInt64, flags: MCOMessageFlag, folder: String = "INBOX") {
+        let op = self.IMAPSession.storeFlagsOperationWithFolder(folder, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Set, flags: flags)
 
         op.start { error -> Void in
             if let err = error {
@@ -340,8 +303,8 @@ class MailHandler {
         }
     }
 
-    func removeFlag(uid: UInt64, flags: MCOMessageFlag) {
-        let op = self.IMAPSession.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Remove, flags: flags)
+    func removeFlag(uid: UInt64, flags: MCOMessageFlag, folder: String = "INBOX") {
+        let op = self.IMAPSession.storeFlagsOperationWithFolder(folder, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Remove, flags: flags)
 
         op.start { error -> Void in
             if let err = error {
@@ -352,17 +315,10 @@ class MailHandler {
         }
     }
     
-    func loadMoreMails(record: KeyRecord, callback: ((Error: Bool) -> ()) ) {
-        /*
-         Find addresses
-         search for all addresses for mails and call callback
-         
-        */
-        print("###### Relaod messages!!!")
+    func loadMoreMails(record: KeyRecord, folder: String = "INBOX", newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ())) {
         let addresses: [MailAddress]
         addresses = record.addresses
-        let folder = "INBOX"
-        
+
         for adr in addresses{
             let searchExpr: MCOIMAPSearchExpression = MCOIMAPSearchExpression.searchFrom(adr.mailAddress)
             let searchOperation: MCOIMAPSearchOperation = self.IMAPSession.searchExpressionOperationWithFolder(folder, expression: searchExpr)
@@ -372,14 +328,22 @@ class MailHandler {
                     return
                 }
                 let ids = indices as MCOIndexSet?
-                self.loadMessages(ids!, callback: callback)
-                
-            
+                if let setOfIndices = ids {
+                    for mail in record.mails{
+                        setOfIndices.removeIndex(mail.uid)
+                    }
+                    if setOfIndices.count() == 0{
+                        completionCallback(error: false)
+                        return
+                    
+                    }
+                    self.loadMessagesFromServer(setOfIndices, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                }
             }
         }
     }
     
-    func loadMessages(uids: MCOIndexSet, folder: String = "INBOX",  callback: ((Error: Bool)-> ()) ){
+    func loadMessagesFromServer(uids: MCOIndexSet, folder: String = "INBOX", record: KeyRecord?, newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ()) ){
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
         let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = EXTRAHEADERS
@@ -387,6 +351,7 @@ class MailHandler {
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
                 print("Error while fetching inbox: \(err)")
+                completionCallback(error: true)
                 return
             }
             if let msgs = msg {
@@ -399,64 +364,55 @@ class MailHandler {
                     }
                     dispatch_group_enter(dispatchGroup)
                     let op = self.IMAPSession.fetchParsedMessageOperationWithFolder(folder, uid: message.uid)
-                    op.start {err,data in self.makeMailParser(err, parser: data, message: message)
+                    op.start {err,data in self.parseMail(err, parser: data, message: message, record: record, newMailCallback: newMailCallback)
                              dispatch_group_leave(dispatchGroup)
                     }
                 }
                 dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
-                    print("Reload finish")
-                    self.delegate?.getMailCompleted()
                     self.IMAPSession.disconnectOperation().start({_ in })
-                    callback(Error: false)
+                    completionCallback(error: false)
                 }
             }
         }
 
     }
     
-    func makeMailParser(error: ErrorType?, parser: MCOMessageParser?, message: MCOIMAPMessage){
-        if let err = error{
-            print("Error while fetching mail: \(err)")
-            return
-        
-        }
-        makeMail(error, data: parser!.data(), message: message)
+   
     
-    }
-    
-    func makeMail(error: ErrorType?, data: NSData?, message: MCOIMAPMessage){
+    func parseMail(error: ErrorType?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: (() -> ())){
         guard error == nil else {
             print("Error while fetching mail: \(error)")
             return
         }
-        let msgParser = MCOMessageParser(data: data)
+        if let data = parser?.data(){
+            let msgParser = MCOMessageParser(data: data)
         
-        let html: String = msgParser.plainTextRendering()
-        var lineArray = html.componentsSeparatedByString("\n")
-        lineArray.removeFirst(4)
-        var body = lineArray.joinWithSeparator("\n")
-        body = body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-        body.appendContentsOf("\n")
-        var rec: [MCOAddress] = []
-        var cc: [MCOAddress] = []
+            let html: String = msgParser.plainTextRendering()
+            var lineArray = html.componentsSeparatedByString("\n")
+            lineArray.removeFirst(4)
+            var body = lineArray.joinWithSeparator("\n")
+            body = body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            body.appendContentsOf("\n")
+            var rec: [MCOAddress] = []
+            var cc: [MCOAddress] = []
         
-        let header = message.header
-        // TODO: Handle here autocrypt
+            let header = message.header
+            // TODO: Handle here autocrypt
         
-        if let to = header.to {
-            for r in to {
-                rec.append(r as! MCOAddress)
+            if let to = header.to {
+                for r in to {
+                    rec.append(r as! MCOAddress)
+                }
             }
-        }
-        if let c = header.cc {
-            for r in c {
-                cc.append(r as! MCOAddress)
+            if let c = header.cc {
+                for r in c {
+                    cc.append(r as! MCOAddress)
+                }
             }
+        
+           DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record)
+            newMailCallback()
         }
-        
-        let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags)
-        self.delegate?.addNewMail(mail)
-        
     }
     
     func findMaxUID(folder: String = "INBOX", callback: ((maxUID: UInt64) -> ())){
@@ -487,7 +443,7 @@ class MailHandler {
         dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
            callback(maxUID: maxUID)
         }
-        }
+    }
     
     /*
      Parameters:

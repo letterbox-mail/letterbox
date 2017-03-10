@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import Contacts
 
-class InboxViewController: UITableViewController, InboxCellDelegator, MailHandlerDelegator {
+class InboxViewController: UITableViewController, InboxCellDelegator {
     let dateFormatter = NSDateFormatter()
 
     var contacts: [KeyRecord] = [] {
@@ -38,7 +38,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
     var lastUpdate: NSDate?
 
 
-    func addNewMail(mail: Mail) { // Records durchgehen. Einsortieren.
+    func addNewMail() {
+        /*// Records durchgehen. Einsortieren.
         for c in contacts {
             if c.addNewMail(mail) {
                 return
@@ -54,6 +55,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
             print("Encrypted mail! Is Secure?: \(mail.isSecure)")
             print("Record: \(r.ezContact.name) key: \(r.key)")
         }
+ */
+       // contacts =  DataHandler.handler.receiverRecords
     }
 
  
@@ -77,7 +80,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
 
         contacts = DataHandler.handler.receiverRecords
 
-        AppDelegate.getAppDelegate().mailHandler.delegate = self
+        //AppDelegate.getAppDelegate().mailHandler.delegate = self
 
         dateFormatter.locale = NSLocale.currentLocale()
         dateFormatter.timeStyle = .MediumStyle
@@ -87,10 +90,10 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
 
     func refresh(refreshControl: UIRefreshControl) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
-        AppDelegate.getAppDelegate().mailHandler.recieve()
+        AppDelegate.getAppDelegate().mailHandler.receiveAll(newMailCallback: addNewMail, completionCallback: getMailCompleted)
     }
 
-    func getMailCompleted() {
+    func getMailCompleted(error: Bool) {
         if let rc = self.refreshControl {
             lastUpdate = NSDate()
             rc.endRefreshing()

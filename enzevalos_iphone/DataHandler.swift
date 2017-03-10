@@ -317,7 +317,7 @@ class DataHandler {
     
     // -------- End handle to, cc, from addresses --------
     
-    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag) -> Mail {
+    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?) -> Mail {
         
         let finding = findNum("Mail", type: "uid", search: uid)
         let mail: Mail
@@ -353,8 +353,17 @@ class DataHandler {
         if getCurrentState().maxUID < mail.uid {
             getCurrentState().maxUID = mail.uid
         }
+        
+        //TODO Duplicates?
         mails.append(mail)
-        isInReceiverRecords(mail)
+        
+        var added = false
+        if let r = record{
+           added =  r.addNewMail(mail)
+        }
+        if !added{
+            isInReceiverRecords(mail)
+        }
        
         
         return mail
