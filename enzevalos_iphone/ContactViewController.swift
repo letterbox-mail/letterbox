@@ -13,6 +13,7 @@ import ContactsUI
 
 class ContactViewController: UIViewController {
     var contact: KeyRecord? = nil
+    var highlightEmail: String? = nil
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
     private var otherRecords: [KeyRecord]? = nil
@@ -197,7 +198,13 @@ extension ContactViewController: UITableViewDataSource {
                 }
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("MailCell") as! MailCell
-                cell.detailLabel.text = contact!.cnContact?.getMailAddresses()[indexPath.item].mailAddress
+                if let address = contact!.cnContact?.getMailAddresses()[indexPath.item].mailAddress {
+                    if let highlightEmail = highlightEmail where highlightEmail.containsString(address) {
+                        cell.detailLabel.textColor = view.tintColor
+                        cell.titleLabel.textColor = view.tintColor
+                    }
+                    cell.detailLabel.text = address
+                }
                 if let label = contact?.cnContact?.getMailAddresses()[indexPath.item].label.label {
                     cell.titleLabel.text = CNLabeledValue.localizedStringForLabel(label)
                 } else {
