@@ -13,6 +13,7 @@ import Contacts
 class InboxViewController: UITableViewController, InboxCellDelegator {
     let dateFormatter = NSDateFormatter()
 
+    /*
     var contacts: [KeyRecord] = [] {
         didSet {
             self.contacts.sortInPlace({ $0 < $1 })
@@ -25,6 +26,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             }
         }
     }
+ */
 
     @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
     var lastUpdateLabel = UILabel(frame: CGRectZero)
@@ -78,7 +80,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         lastUpdateLabel.textColor = UIColor.blackColor()
         lastUpdateButton.customView = lastUpdateLabel
 
-        contacts = DataHandler.handler.receiverRecords
 
         //AppDelegate.getAppDelegate().mailHandler.delegate = self
 
@@ -98,14 +99,14 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             lastUpdate = NSDate()
             rc.endRefreshing()
             lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.stringFromDate(lastUpdate!))"
-            self.contacts.sortInPlace({ $0 < $1 })
+            // self.contacts.sortInPlace({ $0 < $1 })
+            
             self.tableView.reloadData()
         }
     }
 
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
-        contacts = DataHandler.handler.receiverRecords
 
         if lastUpdate == nil || NSDate().timeIntervalSinceDate(lastUpdate!) > 30 {
             self.refreshControl?.beginRefreshingManually()
@@ -120,13 +121,13 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         let cell = tableView.dequeueReusableCellWithIdentifier("inboxCell", forIndexPath: indexPath) as! InboxTableViewCell
 
         cell.delegate = self
-        cell.enzContact = contacts[indexPath.section]
+        cell.enzContact = DataHandler.handler.receiverRecords[indexPath.section]
 
         return cell
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return contacts.count
+        return DataHandler.handler.receiverRecords.count
     }
 
     // set top and bottom seperator height
