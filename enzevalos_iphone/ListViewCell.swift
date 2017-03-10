@@ -14,3 +14,12 @@ class ListViewCell: UITableViewCell {
     @IBOutlet weak var bodyLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
 }
+
+class LoadingCell: UITableViewCell {
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        activityIndicator.startAnimating()
+    }
+}

@@ -21,6 +21,7 @@ class ContactViewController: UITableViewController {
         super.viewDidLoad()
 
         navigationController?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
 
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
@@ -32,9 +33,12 @@ class ContactViewController: UITableViewController {
 //            self.title = CNContactFormatter.stringFromContact(con.ezContact.cnContact, style: .FullName)
 
             prepareContactSheet()
+
             otherRecords = con.ezContact.records.filter({ $0 != contact }) // TODO: add unencrypted records to filter
         }
     }
+
+
 
     func prepareContactSheet() {
         let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
@@ -275,7 +279,7 @@ class ContactViewController: UITableViewController {
 }
 
 extension ContactViewController: CNContactViewControllerDelegate {
-    
+
 }
 
 extension ContactViewController: UINavigationControllerDelegate {
@@ -292,5 +296,11 @@ extension ContactViewController: UINavigationControllerDelegate {
         default:
             return nil
         }
+    }
+}
+
+extension ContactViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }

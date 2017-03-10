@@ -76,7 +76,7 @@
 "discard" = "Nachricht verwerfen?";
 "discardText" = "Die eingegebenen Informationen werden nicht gespeichert.";
 "discardButton" = "Verwerfen";
-"allMessages" = "Alle verknüpften Nachrichten";
+"allMessages" = "Alle Nachrichten dieser Ablage";
 "otherKeys" = "Andere Schlüssel dieses Kontakts";
 "connectedAddresses" = "Verknüpfte E-Mail-Adressen";
 "CC" = "An/CC";

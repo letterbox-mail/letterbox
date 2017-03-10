@@ -29,70 +29,70 @@ import Foundation
 import Contacts
 
 
-let EXTRAHEADERS = ["Inbome","Autocrypt-ENCRYPTION"]
+let EXTRAHEADERS = ["Inbome", "Autocrypt-ENCRYPTION"]
 let TO = "to"
 let TYPE = "type"
 let ENCRYPTION = "prefer-encrypted"
 let KEY = "key"
 
 
-class AutocryptContact{
-    enum AutocryptType: Int{
+class AutocryptContact {
+    enum AutocryptType: Int {
         case OPENPGP, ERROR
-        var string:String{
-            switch self{
+        var string: String {
+            switch self {
             case .OPENPGP:
                 return "p"
             default:
                 return "error"
             }
         }
-        static func getType(type:String) ->AutocryptType{
-            switch type{
-                case "p":
-                    return AutocryptType.OPENPGP
-                case "":
-                    return AutocryptType.OPENPGP
+        static func getType(type: String) -> AutocryptType {
+            switch type {
+            case "p":
+                return AutocryptType.OPENPGP
+            case "":
+                return AutocryptType.OPENPGP
             default:
                 return ERROR
             }
         }
     }
-    
+
     var addr: String = ""
     var type: AutocryptType = .OPENPGP
     var prefer_encryption: Bool = false
     var key: String = ""
-    
-    init(addr: String, type: String, prefer_encryption: String, key: String){
+
+    init(addr: String, type: String, prefer_encryption: String, key: String) {
         self.addr = addr
         self.type = AutocryptType.getType(type)
         setPrefer_encryption(prefer_encryption)
         self.key = key
     }
-    
-    
-    convenience init(header: MCOMessageHeader){
+
+
+    convenience init(header: MCOMessageHeader) {
         let autocrypt = header.extraHeaderValueForName(EXTRAHEADERS[0])
         var field: [String]
         var addr = ""
         var type = ""
         var pref = ""
         var key = ""
-        
-        if(autocrypt != nil){
+
+        if(autocrypt != nil) {
             let autocrypt_fields = autocrypt.componentsSeparatedByString(";")
-            for f in autocrypt_fields{
+            for f in autocrypt_fields {
                 field = f.componentsSeparatedByString("=")
-                if field.count > 1{
+                if field.count > 1 {
                     let flag = field[0].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
                     var value = field[1]
                     if field.count > 2 {
-                        for i in 2...(field.count - 1){
+                        for i in 2...(field.count - 1) {
                             value = value + field[i]
                         }
                     }
-                    switch flag{
+                    switch flag {
                     case TO:
                         addr = value
                         break
@@ -113,27 +113,27 @@ class AutocryptContact{
         }
         self.init(addr: addr, type: type, prefer_encryption: pref, key: key)
     }
-    
-    func validateContact()->Bool{
-        if addr != "" && type != .ERROR && key != ""{
+
+    func validateContact() -> Bool {
+        if addr != "" && type != .ERROR && key != "" {
             return true
         }
         return false
     }
-    
-    func setPrefer_encryption(input:String)->Bool{
-        if input == "yes" || input == "YES" || input == "Yes"{
+
+    func setPrefer_encryption(input: String) -> Bool {
+        if input == "yes" || input == "YES" || input == "Yes" {
             prefer_encryption = true
             return true
         }
-        else if input == "no" || input == "NO" || input == "No"{
+            else if input == "no" || input == "NO" || input == "No" {
             prefer_encryption = false
             return true
         }
         return false
     }
-    
-    func toString()->String{
+
+    func toString() -> String {
         return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption) | key: \(key)"
     }
 }
@@ -153,114 +153,113 @@ class MailHandler {
     
     
     var IMAPSes: MCOIMAPSession?
-    
+
     var IMAPSession: MCOIMAPSession {
         get {
             if IMAPSes == nil {
                 setupIMAPSession()
             }
-            
+
             return IMAPSes!
         }
     }
-    
-    
+
+
     //TODO: signatur hinzufügen
-    
-    
-    func add_autocrypt_header(builder: MCOMessageBuilder){
-        // Autocrypt-ENCRYPTION: to=aaa@bbb.cc; [type=(p|...);] [prefer-encrypted=(yes|no);] key=BASE64 
-        let autocrypt = "to="+(UserManager.loadUserValue(Attribute.UserAddr) as! String)+"; type="+(UserManager.loadUserValue(Attribute.AutocryptType) as! String)+"; prefer-encrypted="+(UserManager.loadUserValue(Attribute.PrefEncryption) as! String)+"; key="+(UserManager.loadUserValue(Attribute.PublicKey) as! String)
-        
+
+
+    func add_autocrypt_header(builder: MCOMessageBuilder) {
+        // Autocrypt-ENCRYPTION: to=aaa@bbb.cc; [type=(p|...);] [prefer-encrypted=(yes|no);] key=BASE64
+        let autocrypt = "to=" + (UserManager.loadUserValue(Attribute.UserAddr) as! String) + "; type=" + (UserManager.loadUserValue(Attribute.AutocryptType) as! String) + "; prefer-encrypted=" + (UserManager.loadUserValue(Attribute.PrefEncryption) as! String) + "; key=" + (UserManager.loadUserValue(Attribute.PublicKey) as! String)
+
         builder.header.setExtraHeaderValue(autocrypt, forName: "Autocrypt-ENCRYPTION")
     }
-    
+
     //return if send successfully
-    func send(toEntrys : [String], ccEntrys : [String], bccEntrys : [String], subject : String, message : String, callback : (NSError?) -> Void){
+    func send(toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: (NSError?) -> Void) {
         //http://stackoverflow.com/questions/31485359/sending-mailcore2-plain-emails-in-swift
-        
+
         let useraddr = (UserManager.loadUserValue(Attribute.UserAddr) as! String)
         let username = UserManager.loadUserValue(Attribute.UserName) as! String
-        
-        let session =  MCOSMTPSession()
+
+        let session = MCOSMTPSession()
         session.hostname = UserManager.loadUserValue(Attribute.SMTPHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.SMTPPort) as! Int)
         session.username = useraddr
         session.password = UserManager.loadUserValue(Attribute.UserPW) as! String
         session.authType = MCOAuthType.SASLPlain
         session.connectionType = MCOConnectionType.StartTLS
-        
+
         let builder = MCOMessageBuilder()
-        
-        var toReady : [MCOAddress] = []
+
+        var toReady: [MCOAddress] = []
         for addr in toEntrys {
             toReady.append(MCOAddress(displayName: addr, mailbox: addr))
         }
         builder.header.to = toReady
-        
-        var ccReady : [MCOAddress] = []
+
+        var ccReady: [MCOAddress] = []
         for addr in ccEntrys {
             ccReady.append(MCOAddress(displayName: addr, mailbox: addr))
         }
         builder.header.cc = ccReady
-        
-        var bccReady : [MCOAddress] = []
+
+        var bccReady: [MCOAddress] = []
         for addr in bccEntrys {
             bccReady.append(MCOAddress(displayName: addr, mailbox: addr))
         }
         builder.header.bcc = bccReady
-        
-        builder.header.from = MCOAddress(displayName: username , mailbox: useraddr)
-        
+
+        builder.header.from = MCOAddress(displayName: username, mailbox: useraddr)
+
         builder.header.subject = subject
-        
+
         add_autocrypt_header(builder)
-        
+
         builder.textBody = message //htmlBody = message
-        
+
         //let rfc822Data = builder.data()
-        
-        var allRec : [String] = []
+
+        var allRec: [String] = []
         allRec.appendContentsOf(toEntrys)
         allRec.appendContentsOf(ccEntrys)
-        
+
         //TODO add support for different Encryptions here
         //edit sortMailaddressesByEncryptionMCOAddress and sortMailaddressesByEncryption because a mailaddress can be found in multiple Encryptions
         let ordered = EnzevalosEncryptionHandler.sortMailaddressesByEncryptionMCOAddress(allRec)
-        
+
         let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
-        
-        var encryption : Encryption
-        var sendData : NSData
+
+        var encryption: Encryption
+        var sendData: NSData
         let orderedString = EnzevalosEncryptionHandler.sortMailaddressesByEncryption(allRec)
         var sendOperation: MCOSMTPSendOperation
-            
+
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
             //TODO use encryptAndSign instead of encrypt
-            if let encData = encryption.encrypt("\n"+message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+            if let encData = encryption.encrypt("\n" + message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
                 sendData = encData
                 sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
             }
-            else {
+                else {
                 //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
             }
         }
-        
+
         //TODO add new encryptions here
-            
+
         if let unenc = ordered[EncryptionType.unknown] {
             sendData = builder.data()
             sendOperation = session.sendOperationWithData(sendData, from: userID, recipients: unenc)
             //TODO handle different callbacks
             sendOperation.start(callback)
         }
-        
     }
-    
+
     func setupIMAPSession() {
         let imapsession = MCOIMAPSession()
         imapsession.hostname = UserManager.loadUserValue(Attribute.IMAPHostname) as! String
@@ -301,7 +300,7 @@ class MailHandler {
         }
         let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = EXTRAHEADERS
-        
+
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
                 print("Error while fetching inbox: \(err)")
@@ -330,20 +329,20 @@ class MailHandler {
             }
         }
     }
-    
+
     func addFlag(uid: UInt64, flags: MCOMessageFlag) {
         let op = self.IMAPSession.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Set, flags: flags)
-        
+
         op.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
             }
         }
     }
-    
+
     func removeFlag(uid: UInt64, flags: MCOMessageFlag) {
         let op = self.IMAPSession.storeFlagsOperationWithFolder("INBOX", uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Remove, flags: flags)
-        
+
         op.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
