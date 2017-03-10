@@ -24,7 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")
         
         ThemeManager.currentTheme()
-        mailHandler.findMaxUID()
+        mailHandler.findMaxUID(callback: { (max: UInt64) -> Void in
+            
+           print(max)
+        })
         var start = NSDateComponents()
         var end =  NSDate()
         start.day = 31
@@ -32,9 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         start.year = 2016
         var  d = NSDate(timeIntervalSinceReferenceDate: -123456789.0)
         print ("From \(d) to \(end) ")
-        mailHandler.lookForMailAddresses(["oliver.wiese@fu-berlin.de", "bob2005@web.de"],startDate: d, endDate: end)
+       // mailHandler.lookForMailAddresses(["oliver.wiese@fu-berlin.de", "bob2005@web.de"],startDate: d, endDate: end)
         return true
     }
+    
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
