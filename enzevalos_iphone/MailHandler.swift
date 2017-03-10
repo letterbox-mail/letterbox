@@ -149,8 +149,6 @@ class MailHandler {
     private let concurrentMailServer = dispatch_queue_create(
         "com.enzevalos.mailserverQueue", DISPATCH_QUEUE_CONCURRENT)
     
-    var lastUID: UInt64 = DataHandler.handler.maxUID
-
     var IMAPSes: MCOIMAPSession?
 
     var IMAPSession: MCOIMAPSession {
@@ -269,33 +267,10 @@ class MailHandler {
         imapsession.connectionType = MCOConnectionType.TLS
         self.IMAPSes = imapsession
     }
-    
-    private func cutIndexSet(inputSet: MCOIndexSet, maxMails: Int = MAXMAILS)->MCOIndexSet{
-        let max = UInt32(maxMails)
-        if inputSet.count() <= max{
-            return inputSet
-        }
-        let result = MCOIndexSet()
-        for x in inputSet.nsIndexSet().reverse(){
-            if(result.count() < max){
-                result.addIndex(UInt64(x))
-            }
-        }
-        return result
-    }
-    
-    
    
-    
-    func receiveAll(folder: String = "INBOX", newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ())) {
-        let uids: MCOIndexSet
-        uids = MCOIndexSet(range: MCORangeMake(lastUID, UINT64_MAX))
-        loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
-    }
 
     func addFlag(uid: UInt64, flags: MCOMessageFlag, folder: String = "INBOX") {
         let op = self.IMAPSession.storeFlagsOperationWithFolder(folder, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Set, flags: flags)
-
         op.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
@@ -315,6 +290,13 @@ class MailHandler {
         }
     }
     
+    
+    func receiveAll(folder: String = "INBOX", newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ())) {
+        let uids: MCOIndexSet
+        uids = MCOIndexSet(range: MCORangeMake(DataHandler.handler.maxUID, UINT64_MAX))
+        loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+    }
+    
     func loadMoreMails(record: KeyRecord, folder: String = "INBOX", newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ())) {
         let addresses: [MailAddress]
         addresses = record.addresses
@@ -325,6 +307,7 @@ class MailHandler {
             
             searchOperation.start { (err, indices) -> Void  in
                 guard err == nil else {
+                    completionCallback(error: true)
                     return
                 }
                 let ids = indices as MCOIndexSet?
@@ -355,13 +338,9 @@ class MailHandler {
                 return
             }
             if let msgs = msg {
-                var biggest = self.lastUID
                 let dispatchGroup = dispatch_group_create()
                 for m in msgs {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
-                    if UInt64(message.uid) > biggest {
-                        biggest = UInt64(message.uid)
-                    }
                     dispatch_group_enter(dispatchGroup)
                     let op = self.IMAPSession.fetchParsedMessageOperationWithFolder(folder, uid: message.uid)
                     op.start {err,data in self.parseMail(err, parser: data, message: message, record: record, newMailCallback: newMailCallback)
@@ -414,6 +393,22 @@ class MailHandler {
             newMailCallback()
         }
     }
+    
+    
+    private func cutIndexSet(inputSet: MCOIndexSet, maxMails: Int = MAXMAILS)->MCOIndexSet{
+        let max = UInt32(maxMails)
+        if inputSet.count() <= max{
+            return inputSet
+        }
+        let result = MCOIndexSet()
+        for x in inputSet.nsIndexSet().reverse(){
+            if(result.count() < max){
+                result.addIndex(UInt64(x))
+            }
+        }
+        return result
+    }
+
     
     func findMaxUID(folder: String = "INBOX", callback: ((maxUID: UInt64) -> ())){
         //TODO: NSP!!!
