@@ -1097,9 +1097,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="DcR-GX-scc"/>
+        <segue reference="rhW-cI-4c4"/>
         <segue reference="ecN-Wn-7S0"/>
         <segue reference="D6m-L0-5AB"/>
-        <segue reference="DcR-GX-scc"/>
-        <segue reference="3Wb-uL-BB5"/>
     </inferredMetricsTieBreakers>
 </document>
