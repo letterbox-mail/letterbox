@@ -201,7 +201,6 @@ class PGPEncryption : Encryption {
         
     }
     
-    //TODO
     //encrypt text with key
     func encrypt(text: String, keyIDs: [String]) -> NSData? {
         var encData : NSData? = nil
@@ -263,9 +262,56 @@ class PGPEncryption : Encryption {
         
     }
     
-    //TODO
-    func signAndEncrypt(text: String, key: KeyWrapper) -> String {
-        return ""
+    func signAndEncrypt(text: String, keyIDs: [String]) -> NSData? {
+        var encData : NSData? = nil
+        var keys : [PGPKey] = []
+        for id in keyIDs {
+            if let key = keyManager.getKey(id) {
+                keys.append(key.key)
+            }
+            else {
+                print("PGPEncryption.encrypt: No key found for keyID "+id)
+                return nil
+            }
+        }
+        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+            if let myKeyID = keyManager.getPrivateKeyID() {
+                if let myKey = keyManager.getKey(myKeyID) {
+                    encData = try? keyManager.pgp.encryptData(data, usingPublicKeys: keys, signWithSecretKey: myKey.key, passphrase: "", armored: true)
+                }
+                else {
+                    return nil
+                }
+            }
+            else {
+                return nil
+            }
+        }
+        else {
+            print("PGPEncryption.encrypt: text has to be in UTF8Encoding")
+        }
+        return encData
+    }
+    
+    func signAndEncrypt(text: String, mailaddresses: [String]) -> NSData? {
+        var keyIDs : [String] = []
+        for addr in mailaddresses {
+            if let ids = keyManager.getKeyIDsForMailAddress(addr) {
+                if ids != [] {
+                    keyIDs.append(ids.last!)
+                }
+                else {
+                    print("PGPEncryption.encrypt: no keyID for mailaddress "+addr+" found")
+                    return nil
+                }
+            }
+            else {
+                print("PGPEncryption.encrypt: no keyID for mailaddress "+addr+" found")
+                return nil
+            }
+        }
+        
+        return signAndEncrypt(text, keyIDs: keyIDs)
     }
     
     //chooses first key in data. others will be ignored

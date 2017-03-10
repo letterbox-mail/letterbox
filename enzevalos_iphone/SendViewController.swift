@@ -165,10 +165,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //LogHandler.deleteLogs()
         LogHandler.newLog()
         //LogHandler.printLogs()
-        
-        //LogHandler.printLogs()
-        //var handler = CryptoHandler.getHandler() // <----
-        
 
         //---------------------------------------
         //Import private Key BEGIN
@@ -277,6 +273,16 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     func tokenFieldDidEndEditing(tokenField: VENTokenField) {}
+    
+    func reloadCollectionViews() {
+        toCollectionview.collectionViewLayout.invalidateLayout()
+        toCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
+        ccCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
+        toCollectionview.reloadItemsAtIndexPaths([NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0)])
+        toCollectionview.beginInteractiveMovementForItemAtIndexPath(NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0))
+        toCollectionview.collectionViewLayout.invalidateLayout()
+        toCollectionview.collectionViewLayout.finalizeCollectionViewUpdates()
+    }
     
     func showContact(email: String) {
         let records = DataHandler.handler.getContactByAddress(email).records
@@ -414,11 +420,21 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     func newInput(tokenField: VENTokenField){
+        print("input")
         animateIfNeeded()
         
         collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
+        
         toCollectionview.reloadData()
-        ccCollectionview.reloadData()
+        let path = NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0)
+        toCollectionview.reloadItemsAtIndexPaths([path])
+        toCollectionview.reloadData()
+        toCollectionview.collectionViewLayout.prepareLayout()// .invalidateLayout()
+        ccCollectionview.collectionViewLayout.prepareLayout()//.invalidateLayout()
+        toCollectionview.invalidateIntrinsicContentSize()
+        toCollectionview.updateConstraints()
+        
+        reloadCollectionViews()
     }
     
     func keyboardOpen(notification: NSNotification) {

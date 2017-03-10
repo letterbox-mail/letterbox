@@ -22,11 +22,13 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(suggestionFunc(alreadyInserted).count)
+        print("section: ",section)
         return suggestionFunc(alreadyInserted).count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        print(indexPath.row)
+        print(indexPath.row, indexPath.description)
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("frequent", forIndexPath: indexPath) as! FrequentCell
         cell.img.layer.cornerRadius = cell.img.frame.height/2
         cell.img.clipsToBounds = true
@@ -45,6 +47,7 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        insertCallback(suggestionFunc(alreadyInserted)[indexPath.row].1, suggestionFunc(alreadyInserted)[indexPath.row].2)
+        let tuple = suggestionFunc(alreadyInserted)[indexPath.row]
+        insertCallback(tuple.1, tuple.2)
     }
 }
