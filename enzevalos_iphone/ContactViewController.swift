@@ -37,7 +37,7 @@ class ContactViewController: UIViewController {
 
             prepareContactSheet()
 
-            otherRecords = con.ezContact.records.filter({ $0 != contact }) // TODO: add unencrypted records to filter
+            otherRecords = con.ezContact.records.filter({ $0 != contact })
         }
     }
 
@@ -206,15 +206,17 @@ extension ContactViewController: UITableViewDataSource {
             case 3:
                 let cell = tableView.dequeueReusableCellWithIdentifier("RecordCell", forIndexPath: indexPath) as! RecordCell
                 if let r = otherRecords {
-                    cell.label.text = r[indexPath.row].addresses.first?.mailAddress
-                    if r[indexPath.row].addresses.first?.label.label == "_$!<Work>!$_" {
-                        cell.iconImage.image = LabelStyleKit.imageOfWork
-                    } else if r[indexPath.row].addresses.first?.label.label == "_$!<Home>!$_" {
-                        cell.iconImage.image = LabelStyleKit.imageOfHome
+                    if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
+                        let dateFormatter = NSDateFormatter()
+                        dateFormatter.locale = NSLocale.currentLocale()
+                        dateFormatter.dateStyle = .MediumStyle
+                        cell.dateLabel.text = dateFormatter.stringFromDate(time)
+                        cell.iconImage.image = IconsStyleKit.imageOfLetter
+                    } else {
+                        cell.dateLabel.text = ""
+                        cell.iconImage.image = IconsStyleKit.imageOfPostcard
                     }
-                    //                else if r[indexPath.row].addresses.first?.label.label?.containsString("other") {
-                    //                    cell.iconImage.image = LabelStyleKit.imageOfOther
-                    //                }
+                    cell.label.text = r[indexPath.row].addresses.first?.mailAddress
                 }
                 return cell
             default:
@@ -225,7 +227,7 @@ extension ContactViewController: UITableViewDataSource {
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if contact?.ezContact.records.count > 1 { // TODO: change later to only show this when there are more than 2 records
+        if contact?.ezContact.records.count > 1 {
             return 4
         }
         return 3
@@ -261,7 +263,7 @@ extension ContactViewController: UITableViewDataSource {
         case 1:
             return NSLocalizedString("connectedAddresses", comment: "All addresses connected to this keyrecord")
         case 3:
-            return NSLocalizedString("otherKeys", comment: "Other keys for this contact")
+            return NSLocalizedString("otherRecords", comment: "Other records of this contact")
         default:
             return nil
         }

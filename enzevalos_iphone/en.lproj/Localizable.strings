@@ -77,7 +77,7 @@
 "discardText" = "The information you have entered will be lost.";
 "discardButton" = "Discard";
 "allMessages" = "All messages from this tray";
-"otherKeys" = "Other keys of this contact";
+"otherRecords" = "Other trays of this contact";
 "connectedAddresses" = "Associated addresses";
 "CC" = "To/CC";
 "All" = "All";

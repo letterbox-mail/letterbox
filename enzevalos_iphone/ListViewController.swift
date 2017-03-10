@@ -40,16 +40,14 @@ class ListViewController: UITableViewController {
     }
 
     func doneLoading(error: Bool) {
-        loading = false
-        
         if error {
             // TODO: maybe we should do something about this? maybe not?
-            tableView.reloadData()
-        } else {
-            tableView.reloadData()
         }
+
+        loading = false
+        tableView.reloadData()
     }
-    
+
     func addNewMail() {
         tableView.reloadData()
     }
@@ -165,7 +163,7 @@ class ListViewController: UITableViewController {
         }
         performSegueWithIdentifier("readMailSegue", sender: mail)
     }
-    
+
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let offset = scrollView.contentOffset
         let bounds = scrollView.bounds
@@ -173,7 +171,7 @@ class ListViewController: UITableViewController {
         let inset = scrollView.contentInset
         let y = offset.y + bounds.size.height - inset.bottom
         let h = size.height
-        
+
         let reload_distance: CGFloat = 50
         if y > h + reload_distance && !loading {
             print("loading new mail because we scrolled to the bottom")
