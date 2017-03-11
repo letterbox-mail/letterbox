@@ -4,10 +4,6 @@
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
-        <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Mail" syncable="YES"/>
-        <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Mail" syncable="YES"/>
-        <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Mail" syncable="YES"/>
-        <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Mail" syncable="YES"/>
     </entity>
     <entity name="Mail" representedClassName="Mail" syncable="YES">
         <attribute name="body" attributeType="String" syncable="YES"/>
@@ -42,7 +38,7 @@
         <attribute name="maxUID" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
     </entity>
     <elements>
-        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="150"/>
+        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>
         <element name="Mail" positionX="-416" positionY="-189" width="128" height="285"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="30"/>
         <element name="State" positionX="-306" positionY="-27" width="128" height="90"/>

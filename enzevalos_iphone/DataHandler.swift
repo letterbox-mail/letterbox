@@ -108,15 +108,12 @@ class DataHandler {
             for _ in  0...(countContacts - MaxRecords) {
                 let c = contacts.last! as EnzevalosContact
                 if  !c.hasKey{
-                    if c.from != nil {
-                        for m in c.from!{
-                            managedObjectContext.deleteObject(m as! NSManagedObject)
-                            if let index = mails.indexOf(m as! Mail) {
+                    for m in c.from{
+                            managedObjectContext.deleteObject(m as NSManagedObject)
+                            if let index = mails.indexOf(m) {
                                 mails.removeAtIndex(index)
                             }
                         }
-                        c.from = nil
-                    }
                     contacts.removeLast()
                     managedObjectContext.deleteObject(c)
                 }
@@ -128,18 +125,16 @@ class DataHandler {
     private func cleanMails() {
         if countMails > (MaxMailsPerRecord * countContacts) {
             for c in contacts {
-                if let ms = c.from {
-                    if ms.count > MaxMailsPerRecord {
+                let ms = c.from
+                    if ms.count > MaxMailsPerRecord && ms.count > 0 {
                         for _ in  0...(ms.count - MaxMailsPerRecord) {
-                            let last = ms.firstObject as! Mail
-                            c.removeFromFrom(last)
+                            let last = ms.first!
                             managedObjectContext.deleteObject(last)
                             if let index = mails.indexOf(last) {
                                 mails.removeAtIndex(index)
                             }
                         }
                     }
-                }
             }
         }
     }
@@ -293,26 +288,17 @@ class DataHandler {
     
     // -------- Start handle to, cc, from addresses --------
     private func handleFromAddress(sender: MCOAddress, fromMail: Mail) {
-        let contact = getContactByMCOAddress(sender)
-        contact.addToFrom(fromMail)
         let adr: Mail_Address
+        let contact = getContactByMCOAddress(sender)
         adr = contact.getAddressByMCOAddress(sender)!
         fromMail.from = adr
     }
     
     private func handleToAddresses(receivers: [MCOAddress], mail: Mail) {
-        let contacts = getContacts(receivers)
-        for c in contacts {
-            c.addToTo(mail)
-        }
         mail.addToTo(NSSet(array: getMailAddressesByMCOAddresses(receivers)))
     }
     
     private func handleCCAddresses(cc: [MCOAddress], mail: Mail) {
-        let contacts = getContacts(cc)
-        for c in contacts {
-            c.addToCc(mail)
-        }
         mail.addToCc(NSSet(array: getMailAddressesByMCOAddresses(cc)))
     }
     
@@ -404,10 +390,9 @@ class DataHandler {
         if result != nil {
             for r in result!{
                 let c = r as! EnzevalosContact
-                if let ms = c.from {
-                    if ms.count > 0 {
-                        contacts.append(c)
-                    }
+                let ms = c.from
+                if ms.count > 0 {
+                    contacts.append(c)
                 }
             }
         }
