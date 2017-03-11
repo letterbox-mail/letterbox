@@ -24,18 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")
         
         ThemeManager.currentTheme()
-        mailHandler.findMaxUID(callback: { (max: UInt64) -> Void in
-            
-           print(max)
-        })
-        let start = NSDateComponents()
-        let end =  NSDate()
-        start.day = 31
-        start.month = 12
-        start.year = 2016
-        let  d = NSDate(timeIntervalSinceReferenceDate: -123456789.0)
-        print ("From \(d) to \(end) ")
-       // mailHandler.lookForMailAddresses(["oliver.wiese@fu-berlin.de", "bob2005@web.de"],startDate: d, endDate: end)
         return true
     }
     
