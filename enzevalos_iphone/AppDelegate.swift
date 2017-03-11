@@ -28,12 +28,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
            print(max)
         })
-        var start = NSDateComponents()
-        var end =  NSDate()
+        let start = NSDateComponents()
+        let end =  NSDate()
         start.day = 31
         start.month = 12
         start.year = 2016
-        var  d = NSDate(timeIntervalSinceReferenceDate: -123456789.0)
+        let  d = NSDate(timeIntervalSinceReferenceDate: -123456789.0)
         print ("From \(d) to \(end) ")
        // mailHandler.lookForMailAddresses(["oliver.wiese@fu-berlin.de", "bob2005@web.de"],startDate: d, endDate: end)
         return true
