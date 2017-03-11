@@ -10,6 +10,9 @@ import UIKit
 import CoreData
 import Contacts
 
+//TODO: TO Felder mit Strings
+// KeyRecord mergen?? IMAP Snyc?
+
 
 class DataHandler {
     static let handler: DataHandler = DataHandler()
@@ -20,7 +23,7 @@ class DataHandler {
     lazy var currentstate: State = self.getCurrentState()
     
     private let MaxRecords = 50
-    private let MaxMailsPerRecord = 20
+    private let MaxMailsPerRecord = 10
     
     var receiverRecords: [KeyRecord]
     
@@ -353,8 +356,6 @@ class DataHandler {
         if getCurrentState().maxUID < mail.uid {
             getCurrentState().maxUID = mail.uid
         }
-        
-        //TODO Duplicates?
         mails.append(mail)
         
         var added = false
@@ -382,6 +383,19 @@ class DataHandler {
             }
         }
         return mails
+    }
+    
+    private func getAddresses()-> [MailAddress]{
+        var adrs = [MailAddress]()
+        let result = findAll("Mail_Address")
+        if result != nil {
+            for r in result! {
+                let adr = r as! MailAddress
+                adrs.append(adr)
+            }
+        }
+        return adrs
+    
     }
     
     private func getContacts()->[EnzevalosContact] {
@@ -421,14 +435,15 @@ class DataHandler {
             if r.addNewMail(m) {
                 found = true
                 usedRecord = r
+                records.sortInPlace()
                 break
             }
         }
         if !found {
             usedRecord = KeyRecord(mail: m)
             records.append(usedRecord!)
+            records.sortInPlace()
         }
-
     }
     
     private func isInReceiverRecords(m: Mail){

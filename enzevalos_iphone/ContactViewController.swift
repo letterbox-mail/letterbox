@@ -11,11 +11,13 @@ import UIKit
 import Contacts
 import ContactsUI
 
-class ContactViewController: UITableViewController {
+class ContactViewController: UIViewController {
     var contact: KeyRecord? = nil
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
     private var otherRecords: [KeyRecord]? = nil
+
+    @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,11 +25,12 @@ class ContactViewController: UITableViewController {
         navigationController?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.delegate = self
 
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 44.0
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 44.0
 
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
-//        headerCell.layoutMargins = UIEdgeInsetsZero
         if let con = contact {
             self.title = con.name
 //            self.title = CNContactFormatter.stringFromContact(con.ezContact.cnContact, style: .FullName)
@@ -37,8 +40,6 @@ class ContactViewController: UITableViewController {
             otherRecords = con.ezContact.records.filter({ $0 != contact }) // TODO: add unencrypted records to filter
         }
     }
-
-
 
     func prepareContactSheet() {
         let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
@@ -125,67 +126,39 @@ class ContactViewController: UITableViewController {
         }
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if contact?.ezContact.records.count > 1 { // TODO: change later to only show this when there are more than 2 records
-            return 4
-        }
-        return 3
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let con = contact {
-            switch section {
-            case 0:
-                if !con.isVerified {
-                    return 2
-                }
-            case 1:
-                if let addresses = con.ezContact.addresses {
-                    return addresses.count
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "newMail" {
+            let navigationController = segue.destinationViewController as? UINavigationController
+            let controller = navigationController?.topViewController as? SendViewController
+            let indexPath = tableView.indexPathForSelectedRow
+            if controller != nil {
+                // TODO: add address to SendView
+                controller!.toField = contact!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+            }
+        } else if segue.identifier == "mailList" {
+            let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
+            DestinationViewController.contact = contact
+        } else if segue.identifier == "otherRecord" {
+            let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
+            let indexPath = tableView.indexPathForSelectedRow
+            if let r = otherRecords {
+                if let indexPath = indexPath where indexPath.section == 3 {
+                    let destinationRecord = r[indexPath.row]
+                    DestinationViewController.contact = destinationRecord
                 } else {
-                    return 0
+                    DestinationViewController.contact = otherRecords!.first
                 }
-            case 3:
-                if let rec = otherRecords {
-                    return rec.count
-                }
-                return 0
-            default:
-                break
             }
         }
-        return 1
     }
+}
 
-    override func tableView(tableView: UITableView, shouldShowMenuForRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.section == 1 {
-            return true
-        }
-        return false
-    }
+extension ContactViewController: CNContactViewControllerDelegate {
 
-    override func tableView(tableView: UITableView, canPerformAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return action == #selector(copy(_:))
-    }
+}
 
-    override func tableView(tableView: UITableView, performAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-        if indexPath.section == 1 {
-            UIPasteboard.generalPasteboard().string = contact!.ezContact.getMailAddresses()[indexPath.row].mailAddress
-        }
-    }
-
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 1:
-            return NSLocalizedString("connectedAddresses", comment: "All addresses connected to this keyrecord")
-        case 3:
-            return NSLocalizedString("otherKeys", comment: "Other keys for this contact")
-        default:
-            return nil
-        }
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+extension ContactViewController: UITableViewDataSource {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if contact != nil {
             switch indexPath.section {
             case 0:
@@ -239,9 +212,9 @@ class ContactViewController: UITableViewController {
                     } else if r[indexPath.row].addresses.first?.label.label == "_$!<Home>!$_" {
                         cell.iconImage.image = LabelStyleKit.imageOfHome
                     }
-//                else if r[indexPath.row].addresses.first?.label.label?.containsString("other") {
-//                    cell.iconImage.image = LabelStyleKit.imageOfOther
-//                }
+                    //                else if r[indexPath.row].addresses.first?.label.label?.containsString("other") {
+                    //                    cell.iconImage.image = LabelStyleKit.imageOfOther
+                    //                }
                 }
                 return cell
             default:
@@ -251,42 +224,81 @@ class ContactViewController: UITableViewController {
         return tableView.dequeueReusableCellWithIdentifier("MailCell", forIndexPath: indexPath)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "newMail" {
-            let navigationController = segue.destinationViewController as? UINavigationController
-            let controller = navigationController?.topViewController as? SendViewController
-            let indexPath = tableView.indexPathForSelectedRow
-            if controller != nil {
-                // TODO: add address to SendView
-                controller!.toField = contact!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
-            }
-        } else if segue.identifier == "mailList" {
-            let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
-            DestinationViewController.contact = contact
-        } else if segue.identifier == "otherRecord" {
-            let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
-            let indexPath = tableView.indexPathForSelectedRow
-            if let r = otherRecords {
-                if let indexPath = indexPath where indexPath.section == 3 {
-                    let destinationRecord = r[indexPath.row]
-                    DestinationViewController.contact = destinationRecord
-                } else {
-                    DestinationViewController.contact = otherRecords!.first
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if contact?.ezContact.records.count > 1 { // TODO: change later to only show this when there are more than 2 records
+            return 4
+        }
+        return 3
+    }
+
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let con = contact {
+            switch section {
+            case 0:
+                if !con.isVerified {
+                    return 2
                 }
+            case 1:
+                if let addresses = con.ezContact.addresses {
+                    return addresses.count
+                } else {
+                    return 0
+                }
+            case 3:
+                if let rec = otherRecords {
+                    return rec.count
+                }
+                return 0
+            default:
+                break
             }
         }
+        return 1
+    }
+
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 1:
+            return NSLocalizedString("connectedAddresses", comment: "All addresses connected to this keyrecord")
+        case 3:
+            return NSLocalizedString("otherKeys", comment: "Other keys for this contact")
+        default:
+            return nil
+        }
+    }
+
+    func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 0 {
+            return "Mit diesem Kontakt kommunizieren Sie zu 93% verschlüsselt und im Durchschnitt 2,3 x pro Woche." // Nur ein Test
+        }
+        return nil
     }
 }
 
-extension ContactViewController: CNContactViewControllerDelegate {
+extension ContactViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, shouldShowMenuForRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if indexPath.section == 1 {
+            return true
+        }
+        return false
+    }
 
+    func tableView(tableView: UITableView, canPerformAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+        return action == #selector(copy(_:))
+    }
+
+    func tableView(tableView: UITableView, performAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
+        if indexPath.section == 1 {
+            UIPasteboard.generalPasteboard().string = contact!.ezContact.getMailAddresses()[indexPath.row].mailAddress
+        }
+    }
 }
 
 extension ContactViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
         case .Pop:
-            return nil // you should return customized pop
+            return nil // default
         case .Push:
             if tableView.indexPathForSelectedRow?.section == 3 || tableView.indexPathForSelectedRow?.section == 0 {
                 return FlipTransition()

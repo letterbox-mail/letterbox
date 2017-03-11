@@ -122,6 +122,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
         cell.delegate = self
         cell.enzContact = DataHandler.handler.receiverRecords[indexPath.section]
+        
+        
 
         return cell
     }

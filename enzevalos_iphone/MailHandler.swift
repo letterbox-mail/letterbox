@@ -142,7 +142,7 @@ class MailHandler {
 
     var delegate: MailHandlerDelegator?
     
-    private static let MAXMAILS: Int = 30
+    private static let MAXMAILS: Int = 10
     
     
     
@@ -311,15 +311,18 @@ class MailHandler {
                     return
                 }
                 let ids = indices as MCOIndexSet?
-                if let setOfIndices = ids {
+                if var setOfIndices = ids {
                     for mail in record.mails{
                         setOfIndices.removeIndex(mail.uid)
                     }
                     if setOfIndices.count() == 0{
                         completionCallback(error: false)
                         return
-                    
                     }
+                    print("Size first: \(setOfIndices.count())")
+                    setOfIndices = self.cutIndexSet(setOfIndices)
+                    print("Size first: \(setOfIndices.count())")
+
                     self.loadMessagesFromServer(setOfIndices, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
                 }
             }
@@ -500,11 +503,18 @@ class MailHandler {
             ids = indices as MCOIndexSet?
             //TODO Make thread safe!!!
 
+<<<<<<< HEAD
             // Handle mails!
             dispatch_group_leave(dispatchGroup)
  
         }
         
+=======
+    func loadMoreMails(record: KeyRecord, newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ())) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(2 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+            completionCallback(error: false)
+        })
+>>>>>>> 3b095ad801e84b3f530f67c054a4adb8cdb465d7
     }
     
     

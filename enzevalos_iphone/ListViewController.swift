@@ -44,6 +44,7 @@ class ListViewController: UITableViewController {
         
         if error {
             // TODO: maybe we should do something about this? maybe not?
+            tableView.reloadData()
         } else {
             tableView.reloadData()
         }
@@ -156,6 +157,9 @@ class ListViewController: UITableViewController {
 
         if searchController.active && searchController.searchBar.text != "" {
             mail = filteredMails[indexPath.row]
+        } else if indexPath.row >= contact?.mails.count {
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            return
         } else {
             mail = contact?.mails[indexPath.row]
         }

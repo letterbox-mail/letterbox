@@ -501,6 +501,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             alert = UIAlertController(title: NSLocalizedString("discard", comment: "discard"), message: NSLocalizedString("discardText", comment: ""), preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "cancel"), style: .Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .Destructive, handler: {(action:UIAlertAction!) -> Void in
+                self.view.endEditing(true)
                 self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
             }))
             dispatch_async(dispatch_get_main_queue(), {
