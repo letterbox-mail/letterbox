@@ -123,18 +123,15 @@ class DataHandler {
     }
     
     private func cleanMails() {
-        if countMails > (MaxMailsPerRecord * countContacts) {
-            for c in contacts {
-                let ms = c.from
-                    if ms.count > MaxMailsPerRecord && ms.count > 0 {
-                        for _ in  0...(ms.count - MaxMailsPerRecord) {
-                            let last = ms.first!
-                            managedObjectContext.deleteObject(last)
-                            if let index = mails.indexOf(last) {
-                                mails.removeAtIndex(index)
-                            }
-                        }
-                    }
+        for c in contacts {
+            while c.from.count > MaxMailsPerRecord {
+                let last = c.from.last!
+                print("delete \(last.uid) of \(last.from.address)")
+                managedObjectContext.deleteObject(last)
+                save()
+                if let index = mails.indexOf(last) {
+                        mails.removeAtIndex(index)
+                }
             }
         }
     }
