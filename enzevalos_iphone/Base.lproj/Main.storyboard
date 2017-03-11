@@ -693,28 +693,39 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ll6-yF-xkq">
-                                            <rect key="frame" x="16" y="8" width="28" height="28"/>
+                                            <rect key="frame" x="16" y="8" width="38" height="28"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="28" id="QdS-hg-KWv"/>
-                                                <constraint firstAttribute="width" constant="28" id="zKm-1g-WHC"/>
+                                                <constraint firstAttribute="width" constant="38" id="zKm-1g-WHC"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="coq-va-tcb">
-                                            <rect key="frame" x="50" y="11" width="284" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="751" verticalHuggingPriority="751" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="coq-va-tcb">
+                                            <rect key="frame" x="60" y="11" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wnj-Bb-1Ox">
+                                            <rect key="frame" x="102" y="13" width="232" height="18"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Ll6-yF-xkq" firstAttribute="centerY" secondItem="pJ9-4e-7at" secondAttribute="centerY" id="GUi-lF-9kL"/>
+                                        <constraint firstItem="Wnj-Bb-1Ox" firstAttribute="baseline" secondItem="coq-va-tcb" secondAttribute="baseline" id="TI6-yd-eMM"/>
+                                        <constraint firstItem="Wnj-Bb-1Ox" firstAttribute="leading" secondItem="coq-va-tcb" secondAttribute="trailing" id="XFp-vU-ruV"/>
                                         <constraint firstItem="Ll6-yF-xkq" firstAttribute="leading" secondItem="pJ9-4e-7at" secondAttribute="leadingMargin" constant="8" id="aNC-ex-29t"/>
                                         <constraint firstItem="coq-va-tcb" firstAttribute="top" secondItem="pJ9-4e-7at" secondAttribute="topMargin" priority="250" constant="3" id="im8-ok-pnf"/>
                                         <constraint firstItem="coq-va-tcb" firstAttribute="leading" secondItem="Ll6-yF-xkq" secondAttribute="trailing" constant="6" id="meT-RA-vjS"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="coq-va-tcb" secondAttribute="trailing" id="uzO-6C-6Gc"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Wnj-Bb-1Ox" secondAttribute="trailing" constant="41" id="fMg-c8-FtQ"/>
+                                </constraints>
                                 <connections>
+                                    <outlet property="dateLabel" destination="Wnj-Bb-1Ox" id="IS8-cF-GB9"/>
                                     <outlet property="iconImage" destination="Ll6-yF-xkq" id="Cvo-ru-dH4"/>
                                     <outlet property="label" destination="coq-va-tcb" id="V9P-cb-D9m"/>
                                     <segue destination="8Di-x2-cWQ" kind="custom" identifier="otherRecord" customClass="ReplaceSegue" customModule="enzevalos_iphone" customModuleProvider="target" id="Nt4-4U-ZEF"/>

@@ -13,6 +13,7 @@ import ContactsUI
 
 class ContactViewController: UIViewController {
     var contact: KeyRecord? = nil
+    var highlightEmail: String? = nil
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
     private var otherRecords: [KeyRecord]? = nil
@@ -37,7 +38,13 @@ class ContactViewController: UIViewController {
 
             prepareContactSheet()
 
-            otherRecords = con.ezContact.records.filter({ $0 != contact }) // TODO: add unencrypted records to filter
+            otherRecords = con.ezContact.records.filter({ $0 != contact })
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        if let row = tableView.indexPathForSelectedRow {
+            tableView.deselectRowAtIndexPath(row, animated: false)
         }
     }
 
@@ -191,7 +198,13 @@ extension ContactViewController: UITableViewDataSource {
                 }
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("MailCell") as! MailCell
-                cell.detailLabel.text = contact!.cnContact?.getMailAddresses()[indexPath.item].mailAddress
+                if let address = contact!.cnContact?.getMailAddresses()[indexPath.item].mailAddress {
+                    if let highlightEmail = highlightEmail where highlightEmail.containsString(address) {
+                        cell.detailLabel.textColor = view.tintColor
+                        cell.titleLabel.textColor = view.tintColor
+                    }
+                    cell.detailLabel.text = address
+                }
                 if let label = contact?.cnContact?.getMailAddresses()[indexPath.item].label.label {
                     cell.titleLabel.text = CNLabeledValue.localizedStringForLabel(label)
                 } else {
@@ -206,15 +219,17 @@ extension ContactViewController: UITableViewDataSource {
             case 3:
                 let cell = tableView.dequeueReusableCellWithIdentifier("RecordCell", forIndexPath: indexPath) as! RecordCell
                 if let r = otherRecords {
-                    cell.label.text = r[indexPath.row].addresses.first?.mailAddress
-                    if r[indexPath.row].addresses.first?.label.label == "_$!<Work>!$_" {
-                        cell.iconImage.image = LabelStyleKit.imageOfWork
-                    } else if r[indexPath.row].addresses.first?.label.label == "_$!<Home>!$_" {
-                        cell.iconImage.image = LabelStyleKit.imageOfHome
+                    if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
+                        let dateFormatter = NSDateFormatter()
+                        dateFormatter.locale = NSLocale.currentLocale()
+                        dateFormatter.dateStyle = .MediumStyle
+                        cell.dateLabel.text = dateFormatter.stringFromDate(time)
+                        cell.iconImage.image = IconsStyleKit.imageOfLetter
+                    } else {
+                        cell.dateLabel.text = ""
+                        cell.iconImage.image = IconsStyleKit.imageOfPostcard
                     }
-                    //                else if r[indexPath.row].addresses.first?.label.label?.containsString("other") {
-                    //                    cell.iconImage.image = LabelStyleKit.imageOfOther
-                    //                }
+                    cell.label.text = r[indexPath.row].addresses.first?.mailAddress
                 }
                 return cell
             default:
@@ -225,7 +240,7 @@ extension ContactViewController: UITableViewDataSource {
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if contact?.ezContact.records.count > 1 { // TODO: change later to only show this when there are more than 2 records
+        if contact?.ezContact.records.count > 1 {
             return 4
         }
         return 3
@@ -261,7 +276,7 @@ extension ContactViewController: UITableViewDataSource {
         case 1:
             return NSLocalizedString("connectedAddresses", comment: "All addresses connected to this keyrecord")
         case 3:
-            return NSLocalizedString("otherKeys", comment: "Other keys for this contact")
+            return NSLocalizedString("otherRecords", comment: "Other records of this contact")
         default:
             return nil
         }

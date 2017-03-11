@@ -283,7 +283,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         for r in records {
             for address in r.addresses {
                 if address.mailAddress == email && address.prefEnc == r.hasKey {
-                    performSegueWithIdentifier("showContact", sender: r)
+                    performSegueWithIdentifier("showContact", sender: ["record": r, "email": email])
                     return
                 }
             }
@@ -295,7 +295,10 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showContact" {
             let destinationVC = segue.destinationViewController as! ContactViewController
-            destinationVC.contact = (sender as! KeyRecord)
+            if let sender = sender {
+                destinationVC.contact = (sender["record"] as! KeyRecord)
+                destinationVC.highlightEmail = (sender["email"] as! String)
+            }
         }
     }
     
