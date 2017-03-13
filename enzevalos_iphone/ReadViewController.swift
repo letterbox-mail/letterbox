@@ -238,6 +238,7 @@ class ReadViewController: UITableViewController {
 
 
             senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: m.from.contact.displayname!, mail: m.from.address)
+//            senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: "tut", mail: "tom@tut.com")
 
             for receiver in m.getReceivers() {
                 if let displayname = receiver.contact.displayname {
@@ -262,6 +263,10 @@ class ReadViewController: UITableViewController {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
                 }
             }
+            
+//            for _ in 0..<10 {
+//                toTokenField.delegate?.tokenField!(toTokenField, didEnterText: "Tom", mail: "tom@web.de")
+//            }
 //            sender.text = m.from.address
             //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
 //            if m.getReceivers().count == 1 && m.cc?.count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
