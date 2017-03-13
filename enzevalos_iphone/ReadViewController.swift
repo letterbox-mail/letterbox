@@ -8,10 +8,12 @@
 
 import UIKit
 import Foundation
+import VENTokenField
 
 class ReadViewController: UITableViewController {
-    @IBOutlet weak var sender: UILabel!
-    @IBOutlet weak var receivers: UILabel!
+
+    @IBOutlet weak var senderTokenField: VENTokenField!
+    @IBOutlet weak var toTokenField: VENTokenField!
     @IBOutlet weak var receivedTime: UILabel!
     @IBOutlet weak var subject: UILabel!
     @IBOutlet weak var messageBody: UILabel!
@@ -28,6 +30,8 @@ class ReadViewController: UITableViewController {
 
     @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
 
+    var VENDelegate: ReadVENDelegate?
+
     var mail: Mail? = nil
     let troubleColor = ThemeManager.troubleMessageColor()
     let encryptColor = ThemeManager.encryptedMessageColor()
@@ -39,6 +43,20 @@ class ReadViewController: UITableViewController {
 
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
+
+        VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: self.showContact)
+
+        senderTokenField.delegate = VENDelegate
+        senderTokenField.dataSource = VENDelegate
+        senderTokenField.toLabelText = "\(NSLocalizedString("From", comment: "From field")):"
+        senderTokenField.toLabelTextColor = UIColor.darkGrayColor()
+        senderTokenField.readOnly = true
+
+        toTokenField.delegate = VENDelegate
+        toTokenField.dataSource = VENDelegate
+        toTokenField.toLabelText = "\(NSLocalizedString("To", comment: "From field")):"
+        toTokenField.toLabelTextColor = UIColor.darkGrayColor()
+        toTokenField.readOnly = true
 
         // not possible to set in IB
         SeperatorConstraint.constant = 1 / UIScreen.mainScreen().scale
@@ -66,6 +84,20 @@ class ReadViewController: UITableViewController {
         if parent == nil {
             UIView.animateWithDuration(0.3, animations: { self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor })
         }
+    }
+
+    func showContact(email: String) {
+        let records = DataHandler.handler.getContactByAddress(email).records
+        for r in records {
+            for address in r.addresses {
+                if address.mailAddress == email && address.prefEnc == r.hasKey {
+                    performSegueWithIdentifier("showContact", sender: ["record": r, "email": email])
+                    return
+                }
+            }
+        }
+
+        //        performSegueWithIdentifier("showContact", sender: records.first)
     }
 
     // set top seperator height
@@ -204,23 +236,51 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-            sender.text = m.from.address
-            //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
-            if m.getReceivers().count == 1 && m.cc?.count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
-                receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
-                if let cc = m.cc {
-                    for c in cc {
-                        receivers.text?.appendContentsOf(c.address)
-                        receivers.text?.appendContentsOf(" ")
-                    }
-                }
-            } else { //TODO: Fix all this by replacing it with VENTokenField
-                receivers.text = NSLocalizedString("To", comment: "To label") + ": "
-                for r in m.getReceivers() {
-                    receivers.text?.appendContentsOf(r.address)
-                    receivers.text?.appendContentsOf(" ")
+
+            senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: m.from.contact.displayname!, mail: m.from.address)
+
+            for receiver in m.getReceivers() {
+                if let displayname = receiver.contact.displayname {
+                    toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
+                } else {
+                    toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
                 }
             }
+            
+            for receiver in m.getCCs() {
+                if let displayname = receiver.contact.displayname {
+                    toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
+                } else {
+                    toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
+                }
+            }
+            
+            for receiver in m.getBCCs() {
+                if let displayname = receiver.contact.displayname {
+                    toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
+                } else {
+                    toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
+                }
+            }
+//            sender.text = m.from.address
+            //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
+//            if m.getReceivers().count == 1 && m.cc?.count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
+//                receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
+//                if let cc = m.cc {
+//                    for c in cc {
+////                        receivers.text?.appendContentsOf(c.address)
+//                        receivers.text?.appendContentsOf(" ")
+//                    }
+//                }
+//            } else { //TODO: Fix all this by replacing it with VENTokenField
+//                receivers.text = NSLocalizedString("To", comment: "To label") + ": "
+//                for r in m.getReceivers() {
+//                    receivers.text?.appendContentsOf(r.address)
+//                    receivers.text?.appendContentsOf(" ")
+//                }
+//            }
+            
+            
             receivedTime.text = m.timeString
 
             if let subj = m.subject {
@@ -256,7 +316,7 @@ class ReadViewController: UITableViewController {
 
                 messageBody.text = m.decryptedBody
                 //print(m.decryptedMessage)
-               // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
+                // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
 
                 //AFTERMERGE
                 /*if m.from.hasKey{
@@ -291,6 +351,12 @@ class ReadViewController: UITableViewController {
             let controller = navigationController?.topViewController as? SendViewController
             if controller != nil {
                 controller?.answerTo = mail
+            }
+        } else if segue.identifier == "showContact" {
+            let destinationVC = segue.destinationViewController as! ContactViewController
+            if let sender = sender {
+                destinationVC.contact = (sender["record"] as! KeyRecord)
+                destinationVC.highlightEmail = (sender["email"] as! String)
             }
         }
     }

@@ -45,7 +45,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     var toSecure = true
     var ccSecure = true
     var dataDelegate = VENDataDelegate()
-    var mailHandler = MailHandler()
+    var mailHandler = AppDelegate.getAppDelegate().mailHandler
     var tableDataDelegate = TableViewDataDelegate(insertCallback: {(name : String, address : String) -> Void in return})
     var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: {(name : String, address : String) -> Void in return})
     var recognizer : UIGestureRecognizer = UIGestureRecognizer.init()
@@ -489,8 +489,8 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .Alert)
             url = "https://enzevalos.org/infos/letter"
         }
-        alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
+        alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
         dispatch_async(dispatch_get_main_queue(), {
             self.presentViewController(alert, animated: true, completion: nil)
         })

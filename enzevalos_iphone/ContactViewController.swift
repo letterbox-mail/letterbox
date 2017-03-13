@@ -254,7 +254,7 @@ extension ContactViewController: UITableViewDataSource {
                     return 2
                 }
             case 1:
-                if let addresses = con.ezContact.addresses {
+                if let addresses = con.cnContact?.getMailAddresses() { // cnContact out of sync with ezContact; should use ezContact -> NSSet to Set<>?
                     return addresses.count
                 } else {
                     return 0
@@ -313,7 +313,7 @@ extension ContactViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
         case .Pop:
-            return nil // default
+            return nil // default?
         case .Push:
             if tableView.indexPathForSelectedRow?.section == 3 || tableView.indexPathForSelectedRow?.section == 0 {
                 return FlipTransition()
