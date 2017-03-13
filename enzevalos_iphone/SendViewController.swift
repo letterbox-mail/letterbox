@@ -71,6 +71,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         toText.dataSource = dataDelegate
         toText.inputTextFieldKeyboardType = UIKeyboardType.EmailAddress
         toText.toLabelText = NSLocalizedString("To", comment: "to label")+": "
+        toText.setColorScheme(self.view.tintColor)
         toCollectionview.delegate = collectionDataDelegate
         toCollectionview.dataSource = collectionDataDelegate
         toCollectionview.registerNib(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
@@ -78,12 +79,14 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         ccText.delegate = dataDelegate
         ccText.dataSource = dataDelegate
         ccText.toLabelText = NSLocalizedString("Cc", comment: "copy label")+": "
+        ccText.setColorScheme(self.view.tintColor)
         ccCollectionview.delegate = collectionDataDelegate
         ccCollectionview.dataSource = collectionDataDelegate
         ccCollectionview.registerNib(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
         ccCollectionviewHeight.constant = 0
         
         subjectText.delegate = self
+        subjectText.setColorScheme(self.view.tintColor)
         
         //will always be thrown, when a token was editied
         toText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
