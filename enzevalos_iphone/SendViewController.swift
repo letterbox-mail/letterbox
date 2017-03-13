@@ -372,7 +372,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
                     }
                 }
                 indexes = []
-                for i in tableDataDelegate.contacts.count...tableview.numberOfRowsInSection(0){
+                for i in tableDataDelegate.contacts.count...tableview.numberOfRowsInSection(0){ //@Jakob: fatal error: Can't form Range with end < start
                     indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
                     if i+1 == tableview.numberOfRowsInSection(0) {
                         tableview.deleteRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)

@@ -44,7 +44,7 @@ class ReadViewController: UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
 
-        VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: self.showContact)
+        VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: self.showContact, tableView: tableView)
 
         senderTokenField.delegate = VENDelegate
         senderTokenField.dataSource = VENDelegate
@@ -56,6 +56,7 @@ class ReadViewController: UITableViewController {
         toTokenField.dataSource = VENDelegate
         toTokenField.toLabelText = "\(NSLocalizedString("To", comment: "From field")):"
         toTokenField.toLabelTextColor = UIColor.darkGrayColor()
+        toTokenField.setColorScheme(self.view.tintColor)
         toTokenField.readOnly = true
 
         // not possible to set in IB
@@ -109,6 +110,12 @@ class ReadViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 0 && indexPath.row == 1 {
+            if toTokenField.frame.height < 60 {
+                return 44.0
+            }
+            return toTokenField.frame.height
+        }
         return UITableViewAutomaticDimension
     }
 
@@ -236,9 +243,7 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-
             senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: m.from.contact.displayname!, mail: m.from.address)
-//            senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: "tut", mail: "tom@tut.com")
 
             for receiver in m.getReceivers() {
                 if let displayname = receiver.contact.displayname {
@@ -247,7 +252,7 @@ class ReadViewController: UITableViewController {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
                 }
             }
-            
+
             for receiver in m.getCCs() {
                 if let displayname = receiver.contact.displayname {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
@@ -255,7 +260,7 @@ class ReadViewController: UITableViewController {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
                 }
             }
-            
+
             for receiver in m.getBCCs() {
                 if let displayname = receiver.contact.displayname {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
@@ -263,29 +268,11 @@ class ReadViewController: UITableViewController {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
                 }
             }
-            
-//            for _ in 0..<10 {
-//                toTokenField.delegate?.tokenField!(toTokenField, didEnterText: "Tom", mail: "tom@web.de")
-//            }
-//            sender.text = m.from.address
-            //let useraddr: String = UserManager.loadUserValue(Attribute.UserAddr) as! String
-//            if m.getReceivers().count == 1 && m.cc?.count > 0 { // && m.to!.first?.mail_address == useraddr  TODO: WHY?
-//                receivers.text = NSLocalizedString("Cc", comment: "Carbon Copy") + ": "
-//                if let cc = m.cc {
-//                    for c in cc {
-////                        receivers.text?.appendContentsOf(c.address)
-//                        receivers.text?.appendContentsOf(" ")
-//                    }
-//                }
-//            } else { //TODO: Fix all this by replacing it with VENTokenField
-//                receivers.text = NSLocalizedString("To", comment: "To label") + ": "
-//                for r in m.getReceivers() {
-//                    receivers.text?.appendContentsOf(r.address)
-//                    receivers.text?.appendContentsOf(" ")
-//                }
-//            }
-            
-            
+
+            if toTokenField.frame.height > 60 {
+                toTokenField.collapse()
+            }
+
             receivedTime.text = m.timeString
 
             if let subj = m.subject {
