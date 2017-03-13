@@ -33,4 +33,25 @@ class enzevalos_iphoneTests: XCTestCase {
         }
     }
     
+    
+    func isSorted(array: [KeyRecord]) -> Bool {
+        let startIndex = 0
+        let endIndex = array.count - 1
+        
+        var previousIndex = startIndex
+        var currentIndex = startIndex.successor()
+        
+        while currentIndex < endIndex {
+            
+            if array[previousIndex] > array[currentIndex] {
+                return false
+            }
+            
+            previousIndex = currentIndex
+            currentIndex = currentIndex.successor()
+        }
+        
+        return true
+    }
+    
 }

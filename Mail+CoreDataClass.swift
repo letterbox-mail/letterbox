@@ -113,9 +113,8 @@ public class Mail: NSManagedObject, Comparable {
             if encryption.isUsedForSignature(self) == true {
                 //TODO
                 //check signature
-                if let correctSignature = encryption.isCorrectlySigned(self) {
+                if (encryption.isCorrectlySigned(self) != nil) {
                     self.isSigned = true
-                    print("From \(self.from.address) mail is signed!")
                 }
             }
 
@@ -135,7 +134,7 @@ public class Mail: NSManagedObject, Comparable {
             if encryption.isUsedForSignature(self) == true {
                 //TODO
                 //check signature
-                if let correctSignature = encryption.isCorrectlySigned(self) {
+                if (encryption.isCorrectlySigned(self) != nil) {
                     self.isSigned = true
                 }
             }

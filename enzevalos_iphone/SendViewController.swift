@@ -352,8 +352,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             do {
                 let contacts = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName(prefix), keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
                 var indexes : [NSIndexPath] = []
-                var i = 0
-                for (i=0; i<tableview.numberOfRowsInSection(0); i+=1) {
+                for i in 0...tableview.numberOfRowsInSection(0){
                     indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
                 }
                 indexes = []
@@ -373,13 +372,13 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
                     }
                 }
                 indexes = []
-                for (i=tableDataDelegate.contacts.count; i < tableview.numberOfRowsInSection(0); i+=1){
+                for i in tableDataDelegate.contacts.count...tableview.numberOfRowsInSection(0){
                     indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
                     if i+1 == tableview.numberOfRowsInSection(0) {
                         tableview.deleteRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
                     }
                 }
-                for (i=tableview.numberOfRowsInSection(0); i < tableDataDelegate.contacts.count; i+=1){
+                for i in tableview.numberOfRowsInSection(0)...tableDataDelegate.contacts.count{
                     indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
                     if i+1 == tableDataDelegate.contacts.count {
                         tableview.insertRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
