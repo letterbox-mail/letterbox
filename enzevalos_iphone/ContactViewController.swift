@@ -312,8 +312,6 @@ extension ContactViewController: UITableViewDelegate {
 extension ContactViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
-        case .Pop:
-            return nil // default?
         case .Push:
             if tableView.indexPathForSelectedRow?.section == 3 || tableView.indexPathForSelectedRow?.section == 0 {
                 return FlipTransition()
@@ -323,6 +321,10 @@ extension ContactViewController: UINavigationControllerDelegate {
         default:
             return nil
         }
+    }
+    
+    func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return nil
     }
 }
 

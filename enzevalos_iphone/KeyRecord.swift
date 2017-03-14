@@ -22,9 +22,7 @@ public class KeyRecord: Record {
     public var addresses: [MailAddress] = [MailAddress]()
 
     public var name: String {
-        get {
-            return ezContact.name
-        }
+        return ezContact.name
     }
     public var hasKey: Bool {
         return key != nil
@@ -47,9 +45,7 @@ public class KeyRecord: Record {
     public var ezContact: EnzevalosContact
 
     public var cnContact: CNContact? {
-        get {
-            return ezContact.cnContact
-        }
+        return ezContact.cnContact
     }
 
     public init(contact: EnzevalosContact, key: String?) {
@@ -59,14 +55,10 @@ public class KeyRecord: Record {
     }
 
     public var image: UIImage {
-        get {
-            return ezContact.getImageOrDefault()
-        }
+        return ezContact.getImageOrDefault()
     }
     public var color: UIColor {
-        get {
-            return ezContact.getColor()
-        }
+        return ezContact.getColor()
     }
 
 
@@ -185,17 +177,12 @@ public class KeyRecord: Record {
         return ezContact.getImageOrDefault()
     }
 
-
 }
 
 
 
 private func isEmpty(contact: KeyRecord) -> Bool {
-    if(contact.mails.count == 0) {
-        return true
-    }
-    return false
-
+    return contact.mails.count == 0
 }
 
 

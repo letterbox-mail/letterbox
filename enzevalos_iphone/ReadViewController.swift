@@ -98,7 +98,7 @@ class ReadViewController: UITableViewController {
             }
         }
 
-        //        performSegueWithIdentifier("showContact", sender: records.first)
+//        performSegueWithIdentifier("showContact", sender: Record(email: email))
     }
 
     // set top seperator height
