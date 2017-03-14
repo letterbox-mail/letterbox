@@ -287,6 +287,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             for address in r.addresses {
                 if address.mailAddress == email && address.prefEnc == r.hasKey {
                     performSegueWithIdentifier("showContact", sender: ["record": r, "email": email])
+                    self.view.endEditing(true)
                     return
                 }
             }
