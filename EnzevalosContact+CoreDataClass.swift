@@ -14,17 +14,26 @@ import Contacts
 
 @objc(EnzevalosContact)
 public class EnzevalosContact: NSManagedObject, Contact, Comparable {
-    
-    //addKeyRecords
-    
+        
     public var name:String{
         get{
             return getName()
         }
     }
     
-    public var records: [KeyRecord] = [KeyRecord]() //TODO: Handle duplicates
+    public var records: [KeyRecord] {
+        get{
+            var myrecords = [KeyRecord]()
+            for r in DataHandler.handler.receiverRecords{
+                if r.ezContact == self{
+                    myrecords.append(r)
+                }
+            }
+            return myrecords
+        
+        }
     
+    }
     public var hasKey: Bool{
         get {
             for item in addresses!{

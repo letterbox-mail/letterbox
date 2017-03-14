@@ -65,8 +65,10 @@
 "LastUpdate" = "Letzte Aktualisierung";
 "notVerified" = "Kontakt ist noch nicht verifiziert";
 "noEncryption" = "Kontakt nutzt noch keine Verschlüsselung";
+"otherEncryption" = "Dies ist die unsichere Ablage dieses Kontakt";
 "Verified" = "Kontakt ist verifiziert";
 "verifyNow" = "Jetzt verifizieren";
+"toEncrypted" = "Zur sicheren Ablage";
 "invite" = "Kontakt einladen Verschlüsselung zu nutzen";
 "discard" = "Nachricht verwerfen?";
 "discardText" = "Die eingegebenen Informationen werden nicht gespeichert.";
