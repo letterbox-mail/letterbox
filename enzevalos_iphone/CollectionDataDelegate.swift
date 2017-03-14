@@ -15,6 +15,8 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
     var alreadyInserted : [String] = []
     var insertCallback : (String, String) -> Void = {(name : String, address : String) -> Void in return}
     
+    static let maxFrequent = 10
+    
     init(suggestionFunc: [String] -> [(UIImage, String, String, UIImage?, UIColor)], insertCallback : (String, String) -> Void){
         self.suggestionFunc = suggestionFunc
         self.insertCallback = insertCallback

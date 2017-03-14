@@ -56,7 +56,7 @@ class AddressHandler {
             }
             catch {}
         var list : [(UIImage,String,String,UIImage?,UIColor)] = []
-        var entrys = 10
+        var entrys = CollectionDataDelegate.maxFrequent
         if cons.count < entrys {
             entrys = cons.count
         }
