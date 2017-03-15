@@ -13,44 +13,37 @@ import Contacts
 
 @objc(Mail_Address)
 public class Mail_Address: NSManagedObject, MailAddress {
-    
-    public var mailAddress: String{
-        get{
-            return address
-        }
+
+    public var mailAddress: String {
+        return address
     }
-    
-   public var label: CNLabeledValue{
-        get{
-            
-            if let cnc = self.contact.cnContact{
-                for adr in cnc.emailAddresses{
-                    if adr.value as! String == address{
-                        return adr
-                    }
+
+    public var label: CNLabeledValue {
+        if let cnc = self.contact.cnContact {
+            for adr in cnc.emailAddresses {
+                if adr.value as! String == address {
+                    return adr
                 }
             }
-            return CNLabeledValue.init(label: CNLabelOther, value: address)
         }
+        return CNLabeledValue.init(label: CNLabelOther, value: address)
     }
-    
-    public var prefEnc: Bool{
-        get{
-            return prefer_encryption
-        }
+
+    public var prefEnc: Bool {
+        return prefer_encryption
     }
-    
+
     //TODO think about it!
-    public var keyID : String? {
+    public var keyID: String? {
         get {
-            if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType){
+            if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
                 return encryption.getActualKeyID(self.address)
             }
             return nil
         }
-        set (newID){
+        set (newID) {
             if let id = newID {
-                if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType){
+                if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
                     if encryption.keyIDExists(id) {
                         if let currentID = self.keyID {
                             encryption.removeMailAddressForKey(self.mailAddress, keyID: currentID)
@@ -59,7 +52,7 @@ public class Mail_Address: NSManagedObject, MailAddress {
                     }
                 }
             }
-            else {
+                else {
                 if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
                     if let currentID = self.keyID {
                         encryption.removeMailAddressForKey(self.mailAddress, keyID: currentID)
@@ -68,16 +61,13 @@ public class Mail_Address: NSManagedObject, MailAddress {
             }
         }
     }
-    
+
     public var encryptionType: EncryptionType = EncryptionType.PGP
-    
-    public var hasKey: Bool{
-        get{
-            if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
-                return encryption.hasKey(self.mailAddress)
-            }
-            return false
+
+    public var hasKey: Bool {
+        if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
+            return encryption.hasKey(self.mailAddress)
         }
+        return false
     }
-    
 }

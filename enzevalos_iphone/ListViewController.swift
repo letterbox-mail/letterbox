@@ -15,8 +15,13 @@ class ListViewController: UITableViewController {
     var contact: KeyRecord? {
         didSet {
             self.title = contact!.name
+            if contact!.mails.count < 20 {
+                loading = true
+                AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, newMailCallback: addNewMail, completionCallback: doneLoading)
+            }
         }
     }
+    var loading = false
 
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
@@ -32,6 +37,19 @@ class ListViewController: UITableViewController {
         searchController.searchBar.delegate = self
 
         tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+    }
+
+    func doneLoading(error: Bool) {
+        if error {
+            // TODO: maybe we should do something about this? maybe not?
+        }
+
+        loading = false
+        tableView.reloadData()
+    }
+
+    func addNewMail() {
+        tableView.reloadData()
     }
 
     func filterContentForSearchText(searchText: String, scope: Int = 0) {
@@ -100,21 +118,25 @@ class ListViewController: UITableViewController {
             return filteredMails.count
         }
         if let count = contact?.mails.count {
-            return count
+            return loading ? count + 1: count
         } else {
-            return 0
+            return loading ? 1 : 0
         }
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ListCell") as! ListViewCell!
         let mail: Mail?
 
         if searchController.active && searchController.searchBar.text != "" {
             mail = filteredMails[indexPath.row]
+        } else if indexPath.row >= contact?.mails.count {
+            let cell = tableView.dequeueReusableCellWithIdentifier("LoadingCell")
+            return cell!
         } else {
             mail = contact?.mails[indexPath.row]
         }
+
+        let cell = tableView.dequeueReusableCellWithIdentifier("ListCell") as! ListViewCell!
 
         if mail != nil && !mail!.isRead {
             cell.subjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
@@ -133,10 +155,30 @@ class ListViewController: UITableViewController {
 
         if searchController.active && searchController.searchBar.text != "" {
             mail = filteredMails[indexPath.row]
+        } else if indexPath.row >= contact?.mails.count {
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            return
         } else {
             mail = contact?.mails[indexPath.row]
         }
         performSegueWithIdentifier("readMailSegue", sender: mail)
+    }
+
+    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let offset = scrollView.contentOffset
+        let bounds = scrollView.bounds
+        let size = scrollView.contentSize
+        let inset = scrollView.contentInset
+        let y = offset.y + bounds.size.height - inset.bottom
+        let h = size.height
+
+        let reload_distance: CGFloat = 50
+        if y > h + reload_distance && !loading {
+            print("loading new mail because we scrolled to the bottom")
+            loading = true
+            AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, newMailCallback: addNewMail, completionCallback: doneLoading)
+            tableView.reloadData()
+        }
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -152,7 +194,7 @@ class ListViewController: UITableViewController {
 extension ListViewController: UISearchResultsUpdating {
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         let searchBar = searchController.searchBar
-        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+        let _ = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
         filterContentForSearchText(searchController.searchBar.text!, scope: searchBar.selectedScopeButtonIndex)
     }
 }
