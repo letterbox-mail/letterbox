@@ -14,6 +14,10 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         //print ("hallo")
     }
     
+    var beginFunc: (VENTokenField -> Void) = {(_ : VENTokenField) -> Void in }
+    
+    var deleteFunc: (() -> Void) = {() -> Void in }
+    
     var tappedWhenSelectedFunc: (String -> Void)? = nil
     
     //Used later to show enzevalos-Contacts
@@ -24,20 +28,20 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         super.init()
     }
     
-    init(changeFunc: (VENTokenField -> Void), tappedWhenSelectedFunc: (String -> Void)?){
+    init(changeFunc: (VENTokenField -> Void), tappedWhenSelectedFunc: (String -> Void)?/*, beginFunc: (VENTokenField -> Void)*/, deleteFunc: (() -> Void)){
         self.changeFunc = changeFunc
         self.tappedWhenSelectedFunc = tappedWhenSelectedFunc
+        self.deleteFunc = deleteFunc
+        //self.beginFunc = beginFunc
         super.init()
     }
     
     func tokenField(tokenField: VENTokenField, didChangeText text: String?) {
-        //print(tokenField.inputText())
-        //print(text)
         changeFunc(tokenField)
     }
    
     func tokenField(tokenField: VENTokenField, colorSchemeForTokenAtIndex index: UInt) -> UIColor {
-        if EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress(tokenField.mailTokens[Int(index)] as! String)) {
+        if EnzevalosEncryptionHandler.hasKey(tokenField.mailTokens[Int(index)] as! String) {
             return UIColor.init(red: 0, green: 122.0/255.0, blue: 1, alpha: 1)
         }
         return UIColor.orangeColor()
@@ -46,6 +50,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     func tokenFieldDidBeginEditing(tokenField: VENTokenField) {
         //print("begin")
         //print(numberOfTokensInTokenField(tokenField))
+        beginFunc(tokenField)
     }
     
     func tokenField(tokenField: VENTokenField, didEnterText text: String) {
@@ -76,6 +81,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         tokenField.textTokens.removeObjectAtIndex(Int(index))
         tokenField.mailTokens.removeObjectAtIndex(Int(index))
         tokenField.reloadData()
+        deleteFunc()
         tokenField.sendActionsForControlEvents(UIControlEvents.EditingDidEnd)
     }
     
@@ -121,7 +127,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     func isSecure(tokenField: VENTokenField) -> Bool {
         var secure = true
         for entry in tokenField.mailTokens{
-            secure = secure && EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress(entry as! String)) //KeyHandler.getHandler().addrHasKey(entry as! String)//AddressHandler.proveAddress(entry as! NSString)
+            secure = secure && EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress(entry as! String))
         }
         return secure
     }

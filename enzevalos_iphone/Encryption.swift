@@ -68,7 +68,8 @@ public protocol Encryption {
     
     //sign and encrypt mail for contact
     func signAndEncrypt(mail: Mail, forContact: KeyRecord)
-    func signAndEncrypt(text: String, key: KeyWrapper) -> String
+    func signAndEncrypt(text: String, keyIDs: [String]) -> NSData?
+    func signAndEncrypt(text: String, mailaddresses: [String]) -> NSData?
     
     func addKey(keyData: NSData, forMailAddresses: [String]?) -> String?
     
