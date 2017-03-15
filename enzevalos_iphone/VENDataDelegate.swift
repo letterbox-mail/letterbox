@@ -16,7 +16,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     
     var tappedWhenSelectedFunc: (String -> Void)? = nil
     
-    //Used later to show enzevalos-Contacts
+    //Used to show enzevalos-Contacts
     //Have a look at tokenField(... didTappedTokenTwice ...)
     //var doubleTapFunc
     

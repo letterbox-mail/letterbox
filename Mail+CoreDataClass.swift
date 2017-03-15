@@ -78,9 +78,7 @@ public class Mail: NSManagedObject, Comparable {
         }
         return receivers
     }
-
-
-
+    
     func getCCs() -> [Mail_Address] {
         var receivers = [Mail_Address] ()
         for obj in cc! {
@@ -96,9 +94,6 @@ public class Mail: NSManagedObject, Comparable {
         }
         return receivers
     }
-
-
-
 
     //decrypt and/or check signature
     func decryptIfPossible() {
@@ -169,7 +164,6 @@ public class Mail: NSManagedObject, Comparable {
         }
         return "\(returnString)\(subj)"
     }
-
 }
 
 public func == (lhs: Mail, rhs: Mail) -> Bool {
