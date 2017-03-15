@@ -29,7 +29,7 @@ import Foundation
 import Contacts
 
 
-let EXTRAHEADERS = ["Inbome", "Autocrypt-ENCRYPTION"]
+let AUTOCRYPTHEADER = "Autocrypt-ENCRYPTION"
 let TO = "to"
 let TYPE = "type"
 let ENCRYPTION = "prefer-encrypted"
@@ -73,7 +73,7 @@ class AutocryptContact {
 
 
     convenience init(header: MCOMessageHeader) {
-        let autocrypt = header.extraHeaderValueForName(EXTRAHEADERS[0])
+        let autocrypt = header.extraHeaderValueForName(AUTOCRYPTHEADER)
         var field: [String]
         var addr = ""
         var type = ""
@@ -103,7 +103,10 @@ class AutocryptContact {
                         pref = value
                         break
                     case KEY:
-                        key = value
+                        if value.characters.count > 0{
+                            key = AutocryptContact.makePGPPublicKey(value)
+                            
+                        }
                         break
                     default:
                         break
@@ -114,6 +117,55 @@ class AutocryptContact {
         self.init(addr: addr, type: type, prefer_encryption: pref, key: key)
     }
 
+    static func fixChecksum(value: String)->String{
+        // [.*\n=....]
+        
+        let regex = try! NSRegularExpression(pattern: "[.*=....]", options: NSRegularExpressionOptions.CaseInsensitive)
+        let range = NSMakeRange((value.characters.count - 5), value.characters.count)
+        print("String: \(value) \n Range: \(range.length) string range: \(value.characters.count)")
+        let modString = regex.stringByReplacingMatchesInString(value, options: [], range: range, withTemplate: "[.*\n=....]")
+        print("Check checksum: \(modString)")
+        return modString
+    
+    }
+    
+    static func makePGPPublicKey(header: String)->String{
+        var key = ""
+        let prefix = "-----BEGIN PGP PUBLIC KEY BLOCK-----\n\n"
+        let suffix = "\n-----END PGP PUBLIC KEY BLOCK-----\n"
+        if !header.hasPrefix(prefix){
+            key = key + prefix
+        }
+        // "key \n=0123 (checksum)
+        let equalPos = (header.characters.count - 4)
+        key = key + header//fixChecksum(header)
+        
+        //let checksum = header.substringWithRange(Range<String.Index>(start: header.endIndex.advancedBy(-4), end:header.endIndex))
+        
+        /*
+        
+        let c = header.characters.indices
+        
+        if header.characters[String.CharacterView.] == "="{
+            print("=== gefunden")
+            if !header.characters[equalPos - 1] == "\n"{
+                print("Missing line break")
+                print("Before insert: \(key.characters.count)")
+                let linebreakPos = equalPos - 1
+                key.characters.insert("\n", atIndex: String.CharacterView.Index(equalPos - 1))
+                print("After insert: \(key.characters.count)")
+
+            }
+        }
+        
+ */
+        if !header.hasSuffix(suffix){
+            key = key + suffix
+        }
+        
+        //Checks if Begin/End is missing, Checks for newline before checksum
+        return key
+    }
     func validateContact() -> Bool {
         if addr != "" && type != .ERROR && key != "" {
             return true
@@ -169,7 +221,7 @@ class MailHandler {
         // Autocrypt-ENCRYPTION: to=aaa@bbb.cc; [type=(p|...);] [prefer-encrypted=(yes|no);] key=BASE64
         let autocrypt = "to=" + (UserManager.loadUserValue(Attribute.UserAddr) as! String) + "; type=" + (UserManager.loadUserValue(Attribute.AutocryptType) as! String) + "; prefer-encrypted=" + (UserManager.loadUserValue(Attribute.PrefEncryption) as! String) + "; key=" + (UserManager.loadUserValue(Attribute.PublicKey) as! String)
 
-        builder.header.setExtraHeaderValue(autocrypt, forName: "Autocrypt-ENCRYPTION")
+        builder.header.setExtraHeaderValue(autocrypt, forName: AUTOCRYPTHEADER)
     }
 
     //return if send successfully
@@ -332,7 +384,7 @@ class MailHandler {
     func loadMessagesFromServer(uids: MCOIndexSet, folder: String = "INBOX", record: KeyRecord?, newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ()) ){
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
         let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
-        fetchOperation.extraHeaders = EXTRAHEADERS
+        fetchOperation.extraHeaders = [AUTOCRYPTHEADER]
         
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
@@ -369,9 +421,9 @@ class MailHandler {
         if let data = parser?.data(){
             let msgParser = MCOMessageParser(data: data)
         
-            let html: String = msgParser.plainTextRendering()
+            let html: String = msgParser.plainTextBodyRendering()
             var lineArray = html.componentsSeparatedByString("\n")
-            lineArray.removeFirst(4)
+            //lineArray.removeFirst(4)
             var body = lineArray.joinWithSeparator("\n")
             body = body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             body.appendContentsOf("\n")
@@ -380,7 +432,31 @@ class MailHandler {
         
             let header = message.header
             // TODO: Handle here autocrypt
-        
+            var autocrypt: AutocryptContact? = nil
+            if let _ = header.extraHeaderValueForName(AUTOCRYPTHEADER){
+                print("Header: \(header)")
+                print("subject: \(header.subject)")
+                print("=============================")
+                autocrypt = AutocryptContact(header: header)
+                print(autocrypt?.toString())
+                if(autocrypt?.type == AutocryptContact.AutocryptType.OPENPGP && autocrypt?.key.characters.count > 0){
+                    let pgp = ObjectivePGP.init()
+                    print("####### Insert new KEY!!!")
+                    if let data = autocrypt!.key.dataUsingEncoding(NSUTF8StringEncoding){
+                       // pgp.importKeysFromData(data, allowDuplicates: true)
+                       // let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+                        do {
+                          //  enc?.addKey(data, forMailAddresses: [header.from.mailbox])
+                        }
+                        catch {
+                            print("Could not conntect key! \(autocrypt?.toString())")
+                        }
+                        print("Key added: \(autocrypt?.toString())")
+                    }
+                }
+                
+            }
+            
             if let to = header.to {
                 for r in to {
                     rec.append(r as! MCOAddress)
