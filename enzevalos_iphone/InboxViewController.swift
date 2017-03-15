@@ -10,9 +10,10 @@ import UIKit
 import Foundation
 import Contacts
 
-class InboxViewController: UITableViewController, InboxCellDelegator, MailHandlerDelegator {
+class InboxViewController: UITableViewController, InboxCellDelegator {
     let dateFormatter = NSDateFormatter()
 
+    /*
     var contacts: [KeyRecord] = [] {
         didSet {
             self.contacts.sortInPlace({ $0 < $1 })
@@ -25,6 +26,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
             }
         }
     }
+ */
 
     @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
     var lastUpdateLabel = UILabel(frame: CGRectZero)
@@ -38,7 +40,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
     var lastUpdate: NSDate?
 
 
-    func addNewMail(mail: Mail) { // Records durchgehen. Einsortieren.
+    func addNewMail() {
+        /*// Records durchgehen. Einsortieren.
         for c in contacts {
             if c.addNewMail(mail) {
                 return
@@ -54,6 +57,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
             print("Encrypted mail! Is Secure?: \(mail.isSecure)")
             print("Record: \(r.ezContact.name) key: \(r.key)")
         }
+ */
+       // contacts =  DataHandler.handler.receiverRecords
     }
 
  
@@ -75,9 +80,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
         lastUpdateLabel.textColor = UIColor.blackColor()
         lastUpdateButton.customView = lastUpdateLabel
 
-        contacts = DataHandler.handler.receiverRecords
 
-        AppDelegate.getAppDelegate().mailHandler.delegate = self
+        //AppDelegate.getAppDelegate().mailHandler.delegate = self
 
         dateFormatter.locale = NSLocale.currentLocale()
         dateFormatter.timeStyle = .MediumStyle
@@ -87,22 +91,22 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
 
     func refresh(refreshControl: UIRefreshControl) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
-        AppDelegate.getAppDelegate().mailHandler.recieve()
+        AppDelegate.getAppDelegate().mailHandler.receiveAll(newMailCallback: addNewMail, completionCallback: getMailCompleted)
     }
 
-    func getMailCompleted() {
+    func getMailCompleted(error: Bool) {
         if let rc = self.refreshControl {
             lastUpdate = NSDate()
             rc.endRefreshing()
             lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.stringFromDate(lastUpdate!))"
-            self.contacts.sortInPlace({ $0 < $1 })
+            // self.contacts.sortInPlace({ $0 < $1 })
+            
             self.tableView.reloadData()
         }
     }
 
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
-        contacts = DataHandler.handler.receiverRecords
 
         if lastUpdate == nil || NSDate().timeIntervalSinceDate(lastUpdate!) > 30 {
             self.refreshControl?.beginRefreshingManually()
@@ -117,13 +121,15 @@ class InboxViewController: UITableViewController, InboxCellDelegator, MailHandle
         let cell = tableView.dequeueReusableCellWithIdentifier("inboxCell", forIndexPath: indexPath) as! InboxTableViewCell
 
         cell.delegate = self
-        cell.enzContact = contacts[indexPath.section]
+        cell.enzContact = DataHandler.handler.receiverRecords[indexPath.section]
+        
+        
 
         return cell
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return contacts.count
+        return DataHandler.handler.receiverRecords.count
     }
 
     // set top and bottom seperator height

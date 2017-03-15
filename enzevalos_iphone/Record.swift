@@ -12,17 +12,17 @@ import UIKit
 
 
 public protocol Record: Comparable {
-    var name: String{get}
-    var hasKey: Bool{get}
-    var isVerified: Bool {get}
-    var ezContact: EnzevalosContact{get}
-    var mails: [Mail]{get}
-    var cnContact: CNContact?{get}
-    var color: UIColor {get}
-    var image: UIImage {get}
-    var addresses: [MailAddress]{get}
-    
-    
-    func addNewAddress(adr: MailAddress)->Bool
-    func addNewMail(mail:Mail)->Bool
+    var name: String { get }
+    var hasKey: Bool { get }
+    var isVerified: Bool { get }
+    var ezContact: EnzevalosContact { get }
+    var mails: [Mail] { get }
+    var cnContact: CNContact? { get }
+    var color: UIColor { get }
+    var image: UIImage { get }
+    var addresses: [MailAddress] { get }
+
+
+    func addNewAddress(adr: MailAddress) -> Bool
+    func addNewMail(mail: Mail) -> Bool
 }

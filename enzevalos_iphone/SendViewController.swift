@@ -45,7 +45,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     var toSecure = true
     var ccSecure = true
     var dataDelegate = VENDataDelegate()
-    var mailHandler = MailHandler()
+    var mailHandler = AppDelegate.getAppDelegate().mailHandler
     var tableDataDelegate = TableViewDataDelegate(insertCallback: {(name : String, address : String) -> Void in return})
     var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: {(name : String, address : String) -> Void in return})
     var recognizer : UIGestureRecognizer = UIGestureRecognizer.init()
@@ -71,6 +71,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         toText.dataSource = dataDelegate
         toText.inputTextFieldKeyboardType = UIKeyboardType.EmailAddress
         toText.toLabelText = NSLocalizedString("To", comment: "to label")+": "
+        toText.setColorScheme(self.view.tintColor)
         toCollectionview.delegate = collectionDataDelegate
         toCollectionview.dataSource = collectionDataDelegate
         toCollectionview.registerNib(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
@@ -78,6 +79,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         ccText.delegate = dataDelegate
         ccText.dataSource = dataDelegate
         ccText.toLabelText = NSLocalizedString("Cc", comment: "copy label")+": "
+        ccText.setColorScheme(self.view.tintColor)
         ccCollectionview.delegate = collectionDataDelegate
         ccCollectionview.dataSource = collectionDataDelegate
         ccCollectionview.registerNib(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
@@ -93,6 +95,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         }*/
         
         subjectText.delegate = self
+        subjectText.setColorScheme(self.view.tintColor)
         
         //will always be thrown, when a token was editied
         toText.addTarget(self, action: #selector(self.newInput(_:)), forControlEvents: UIControlEvents.EditingDidEnd)
@@ -333,7 +336,8 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         for r in records {
             for address in r.addresses {
                 if address.mailAddress == email && address.prefEnc == r.hasKey {
-                    performSegueWithIdentifier("showContact", sender: r)
+                    performSegueWithIdentifier("showContact", sender: ["record": r, "email": email])
+                    self.view.endEditing(true)
                     return
                 }
             }
@@ -345,7 +349,10 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showContact" {
             let destinationVC = segue.destinationViewController as! ContactViewController
-            destinationVC.contact = (sender as! KeyRecord)
+            if let sender = sender {
+                destinationVC.contact = (sender["record"] as! KeyRecord)
+                destinationVC.highlightEmail = (sender["email"] as! String)
+            }
         }
     }
     
@@ -398,12 +405,11 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         if authorizationStatus == CNAuthorizationStatus.Authorized {
             do {
                 let contacts = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName(prefix), keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
-                var indexes : [NSIndexPath] = []
-                var i = 0
-                for (i=0; i<tableview.numberOfRowsInSection(0); i+=1) {
+                //var indexes : [NSIndexPath] = []
+                /*for i in 0...tableview.numberOfRowsInSection(0){
                     indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
-                }
-                indexes = []
+                }*/
+                //indexes = []
                 tableDataDelegate.contacts = []
                 tableDataDelegate.addresses = []
                 tableDataDelegate.pictures = []
@@ -419,19 +425,19 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
                         self.tableDataDelegate.pictures.append(c.getImageOrDefault())
                     }
                 }
-                indexes = []
-                for (i=tableDataDelegate.contacts.count; i < tableview.numberOfRowsInSection(0); i+=1){
+                /*indexes = []
+                for i in tableDataDelegate.contacts.count...tableview.numberOfRowsInSection(0){ //@Jakob: fatal error: Can't form Range with end < start
                     indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
                     if i+1 == tableview.numberOfRowsInSection(0) {
                         tableview.deleteRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
                     }
                 }
-                for (i=tableview.numberOfRowsInSection(0); i < tableDataDelegate.contacts.count; i+=1){
+                for i in tableview.numberOfRowsInSection(0)...tableDataDelegate.contacts.count{
                     indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
                     if i+1 == tableDataDelegate.contacts.count {
                         tableview.insertRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
                     }
-                }
+                }*/
                 tableview.reloadData()
             }
             catch {
@@ -551,8 +557,8 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .Alert)
             url = "https://enzevalos.org/infos/letter"
         }
-        alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: UIAlertActionStyle.Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
-        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .Default, handler: {(action:UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!)}))
+        alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
         dispatch_async(dispatch_get_main_queue(), {
             self.presentViewController(alert, animated: true, completion: nil)
         })
@@ -566,6 +572,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             alert = UIAlertController(title: NSLocalizedString("discard", comment: "discard"), message: NSLocalizedString("discardText", comment: ""), preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "cancel"), style: .Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .Destructive, handler: {(action:UIAlertAction!) -> Void in
+                self.view.endEditing(true)
                 self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
             }))
             dispatch_async(dispatch_get_main_queue(), {

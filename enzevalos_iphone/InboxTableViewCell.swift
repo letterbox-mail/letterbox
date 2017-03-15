@@ -89,10 +89,8 @@ class InboxTableViewCell: UITableViewCell {
                 }
                 if con.hasKey {
                     iconView.image = IconsStyleKit.imageOfLetterBG
-//                    iconView.image = UIImage(named: "letter_small_2")!
                 } else {
                     iconView.image = IconsStyleKit.imageOfPostcardBG
-//                    iconView.image = UIImage(named: "postcard_small")!
                 }
 
                 self.contact = con.cnContact

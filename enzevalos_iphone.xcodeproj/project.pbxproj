@@ -118,6 +118,7 @@
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
 		F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445D1E7044B70080C041 /* FlipTransition.swift */; };
 		F18B44601E704C550080C041 /* ReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445F1E704C550080C041 /* ReplaceSegue.swift */; };
+		F18B44621E73286C0080C041 /* ReadVENDeleagate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B44611E73286C0080C041 /* ReadVENDeleagate.swift */; };
 		F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D711E1D327200804E1E /* IconsStyleKit.swift */; };
 		F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
 		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
@@ -313,6 +314,7 @@
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
 		F18B445D1E7044B70080C041 /* FlipTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipTransition.swift; sourceTree = "<group>"; };
 		F18B445F1E704C550080C041 /* ReplaceSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaceSegue.swift; sourceTree = "<group>"; };
+		F18B44611E73286C0080C041 /* ReadVENDeleagate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadVENDeleagate.swift; sourceTree = "<group>"; };
 		F1984D711E1D327200804E1E /* IconsStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconsStyleKit.swift; sourceTree = "<group>"; };
 		F1984D731E1E92B300804E1E /* LabelStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelStyleKit.swift; sourceTree = "<group>"; };
 		F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
@@ -447,7 +449,6 @@
 				A1EB05871D956879008659C1 /* AddressHandler.swift */,
 				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
 				476373C11E09BA88004D5EFE /* UserData.swift */,
-				F1984D711E1D327200804E1E /* IconsStyleKit.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				472F39871E1FA377009260FB /* KeyRecord.swift */,
@@ -464,6 +465,7 @@
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
 				A1F9922B1DA7C9100073BF1B /* Main.storyboard */,
 				F1984D731E1E92B300804E1E /* LabelStyleKit.swift */,
+				F1984D711E1D327200804E1E /* IconsStyleKit.swift */,
 				F1ACF21D1E0C290500C1B843 /* contactView */,
 				A1123E6C1DA682850069551C /* Localizable.strings */,
 				A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */,
@@ -605,6 +607,7 @@
 			isa = PBXGroup;
 			children = (
 				A1EB058F1D956923008659C1 /* ReadViewController.swift */,
+				F18B44611E73286C0080C041 /* ReadVENDeleagate.swift */,
 				F12041FA1DA3FBF7002E4940 /* ListViewController.swift */,
 				F12041FC1DA409A5002E4940 /* ListViewCell.swift */,
 				F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */,
@@ -972,6 +975,7 @@
 				472F39821E1E5347009260FB /* Mail_Address+CoreDataProperties.swift in Sources */,
 				476373C21E09BA88004D5EFE /* UserData.swift in Sources */,
 				A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */,
+				F18B44621E73286C0080C041 /* ReadVENDeleagate.swift in Sources */,
 				A17A18F71DDCBE530058D934 /* PGPKeyWrapper.swift in Sources */,
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
 				472F39731E1D09C4009260FB /* State+CoreDataClass.swift in Sources */,

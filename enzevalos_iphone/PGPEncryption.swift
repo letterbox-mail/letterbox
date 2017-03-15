@@ -132,7 +132,6 @@ class PGPEncryption : Encryption {
             signed[0] = false
             var valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
             valid[0] = false
-            do {
                 data = temp.plaintextData
                 if data == nil {
                     self.keyManager.useAllPrivateKeys()
@@ -159,8 +158,6 @@ class PGPEncryption : Encryption {
                     }
                     return
                 }
-            }
-            catch _ {}
         }
         mail.unableToDecrypt = true
     }
