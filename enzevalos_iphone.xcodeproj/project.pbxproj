@@ -1004,6 +1004,7 @@
 				A135CF091DD4BDD1007E3C29 /* PGPCryptoUtils.m in Sources */,
 				A135CF1A1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
+				A196DF831E71A20D004AE144 /* FrequentCollectionViewLayout.swift in Sources */,
 				F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */,
 				A135CF201DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
 				472F397E1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */,

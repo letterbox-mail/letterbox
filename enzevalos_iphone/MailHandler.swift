@@ -273,7 +273,10 @@ class MailHandler {
                         }
                         let msgParser = MCOMessageParser(data: data)
                         
-                        let html: String = msgParser.plainTextRendering()
+                        let html: String = msgParser.plainTextBodyRendering()//.plainTextRendering()
+                        print("--------- Mail ------------")
+                        print(html)
+                        print("--------- Mail ------------")
                         var lineArray = html.componentsSeparatedByString("\n") 
                         lineArray.removeFirst(4)
                         var body = lineArray.joinWithSeparator("\n")
