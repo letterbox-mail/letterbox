@@ -17,6 +17,9 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var receivedTime: UILabel!
     @IBOutlet weak var subject: UILabel!
     @IBOutlet weak var messageBody: UILabel!
+    @IBOutlet weak var infoHeadline: UILabel!
+    @IBOutlet weak var infoText: UILabel!
+    @IBOutlet weak var infoSymbol: UILabel!
 
     // Cells
     @IBOutlet weak var senderCell: UITableViewCell!
@@ -33,10 +36,6 @@ class ReadViewController: UITableViewController {
     var VENDelegate: ReadVENDelegate?
 
     var mail: Mail? = nil
-    let troubleColor = ThemeManager.troubleMessageColor()
-    let encryptColor = ThemeManager.encryptedMessageColor()
-    let uncryptColor = ThemeManager.uncryptedMessageColor()
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +53,7 @@ class ReadViewController: UITableViewController {
 
         toTokenField.delegate = VENDelegate
         toTokenField.dataSource = VENDelegate
-        toTokenField.toLabelText = "\(NSLocalizedString("To", comment: "From field")):"
+        toTokenField.toLabelText = "\(NSLocalizedString("To", comment: "To field")):"
         toTokenField.toLabelTextColor = UIColor.darkGrayColor()
         toTokenField.setColorScheme(self.view.tintColor)
         toTokenField.readOnly = true
@@ -68,13 +67,13 @@ class ReadViewController: UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         // NavigationBar color
-        if let m = mail {
-            if m.trouble {
-                self.navigationController?.navigationBar.barTintColor = self.troubleColor
-            } else if m.isSecure {
-                self.navigationController?.navigationBar.barTintColor = self.encryptColor
+        if let mail = mail {
+            if mail.trouble {
+                self.navigationController?.navigationBar.barTintColor = ThemeManager.troubleMessageColor()
+            } else if mail.isSecure {
+                self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
             } else {
-                self.navigationController?.navigationBar.barTintColor = self.uncryptColor
+                self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
             }
         }
     }
@@ -120,8 +119,8 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if mail != nil {
-            if mail!.trouble && mail!.showMessage {
+        if let mail = mail {
+            if mail.trouble && mail.showMessage || mail.from.contact.hasKey {
                 return 3
             }
         }
@@ -133,13 +132,9 @@ class ReadViewController: UITableViewController {
         if section == 0 {
             return 3
         }
-        if mail != nil {
-            if mail!.trouble && section == 1 {
-                if mail!.showMessage {
-                    return 1
-                } else {
-                    return 2
-                }
+        if let mail = mail {
+            if mail.trouble && section == 1 && !mail.showMessage {
+                return 2
             }
         }
 
@@ -158,13 +153,20 @@ class ReadViewController: UITableViewController {
             }
         }
         if indexPath.section == 1 {
-            if mail != nil {
-                if mail!.trouble {
+            if let mail = mail {
+                if mail.trouble {
                     if indexPath.row == 0 {
                         return infoCell
                     } else if indexPath.row == 1 {
                         return infoButtonCell
                     }
+                } else if mail.from.hasKey && !mail.isSecure {
+                    infoSymbol.text = "?"
+                    infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                    infoHeadline.text = NSLocalizedString("encryptedBeforeHeadline", comment: "The sender has encrypted before")
+                    infoHeadline.textColor = UIColor.grayColor()
+                    infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
+                    return infoCell
                 }
             } else {
                 return messageCell
