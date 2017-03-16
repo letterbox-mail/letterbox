@@ -355,11 +355,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         if authorizationStatus == CNAuthorizationStatus.Authorized {
             do {
                 let contacts = try AppDelegate.getAppDelegate().contactStore.unifiedContactsMatchingPredicate(CNContact.predicateForContactsMatchingName(prefix), keysToFetch: [CNContactFormatter.descriptorForRequiredKeysForStyle(CNContactFormatterStyle.FullName), CNContactEmailAddressesKey, CNContactImageDataKey, CNContactThumbnailImageDataKey])
-                var indexes : [NSIndexPath] = []
-                for i in 0...tableview.numberOfRowsInSection(0){
-                    indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
-                }
-                indexes = []
                 tableDataDelegate.contacts = []
                 tableDataDelegate.addresses = []
                 tableDataDelegate.pictures = []
@@ -373,19 +368,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
                         }
                         self.tableDataDelegate.addresses.append(mail.value as! String)
                         self.tableDataDelegate.pictures.append(c.getImageOrDefault())
-                    }
-                }
-                indexes = []
-                for i in tableDataDelegate.contacts.count...tableview.numberOfRowsInSection(0){ //@Jakob: fatal error: Can't form Range with end < start
-                    indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
-                    if i+1 == tableview.numberOfRowsInSection(0) {
-                        tableview.deleteRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
-                    }
-                }
-                for i in tableview.numberOfRowsInSection(0)...tableDataDelegate.contacts.count{
-                    indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
-                    if i+1 == tableDataDelegate.contacts.count {
-                        tableview.insertRowsAtIndexPaths(indexes, withRowAnimation: UITableViewRowAnimation.None)
                     }
                 }
                 tableview.reloadData()
