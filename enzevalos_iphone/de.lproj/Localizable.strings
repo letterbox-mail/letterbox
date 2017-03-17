@@ -35,7 +35,7 @@
 "Re" = "AW";
 "Receive" = "Empfangen";
 "ReceiveError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
-"ReceiveDamagedInfo" = "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.";
+"ReceiveDamagedInfo" = "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.\n";
 "ReceiveSecureInfo" = "Diese Nachricht war ordnungsgemäß verschlossen. Sie kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt";
 "ReceiveInsecureInfo" = "Diese Nachricht wurde unverschlüsselt gesendet und konnte somit von Allen am Weg mitgelesen werden. Die Identität des Absenders konnte nicht bestätigt werden und der Inhalt könnte manipuliert sein.";
 "ReceiveInsecureInfoVerified" = "Diese Nachricht wurde unverschlüsselt gesendet und konnte somit von Allen am Weg mitgelesen werden. Die Identität des Absenders wurde bestätigt und die Nachricht wurde nicht verändert.";
