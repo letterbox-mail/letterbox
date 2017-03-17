@@ -35,7 +35,7 @@
 "Re" = "Re";
 "Receive" = "Receive";
 "ReceiveError" = "An error occured"; //mehr spezifizieren?
-"ReceiveDamagedInfo" = "Something is wrong with this message. It might have been tempered with.\n";
+"ReceiveDamagedInfo" = "Something is wrong with this message. It might have been tempered with.";
 "ReceiveSecureInfo" = "This message was properly closed. It cannot be read by third parties. The identity of the sender has beed checked.";
 "ReceiveInsecureInfo" = "This message was not encrypted so it was possible for everyone on the way to read its content. The identity of the sender can not verified and the content of the message might have been manipulated.";
 "ReceiveInsecureInfoVerified" = "This message was not encrypted so it was possible for everyone on the way to read its content. The identity of the sender was verified and the content of the message was not changed.";
@@ -85,4 +85,6 @@
 "and" = "and";
 "more" = "more";
 "encryptedBeforeHeadline" = "Insecure Message";
-"encryptedBeforeText" = "You received secure messages from this contact before. Maybe don't trust this email too much. \n";
+"encryptedBeforeText" = "You received secure messages from this contact before. Maybe don't trust this email too much.";
+"corruptedText" = "This E-Mail may have been modified! If you want to read it anyways, please be weary of its content.";
+"corruptedHeadline" = "Attention!";

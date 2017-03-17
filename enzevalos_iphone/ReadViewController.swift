@@ -120,7 +120,7 @@ class ReadViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if let mail = mail {
-            if mail.trouble || !mail.isSecure && mail.from.contact.hasKey {
+            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact.hasKey {
                 return 3
             }
         }
@@ -156,6 +156,14 @@ class ReadViewController: UITableViewController {
             if let mail = mail {
                 if mail.trouble {
                     if indexPath.row == 0 {
+                        infoSymbol.text = "!"
+                        infoSymbol.textColor = ThemeManager.troubleMessageColor()
+                        infoHeadline.text = NSLocalizedString("corruptedHeadline", comment: "This mail is corrupted")
+                        infoHeadline.textColor = UIColor.blackColor()
+                        infoText.text = NSLocalizedString("corruptedText", comment: "This mail is corrupted")
+                        infoCell.setNeedsLayout()
+                        infoCell.layoutIfNeeded()
+                        infoCell.translatesAutoresizingMaskIntoConstraints = true
                         return infoCell
                     } else if indexPath.row == 1 {
                         return infoButtonCell
@@ -174,6 +182,14 @@ class ReadViewController: UITableViewController {
         }
 
         return messageCell
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 1 && indexPath.row == 0 {
+            // get the tableview to use the correct height for this cell; please replace this with a better way if you know one
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
     }
 
     @IBAction func showEmailButton(sender: UIButton) {
