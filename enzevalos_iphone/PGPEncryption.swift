@@ -133,6 +133,7 @@ class PGPEncryption : Encryption {
             signed[0] = false
             var valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
             valid[0] = false
+            print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
                 data = temp.plaintextData
                 if data == nil {
                     self.keyManager.useAllPrivateKeys()

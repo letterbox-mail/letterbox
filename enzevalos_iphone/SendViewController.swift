@@ -114,8 +114,8 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             textView.text.appendContentsOf(ccText.mailTokens.componentsJoinedByString(", "))
             textView.text.appendContentsOf("\n"+NSLocalizedString("subject", comment:"describing what subject was choosen")+": "+(answerTo?.subject!)!)
             if answerTo!.isEncrypted {
-                if answerTo?.decryptedMessage != nil {
-                    textView.text.appendContentsOf("\n--------------------\n\n"+(answerTo?.decryptedMessage)!)
+                if answerTo?.decryptedBody != nil {
+                    textView.text.appendContentsOf("\n--------------------\n\n"+(answerTo?.decryptedBody)!)
                 }
             }
             else {

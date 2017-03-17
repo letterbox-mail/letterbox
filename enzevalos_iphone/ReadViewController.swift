@@ -322,8 +322,8 @@ class ReadViewController: UITableViewController {
             iconView.image = icon
             iconButton.setImage(icon, forState: UIControlState.Normal)
             
-            print("enc: ",m.isEncrypted,", unableDec: ",m.unableToDecrypt,", signed: ",m.isSigned,", correctlySig: ",m.isCorrectlySigned)
-            
+            print("enc: ",m.isEncrypted,", unableDec: ",m.unableToDecrypt,", signed: ",m.isSigned,", correctlySig: ",m.isCorrectlySigned,", oldPrivK: ",m.decryptedWithOldPrivateKey)
+            EnzevalosEncryptionHandler.getEncryption(.PGP)?.decryptAndSignatureCheck(m)
         }
     }
 
