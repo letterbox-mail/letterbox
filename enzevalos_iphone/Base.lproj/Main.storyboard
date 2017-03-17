@@ -290,6 +290,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="SeperatorConstraint" destination="AX9-BE-lhT" id="vUm-gH-8hO"/>
+                        <outlet property="answerButton" destination="gd7-4L-kZs" id="UNS-5A-0e0"/>
                         <outlet property="iconButton" destination="bcV-Tv-Mmh" id="dF9-8X-MI7"/>
                         <outlet property="infoButtonCell" destination="sfU-SD-QZO" id="D1b-xZ-hPj"/>
                         <outlet property="infoCell" destination="hiO-mC-dXs" id="f6G-Lb-g8H"/>
