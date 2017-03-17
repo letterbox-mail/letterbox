@@ -126,7 +126,8 @@ class PGPEncryption : Encryption {
         if self.isUsed(mail) {
             let bodyData = mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!
             var data: NSData?
-            var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
+            var error = NSErrorPointer.init()
+            var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
             var maybeUsedKeys: [String] = []
             var signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
             signed[0] = false
@@ -135,13 +136,16 @@ class PGPEncryption : Encryption {
                 data = temp.plaintextData
                 if data == nil {
                     self.keyManager.useAllPrivateKeys()
-                    temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
+                    temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
                     data = temp.plaintextData
                     self.keyManager.useOnlyActualPrivateKey()
                     if data != nil {
                         mail.decryptedWithOldPrivateKey = true
                     }
                 }
+            if error.debugDescription == "MDC validation failed" {
+                mail.trouble = true
+            }
                 if let unwrappedData = data {
                     mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
                     if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(mail.from.address), theirKeyID = temp.incompleteKeyID {
@@ -149,12 +153,22 @@ class PGPEncryption : Encryption {
                     }
                     for maybeUsedKey in maybeUsedKeys {
                         if let key = self.keyManager.getKey(maybeUsedKey) {
-                            let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: nil)[0])
-                            if done {
-                                mail.isSigned = signed.memory.boolValue
-                                mail.isCorrectlySigned = valid.memory.boolValue
+                            let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: error)[0])
+                            if !done {
+                                mail.isSigned = false
+                                mail.isCorrectlySigned = false
+                                break
+                            }
+                            mail.isSigned = signed.memory.boolValue
+                            mail.isCorrectlySigned = valid.memory.boolValue
+                            if mail.isSigned && mail.isCorrectlySigned {
+                                mail.keyID = key.keyID
+                                break
                             }
                         }
+                    }
+                    if mail.isSigned && !mail.isCorrectlySigned && maybeUsedKeys != [] {
+                        mail.trouble = true
                     }
                     return
                 }

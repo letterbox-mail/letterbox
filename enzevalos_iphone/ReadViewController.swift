@@ -285,41 +285,10 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-            //print("-----".commonPrefixWithString(m.body!, options: NSStringCompareOptions.CaseInsensitiveSearch))
-
-            //in-line PGP
             if m.isEncrypted && !m.unableToDecrypt {
-                //CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
-
-                //let content = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
-                //print("read")
-                //print(String(data: content!, encoding: NSUTF8StringEncoding))
-
-                //var signed : ObjCBool = false
-                //var valid : ObjCBool = false
-                //var integrityProtected : ObjCBool = false
-
-                //print(m.sender?.mailbox)
-                //let decBody = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr((m.sender?.mailbox)!)!.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected)
-
-                //if decBody != nil {
-                //    messageBody.text = String(data: decBody!, encoding: NSUTF8StringEncoding)
-                //}
-
-                //print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
-
                 messageBody.text = m.decryptedBody
-                //print(m.decryptedMessage)
-                // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
-
-                //AFTERMERGE
-                /*if m.from.hasKey{
-                    let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.from.address))?.key
-                    print(signatureKey)
-                }*/
-
             }
-                else {
+            else {
                 messageBody.text = m.body
             }
             // NavigationBar Icon
@@ -336,6 +305,9 @@ class ReadViewController: UITableViewController {
             }
             iconView.image = icon
             iconButton.setImage(icon, forState: UIControlState.Normal)
+            
+            print("enc: ",m.isEncrypted,", unableDec: ",m.unableToDecrypt,", signed: ",m.isSigned,", correctlySig: ",m.isCorrectlySigned)
+            
         }
     }
 
