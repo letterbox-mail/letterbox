@@ -84,3 +84,5 @@
 "Body" = "Body";
 "and" = "and";
 "more" = "more";
+"encryptedBeforeHeadline" = "Insecure Message";
+"encryptedBeforeText" = "You received secure messages from this contact before. Maybe don't trust this email too much. \n";

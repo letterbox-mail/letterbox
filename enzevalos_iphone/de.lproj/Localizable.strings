@@ -84,3 +84,5 @@
 "Body" = "Nachricht";
 "and" = "und";
 "more" = "weitere";
+"encryptedBeforeHeadline" = "Unsichere Nachricht";
+"encryptedBeforeText" = "Früher hat dieser Kontakt sichere Nachrichten gesendet. Vertraue dem Inhalt vielleicht nicht zu sehr.\n";
