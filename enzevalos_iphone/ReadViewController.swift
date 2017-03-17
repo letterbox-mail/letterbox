@@ -120,7 +120,7 @@ class ReadViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if let mail = mail {
-            if mail.trouble || !mail.isEncrypted && mail.from.contact.hasKey {
+            if mail.trouble || !mail.isSecure && mail.from.contact.hasKey {
                 return 3
             }
         }
