@@ -16,6 +16,7 @@
 "Contacts" = "Contacts";
 "Content" = "Content";
 "ContentNo" = "No content";
+"Details" = "Details";
 "Drafts" = "Drafts";
 "Emailaddress" = "Emailaddress";
 "Forward" = "Forward";
@@ -23,6 +24,7 @@
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
 "Junk" = "Junk";
+"KeyNotFound" = "No Key Found. This is an error, contact the developers!";
 "Letter" = "Letter";
 "LetterDamaged" = "Damaged Letter";
 "mail from" = "mail from";

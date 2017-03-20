@@ -16,6 +16,7 @@
 "Contacts" = "Kontakte";
 "Content" = "Inhalt";
 "ContentNo" = "Kein Inhalt";
+"Details" = "Details";
 "Drafts" = "Entwürfe";
 "Emailaddress" = "Emailadresse";
 "Forward" = "Weiterleiten";
@@ -23,6 +24,7 @@
 "Inbox" = "Postfach";//Briefkasten?
 "Insecure" = "Unsicher";
 "Junk" = "Spam";
+"KeyNotFound" = "Schlüssel konnte nicht gefunden werden. Dies ist ein Fehler, bitte wende dich an die Entwickler!";
 "Letter" = "Brief";
 "LetterDamaged" = "Angerissener Brief";
 "mail from" = "Nachricht von";
