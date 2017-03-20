@@ -41,7 +41,7 @@ class ContactViewController: UIViewController {
             otherRecords = con.ezContact.records.filter({ $0 != contact })
         }
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         if let row = tableView.indexPathForSelectedRow {
             tableView.deselectRowAtIndexPath(row, animated: false)
@@ -140,7 +140,9 @@ class ContactViewController: UIViewController {
             let indexPath = tableView.indexPathForSelectedRow
             if controller != nil {
                 // TODO: add address to SendView
-                controller!.toField = contact!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                if indexPath!.row < contact!.ezContact.getMailAddresses().count {
+                    controller!.toField = contact!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                }
             }
         } else if segue.identifier == "mailList" {
             let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
@@ -322,7 +324,7 @@ extension ContactViewController: UINavigationControllerDelegate {
             return nil
         }
     }
-    
+
     func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return nil
     }

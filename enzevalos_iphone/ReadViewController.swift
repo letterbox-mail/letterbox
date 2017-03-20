@@ -20,6 +20,7 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var infoHeadline: UILabel!
     @IBOutlet weak var infoText: UILabel!
     @IBOutlet weak var infoSymbol: UILabel!
+    @IBOutlet weak var answerButton: UIBarButtonItem!
 
     // Cells
     @IBOutlet weak var senderCell: UITableViewCell!
@@ -42,6 +43,8 @@ class ReadViewController: UITableViewController {
 
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
+
+        answerButton.title = NSLocalizedString("answer", comment: "")
 
         VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: self.showContact, tableView: tableView)
 
@@ -70,6 +73,10 @@ class ReadViewController: UITableViewController {
         if let mail = mail {
             if mail.trouble {
                 self.navigationController?.navigationBar.barTintColor = ThemeManager.troubleMessageColor()
+                if !mail.showMessage {
+                    answerButton.enabled = false
+                }
+                navigationController?.navigationBar
             } else if mail.isSecure {
                 self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
             } else {
@@ -183,7 +190,7 @@ class ReadViewController: UITableViewController {
 
         return messageCell
     }
-    
+
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 && indexPath.row == 0 {
             // get the tableview to use the correct height for this cell; please replace this with a better way if you know one
@@ -193,13 +200,15 @@ class ReadViewController: UITableViewController {
     }
 
     @IBAction func showEmailButton(sender: UIButton) {
-        mail!.showMessage = true
+        mail?.showMessage = true
 
         self.tableView.beginUpdates()
         let path = NSIndexPath(forRow: 1, inSection: 1)
         self.tableView.deleteRowsAtIndexPaths([path], withRowAnimation: .Fade)
         self.tableView.insertSections(NSIndexSet(index: 2), withRowAnimation: .Fade)
         self.tableView.endUpdates()
+
+        answerButton.enabled = true
     }
 
     @IBAction func ignoreEmailButton(sender: AnyObject) {
@@ -321,8 +330,8 @@ class ReadViewController: UITableViewController {
             }
             iconView.image = icon
             iconButton.setImage(icon, forState: UIControlState.Normal)
-            
-            print("enc: ",m.isEncrypted,", unableDec: ",m.unableToDecrypt,", signed: ",m.isSigned,", correctlySig: ",m.isCorrectlySigned,", oldPrivK: ",m.decryptedWithOldPrivateKey)
+
+            print("enc: ", m.isEncrypted, ", unableDec: ", m.unableToDecrypt, ", signed: ", m.isSigned, ", correctlySig: ", m.isCorrectlySigned, ", oldPrivK: ", m.decryptedWithOldPrivateKey)
             EnzevalosEncryptionHandler.getEncryption(.PGP)?.decryptAndSignatureCheck(m)
         }
     }
