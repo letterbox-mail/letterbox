@@ -37,7 +37,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
    
     func tokenField(tokenField: VENTokenField, colorSchemeForTokenAtIndex index: UInt) -> UIColor {
-        if EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress(tokenField.mailTokens[Int(index)] as! String)) {
+        if EnzevalosEncryptionHandler.hasKey(tokenField.mailTokens[Int(index)] as! String) {
             return UIColor.init(red: 0, green: 122.0/255.0, blue: 1, alpha: 1)
         }
         return UIColor.orangeColor()
@@ -121,7 +121,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     func isSecure(tokenField: VENTokenField) -> Bool {
         var secure = true
         for entry in tokenField.mailTokens{
-            secure = secure && EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress(entry as! String)) //KeyHandler.getHandler().addrHasKey(entry as! String)//AddressHandler.proveAddress(entry as! NSString)
+            secure = secure && EnzevalosEncryptionHandler.hasKey(entry as! String) //KeyHandler.getHandler().addrHasKey(entry as! String)//AddressHandler.proveAddress(entry as! NSString)
         }
         return secure
     }
