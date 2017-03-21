@@ -770,6 +770,9 @@
                             <state key="normal" title="Delete Key">
                                 <color key="titleColor" red="1" green="0.089482954909999995" blue="0.088961529910000003" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
+                            <connections>
+                                <action selector="deleteKey:" destination="jYD-fk-aIP" eventType="primaryActionTriggered" id="dzD-Ik-KEZ"/>
+                            </connections>
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="KeyIDCell" textLabel="Z5E-3a-5Ef" detailTextLabel="Vun-jB-lcm" style="IBUITableViewCellStyleValue1" id="a8L-fv-t1M">

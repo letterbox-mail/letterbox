@@ -26,6 +26,11 @@ class KeyViewController : UIViewController {
         
     }
     
+    @IBAction func deleteKey(sender: AnyObject) {
+        if let key = keyWrapper {
+            EnzevalosEncryptionHandler.getEncryption(key.type)?.removeKey(key)
+        }
+    }
     
 }
 
