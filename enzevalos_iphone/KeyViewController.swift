@@ -31,6 +31,13 @@ class KeyViewController : UIViewController {
 
 extension KeyViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if toSectionType(section) == .KeyDetails {
+            var returnValue = 0
+            while(toRowType(NSIndexPath.init(forRow: returnValue, inSection: section)) != .NoKey){
+                returnValue += 1
+            }
+            return returnValue
+        }
         if toSectionType(section) == .Addresses {
             if let key = keyWrapper where key.mailAddresses != nil {
                 return key.mailAddresses!.count
@@ -41,31 +48,55 @@ extension KeyViewController : UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if toSectionType(indexPath.section) == .KeyID {
-            var cell = tableView.dequeueReusableCellWithIdentifier("KeyIDCell")!
-            cell.textLabel?.text = keyWrapper?.keyID
-            return cell
-        }
-        if toSectionType(indexPath.section) == .EncryptionType {
-            var cell = tableView.dequeueReusableCellWithIdentifier("EncryptionTypeCell")!
-            cell.textLabel?.text = keyWrapper?.type.rawValue
-            return cell
-        }
-        if toSectionType(indexPath.section) == .DiscoveryTime {
-            var cell = tableView.dequeueReusableCellWithIdentifier("DiscoveryTimeCell")!
-            cell.textLabel?.text = keyWrapper?.discoveryTime.description
+        if toSectionType(indexPath.section) == .KeyDetails {
+            if toRowType(indexPath) == .KeyID {
+                var cell = tableView.dequeueReusableCellWithIdentifier("KeyIDCell")!
+                cell.textLabel?.text = keyWrapper?.keyID
+                return cell
+            }
+            else if toRowType(indexPath) == .EncryptionType {
+                var cell = tableView.dequeueReusableCellWithIdentifier("EncryptionTypeCell")!
+                cell.textLabel?.text = keyWrapper?.type.rawValue
+                cell.detailTextLabel?.text = NSLocalizedString("Encryption Type", comment: "Type of Encryption")
+                return cell
+            }
+            else if toRowType(indexPath) == .DiscoveryTime {
+                var cell = tableView.dequeueReusableCellWithIdentifier("DiscoveryTimeCell")!
+                cell.textLabel?.text = keyWrapper?.discoveryTime.description
+                return cell
+            }
+            else if toRowType(indexPath) == .DiscoveryMail {
+                var cell = tableView.dequeueReusableCellWithIdentifier("DiscoveryMailCell")!
+                cell.textLabel?.text = "Mail"
+                return cell
+            }
+            else if toRowType(indexPath) == .Verified {
+                var cell = tableView.dequeueReusableCellWithIdentifier("VerifiedCell")!
+                cell.textLabel?.text = NSLocalizedString("KeyIsVerified", comment: "The Key is verified. The time when the Key was verified")+"\(keyWrapper?.verifyTime)"
+                return cell
+            }
+            else if toRowType(indexPath) == .Revoked {
+                var cell = tableView.dequeueReusableCellWithIdentifier("RevokedCell")!
+                cell.textLabel?.text = NSLocalizedString("KeyIsRevoked", comment: "The Key is revoked. The time when the Key was revoked")+"\(keyWrapper?.revokeTime)"
+                return cell
+            }
         }
         
+        else if toSectionType(indexPath.section) == .Addresses {
+            var cell = tableView.dequeueReusableCellWithIdentifier("MailAddressCell")!
+            cell.textLabel?.text = keyWrapper?.mailAddresses?[indexPath.row]
+            return cell
+        }
         
         var cell = tableView.dequeueReusableCellWithIdentifier("VerifiedCell")!
-        cell.textLabel?.text = NSLocalizedString("KeyNotFound", comment: "there was no key found in the backend")
+        cell.textLabel?.text = NSLocalizedString("KeyNotFound", comment: "there was no key found. Contact developers")
         return cell
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if let key = keyWrapper {
-            var sections = 3
-            if key.discoveryMailUID != nil {
+            var sections = 1
+            /*if key.discoveryMailUID != nil {
                 sections += 1
             }
             if key.verified {
@@ -73,7 +104,7 @@ extension KeyViewController : UITableViewDataSource {
             }
             if key.revoked {
                 sections += 1
-            }
+            }*/
             if let addrs = key.mailAddresses where addrs != [] {
                 sections += 1
             }
@@ -82,13 +113,23 @@ extension KeyViewController : UITableViewDataSource {
         return 1
     }
     
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if toSectionType(section) == .KeyDetails {
+            return NSLocalizedString("KeyDetails", comment: "Details of the key")
+        }
+        if toSectionType(section) == .Addresses {
+            return NSLocalizedString("KeyAddresses", comment: "Mailaddresses Connected to the key")
+        }
+        return nil
+    }
+    
     func toSectionType(sectionNumber: Int) -> KeyViewSectionType {
         var returnValue: KeyViewSectionType = .NoKey
         var section = sectionNumber
         
         if let key = keyWrapper {
-            returnValue = .KeyID
-            //keyID
+            returnValue = .KeyDetails//.KeyID
+            /*//keyID
             if section != 0 {
                 returnValue = KeyViewSectionType(rawValue: returnValue.rawValue+1)!
                 section -= 1
@@ -117,10 +158,48 @@ extension KeyViewController : UITableViewDataSource {
             if section != 0 && key.revoked {
                 returnValue = KeyViewSectionType(rawValue: returnValue.rawValue+1)!
                 section -= 1
-            }
+            }*/
             //addresses
             if section != 0 {
                 returnValue = .Addresses
+            }
+        }
+        return returnValue
+    }
+    
+    func toRowType(index: NSIndexPath) -> KeyViewRowType {
+        var returnValue : KeyViewRowType = .NoKey
+        var row = index.row
+        if let key = keyWrapper where toSectionType(index.section) == .KeyDetails {
+            returnValue = .KeyID
+            //EncryptionType
+            if row != 0 {
+                returnValue = KeyViewRowType(rawValue: returnValue.rawValue+1)!
+                row -= 1
+            }
+            //DiscoveryTime
+            if row != 0 {
+                returnValue = KeyViewRowType(rawValue: returnValue.rawValue+1)!
+                row -= 1
+            }
+            //DiscoveryMail
+            if row != 0 && key.discoveryMailUID != nil {
+                returnValue = KeyViewRowType(rawValue: returnValue.rawValue+1)!
+                row -= 1
+            }
+            //verified
+            if row != 0 && key.verified {
+                returnValue = KeyViewRowType(rawValue: returnValue.rawValue+1)!
+                row -= 1
+            }
+            //revoked
+            if row != 0 && key.revoked {
+                returnValue = KeyViewRowType(rawValue: returnValue.rawValue+1)!
+                row -= 1
+            }
+            //too much rows
+            if row != 0 {
+                returnValue = .NoKey
             }
         }
         return returnValue
@@ -132,5 +211,9 @@ extension KeyViewController : UITableViewDelegate {
 }
 
 enum KeyViewSectionType : Int {
-    case NoKey = 0, KeyID, EncryptionType, DiscoveryTime, DiscoveryMail, Verified, Revoked, Addresses
+    case NoKey = 0, KeyDetails, Addresses
+}
+
+enum KeyViewRowType : Int {
+    case NoKey = 0, KeyID, EncryptionType, DiscoveryTime, DiscoveryMail, Verified, Revoked
 }

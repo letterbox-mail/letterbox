@@ -19,11 +19,16 @@
 "Details" = "Details";
 "Drafts" = "Drafts";
 "Emailaddress" = "Emailaddress";
+"Encryption Type" = "Encryption Type";
 "Forward" = "Forward";
 "From" = "From";
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
 "Junk" = "Junk";
+"KeyAddresses" = "Mailaddresses connected to the key";
+"KeyDetails" = "Details";
+"KeyIsRevoked" = "The Key is revoked. It was revoked at ";
+"KeyIsVerified" = "The Key is verified. It was verified at ";
 "KeyNotFound" = "No Key Found. This is an error, contact the developers!";
 "Letter" = "Letter";
 "LetterDamaged" = "Damaged Letter";
