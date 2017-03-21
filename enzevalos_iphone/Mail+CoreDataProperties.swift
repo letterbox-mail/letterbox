@@ -27,12 +27,17 @@ extension Mail {
                 self.willChangeValueForKey("flag")
                 self.setPrimitiveValue(newValue.rawValue, forKey: "flag")
                 self.didChangeValueForKey("flag")
+                
             }
             
         }
         get {
             self.willAccessValueForKey("flag")
-            let text = MCOMessageFlag(rawValue: (self.primitiveValueForKey("flag") as? Int)!)
+            var value = MCOMessageFlag.None.rawValue
+            if let flagInt = self.primitiveValueForKey("flag"){
+                value = flagInt as! Int
+            }
+            let text = MCOMessageFlag(rawValue: value)
             self.didAccessValueForKey("flag")
             return text
         }
@@ -41,6 +46,7 @@ extension Mail {
     @NSManaged public var isEncrypted: Bool
     @NSManaged public var isSigned: Bool
     @NSManaged public var isCorrectlySigned: Bool
+    @NSManaged public var keyID: String
     @NSManaged public var unableToDecrypt: Bool
     @NSManaged public var subject: String?
     public var trouble: Bool{
@@ -53,6 +59,9 @@ extension Mail {
             self.willAccessValueForKey("trouble")
             let text = self.primitiveValueForKey("trouble") as? Bool
             self.didAccessValueForKey("trouble")
+            if(text == nil){
+                print("NIL!!!")
+            }
             return text!
         }
     

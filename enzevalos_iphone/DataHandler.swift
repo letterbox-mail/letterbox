@@ -10,6 +10,10 @@ import UIKit
 import CoreData
 import Contacts
 
+//TODO: TO Felder mit Strings
+// KeyRecord mergen?? IMAP Snyc?
+
+
 class DataHandler {
     static let handler: DataHandler = DataHandler()
     
@@ -19,9 +23,9 @@ class DataHandler {
     lazy var currentstate: State = self.getCurrentState()
     
     private let MaxRecords = 50
-    private let MaxMailsPerRecord = 20
+    private let MaxMailsPerRecord = 10
     
-    var receiverRecords = [KeyRecord]()
+    var receiverRecords: [KeyRecord]
     
     var maxUID:UInt64 {
         get {
@@ -78,8 +82,8 @@ class DataHandler {
         } catch {
             fatalError("Error migrating store: \(error)")
         }
+        receiverRecords = [KeyRecord] ()
         receiverRecords = self.getRecords()
-        print("Finish init of DataHandler")
     }
     
     func terminate() {
@@ -104,15 +108,12 @@ class DataHandler {
             for _ in  0...(countContacts - MaxRecords) {
                 let c = contacts.last! as EnzevalosContact
                 if  !c.hasKey{
-                    if c.from != nil {
-                        for m in c.from!{
-                            managedObjectContext.deleteObject(m as! NSManagedObject)
-                            if let index = mails.indexOf(m as! Mail) {
+                    for m in c.from{
+                            managedObjectContext.deleteObject(m as NSManagedObject)
+                            if let index = mails.indexOf(m) {
                                 mails.removeAtIndex(index)
                             }
                         }
-                        c.from = nil
-                    }
                     contacts.removeLast()
                     managedObjectContext.deleteObject(c)
                 }
@@ -122,19 +123,14 @@ class DataHandler {
     }
     
     private func cleanMails() {
-        if countMails > (MaxMailsPerRecord * countContacts) {
-            for c in contacts {
-                if let ms = c.from {
-                    if ms.count > MaxMailsPerRecord {
-                        for _ in  0...(ms.count - MaxMailsPerRecord) {
-                            let last = ms.firstObject as! Mail
-                            c.removeFromFrom(last)
-                            managedObjectContext.deleteObject(last)
-                            if let index = mails.indexOf(last) {
-                                mails.removeAtIndex(index)
-                            }
-                        }
-                    }
+        for c in contacts {
+            while c.from.count > MaxMailsPerRecord {
+                let last = c.from.last!
+                print("delete \(last.uid) of \(last.from.address)")
+                managedObjectContext.deleteObject(last)
+                save()
+                if let index = mails.indexOf(last) {
+                        mails.removeAtIndex(index)
                 }
             }
         }
@@ -144,7 +140,6 @@ class DataHandler {
     // Save, load, search
     
     private func find(entityName: String, type:String, search: String) -> [AnyObject]?{
-      //  print("Start find: \(entityName) for \(type) \(search)")
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         fReq.predicate = NSPredicate(format:"\(type) CONTAINS '\(search)' ")
         let result: [AnyObject]?
@@ -154,12 +149,10 @@ class DataHandler {
             result = nil
             return nil
         }
-       // print("### finish find #####")
         return result
     }
     
     private func findNum (entityName: String, type:String, search: UInt64) -> [AnyObject]?{
-      //  print("Start find: \(entityName) for \(type) \(search)")
         let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
         fReq.predicate = NSPredicate(format:"\(type) = %D ",search)
         let result: [AnyObject]?
@@ -192,7 +185,6 @@ class DataHandler {
         if search == nil || search!.count == 0 {
             mail_address =  NSEntityDescription.insertNewObjectForEntityForName("Mail_Address",inManagedObjectContext: managedObjectContext) as! Mail_Address
             mail_address.address = address
-            //mail_address.keyID = nil
             mail_address.prefer_encryption = false
         }
         else {
@@ -293,26 +285,17 @@ class DataHandler {
     
     // -------- Start handle to, cc, from addresses --------
     private func handleFromAddress(sender: MCOAddress, fromMail: Mail) {
-        let contact = getContactByMCOAddress(sender)
-        contact.addToFrom(fromMail)
         let adr: Mail_Address
+        let contact = getContactByMCOAddress(sender)
         adr = contact.getAddressByMCOAddress(sender)!
         fromMail.from = adr
     }
     
     private func handleToAddresses(receivers: [MCOAddress], mail: Mail) {
-        let contacts = getContacts(receivers)
-        for c in contacts {
-            c.addToTo(mail)
-        }
         mail.addToTo(NSSet(array: getMailAddressesByMCOAddresses(receivers)))
     }
     
     private func handleCCAddresses(cc: [MCOAddress], mail: Mail) {
-        let contacts = getContacts(cc)
-        for c in contacts {
-            c.addToCc(mail)
-        }
         mail.addToCc(NSSet(array: getMailAddressesByMCOAddresses(cc)))
     }
     
@@ -320,7 +303,7 @@ class DataHandler {
     
     // -------- End handle to, cc, from addresses --------
     
-    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag) -> Mail {
+    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?) -> Mail {
         
         let finding = findNum("Mail", type: "uid", search: uid)
         let mail: Mail
@@ -358,6 +341,13 @@ class DataHandler {
         }
         mails.append(mail)
         
+        var added = false
+        if let r = record{
+           added =  r.addNewMail(mail)
+        }
+        if !added{
+            isInReceiverRecords(mail)
+        }
        
         
         return mail
@@ -378,22 +368,31 @@ class DataHandler {
         return mails
     }
     
+    private func getAddresses()-> [MailAddress]{
+        var adrs = [MailAddress]()
+        let result = findAll("Mail_Address")
+        if result != nil {
+            for r in result! {
+                let adr = r as! MailAddress
+                adrs.append(adr)
+            }
+        }
+        return adrs
+    
+    }
+    
     private func getContacts()->[EnzevalosContact] {
         var contacts = [EnzevalosContact]()
         let result = findAll("EnzevalosContact")
         if result != nil {
             for r in result!{
                 let c = r as! EnzevalosContact
-                if let ms = c.from {
-                    if ms.count > 0 {
-                        contacts.append(c)
-                        let adr = c.addresses?.anyObject() as! MailAddress
-                        print("\(adr.mailAddress) #adr: \(c.addresses?.count)")
-                    }
+                let ms = c.from
+                if ms.count > 0 {
+                    contacts.append(c)
                 }
             }
         }
-        print("All contacts: \(contacts.count)")
         return contacts
     }
     
@@ -403,11 +402,9 @@ class DataHandler {
         for m in mails {
             isInRecords(m,records: &records)
         }
-        
         for r in records {
             r.mails.sortInPlace()
         }
-        
         records.sortInPlace()
         return records
     }
@@ -420,17 +417,15 @@ class DataHandler {
             if r.addNewMail(m) {
                 found = true
                 usedRecord = r
+                records.sortInPlace()
                 break
             }
         }
         if !found {
             usedRecord = KeyRecord(mail: m)
-            if(usedRecord?.addresses.count == 0){
-                print("Error: Empty record. \(m.from.address) is encrypted: \(m.isEncrypted) is secure?: \(m.isSecure)")
-            }
             records.append(usedRecord!)
+            records.sortInPlace()
         }
-
     }
     
     private func isInReceiverRecords(m: Mail){

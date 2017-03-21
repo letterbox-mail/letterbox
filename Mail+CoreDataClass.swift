@@ -14,7 +14,7 @@ import CoreData
 @objc(Mail)
 public class Mail: NSManagedObject, Comparable {
 
-    var showMessage: Bool = true
+    var showMessage: Bool = false
 
     var isSecure: Bool {
         return isEncrypted && isSigned && !unableToDecrypt && !trouble
@@ -78,9 +78,7 @@ public class Mail: NSManagedObject, Comparable {
         }
         return receivers
     }
-
-
-
+    
     func getCCs() -> [Mail_Address] {
         var receivers = [Mail_Address] ()
         for obj in cc! {
@@ -97,9 +95,6 @@ public class Mail: NSManagedObject, Comparable {
         return receivers
     }
 
-
-
-
     //decrypt and/or check signature
     func decryptIfPossible() {
         let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
@@ -113,9 +108,8 @@ public class Mail: NSManagedObject, Comparable {
             if encryption.isUsedForSignature(self) == true {
                 //TODO
                 //check signature
-                if let correctSignature = encryption.isCorrectlySigned(self) {
+                if (encryption.isCorrectlySigned(self) != nil) {
                     self.isSigned = true
-                    print("From \(self.from.address) mail is signed!")
                 }
             }
 
@@ -135,7 +129,7 @@ public class Mail: NSManagedObject, Comparable {
             if encryption.isUsedForSignature(self) == true {
                 //TODO
                 //check signature
-                if let correctSignature = encryption.isCorrectlySigned(self) {
+                if (encryption.isCorrectlySigned(self) != nil) {
                     self.isSigned = true
                 }
             }
@@ -170,7 +164,6 @@ public class Mail: NSManagedObject, Comparable {
         }
         return "\(returnString)\(subj)"
     }
-
 }
 
 public func == (lhs: Mail, rhs: Mail) -> Bool {

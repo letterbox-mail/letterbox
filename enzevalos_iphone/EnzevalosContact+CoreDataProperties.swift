@@ -18,81 +18,10 @@ extension EnzevalosContact {
 
     @NSManaged public var displayname: String?
     @NSManaged public var cnidentifier: String?
-    @NSManaged public var from: NSOrderedSet?
-    @NSManaged public var to: NSSet?
-    @NSManaged public var cc: NSSet?
-    @NSManaged public var bcc: NSSet?
     @NSManaged public var addresses: NSSet?
 
 }
 
-// MARK: Generated accessors for from
-extension EnzevalosContact {
-
-    @objc(addFromObject:)
-    @NSManaged public func addToFrom(value: Mail)
-
-    @objc(removeFromObject:)
-    @NSManaged public func removeFromFrom(value: Mail)
-
-    @objc(addFrom:)
-    @NSManaged public func addToFrom(values: NSSet)
-
-    @objc(removeFrom:)
-    @NSManaged public func removeFromFrom(values: NSSet)
-
-}
-
-// MARK: Generated accessors for to
-extension EnzevalosContact {
-
-    @objc(addToObject:)
-    @NSManaged public func addToTo(value: Mail)
-
-    @objc(removeToObject:)
-    @NSManaged public func removeFromTo(value: Mail)
-
-    @objc(addTo:)
-    @NSManaged public func addToTo(values: NSSet)
-
-    @objc(removeTo:)
-    @NSManaged public func removeFromTo(values: NSSet)
-
-}
-
-// MARK: Generated accessors for cc
-extension EnzevalosContact {
-    
-    @objc(addCcObject:)
-    @NSManaged public func addToCc(value: Mail)
-    
-    @objc(removeCcObject:)
-    @NSManaged public func removeFromCc(value: Mail)
-    
-    @objc(addCc:)
-    @NSManaged public func addToCc(values: NSSet)
-    
-    @objc(removeCc:)
-    @NSManaged public func removeFromCc(values: NSSet)
-    
-}
-
-// MARK: Generated accessors for bcc
-extension EnzevalosContact {
-    
-    @objc(addBCCObject:)
-    @NSManaged public func addToBCC(value: Mail)
-    
-    @objc(removeBCCObject:)
-    @NSManaged public func removeFromBCC(value: Mail)
-    
-    @objc(addBCC:)
-    @NSManaged public func addToBCC(values: NSSet)
-    
-    @objc(removeBCC:)
-    @NSManaged public func removeFromBCC(values: NSSet)
-    
-}
 
 // MARK: Generated accessors for addresses
 extension EnzevalosContact {

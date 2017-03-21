@@ -14,17 +14,97 @@ import Contacts
 
 @objc(EnzevalosContact)
 public class EnzevalosContact: NSManagedObject, Contact, Comparable {
-    
-    //addKeyRecords
-    
+        
     public var name:String{
         get{
             return getName()
         }
     }
     
-    public var records: [KeyRecord] = [KeyRecord]() //TODO: Handle duplicates
     
+    public var to: [Mail]{
+        get{
+            var mails = [Mail]()
+            if let adrs = addresses{
+                for adr in adrs{
+                    let a  = adr as! Mail_Address
+                    if a.to != nil {
+                        for m in a.to!{
+                            mails.append(m as! Mail)
+                        }
+                    }
+                }
+            }
+            return mails
+        }
+    }
+    
+    public var bcc: [Mail]{
+        get{
+            var mails = [Mail]()
+            if let adrs = addresses{
+                for adr in adrs{
+                    let a  = adr as! Mail_Address
+                    if a.bcc != nil {
+                        for m in a.bcc!{
+                            mails.append(m as! Mail)
+                        }
+                    }
+                }
+            }
+            return mails
+        }
+    }
+    
+    
+    
+    public var cc: [Mail]{
+        get{
+            var mails = [Mail]()
+            if let adrs = addresses{
+                for adr in adrs{
+                    let a  = adr as! Mail_Address
+                    if a.cc != nil {
+                        for m in a.cc!{
+                            mails.append(m as! Mail)
+                        }
+                    }
+                }
+            }
+            return mails
+        }
+    }
+    
+    public var from: [Mail]{
+        get{
+            var mails = [Mail]()
+            if let adrs = addresses{
+                for adr in adrs{
+                    let a  = adr as! Mail_Address
+                    if a.from != nil {
+                        for m in a.from!{
+                            mails.append(m as! Mail)
+                        }
+                    }
+                }
+            }
+            return mails
+        }
+    }
+    
+    public var records: [KeyRecord] {
+        get{
+            var myrecords = [KeyRecord]()
+            for r in DataHandler.handler.receiverRecords{
+                if r.ezContact == self{
+                    myrecords.append(r)
+                }
+            }
+            return myrecords
+        
+        }
+    
+    }
     public var hasKey: Bool{
         get {
             for item in addresses!{
@@ -125,13 +205,11 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
 }
 
 private func isEmpty(contact: EnzevalosContact)-> Bool{
-    if let mails = contact.from{
+    let mails = contact.from
         if(mails.count == 0){
             return true
         }
-        return false
-    }
-    return true
+    return false
 }
 
 func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
@@ -141,8 +219,8 @@ func ==(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     if isEmpty(rhs){
         return false
     }
-    let mailLHS = lhs.from?.lastObject as! Mail
-    let mailRHS = rhs.from?.lastObject as! Mail
+    let mailLHS = lhs.from.last
+    let mailRHS = rhs.from.last
     
     return mailLHS == mailRHS
 }
@@ -154,8 +232,8 @@ public  func <(lhs: EnzevalosContact, rhs: EnzevalosContact) -> Bool {
     if isEmpty(rhs){
         return false
     }
-    let mailLHS = lhs.from?.lastObject as! Mail
-    let mailRHS = rhs.from?.lastObject as! Mail
+    let mailLHS = lhs.from.last
+    let mailRHS = rhs.from.last
     
     return mailLHS < mailRHS
 }

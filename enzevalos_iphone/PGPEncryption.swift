@@ -126,24 +126,27 @@ class PGPEncryption : Encryption {
         if self.isUsed(mail) {
             let bodyData = mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!
             var data: NSData?
-            var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
+            var error = NSErrorPointer.init()
+            var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
             var maybeUsedKeys: [String] = []
-            let signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            var signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
             signed[0] = false
-            let valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
+            var valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
             valid[0] = false
-            do {
+            print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
                 data = temp.plaintextData
                 if data == nil {
                     self.keyManager.useAllPrivateKeys()
-                    temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
+                    temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
                     data = temp.plaintextData
                     self.keyManager.useOnlyActualPrivateKey()
                     if data != nil {
                         mail.decryptedWithOldPrivateKey = true
                     }
                 }
-                print("Decrypt and sign decrypted data: \(data)")
+            if error.debugDescription == "MDC validation failed" {
+                mail.trouble = true
+            }
                 if let unwrappedData = data {
                     mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
                     if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(mail.from.address), theirKeyID = temp.incompleteKeyID {
@@ -158,10 +161,11 @@ class PGPEncryption : Encryption {
                             }
                         }
                     }
+                    if mail.isSigned && !mail.isCorrectlySigned && maybeUsedKeys != [] {
+                        mail.trouble = true
+                    }
                     return
                 }
-            }
-            catch _ {}
         }
         mail.unableToDecrypt = true
     }

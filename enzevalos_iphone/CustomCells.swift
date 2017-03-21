@@ -27,4 +27,5 @@ class MailCell: UITableViewCell {
 class RecordCell: UITableViewCell {
     @IBOutlet weak var iconImage: UIImageView!
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
 }
