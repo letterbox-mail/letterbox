@@ -20,8 +20,11 @@ public protocol KeyWrapper {
     var type: EncryptionType {get}
     var keyID: String {get}
     
-    //maybe not in this interface?
+    //Mailaddresses we discovered using this key
     var mailAddresses: [String]? {get set}
+    
+    //Mailaddresses, that are listed in the Key
+    var mailAddressesInKey: [String]? {get}
     
     init(coder: NSCoder)
     

@@ -45,7 +45,7 @@ extension KeyViewController : UITableViewDataSource {
         }
         if toSectionType(section) == .Addresses {
             if let key = keyWrapper where key.mailAddresses != nil {
-                return key.mailAddresses!.count
+                return key.mailAddressesInKey!.count
             }
             return 0
         }
@@ -91,7 +91,15 @@ extension KeyViewController : UITableViewDataSource {
         
         else if toSectionType(indexPath.section) == .Addresses {
             var cell = tableView.dequeueReusableCellWithIdentifier("MailAddressCell")!
-            cell.textLabel?.text = keyWrapper?.mailAddresses?[indexPath.row]
+            if let addr = keyWrapper?.mailAddressesInKey?[indexPath.row] {
+                for ourAddr in (keyWrapper?.mailAddresses)! {
+                    if addr.containsString(ourAddr) {
+                        cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                        break
+                    }
+                }
+            }
+            cell.textLabel?.text = keyWrapper?.mailAddressesInKey?[indexPath.row]
             return cell
         }
         
