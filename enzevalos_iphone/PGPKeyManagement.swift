@@ -152,14 +152,14 @@ class PGPKeyManagement {
             //remove keyID outof keyIDs
             if var keys = keyIDs[mailAddress]{
                 if keys.contains(keyID) {
-                    keys.removeAtIndex(keys.indexOf(mailAddress)!)
+                    keys.removeAtIndex(keys.indexOf(keyID)!)
                     keyIDs[mailAddress] = keys
                 }
             }
             //remove mailAddress outof addresses
             if var mAddresses = addresses[keyID]{
                 if mAddresses.contains(mailAddress) {
-                    mAddresses.removeAtIndex(mAddresses.indexOf(keyID)!)
+                    mAddresses.removeAtIndex(mAddresses.indexOf(mailAddress)!)
                     addresses[keyID] = mAddresses
                 }
             }
