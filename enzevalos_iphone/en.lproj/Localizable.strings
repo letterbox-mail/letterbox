@@ -17,9 +17,10 @@
 "Content" = "Content";
 "ContentNo" = "No content";
 "Details" = "Details";
+"DiscoveryTime" = "Discoverytime";
 "Drafts" = "Drafts";
 "Emailaddress" = "Emailaddress";
-"Encryption Type" = "Encryption Type";
+"EncryptionType" = "Encryption Type";
 "Forward" = "Forward";
 "From" = "From";
 "Inbox" = "Inbox";
@@ -27,6 +28,7 @@
 "Junk" = "Junk";
 "KeyAddresses" = "Mailaddresses connected to the key";
 "KeyDetails" = "Details";
+"KeyID" = "KeyID";
 "KeyIsRevoked" = "The Key is revoked. It was revoked at ";
 "KeyIsVerified" = "The Key is verified. It was verified at ";
 "KeyNotFound" = "No Key Found. This is an error, contact the developers!";

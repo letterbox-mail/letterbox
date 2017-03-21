@@ -56,18 +56,20 @@ extension KeyViewController : UITableViewDataSource {
         if toSectionType(indexPath.section) == .KeyDetails {
             if toRowType(indexPath) == .KeyID {
                 var cell = tableView.dequeueReusableCellWithIdentifier("KeyIDCell")!
-                cell.textLabel?.text = keyWrapper?.keyID
+                cell.textLabel?.text = NSLocalizedString("KeyID", comment: "Identifier of the key")
+                cell.detailTextLabel?.text = keyWrapper?.keyID
                 return cell
             }
             else if toRowType(indexPath) == .EncryptionType {
                 var cell = tableView.dequeueReusableCellWithIdentifier("EncryptionTypeCell")!
-                cell.textLabel?.text = keyWrapper?.type.rawValue
-                cell.detailTextLabel?.text = NSLocalizedString("Encryption Type", comment: "Type of Encryption")
+                cell.detailTextLabel?.text = keyWrapper?.type.rawValue
+                cell.textLabel?.text = NSLocalizedString("EncryptionType", comment: "Type of Encryption")
                 return cell
             }
             else if toRowType(indexPath) == .DiscoveryTime {
                 var cell = tableView.dequeueReusableCellWithIdentifier("DiscoveryTimeCell")!
-                cell.textLabel?.text = keyWrapper?.discoveryTime.description
+                cell.textLabel?.text = NSLocalizedString("DiscoveryTime", comment: "Time of keydiscovery")
+                cell.detailTextLabel?.text = keyWrapper?.discoveryTime.description
                 return cell
             }
             else if toRowType(indexPath) == .DiscoveryMail {

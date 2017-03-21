@@ -17,9 +17,10 @@
 "Content" = "Inhalt";
 "ContentNo" = "Kein Inhalt";
 "Details" = "Details";
+"DiscoveryTime" = "Entdeckungszeit";
 "Drafts" = "Entwürfe";
 "Emailaddress" = "Emailadresse";
-"Encryption Type" = "Verschlüsselungsart";
+"EncryptionType" = "Verschlüsselungsart";
 "Forward" = "Weiterleiten";
 "From" = "Von";
 "Inbox" = "Postfach";//Briefkasten?
@@ -27,6 +28,7 @@
 "Junk" = "Spam";
 "KeyAddresses" = "Mailadressen, die mit dem Schlüssel verknüpft sind";
 "KeyDetails" = "Details";
+"KeyID" = "KeyID";
 "KeyIsRevoked" = "Der Schlüssel ist zurückgezogen. Zurückgezogen wurde er am ";
 "KeyIsVerified" = "Der Schlüssel ist verifiziert. Verifiziert wurde er am ";
 "KeyNotFound" = "Schlüssel konnte nicht gefunden werden. Dies ist ein Fehler, bitte wende dich an die Entwickler!";
