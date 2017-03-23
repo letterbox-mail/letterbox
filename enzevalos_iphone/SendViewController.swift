@@ -299,7 +299,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         if segue.identifier == "showContact" {
             let destinationVC = segue.destinationViewController as! ContactViewController
             if let sender = sender {
-                destinationVC.contact = (sender["record"] as! KeyRecord)
+                destinationVC.keyRecord = (sender["record"] as! KeyRecord)
                 destinationVC.highlightEmail = (sender["email"] as! String)
             }
         }
