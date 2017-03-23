@@ -16,15 +16,15 @@ enum Attribute: Int{
     var defaultValue:AnyObject? {
         switch self {
         case .Accountname:
-            return "Alice"
+            return Attribute.attributeValues[Attribute.Accountname]! //return "Alice"
         case .UserName:
-            return "Alice2005"
+            return Attribute.attributeValues[Attribute.UserName]! //return "Alice2005"
         case .UserAddr:
-            return "alice2005@web.de"
+            return Attribute.attributeValues[Attribute.UserAddr]! //return "alice2005@web.de"
         case .UserPW:
-           return "WJ$CE:EtUo3E$"
+            return Attribute.attributeValues[Attribute.UserPW]! //return "WJ$CE:EtUo3E$"
         case .SMTPHostname:
-           return "smtp.web.de"
+            return Attribute.attributeValues[Attribute.SMTPHostname]! //return "smtp.web.de"
         case .SMTPPort:
             return 587
         case .IMAPHostname:
@@ -42,7 +42,7 @@ enum Attribute: Int{
     }
     
     static let allAttributes = [Accountname, UserName, UserAddr, UserPW, SMTPHostname, SMTPPort, IMAPHostname, IMAPPort, PrefEncryption, PublicKey, AutocryptType]
-   
+    static var attributeValues: [Attribute : AnyObject?] = [.Accountname : "Alice", .UserName : "Alice2005", .UserAddr : "alice2005@web.de", .UserPW : "WJ$CE:EtUo3E$", .SMTPHostname : "smtp.web.de", .SMTPPort : 587, .IMAPHostname : "imap.web.de", .IMAPPort : 993, .PrefEncryption : "yes", .AutocryptType : "p", .PublicKey : ""]
 }
 
 

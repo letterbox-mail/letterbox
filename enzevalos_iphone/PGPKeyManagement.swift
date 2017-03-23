@@ -216,7 +216,23 @@ class PGPKeyManagement {
             addrs = addrss
         }
         self.removeMailAddressesForKey(addrs, keyID: keyID)
-        encryptionHandler.deletePersistentData(keyID, encryptionType: EncryptionType.PGP)
+        encryptionHandler.deletePersistentData(keyID, encryptionType: self.encryptionType)
+    }
+    
+    private func cleanIndex(keyID: String) {
+        let index = keyID.componentsSeparatedByString("-")[0]+"-index"
+        encryptionHandler.deletePersistentData(index, encryptionType: self.encryptionType)
+    }
+    
+    //includes privatekeys too
+    func removeAllKeys() {
+        for keyID in addresses.keys {
+            self.removeKey(keyID)
+            self.cleanIndex(keyID)
+        }
+        self.addresses = [:]
+        self.keyIDs = [:]
+        self.saveDictionarys()
     }
     
     func useOnlyActualPrivateKey() {

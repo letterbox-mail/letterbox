@@ -127,7 +127,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     func isSecure(tokenField: VENTokenField) -> Bool {
         var secure = true
         for entry in tokenField.mailTokens{
-            secure = secure && EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress(entry as! String))
+            secure = secure && EnzevalosEncryptionHandler.hasKey(entry as! String) //KeyHandler.getHandler().addrHasKey(entry as! String)//AddressHandler.proveAddress(entry as! NSString)
         }
         return secure
     }

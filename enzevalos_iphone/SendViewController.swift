@@ -177,6 +177,10 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         LogHandler.newLog()
         //LogHandler.printLogs()
 
+        //LogHandler.printLogs()
+        //var handler = CryptoHandler.getHandler() // <----
+
+
         //---------------------------------------
         //Import private Key BEGIN
         /*

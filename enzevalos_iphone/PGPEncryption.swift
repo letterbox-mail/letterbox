@@ -154,10 +154,17 @@ class PGPEncryption : Encryption {
                     }
                     for maybeUsedKey in maybeUsedKeys {
                         if let key = self.keyManager.getKey(maybeUsedKey) {
-                            let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: nil))[0]
-                            if done {
-                                mail.isSigned = signed.memory.boolValue
-                                mail.isCorrectlySigned = valid.memory.boolValue
+                            let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: error)[0])
+                            if !done {
+                                mail.isSigned = false
+                                mail.isCorrectlySigned = false
+                                break
+                            }
+                            mail.isSigned = signed.memory.boolValue
+                            mail.isCorrectlySigned = valid.memory.boolValue
+                            if mail.isSigned && mail.isCorrectlySigned {
+                                mail.keyID = key.keyID
+                                break
                             }
                         }
                     }
@@ -432,6 +439,11 @@ class PGPEncryption : Encryption {
     
     func removeKey(key: KeyWrapper) {
         self.removeKey(key.keyID)
+    }
+    
+    //includes privatekeys too
+    func removeAllKeys() {
+        self.keyManager.removeAllKeys()
     }
     
     func addMailAddressForKey(mailAddress: String, keyID: String) {

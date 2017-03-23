@@ -98,6 +98,9 @@ public protocol Encryption {
     
     func removeKey(key: KeyWrapper) //-> Bool
     
+    //includes privatekeys too
+    func removeAllKeys()
+    
     func addMailAddressForKey(mailAddress: String, keyID: String)
     
     func removeMailAddressForKey(mailaddress: String, keyID: String)
