@@ -16,8 +16,9 @@
 "Contacts" = "Kontakte";
 "Content" = "Inhalt";
 "ContentNo" = "Kein Inhalt";
-"Details" = "Details";
+"Details" = "Key Details";
 "DiscoveryTime" = "Entdeckungszeit";
+"Checkmarks" = "Du hast Nachrichten von den Adressen mit Haken bekommen";
 "Drafts" = "Entwürfe";
 "Emailaddress" = "Emailadresse";
 "EncryptionType" = "Verschlüsselungsart";
@@ -26,8 +27,8 @@
 "Inbox" = "Postfach";//Briefkasten?
 "Insecure" = "Unsicher";
 "Junk" = "Spam";
-"KeyAddresses" = "Mailadressen, die mit dem Schlüssel verknüpft sind";
-"KeyDetails" = "Details";
+"KeyAddresses" = "Mailadressen im Schlüssel";
+"KeyDetails" = "Key Details";
 "KeyID" = "KeyID";
 "KeyIsRevoked" = "Der Schlüssel ist zurückgezogen. Zurückgezogen wurde er am ";
 "KeyIsVerified" = "Der Schlüssel ist verifiziert. Verifiziert wurde er am ";
