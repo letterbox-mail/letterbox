@@ -236,10 +236,14 @@ class MailHandler {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
             //TODO add cases for only encryption
             if let encData = encryption.signAndEncrypt("\n"+message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
-                sendData = encData
-                sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(sendData), from: userID, recipients: encPGP)
+                //sendData = encData
+                builder.textBody = String(data: encData, encoding: NSUTF8StringEncoding)
+                sendData = builder.data()
+                sendOperation = session.sendOperationWithData(sendData, from: userID, recipients: encPGP)
+                //sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
+                builder.textBody = message
             }
                 else {
                 //TODO do it better
@@ -345,6 +349,7 @@ class MailHandler {
                 for m in msgs {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
                     dispatch_group_enter(dispatchGroup)
+
                     let op = self.IMAPSession.fetchParsedMessageOperationWithFolder(folder, uid: message.uid)
                     op.start { err, data in self.parseMail(err, parser: data, message: message, record: record, newMailCallback: newMailCallback)
                         dispatch_group_leave(dispatchGroup)
@@ -369,11 +374,17 @@ class MailHandler {
             let msgParser = MCOMessageParser(data: data)
 
             let html: String = msgParser.plainTextRendering()
+            /*print("---- Mail ----")
+            print(html)
+            print("---- Mail ----")*/
             var lineArray = html.componentsSeparatedByString("\n")
             lineArray.removeFirst(4)
             var body = lineArray.joinWithSeparator("\n")
             body = body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             body.appendContentsOf("\n")
+            /*print("---- Body ----")
+            print(body)
+            print("---- Body ----")*/
             var rec: [MCOAddress] = []
             var cc: [MCOAddress] = []
 

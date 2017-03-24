@@ -155,6 +155,7 @@ class PGPEncryption : Encryption {
                     for maybeUsedKey in maybeUsedKeys {
                         if let key = self.keyManager.getKey(maybeUsedKey) {
                             let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: error)[0])
+
                             if !done {
                                 mail.isSigned = false
                                 mail.isCorrectlySigned = false

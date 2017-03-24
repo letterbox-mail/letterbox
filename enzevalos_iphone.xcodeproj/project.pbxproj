@@ -92,9 +92,7 @@
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
-		A1D5076C1E80125500B68B38 /* alice2005-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1D5076B1E80125500B68B38 /* alice2005-public.gpg */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
-		A1D507711E80276E00B68B38 /* KeyCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D507701E80276E00B68B38 /* KeyCells.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
 		A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
@@ -116,6 +114,7 @@
 		A1F1D7E41E83E93D0009CBDF /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F1D7E31E83E93D0009CBDF /* SwitchCell.xib */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
+		A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */; };
 		F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */; };
 		F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
@@ -284,9 +283,7 @@
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
-		A1D5076B1E80125500B68B38 /* alice2005-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-public.gpg"; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
-		A1D507701E80276E00B68B38 /* KeyCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyCells.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		A1EB057B1D956838008659C1 /* MailHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandler.swift; sourceTree = "<group>"; };
@@ -314,6 +311,7 @@
 		A1F9923A1DA7DD2E0073BF1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/InboxTableViewCell.xib; sourceTree = "<group>"; };
 		A1F9923D1DA7DD350073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
 		A1F9923F1DA7DD370073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
+		A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-public.gpg"; sourceTree = "<group>"; };
 		AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -603,7 +601,6 @@
 			isa = PBXGroup;
 			children = (
 				A1D5076E1E80257A00B68B38 /* KeyViewController.swift */,
-				A1D507701E80276E00B68B38 /* KeyCells.swift */,
 			);
 			name = keyView;
 			sourceTree = "<group>";
@@ -614,8 +611,8 @@
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
 				F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */,
 				A19C12461DE602FF007F72E7 /* jabo.asc */,
-				A1D5076B1E80125500B68B38 /* alice2005-public.gpg */,
 				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
+				A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */,
 				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
 				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
 				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
@@ -801,7 +798,7 @@
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
 				A18BCB3B1DDF3EFD004D81D8 /* test in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
-				A1D5076C1E80125500B68B38 /* alice2005-public.gpg in Resources */,
+				A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
 				A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */,
 			);
@@ -1019,7 +1016,6 @@
 				472F397C1E1D0B0B009260FB /* Mail+CoreDataProperties.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				A135CF131DD4BDD1007E3C29 /* PGPPKCSEme.m in Sources */,
-				A1D507711E80276E00B68B38 /* KeyCells.swift in Sources */,
 				A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */,
 				A135CF151DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
 				472F39741E1D09C4009260FB /* State+CoreDataProperties.swift in Sources */,

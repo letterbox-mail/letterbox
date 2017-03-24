@@ -16,7 +16,8 @@
 "Contacts" = "Contacts";
 "Content" = "Content";
 "ContentNo" = "No content";
-"Details" = "Details";
+"Details" = "Key Details";
+"Checkmarks" = "You received Mails from Mailadresses with checkmarks";
 "DiscoveryTime" = "Discoverytime";
 "Drafts" = "Drafts";
 "Emailaddress" = "Emailaddress";
@@ -26,8 +27,8 @@
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
 "Junk" = "Junk";
-"KeyAddresses" = "Mailaddresses connected to the key";
-"KeyDetails" = "Details";
+"KeyAddresses" = "Mailaddresses from the key";
+"KeyDetails" = "Key Details";
 "KeyID" = "KeyID";
 "KeyIsRevoked" = "The Key is revoked. It was revoked at ";
 "KeyIsVerified" = "The Key is verified. It was verified at ";
