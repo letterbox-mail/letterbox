@@ -98,11 +98,12 @@ class OnboardingViewController : UIViewController {
                 //if addr.componentsSeparatedByString("@")[1] != "web.de" {
                 // naechste view
                 //}
-                Attribute.attributeValues[Attribute.UserAddr] = addr
-                Attribute.attributeValues[Attribute.Accountname] = addr.componentsSeparatedByString("@")[0]
+                let guessedUserName = addr.componentsSeparatedByString("@")[0]
+                UserManager.storeUserValue(addr, attribute: Attribute.UserAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
+                UserManager.storeUserValue(guessedUserName, attribute: Attribute.UserName)
             }
             if let pw = password?.text where pw != "" {
-                Attribute.attributeValues[Attribute.UserPW] = pw
+                UserManager.storeUserValue(pw, attribute: Attribute.UserPW)//Attribute.attributeValues[Attribute.UserPW] = pw
             }
         }
     }
