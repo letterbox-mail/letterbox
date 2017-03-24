@@ -508,7 +508,7 @@
     {
         *isValid = _valid;
     }
-    return isValid;
+    return isSigned;
 }
 
 //--------------------- Jakob -------------------------

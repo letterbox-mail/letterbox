@@ -46,6 +46,7 @@ extension Mail {
     @NSManaged public var isEncrypted: Bool
     @NSManaged public var isSigned: Bool
     @NSManaged public var isCorrectlySigned: Bool
+    @NSManaged public var keyID: String
     @NSManaged public var unableToDecrypt: Bool
     @NSManaged public var subject: String?
     public var trouble: Bool{
