@@ -14,6 +14,10 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         //print ("hallo")
     }
     
+    var beginFunc: (VENTokenField -> Void) = {(_ : VENTokenField) -> Void in }
+    
+    var deleteFunc: (() -> Void) = {() -> Void in }
+    
     var tappedWhenSelectedFunc: (String -> Void)? = nil
     
     //Used to show enzevalos-Contacts
@@ -24,15 +28,15 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         super.init()
     }
     
-    init(changeFunc: (VENTokenField -> Void), tappedWhenSelectedFunc: (String -> Void)?){
+    init(changeFunc: (VENTokenField -> Void), tappedWhenSelectedFunc: (String -> Void)?/*, beginFunc: (VENTokenField -> Void)*/, deleteFunc: (() -> Void)){
         self.changeFunc = changeFunc
         self.tappedWhenSelectedFunc = tappedWhenSelectedFunc
+        self.deleteFunc = deleteFunc
+        //self.beginFunc = beginFunc
         super.init()
     }
     
     func tokenField(tokenField: VENTokenField, didChangeText text: String?) {
-        //print(tokenField.inputText())
-        //print(text)
         changeFunc(tokenField)
     }
    
@@ -46,6 +50,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     func tokenFieldDidBeginEditing(tokenField: VENTokenField) {
         //print("begin")
         //print(numberOfTokensInTokenField(tokenField))
+        beginFunc(tokenField)
     }
     
     func tokenField(tokenField: VENTokenField, didEnterText text: String) {
@@ -76,6 +81,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         tokenField.textTokens.removeObjectAtIndex(Int(index))
         tokenField.mailTokens.removeObjectAtIndex(Int(index))
         tokenField.reloadData()
+        deleteFunc()
         tokenField.sendActionsForControlEvents(UIControlEvents.EditingDidEnd)
     }
     

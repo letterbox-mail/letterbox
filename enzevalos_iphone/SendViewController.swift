@@ -55,7 +55,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact)
+        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, deleteFunc: /*{() -> Void in return}*/self.addFrequentCellIfPossible)
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
         setAnimation()
@@ -84,7 +84,16 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         ccCollectionview.dataSource = collectionDataDelegate
         ccCollectionview.registerNib(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
         ccCollectionviewHeight.constant = 0
-
+        //ccCollectionview.translatesAutoresizingMaskIntoConstraints = true
+        //toCollectionview.translatesAutoresizingMaskIntoConstraints = true
+        toCollectionviewHeight.constant = 0
+        
+        /*for constraint in toCollectionview.constraints {
+            if constraint.firstAttribute == NSLayoutAttribute.Height {
+                constraint.constant = 0
+            }
+        }*/
+        
         subjectText.delegate = self
         subjectText.setColorScheme(self.view.tintColor)
 
@@ -167,11 +176,6 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //LogHandler.deleteLogs()
         LogHandler.newLog()
         //LogHandler.printLogs()
-
-        //LogHandler.printLogs()
-        //var handler = CryptoHandler.getHandler() // <----
-
-
         //---------------------------------------
         //Import private Key BEGIN
         /*
@@ -190,16 +194,16 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         //---------------------------------------
         //Import public Key BEGIN
         /*
-         let path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")               //<---- Schlüsseldatei
+         let path = NSBundle.mainBundle().pathForResource("alice2005-public", ofType: "gpg")               //<---- Schlüsseldatei
          let pgp = ObjectivePGP.init()
          pgp.importKeysFromFile(path!, allowDuplicates: false)
          let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
          do {
          let data = try pgp.keys[0].export()
-         enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])                           //<---- Emailadresse
+         enc?.addKey(data, forMailAddresses: ["alice2005@web.de"])                           //<---- Emailadresse
          }
          catch _ {}
-         */
+        */
         //Import public key END
         //---------------------------------------
     }
@@ -277,9 +281,54 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             LogHandler.doLog(UIViewResolver.resolve(textView.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: textView.text)
         }
     }
-
-    func tokenFieldDidEndEditing(tokenField: VENTokenField) { }
-
+    
+    func tokenFieldDidEndEditing(tokenField: VENTokenField) {}
+    
+    func reloadCollectionViews() {
+        //toCollectionview.collectionViewLayout.invalidateLayout()
+        toCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
+        ccCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
+        /*toCollectionviewHeight.constant += 200
+        ccCollectionviewHeight.constant += 200
+        toCollectionview.setNeedsDisplay()
+        ccCollectionview.setNeedsDisplay()
+        toCollectionviewHeight.constant -= 200
+        ccCollectionviewHeight.constant -= 200
+        toCollectionview.setNeedsDisplay()
+        ccCollectionview.setNeedsDisplay()*/
+        //toCollectionview.reloadItemsAtIndexPaths([NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0)])
+        //toCollectionview.beginInteractiveMovementForItemAtIndexPath(NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0))
+        //toCollectionview.collectionViewLayout.invalidateLayout()
+        //toCollectionview.collectionViewLayout.finalizeCollectionViewUpdates()
+    }
+    
+    func addFrequentCellIfPossible() {
+        //collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
+        //let len = collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)
+        //if len < CollectionDataDelegate.maxFrequent {
+            //let path = NSIndexPath.init(forRow: len-1, inSection: 0)
+            /*toCollectionview.performBatchUpdates({
+                var indexes : [NSIndexPath] = []
+                let len = self.collectionDataDelegate.collectionView(self.toCollectionview, numberOfItemsInSection: 0)
+                print("benjamin ", len)
+                var i = 0
+                //for i in 1..<len {
+                    indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
+                //}
+                self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
+                self.toCollectionview.insertItemsAtIndexPaths(indexes)
+                }, completion: nil)*/
+            //toCollectionview.insertItemsAtIndexPaths([path])
+        //}
+        collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
+        toCollectionview.reloadData()
+        //toCollectionviewHeight.trans
+        //        toCollectionview.translatesAutoresizingMaskIntoConstraints = true
+        toCollectionview.startInteractiveTransitionToCollectionViewLayout(toCollectionview.collectionViewLayout, completion: nil)
+        toCollectionview.reloadData()
+        ccCollectionview.reloadData()
+    }
+    
     func showContact(email: String) {
         let records = DataHandler.handler.getContactByAddress(email).records
         for r in records {
@@ -393,13 +442,28 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             print("no Access!")
         }
     }
-
-    func newInput(tokenField: VENTokenField) {
+    
+    func newInput(tokenField: VENTokenField){
+        print("input")
         animateIfNeeded()
 
         collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String]) + (ccText.mailTokens as NSArray as! [String])
         toCollectionview.reloadData()
-        ccCollectionview.reloadData()
+//        toCollectionview.translatesAutoresizingMaskIntoConstraints = true
+        //toCollectionview.startInteractiveTransitionToCollectionViewLayout(toCollectionview.collectionViewLayout, completion: nil)
+        toCollectionview.setNeedsLayout()
+        toCollectionview.setNeedsDisplay()
+//        toCollectionview.translatesAutoresizingMaskIntoConstraints = false
+        toCollectionview.reloadData()
+        //let path = NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0)
+        //toCollectionview.reloadItemsAtIndexPaths([path])
+        //toCollectionview.reloadData()
+        //toCollectionview.collectionViewLayout.prepareLayout()// .invalidateLayout()
+        //ccCollectionview.collectionViewLayout.prepareLayout()//.invalidateLayout()
+        //toCollectionview.invalidateIntrinsicContentSize()
+        //toCollectionview.updateConstraints()
+        
+        //reloadCollectionViews()
     }
 
     func keyboardOpen(notification: NSNotification) {
