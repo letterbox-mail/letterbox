@@ -717,7 +717,7 @@
 					MailCoreRessources,
 				);
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "fu-berlin";
 				TargetAttributes = {
 					A13526741D955BDF00D3BFE1 = {
