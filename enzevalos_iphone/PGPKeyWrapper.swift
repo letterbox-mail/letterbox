@@ -97,6 +97,19 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
     //KeyIDs from previous keys, that signed the actual key
     //public var predecessorsKeyID: [String]?
     
+    public var mailAddressesInKey: [String]? {
+        get {
+            var array: [String] = []
+            for user:PGPUser in key.users as NSArray as! [PGPUser]{
+                array.append(user.userID)
+            }
+            if array == [] {
+                return nil
+            }
+            return array
+        }
+    }
+    
     init(key: PGPKey, mailAddresses: [String], discoveryMailUID: UInt64?, keyManager: PGPKeyManagement){
         self.key = key
         self.keyManager = keyManager

@@ -17,6 +17,10 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var receivedTime: UILabel!
     @IBOutlet weak var subject: UILabel!
     @IBOutlet weak var messageBody: UILabel!
+    @IBOutlet weak var infoHeadline: UILabel!
+    @IBOutlet weak var infoText: UILabel!
+    @IBOutlet weak var infoSymbol: UILabel!
+    @IBOutlet weak var answerButton: UIBarButtonItem!
 
     // Cells
     @IBOutlet weak var senderCell: UITableViewCell!
@@ -33,16 +37,14 @@ class ReadViewController: UITableViewController {
     var VENDelegate: ReadVENDelegate?
 
     var mail: Mail? = nil
-    let troubleColor = ThemeManager.troubleMessageColor()
-    let encryptColor = ThemeManager.encryptedMessageColor()
-    let uncryptColor = ThemeManager.uncryptedMessageColor()
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
+
+        answerButton.title = NSLocalizedString("answer", comment: "")
 
         VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: self.showContact, tableView: tableView)
 
@@ -54,7 +56,7 @@ class ReadViewController: UITableViewController {
 
         toTokenField.delegate = VENDelegate
         toTokenField.dataSource = VENDelegate
-        toTokenField.toLabelText = "\(NSLocalizedString("To", comment: "From field")):"
+        toTokenField.toLabelText = "\(NSLocalizedString("To", comment: "To field")):"
         toTokenField.toLabelTextColor = UIColor.darkGrayColor()
         toTokenField.setColorScheme(self.view.tintColor)
         toTokenField.readOnly = true
@@ -68,13 +70,17 @@ class ReadViewController: UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         // NavigationBar color
-        if let m = mail {
-            if m.trouble {
-                self.navigationController?.navigationBar.barTintColor = self.troubleColor
-            } else if m.isSecure {
-                self.navigationController?.navigationBar.barTintColor = self.encryptColor
+        if let mail = mail {
+            if mail.trouble {
+                self.navigationController?.navigationBar.barTintColor = ThemeManager.troubleMessageColor()
+                if !mail.showMessage {
+                    answerButton.enabled = false
+                }
+                navigationController?.navigationBar
+            } else if mail.isSecure {
+                self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
             } else {
-                self.navigationController?.navigationBar.barTintColor = self.uncryptColor
+                self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
             }
         }
     }
@@ -120,8 +126,8 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if mail != nil {
-            if mail!.trouble && mail!.showMessage {
+        if let mail = mail {
+            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact.hasKey {
                 return 3
             }
         }
@@ -133,13 +139,9 @@ class ReadViewController: UITableViewController {
         if section == 0 {
             return 3
         }
-        if mail != nil {
-            if mail!.trouble && section == 1 {
-                if mail!.showMessage {
-                    return 1
-                } else {
-                    return 2
-                }
+        if let mail = mail {
+            if section == 1 && mail.trouble && !mail.showMessage {
+                return 2
             }
         }
 
@@ -158,13 +160,28 @@ class ReadViewController: UITableViewController {
             }
         }
         if indexPath.section == 1 {
-            if mail != nil {
-                if mail!.trouble {
+            if let mail = mail {
+                if mail.trouble {
                     if indexPath.row == 0 {
+                        infoSymbol.text = "!"
+                        infoSymbol.textColor = ThemeManager.troubleMessageColor()
+                        infoHeadline.text = NSLocalizedString("corruptedHeadline", comment: "This mail is corrupted")
+                        infoHeadline.textColor = UIColor.blackColor()
+                        infoText.text = NSLocalizedString("corruptedText", comment: "This mail is corrupted")
+                        infoCell.setNeedsLayout()
+                        infoCell.layoutIfNeeded()
+                        infoCell.translatesAutoresizingMaskIntoConstraints = true
                         return infoCell
                     } else if indexPath.row == 1 {
                         return infoButtonCell
                     }
+                } else if mail.from.hasKey && !mail.isSecure {
+                    infoSymbol.text = "?"
+                    infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                    infoHeadline.text = NSLocalizedString("encryptedBeforeHeadline", comment: "The sender has encrypted before")
+                    infoHeadline.textColor = UIColor.grayColor()
+                    infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
+                    return infoCell
                 }
             } else {
                 return messageCell
@@ -174,14 +191,24 @@ class ReadViewController: UITableViewController {
         return messageCell
     }
 
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 1 && indexPath.row == 0 {
+            // get the tableview to use the correct height for this cell; please replace this with a better way if you know one
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+    }
+
     @IBAction func showEmailButton(sender: UIButton) {
-        mail!.showMessage = true
+        mail?.showMessage = true
 
         self.tableView.beginUpdates()
         let path = NSIndexPath(forRow: 1, inSection: 1)
         self.tableView.deleteRowsAtIndexPaths([path], withRowAnimation: .Fade)
         self.tableView.insertSections(NSIndexSet(index: 2), withRowAnimation: .Fade)
         self.tableView.endUpdates()
+
+        answerButton.enabled = true
     }
 
     @IBAction func ignoreEmailButton(sender: AnyObject) {
@@ -283,41 +310,10 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-            //print("-----".commonPrefixWithString(m.body!, options: NSStringCompareOptions.CaseInsensitiveSearch))
-
-            //in-line PGP
             if m.isEncrypted && !m.unableToDecrypt {
-                //CryptoHandler.getHandler().pgp.keys.append((KeyHandler.createHandler().getPrivateKey()?.key)!)
-
-                //let content = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil)
-                //print("read")
-                //print(String(data: content!, encoding: NSUTF8StringEncoding))
-
-                //var signed : ObjCBool = false
-                //var valid : ObjCBool = false
-                //var integrityProtected : ObjCBool = false
-
-                //print(m.sender?.mailbox)
-                //let decBody = try? CryptoHandler.getHandler().pgp.decryptData(m.body!.dataUsingEncoding(NSUTF8StringEncoding)!, passphrase: nil, verifyWithPublicKey: KeyHandler.createHandler().getKeyByAddr((m.sender?.mailbox)!)!.key, signed: &signed, valid: &valid, integrityProtected: &integrityProtected)
-
-                //if decBody != nil {
-                //    messageBody.text = String(data: decBody!, encoding: NSUTF8StringEncoding)
-                //}
-
-                //print("signed: ", signed, " valid: ", valid, " integrityProtected: ", integrityProtected)
-
                 messageBody.text = m.decryptedBody
-                //print(m.decryptedMessage)
-                // if KeyHandler.getHandler().addrHasKey((m.from.address)) {
-
-                //AFTERMERGE
-                /*if m.from.hasKey{
-                    let signatureKey = KeyHandler.getHandler().getKeyByAddr((m.from.address))?.key
-                    print(signatureKey)
-                }*/
-
             }
-                else {
+            else {
                 messageBody.text = m.body
             }
             // NavigationBar Icon
@@ -334,6 +330,9 @@ class ReadViewController: UITableViewController {
             }
             iconView.image = icon
             iconButton.setImage(icon, forState: UIControlState.Normal)
+
+            print("enc: ", m.isEncrypted, ", unableDec: ", m.unableToDecrypt, ", signed: ", m.isSigned, ", correctlySig: ", m.isCorrectlySigned, ", oldPrivK: ", m.decryptedWithOldPrivateKey)
+            EnzevalosEncryptionHandler.getEncryption(.PGP)?.decryptAndSignatureCheck(m)
         }
     }
 

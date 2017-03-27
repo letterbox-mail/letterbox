@@ -41,7 +41,7 @@ class ContactViewController: UIViewController {
             otherRecords = con.ezContact.records.filter({ $0 != contact })
         }
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         if let row = tableView.indexPathForSelectedRow {
             tableView.deselectRowAtIndexPath(row, animated: false)
@@ -140,7 +140,9 @@ class ContactViewController: UIViewController {
             let indexPath = tableView.indexPathForSelectedRow
             if controller != nil {
                 // TODO: add address to SendView
-                controller!.toField = contact!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                if indexPath!.row < contact!.ezContact.getMailAddresses().count {
+                    controller!.toField = contact!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                }
             }
         } else if segue.identifier == "mailList" {
             let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
@@ -149,13 +151,16 @@ class ContactViewController: UIViewController {
             let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
             let indexPath = tableView.indexPathForSelectedRow
             if let r = otherRecords {
-                if let indexPath = indexPath where indexPath.section == 3 {
+                if let indexPath = indexPath where indexPath.section == 3 && !(contact?.hasKey ?? false) || indexPath.section == 4 && (contact?.hasKey ?? false) {
                     let destinationRecord = r[indexPath.row]
                     DestinationViewController.contact = destinationRecord
                 } else {
                     DestinationViewController.contact = otherRecords!.first
                 }
             }
+        } else if segue.identifier == "keyView" {
+            let destinationViewController: KeyViewController = segue.destinationViewController as! KeyViewController
+            destinationViewController.record = contact
         }
     }
 }
@@ -216,7 +221,31 @@ extension ContactViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCellWithIdentifier("AllMails", forIndexPath: indexPath)
                 cell.textLabel?.text = NSLocalizedString("allMessages", comment: "show all messages")
                 return cell
-            case 3:
+            case 3 where (contact?.hasKey) ?? false:
+                let cell = tableView.dequeueReusableCellWithIdentifier("KeyCell", forIndexPath: indexPath)
+                cell.textLabel?.text = NSLocalizedString("Details", comment: "Details")
+                return cell
+            case 3 where !((contact?.hasKey) ?? false):
+                let cell = tableView.dequeueReusableCellWithIdentifier("RecordCell", forIndexPath: indexPath) as! RecordCell
+                if let r = otherRecords {
+                    if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
+                        let dateFormatter = NSDateFormatter()
+                        dateFormatter.locale = NSLocale.currentLocale()
+                        dateFormatter.dateStyle = .MediumStyle
+                        cell.dateLabel.text = dateFormatter.stringFromDate(time)
+                        cell.iconImage.image = IconsStyleKit.imageOfLetter
+                    } else {
+                        cell.dateLabel.text = ""
+                        cell.iconImage.image = IconsStyleKit.imageOfPostcard
+                    }
+                    cell.label.text = r[indexPath.row].addresses.first?.mailAddress
+                }
+                return cell
+            case 4 where !((contact?.hasKey) ?? false):
+                let cell = tableView.dequeueReusableCellWithIdentifier("KeyCell", forIndexPath: indexPath)
+                cell.textLabel?.text = "abc"
+                return cell
+            case 4 where (contact?.hasKey) ?? false:
                 let cell = tableView.dequeueReusableCellWithIdentifier("RecordCell", forIndexPath: indexPath) as! RecordCell
                 if let r = otherRecords {
                     if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
@@ -240,10 +269,14 @@ extension ContactViewController: UITableViewDataSource {
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        var sections = 3
         if contact?.ezContact.records.count > 1 {
-            return 4
+            sections += 1
         }
-        return 3
+        if let hasKey = contact?.hasKey where hasKey {
+            sections += 1
+        }
+        return sections
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -259,7 +292,13 @@ extension ContactViewController: UITableViewDataSource {
                 } else {
                     return 0
                 }
-            case 3:
+                
+            case 3 where !((contact?.hasKey) ?? false):
+                if let rec = otherRecords {
+                    return rec.count
+                }
+                return 0
+            case 4 where (contact?.hasKey) ?? false:
                 if let rec = otherRecords {
                     return rec.count
                 }
@@ -275,7 +314,9 @@ extension ContactViewController: UITableViewDataSource {
         switch section {
         case 1:
             return NSLocalizedString("connectedAddresses", comment: "All addresses connected to this keyrecord")
-        case 3:
+        case 3 where !((contact?.hasKey) ?? false):
+            return NSLocalizedString("otherRecords", comment: "Other records of this contact")
+        case 4 where (contact?.hasKey) ?? false:
             return NSLocalizedString("otherRecords", comment: "Other records of this contact")
         default:
             return nil
@@ -313,7 +354,7 @@ extension ContactViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
         case .Push:
-            if tableView.indexPathForSelectedRow?.section == 3 || tableView.indexPathForSelectedRow?.section == 0 {
+            if (tableView.indexPathForSelectedRow?.section == 4 && ((contact?.hasKey) ?? false) || tableView.indexPathForSelectedRow?.section == 3 && !((contact?.hasKey) ?? false)) || tableView.indexPathForSelectedRow?.section == 0 {
                 return FlipTransition()
             } else {
                 return nil
@@ -322,7 +363,7 @@ extension ContactViewController: UINavigationControllerDelegate {
             return nil
         }
     }
-    
+
     func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return nil
     }

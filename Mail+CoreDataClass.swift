@@ -14,7 +14,7 @@ import CoreData
 @objc(Mail)
 public class Mail: NSManagedObject, Comparable {
 
-    var showMessage: Bool = true
+    var showMessage: Bool = false
 
     var isSecure: Bool {
         return isEncrypted && isSigned && !unableToDecrypt && !trouble
