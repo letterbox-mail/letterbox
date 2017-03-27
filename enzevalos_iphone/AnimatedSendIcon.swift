@@ -46,6 +46,7 @@ class AnimatedSendIcon: UIView {
         square.frame = CGRect(origin: front, size: size)
         square2.frame = CGRect(origin: back, size: sizeSmall)
         square2.layer.zPosition = 0.0
+        square2.alpha = 0.6
         square.layer.zPosition = 1.0
         
         
@@ -75,6 +76,8 @@ class AnimatedSendIcon: UIView {
                 })
                 UIView.addKeyframeWithRelativeStartTime(0.25, relativeDuration: 0.5, animations: {
                     self.square.frame = CGRect(x: 70, y: 5, width: self.width*0.78, height: self.height*0.78)
+                    self.square.alpha = 0.6
+                    self.square2.alpha = 1.0
                     self.square2.frame = CGRect(x: 60, y: 40, width: self.width*0.95, height: self.height*0.95)
                 })
                 
@@ -92,6 +95,8 @@ class AnimatedSendIcon: UIView {
                 })
                 UIView.addKeyframeWithRelativeStartTime(0.25, relativeDuration: 0.5, animations: {
                     self.square2.frame = CGRect(x: 70, y: 5, width: self.width*0.85, height: self.height*0.85)
+                    self.square2.alpha = 0.6
+                    self.square.alpha = 1.0
                     self.square.frame = CGRect(x: 60, y: 40, width: self.width*0.95, height: self.height*0.95)
                 })
                 

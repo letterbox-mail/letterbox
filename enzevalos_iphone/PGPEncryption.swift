@@ -126,22 +126,27 @@ class PGPEncryption : Encryption {
         if self.isUsed(mail) {
             let bodyData = mail.body!.dataUsingEncoding(NSUTF8StringEncoding)!
             var data: NSData?
-            var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
+            var error = NSErrorPointer.init()
+            var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
             var maybeUsedKeys: [String] = []
             var signed = UnsafeMutablePointer<ObjCBool>.alloc(1)
             signed[0] = false
             var valid = UnsafeMutablePointer<ObjCBool>.alloc(1)
             valid[0] = false
+            print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
                 data = temp.plaintextData
                 if data == nil {
                     self.keyManager.useAllPrivateKeys()
-                    temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: nil)
+                    temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
                     data = temp.plaintextData
                     self.keyManager.useOnlyActualPrivateKey()
                     if data != nil {
                         mail.decryptedWithOldPrivateKey = true
                     }
                 }
+            if error.debugDescription == "MDC validation failed" {
+                mail.trouble = true
+            }
                 if let unwrappedData = data {
                     mail.decryptedBody = String(data: unwrappedData, encoding: NSUTF8StringEncoding)
                     if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(mail.from.address), theirKeyID = temp.incompleteKeyID {
@@ -149,12 +154,22 @@ class PGPEncryption : Encryption {
                     }
                     for maybeUsedKey in maybeUsedKeys {
                         if let key = self.keyManager.getKey(maybeUsedKey) {
-                            let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: nil)[0])
-                            if done {
-                                mail.isSigned = signed.memory.boolValue
-                                mail.isCorrectlySigned = valid.memory.boolValue
+                           let done : ObjCBool = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: error)[0])
+                            if !done {
+                                mail.isSigned = false
+                                mail.isCorrectlySigned = false
+                                break
+                            }
+                            mail.isSigned = signed.memory.boolValue
+                            mail.isCorrectlySigned = valid.memory.boolValue
+                            if mail.isSigned && mail.isCorrectlySigned {
+                                mail.keyID = key.keyID
+                                break
                             }
                         }
+                    }
+                    if mail.isSigned && !mail.isCorrectlySigned && maybeUsedKeys != [] {
+                        mail.trouble = true
                     }
                     return
                 }
@@ -197,7 +212,6 @@ class PGPEncryption : Encryption {
         
     }
     
-    //TODO
     //encrypt text with key
     func encrypt(text: String, keyIDs: [String]) -> NSData? {
         var encData : NSData? = nil
@@ -259,9 +273,56 @@ class PGPEncryption : Encryption {
         
     }
     
-    //TODO
-    func signAndEncrypt(text: String, key: KeyWrapper) -> String {
-        return ""
+    func signAndEncrypt(text: String, keyIDs: [String]) -> NSData? {
+        var encData : NSData? = nil
+        var keys : [PGPKey] = []
+        for id in keyIDs {
+            if let key = keyManager.getKey(id) {
+                keys.append(key.key)
+            }
+            else {
+                print("PGPEncryption.encrypt: No key found for keyID "+id)
+                return nil
+            }
+        }
+        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+            if let myKeyID = keyManager.getPrivateKeyID() {
+                if let myKey = keyManager.getKey(myKeyID) {
+                    encData = try? keyManager.pgp.encryptData(data, usingPublicKeys: keys, signWithSecretKey: myKey.key, passphrase: "", armored: true)
+                }
+                else {
+                    return nil
+                }
+            }
+            else {
+                return nil
+            }
+        }
+        else {
+            print("PGPEncryption.encrypt: text has to be in UTF8Encoding")
+        }
+        return encData
+    }
+    
+    func signAndEncrypt(text: String, mailaddresses: [String]) -> NSData? {
+        var keyIDs : [String] = []
+        for addr in mailaddresses {
+            if let ids = keyManager.getKeyIDsForMailAddress(addr) {
+                if ids != [] {
+                    keyIDs.append(ids.last!)
+                }
+                else {
+                    print("PGPEncryption.encrypt: no keyID for mailaddress "+addr+" found")
+                    return nil
+                }
+            }
+            else {
+                print("PGPEncryption.encrypt: no keyID for mailaddress "+addr+" found")
+                return nil
+            }
+        }
+        
+        return signAndEncrypt(text, keyIDs: keyIDs)
     }
     
     //chooses first key in data. others will be ignored

@@ -193,14 +193,14 @@ class AutocryptContact {
 class MailHandler {
 
     var delegate: MailHandlerDelegator?
-    
+
     private static let MAXMAILS: Int = 10
-    
-    
-    
+
+
+
     private let concurrentMailServer = dispatch_queue_create(
-        "com.enzevalos.mailserverQueue", DISPATCH_QUEUE_CONCURRENT)
-    
+                                                             "com.enzevalos.mailserverQueue", DISPATCH_QUEUE_CONCURRENT)
+
     var IMAPSes: MCOIMAPSession?
 
     var IMAPSession: MCOIMAPSession {
@@ -286,12 +286,16 @@ class MailHandler {
 
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
-            //TODO use encryptAndSign instead of encrypt
-            if let encData = encryption.encrypt("\n" + message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
-                sendData = encData
-                sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(sendData), from: userID, recipients: encPGP)
+            //TODO add cases for only encryption
+            if let encData = encryption.signAndEncrypt("\n"+message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+                //sendData = encData
+                builder.textBody = String(data: encData, encoding: NSUTF8StringEncoding)
+                sendData = builder.data()
+                sendOperation = session.sendOperationWithData(sendData, from: userID, recipients: encPGP)
+                //sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
+                builder.textBody = message
             }
                 else {
                 //TODO do it better
@@ -319,7 +323,7 @@ class MailHandler {
         imapsession.connectionType = MCOConnectionType.TLS
         self.IMAPSes = imapsession
     }
-   
+
 
     func addFlag(uid: UInt64, flags: MCOMessageFlag, folder: String = "INBOX") {
         let op = self.IMAPSession.storeFlagsOperationWithFolder(folder, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.Set, flags: flags)
@@ -341,33 +345,33 @@ class MailHandler {
             }
         }
     }
-    
-    
+
+
     func receiveAll(folder: String = "INBOX", newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ())) {
         let uids: MCOIndexSet
         uids = MCOIndexSet(range: MCORangeMake(DataHandler.handler.maxUID, UINT64_MAX))
         loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
-    
+
     func loadMoreMails(record: KeyRecord, folder: String = "INBOX", newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ())) {
         let addresses: [MailAddress]
         addresses = record.addresses
 
-        for adr in addresses{
+        for adr in addresses {
             let searchExpr: MCOIMAPSearchExpression = MCOIMAPSearchExpression.searchFrom(adr.mailAddress)
             let searchOperation: MCOIMAPSearchOperation = self.IMAPSession.searchExpressionOperationWithFolder(folder, expression: searchExpr)
-            
-            searchOperation.start { (err, indices) -> Void  in
+
+            searchOperation.start { (err, indices) -> Void in
                 guard err == nil else {
                     completionCallback(error: true)
                     return
                 }
                 let ids = indices as MCOIndexSet?
                 if var setOfIndices = ids {
-                    for mail in record.mails{
+                    for mail in record.mails {
                         setOfIndices.removeIndex(mail.uid)
                     }
-                    if setOfIndices.count() == 0{
+                    if setOfIndices.count() == 0 {
                         completionCallback(error: false)
                         return
                     }
@@ -380,12 +384,13 @@ class MailHandler {
             }
         }
     }
-    
-    func loadMessagesFromServer(uids: MCOIndexSet, folder: String = "INBOX", record: KeyRecord?, newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ()) ){
+
+    func loadMessagesFromServer(uids: MCOIndexSet, folder: String = "INBOX", record: KeyRecord?, newMailCallback: (() -> ()), completionCallback: ((error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue | MCOIMAPMessagesRequestKind.Flags.rawValue)
         let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER]
         
+
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
                 print("Error while fetching inbox: \(err)")
@@ -397,66 +402,43 @@ class MailHandler {
                 for m in msgs {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
                     dispatch_group_enter(dispatchGroup)
+
                     let op = self.IMAPSession.fetchParsedMessageOperationWithFolder(folder, uid: message.uid)
-                    op.start {err,data in self.parseMail(err, parser: data, message: message, record: record, newMailCallback: newMailCallback)
-                             dispatch_group_leave(dispatchGroup)
+                    op.start { err, data in self.parseMail(err, parser: data, message: message, record: record, newMailCallback: newMailCallback)
+                        dispatch_group_leave(dispatchGroup)
                     }
                 }
                 dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
-                    self.IMAPSession.disconnectOperation().start({_ in })
+                    self.IMAPSession.disconnectOperation().start({ _ in })
                     completionCallback(error: false)
                 }
             }
         }
-
     }
-    
-   
-    
-    func parseMail(error: ErrorType?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: (() -> ())){
+
+
+
+    func parseMail(error: ErrorType?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: (() -> ())) {
         guard error == nil else {
             print("Error while fetching mail: \(error)")
             return
         }
-        if let data = parser?.data(){
+        if let data = parser?.data() {
             let msgParser = MCOMessageParser(data: data)
-        
-            let html: String = msgParser.plainTextBodyRendering()
+            let html: String = msgParser.plainTextRendering()
             var lineArray = html.componentsSeparatedByString("\n")
             //lineArray.removeFirst(4)
             var body = lineArray.joinWithSeparator("\n")
             body = body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             body.appendContentsOf("\n")
+            /*print("---- Body ----")
+            print(body)
+            print("---- Body ----")*/
             var rec: [MCOAddress] = []
             var cc: [MCOAddress] = []
-        
+
             let header = message.header
             // TODO: Handle here autocrypt
-            var autocrypt: AutocryptContact? = nil
-            if let _ = header.extraHeaderValueForName(AUTOCRYPTHEADER){
-                print("Header: \(header)")
-                print("subject: \(header.subject)")
-                print("=============================")
-                autocrypt = AutocryptContact(header: header)
-                print(autocrypt?.toString())
-                if(autocrypt?.type == AutocryptContact.AutocryptType.OPENPGP && autocrypt?.key.characters.count > 0){
-                    let pgp = ObjectivePGP.init()
-                    print("####### Insert new KEY!!!")
-                    if let data = autocrypt!.key.dataUsingEncoding(NSUTF8StringEncoding){
-                       // pgp.importKeysFromData(data, allowDuplicates: true)
-                       // let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-                        do {
-                          //  enc?.addKey(data, forMailAddresses: [header.from.mailbox])
-                        }
-                        catch {
-                            print("Could not conntect key! \(autocrypt?.toString())")
-                        }
-                        print("Key added: \(autocrypt?.toString())")
-                    }
-                }
-                
-            }
-            
             if let to = header.to {
                 for r in to {
                     rec.append(r as! MCOAddress)
@@ -467,29 +449,29 @@ class MailHandler {
                     cc.append(r as! MCOAddress)
                 }
             }
-        
-           DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record)
+
+            DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
             newMailCallback()
         }
     }
-    
-    
-    private func cutIndexSet(inputSet: MCOIndexSet, maxMails: Int = MAXMAILS)->MCOIndexSet{
+
+
+    private func cutIndexSet(inputSet: MCOIndexSet, maxMails: Int = MAXMAILS) -> MCOIndexSet {
         let max = UInt32(maxMails)
-        if inputSet.count() <= max{
+        if inputSet.count() <= max {
             return inputSet
         }
         let result = MCOIndexSet()
-        for x in inputSet.nsIndexSet().reverse(){
-            if(result.count() < max){
+        for x in inputSet.nsIndexSet().reverse() {
+            if(result.count() < max) {
                 result.addIndex(UInt64(x))
             }
         }
         return result
     }
 
-    
-    func findMaxUID(folder: String = "INBOX", callback: ((maxUID: UInt64) -> ())){
+
+    func findMaxUID(folder: String = "INBOX", callback: ((maxUID: UInt64) -> ())) {
         //TODO: NSP!!!
         var maxUID: UInt64 = 0
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue)
@@ -497,17 +479,17 @@ class MailHandler {
         let dispatchGroup = dispatch_group_create()
         dispatch_group_enter(dispatchGroup)
 
-        let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
+        let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder(folder, requestKind: requestKind, uids: uids)
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
                 print("Error while fetching inbox: \(err)")
                 return
             }
             if let msgs = msg {
-                for m in msgs{
+                for m in msgs {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
                     let id = UInt64(message.uid)
-                    if id > maxUID{
+                    if id > maxUID {
                         maxUID = id
                     }
                 }
@@ -515,10 +497,10 @@ class MailHandler {
             dispatch_group_leave(dispatchGroup)
         }
         dispatch_group_notify(dispatchGroup, dispatch_get_main_queue()) {
-           callback(maxUID: maxUID)
+            callback(maxUID: maxUID)
         }
     }
-    
+
     /*
      Parameters:
      ---------------

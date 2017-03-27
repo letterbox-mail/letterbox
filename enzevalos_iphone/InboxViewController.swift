@@ -172,7 +172,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         } else if segue.identifier == "contactSegue" {
             if let contact = sender as? KeyRecord {
                 let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
-                DestinationViewController.contact = contact
+                DestinationViewController.keyRecord = contact
             }
         }
     }

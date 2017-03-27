@@ -16,13 +16,23 @@
 "Contacts" = "Contacts";
 "Content" = "Content";
 "ContentNo" = "No content";
+"Details" = "Key Details";
+"Checkmarks" = "You received Mails from Mailadresses with checkmarks";
+"DiscoveryTime" = "Discoverytime";
 "Drafts" = "Drafts";
 "Emailaddress" = "Emailaddress";
+"EncryptionType" = "Encryption Type";
 "Forward" = "Forward";
 "From" = "From";
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
 "Junk" = "Junk";
+"KeyAddresses" = "Mailaddresses from the key";
+"KeyDetails" = "Key Details";
+"KeyID" = "KeyID";
+"KeyIsRevoked" = "The Key is revoked. It was revoked at ";
+"KeyIsVerified" = "The Key is verified. It was verified at ";
+"KeyNotFound" = "No Key Found. This is an error, contact the developers!";
 "Letter" = "Letter";
 "LetterDamaged" = "Damaged Letter";
 "mail from" = "mail from";
@@ -84,3 +94,9 @@
 "Body" = "Body";
 "and" = "and";
 "more" = "more";
+"encryptedBeforeHeadline" = "Insecure Message";
+"encryptedBeforeText" = "You received secure messages from this contact before. Maybe don't trust this email too much.";
+"corruptedText" = "This E-Mail may have been modified! If you want to read it anyways, please be weary of its content.";
+"corruptedHeadline" = "Attention!";
+"answer" = "Answer";
+

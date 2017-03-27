@@ -27,8 +27,6 @@
 #import "PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h"
 #import "PGPMPI.h"
 
-#import "PGPTemporaryDecryptionObject.h"
-
 @implementation ObjectivePGP
 
 - (NSArray<PGPKey *> *)keys
@@ -216,9 +214,9 @@
 
 - (NSData *) decryptData:(NSData *)messageDataToDecrypt passphrase:(NSString *)passphrase verifyWithPublicKey:(PGPKey *)publicKey signed:(BOOL*)isSigned valid:(BOOL*)isValid integrityProtected:(BOOL*)isIntegrityProtected error:(NSError * __autoreleasing *)error
 {
-    NSData *binaryMessageToDecrypt = [self convertArmoredMessage2BinaryWhenNecessary:messageDataToDecrypt];
-    printf("jakob auskommentierte Assertion line 218 ObjectivePGP.m");
-    //NSAssert(binaryMessageToDecrypt != nil, @"Invalid input data");
+    NSArray *binaryMessages = [self convertArmoredMessage2BinaryBlocksWhenNecessary:messageDataToDecrypt];
+    NSData *binaryMessageToDecrypt = binaryMessages.count > 0 ? binaryMessages.firstObject : nil;
+    NSAssert(binaryMessageToDecrypt != nil, @"Invalid input data");
     if (!binaryMessageToDecrypt) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Invalid input data"}];
@@ -267,8 +265,7 @@
         return nil;
     }
     
-    printf("jakob auskommentierte Assertion in line 267 ObjectivePGP.m");
-    //NSAssert(eskPacket, @"Valid PublicKeyEncryptedSessionKeyPacket not found");
+    NSAssert(eskPacket, @"Valid PublicKeyEncryptedSessionKeyPacket not found");
     if (!eskPacket) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Valid PublicKeyEncryptedSessionKeyPacket not found"}];
@@ -362,7 +359,8 @@
 
 - (PGPTemporaryDecryptionObject *) decryptDataFirstPart:(NSData *)messageDataToDecrypt passphrase:(NSString *)passphrase integrityProtected:(BOOL*)isIntegrityProtected error:(NSError * __autoreleasing *)error
 {
-    NSData *binaryMessageToDecrypt = [self convertArmoredMessage2BinaryWhenNecessary:messageDataToDecrypt];
+    NSArray *binaryMessages = [self convertArmoredMessage2BinaryBlocksWhenNecessary:messageDataToDecrypt];
+    NSData *binaryMessageToDecrypt = binaryMessages.count > 0 ? binaryMessages.firstObject : nil;
     printf("jakob auskommentierte Assertion line 218 ObjectivePGP.m");
     //NSAssert(binaryMessageToDecrypt != nil, @"Invalid input data");
     if (!binaryMessageToDecrypt) {
@@ -510,7 +508,7 @@
     {
         *isValid = _valid;
     }
-    return isValid;
+    return isSigned;
 }
 
 //--------------------- Jakob -------------------------
@@ -926,18 +924,19 @@
 {
     NSAssert(fileData.length > 0, @"Empty data");
 
-    NSData *binRingData = [self convertArmoredMessage2BinaryWhenNecessary:fileData];
-    NSAssert(binRingData != nil, @"Invalid input data");
-    if (!binRingData) {
-        return nil;
+    NSArray *binRingData = [self convertArmoredMessage2BinaryBlocksWhenNecessary:fileData];
+    NSAssert(binRingData.count > 0, @"Invalid input data");
+    if (binRingData.count == 0) {
+        return @[];
     }
-    
-    NSArray *parsedKeys = [self readKeysFromData:binRingData];
-    if (parsedKeys.count == 0) {
-        return nil;
+
+    NSMutableSet *keys = [[NSMutableSet alloc] init];
+    for (NSData *data in binRingData) {
+        NSArray *parsedKeys = [self readKeysFromData:data];
+        [keys addObjectsFromArray:parsedKeys];
     }
-    
-    return parsedKeys;
+
+    return keys.allObjects;
 }
 
 #pragma mark - Private
@@ -1018,26 +1017,45 @@ found_key_label:
     return foundKey;
 }
 
-- (NSData *) convertArmoredMessage2BinaryWhenNecessary:(NSData *)binOrArmorData
-{
+- (NSArray *)convertArmoredMessage2BinaryBlocksWhenNecessary:(NSData *)binOrArmorData {
     NSData *binRingData = binOrArmorData;
     // detect if armored, check for strin -----BEGIN PGP
     if ([PGPArmor isArmoredData:binRingData]) {
         NSError *deadmorError = nil;
         NSString *armoredString = [[NSString alloc] initWithData:binRingData encoding:NSUTF8StringEncoding];
-        
+
         // replace \n to \r\n
         // propably unecessary since armore code care about \r\n or \n as newline sentence
         armoredString = [armoredString stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
         armoredString = [armoredString stringByReplacingOccurrencesOfString:@"\n" withString:@"\r\n"];
-        
-        binRingData = [PGPArmor readArmoredData:armoredString error:&deadmorError];
-        if (deadmorError) {
-            return nil;
-        }
-    }
-    return binRingData;
-}
 
+        NSMutableArray *extractedStrings = [[NSMutableArray alloc] init];
+        NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"(-----)(BEGIN|END)[ ](PGP)[A-Z ]*(-----)" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
+        __block NSInteger offset = 0;
+        [regex enumerateMatchesInString:armoredString options:0 range:NSMakeRange(0, armoredString.length) usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+            NSString *substring = [armoredString substringWithRange:result.range];
+            if ([substring containsString:@"END"]) {
+                NSInteger endIndex = result.range.location + result.range.length;
+                [extractedStrings addObject:[armoredString substringWithRange:NSMakeRange(offset, endIndex - offset)]];
+            } else if ([substring containsString:@"BEGIN"]) {
+                offset = result.range.location;
+            }
+        }];
+
+        NSMutableArray *extractedData = [[NSMutableArray alloc] init];
+
+        for (NSString *extractedString in extractedStrings) {
+            binRingData = [PGPArmor readArmoredData:extractedString error:&deadmorError];
+            if (deadmorError) {
+                return @[];
+            } else {
+                [extractedData addObject:binRingData];
+            }
+        }
+
+        return extractedData;
+    }
+    return @[binRingData];
+}
 
 @end

@@ -87,13 +87,28 @@ class PGPKeyManagement {
         
         let data = NSKeyedArchiver.archivedDataWithRootObject(key)
         //key-ID should be created once
-        encryptionHandler.addPersistentData(data, searchKey: key.keyID, encryptionType: self.encryptionType)
+        //encryptionHandler.addPersistentData(data, searchKey: key.keyID, encryptionType: self.encryptionType)
         
-        addMailAddressesForKey(forMailAddresses, keyID: keyID)
+        //check, if the key is already inserted
+        var alreadyInserted = false
+        var returnedKeyID = keyID
+        if index > 1 {
+            for otherIndex in 1...index {
+                var otherKeyID = key.key.keyID.longKeyString+"-"+String(otherIndex)
+                if key.key.isEqual(self.getKey(otherKeyID)?.key) {
+                    alreadyInserted = true
+                    returnedKeyID = otherKeyID
+                    break
+                }
+            }
+        }
+        if !alreadyInserted {
+            encryptionHandler.addPersistentData(data, searchKey: key.keyID, encryptionType: self.encryptionType)
+            addMailAddressesForKey(forMailAddresses, keyID: keyID)
+            addPrivateKey(key)
+        }
         
-        addPrivateKey(key)
-        
-        return keyID
+        return returnedKeyID
     }
     
     func updateKey(key: PGPKeyWrapper) {
@@ -137,14 +152,14 @@ class PGPKeyManagement {
             //remove keyID outof keyIDs
             if var keys = keyIDs[mailAddress]{
                 if keys.contains(keyID) {
-                    keys.removeAtIndex(keys.indexOf(mailAddress)!)
+                    keys.removeAtIndex(keys.indexOf(keyID)!)
                     keyIDs[mailAddress] = keys
                 }
             }
             //remove mailAddress outof addresses
             if var mAddresses = addresses[keyID]{
                 if mAddresses.contains(mailAddress) {
-                    mAddresses.removeAtIndex(mAddresses.indexOf(keyID)!)
+                    mAddresses.removeAtIndex(mAddresses.indexOf(mailAddress)!)
                     addresses[keyID] = mAddresses
                 }
             }
