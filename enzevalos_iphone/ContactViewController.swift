@@ -12,7 +12,7 @@ import Contacts
 import ContactsUI
 
 class ContactViewController: UIViewController {
-    var contact: KeyRecord? = nil
+    var keyRecord: KeyRecord? = nil
     var highlightEmail: String? = nil
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
@@ -32,13 +32,13 @@ class ContactViewController: UIViewController {
         tableView.estimatedRowHeight = 44.0
 
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
-        if let con = contact {
+        if let con = keyRecord {
             self.title = con.name
 //            self.title = CNContactFormatter.stringFromContact(con.ezContact.cnContact, style: .FullName)
 
             prepareContactSheet()
 
-            otherRecords = con.ezContact.records.filter({ $0 != contact })
+            otherRecords = con.ezContact.records.filter({ $0 != keyRecord })
         }
     }
 
@@ -52,7 +52,7 @@ class ContactViewController: UIViewController {
         let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
         if authorizationStatus == CNAuthorizationStatus.Authorized {
             do {
-                uiContact = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(contact!.cnContact!.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
+                uiContact = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(keyRecord!.cnContact!.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
             } catch {
                 //contact doesn't exist or we don't have authorization
                 //TODO: handle missing authorization
@@ -66,7 +66,7 @@ class ContactViewController: UIViewController {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: infoButton)
         } else {
             let addButton = UIButton(type: .ContactAdd)
-            vc = CNContactViewController(forNewContact: contact!.cnContact)
+            vc = CNContactViewController(forNewContact: keyRecord!.cnContact)
             vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
             vc!.delegate = self
             addButton.addTarget(self, action: #selector(ContactViewController.showContact), forControlEvents: .TouchUpInside)
@@ -75,7 +75,7 @@ class ContactViewController: UIViewController {
     }
 
     func drawStatusCircle() -> UIImage? {
-        guard contact != nil else {
+        guard keyRecord != nil else {
             return nil
         }
         var myBounds = CGRect()
@@ -92,9 +92,9 @@ class ContactViewController: UIViewController {
 
         // Fill background of context
         var bgColor: CGColor = ThemeManager.defaultColor.CGColor
-        if contact!.isVerified {
+        if keyRecord!.isVerified {
             bgColor = Theme.Very_strong_security_indicator.encryptedVerifiedMessageColor.CGColor
-        } else if !contact!.hasKey {
+        } else if !keyRecord!.hasKey {
             bgColor = Theme.Very_strong_security_indicator.uncryptedMessageColor.CGColor
         }
         CGContextSetFillColorWithColor(context!, bgColor)
@@ -103,9 +103,9 @@ class ContactViewController: UIViewController {
         let iconSize = CGFloat(50)
         let frame = CGRectMake(myBounds.size.width / 2 - iconSize / 2, myBounds.size.height / 2 - iconSize / 2, iconSize, iconSize)
 
-        if contact!.hasKey {
+        if keyRecord!.hasKey {
             IconsStyleKit.drawLetter(frame: frame, fillBackground: true)
-        } else if contact!.isVerified {
+        } else if keyRecord!.isVerified {
             IconsStyleKit.drawLetter(frame: frame, color: UIColor.whiteColor())
         } else {
             IconsStyleKit.drawPostcard(frame: frame, resizing: .AspectFit, color: UIColor.whiteColor())
@@ -140,27 +140,27 @@ class ContactViewController: UIViewController {
             let indexPath = tableView.indexPathForSelectedRow
             if controller != nil {
                 // TODO: add address to SendView
-                if indexPath!.row < contact!.ezContact.getMailAddresses().count {
-                    controller!.toField = contact!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                if indexPath!.row < keyRecord!.ezContact.getMailAddresses().count {
+                    controller!.toField = keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
                 }
             }
         } else if segue.identifier == "mailList" {
             let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
-            DestinationViewController.contact = contact
+            DestinationViewController.contact = keyRecord
         } else if segue.identifier == "otherRecord" {
             let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
             let indexPath = tableView.indexPathForSelectedRow
             if let r = otherRecords {
-                if let indexPath = indexPath where indexPath.section == 3 && !(contact?.hasKey ?? false) || indexPath.section == 4 && (contact?.hasKey ?? false) {
+                if let indexPath = indexPath where indexPath.section == 3 && !(keyRecord?.hasKey ?? false) || indexPath.section == 4 && (keyRecord?.hasKey ?? false) {
                     let destinationRecord = r[indexPath.row]
-                    DestinationViewController.contact = destinationRecord
+                    DestinationViewController.keyRecord = destinationRecord
                 } else {
-                    DestinationViewController.contact = otherRecords!.first
+                    DestinationViewController.keyRecord = otherRecords!.first
                 }
             }
         } else if segue.identifier == "keyView" {
             let destinationViewController: KeyViewController = segue.destinationViewController as! KeyViewController
-            destinationViewController.record = contact
+            destinationViewController.record = keyRecord
         }
     }
 }
@@ -171,18 +171,18 @@ extension ContactViewController: CNContactViewControllerDelegate {
 
 extension ContactViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if contact != nil {
+        if keyRecord != nil {
             switch indexPath.section {
             case 0:
                 if indexPath.row == 0 {
                     let cell = tableView.dequeueReusableCellWithIdentifier("ContactViewCell") as! ContactViewCell
-                    cell.contactImage.image = contact!.cnContact!.getImageOrDefault()
+                    cell.contactImage.image = keyRecord!.cnContact!.getImageOrDefault()
                     cell.contactImage.layer.cornerRadius = cell.contactImage.frame.height / 2
                     cell.contactImage.clipsToBounds = true
                     cell.iconImage.image = drawStatusCircle()
-                    if contact!.isVerified {
+                    if keyRecord!.isVerified {
                         cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
-                    } else if contact!.hasKey {
+                    } else if keyRecord!.hasKey {
                         cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
                     } else if otherRecords?.filter({ $0.hasKey }).count > 0 {
                         cell.contactStatus.text = NSLocalizedString("otherEncryption", comment: "Contact is using encryption, this is the unsecure collection")
@@ -192,7 +192,7 @@ extension ContactViewController: UITableViewDataSource {
                     return cell
                 } else if indexPath.row == 1 {
                     let actionCell = tableView.dequeueReusableCellWithIdentifier("ActionCell", forIndexPath: indexPath) as! ActionCell
-                    if contact!.hasKey {
+                    if keyRecord!.hasKey {
                         actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), forState: .Normal)
                     } else if otherRecords?.filter({ $0.hasKey }).count > 0 {
                         actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), forState: .Normal)
@@ -203,14 +203,14 @@ extension ContactViewController: UITableViewDataSource {
                 }
             case 1:
                 let cell = tableView.dequeueReusableCellWithIdentifier("MailCell") as! MailCell
-                if let address = contact!.cnContact?.getMailAddresses()[indexPath.item].mailAddress {
+                if let address = keyRecord?.ezContact.getMailAddresses()[indexPath.item].mailAddress {
                     if let highlightEmail = highlightEmail where highlightEmail.containsString(address) {
                         cell.detailLabel.textColor = view.tintColor
                         cell.titleLabel.textColor = view.tintColor
                     }
                     cell.detailLabel.text = address
                 }
-                if let label = contact?.cnContact?.getMailAddresses()[indexPath.item].label.label {
+                if let label = keyRecord?.ezContact.getMailAddresses()[indexPath.item].label.label {
                     cell.titleLabel.text = CNLabeledValue.localizedStringForLabel(label)
                 } else {
                     cell.titleLabel.text = ""
@@ -221,11 +221,11 @@ extension ContactViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCellWithIdentifier("AllMails", forIndexPath: indexPath)
                 cell.textLabel?.text = NSLocalizedString("allMessages", comment: "show all messages")
                 return cell
-            case 3 where (contact?.hasKey) ?? false:
+            case 3 where (keyRecord?.hasKey) ?? false:
                 let cell = tableView.dequeueReusableCellWithIdentifier("KeyCell", forIndexPath: indexPath)
                 cell.textLabel?.text = NSLocalizedString("Details", comment: "Details")
                 return cell
-            case 3 where !((contact?.hasKey) ?? false):
+            case 3 where !((keyRecord?.hasKey) ?? false):
                 let cell = tableView.dequeueReusableCellWithIdentifier("RecordCell", forIndexPath: indexPath) as! RecordCell
                 if let r = otherRecords {
                     if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
@@ -241,11 +241,11 @@ extension ContactViewController: UITableViewDataSource {
                     cell.label.text = r[indexPath.row].addresses.first?.mailAddress
                 }
                 return cell
-            case 4 where !((contact?.hasKey) ?? false):
+            case 4 where !((keyRecord?.hasKey) ?? false):
                 let cell = tableView.dequeueReusableCellWithIdentifier("KeyCell", forIndexPath: indexPath)
                 cell.textLabel?.text = "abc"
                 return cell
-            case 4 where (contact?.hasKey) ?? false:
+            case 4 where (keyRecord?.hasKey) ?? false:
                 let cell = tableView.dequeueReusableCellWithIdentifier("RecordCell", forIndexPath: indexPath) as! RecordCell
                 if let r = otherRecords {
                     if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
@@ -270,35 +270,30 @@ extension ContactViewController: UITableViewDataSource {
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         var sections = 3
-        if contact?.ezContact.records.count > 1 {
+        if keyRecord?.ezContact.records.count > 1 {
             sections += 1
         }
-        if let hasKey = contact?.hasKey where hasKey {
+        if let hasKey = keyRecord?.hasKey where hasKey {
             sections += 1
         }
         return sections
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let con = contact {
+        if let con = keyRecord {
             switch section {
             case 0:
                 if !con.isVerified {
                     return 2
                 }
             case 1:
-                if let addresses = con.cnContact?.getMailAddresses() { // cnContact out of sync with ezContact; should use ezContact -> NSSet to Set<>?
-                    return addresses.count
-                } else {
-                    return 0
-                }
-                
-            case 3 where !((contact?.hasKey) ?? false):
+                return con.ezContact.getMailAddresses().count
+            case 3 where !((keyRecord?.hasKey) ?? false):
                 if let rec = otherRecords {
                     return rec.count
                 }
                 return 0
-            case 4 where (contact?.hasKey) ?? false:
+            case 4 where (keyRecord?.hasKey) ?? false:
                 if let rec = otherRecords {
                     return rec.count
                 }
@@ -314,9 +309,9 @@ extension ContactViewController: UITableViewDataSource {
         switch section {
         case 1:
             return NSLocalizedString("connectedAddresses", comment: "All addresses connected to this keyrecord")
-        case 3 where !((contact?.hasKey) ?? false):
+        case 3 where !((keyRecord?.hasKey) ?? false):
             return NSLocalizedString("otherRecords", comment: "Other records of this contact")
-        case 4 where (contact?.hasKey) ?? false:
+        case 4 where (keyRecord?.hasKey) ?? false:
             return NSLocalizedString("otherRecords", comment: "Other records of this contact")
         default:
             return nil
@@ -345,7 +340,7 @@ extension ContactViewController: UITableViewDelegate {
 
     func tableView(tableView: UITableView, performAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
         if indexPath.section == 1 {
-            UIPasteboard.generalPasteboard().string = contact!.ezContact.getMailAddresses()[indexPath.row].mailAddress
+            UIPasteboard.generalPasteboard().string = keyRecord!.ezContact.getMailAddresses()[indexPath.row].mailAddress
         }
     }
 }
@@ -353,12 +348,8 @@ extension ContactViewController: UITableViewDelegate {
 extension ContactViewController: UINavigationControllerDelegate {
     func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
-        case .Push:
-            if (tableView.indexPathForSelectedRow?.section == 4 && ((contact?.hasKey) ?? false) || tableView.indexPathForSelectedRow?.section == 3 && !((contact?.hasKey) ?? false)) || tableView.indexPathForSelectedRow?.section == 0 {
-                return FlipTransition()
-            } else {
-                return nil
-            }
+        case .Push where (tableView.indexPathForSelectedRow?.section == 4 && ((keyRecord?.hasKey) ?? false) || tableView.indexPathForSelectedRow?.section == 3 && !((keyRecord?.hasKey) ?? false)) || tableView.indexPathForSelectedRow?.section == 0:
+            return FlipTransition()
         default:
             return nil
         }
