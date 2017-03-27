@@ -9,6 +9,7 @@
 import UIKit
 import Contacts
 import CoreData
+import Onboard
 
 
 @UIApplicationMain
@@ -21,12 +22,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
-        NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")
-        
         ThemeManager.currentTheme()
+        
+        if (!NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")) {
+            self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+            self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding") //onboarding()
+            self.window?.makeKeyAndVisible()
+        }
         return true
     }
     
+    func onboarding() -> UIViewController {
+        
+        //Background
+        var background: UIImage
+        
+        var myBounds = CGRect()
+        myBounds.size.width = 70
+        myBounds.size.height = 70
+        UIGraphicsBeginImageContextWithOptions(myBounds.size, false, 2) //try 200 here
+        
+        let context = UIGraphicsGetCurrentContext()
+        
+        //
+        // Clip context to a circle
+        //
+        let path = CGPathCreateWithEllipseInRect(myBounds, nil);
+        CGContextAddPath(context!, path);
+        CGContextClip(context!);
+        
+        
+        //
+        // Fill background of context
+        //
+        CGContextSetFillColorWithColor(context!, UIColor.init(red: 0.1, green: 1.0, blue: 0.3, alpha: 0.0).CGColor)
+        CGContextFillRect(context!, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
+        
+        let snapshot = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        background = snapshot!
+        
+        //Content
+        var page1 = OnboardingContentViewController.contentWithTitle("Hallo", body: "Body String GFDsahgklsregh.örhjtghkljsdlöhj", image: nil, buttonText: "button", action: nil)
+        
+        return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
+    }
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -324,7 +324,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         toCollectionview.reloadData()
         //toCollectionviewHeight.trans
         //        toCollectionview.translatesAutoresizingMaskIntoConstraints = true
-        toCollectionview.startInteractiveTransitionToCollectionViewLayout(toCollectionview.collectionViewLayout, completion: nil)
+        //toCollectionview.startInteractiveTransitionToCollectionViewLayout(toCollectionview.collectionViewLayout, completion: nil)
         toCollectionview.reloadData()
         ccCollectionview.reloadData()
     }

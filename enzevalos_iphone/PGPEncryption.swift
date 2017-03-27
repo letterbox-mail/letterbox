@@ -447,6 +447,10 @@ class PGPEncryption : Encryption {
         self.keyManager.removeAllKeys()
     }
     
+    func printAllKeyIDs() {
+        keyManager.printAllKeyIDs()
+    }
+    
     func addMailAddressForKey(mailAddress: String, keyID: String) {
         self.addMailAddressesForKey([mailAddress], keyID: keyID)
     }

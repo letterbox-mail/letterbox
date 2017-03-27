@@ -14,6 +14,13 @@ class OnboardingViewController : UIViewController {
     var pKey = true
     var jKey = true
     var aKey = true
+    var q1Key = true
+    
+    var smtpCheckDone = false
+    var imapCheckDone = false
+    
+    var smtpCheck = false
+    var imapCheck = false
     
     var mailaddress : UITextField? = nil
     var password : UITextField? = nil
@@ -23,6 +30,7 @@ class OnboardingViewController : UIViewController {
         super.viewDidLoad()
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        EnzevalosEncryptionHandler.getEncryption(.PGP)?.printAllKeyIDs()
     }
     
     @IBAction func privateKey(sender: AnyObject, forEvent event: UIEvent) {
@@ -34,21 +42,44 @@ class OnboardingViewController : UIViewController {
     @IBAction func aliceKey(sender: AnyObject, forEvent event: UIEvent) {
         aKey = !aKey
     }
+    @IBAction func quizer1Key(sender: AnyObject, forEvent event: UIEvent) {
+        q1Key = !q1Key
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?){
         if segue.identifier == "onboarding" {
+            var mAddr = ""
+            var mPw = ""
+            if let addr = mailaddress?.text where addr != "" {
+                //if addr.componentsSeparatedByString("@")[1] != "web.de" {
+                // naechste view
+                //}
+                /*let guessedUserName = addr.componentsSeparatedByString("@")[0]
+                 UserManager.storeUserValue(addr, attribute: Attribute.UserAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
+                 UserManager.storeUserValue(guessedUserName, attribute: Attribute.UserName)*/
+                mAddr = addr
+            }
+            if let pw = password?.text where pw != "" {
+                //UserManager.storeUserValue(pw, attribute: Attribute.UserPW)//Attribute.attributeValues[Attribute.UserPW] = pw
+                mPw = pw
+            }
+            self.setGuessValues(mAddr, pw: mPw)
             for encType in iterateEnum(EncryptionType) {
                 let encryption = EnzevalosEncryptionHandler.getEncryption(encType)
                 if let enc = encryption {
                     enc.removeAllKeys()
                 }
             }
+            EnzevalosEncryptionHandler.getEncryption(.PGP)?.printAllKeyIDs()
             if pKey {
                 //---------------------------------------
                 //Import private Key BEGIN
                 
-                 let path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg")        //<---- Schlüsseldatei
-                 let pgp = ObjectivePGP.init()
+                 var path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg")        //<---- Schlüsseldatei
+                 if mAddr.containsString("@") && mAddr.componentsSeparatedByString("@")[1] == Provider.ENZEVALOS.rawValue {
+                        path = NSBundle.mainBundle().pathForResource("quizer1-private", ofType: "asc")
+                 }
+                let pgp = ObjectivePGP.init()
                  pgp.importKeysFromFile(path!, allowDuplicates: false)
                  let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                  do {
@@ -94,17 +125,24 @@ class OnboardingViewController : UIViewController {
                 //Import public key END
                 //---------------------------------------
             }
-            if let addr = mailaddress?.text where addr != "" {
-                //if addr.componentsSeparatedByString("@")[1] != "web.de" {
-                // naechste view
-                //}
-                let guessedUserName = addr.componentsSeparatedByString("@")[0]
-                UserManager.storeUserValue(addr, attribute: Attribute.UserAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
-                UserManager.storeUserValue(guessedUserName, attribute: Attribute.UserName)
+            if q1Key {
+                //---------------------------------------
+                //Import public Key BEGIN
+                
+                let path = NSBundle.mainBundle().pathForResource("quizer1-public", ofType: "asc")               //<---- Schlüsseldatei
+                let pgp = ObjectivePGP.init()
+                pgp.importKeysFromFile(path!, allowDuplicates: false)
+                let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+                do {
+                    let data = try pgp.keys[0].export()
+                    enc?.addKey(data, forMailAddresses: ["quizer1@enzevalos.de"])                           //<---- Emailadresse
+                }
+                catch _ {}
+                
+                //Import public key END
+                //---------------------------------------
             }
-            if let pw = password?.text where pw != "" {
-                UserManager.storeUserValue(pw, attribute: Attribute.UserPW)//Attribute.attributeValues[Attribute.UserPW] = pw
-            }
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
         }
     }
     
@@ -114,6 +152,55 @@ class OnboardingViewController : UIViewController {
             let next = withUnsafePointer(&i) { UnsafePointer<T>($0).memory }
             return next.hashValue == i++ ? next : nil
         }
+    }
+    
+    func setGuessValues(mailAddress: String, pw: String) {
+        if mailAddress != "" {
+            let guessedUserName = mailAddress.componentsSeparatedByString("@")[0]
+            let provider = mailAddress.componentsSeparatedByString("@")[1]
+            UserManager.storeUserValue(mailAddress, attribute: Attribute.UserAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
+            UserManager.storeUserValue(guessedUserName, attribute: Attribute.UserName)
+            if provider == Provider.FU.rawValue {
+                Providers.setValues(Provider.FU)
+                UserManager.storeUserValue("jakobsbode", attribute: Attribute.Accountname)
+                UserManager.storeUserValue("jakobsbode", attribute: Attribute.UserName)
+            }
+            if provider == Provider.ZEDAT.rawValue {
+                Providers.setValues(Provider.ZEDAT)
+                UserManager.storeUserValue("jakobsbode", attribute: Attribute.Accountname)
+                UserManager.storeUserValue("jakobsbode", attribute: Attribute.UserName)
+            }
+            if provider == Provider.ENZEVALOS.rawValue {
+                Providers.setValues(Provider.ENZEVALOS)
+                UserManager.storeUserValue(guessedUserName, attribute: Attribute.Accountname)
+                UserManager.storeUserValue(guessedUserName, attribute: Attribute.UserName)
+            }
+        }
+        if pw != "" {
+            UserManager.storeUserValue(pw, attribute: Attribute.UserPW)
+        }
+        smtpCheckDone = false
+        imapCheckDone = false
+        /*AppDelegate.getAppDelegate().mailHandler.checkSMTP(SMTPCompletion)
+        AppDelegate.getAppDelegate().mailHandler.checkIMAP(IMAPCompletion)
+        while (!imapCheckDone || !smtpCheckDone) {
+            
+        }*/
+        print("checks ", imapCheck, smtpCheck)
+    }
+    
+    private func SMTPCompletion(error: NSError?) {
+        if error == nil {
+            smtpCheck = true
+        }
+        smtpCheckDone = true
+    }
+    
+    private func IMAPCompletion(error: NSError?) {
+        if error == nil {
+            imapCheck = true
+        }
+        imapCheckDone = true
     }
     
 }
@@ -129,7 +216,7 @@ extension OnboardingViewController : UITableViewDataSource {
             return 2
         }
         if section == 1 {
-            return 3
+            return 4
         }
         return 0
     }
@@ -147,6 +234,8 @@ extension OnboardingViewController : UITableViewDataSource {
                 let cell = tableView.dequeueReusableCellWithIdentifier("InputCell") as! InputCell
                 cell.label.text = "Mailaddress"
                 cell.textfield.placeholder = "address"
+                cell.textfield.keyboardType = UIKeyboardType.EmailAddress
+                cell.textfield.autocorrectionType = UITextAutocorrectionType.No
                 self.mailaddress = cell.textfield
                 return cell
             }
@@ -154,6 +243,7 @@ extension OnboardingViewController : UITableViewDataSource {
                 let cell = tableView.dequeueReusableCellWithIdentifier("InputCell") as! InputCell
                 cell.label.text = "Password"
                 cell.textfield.placeholder = "password"
+                cell.textfield.secureTextEntry = true
                 self.password = cell.textfield
                 return cell
                 
@@ -176,6 +266,12 @@ extension OnboardingViewController : UITableViewDataSource {
                 let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
                 cell.label.text = "import alice's pub-key"
                 cell.switcher.addTarget(self, action: #selector(aliceKey), forControlEvents: .ValueChanged)
+                return cell
+            }
+            if indexPath.row == 3 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
+                cell.label.text = "import quizer1's pub-key"
+                cell.switcher.addTarget(self, action: #selector(quizer1Key), forControlEvents: .ValueChanged)
                 return cell
             }
         }

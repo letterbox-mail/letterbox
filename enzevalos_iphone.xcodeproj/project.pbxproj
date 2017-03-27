@@ -92,6 +92,8 @@
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
+		A1C7FF8F1E895367000D1E92 /* quizer1-public.asc in Resources */ = {isa = PBXBuildFile; fileRef = A1C7FF8E1E895367000D1E92 /* quizer1-public.asc */; };
+		A1C7FF911E8955BD000D1E92 /* quizer1-private.asc in Resources */ = {isa = PBXBuildFile; fileRef = A1C7FF901E8955BD000D1E92 /* quizer1-private.asc */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
@@ -112,6 +114,7 @@
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
 		A1F1D7E41E83E93D0009CBDF /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F1D7E31E83E93D0009CBDF /* SwitchCell.xib */; };
+		A1F2A5691E85586300320275 /* Providers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2A5681E85586300320275 /* Providers.swift */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
 		A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */; };
@@ -283,6 +286,8 @@
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
+		A1C7FF8E1E895367000D1E92 /* quizer1-public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "quizer1-public.asc"; sourceTree = "<group>"; };
+		A1C7FF901E8955BD000D1E92 /* quizer1-private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "quizer1-private.asc"; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -303,6 +308,7 @@
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1F1D7E31E83E93D0009CBDF /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
+		A1F2A5681E85586300320275 /* Providers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Providers.swift; sourceTree = "<group>"; };
 		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992321DA7D2360073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992341DA7DA570073BF1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -447,6 +453,7 @@
 				472F39921E279792009260FB /* protocols */,
 				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
+				A1C7FF8B1E895316000D1E92 /* keys */,
 				A11E733A1E019AB5006574DD /* init */,
 				A18C76851E8185ED00B21414 /* onboarding */,
 				A1EB05761D9567F2008659C1 /* read */,
@@ -590,11 +597,26 @@
 		A18C76851E8185ED00B21414 /* onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				A1F2A5681E85586300320275 /* Providers.swift */,
 				A18C76861E81861C00B21414 /* OnboardingViewController.swift */,
 				A17A06E81E8190C300C8AEF6 /* OnboardingViewCells.swift */,
 				A1F1D7E31E83E93D0009CBDF /* SwitchCell.xib */,
 			);
 			name = onboarding;
+			sourceTree = "<group>";
+		};
+		A1C7FF8B1E895316000D1E92 /* keys */ = {
+			isa = PBXGroup;
+			children = (
+				A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */,
+				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
+				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
+				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
+				A19C12461DE602FF007F72E7 /* jabo.asc */,
+				A1C7FF901E8955BD000D1E92 /* quizer1-private.asc */,
+				A1C7FF8E1E895367000D1E92 /* quizer1-public.asc */,
+			);
+			name = keys;
 			sourceTree = "<group>";
 		};
 		A1D5076D1E80254D00B68B38 /* keyView */ = {
@@ -610,12 +632,7 @@
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
 				F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */,
-				A19C12461DE602FF007F72E7 /* jabo.asc */,
-				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
-				A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */,
-				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
 				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
-				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
 				A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */,
 				A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */,
@@ -791,6 +808,8 @@
 				4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */,
 				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
 				A16BA2121E0439B6005E29E3 /* providers.json in Resources */,
+				A1C7FF8F1E895367000D1E92 /* quizer1-public.asc in Resources */,
+				A1C7FF911E8955BD000D1E92 /* quizer1-private.asc in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
 				A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */,
@@ -952,6 +971,7 @@
 				472F39861E1FA34E009260FB /* Record.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */,
+				A1F2A5691E85586300320275 /* Providers.swift in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A15B7BE61E2931AD0024E499 /* KeyWrapper.swift in Sources */,

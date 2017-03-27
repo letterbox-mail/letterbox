@@ -11,7 +11,7 @@ import Foundation
 
 
 enum Attribute: Int{
-    case Accountname, UserName, UserAddr, UserPW, SMTPHostname, SMTPPort, IMAPHostname, IMAPPort, PrefEncryption, PublicKey, AutocryptType
+    case Accountname, UserName, UserAddr, UserPW, SMTPHostname, SMTPPort, IMAPHostname, IMAPPort, PrefEncryption, PublicKey, AutocryptType, ConnectionType, AuthType
     
     var defaultValue:AnyObject? {
         switch self {
@@ -35,6 +35,10 @@ enum Attribute: Int{
             return "yes" // yes or no
         case .AutocryptType:
             return "p" // only openpgp 
+        case .ConnectionType:
+            return MCOConnectionType.StartTLS.rawValue
+        case .AuthType:
+            return MCOAuthType.SASLPlain.rawValue
             
         case .PublicKey:
             return ""

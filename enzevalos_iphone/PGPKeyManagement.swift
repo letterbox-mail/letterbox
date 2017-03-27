@@ -226,13 +226,30 @@ class PGPKeyManagement {
     
     //includes privatekeys too
     func removeAllKeys() {
+        for keyID in privateKeys {
+            self.encryptionHandler.deletePersistentData(keyID, encryptionType: self.encryptionType)
+        }
+        self.privateKeys = []
+        self.actualPrivateKey = nil
+        encryptionHandler.deletePersistentData("actualPrivateKey", encryptionType: self.encryptionType)
+        encryptionHandler.deletePersistentData("privateKeys", encryptionType: self.encryptionType)
+        let insertData = NSKeyedArchiver.archivedDataWithRootObject(self.privateKeys)
+        encryptionHandler.addPersistentData(insertData, searchKey: "privateKeys", encryptionType: self.encryptionType)
         for keyID in addresses.keys {
+            self.removeKey(keyID)
+            self.cleanIndex(keyID)
+        }
+        for keyID in privateKeys {
             self.removeKey(keyID)
             self.cleanIndex(keyID)
         }
         self.addresses = [:]
         self.keyIDs = [:]
         self.saveDictionarys()
+    }
+    
+    func printAllKeyIDs() {
+        print(self.addresses)
     }
     
     func useOnlyActualPrivateKey() {

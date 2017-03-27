@@ -101,6 +101,8 @@ public protocol Encryption {
     //includes privatekeys too
     func removeAllKeys()
     
+    func printAllKeyIDs()
+    
     func addMailAddressForKey(mailAddress: String, keyID: String)
     
     func removeMailAddressForKey(mailaddress: String, keyID: String)
