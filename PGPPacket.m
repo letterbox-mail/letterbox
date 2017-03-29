@@ -80,14 +80,7 @@ const UInt32 UnknownLength = UINT32_MAX;
 {
     UInt8 headerByte = 0;
     [data getBytes:&headerByte range:(NSRange){0,1}];
-    
-    /*
-     PGP Headerbyte fehlerhaft
-     */
-    
-    NSLog(@"Header bytes ");
-    NSLog(@"%hhu", headerByte);
-    
+     
     
     BOOL isPGPHeader = !!(headerByte & PGPHeaderPacketTagAllwaysSet);
     BOOL isNewFormat = !!(headerByte & PGPHeaderPacketTagNewFormat);

@@ -186,6 +186,79 @@
     return result;
 }
 
+- (NSString *) exportKeyWithoutArmor: (PGPKey *)key
+{
+    NSData* data = [self exportKey: key armored:true];
+    if (data == nil){
+        return nil;
+    }
+    /*
+    NSArray* binData = [self convertArmoredMessage2BinaryBlocksWhenNecessary:data];
+    NSString * result = [[binData valueForKey:@"description"] componentsJoinedByString:@""];
+
+    NSLog(@"BinData %@", result);
+    NSLog(@"UnArmoredData %@", unarmoredKey);
+     */
+    NSString* armoredString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+    NSScanner *scanner = [[NSScanner alloc] initWithString:armoredString];
+    scanner.charactersToBeSkipped = nil;
+    
+    // check header line
+    NSString *headerLine = nil;
+    [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&headerLine];
+    if (![headerLine isEqualToString:@"-----BEGIN PGP MESSAGE-----"] &&
+        ![headerLine isEqualToString:@"-----BEGIN PGP PUBLIC KEY BLOCK-----"] &&
+        ![headerLine isEqualToString:@"-----BEGIN PGP PRIVATE KEY BLOCK-----"] &&
+        ![headerLine isEqualToString:@"-----BEGIN PGP SECRET KEY BLOCK-----"] && // PGP 2.x generates the header "BEGIN PGP SECRET KEY BLOCK" instead of "BEGIN PGP PRIVATE KEY BLOCK"
+        ![headerLine isEqualToString:@"-----BEGIN PGP SIGNATURE-----"] &&
+        ![headerLine hasPrefix:@"-----BEGIN PGP MESSAGE, PART"])
+    {
+        return nil;
+    }
+    
+    // consume newline
+    [scanner scanString:@"\r" intoString:nil];
+    [scanner scanString:@"\n" intoString:nil];
+    
+    NSString *line = nil;
+    
+    if (![scanner scanCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:nil]) {
+        // Scan headers (Optional)
+        [scanner scanUpToCharactersFromSet:[[NSCharacterSet newlineCharacterSet] invertedSet] intoString:nil];
+        
+        while ([scanner scanCharactersFromSet:[[NSCharacterSet newlineCharacterSet] invertedSet] intoString:&line])
+        {
+            // consume newline
+            [scanner scanString:@"\r" intoString:nil];
+            [scanner scanString:@"\n" intoString:nil];
+        }
+    }
+    
+    // skip blank line
+    [scanner scanCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:nil];
+    
+    // read base64 data
+    BOOL base64Section = YES;
+    NSMutableString *base64String = [NSMutableString string];
+    while (base64Section && [scanner scanCharactersFromSet:[[NSCharacterSet newlineCharacterSet] invertedSet] intoString:&line]) {
+        // consume newline
+        [scanner scanString:@"\r" intoString:nil];
+        [scanner scanString:@"\n" intoString:nil];
+        
+        if ([line hasPrefix:@"="]) {
+            scanner.scanLocation = scanner.scanLocation - (line.length + 2);
+            base64Section = NO;
+        } else {
+            [base64String appendFormat:@"%@\n", line];
+        }
+    }
+
+
+    return base64String;
+
+}
+
 - (NSData *) exportKey:(PGPKey *)key armored:(BOOL)armored
 {
     NSAssert(key, @"Missing parameter");

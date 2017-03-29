@@ -111,12 +111,20 @@ class PGPKeyManagement {
         return returnedKeyID
     }
     
+    
     func updateKey(key: PGPKeyWrapper) {
         if encryptionHandler.hasPersistentData(key.keyID, encryptionType: self.encryptionType) {
             let keyData = NSKeyedArchiver.archivedDataWithRootObject(key)
             encryptionHandler.replacePersistentData(key.keyID, replacementData: keyData, encryptionType: self.encryptionType)
             return
         }
+    }
+    
+    func findPublicKeyInBase64(key: PGPKeyWrapper)-> String{
+        if let data = self.pgp.exportKeyWithoutArmor(key.key){
+            return data
+        }
+        return ""
     }
     
     func addMailAddressesForKey(mailAddresses: [String], keyID: String){
@@ -232,6 +240,7 @@ class PGPKeyManagement {
             self.pgp.keys.append(self.getKey(key)!.key)
         }
     }
+    
     
     private func saveDictionarys(){
         var data = NSKeyedArchiver.archivedDataWithRootObject(keyIDs as NSDictionary)

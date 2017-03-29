@@ -172,12 +172,8 @@ class MailHandler {
 
     func add_autocrypt_header(builder: MCOMessageBuilder) {
         let adr = UserManager.loadUserValue(Attribute.UserAddr) as! String
-        var publicKey = "" //TODO: Get own Key and  cut the key in BASE64!
-        
-        // Autocrypt-ENCRYPTION: to=aaa@bbb.cc; [type=(p|...);] [prefer-encrypted=(yes|no);] key=BASE64
-        let autocrypt = "to=" + adr + "; type=" + (UserManager.loadUserValue(Attribute.AutocryptType) as! String) + "; prefer-encrypted=" + (UserManager.loadUserValue(Attribute.PrefEncryption) as! String) + "; key=" + publicKey
-
-        builder.header.setExtraHeaderValue(autocrypt, forName: AUTOCRYPTHEADER)
+        let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
+        builder.header.setExtraHeaderValue(pgpenc.autocryptHeader(adr), forName: AUTOCRYPTHEADER)
     }
 
     //return if send successfully
@@ -258,8 +254,6 @@ class MailHandler {
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
             }
         }
-
-        //TODO add new encryptions here
 
         if let unenc = ordered[EncryptionType.unknown] {
             sendData = builder.data()
@@ -378,7 +372,7 @@ func parseMail(error: ErrorType?, parser: MCOMessageParser?, message: MCOIMAPMes
         if let data = parser?.data() {
             let msgParser = MCOMessageParser(data: data)
 
-            let html: String = msgParser.plainTextBodyRendering()
+            let html: String = msgParser.plainTextRendering()
             var lineArray = html.componentsSeparatedByString("\n")
            
             lineArray.removeFirst(4)

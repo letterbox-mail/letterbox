@@ -35,6 +35,8 @@
 
 - (BOOL) exportKeys:(nonnull NSArray<PGPKey *> *)keys toFile:(nonnull NSString *)path error:(NSError * __autoreleasing __nullable * __nullable)error;
 - (nullable NSData *) exportKey:(nonnull PGPKey *)key armored:(BOOL)armored;
+- (nullable NSString *) exportKeyWithoutArmor:(nonnull PGPKey *)key;
+
 
 - (nullable PGPKey *) getKeyForIdentifier:(nonnull NSString *)keyIdentifier type:(PGPKeyType)keyType;
 - (nullable PGPKey *) getKeyForKeyID:(nonnull PGPKeyID *)searchKeyID type:(PGPKeyType)keyType;

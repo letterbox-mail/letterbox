@@ -103,4 +103,6 @@ public protocol Encryption {
     func removeMailAddressForKey(mailaddress: String, keyID: String)
     
     func keyOfThisEncryption(keyData: NSData) -> Bool?
+    
+    func autocryptHeader(adr: String) -> String
 }
