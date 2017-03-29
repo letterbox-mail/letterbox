@@ -469,7 +469,7 @@ class PGPEncryption : Encryption {
     func autocryptHeader(adr: String) -> String {
         let keyId = self.getActualKeyID(adr)
         let key = self.getKey(keyId!) as! PGPKeyWrapper
-        let pgpManger = self.getPGPKeyManagement()
+        let pgpManger = self.keyManager
         var string = "to=" + adr + "; type=p;prefer-encrypted=" + (UserManager.loadUserValue(Attribute.PrefEncryption) as! String) + ";key="
         if let keyBase64 = pgpManger.pgp.exportKeyWithoutArmor(key.key){
          string = string + keyBase64
