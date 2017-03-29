@@ -210,7 +210,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         
         //---------------------------------------
         //ImportBobs Keys
-        
+        /*
          let path = NSBundle.mainBundle().pathForResource("bob2005", ofType: "asc")               //<---- Schlüsseldatei
          let pgp = ObjectivePGP.init()
          pgp.importKeysFromFile(path!, allowDuplicates: false)
@@ -225,7 +225,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             enc?.addKey(data2, forMailAddresses: [])                           //<---- Emailadresse
         }
         catch _ {}
-        
+        */
         //Import public key END
         //---------------------------------------
     }
