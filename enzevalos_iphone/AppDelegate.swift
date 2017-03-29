@@ -64,9 +64,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         background = snapshot!
         
         //Content
-        var page1 = OnboardingContentViewController.contentWithTitle("Hallo", body: "Body String GFDsahgklsregh.örhjtghkljsdlöhj", image: nil, buttonText: "button", action: nil)
+        var page1 = OnboardingContentViewController.contentWithTitle("Hallo", body: "Schön, dass du dich für sichere Email interessierst!", image: nil, buttonText: "", action: nil)
+        var page2 = OnboardingContentViewController.contentWithTitle("hallo", body: "adgjadsghk.jer", videoURL: nil, inputView: UITextField.init(), buttonText: nil, action: nil)
         
-        return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
+        return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, page2])
     }
     
     func applicationWillResignActive(application: UIApplication) {
