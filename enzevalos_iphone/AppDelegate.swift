@@ -26,48 +26,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (!NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")) {
             self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-            self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding") //onboarding()
+            //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
+            self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
             self.window?.makeKeyAndVisible()
         }
         return true
     }
     
-    func onboarding() -> UIViewController {
-        
-        //Background
-        var background: UIImage
-        
-        var myBounds = CGRect()
-        myBounds.size.width = 70
-        myBounds.size.height = 70
-        UIGraphicsBeginImageContextWithOptions(myBounds.size, false, 2) //try 200 here
-        
-        let context = UIGraphicsGetCurrentContext()
-        
-        //
-        // Clip context to a circle
-        //
-        let path = CGPathCreateWithEllipseInRect(myBounds, nil);
-        CGContextAddPath(context!, path);
-        CGContextClip(context!);
-        
-        
-        //
-        // Fill background of context
-        //
-        CGContextSetFillColorWithColor(context!, UIColor.init(red: 0.1, green: 1.0, blue: 0.3, alpha: 0.0).CGColor)
-        CGContextFillRect(context!, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
-        
-        let snapshot = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        background = snapshot!
-        
-        //Content
-        var page1 = OnboardingContentViewController.contentWithTitle("Hallo", body: "Schön, dass du dich für sichere Email interessierst!", image: nil, buttonText: "", action: nil)
-        var page2 = OnboardingContentViewController.contentWithTitle("hallo", body: "adgjadsghk.jer", videoURL: nil, inputView: UITextField.init(), buttonText: nil, action: nil)
-        
-        return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, page2])
+    func credentialCheck() {
+        self.window?.rootViewController = Onboarding.checkConfigView()
+        Onboarding.setGuessValues()
+        if !Onboarding.checkConfig() {
+            self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
+            return
+        }
     }
     
     func applicationWillResignActive(application: UIApplication) {
