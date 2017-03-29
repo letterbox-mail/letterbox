@@ -73,9 +73,6 @@ public class KeyRecord: Record {
         mails.sortInPlace()
         self.ezContact = mail.from.contact
         addNewAddress(mail.from)
-        //if(!isInRecords(ezContact.records)){
-        // self.ezContact.records.append(self)
-        //}
     }
 
     public static func deleteRecordFromRecordArray(records: [KeyRecord], delRecord: KeyRecord) -> [KeyRecord] {
@@ -137,9 +134,6 @@ public class KeyRecord: Record {
 
     public func addNewMail(mail: Mail) -> Bool {
         //TODO: signed only mails are dropped ??
-
-
-
         if mail.isSecure && self.hasKey {
             if mail.from.keyID == self.key {
                 mails.append(mail)

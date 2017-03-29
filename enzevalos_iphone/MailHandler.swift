@@ -379,23 +379,17 @@ func parseMail(error: ErrorType?, parser: MCOMessageParser?, message: MCOIMAPMes
             var body = lineArray.joinWithSeparator("\n")
             body = body.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             body.appendContentsOf("\n")
-            /*print("---- Body ----")
-            print(body)
-            print("---- Body ----")*/
             var rec: [MCOAddress] = []
             var cc: [MCOAddress] = []
 
             let header = message.header
             var autocrypt: AutocryptContact? = nil
             if let _ = header.extraHeaderValueForName(AUTOCRYPTHEADER){
-                print("Header: \(header)")
-                print("subject: \(header.subject)")
-                print("=============================")
                 autocrypt = AutocryptContact(header: header)
                 print(autocrypt?.toString())
                 if(autocrypt?.type == AutocryptContact.AutocryptType.OPENPGP && autocrypt?.key.characters.count > 0){
                     let pgp = ObjectivePGP.init()
-                    pgp.importPublicKeyFromHeader((autocrypt?.key)!, allowDuplicates: false) // TODO: No duplicates!
+                    pgp.importPublicKeyFromHeader((autocrypt?.key)!, allowDuplicates: false)
                     let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                     do {
                         let pgpKey = try pgp.keys[0].export()
