@@ -22,6 +22,8 @@ public class CNMailAddressExtension: MailAddress{
         get{
             return false
         }
+        set{
+        }
     }
     public var hasKey: Bool{
         get{

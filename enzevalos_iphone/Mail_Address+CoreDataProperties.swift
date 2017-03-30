@@ -21,6 +21,24 @@ extension Mail_Address {
     @NSManaged public var prefer_encryption: Bool
     @NSManaged public var contact: EnzevalosContact
     
+    public var encryptionType: EncryptionType{
+        set {
+            let name = "encryptionType"
+            self.willChangeValueForKey(name)
+            self.setPrimitiveValue(newValue.rawValue, forKey: name)
+            self.didChangeValueForKey(name)
+        }
+        get {
+            
+            let name = "encryptionType"
+            self.willAccessValueForKey(name)
+            let string = self.primitiveValueForKey(name) as! String?
+            self.didAccessValueForKey(name)
+            return EncryptionType.fromString(string)
+         }
+    }
+    
+    
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var from: NSSet?

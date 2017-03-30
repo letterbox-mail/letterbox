@@ -37,36 +37,14 @@ let KEY = "key"
 
 
 class AutocryptContact {
-    enum AutocryptType: Int {
-        case OPENPGP, ERROR
-        var string: String {
-            switch self {
-            case .OPENPGP:
-                return "p"
-            default:
-                return "error"
-            }
-        }
-        static func getType(type: String) -> AutocryptType {
-            switch type {
-            case "p":
-                return AutocryptType.OPENPGP
-            case "":
-                return AutocryptType.OPENPGP
-            default:
-                return ERROR
-            }
-        }
-    }
-
     var addr: String = ""
-    var type: AutocryptType = .OPENPGP
+    var type: EncryptionType = .PGP
     var prefer_encryption: Bool = false
     var key: String = ""
 
     init(addr: String, type: String, prefer_encryption: String, key: String) {
         self.addr = addr
-        self.type = AutocryptType.getType(type)
+        self.type = EncryptionType.typeFromAutocrypt(type)
         setPrefer_encryption(prefer_encryption)
         self.key = key
     }
@@ -76,8 +54,8 @@ class AutocryptContact {
         let autocrypt = header.extraHeaderValueForName(AUTOCRYPTHEADER)
         var field: [String]
         var addr = ""
-        var type = ""
-        var pref = ""
+        var type = "p" // Default value since no one else uses autocrypt...
+        var pref = "true"
         var key = ""
 
         if(autocrypt != nil) {
@@ -105,7 +83,6 @@ class AutocryptContact {
                         break
                     case KEY:
                         if value.characters.count > 0{
-                            // TODO Remove whitespaces and \r\n????
                             key = value
                             
                         }
@@ -120,7 +97,7 @@ class AutocryptContact {
     }
     
     func validateContact() -> Bool {
-        if addr != "" && type != .ERROR && key != "" {
+        if addr != "" && type != .unknown && key != "" {
             return true
         }
         return false
@@ -217,9 +194,8 @@ class MailHandler {
 
         add_autocrypt_header(builder)
 
-        builder.textBody = message //htmlBody = message
+        builder.textBody = message
 
-        //let rfc822Data = builder.data()
 
         var allRec: [String] = []
         allRec.appendContentsOf(toEntrys)
@@ -238,7 +214,6 @@ class MailHandler {
 
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
-            //TODO add cases for only encryption
             if let encData = encryption.signAndEncrypt("\n"+message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
                 //sendData = encData
                 builder.textBody = String(data: encData, encoding: NSUTF8StringEncoding)
@@ -387,8 +362,9 @@ func parseMail(error: ErrorType?, parser: MCOMessageParser?, message: MCOIMAPMes
             if let _ = header.extraHeaderValueForName(AUTOCRYPTHEADER){
                 autocrypt = AutocryptContact(header: header)
                 print(autocrypt?.toString())
-                if(autocrypt?.type == AutocryptContact.AutocryptType.OPENPGP && autocrypt?.key.characters.count > 0){
+                if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0){
                     let pgp = ObjectivePGP.init()
+                    print(autocrypt?.toString())
                     pgp.importPublicKeyFromHeader((autocrypt?.key)!, allowDuplicates: false)
                     let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                     do {
@@ -412,7 +388,7 @@ func parseMail(error: ErrorType?, parser: MCOMessageParser?, message: MCOIMAPMes
                 }
             }
 
-            DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
+            DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
             newMailCallback()
         }
     }

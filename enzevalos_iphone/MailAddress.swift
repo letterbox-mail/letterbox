@@ -12,6 +12,6 @@ import Contacts
 public protocol MailAddress { 
     var mailAddress:String{get}
     var label: CNLabeledValue{get}
-    var prefEnc: Bool{get}
+    var prefEnc: Bool{get set}
     var hasKey: Bool{get}
 }

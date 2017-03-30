@@ -284,10 +284,14 @@ class DataHandler {
     
     
     // -------- Start handle to, cc, from addresses --------
-    private func handleFromAddress(sender: MCOAddress, fromMail: Mail) {
+    private func handleFromAddress(sender: MCOAddress, fromMail: Mail, autocrypt: AutocryptContact?) {
         let adr: Mail_Address
         let contact = getContactByMCOAddress(sender)
         adr = contact.getAddressByMCOAddress(sender)!
+        if let ac = autocrypt{
+            adr.prefEnc = ac.prefer_encryption
+            adr.encryptionType = ac.type
+        }
         fromMail.from = adr
     }
     
@@ -303,7 +307,7 @@ class DataHandler {
     
     // -------- End handle to, cc, from addresses --------
     
-    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?) -> Mail {
+    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) -> Mail {
         
         let finding = findNum("Mail", type: "uid", search: uid)
         let mail: Mail
@@ -324,7 +328,7 @@ class DataHandler {
             mail.isEncrypted = false
             mail.trouble = false
 
-            handleFromAddress(sender, fromMail: mail)
+            handleFromAddress(sender, fromMail: mail, autocrypt: autocrypt)
             handleToAddresses(receivers, mail: mail)
             handleCCAddresses(cc, mail: mail)
             

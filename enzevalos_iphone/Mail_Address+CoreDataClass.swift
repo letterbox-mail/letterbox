@@ -30,7 +30,12 @@ public class Mail_Address: NSManagedObject, MailAddress {
     }
 
     public var prefEnc: Bool {
-        return prefer_encryption
+        get{
+            return prefer_encryption
+        }
+        set{
+            prefer_encryption = newValue
+        }
     }
 
     //TODO think about it!
@@ -61,8 +66,6 @@ public class Mail_Address: NSManagedObject, MailAddress {
             }
         }
     }
-
-    public var encryptionType: EncryptionType = EncryptionType.PGP
 
     public var hasKey: Bool {
         if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {

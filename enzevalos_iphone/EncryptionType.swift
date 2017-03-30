@@ -8,4 +8,35 @@
 
 public enum EncryptionType : String {
     case unknown = "unknown", PGP = "PGP"
+    
+    var autocryptSymbol: String{
+        switch self {
+        case .PGP:
+            return "p"
+        default:
+            return ""
+        }
+        
+    }
+    
+    static func typeFromAutocrypt(symbol: String)-> EncryptionType{
+        switch symbol {
+        case "p":
+            return .PGP
+        default:
+            return .unknown
+        }
+    }
+    
+    static func fromString(string: String?)->EncryptionType{
+        if let symbol = string{
+            switch symbol {
+            case "PGP":
+                return .PGP
+            default:
+                return .unknown
+            }
+        }
+        return .unknown
+    }
 }
