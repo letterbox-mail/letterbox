@@ -113,24 +113,7 @@ class InboxTableViewCell: UITableViewCell {
 
                 firstSubjectLabel.text = mail.getSubjectWithFlagsString()
 
-                // Reducing message to one line and truncating to 50
-                var message: String = ""
-                if mail.isEncrypted {
-                    /*if mail.decryptedBody == nil {
-                        mail.decryptIfPossible()
-                    }*/
-                    if mail.isEncrypted {
-                        message = mail.decryptedMessage!
-                    }
-                }
-                    else if mail.body == nil {
-                    message = mail.body!
-                }
-                if message.characters.count > 50 {
-                    message = message.substringToIndex(message.startIndex.advancedBy(50))
-                }
-                let messageArray = message.componentsSeparatedByString("\n")
-                firstMessageLabel.text = messageArray.joinWithSeparator(" ")
+                firstMessageLabel.text = mail.shortBodyString
 
                 firstDateLabel.text = mail.timeString
             }
@@ -148,31 +131,7 @@ class InboxTableViewCell: UITableViewCell {
 
                 secondSubjectLabel.text = mail.getSubjectWithFlagsString()
 
-                // Reducing message to one line and truncating to 50
-                /*let message: String
-                if mail.body?.characters.count > 50 {
-                    message = mail.body!.substringToIndex(mail.body!.startIndex.advancedBy(50))
-                } else {
-                    message = mail.body!
-                }*/
-                var message: String = ""
-                if mail.isEncrypted {
-                    /*if mail.decryptedBody == nil {
-                        mail.decryptIfPossible()
-                    }*/
-
-                    if !mail.trouble {
-                        message = mail.decryptedMessage!
-                    }
-                }
-                    else if mail.body != nil {
-                    message = mail.body!
-                }
-                if message.characters.count > 50 {
-                    message = message.substringToIndex(message.startIndex.advancedBy(50))
-                }
-                let messageArray = message.componentsSeparatedByString("\n")
-                secondMessageLabel.text = messageArray.joinWithSeparator(" ")
+                secondMessageLabel.text = mail.shortBodyString
 
                 secondDateLabel.text = mail.timeString
 
