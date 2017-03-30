@@ -346,7 +346,7 @@ class DataHandler {
            added =  r.addNewMail(mail)
         }
         if !added{
-            isInReceiverRecords(mail)
+            addToReceiverRecords(mail)
         }
        
         
@@ -400,7 +400,7 @@ class DataHandler {
         var records = [KeyRecord]()
         let mails = readMails()
         for m in mails {
-            isInRecords(m,records: &records)
+            addToRecords(m,records: &records)
         }
         for r in records {
             r.mails.sortInPlace()
@@ -409,27 +409,25 @@ class DataHandler {
         return records
     }
     
-    private func isInRecords(m:Mail, inout records: [KeyRecord] ){
+    private func addToRecords(m:Mail, inout records: [KeyRecord] ){
     
         var found = false
-        var usedRecord: KeyRecord? = nil
         for r in records {
             if r.addNewMail(m) {
                 found = true
-                usedRecord = r
                 records.sortInPlace()
                 break
             }
         }
         if !found {
-            usedRecord = KeyRecord(mail: m)
-            records.append(usedRecord!)
+            let r = KeyRecord(mail: m)
+            records.append(r)
             records.sortInPlace()
         }
     }
     
-    private func isInReceiverRecords(m: Mail){
-        isInRecords(m, records: &receiverRecords)
+    private func addToReceiverRecords(m: Mail){
+        addToRecords(m, records: &receiverRecords)
     }
     
     
