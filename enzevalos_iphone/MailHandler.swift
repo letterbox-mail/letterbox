@@ -364,7 +364,6 @@ func parseMail(error: ErrorType?, parser: MCOMessageParser?, message: MCOIMAPMes
                 print(autocrypt?.toString())
                 if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0){
                     let pgp = ObjectivePGP.init()
-                    print(autocrypt?.toString())
                     pgp.importPublicKeyFromHeader((autocrypt?.key)!, allowDuplicates: false)
                     let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                     do {
