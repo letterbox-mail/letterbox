@@ -28,6 +28,51 @@ public class PGPKeyWrapper : NSObject, KeyWrapper {
     
     //private(set) var alternativeOldKeys: [KeyWrapper]?
     
+    public var expireDate: NSDate?{
+        get{
+            // Expire date is not speficied for PublicKeyPacket V4.
+            // See: https://tools.ietf.org/html/rfc4880#section-5.5.1.1
+            if let publicKey = publicKeyPacket{
+                // TODO: Consider other packets?
+                if publicKey.V3validityPeriod <= 0{
+                    return nil
+                }
+                else{
+                    return NSCalendar.currentCalendar().dateByAddingUnit(.Day, value: Int(publicKey.V3validityPeriod), toDate: publicKey.createDate, options: [])
+                }
+            }
+            return nil
+        }
+    }
+    
+    public var creationDate: NSDate{
+        get{
+            // TODO: Consider other packets?
+            if let publicKey = publicKeyPacket{
+                return publicKey.createDate
+            }
+            return discoveryTime
+        }
+    }
+    
+    private var publicKeyPacket: PGPPublicKeyPacket?{
+        get{
+            if self.key.primaryKeyPacket.tag.rawValue == 6{ // Flag for PGPPublicKeyPacket
+                let primKey = self.key.primaryKeyPacket as! PGPPublicKeyPacket
+                return primKey
+            }
+            for k in key.allKeyPackets(){
+                let keypacket = k as! PGPPacket
+                if keypacket.tag.rawValue == 6 {
+                    let publicKeyPacket = keypacket as! PGPPublicKeyPacket
+                    return publicKeyPacket
+                }
+            }
+            return nil
+        }
+    }
+    
+    
     public var revoked: Bool{
         didSet {
             self.revokeTime = NSDate.init()

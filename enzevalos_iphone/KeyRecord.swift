@@ -72,7 +72,7 @@ public class KeyRecord: Record {
         mails.append(mail)
         mails.sortInPlace()
         self.ezContact = mail.from.contact
-        addNewAddress(mail.from)
+        addNewAddress(mail.from)        
     }
 
     public static func deleteRecordFromRecordArray(records: [KeyRecord], delRecord: KeyRecord) -> [KeyRecord] {

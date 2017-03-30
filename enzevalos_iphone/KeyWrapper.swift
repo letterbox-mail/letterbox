@@ -19,6 +19,8 @@ public protocol KeyWrapper {
     var discoveryMailUID: UInt64? {get}
     var type: EncryptionType {get}
     var keyID: String {get}
+    var creationDate: NSDate {get}
+    var expireDate: NSDate? {get}
     
     //Mailaddresses we discovered using this key
     var mailAddresses: [String]? {get set}
