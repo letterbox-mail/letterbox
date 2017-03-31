@@ -192,13 +192,6 @@
     if (data == nil){
         return nil;
     }
-    /*
-    NSArray* binData = [self convertArmoredMessage2BinaryBlocksWhenNecessary:data];
-    NSString * result = [[binData valueForKey:@"description"] componentsJoinedByString:@""];
-
-    NSLog(@"BinData %@", result);
-    NSLog(@"UnArmoredData %@", unarmoredKey);
-     */
     NSString* armoredString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
     NSScanner *scanner = [[NSScanner alloc] initWithString:armoredString];
@@ -1014,7 +1007,6 @@
     
     //TODO REMOVE
     NSString *aString  = [[NSString alloc] initWithData:armoredData encoding:NSUTF8StringEncoding];
-    NSLog(@"ppublic key %@", aString);
     return [self importKeysFromData: armoredData allowDuplicates:allowDuplicates];
     
 
