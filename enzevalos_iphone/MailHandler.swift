@@ -182,10 +182,10 @@ class MailHandler {
         let session = MCOSMTPSession()
         session.hostname = UserManager.loadUserValue(Attribute.SMTPHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.SMTPPort) as! Int)
-        session.username = useraddr
+        session.username = username //useraddr
         session.password = UserManager.loadUserValue(Attribute.UserPW) as! String
-        session.authType = MCOAuthType.init(rawValue: UserManager.loadUserValue(Attribute.AuthType) as! Int)//MCOAuthType.SASLPlain
-        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.ConnectionType) as! Int)//MCOConnectionType.StartTLS
+        session.authType = MCOAuthType.init(rawValue: UserManager.loadUserValue(Attribute.SMTPAuthType) as! Int)//MCOAuthType.SASLPlain
+        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.SMTPConnectionType) as! Int)//MCOConnectionType.StartTLS
         
         let builder = MCOMessageBuilder()
 
@@ -267,8 +267,8 @@ class MailHandler {
         imapsession.port = UInt32(UserManager.loadUserValue(Attribute.IMAPPort) as! Int)
         imapsession.username = UserManager.loadUserValue(Attribute.UserAddr) as! String
         imapsession.password = UserManager.loadUserValue(Attribute.UserPW) as! String
-        imapsession.authType = MCOAuthType.SASLPlain
-        imapsession.connectionType = MCOConnectionType.TLS
+        imapsession.authType = MCOAuthType(rawValue: UserManager.loadUserValue(Attribute.IMAPAuthType) as! Int) //MCOAuthType.SASLPlain
+        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.IMAPConnectionType) as! Int)//MCOConnectionType.TLS
         self.IMAPSes = imapsession
     }
 
@@ -543,17 +543,30 @@ class MailHandler {
         let session = MCOSMTPSession()
         session.hostname = UserManager.loadUserValue(Attribute.SMTPHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.SMTPPort) as! Int)
-        session.username = useraddr
+        session.username = username
         session.password = UserManager.loadUserValue(Attribute.UserPW) as! String
-        session.authType = MCOAuthType.init(rawValue: UserManager.loadUserValue(Attribute.AuthType) as! Int)//MCOAuthType.SASLPlain
-        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.ConnectionType) as! Int)//MCOConnectionType.StartTLS
+        session.authType = MCOAuthType.init(rawValue: UserManager.loadUserValue(Attribute.SMTPAuthType) as! Int)//MCOAuthType.SASLPlain
+        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.SMTPConnectionType) as! Int)//MCOConnectionType.StartTLS
         
         session.checkAccountOperationWithFrom(MCOAddress.init(mailbox: useraddr)).start(completion)
+        
     }
     
     func checkIMAP(completion: (NSError?) -> Void) {
         self.setupIMAPSession()
+        
+        /*let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.Headers.rawValue)
+        let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
+        
+        let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperationWithFolder("INBOX", requestKind: requestKind, uids: uids)
+        fetchOperation.start { (err, msg, vanished) -> Void in
+            print("Hallo")
+            completion(err)
+        }
+        print("called")*/
+        
         self.IMAPSession.checkAccountOperation().start(completion)
+        self.IMAPSession.connectOperation().start(completion)
     }
     
     

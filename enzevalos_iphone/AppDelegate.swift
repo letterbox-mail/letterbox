@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var contactStore = CNContactStore()
     var mailHandler = MailHandler()
+    private var initialViewController : UIViewController? = nil
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -25,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ThemeManager.currentTheme()
         
         if (!NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")) {
+            self.initialViewController = self.window?.rootViewController
             self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
@@ -36,10 +38,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func credentialCheck() {
         self.window?.rootViewController = Onboarding.checkConfigView()
         Onboarding.setGuessValues()
-        if !Onboarding.checkConfig() {
+        if !Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork) {
             self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
             return
         }
+    }
+    
+    func credentialsFailed(){
+        self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
+    }
+    
+    func credentialsWork() {
+        self.window?.rootViewController = Onboarding.keyHandlingView()
+        Onboarding.keyHandling()
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
+        self.window?.rootViewController = self.initialViewController!
     }
     
     func applicationWillResignActive(application: UIApplication) {
