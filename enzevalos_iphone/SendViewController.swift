@@ -613,7 +613,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
 
     func getContemporarySecurityState() -> Bool {
-        toSecure = toText.dataSource!.isSecure!(toText)
+        toSecure = toText.dataSource!.isSecure!(toText) //TODO: Add pref enc field.
         ccSecure = ccText.dataSource!.isSecure!(ccText)
         return toSecure && ccSecure
     }

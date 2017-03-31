@@ -39,7 +39,7 @@ let KEY = "key"
 class AutocryptContact {
     var addr: String = ""
     var type: EncryptionType = .PGP
-    var prefer_encryption: Bool = false
+    var prefer_encryption: Bool = true
     var key: String = ""
 
     init(addr: String, type: String, prefer_encryption: String, key: String) {
@@ -152,54 +152,56 @@ class MailHandler {
         let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
         builder.header.setExtraHeaderValue(pgpenc.autocryptHeader(adr), forName: AUTOCRYPTHEADER)
     }
+    
+    private func createHeader(builder: MCOMessageBuilder, toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String){
+        
+        let username = UserManager.loadUserValue(Attribute.UserName) as! String
+        let useraddr = (UserManager.loadUserValue(Attribute.UserAddr) as! String)
+
+    
+        var toReady: [MCOAddress] = []
+        for addr in toEntrys {
+            toReady.append(MCOAddress(displayName: addr, mailbox: addr))
+        }
+        builder.header.to = toReady
+        
+        var ccReady: [MCOAddress] = []
+        for addr in ccEntrys {
+            ccReady.append(MCOAddress(displayName: addr, mailbox: addr))
+        }
+        builder.header.cc = ccReady
+        
+        var bccReady: [MCOAddress] = []
+        for addr in bccEntrys {
+            bccReady.append(MCOAddress(displayName: addr, mailbox: addr))
+        }
+        builder.header.bcc = bccReady
+        
+        builder.header.from = MCOAddress(displayName: username, mailbox: useraddr)
+        
+        builder.header.subject = subject
+        
+        add_autocrypt_header(builder)
+    
+    }
 
     //return if send successfully
     func send(toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: (NSError?) -> Void) {
         //http://stackoverflow.com/questions/31485359/sending-mailcore2-plain-emails-in-swift
 
         let useraddr = (UserManager.loadUserValue(Attribute.UserAddr) as! String)
-        let username = UserManager.loadUserValue(Attribute.UserName) as! String
-
-        let session = MCOSMTPSession()
-        session.hostname = UserManager.loadUserValue(Attribute.SMTPHostname) as! String
-        session.port = UInt32(UserManager.loadUserValue(Attribute.SMTPPort) as! Int)
-        session.username = useraddr
-        session.password = UserManager.loadUserValue(Attribute.UserPW) as! String
-        session.authType = MCOAuthType.SASLPlain
-        session.connectionType = MCOConnectionType.StartTLS
-
+        let session = createSMTPSession()
         let builder = MCOMessageBuilder()
 
-        var toReady: [MCOAddress] = []
-        for addr in toEntrys {
-            toReady.append(MCOAddress(displayName: addr, mailbox: addr))
-        }
-        builder.header.to = toReady
+        createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
+        
 
-        var ccReady: [MCOAddress] = []
-        for addr in ccEntrys {
-            ccReady.append(MCOAddress(displayName: addr, mailbox: addr))
-        }
-        builder.header.cc = ccReady
-
-        var bccReady: [MCOAddress] = []
-        for addr in bccEntrys {
-            bccReady.append(MCOAddress(displayName: addr, mailbox: addr))
-        }
-        builder.header.bcc = bccReady
-
-        builder.header.from = MCOAddress(displayName: username, mailbox: useraddr)
-
-        builder.header.subject = subject
-
-        add_autocrypt_header(builder)
-
-        builder.textBody = message
-
+        // MailAddresses statt strings??
 
         var allRec: [String] = []
         allRec.appendContentsOf(toEntrys)
         allRec.appendContentsOf(ccEntrys)
+        // What about BCC??
 
         //TODO add support for different Encryptions here
         //edit sortMailaddressesByEncryptionMCOAddress and sortMailaddressesByEncryption because a mailaddress can be found in multiple Encryptions
@@ -212,6 +214,8 @@ class MailHandler {
         let orderedString = EnzevalosEncryptionHandler.sortMailaddressesByEncryption(allRec)
         var sendOperation: MCOSMTPSendOperation
 
+        //TODO: Consider pref enc = false
+        
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
             if let encData = encryption.signAndEncrypt("\n"+message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
@@ -231,6 +235,7 @@ class MailHandler {
         }
 
         if let unenc = ordered[EncryptionType.unknown] {
+            builder.textBody = message
             sendData = builder.data()
             sendOperation = session.sendOperationWithData(sendData, from: userID, recipients: unenc)
             //TODO handle different callbacks
@@ -248,6 +253,18 @@ class MailHandler {
         imapsession.connectionType = MCOConnectionType.TLS
         self.IMAPSes = imapsession
     }
+    
+    private func createSMTPSession()-> MCOSMTPSession{
+        let session = MCOSMTPSession()
+        session.hostname = UserManager.loadUserValue(Attribute.SMTPHostname) as! String
+        session.port = UInt32(UserManager.loadUserValue(Attribute.SMTPPort) as! Int)
+        session.username = (UserManager.loadUserValue(Attribute.UserAddr) as! String)
+        session.password = UserManager.loadUserValue(Attribute.UserPW) as! String
+        session.authType = MCOAuthType.SASLPlain
+        session.connectionType = MCOConnectionType.StartTLS
+        return session
+    }
+
 
 
     func addFlag(uid: UInt64, flags: MCOMessageFlag, folder: String = "INBOX") {

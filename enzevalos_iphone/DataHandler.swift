@@ -178,29 +178,43 @@ class DataHandler {
         return result
     }
     
+    
+    
     // -------- Handle mail addresses ---------
-    func getMailAddress(address: String)-> Mail_Address {
+    func getMailAddress(address: String, temporary: Bool)-> MailAddress {
         let search  = find("Mail_Address", type: "address", search: address)
-        var mail_address: Mail_Address
         if search == nil || search!.count == 0 {
-            mail_address =  NSEntityDescription.insertNewObjectForEntityForName("Mail_Address",inManagedObjectContext: managedObjectContext) as! Mail_Address
-            mail_address.address = address
-            mail_address.prefer_encryption = false
+            if temporary{
+                return CNMailAddressExtension(addr: address)
+            }
+            else{
+                let mail_address =  NSEntityDescription.insertNewObjectForEntityForName("Mail_Address",inManagedObjectContext: managedObjectContext) as! Mail_Address
+                mail_address.address = address
+                mail_address.prefer_encryption = false
+                return mail_address
+            }
         }
         else {
-            mail_address = search![0] as! Mail_Address
+            return search![0] as! Mail_Address
         }
-        return mail_address
     }
     
-    func getMailAddressByMCOAddress(address: MCOAddress) -> Mail_Address {
-        return getMailAddress(address.mailbox!)
+    func getMailAddressesByString(addresses: [String], temporary: Bool) -> [MailAddress]{
+        var mailaddresses = [MailAddress]()
+        for adr in addresses{
+            mailaddresses.append(getMailAddress(adr, temporary: temporary))
+        }
+        return mailaddresses    
+    }
+    
+    func getMailAddressByMCOAddress(address: MCOAddress, temporary: Bool) -> MailAddress {
+        return getMailAddress(address.mailbox!, temporary: temporary)
     }
     
     func getMailAddressesByMCOAddresses(addresses: [MCOAddress])->[Mail_Address] {
         var mailaddresses = [Mail_Address]()
         for adr in addresses{
-            mailaddresses.append(getMailAddressByMCOAddress(adr))
+            mailaddresses.append(getMailAddressByMCOAddress(adr, temporary: false) as! Mail_Address)
         }
         return mailaddresses
     }
@@ -226,7 +240,7 @@ class DataHandler {
                 for adr in cnContact.emailAddresses {
                     let name = adr.value as! String
                     if name == address {
-                        let adr = getMailAddress(address)
+                        let adr = getMailAddress(address, temporary: false) as! Mail_Address
                         c.addToAddresses(adr)
                         adr.contact = c
                         return c
@@ -240,7 +254,7 @@ class DataHandler {
         if search == nil || search!.count == 0 {
             contact = NSEntityDescription.insertNewObjectForEntityForName("EnzevalosContact", inManagedObjectContext: managedObjectContext) as! EnzevalosContact
             contact.displayname = address
-            let adr = getMailAddress(address)
+            let adr = getMailAddress(address, temporary: false)as! Mail_Address
             contact.addToAddresses(adr)
             adr.contact = contact
             contacts.append(contact)
