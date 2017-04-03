@@ -316,6 +316,8 @@ class ReadViewController: UITableViewController {
             else {
                 messageBody.text = m.body
             }
+            messageBody.text = messageBody.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            
             // NavigationBar Icon
             let iconView = UIImageView()
             iconView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
