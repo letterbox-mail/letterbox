@@ -18,9 +18,13 @@ class Onboarding {
     static var imapPort = UITextField.init()
     static var smtpPort = UITextField.init()
     static var imapAuthentication = UIPickerView.init()
+    static var imapAuthDataDelegate = PickerDataDelegate.init(rows: ["a", "b", "c"])
     static var imapTransportEncryption = UIPickerView.init()
+    static var imapTransDataDelegate = PickerDataDelegate.init(rows: ["a", "b", "c"])
     static var smtpAuthentication = UIPickerView.init()
+    static var smtpAuthDataDelegate = PickerDataDelegate.init(rows: ["a", "b", "c"])
     static var smtpTransportEncryption = UIPickerView.init()
+    static var smtpTransDataDelegate = PickerDataDelegate.init(rows: ["a", "b", "c"])
     static var background = UIImage.init()
     static var smtpCheck = false
     static var smtpCheckDone = false
@@ -28,10 +32,14 @@ class Onboarding {
     static var imapCheckDone = false
     static var manualSet = false
     
+    static let font = UIFont.init(name: "Helvetica-Light", size: 28)
+    static let padding : CGFloat = 30
+    
     static var fail : () -> () = {Void in}
     static var work : () -> () = {Void in}
 
     static var authenticationRows : [Int : String] = [MCOAuthType.SASLNone.rawValue : "Keine", MCOAuthType.SASLLogin.rawValue : "Login", MCOAuthType.SASLPlain.rawValue : "Normal, Password", MCOAuthType.SASLSRP.rawValue : "SRP", MCOAuthType.SASLCRAMMD5.rawValue : "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue : "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue : "NTLM", MCOAuthType.SASLGSSAPI.rawValue : "GSSAPI", MCOAuthType.SASLKerberosV4.rawValue : "KerberosV4"]
+    static var transportRows : [Int : String] = [MCOConnectionType.Clear.rawValue : "Klartext", MCOConnectionType.StartTLS.rawValue : "StartTLS", MCOConnectionType.TLS.rawValue : "TLS"]
     
     static func onboarding(callback: dispatch_block_t) -> UIViewController {
         
@@ -114,9 +122,6 @@ class Onboarding {
     
     static func detailOnboarding(callback: dispatch_block_t) -> UIViewController {
         
-        let font = UIFont.init(name: "Helvetica-Light", size: 28)
-        let padding : CGFloat = 30
-        
         let start = OnboardingContentViewController.contentWithTitle("Schade!", body: "Die Verbindung zum Server konnte nicht hergestellt werden. Bitte überprüfe die folgenden Angaben und passe sie ggf. an.", videoURL: nil, inputView: nil, buttonText: nil, actionBlock: nil)
         
         
@@ -129,8 +134,8 @@ class Onboarding {
         username.keyboardType = UIKeyboardType.EmailAddress
         username.autocorrectionType = UITextAutocorrectionType.No
         username.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
-        username.placeholder = "Nutzername"
-        username.text = UserManager.loadUserValue(Attribute.UserName) as? String
+        //username.placeholder = "Nutzername"
+        //username.text = UserManager.loadUserValue(Attribute.UserName) as? String
         
         let user = OnboardingContentViewController.contentWithTitle(nil, body: "Bitte gib deinen Nutzernamen ein", videoURL: nil, inputView: username, buttonText: nil, actionBlock: nil)
         
@@ -163,6 +168,19 @@ class Onboarding {
         
         let imap1 = OnboardingContentViewController.contentWithTitle(nil, body: "IMAP-Server", videoURL: nil, inputView: imap, buttonText: nil, actionBlock: nil)
         
+        imapTransportEncryption = UIPickerView()
+        imapTransDataDelegate = PickerDataDelegate.init(rows: Array(transportRows.values))
+        imapTransportEncryption.dataSource = imapTransDataDelegate
+        imapTransportEncryption.delegate = imapTransDataDelegate
+        imapTransportEncryption.frame = CGRect.init(x: 0, y: 0, width: 50, height: 100)
+        imapTransportEncryption.reloadAllComponents()
+        //imapAuthentication.backgroundColor = UIColor.whiteColor()
+        var row = UserManager.loadUserValue(Attribute.IMAPConnectionType) as! Int
+        row = imapTransDataDelegate.rows.indexOf(transportRows[row]!)!
+        //if Array(transportRows.keys).contains(row){
+            imapTransportEncryption.selectRow(row, inComponent: 0, animated: false)
+        //}
+        
         let imapAuthLabel = UILabel.init()
         imapAuthLabel.text = "IMAP-Authentifizierung"
         
@@ -170,23 +188,30 @@ class Onboarding {
         imapAuthLabel.font = font
         imapAuthLabel.numberOfLines = 0;
         imapAuthLabel.textAlignment = NSTextAlignment.Center;
-        imapAuthLabel.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
+        imapAuthLabel.frame = CGRect.init(x: 0, y: imapTransportEncryption.frame.height, width: 50, height: 30)
         
-        imapAuthentication = UIPickerView.init()
-        let imapAuthDataDelegate = PickerDataDelegate.init(rows: Array(authenticationRows.values))
+        imapAuthentication = UIPickerView()
+        imapAuthDataDelegate = PickerDataDelegate.init(rows: Array(authenticationRows.values))
         imapAuthentication.dataSource = imapAuthDataDelegate
-        imapAuthentication.frame = CGRect.init(x: 0, y: imapAuthLabel.frame.height+padding, width: 50, height: 50)
+        imapAuthentication.delegate = imapAuthDataDelegate
+        imapAuthentication.frame = CGRect.init(x: 0, y: imapTransportEncryption.frame.height+imapAuthLabel.frame.height, width: 50, height: 100)
+        imapAuthentication.reloadAllComponents()
+        imapAuthentication.reloadInputViews()
         imapAuthentication.tintColor = UIColor.whiteColor()
-        let row = UserManager.loadUserValue(Attribute.IMAPAuthType) as! Int
-        if Array(authenticationRows.keys).contains(row){
+        //imapAuthentication.backgroundColor = UIColor.whiteColor()
+        row = UserManager.loadUserValue(Attribute.IMAPAuthType) as! Int
+        row = Array(authenticationRows.values).indexOf(authenticationRows[row]!)!
+        //if Array(authenticationRows.keys).contains(row){
             imapAuthentication.selectRow(row, inComponent: 0, animated: false)
-        }
+        //}
         
-        let imapAuth = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: imapServer.frame.height+padding+imapAuthLabel.frame.height+padding+imapPort.frame.height))
+        let imapAuth = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: imapTransportEncryption.frame.height+padding+imapAuthLabel.frame.height+imapAuthentication.frame.height))
+        imapAuth.addSubview(imapTransportEncryption)
         imapAuth.addSubview(imapAuthLabel)
         imapAuth.addSubview(imapAuthentication)
-        
-        let imap2 = OnboardingContentViewController.contentWithTitle(nil, body: "IMAP-Transferverschlüsselung", videoURL: nil, inputView: imapAuth, buttonText: nil, actionBlock: nil)
+        let boolPointer = UnsafeMutablePointer<ObjCBool>.alloc(1)
+        boolPointer[0] = false
+        let imap2 = OnboardingContentViewController.contentWithTitle(nil, body: "IMAP-Transferverschlüsselung", videoURL: nil, inputView: imapAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
         
         
         smtpServer.borderStyle = UITextBorderStyle.RoundedRect
@@ -216,9 +241,54 @@ class Onboarding {
         
         let smtp1 = OnboardingContentViewController.contentWithTitle(nil, body: "SMTP-Server", videoURL: nil, inputView: smtp, buttonText: nil, actionBlock: nil)
         
+        smtpTransportEncryption = UIPickerView()
+        smtpTransDataDelegate = PickerDataDelegate.init(rows: Array(transportRows.values))
+        smtpTransportEncryption.dataSource = smtpTransDataDelegate
+        smtpTransportEncryption.delegate = smtpTransDataDelegate
+        smtpTransportEncryption.frame = CGRect.init(x: 0, y: 0, width: 50, height: 100)
+        smtpTransportEncryption.reloadAllComponents()
+        //smtpAuthentication.backgroundColor = UIColor.whiteColor()
+        row = UserManager.loadUserValue(Attribute.SMTPConnectionType) as! Int
+        row = smtpTransDataDelegate.rows.indexOf(transportRows[row]!)!
+        //if Array(transportRows.keys).contains(row){
+        smtpTransportEncryption.selectRow(row, inComponent: 0, animated: false)
+        //}
+        
+        let smtpAuthLabel = UILabel.init()
+        smtpAuthLabel.text = "SMTP-Authentifizierung"
+        
+        smtpAuthLabel.textColor = UIColor.whiteColor();
+        smtpAuthLabel.font = font
+        smtpAuthLabel.numberOfLines = 0;
+        smtpAuthLabel.textAlignment = NSTextAlignment.Center;
+        smtpAuthLabel.frame = CGRect.init(x: 0, y: smtpTransportEncryption.frame.height, width: 50, height: 30)
+        
+        smtpAuthentication = UIPickerView()
+        smtpAuthDataDelegate = PickerDataDelegate.init(rows: Array(authenticationRows.values))
+        smtpAuthentication.dataSource = smtpAuthDataDelegate
+        smtpAuthentication.delegate = smtpAuthDataDelegate
+        smtpAuthentication.frame = CGRect.init(x: 0, y: smtpTransportEncryption.frame.height+smtpAuthLabel.frame.height, width: 50, height: 100)
+        smtpAuthentication.reloadAllComponents()
+        smtpAuthentication.reloadInputViews()
+        smtpAuthentication.tintColor = UIColor.whiteColor()
+        //smtpAuthentication.backgroundColor = UIColor.whiteColor()
+        row = UserManager.loadUserValue(Attribute.SMTPAuthType) as! Int
+        row = Array(authenticationRows.values).indexOf(authenticationRows[row]!)!
+        //if Array(authenticationRows.keys).contains(row){
+        smtpAuthentication.selectRow(row, inComponent: 0, animated: false)
+        //}
+        
+        let smtpAuth = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: smtpTransportEncryption.frame.height+padding+smtpAuthLabel.frame.height+smtpAuthentication.frame.height))
+        smtpAuth.addSubview(smtpTransportEncryption)
+        smtpAuth.addSubview(smtpAuthLabel)
+        smtpAuth.addSubview(smtpAuthentication)
+        boolPointer[0] = false
+        let smtp2 = OnboardingContentViewController.contentWithTitle(nil, body: "SMTP-Transferverschlüsselung", videoURL: nil, inputView: smtpAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
+
+        
         let last = OnboardingContentViewController.contentWithTitle("Alles richtig?", body: nil, videoURL: nil, inputView: nil, buttonText: "Weiter", actionBlock: callback)
         
-        return Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, passwd, imap1, imap2, smtp1, last])
+        return Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, passwd, imap1, imap2, smtp1, smtp2, last])
     }
     
     static func checkConfig(fail: () -> (), work: () -> ()) -> Bool {
@@ -281,6 +351,9 @@ class Onboarding {
                 UserManager.storeUserValue(guessedUserName, attribute: Attribute.Accountname)
                 UserManager.storeUserValue(guessedUserName, attribute: Attribute.UserName)
             }
+            if provider == Provider.WEB.rawValue {
+                Providers.setValues(Provider.WEB)
+            }
         }
         if let pw = password.text where pw != "" {
             UserManager.storeUserValue(pw, attribute: Attribute.UserPW)
@@ -294,6 +367,10 @@ class Onboarding {
             UserManager.storeUserValue(password.text!, attribute: Attribute.UserPW)
             UserManager.storeUserValue(username.text!, attribute: Attribute.UserName)
             UserManager.storeUserValue(username.text!, attribute: Attribute.Accountname)
+            /*UserManager.storeUserValue([0], attribute: Attribute.IMAPConnectionType)
+            UserManager.storeUserValue(authenticationRows.allKeysForValue(imapAuthDataDelegate.pickedValue)[0], attribute: Attribute.IMAPAuthType)
+            UserManager.storeUserValue(transportRows.allKeysForValue(smtpTransDataDelegate.pickedValue)[0], attribute: Attribute.SMTPConnectionType)
+            UserManager.storeUserValue(authenticationRows.allKeysForValue(smtpAuthDataDelegate.pickedValue)[0], attribute: Attribute.SMTPAuthType)*/
         }
         
     }
@@ -382,6 +459,7 @@ class Onboarding {
 
 class PickerDataDelegate : NSObject, UIPickerViewDataSource {
     var rows = ["Keine", "Normal, Password", "Login"]
+    var pickedValue = ""
     
     init(rows : [String]){
         super.init()
@@ -396,16 +474,37 @@ class PickerDataDelegate : NSObject, UIPickerViewDataSource {
         return rows.count
     }
     
+    
+    
 }
 extension PickerDataDelegate : UIPickerViewDelegate {
+    
     func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 30
+        return 50
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if component < 0 || component >= rows.count {
+        return rows[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+        let label = UILabel(frame: CGRect.init(x: 0, y: 0, width: 0/*pickerView.frame.width*/, height: 30))
+        label.text = rows[row]
+        label.textAlignment = NSTextAlignment.Center
+        label.font = Onboarding.font?.fontWithSize((Onboarding.font?.pointSize)!-CGFloat(5))
+        //label.backgroundColor = UIColor.greenColor()
+        label.textColor = UIColor.whiteColor()
+        return label
+    }
+    
+    /*func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        if row < 0 || row >= rows.count {
             return nil
         }
-        return rows[component]
+        return NSAttributedString(string: rows[row])
+    }*/
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        pickedValue = rows[row]
     }
 }
