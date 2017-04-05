@@ -295,6 +295,21 @@ class Onboarding {
         return Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, passwd, imap1, imap2, smtp1, smtp2, last])
     }
     
+    static func contactView(callback: () -> ()) -> UIViewController {
+        let activity = UIActivityIndicatorView.init()
+        activity.startAnimating()
+        let view = UIView.init()
+        view.addSubview(activity)
+        view.frame = activity.frame
+        let page1 = OnboardingContentViewController.contentWithTitle("Zugriff auf Kontakte", body: "Damit diese App richtig funktioniert, brauchen wir Zugriff auf deine Kontakte. Wir teilen diese Daten mit niemandem und senden sie auch nicht über das Internet.", videoURL: nil, inputView: nil, buttonText: "weiter", actionBlock: callback)
+        
+        return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
+    }
+    
+    static func checkContact(callback : (Bool) -> ()){
+        AppDelegate.getAppDelegate().requestForAccess(callback)
+    }
+    
     static func checkConfig(fail: () -> (), work: () -> ()) -> Bool {
         smtpCheckDone = false
         imapCheckDone = false

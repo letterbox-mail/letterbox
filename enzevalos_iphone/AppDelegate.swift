@@ -49,6 +49,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func credentialsWork() {
+        self.window?.rootViewController = Onboarding.contactView(self.requestForAccess)
+        //self.onboardingDone()
+    }
+    
+    func contactCheck(accessGranted: Bool) {
+        if accessGranted {
+            self.onboardingDone()
+        }
+        else {
+            //self.onboardingDone()
+            dispatch_async(dispatch_get_main_queue(),{
+                self.showMessage("Bitte schalte unter Einstellungen den Zugriff auf die Kontakte frei, wenn du möchtest, dass die App richtig funktioniert", completion: self.onboardingDone)
+            });
+        }
+    }
+    
+    func onboardingDone() {
         self.window?.rootViewController = Onboarding.keyHandlingView()
         Onboarding.keyHandling()
         NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
@@ -86,17 +103,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func showMessage(message: String, completion: (() -> Void)? ) {
-        let alertController = UIAlertController(title: "enzevalos-send", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let alertController = UIAlertController(title: "Enzevalos", message: message, preferredStyle: UIAlertControllerStyle.Alert)
         
-        let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (action) -> Void in
+        let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (action : UIAlertAction) -> Void in
+            if let cb = completion {
+                cb()
+            }
         }
         
         alertController.addAction(dismissAction)
         
-        let pushedViewControllers = (self.window?.rootViewController as! UINavigationController).viewControllers
-        let presentedViewController = pushedViewControllers[pushedViewControllers.count - 1]
+        //let pushedViewControllers = (self.window?.rootViewController as! UINavigationController).viewControllers
+        let presentedViewController = self.window!.rootViewController!//pushedViewControllers[pushedViewControllers.count - 1]
         
-        presentedViewController.presentViewController(alertController, animated: true, completion: completion)
+        presentedViewController.presentViewController(alertController, animated: false, completion: nil)
     }
     
     
@@ -107,24 +127,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case .Authorized:
             completionHandler(accessGranted: true)
             
-        case .Denied, .NotDetermined:
+        case .NotDetermined:
             self.contactStore.requestAccessForEntityType(CNEntityType.Contacts, completionHandler: { (access, accessError) -> Void in
                 if access {
                     completionHandler(accessGranted: access)
                 }
                 else {
                     if authorizationStatus == CNAuthorizationStatus.Denied {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        /*dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts through the Settings."
                             self.showMessage(message, completion: nil)
-                        })
+                        })*/
                     }
+                    completionHandler(accessGranted: false)
                 }
             })
             
         default:
             completionHandler(accessGranted: false)
         }
+    }
+    
+    func requestForAccess() {
+        self.requestForAccess(self.contactCheck)
     }
 }
 
