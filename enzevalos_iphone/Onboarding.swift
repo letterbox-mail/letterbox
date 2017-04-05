@@ -134,8 +134,8 @@ class Onboarding {
         username.keyboardType = UIKeyboardType.EmailAddress
         username.autocorrectionType = UITextAutocorrectionType.No
         username.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
-        //username.placeholder = "Nutzername"
-        //username.text = UserManager.loadUserValue(Attribute.UserName) as? String
+        username.placeholder = "Nutzername"
+        username.text = UserManager.loadUserValue(Attribute.UserName) as? String
         
         let user = OnboardingContentViewController.contentWithTitle(nil, body: "Bitte gib deinen Nutzernamen ein", videoURL: nil, inputView: username, buttonText: nil, actionBlock: nil)
         
@@ -176,6 +176,7 @@ class Onboarding {
         imapTransportEncryption.reloadAllComponents()
         //imapAuthentication.backgroundColor = UIColor.whiteColor()
         var row = UserManager.loadUserValue(Attribute.IMAPConnectionType) as! Int
+        imapTransDataDelegate.pickedValue = transportRows[row]!
         row = imapTransDataDelegate.rows.indexOf(transportRows[row]!)!
         //if Array(transportRows.keys).contains(row){
             imapTransportEncryption.selectRow(row, inComponent: 0, animated: false)
@@ -200,6 +201,7 @@ class Onboarding {
         imapAuthentication.tintColor = UIColor.whiteColor()
         //imapAuthentication.backgroundColor = UIColor.whiteColor()
         row = UserManager.loadUserValue(Attribute.IMAPAuthType) as! Int
+        imapAuthDataDelegate.pickedValue = authenticationRows[row]!
         row = Array(authenticationRows.values).indexOf(authenticationRows[row]!)!
         //if Array(authenticationRows.keys).contains(row){
             imapAuthentication.selectRow(row, inComponent: 0, animated: false)
@@ -249,6 +251,7 @@ class Onboarding {
         smtpTransportEncryption.reloadAllComponents()
         //smtpAuthentication.backgroundColor = UIColor.whiteColor()
         row = UserManager.loadUserValue(Attribute.SMTPConnectionType) as! Int
+        smtpTransDataDelegate.pickedValue = transportRows[row]!
         row = smtpTransDataDelegate.rows.indexOf(transportRows[row]!)!
         //if Array(transportRows.keys).contains(row){
         smtpTransportEncryption.selectRow(row, inComponent: 0, animated: false)
@@ -273,6 +276,7 @@ class Onboarding {
         smtpAuthentication.tintColor = UIColor.whiteColor()
         //smtpAuthentication.backgroundColor = UIColor.whiteColor()
         row = UserManager.loadUserValue(Attribute.SMTPAuthType) as! Int
+        smtpAuthDataDelegate.pickedValue = authenticationRows[row]!
         row = Array(authenticationRows.values).indexOf(authenticationRows[row]!)!
         //if Array(authenticationRows.keys).contains(row){
         smtpAuthentication.selectRow(row, inComponent: 0, animated: false)
@@ -367,10 +371,10 @@ class Onboarding {
             UserManager.storeUserValue(password.text!, attribute: Attribute.UserPW)
             UserManager.storeUserValue(username.text!, attribute: Attribute.UserName)
             UserManager.storeUserValue(username.text!, attribute: Attribute.Accountname)
-            /*UserManager.storeUserValue([0], attribute: Attribute.IMAPConnectionType)
-            UserManager.storeUserValue(authenticationRows.allKeysForValue(imapAuthDataDelegate.pickedValue)[0], attribute: Attribute.IMAPAuthType)
-            UserManager.storeUserValue(transportRows.allKeysForValue(smtpTransDataDelegate.pickedValue)[0], attribute: Attribute.SMTPConnectionType)
-            UserManager.storeUserValue(authenticationRows.allKeysForValue(smtpAuthDataDelegate.pickedValue)[0], attribute: Attribute.SMTPAuthType)*/
+            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0], attribute: Attribute.IMAPConnectionType)
+            UserManager.storeUserValue(keyForValue(authenticationRows, value: imapAuthDataDelegate.pickedValue)[0], attribute: Attribute.IMAPAuthType)
+            UserManager.storeUserValue(keyForValue(transportRows, value: smtpTransDataDelegate.pickedValue)[0], attribute: Attribute.SMTPConnectionType)
+            UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0], attribute: Attribute.SMTPAuthType)
         }
         
     }
@@ -455,6 +459,17 @@ class Onboarding {
             return next.hashValue == i++ ? next : nil
         }
     }
+    
+    
+    //Inspired by http://stackoverflow.com/questions/32692450/swift-dictionary-get-key-for-values
+    static func keyForValue(dict : [Int : String], value : String) -> [Int]{
+        let keys = dict.filter {
+            return $0.1 == value
+            }.map {
+                return $0.0
+        }
+        return keys
+    }
 }
 
 class PickerDataDelegate : NSObject, UIPickerViewDataSource {
@@ -503,6 +518,7 @@ extension PickerDataDelegate : UIPickerViewDelegate {
         }
         return NSAttributedString(string: rows[row])
     }*/
+    
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         pickedValue = rows[row]
