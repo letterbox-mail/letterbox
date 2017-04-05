@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else {
             //self.onboardingDone()
             dispatch_async(dispatch_get_main_queue(),{
-                self.showMessage("Bitte schalte unter Einstellungen den Zugriff auf die Kontakte frei, wenn du möchtest, dass die App richtig funktioniert", completion: self.onboardingDone)
+                self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.onboardingDone)
             });
         }
     }

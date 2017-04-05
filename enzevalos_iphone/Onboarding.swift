@@ -38,8 +38,8 @@ class Onboarding {
     static var fail : () -> () = {Void in}
     static var work : () -> () = {Void in}
 
-    static var authenticationRows : [Int : String] = [MCOAuthType.SASLNone.rawValue : "Keine", MCOAuthType.SASLLogin.rawValue : "Login", MCOAuthType.SASLPlain.rawValue : "Normal, Password", MCOAuthType.SASLSRP.rawValue : "SRP", MCOAuthType.SASLCRAMMD5.rawValue : "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue : "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue : "NTLM", MCOAuthType.SASLGSSAPI.rawValue : "GSSAPI", MCOAuthType.SASLKerberosV4.rawValue : "KerberosV4"]
-    static var transportRows : [Int : String] = [MCOConnectionType.Clear.rawValue : "Klartext", MCOConnectionType.StartTLS.rawValue : "StartTLS", MCOConnectionType.TLS.rawValue : "TLS"]
+    static var authenticationRows : [Int : String] = [MCOAuthType.SASLNone.rawValue : NSLocalizedString("None", comment: ""), MCOAuthType.SASLLogin.rawValue : "Login", MCOAuthType.SASLPlain.rawValue : NSLocalizedString("NormalPassword", comment: ""), MCOAuthType.SASLSRP.rawValue : "SRP", MCOAuthType.SASLCRAMMD5.rawValue : "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue : "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue : "NTLM", MCOAuthType.SASLGSSAPI.rawValue : "GSSAPI", MCOAuthType.SASLKerberosV4.rawValue : "KerberosV4"]
+    static var transportRows : [Int : String] = [MCOConnectionType.Clear.rawValue : NSLocalizedString("Plaintext", comment: ""), MCOConnectionType.StartTLS.rawValue : "StartTLS", MCOConnectionType.TLS.rawValue : "TLS"]
     
     static func onboarding(callback: dispatch_block_t) -> UIViewController {
         
@@ -72,7 +72,7 @@ class Onboarding {
         background = snapshot!
         
         //Content
-        let page1 = OnboardingContentViewController.contentWithTitle("Hallo", body: "Schön, dass du dich für sichere Email interessierst!", image: nil, buttonText: "", action: nil)
+        let page1 = OnboardingContentViewController.contentWithTitle(NSLocalizedString("Hello", comment: "Welcome"), body: NSLocalizedString("InterestedInSecureMail", comment: "commendation to user for using secure mail"), image: nil, buttonText: nil, action: nil)
         mailaddress = UITextField.init()
         //text.textColor = UIColor.whiteColor()
         //text.tintColor = UIColor.whiteColor()
@@ -80,8 +80,8 @@ class Onboarding {
         mailaddress.keyboardType = UIKeyboardType.EmailAddress
         mailaddress.autocorrectionType = UITextAutocorrectionType.No
         mailaddress.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
-        mailaddress.placeholder = "Adresse"
-        let page2 = OnboardingContentViewController.contentWithTitle(nil, body: "Bitte gib deine Emailadresse ein", videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
+        mailaddress.placeholder = NSLocalizedString("Address", comment: "")
+        let page2 = OnboardingContentViewController.contentWithTitle(nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
         
         password = UITextField.init()
         //text.textColor = UIColor.whiteColor()
@@ -89,9 +89,9 @@ class Onboarding {
         password.borderStyle = UITextBorderStyle.RoundedRect
         password.secureTextEntry = true
         password.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
-        password.placeholder = "Passwort"
-        let page3 = OnboardingContentViewController.contentWithTitle(nil, body: "Bitte gib\ndein Passwort ein", videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
-        let page4 = OnboardingContentViewController.contentWithTitle("Alles richtig?", body: nil, videoURL: nil, inputView: nil, buttonText: "Weiter", actionBlock: callback)
+        password.placeholder = NSLocalizedString("Password", comment: "")
+        let page3 = OnboardingContentViewController.contentWithTitle(nil, body: NSLocalizedString("InsertPassword", comment: ""), videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
+        let page4 = OnboardingContentViewController.contentWithTitle(NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
         
         
         return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, page2, page3, page4])
@@ -104,7 +104,7 @@ class Onboarding {
         let view = UIView.init()
         view.addSubview(activity)
         view.frame = activity.frame
-        let page1 = OnboardingContentViewController.contentWithTitle("Verbinde zum Mailserver", body: nil, videoURL: nil, inputView: view, buttonText: nil, actionBlock: nil)
+        let page1 = OnboardingContentViewController.contentWithTitle(NSLocalizedString("ConnectingToMailServer", comment: ""), body: nil, videoURL: nil, inputView: view, buttonText: nil, actionBlock: nil)
         
         return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
     }
@@ -115,17 +115,17 @@ class Onboarding {
         let view = UIView.init()
         view.addSubview(activity)
         view.frame = activity.frame
-        let page1 = OnboardingContentViewController.contentWithTitle("Erstelle und verwalte Schlüssel", body: nil, videoURL: nil, inputView: view, buttonText: nil, actionBlock: nil)
+        let page1 = OnboardingContentViewController.contentWithTitle(NSLocalizedString("CreateAndManageKeys", comment: ""), body: nil, videoURL: nil, inputView: view, buttonText: nil, actionBlock: nil)
         
         return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
     }
     
     static func detailOnboarding(callback: dispatch_block_t) -> UIViewController {
         
-        let start = OnboardingContentViewController.contentWithTitle("Schade!", body: "Die Verbindung zum Server konnte nicht hergestellt werden. Bitte überprüfe die folgenden Angaben und passe sie ggf. an.", videoURL: nil, inputView: nil, buttonText: nil, actionBlock: nil)
+        let start = OnboardingContentViewController.contentWithTitle(NSLocalizedString("WhatAShame", comment: ""), body: NSLocalizedString("CouldNotConnect", comment: ""), videoURL: nil, inputView: nil, buttonText: nil, actionBlock: nil)
         
         
-        let email = OnboardingContentViewController.contentWithTitle(nil, body: "Bitte gib deine Emailadresse ein", videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
+        let email = OnboardingContentViewController.contentWithTitle(nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
         
         username = UITextField.init()
         //text.textColor = UIColor.whiteColor()
@@ -134,12 +134,12 @@ class Onboarding {
         username.keyboardType = UIKeyboardType.EmailAddress
         username.autocorrectionType = UITextAutocorrectionType.No
         username.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
-        username.placeholder = "Nutzername"
+        username.placeholder = NSLocalizedString("Username", comment: "")
         username.text = UserManager.loadUserValue(Attribute.UserName) as? String
         
-        let user = OnboardingContentViewController.contentWithTitle(nil, body: "Bitte gib deinen Nutzernamen ein", videoURL: nil, inputView: username, buttonText: nil, actionBlock: nil)
+        let user = OnboardingContentViewController.contentWithTitle(nil, body: NSLocalizedString("InsertUsername", comment: ""), videoURL: nil, inputView: username, buttonText: nil, actionBlock: nil)
         
-        let passwd = OnboardingContentViewController.contentWithTitle(nil, body: "Bitte gib\ndein Passwort ein", videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
+        let passwd = OnboardingContentViewController.contentWithTitle(nil, body: NSLocalizedString("InsertPassword", comment: ""), videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
         
         imapServer.borderStyle = UITextBorderStyle.RoundedRect
         imapServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
@@ -183,7 +183,7 @@ class Onboarding {
         //}
         
         let imapAuthLabel = UILabel.init()
-        imapAuthLabel.text = "IMAP-Authentifizierung"
+        imapAuthLabel.text = "IMAP-"+NSLocalizedString("Authentification", comment: "")
         
         imapAuthLabel.textColor = UIColor.whiteColor();
         imapAuthLabel.font = font
@@ -213,7 +213,7 @@ class Onboarding {
         imapAuth.addSubview(imapAuthentication)
         let boolPointer = UnsafeMutablePointer<ObjCBool>.alloc(1)
         boolPointer[0] = false
-        let imap2 = OnboardingContentViewController.contentWithTitle(nil, body: "IMAP-Transferverschlüsselung", videoURL: nil, inputView: imapAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
+        let imap2 = OnboardingContentViewController.contentWithTitle(nil, body: "IMAP-"+NSLocalizedString("Transportencryption", comment: ""), videoURL: nil, inputView: imapAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
         
         
         smtpServer.borderStyle = UITextBorderStyle.RoundedRect
@@ -258,7 +258,7 @@ class Onboarding {
         //}
         
         let smtpAuthLabel = UILabel.init()
-        smtpAuthLabel.text = "SMTP-Authentifizierung"
+        smtpAuthLabel.text = "SMTP-"+NSLocalizedString("Authentification", comment: "")
         
         smtpAuthLabel.textColor = UIColor.whiteColor();
         smtpAuthLabel.font = font
@@ -287,10 +287,10 @@ class Onboarding {
         smtpAuth.addSubview(smtpAuthLabel)
         smtpAuth.addSubview(smtpAuthentication)
         boolPointer[0] = false
-        let smtp2 = OnboardingContentViewController.contentWithTitle(nil, body: "SMTP-Transferverschlüsselung", videoURL: nil, inputView: smtpAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
+        let smtp2 = OnboardingContentViewController.contentWithTitle(nil, body: "SMTP-"+NSLocalizedString("Transportencryption", comment: ""), videoURL: nil, inputView: smtpAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
 
         
-        let last = OnboardingContentViewController.contentWithTitle("Alles richtig?", body: nil, videoURL: nil, inputView: nil, buttonText: "Weiter", actionBlock: callback)
+        let last = OnboardingContentViewController.contentWithTitle(NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
         
         return Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, passwd, imap1, imap2, smtp1, smtp2, last])
     }
@@ -301,7 +301,7 @@ class Onboarding {
         let view = UIView.init()
         view.addSubview(activity)
         view.frame = activity.frame
-        let page1 = OnboardingContentViewController.contentWithTitle("Zugriff auf Kontakte", body: "Damit diese App richtig funktioniert, brauchen wir Zugriff auf deine Kontakte. Wir teilen diese Daten mit niemandem und senden sie auch nicht über das Internet.", videoURL: nil, inputView: nil, buttonText: "weiter", actionBlock: callback)
+        let page1 = OnboardingContentViewController.contentWithTitle(NSLocalizedString("AccessContacts", comment: ""), body: NSLocalizedString("AccessContactsDescription", comment: "Description, why we need access"), videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
         
         return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
     }
