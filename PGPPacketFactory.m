@@ -45,6 +45,7 @@
     NSData *packetBodyData = [PGPPacket parsePacketHeader:data headerLength:&headerLength nextPacketOffset:nextPacketOffset packetTag:&packetTag indeterminateLength:&indeterminateLength];
     NSData *packetHeaderData = [packetData subdataWithRange:(NSRange) {offset, headerLength}];
 
+    
     if (packetHeaderData.length > 0) {
         
         // Analyze body0

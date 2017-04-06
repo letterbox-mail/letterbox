@@ -61,8 +61,8 @@ class ListViewController: UITableViewController {
                     returnValue = subject.lowercaseString.containsString(searchText.lowercaseString)
                 }
             case 1:
-                if !returnValue && mail.decryptedMessage != nil {
-                    returnValue = mail.decryptedMessage!.lowercaseString.containsString(searchText.lowercaseString)
+                if !returnValue && mail.decryptedBody != nil {
+                    returnValue = mail.decryptedBody!.lowercaseString.containsString(searchText.lowercaseString)
                 } else if !returnValue && mail.body != nil {
                     returnValue = mail.body!.lowercaseString.containsString(searchText.lowercaseString)
                 }
@@ -86,8 +86,8 @@ class ListViewController: UITableViewController {
                 if let subject = mail.subject {
                     returnValue = subject.lowercaseString.containsString(searchText.lowercaseString)
                 }
-                if !returnValue && mail.decryptedMessage != nil {
-                    returnValue = mail.decryptedMessage!.lowercaseString.containsString(searchText.lowercaseString)
+                if !returnValue && mail.decryptedBody != nil {
+                    returnValue = mail.decryptedBody!.lowercaseString.containsString(searchText.lowercaseString)
                 } else if !returnValue && mail.body != nil {
                     returnValue = mail.body!.lowercaseString.containsString(searchText.lowercaseString)
                 }
@@ -144,7 +144,7 @@ class ListViewController: UITableViewController {
             cell.subjectLabel.font = UIFont.systemFontOfSize(17.0)
         }
         cell.subjectLabel.text = mail?.getSubjectWithFlagsString()
-        cell.bodyLabel.text = mail?.body
+        cell.bodyLabel.text = mail?.shortBodyString
         cell.dateLabel.text = mail?.timeString
 
         return cell

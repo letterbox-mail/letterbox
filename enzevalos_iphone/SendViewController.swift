@@ -203,6 +203,28 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
          enc?.addKey(data, forMailAddresses: ["alice2005@web.de"])                           //<---- Emailadresse
          }
          catch _ {}
+ */
+        //Import public key END
+        //---------------------------------------
+        
+        
+        //---------------------------------------
+        //ImportBobs Keys
+        /*
+         let path = NSBundle.mainBundle().pathForResource("bob2005", ofType: "asc")               //<---- Schlüsseldatei
+         let pgp = ObjectivePGP.init()
+         pgp.importKeysFromFile(path!, allowDuplicates: false)
+         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+         do {
+         let data = try pgp.keys[0].export()
+         enc?.addKey(data, forMailAddresses: ["bob2005@web.de"])                           //<---- Emailadresse
+         }
+         catch _ {}
+        do {
+            let data2 = try pgp.keys[1].export()
+            enc?.addKey(data2, forMailAddresses: [])                           //<---- Emailadresse
+        }
+        catch _ {}
         */
         //Import public key END
         //---------------------------------------
@@ -348,7 +370,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         if segue.identifier == "showContact" {
             let destinationVC = segue.destinationViewController as! ContactViewController
             if let sender = sender {
-                destinationVC.contact = (sender["record"] as! KeyRecord)
+                destinationVC.keyRecord = (sender["record"] as! KeyRecord)
                 destinationVC.highlightEmail = (sender["email"] as! String)
             }
         }
@@ -591,7 +613,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
 
     func getContemporarySecurityState() -> Bool {
-        toSecure = toText.dataSource!.isSecure!(toText)
+        toSecure = toText.dataSource!.isSecure!(toText) //TODO: Add pref enc field.
         ccSecure = ccText.dataSource!.isSecure!(ccText)
         return toSecure && ccSecure
     }

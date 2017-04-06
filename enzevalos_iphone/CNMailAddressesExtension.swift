@@ -22,6 +22,8 @@ public class CNMailAddressExtension: MailAddress{
         get{
             return false
         }
+        set{
+        }
     }
     public var hasKey: Bool{
         get{
@@ -31,5 +33,9 @@ public class CNMailAddressExtension: MailAddress{
     
     init(addr: CNLabeledValue){
         self.label = addr
+    }
+    
+    convenience init(addr: String){
+        self.init(addr: CNLabeledValue(label: CNLabelOther, value: addr))
     }
 }

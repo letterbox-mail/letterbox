@@ -143,8 +143,11 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
             }
             
             let adr: Mail_Address
-            adr = self.addresses?.anyObject() as! Mail_Address
-            con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address))
+            if let adrs = self.addresses{
+                 adr = adrs.anyObject() as! Mail_Address
+                con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address))
+            }
+           
             
             return con
         }

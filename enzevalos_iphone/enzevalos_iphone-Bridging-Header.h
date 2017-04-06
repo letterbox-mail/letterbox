@@ -14,3 +14,4 @@
 #import "PGPOnePassSignaturePacket.h"
 #import "PGPSignaturePacket.h"
 #import "PGPKeyID.h"
+#import "PGPPublicKeyPacket.h"

@@ -24,6 +24,7 @@
 - (NSArray * __nullable) importKeysFromFile:(NSString * __nonnull)path allowDuplicates:(BOOL)duplicates;
 - (NSArray * __nullable) importKeysFromData:(NSData * __nonnull)data allowDuplicates:(BOOL)duplicates;
 - (BOOL) importKey:(nonnull NSString *)shortKeyStringIdentifier fromFile:(nonnull NSString *)path;
+- (NSArray * __nullable) importPublicKeyFromHeader: (NSString * __nonnull) data allowDuplicates:(BOOL)duplicates;
 
 // Read keys
 - (nullable NSArray<PGPKey *> *) keysFromData:(nonnull NSData *)fileData;
@@ -34,6 +35,8 @@
 
 - (BOOL) exportKeys:(nonnull NSArray<PGPKey *> *)keys toFile:(nonnull NSString *)path error:(NSError * __autoreleasing __nullable * __nullable)error;
 - (nullable NSData *) exportKey:(nonnull PGPKey *)key armored:(BOOL)armored;
+- (nullable NSString *) exportKeyWithoutArmor:(nonnull PGPKey *)key;
+
 
 - (nullable PGPKey *) getKeyForIdentifier:(nonnull NSString *)keyIdentifier type:(PGPKeyType)keyType;
 - (nullable PGPKey *) getKeyForKeyID:(nonnull PGPKeyID *)searchKeyID type:(PGPKeyType)keyType;

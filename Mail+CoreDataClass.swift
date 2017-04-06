@@ -60,16 +60,27 @@ public class Mail: NSManagedObject, Comparable {
         return returnString
     }
 
-    var decryptedWithOldPrivateKey: Bool = false
-
-    var decryptedMessage: String? {
-        get {
-            return self.body
+    var shortBodyString: String? {
+        var message: String? = ""
+        if isEncrypted && !unableToDecrypt {
+            message = decryptedBody
+        } else {
+            message = body
         }
-        set {
-            self.body = newValue
+
+        if message != nil {
+            message = message!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            if message!.characters.count > 50 {
+                message = message!.substringToIndex(message!.startIndex.advancedBy(50))
+            }
+            let messageArray = message!.componentsSeparatedByString("\n")
+            return messageArray.joinWithSeparator(" ")
+        } else {
+            return nil
         }
     }
+
+    var decryptedWithOldPrivateKey: Bool = false
 
     func getReceivers() -> [Mail_Address] {
         var receivers = [Mail_Address] ()
@@ -78,7 +89,7 @@ public class Mail: NSManagedObject, Comparable {
         }
         return receivers
     }
-    
+
     func getCCs() -> [Mail_Address] {
         var receivers = [Mail_Address] ()
         for obj in cc! {
@@ -103,7 +114,7 @@ public class Mail: NSManagedObject, Comparable {
                 self.isEncrypted = true
                 //decrypt
                 encryption.decryptAndSignatureCheck(self)
-                
+
             }
             if encryption.isUsedForSignature(self) == true {
                 //TODO
@@ -116,8 +127,8 @@ public class Mail: NSManagedObject, Comparable {
         }
     }
 
-    
-    func liveDecrypt()-> String?{
+
+    func liveDecrypt() -> String? {
         let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
         if let encryption = EnzevalosEncryptionHandler.getEncryption(encType) {
             if encryption.isUsedForEncryption(self) == true {
@@ -133,7 +144,7 @@ public class Mail: NSManagedObject, Comparable {
                     self.isSigned = true
                 }
             }
-            
+
         }
         return nil
     }

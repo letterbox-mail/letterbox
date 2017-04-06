@@ -159,7 +159,7 @@
         } else {
             [base64String appendFormat:@"%@\n", line];
         }
-    }
+    }    
 
     // read checksum
     NSString *checksumString = nil;

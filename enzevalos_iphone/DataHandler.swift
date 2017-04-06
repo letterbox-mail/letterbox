@@ -178,29 +178,43 @@ class DataHandler {
         return result
     }
     
+    
+    
     // -------- Handle mail addresses ---------
-    func getMailAddress(address: String)-> Mail_Address {
+    func getMailAddress(address: String, temporary: Bool)-> MailAddress {
         let search  = find("Mail_Address", type: "address", search: address)
-        var mail_address: Mail_Address
         if search == nil || search!.count == 0 {
-            mail_address =  NSEntityDescription.insertNewObjectForEntityForName("Mail_Address",inManagedObjectContext: managedObjectContext) as! Mail_Address
-            mail_address.address = address
-            mail_address.prefer_encryption = false
+            if temporary{
+                return CNMailAddressExtension(addr: address)
+            }
+            else{
+                let mail_address =  NSEntityDescription.insertNewObjectForEntityForName("Mail_Address",inManagedObjectContext: managedObjectContext) as! Mail_Address
+                mail_address.address = address
+                mail_address.prefer_encryption = false
+                return mail_address
+            }
         }
         else {
-            mail_address = search![0] as! Mail_Address
+            return search![0] as! Mail_Address
         }
-        return mail_address
     }
     
-    func getMailAddressByMCOAddress(address: MCOAddress) -> Mail_Address {
-        return getMailAddress(address.mailbox!)
+    func getMailAddressesByString(addresses: [String], temporary: Bool) -> [MailAddress]{
+        var mailaddresses = [MailAddress]()
+        for adr in addresses{
+            mailaddresses.append(getMailAddress(adr, temporary: temporary))
+        }
+        return mailaddresses    
+    }
+    
+    func getMailAddressByMCOAddress(address: MCOAddress, temporary: Bool) -> MailAddress {
+        return getMailAddress(address.mailbox!, temporary: temporary)
     }
     
     func getMailAddressesByMCOAddresses(addresses: [MCOAddress])->[Mail_Address] {
         var mailaddresses = [Mail_Address]()
         for adr in addresses{
-            mailaddresses.append(getMailAddressByMCOAddress(adr))
+            mailaddresses.append(getMailAddressByMCOAddress(adr, temporary: false) as! Mail_Address)
         }
         return mailaddresses
     }
@@ -226,7 +240,7 @@ class DataHandler {
                 for adr in cnContact.emailAddresses {
                     let name = adr.value as! String
                     if name == address {
-                        let adr = getMailAddress(address)
+                        let adr = getMailAddress(address, temporary: false) as! Mail_Address
                         c.addToAddresses(adr)
                         adr.contact = c
                         return c
@@ -240,7 +254,7 @@ class DataHandler {
         if search == nil || search!.count == 0 {
             contact = NSEntityDescription.insertNewObjectForEntityForName("EnzevalosContact", inManagedObjectContext: managedObjectContext) as! EnzevalosContact
             contact.displayname = address
-            let adr = getMailAddress(address)
+            let adr = getMailAddress(address, temporary: false)as! Mail_Address
             contact.addToAddresses(adr)
             adr.contact = contact
             contacts.append(contact)
@@ -284,10 +298,14 @@ class DataHandler {
     
     
     // -------- Start handle to, cc, from addresses --------
-    private func handleFromAddress(sender: MCOAddress, fromMail: Mail) {
+    private func handleFromAddress(sender: MCOAddress, fromMail: Mail, autocrypt: AutocryptContact?) {
         let adr: Mail_Address
         let contact = getContactByMCOAddress(sender)
         adr = contact.getAddressByMCOAddress(sender)!
+        if let ac = autocrypt{
+            adr.prefEnc = ac.prefer_encryption
+            adr.encryptionType = ac.type
+        }
         fromMail.from = adr
     }
     
@@ -303,7 +321,7 @@ class DataHandler {
     
     // -------- End handle to, cc, from addresses --------
     
-    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?) -> Mail {
+    func createMail(uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: NSDate, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) -> Mail {
         
         let finding = findNum("Mail", type: "uid", search: uid)
         let mail: Mail
@@ -324,7 +342,7 @@ class DataHandler {
             mail.isEncrypted = false
             mail.trouble = false
 
-            handleFromAddress(sender, fromMail: mail)
+            handleFromAddress(sender, fromMail: mail, autocrypt: autocrypt)
             handleToAddresses(receivers, mail: mail)
             handleCCAddresses(cc, mail: mail)
             
@@ -346,7 +364,7 @@ class DataHandler {
            added =  r.addNewMail(mail)
         }
         if !added{
-            isInReceiverRecords(mail)
+            addToReceiverRecords(mail)
         }
        
         
@@ -400,7 +418,7 @@ class DataHandler {
         var records = [KeyRecord]()
         let mails = readMails()
         for m in mails {
-            isInRecords(m,records: &records)
+            addToRecords(m,records: &records)
         }
         for r in records {
             r.mails.sortInPlace()
@@ -409,27 +427,25 @@ class DataHandler {
         return records
     }
     
-    private func isInRecords(m:Mail, inout records: [KeyRecord] ){
+    private func addToRecords(m:Mail, inout records: [KeyRecord] ){
     
         var found = false
-        var usedRecord: KeyRecord? = nil
         for r in records {
             if r.addNewMail(m) {
                 found = true
-                usedRecord = r
                 records.sortInPlace()
                 break
             }
         }
         if !found {
-            usedRecord = KeyRecord(mail: m)
-            records.append(usedRecord!)
+            let r = KeyRecord(mail: m)
+            records.append(r)
             records.sortInPlace()
         }
     }
     
-    private func isInReceiverRecords(m: Mail){
-        isInRecords(m, records: &receiverRecords)
+    private func addToReceiverRecords(m: Mail){
+        addToRecords(m, records: &receiverRecords)
     }
     
     

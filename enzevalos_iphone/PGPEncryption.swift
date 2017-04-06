@@ -476,6 +476,18 @@ class PGPEncryption : Encryption {
         return nil
     }
     
+    func autocryptHeader(adr: String) -> String {
+        let keyId = self.getActualKeyID(adr)
+        let key = self.getKey(keyId!) as! PGPKeyWrapper
+        let pgpManger = self.keyManager
+        var string = "to=" + adr + "; type=p;prefer-encrypted=" + (UserManager.loadUserValue(Attribute.PrefEncryption) as! String) + ";key="
+        if let keyBase64 = pgpManger.pgp.exportKeyWithoutArmor(key.key){
+         string = string + keyBase64
+        }
+        return string
+    }
+    
+    
     //the libary (ObjectivePGP) we use has a different definition of keyID than we have. their keyID is calculated outof the key. We take their keyID and add a index in the end to handle collisions
     private func getLibaryKeyIDOverlap(libaryKeyID: String, ourKeyIDs: [String]) -> [String] {
         var returnValue: [String] = []
