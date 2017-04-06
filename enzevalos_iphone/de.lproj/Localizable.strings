@@ -18,7 +18,7 @@
 "Cancel" = "Abbrechen";
 "Cc" = "Kopie";
 "CouldNotConnect" = "Die Verbindung zum Server konnte nicht hergestellt werden. Bitte überprüfe die folgenden Angaben und passe sie ggf. an.";
-"ConnectingToMailserver" = "Verbinde zum Mailserver";
+"ConnectingToMailServer" = "Verbinde zum Mailserver";
 "Contacts" = "Kontakte";
 "Content" = "Inhalt";
 "ContentNo" = "Kein Inhalt";

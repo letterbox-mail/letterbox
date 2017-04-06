@@ -90,6 +90,7 @@
 		A196DF831E71A20D004AE144 /* FrequentCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A196DF821E71A20D004AE144 /* FrequentCollectionViewLayout.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
+		A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
@@ -286,6 +287,8 @@
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jabo.asc; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
+		A1BE3FF71E9664660040114B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1BE3FF91E96646A0040114B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1C7FF8E1E895367000D1E92 /* quizer1-public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "quizer1-public.asc"; sourceTree = "<group>"; };
@@ -491,6 +494,7 @@
 				A1EB05A31D956E32008659C1 /* Assets.xcassets */,
 				476142091E082F9C00FD5E4F /* Settings.bundle */,
 				A13526871D955BDF00D3BFE1 /* Info.plist */,
+				A1BE3FF81E9664660040114B /* InfoPlist.strings */,
 				A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */,
 			);
 			path = enzevalos_iphone;
@@ -815,6 +819,7 @@
 				A1C7FF911E8955BD000D1E92 /* quizer1-private.asc in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
+				A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */,
 				A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */,
 				A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */,
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
@@ -1122,6 +1127,15 @@
 				A1F992321DA7D2360073BF1B /* en */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A1BE3FF81E9664660040114B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1BE3FF71E9664660040114B /* en */,
+				A1BE3FF91E96646A0040114B /* de */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		A1F9922B1DA7C9100073BF1B /* Main.storyboard */ = {
