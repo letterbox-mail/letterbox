@@ -158,16 +158,7 @@ class MailHandler {
         let username = UserManager.loadUserValue(Attribute.UserName) as! String
         let useraddr = (UserManager.loadUserValue(Attribute.UserAddr) as! String)
 
-        let session = MCOSMTPSession()
-        session.hostname = UserManager.loadUserValue(Attribute.SMTPHostname) as! String
-        session.port = UInt32(UserManager.loadUserValue(Attribute.SMTPPort) as! Int)
-        session.username = username //useraddr
-        session.password = UserManager.loadUserValue(Attribute.UserPW) as! String
-        session.authType = MCOAuthType.init(rawValue: UserManager.loadUserValue(Attribute.SMTPAuthType) as! Int)//MCOAuthType.SASLPlain
-        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.SMTPConnectionType) as! Int)//MCOConnectionType.StartTLS
-        
-        let builder = MCOMessageBuilder()
-
+    
         var toReady: [MCOAddress] = []
         for addr in toEntrys {
             toReady.append(MCOAddress(displayName: addr, mailbox: addr))
@@ -269,8 +260,8 @@ class MailHandler {
         session.port = UInt32(UserManager.loadUserValue(Attribute.SMTPPort) as! Int)
         session.username = (UserManager.loadUserValue(Attribute.UserAddr) as! String)
         session.password = UserManager.loadUserValue(Attribute.UserPW) as! String
-        session.authType = MCOAuthType.SASLPlain
-        session.connectionType = MCOConnectionType.StartTLS
+        session.authType = MCOAuthType(rawValue: UserManager.loadUserValue(Attribute.SMTPAuthType) as! Int)
+        session.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.SMTPConnectionType) as! Int)
         return session
     }
 
