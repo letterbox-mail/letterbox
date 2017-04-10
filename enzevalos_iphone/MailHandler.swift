@@ -402,14 +402,14 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
             var autocrypt: AutocryptContact? = nil
             if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER){
                 autocrypt = AutocryptContact(header: header!)
-                print(autocrypt?.toString())
+                print(autocrypt?.toString() ?? "nil")
                 if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0){
                     let pgp = ObjectivePGP.init()
                     pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
                     let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                     do {
                         let pgpKey = try pgp.keys[0].export()
-                        enc?.addKey(pgpKey, forMailAddresses: [header.from.mailbox])
+                        enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
                     }
                     catch {
                         print("Could not conntect key! \(autocrypt?.toString())")
@@ -428,7 +428,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
                 }
             }
 
-            DataHandler.handler.createMail(UInt64(message.uid), sender: header.from, receivers: rec, cc: cc, time: header.date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
+            DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from)!, receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
             newMailCallback()
         }
     }
@@ -479,7 +479,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
         }
     }
 
-    func checkSMTP(_ completion: (NSError?) -> Void) {
+    func checkSMTP(_ completion: @escaping (Error?) -> Void) {
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let username = UserManager.loadUserValue(Attribute.userName) as! String
         
