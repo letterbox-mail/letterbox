@@ -7,7 +7,7 @@
 //
 
 #import <MailCore/MailCore.h>
-#import <BZipCompression/BZipCompression.h>
+//#import <BZipCompression/BZipCompression.h>
 #import <Onboard/OnboardingViewController.h>
 #import <Onboard/OnboardingContentViewController.h>
 #import "ObjectivePGP.h"

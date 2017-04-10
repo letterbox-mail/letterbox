@@ -9,29 +9,29 @@
 import Foundation
 import Contacts
 
-public class CNMailAddressExtension: MailAddress{
+open class CNMailAddressExtension: MailAddress{
 
-    public var mailAddress:String{
+    open var mailAddress:String{
         get{
             return label.value as! String
         }
     }
-    public var label: CNLabeledValue
+    open var label: CNLabeledValue<<#ValueType: NSCopying & NSSecureCoding#>>
     
-    public var prefEnc: Bool{
+    open var prefEnc: Bool{
         get{
             return false
         }
         set{
         }
     }
-    public var hasKey: Bool{
+    open var hasKey: Bool{
         get{
             return false
         }
     }
     
-    init(addr: CNLabeledValue){
+    init(addr: CNLabeledValue<<#ValueType: NSCopying & NSSecureCoding#>>){
         self.label = addr
     }
     

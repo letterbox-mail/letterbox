@@ -20,14 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var mailHandler = MailHandler()
     private var initialViewController : UIViewController? = nil
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
         ThemeManager.currentTheme()
         
-        if (!NSUserDefaults.standardUserDefaults().boolForKey("launchedBefore")) {
+        if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             self.initialViewController = self.window?.rootViewController
-            self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+            self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
             self.window?.makeKeyAndVisible()
@@ -53,59 +53,67 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //self.onboardingDone()
     }
     
-    func contactCheck(accessGranted: Bool) {
+    func contactCheck(_ accessGranted: Bool) {
         if accessGranted {
-            self.onboardingDone()
+            self.setupKeys()
         }
         else {
             //self.onboardingDone()
-            dispatch_async(dispatch_get_main_queue(),{
-                self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.onboardingDone)
+            DispatchQueue.main.async(execute: {
+                self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.setupKeys)
             });
         }
     }
     
-    func onboardingDone() {
+    func setupKeys() {
         self.window?.rootViewController = Onboarding.keyHandlingView()
-        Onboarding.keyHandling()
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
+        DispatchQueue.main.async(execute: {
+            Onboarding.keyHandling()
+            self.onboardingDone()
+        });
+    }
+    
+    func onboardingDone() {
+        /*self.window?.rootViewController = Onboarding.keyHandlingView()
+        Onboarding.keyHandling()*/
+        UserDefaults.standard.set(true, forKey: "launchedBefore")
         self.window?.rootViewController = self.initialViewController!
     }
     
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
     
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         //DataHandler.handler.terminate()
     }
     
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
     
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         DataHandler.handler.terminate()
     }
     
     
     class func getAppDelegate() -> AppDelegate {
-        return UIApplication.sharedApplication().delegate as! AppDelegate
+        return UIApplication.shared.delegate as! AppDelegate
     }
     
     
-    func showMessage(message: String, completion: (() -> Void)? ) {
-        let alertController = UIAlertController(title: "Enzevalos", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+    func showMessage(_ message: String, completion: (() -> Void)? ) {
+        let alertController = UIAlertController(title: "Enzevalos", message: message, preferredStyle: UIAlertControllerStyle.alert)
         
-        let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default) { (action : UIAlertAction) -> Void in
+        let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action : UIAlertAction) -> Void in
             if let cb = completion {
                 cb()
             }
@@ -116,35 +124,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //let pushedViewControllers = (self.window?.rootViewController as! UINavigationController).viewControllers
         let presentedViewController = self.window!.rootViewController!//pushedViewControllers[pushedViewControllers.count - 1]
         
-        presentedViewController.presentViewController(alertController, animated: false, completion: nil)
+        presentedViewController.present(alertController, animated: false, completion: nil)
     }
     
     
-    func requestForAccess(completionHandler: (accessGranted: Bool) -> Void) {
-        let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
+    func requestForAccess(_ completionHandler: @escaping (_ accessGranted: Bool) -> Void) {
+        let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
         
         switch authorizationStatus {
-        case .Authorized:
-            completionHandler(accessGranted: true)
+        case .authorized:
+            completionHandler(true)
             
-        case .NotDetermined:
-            self.contactStore.requestAccessForEntityType(CNEntityType.Contacts, completionHandler: { (access, accessError) -> Void in
+        case .notDetermined:
+            self.contactStore.requestAccess(for: CNEntityType.contacts, completionHandler: { (access, accessError) -> Void in
                 if access {
-                    completionHandler(accessGranted: access)
+                    completionHandler(access)
                 }
                 else {
-                    if authorizationStatus == CNAuthorizationStatus.Denied {
+                    if authorizationStatus == CNAuthorizationStatus.denied {
                         /*dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts through the Settings."
                             self.showMessage(message, completion: nil)
                         })*/
                     }
-                    completionHandler(accessGranted: false)
+                    completionHandler(false)
                 }
             })
             
         default:
-            completionHandler(accessGranted: false)
+            completionHandler(false)
         }
     }
     

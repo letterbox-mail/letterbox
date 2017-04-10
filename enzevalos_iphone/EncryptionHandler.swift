@@ -14,13 +14,13 @@ public protocol EncryptionHandler {
     
     
     //handle entrys in keychain for different Encryptions
-    func addPersistentData(data: NSData, searchKey: String, encryptionType: EncryptionType)
+    func addPersistentData(_ data: Data, searchKey: String, encryptionType: EncryptionType)
     //for all encryptions
     //func getPersistentData(searchKey: String) -> NSData?
-    func hasPersistentData(searchKey: String, encryptionType: EncryptionType) -> Bool
+    func hasPersistentData(_ searchKey: String, encryptionType: EncryptionType) -> Bool
     //for given encryption
-    func getPersistentData(searchKey: String, encryptionType: EncryptionType) -> NSData?
-    func replacePersistentData(searchKey: String, replacementData: NSData, encryptionType: EncryptionType) //-> Bool
-    func deletePersistentData(searchKey: String, encryptionType: EncryptionType) //-> Bool
+    func getPersistentData(_ searchKey: String, encryptionType: EncryptionType) -> Data?
+    func replacePersistentData(_ searchKey: String, replacementData: Data, encryptionType: EncryptionType) //-> Bool
+    func deletePersistentData(_ searchKey: String, encryptionType: EncryptionType) //-> Bool
     
 }

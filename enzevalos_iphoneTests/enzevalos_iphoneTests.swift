@@ -28,18 +28,18 @@ class enzevalos_iphoneTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }
     
     
-    func isSorted(array: [KeyRecord]) -> Bool {
+    func isSorted(_ array: [KeyRecord]) -> Bool {
         let startIndex = 0
         let endIndex = array.count - 1
         
         var previousIndex = startIndex
-        var currentIndex = startIndex.successor()
+        var currentIndex = (startIndex + 1)
         
         while currentIndex < endIndex {
             
@@ -48,7 +48,7 @@ class enzevalos_iphoneTests: XCTestCase {
             }
             
             previousIndex = currentIndex
-            currentIndex = currentIndex.successor()
+            currentIndex = (currentIndex + 1)
         }
         
         return true

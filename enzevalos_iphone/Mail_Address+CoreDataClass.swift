@@ -12,24 +12,24 @@ import CoreData
 import Contacts
 
 @objc(Mail_Address)
-public class Mail_Address: NSManagedObject, MailAddress {
+open class Mail_Address: NSManagedObject, MailAddress {
 
-    public var mailAddress: String {
+    open var mailAddress: String {
         return address
     }
 
-    public var label: CNLabeledValue {
+    open var label: CNLabeledValue<NSString> { //Wie in MailAddress; Ist der NSString hier richtig? (http://stackoverflow.com/questions/39648830/how-to-add-new-email-to-cnmutablecontact-in-swift-3)
         if let cnc = self.contact.cnContact {
             for adr in cnc.emailAddresses {
-                if adr.value as! String == address {
+                if adr.value as String == address {
                     return adr
                 }
             }
         }
-        return CNLabeledValue.init(label: CNLabelOther, value: address)
+        return CNLabeledValue.init(label: CNLabelOther, value: address as NSString)
     }
 
-    public var prefEnc: Bool {
+    open var prefEnc: Bool {
         get{
             return prefer_encryption
         }
@@ -39,7 +39,7 @@ public class Mail_Address: NSManagedObject, MailAddress {
     }
 
     //TODO think about it!
-    public var keyID: String? {
+    open var keyID: String? {
         get {
             if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
                 return encryption.getActualKeyID(self.address)
@@ -67,7 +67,7 @@ public class Mail_Address: NSManagedObject, MailAddress {
         }
     }
 
-    public var hasKey: Bool {
+    open var hasKey: Bool {
         if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
             return encryption.hasKey(self.mailAddress)
         }

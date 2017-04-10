@@ -19,95 +19,95 @@ public protocol Encryption {
     init(encHandler: EncryptionHandler)
     
     //check whether this encryption is used in this mail. This means is it used for encryption OR signing.
-    func isUsed(mail: Mail) -> Bool
+    func isUsed(_ mail: Mail) -> Bool
     
     //check whether this encryption is used in this text. This means is it used for encryption OR signing. the key is not known to be used. nil is returned, if there is no answer to be made at the moment.
-    func isUsed(text: String, key: KeyWrapper?) -> Bool
+    func isUsed(_ text: String, key: KeyWrapper?) -> Bool
     
     //check whether this encryption is used in this mail for encryption. nil is returned, if there is no answer to be made at the moment.
-    func isUsedForEncryption(mail: Mail) -> Bool?
+    func isUsedForEncryption(_ mail: Mail) -> Bool?
     
     //check whether this encryption is used in this text for encryption. the key is not known to be used. nil is returned, if there is no answer to be made at the moment.
-    func isUsedForEncryption(text: String, key: KeyWrapper?) -> Bool?
+    func isUsedForEncryption(_ text: String, key: KeyWrapper?) -> Bool?
     
     //check whether this encryption is used in this mail for signing. nil is returned, if there is no answer to be made at the moment.
-    func isUsedForSignature(mail: Mail) -> Bool?
+    func isUsedForSignature(_ mail: Mail) -> Bool?
     
     //check whether this encryption is used in this text for signing. nil is returned, if there is no answer to be made at the moment.
-    func isUsedForSignature(text: String, key: KeyWrapper?) -> Bool?
+    func isUsedForSignature(_ text: String, key: KeyWrapper?) -> Bool?
     
     //decrypt the mails body. the decryted body will be saved in the mail object.
-    func decrypt(mail: Mail) -> String?
+    func decrypt(_ mail: Mail) -> String?
     
     //decrypt the mails body. the decryted body will be saved in the mail object.
     //Signaturechecking included. will be set in mail object too.
-    func decryptAndSignatureCheck(mail: Mail)
+    func decryptAndSignatureCheck(_ mail: Mail)
     
     //decrypt the text with the given key and return it.
-    func decrypt(text: String, keyID: String) -> String?
+    func decrypt(_ text: String, keyID: String) -> String?
     
     //check whether the mail is correctly signed with this encryption. nil is returned, if there is no answer to be made at the moment.
-    func isCorrectlySigned(mail: Mail) -> Bool?
+    func isCorrectlySigned(_ mail: Mail) -> Bool?
     
     //check whether the text is correctly signed with this encryption.
-    func isCorrectlySigned(text: String, key: KeyWrapper) -> Bool?
+    func isCorrectlySigned(_ text: String, key: KeyWrapper) -> Bool?
     
     //encrypt mail for contact
-    func encrypt(mail: Mail)
+    func encrypt(_ mail: Mail)
     
-    func encrypt(text: String, mailaddresses: [String]) -> NSData?
+    func encrypt(_ text: String, mailaddresses: [String]) -> Data?
     
     //encrypt text with key
-    func encrypt(text: String, keyIDs: [String]) -> NSData?
+    func encrypt(_ text: String, keyIDs: [String]) -> Data?
     
     //sign mail
-    func sign(mail: Mail)
+    func sign(_ mail: Mail)
     
     //sign text
-    func sign(text: String, key: KeyWrapper) -> String
+    func sign(_ text: String, key: KeyWrapper) -> String
     
     //sign and encrypt mail for contact
-    func signAndEncrypt(mail: Mail, forContact: KeyRecord)
-    func signAndEncrypt(text: String, keyIDs: [String]) -> NSData?
-    func signAndEncrypt(text: String, mailaddresses: [String]) -> NSData?
+    func signAndEncrypt(_ mail: Mail, forContact: KeyRecord)
+    func signAndEncrypt(_ text: String, keyIDs: [String]) -> Data?
+    func signAndEncrypt(_ text: String, mailaddresses: [String]) -> Data?
     
-    func addKey(keyData: NSData, forMailAddresses: [String]?) -> String?
+    func addKey(_ keyData: Data, forMailAddresses: [String]?) -> String?
     
-    func addKey(keyData: NSData, forMailAddresses: [String]?, discoveryMailUID: UInt64?) -> String?
+    func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?) -> String?
     
     //key is connected to the senders address, if discoveryMail is set
-    func addKey(keyData: NSData, discoveryMail: Mail?) -> String?
+    func addKey(_ keyData: Data, discoveryMail: Mail?) -> String?
     
     //will be maybe deleted... because keyWrapper will be added when constructed
     //func addKey(key: KeyWrapper, forMailAddress: [String]?, callBack: ((success: Bool) -> Void)?)
     
-    func hasKey(enzContact: EnzevalosContact) -> Bool
-    func hasKey(mailaddress: String) -> Bool
-    func getKeyIDs(enzContact: EnzevalosContact) -> [String]?
-    func getKeyIDs(mailaddress: String) -> [String]?
+    func hasKey(_ enzContact: EnzevalosContact) -> Bool
+    func hasKey(_ mailaddress: String) -> Bool
+    func getKeyIDs(_ enzContact: EnzevalosContact) -> [String]?
+    func getKeyIDs(_ mailaddress: String) -> [String]?
     
-    func getActualKeyID(mailaddress: String) -> String?
+    func getActualKeyID(_ mailaddress: String) -> String?
     
-    func keyIDExists(keyID: String) -> Bool
+    func keyIDExists(_ keyID: String) -> Bool
     
-    func getKey(keyID: String) -> KeyWrapper?
+    func getKey(_ keyID: String) -> KeyWrapper?
     
     //internaly done; update is done when a keyWrapper is manipulated
     //func updateKey(key: KeyWrapper, callBack: ((success: Bool) -> Void)?)
-    func removeKey(keyID: String) //-> Bool
+    func removeKey(_ keyID: String) //-> Bool
     
-    func removeKey(key: KeyWrapper) //-> Bool
+    func removeKey(_ key: KeyWrapper) //-> Bool
     
     //includes privatekeys too
     func removeAllKeys()
     
     func printAllKeyIDs()
     
-    func addMailAddressForKey(mailAddress: String, keyID: String)
+    func addMailAddressForKey(_ mailAddress: String, keyID: String)
     
-    func removeMailAddressForKey(mailaddress: String, keyID: String)
+    func removeMailAddressForKey(_ mailaddress: String, keyID: String)
     
-    func keyOfThisEncryption(keyData: NSData) -> Bool?
+    func keyOfThisEncryption(_ keyData: Data) -> Bool?
     
-    func autocryptHeader(adr: String) -> String
+    func autocryptHeader(_ adr: String) -> String
 }

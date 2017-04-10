@@ -10,7 +10,7 @@ import Foundation
 import Contacts
 import UIKit
 
-public class KeyRecord: Record {
+open class KeyRecord: Record {
     /*
      A record contains a signing key (or none because of insecure communication), a contact (inlucding mail-addresses) and mails.
      For each key we have a different record for mailboxes. Mails and contact are affliate with the key.
@@ -19,16 +19,16 @@ public class KeyRecord: Record {
 
     let key: String?
 
-    public var addresses: [MailAddress] = [MailAddress]()
+    open var addresses: [MailAddress] = [MailAddress]()
 
-    public var name: String {
+    open var name: String {
         return ezContact.name
     }
-    public var hasKey: Bool {
+    open var hasKey: Bool {
         return key != nil
     }
 
-    public var isVerified: Bool {
+    open var isVerified: Bool {
         if let key = self.key {
             if let keywrapper = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)?.getKey(key) {
                 return keywrapper.verified
@@ -39,12 +39,12 @@ public class KeyRecord: Record {
     }
 
 
-    public var mails: [Mail] = [Mail]()
+    open var mails: [Mail] = [Mail]()
 
 
-    public var ezContact: EnzevalosContact
+    open var ezContact: EnzevalosContact
 
-    public var cnContact: CNContact? {
+    open var cnContact: CNContact? {
         return ezContact.cnContact
     }
 
@@ -54,10 +54,10 @@ public class KeyRecord: Record {
         self.mails = [Mail] ()
     }
 
-    public var image: UIImage {
+    open var image: UIImage {
         return ezContact.getImageOrDefault()
     }
-    public var color: UIColor {
+    open var color: UIColor {
         return ezContact.getColor()
     }
 
@@ -70,22 +70,22 @@ public class KeyRecord: Record {
             self.key = nil
         }
         mails.append(mail)
-        mails.sortInPlace()
+        mails.sort()
         self.ezContact = mail.from.contact
         addNewAddress(mail.from)        
     }
 
-    public static func deleteRecordFromRecordArray(records: [KeyRecord], delRecord: KeyRecord) -> [KeyRecord] {
+    open static func deleteRecordFromRecordArray(_ records: [KeyRecord], delRecord: KeyRecord) -> [KeyRecord] {
         var myrecords = [KeyRecord](records)
         let index = indexInRecords(myrecords, record: delRecord)
         if index >= 0 {
-            myrecords.removeAtIndex(index)
+            myrecords.remove(at: index)
         }
         return myrecords
     }
 
-    public static func indexInRecords(records: [KeyRecord], record: KeyRecord) -> Int {
-        for (index, r) in records.enumerate() {
+    open static func indexInRecords(_ records: [KeyRecord], record: KeyRecord) -> Int {
+        for (index, r) in records.enumerated() {
             if (matchAddresses(r, record2: record) && r.hasKey == record.hasKey && r.key == record.key) {
                 return index
             }
@@ -93,7 +93,7 @@ public class KeyRecord: Record {
         return -1
     }
 
-    private func isInRecords(records: [KeyRecord]) -> Bool {
+    private func isInRecords(_ records: [KeyRecord]) -> Bool {
         if KeyRecord.indexInRecords(records, record: self) >= 0 {
             return true
         }
@@ -101,7 +101,7 @@ public class KeyRecord: Record {
     }
 
 
-    private static func matchAddresses(record1: KeyRecord, record2: KeyRecord) -> Bool {
+    private static func matchAddresses(_ record1: KeyRecord, record2: KeyRecord) -> Bool {
         for adr1 in record1.addresses {
             for adr2 in record2.addresses {
                 if adr1.mailAddress == adr2.mailAddress {
@@ -115,14 +115,14 @@ public class KeyRecord: Record {
 
 
 
-    public func showInfos() {
+    open func showInfos() {
         print("-----------------")
         print("Name: \(ezContact.displayname) | State: \(hasKey) | #Mails: \(mails.count)")
         print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.from.address) | date: \(mails.first?.date.description) ")
-        print("subj: \(mails.first?.subject?.capitalizedString)")
+        print("subj: \(mails.first?.subject?.capitalized)")
     }
 
-    public func addNewAddress(adr: MailAddress) -> Bool {
+    open func addNewAddress(_ adr: MailAddress) -> Bool {
         for a in addresses {
             if a.mailAddress == adr.mailAddress {
                 return false
@@ -132,12 +132,12 @@ public class KeyRecord: Record {
         return true
     }
 
-    public func addNewMail(mail: Mail) -> Bool {
+    open func addNewMail(_ mail: Mail) -> Bool {
         //TODO: signed only mails are dropped ??
         if mail.isSecure && self.hasKey {
             if mail.from.keyID == self.key {
                 mails.append(mail)
-                mails.sortInPlace()
+                mails.sort()
                 addNewAddress(mail.from)
                 return true
             }
@@ -160,14 +160,14 @@ public class KeyRecord: Record {
 
 
             mails.append(mail)
-            mails.sortInPlace()
+            mails.sort()
             addNewAddress(mail.from)
             return true
         }
         return false
     }
 
-    public func getImageOrDefault() -> UIImage {
+    open func getImageOrDefault() -> UIImage {
         return ezContact.getImageOrDefault()
     }
 
@@ -175,7 +175,7 @@ public class KeyRecord: Record {
 
 
 
-private func isEmpty(contact: KeyRecord) -> Bool {
+private func isEmpty(_ contact: KeyRecord) -> Bool {
     return contact.mails.count == 0
 }
 

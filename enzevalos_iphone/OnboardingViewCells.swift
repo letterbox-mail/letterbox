@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class SwitchCell : UITableViewCell {
+open class SwitchCell : UITableViewCell {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var switcher: UISwitch!
 }

@@ -9,13 +9,13 @@
 import Foundation
 
 class TextFormatter {
-    static func insertBeforeEveryLine(insertion: String, text: String) -> String{
-        let textSep = text.componentsSeparatedByString("\n")
+    static func insertBeforeEveryLine(_ insertion: String, text: String) -> String{
+        let textSep = text.components(separatedBy: "\n")
         var ret = ""
         for t in textSep {
-            ret.appendContentsOf(insertion)
-            ret.appendContentsOf(t)
-            ret.appendContentsOf("\n")
+            ret.append(insertion)
+            ret.append(t)
+            ret.append("\n")
         }
         return ret
     }

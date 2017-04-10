@@ -11,7 +11,7 @@ import Foundation
 import Contacts
 
 class InboxViewController: UITableViewController, InboxCellDelegator {
-    let dateFormatter = NSDateFormatter()
+    let dateFormatter = DateFormatter()
 
     /*
     var contacts: [KeyRecord] = [] {
@@ -29,7 +29,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
  */
 
     @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
-    var lastUpdateLabel = UILabel(frame: CGRectZero)
+    var lastUpdateLabel = UILabel(frame: CGRect.zero)
     var lastUpdateText: String? {
         didSet {
             lastUpdateLabel.text = lastUpdateText
@@ -37,7 +37,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         }
     }
 
-    var lastUpdate: NSDate?
+    var lastUpdate: Date?
 
 
     func addNewMail() {
@@ -70,55 +70,55 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         tableView.sectionHeaderHeight = 1
         tableView.sectionFooterHeight = 0
 
-        self.refreshControl?.addTarget(self, action: #selector(InboxViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(InboxViewController.refresh(_:)), for: UIControlEvents.valueChanged)
         self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
 
         lastUpdateLabel.sizeToFit()
-        lastUpdateLabel.backgroundColor = UIColor.clearColor()
-        lastUpdateLabel.textAlignment = .Center
-        lastUpdateLabel.font = UIFont.systemFontOfSize(13)
-        lastUpdateLabel.textColor = UIColor.blackColor()
+        lastUpdateLabel.backgroundColor = UIColor.clear
+        lastUpdateLabel.textAlignment = .center
+        lastUpdateLabel.font = UIFont.systemFont(ofSize: 13)
+        lastUpdateLabel.textColor = UIColor.black
         lastUpdateButton.customView = lastUpdateLabel
 
 
         //AppDelegate.getAppDelegate().mailHandler.delegate = self
 
-        dateFormatter.locale = NSLocale.currentLocale()
-        dateFormatter.timeStyle = .MediumStyle
+        dateFormatter.locale = Locale.current
+        dateFormatter.timeStyle = .medium
 
-        tableView.registerNib(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
+        tableView.register(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
     }
 
-    func refresh(refreshControl: UIRefreshControl) {
+    func refresh(_ refreshControl: UIRefreshControl) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         AppDelegate.getAppDelegate().mailHandler.receiveAll(newMailCallback: addNewMail, completionCallback: getMailCompleted)
     }
 
-    func getMailCompleted(error: Bool) {
+    func getMailCompleted(_ error: Bool) {
         if let rc = self.refreshControl {
-            lastUpdate = NSDate()
+            lastUpdate = Date()
             rc.endRefreshing()
-            lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.stringFromDate(lastUpdate!))"
+            lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))"
             // self.contacts.sortInPlace({ $0 < $1 })
             
             self.tableView.reloadData()
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
 
-        if lastUpdate == nil || NSDate().timeIntervalSinceDate(lastUpdate!) > 30 {
+        if lastUpdate == nil || Date().timeIntervalSince(lastUpdate!) > 30 {
             self.refreshControl?.beginRefreshingManually()
         }
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("inboxCell", forIndexPath: indexPath) as! InboxTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as! InboxTableViewCell
 
         cell.delegate = self
         cell.enzContact = DataHandler.handler.receiverRecords[indexPath.section]
@@ -128,50 +128,50 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         return cell
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return DataHandler.handler.receiverRecords.count
     }
 
     // set top and bottom seperator height
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return 0.01
         }
         return tableView.sectionHeaderHeight
     }
 
-    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0.01
     }
 
-    func callSegueFromCell(mail: Mail?) {
-        performSegueWithIdentifier("readMailSegue", sender: mail)
+    func callSegueFromCell(_ mail: Mail?) {
+        performSegue(withIdentifier: "readMailSegue", sender: mail)
     }
 
     //TODO: Whats that? What is the error?
 
-    func callSegueFromCell2(contact: KeyRecord?) {
-        performSegueWithIdentifier("mailListSegue", sender: contact)
+    func callSegueFromCell2(_ contact: KeyRecord?) {
+        performSegue(withIdentifier: "mailListSegue", sender: contact)
     }
 
-    func callSegueToContact(contact: KeyRecord?) {
-        performSegueWithIdentifier("contactSegue", sender: contact)
+    func callSegueToContact(_ contact: KeyRecord?) {
+        performSegue(withIdentifier: "contactSegue", sender: contact)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "readMailSegue" {
             if let mail = sender as? Mail {
-                let DestinationViewController: ReadViewController = segue.destinationViewController as! ReadViewController
+                let DestinationViewController: ReadViewController = segue.destination as! ReadViewController
                 DestinationViewController.mail = mail
             }
         } else if segue.identifier == "mailListSegue" {
             if let contact = sender as? KeyRecord {
-                let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
+                let DestinationViewController: ListViewController = segue.destination as! ListViewController
                 DestinationViewController.contact = contact
             }
         } else if segue.identifier == "contactSegue" {
             if let contact = sender as? KeyRecord {
-                let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
+                let DestinationViewController: ContactViewController = segue.destination as! ContactViewController
                 DestinationViewController.keyRecord = contact
             }
         }

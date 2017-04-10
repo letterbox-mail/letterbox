@@ -28,28 +28,28 @@ class InboxTableViewCell: UITableViewCell {
     @IBOutlet weak var seperator2: NSLayoutConstraint!
     @IBOutlet weak var contactButton: UIButton!
 
-    @IBAction func firstButtonPressed(sender: AnyObject) {
-        if let delegate = delegate where firstMail != nil {
+    @IBAction func firstButtonPressed(_ sender: AnyObject) {
+        if let delegate = delegate, firstMail != nil {
             firstButton.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
             print("Open mail \(firstMail?.subject) | read status: \(firstMail?.isRead)")
             delegate.callSegueFromCell(firstMail)
         }
     }
 
-    @IBAction func secondButtonPressed(sender: AnyObject) {
-        if let delegate = delegate where secondMail != nil {
+    @IBAction func secondButtonPressed(_ sender: AnyObject) {
+        if let delegate = delegate, secondMail != nil {
             secondButton.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
             delegate.callSegueFromCell(secondMail)
         }
     }
 
-    @IBAction func moreButtonPressed(sender: AnyObject) {
+    @IBAction func moreButtonPressed(_ sender: AnyObject) {
         if let delegate = delegate {
             delegate.callSegueFromCell2(enzContact)
         }
     }
 
-    @IBAction func contactButtonPressed(sender: AnyObject) {
+    @IBAction func contactButtonPressed(_ sender: AnyObject) {
         if let delegate = delegate {
             delegate.callSegueToContact(enzContact)
         }
@@ -59,19 +59,19 @@ class InboxTableViewCell: UITableViewCell {
         super.layoutSubviews()
 
         // prevent two buttons being pressed at the same time
-        firstButton.exclusiveTouch = true
-        secondButton.exclusiveTouch = true
-        moreButton.exclusiveTouch = true
-        contactButton.exclusiveTouch = true
+        firstButton.isExclusiveTouch = true
+        secondButton.isExclusiveTouch = true
+        moreButton.isExclusiveTouch = true
+        contactButton.isExclusiveTouch = true
 
-        firstButton.backgroundColor = UIColor.clearColor()
-        secondButton.backgroundColor = UIColor.clearColor()
-        firstButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
-        firstButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchDragExit, .TouchCancel])
-        secondButton.addTarget(self, action: .cellTouched, forControlEvents: [.TouchDown, .TouchDragEnter])
-        secondButton.addTarget(self, action: .clearCell, forControlEvents: [.TouchUpOutside, .TouchDragExit, .TouchCancel])
-        seperator.constant = 1 / UIScreen.mainScreen().scale
-        seperator2.constant = 1 / UIScreen.mainScreen().scale
+        firstButton.backgroundColor = UIColor.clear
+        secondButton.backgroundColor = UIColor.clear
+        firstButton.addTarget(self, action: .cellTouched, for: [.touchDown, .touchDragEnter])
+        firstButton.addTarget(self, action: .clearCell, for: [.touchUpOutside, .touchDragExit, .touchCancel])
+        secondButton.addTarget(self, action: .cellTouched, for: [.touchDown, .touchDragEnter])
+        secondButton.addTarget(self, action: .clearCell, for: [.touchUpOutside, .touchDragExit, .touchCancel])
+        seperator.constant = 1 / UIScreen.main.scale
+        seperator2.constant = 1 / UIScreen.main.scale
     }
 
     var enzContact: KeyRecord? {
@@ -80,12 +80,12 @@ class InboxTableViewCell: UITableViewCell {
                 firstMail = con.mails.first
                 if con.mails.count > 1 {
                     secondMail = con.mails[1]
-                    secondButton.enabled = true
+                    secondButton.isEnabled = true
                 } else {
                     secondDateLabel.text = ""
                     secondSubjectLabel.text = ""
                     secondMessageLabel.text = NSLocalizedString("NoFurtherMessages", comment: "There is only one message from this sender.")
-                    secondButton.enabled = false
+                    secondButton.isEnabled = false
                 }
                 if con.hasKey {
                     iconView.image = IconsStyleKit.imageOfLetterBG
@@ -106,9 +106,9 @@ class InboxTableViewCell: UITableViewCell {
         didSet {
             if let mail = firstMail {
                 if !mail.isRead {
-                    firstSubjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
+                    firstSubjectLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
                 } else {
-                    firstSubjectLabel.font = UIFont.systemFontOfSize(17.0)
+                    firstSubjectLabel.font = UIFont.systemFont(ofSize: 17.0)
                 }
 
                 firstSubjectLabel.text = mail.getSubjectWithFlagsString()
@@ -124,9 +124,9 @@ class InboxTableViewCell: UITableViewCell {
         didSet {
             if let mail = secondMail {
                 if !mail.isRead {
-                    secondSubjectLabel.font = UIFont.boldSystemFontOfSize(17.0)
+                    secondSubjectLabel.font = UIFont.boldSystemFont(ofSize: 17.0)
                 } else {
-                    secondSubjectLabel.font = UIFont.systemFontOfSize(17.0)
+                    secondSubjectLabel.font = UIFont.systemFont(ofSize: 17.0)
                 }
 
                 secondSubjectLabel.text = mail.getSubjectWithFlagsString()
@@ -135,22 +135,22 @@ class InboxTableViewCell: UITableViewCell {
 
                 secondDateLabel.text = mail.timeString
 
-                moreButton.enabled = true
+                moreButton.isEnabled = true
             }
         }
     }
 
     var contact: CNContact?
 
-    func cellTouched(sender: AnyObject) {
+    func cellTouched(_ sender: AnyObject) {
         if let button = sender as? UIButton {
             button.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
         }
     }
 
-    func clearCell(sender: AnyObject) {
+    func clearCell(_ sender: AnyObject) {
         if let button = sender as? UIButton {
-            UIView.animateWithDuration(0.5, animations: { button.backgroundColor = UIColor.clearColor() })
+            UIView.animate(withDuration: 0.5, animations: { button.backgroundColor = UIColor.clear })
         }
     }
 }

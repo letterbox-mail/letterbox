@@ -23,6 +23,6 @@ public protocol Record: Comparable {
     var addresses: [MailAddress] { get }
 
 
-    func addNewAddress(adr: MailAddress) -> Bool
-    func addNewMail(mail: Mail) -> Bool
+    func addNewAddress(_ adr: MailAddress) -> Bool
+    func addNewMail(_ mail: Mail) -> Bool
 }

@@ -33,24 +33,24 @@ class OnboardingViewController : UIViewController {
         EnzevalosEncryptionHandler.getEncryption(.PGP)?.printAllKeyIDs()
     }
     
-    @IBAction func privateKey(sender: AnyObject, forEvent event: UIEvent) {
+    @IBAction func privateKey(_ sender: AnyObject, forEvent event: UIEvent) {
         pKey = !pKey
     }
-    @IBAction func jakobKey(sender: AnyObject, forEvent event: UIEvent) {
+    @IBAction func jakobKey(_ sender: AnyObject, forEvent event: UIEvent) {
         jKey = !jKey
     }
-    @IBAction func aliceKey(sender: AnyObject, forEvent event: UIEvent) {
+    @IBAction func aliceKey(_ sender: AnyObject, forEvent event: UIEvent) {
         aKey = !aKey
     }
-    @IBAction func quizer1Key(sender: AnyObject, forEvent event: UIEvent) {
+    @IBAction func quizer1Key(_ sender: AnyObject, forEvent event: UIEvent) {
         q1Key = !q1Key
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?){
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if segue.identifier == "onboarding" {
             var mAddr = ""
             var mPw = ""
-            if let addr = mailaddress?.text where addr != "" {
+            if let addr = mailaddress?.text, addr != "" {
                 //if addr.componentsSeparatedByString("@")[1] != "web.de" {
                 // naechste view
                 //}
@@ -59,7 +59,7 @@ class OnboardingViewController : UIViewController {
                  UserManager.storeUserValue(guessedUserName, attribute: Attribute.UserName)*/
                 mAddr = addr
             }
-            if let pw = password?.text where pw != "" {
+            if let pw = password?.text, pw != "" {
                 //UserManager.storeUserValue(pw, attribute: Attribute.UserPW)//Attribute.attributeValues[Attribute.UserPW] = pw
                 mPw = pw
             }
@@ -75,12 +75,12 @@ class OnboardingViewController : UIViewController {
                 //---------------------------------------
                 //Import private Key BEGIN
                 
-                 var path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg")        //<---- Schlüsseldatei
-                 if mAddr.containsString("@") && mAddr.componentsSeparatedByString("@")[1] == Provider.ENZEVALOS.rawValue {
-                        path = NSBundle.mainBundle().pathForResource("quizer1-private", ofType: "asc")
+                 var path = Bundle.main.path(forResource: "alice2005-private", ofType: "gpg")        //<---- Schlüsseldatei
+                 if mAddr.contains("@") && mAddr.components(separatedBy: "@")[1] == Provider.ENZEVALOS.rawValue {
+                        path = Bundle.main.path(forResource: "quizer1-private", ofType: "asc")
                  }
                 let pgp = ObjectivePGP.init()
-                 pgp.importKeysFromFile(path!, allowDuplicates: false)
+                 pgp.importKeys(fromFile: path!, allowDuplicates: false)
                  let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                  do {
                  let data = try pgp.keys[0].export()
@@ -95,9 +95,9 @@ class OnboardingViewController : UIViewController {
                 //---------------------------------------
                 //Import public Key BEGIN
                 
-                 let path = NSBundle.mainBundle().pathForResource("JakobBode", ofType: "asc")               //<---- Schlüsseldatei
+                 let path = Bundle.main.path(forResource: "JakobBode", ofType: "asc")               //<---- Schlüsseldatei
                  let pgp = ObjectivePGP.init()
-                 pgp.importKeysFromFile(path!, allowDuplicates: false)
+                 pgp.importKeys(fromFile: path!, allowDuplicates: false)
                  let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                  do {
                  let data = try pgp.keys[0].export()
@@ -112,9 +112,9 @@ class OnboardingViewController : UIViewController {
                 //---------------------------------------
                 //Import public Key BEGIN
                 
-                 let path = NSBundle.mainBundle().pathForResource("alice2005-public", ofType: "gpg")               //<---- Schlüsseldatei
+                 let path = Bundle.main.path(forResource: "alice2005-public", ofType: "gpg")               //<---- Schlüsseldatei
                  let pgp = ObjectivePGP.init()
-                 pgp.importKeysFromFile(path!, allowDuplicates: false)
+                 pgp.importKeys(fromFile: path!, allowDuplicates: false)
                  let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                  do {
                  let data = try pgp.keys[0].export()
@@ -129,9 +129,9 @@ class OnboardingViewController : UIViewController {
                 //---------------------------------------
                 //Import public Key BEGIN
                 
-                let path = NSBundle.mainBundle().pathForResource("quizer1-public", ofType: "asc")               //<---- Schlüsseldatei
+                let path = Bundle.main.path(forResource: "quizer1-public", ofType: "asc")               //<---- Schlüsseldatei
                 let pgp = ObjectivePGP.init()
-                pgp.importKeysFromFile(path!, allowDuplicates: false)
+                pgp.importKeys(fromFile: path!, allowDuplicates: false)
                 let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                 do {
                     let data = try pgp.keys[0].export()
@@ -142,42 +142,43 @@ class OnboardingViewController : UIViewController {
                 //Import public key END
                 //---------------------------------------
             }
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "launchedBefore")
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
     }
     
-    func iterateEnum<T: Hashable>(_: T.Type) -> AnyGenerator<T> {
+    func iterateEnum<T: Hashable>(_: T.Type) -> AnyIterator<T> {
         var i = 0
-        return anyGenerator {
-            let next = withUnsafePointer(&i) { UnsafePointer<T>($0).memory }
-            return next.hashValue == i++ ? next : nil
+        return AnyIterator {
+            let next = withUnsafePointer(to: &i) { UnsafeRawPointer($0).load(as: T.self) }
+            i += 1
+            return next.hashValue == i-1 ? next : nil
         }
     }
     
-    func setGuessValues(mailAddress: String, pw: String) {
+    func setGuessValues(_ mailAddress: String, pw: String) {
         if mailAddress != "" {
-            let guessedUserName = mailAddress.componentsSeparatedByString("@")[0]
-            let provider = mailAddress.componentsSeparatedByString("@")[1]
-            UserManager.storeUserValue(mailAddress, attribute: Attribute.UserAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
-            UserManager.storeUserValue(guessedUserName, attribute: Attribute.UserName)
+            let guessedUserName = mailAddress.components(separatedBy: "@")[0]
+            let provider = mailAddress.components(separatedBy: "@")[1]
+            UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
+            UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
             if provider == Provider.FU.rawValue {
                 Providers.setValues(Provider.FU)
-                UserManager.storeUserValue("jakobsbode", attribute: Attribute.Accountname)
-                UserManager.storeUserValue("jakobsbode", attribute: Attribute.UserName)
+                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.accountname)
+                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.userName)
             }
             if provider == Provider.ZEDAT.rawValue {
                 Providers.setValues(Provider.ZEDAT)
-                UserManager.storeUserValue("jakobsbode", attribute: Attribute.Accountname)
-                UserManager.storeUserValue("jakobsbode", attribute: Attribute.UserName)
+                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.accountname)
+                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.userName)
             }
             if provider == Provider.ENZEVALOS.rawValue {
                 Providers.setValues(Provider.ENZEVALOS)
-                UserManager.storeUserValue(guessedUserName, attribute: Attribute.Accountname)
-                UserManager.storeUserValue(guessedUserName, attribute: Attribute.UserName)
+                UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.accountname)
+                UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
             }
         }
         if pw != "" {
-            UserManager.storeUserValue(pw, attribute: Attribute.UserPW)
+            UserManager.storeUserValue(pw as AnyObject?, attribute: Attribute.userPW)
         }
         smtpCheckDone = false
         imapCheckDone = false
@@ -189,14 +190,14 @@ class OnboardingViewController : UIViewController {
         print("checks ", imapCheck, smtpCheck)
     }
     
-    private func SMTPCompletion(error: NSError?) {
+    private func SMTPCompletion(_ error: NSError?) {
         if error == nil {
             smtpCheck = true
         }
         smtpCheckDone = true
     }
     
-    private func IMAPCompletion(error: NSError?) {
+    private func IMAPCompletion(_ error: NSError?) {
         if error == nil {
             imapCheck = true
         }
@@ -211,7 +212,7 @@ extension OnboardingViewController : UITableViewDelegate {
 
 extension OnboardingViewController : UITableViewDataSource {
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 2
         }
@@ -221,29 +222,29 @@ extension OnboardingViewController : UITableViewDataSource {
         return 0
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return "Credentials"
         }
         return "Keys"
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                let cell = tableView.dequeueReusableCellWithIdentifier("InputCell") as! InputCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "InputCell") as! InputCell
                 cell.label.text = "Mailaddress"
                 cell.textfield.placeholder = "address"
-                cell.textfield.keyboardType = UIKeyboardType.EmailAddress
-                cell.textfield.autocorrectionType = UITextAutocorrectionType.No
+                cell.textfield.keyboardType = UIKeyboardType.emailAddress
+                cell.textfield.autocorrectionType = UITextAutocorrectionType.no
                 self.mailaddress = cell.textfield
                 return cell
             }
             if indexPath.row == 1 {
-                let cell = tableView.dequeueReusableCellWithIdentifier("InputCell") as! InputCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "InputCell") as! InputCell
                 cell.label.text = "Password"
                 cell.textfield.placeholder = "password"
-                cell.textfield.secureTextEntry = true
+                cell.textfield.isSecureTextEntry = true
                 self.password = cell.textfield
                 return cell
                 
@@ -251,35 +252,35 @@ extension OnboardingViewController : UITableViewDataSource {
         }
         if indexPath.section == 1 {
             if indexPath.row == 0 {
-                let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchCell
                 cell.label.text = "import private key"
-                cell.switcher.addTarget(self, action: #selector(privateKey), forControlEvents: .ValueChanged)
+                cell.switcher.addTarget(self, action: #selector(privateKey), for: .valueChanged)
                 return cell
             }
             if indexPath.row == 1 {
-                let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchCell
                 cell.label.text = "import jakob's pub-key"
-                cell.switcher.addTarget(self, action: #selector(jakobKey), forControlEvents: .ValueChanged)
+                cell.switcher.addTarget(self, action: #selector(jakobKey), for: .valueChanged)
                 return cell
             }
             if indexPath.row == 2 {
-                let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchCell
                 cell.label.text = "import alice's pub-key"
-                cell.switcher.addTarget(self, action: #selector(aliceKey), forControlEvents: .ValueChanged)
+                cell.switcher.addTarget(self, action: #selector(aliceKey), for: .valueChanged)
                 return cell
             }
             if indexPath.row == 3 {
-                let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchCell
                 cell.label.text = "import quizer1's pub-key"
-                cell.switcher.addTarget(self, action: #selector(quizer1Key), forControlEvents: .ValueChanged)
+                cell.switcher.addTarget(self, action: #selector(quizer1Key), for: .valueChanged)
                 return cell
             }
         }
-        let cell = tableView.dequeueReusableCellWithIdentifier("AliceKeyCell")!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AliceKeyCell")!
         return cell
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
 }

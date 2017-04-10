@@ -11,13 +11,23 @@ enum Provider : String {
 }
 
 class Providers {
-    static let config: [Provider : [Attribute : AnyObject?]] = [
-        Provider.WEB : [.SMTPHostname : "smtp.web.de", .SMTPPort : 587, .IMAPHostname : "imap.web.de", .IMAPPort : 993, .IMAPConnectionType: MCOConnectionType.TLS.rawValue, .IMAPAuthType: MCOAuthType.SASLPlain.rawValue, .SMTPConnectionType: MCOConnectionType.StartTLS.rawValue, .SMTPAuthType: MCOAuthType.SASLPlain.rawValue],
-        Provider.FU : [.SMTPHostname : "mail.zedat.fu-berlin.de", .SMTPPort : 587, .IMAPHostname : "mail.zedat.fu-berlin.de", .IMAPPort : 993, .IMAPConnectionType: MCOConnectionType.TLS.rawValue, .IMAPAuthType: MCOAuthType.SASLPlain.rawValue, .SMTPConnectionType: MCOConnectionType.StartTLS.rawValue, .SMTPAuthType: MCOAuthType.SASLPlain.rawValue],
-        Provider.ZEDAT : [.SMTPHostname : "mail.zedat.fu-berlin.de", .SMTPPort : 587, .IMAPHostname : "mail.zedat.fu-berlin.de", .IMAPPort : 143, .IMAPConnectionType: MCOConnectionType.StartTLS.rawValue, .IMAPAuthType: MCOAuthType.SASLPlain.rawValue, .SMTPConnectionType: MCOConnectionType.TLS.rawValue, .SMTPAuthType: MCOAuthType.SASLPlain.rawValue],
-        Provider.ENZEVALOS : [.SMTPHostname : "mail.enzevalos.de", .SMTPPort : 465, .IMAPHostname : "mail.enzevalos.de", .IMAPPort : 993, .IMAPConnectionType: MCOConnectionType.TLS.rawValue, .IMAPAuthType: MCOAuthType.SASLPlain.rawValue, .SMTPConnectionType: MCOConnectionType.TLS.rawValue, .SMTPAuthType: MCOAuthType.SASLPlain.rawValue]]
+    static let config: [Provider : [Attribute : AnyObject?]] = createConfig()
+
+        /*Provider.WEB : [.smtpHostname : "smtp.web.de" as AnyObject?, .smtpPort : 587 as AnyObject?, .imapHostname : "imap.web.de" as AnyObject?, .imapPort : 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .smtpConnectionType: MCOConnectionType.startTLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?],
+        Provider.FU : [.smtpHostname : "mail.zedat.fu-berlin.de" as AnyObject?, .smtpPort : 587 as AnyObject?, .imapHostname : "mail.zedat.fu-berlin.de" as AnyObject?, .imapPort : 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .smtpConnectionType: MCOConnectionType.startTLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?],
+        Provider.ZEDAT : [.smtpHostname : "mail.zedat.fu-berlin.de" as AnyObject?, .smtpPort : 587 as AnyObject?, .imapHostname : "mail.zedat.fu-berlin.de" as AnyObject?, .imapPort : 143 as AnyObject?, .imapConnectionType: MCOConnectionType.startTLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .smtpConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?],
+        Provider.ENZEVALOS : [.smtpHostname : "mail.enzevalos.de" as AnyObject?, .smtpPort : 465 as AnyObject?, .imapHostname : "mail.enzevalos.de" as AnyObject?, .imapPort : 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .smtpConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?]*/
     
-    static func setValues(provider: Provider) {
+    static func createConfig() -> [Provider : [Attribute : AnyObject?]] {
+        var config: [Provider : [Attribute : AnyObject?]] = [:]
+        config.updateValue([.smtpHostname : "smtp.web.de" as AnyObject?, .smtpPort : 587 as AnyObject?, .imapHostname : "imap.web.de" as AnyObject?, .imapPort : 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .smtpConnectionType: MCOConnectionType.startTLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?], forKey: Provider.WEB)
+        config.updateValue([.smtpHostname : "mail.zedat.fu-berlin.de" as AnyObject?, .smtpPort : 587 as AnyObject?, .imapHostname : "mail.zedat.fu-berlin.de" as AnyObject?, .imapPort : 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .smtpConnectionType: MCOConnectionType.startTLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?], forKey: Provider.FU)
+        config.updateValue([.smtpHostname : "mail.zedat.fu-berlin.de" as AnyObject?, .smtpPort : 587 as AnyObject?, .imapHostname : "mail.zedat.fu-berlin.de" as AnyObject?, .imapPort : 143 as AnyObject?, .imapConnectionType: MCOConnectionType.startTLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .smtpConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?], forKey: Provider.ZEDAT)
+        config.updateValue([.smtpHostname : "mail.enzevalos.de" as AnyObject?, .smtpPort : 465 as AnyObject?, .imapHostname : "mail.enzevalos.de" as AnyObject?, .imapPort : 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .smtpConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?], forKey: Provider.ENZEVALOS)
+        return config
+    }
+    
+    static func setValues(_ provider: Provider) {
         for key in (config[provider]?.keys)! {
             UserManager.storeUserValue(config[provider]![key]!, attribute: key)
         }

@@ -20,14 +20,14 @@ enum Theme: Int{
      Strong security indicators -> weak + different colors
      Very strong security indicators -> strong + animation
     */
-   case No_security_indicator, Weak_security_indicator, Strong_security_indicator, Very_strong_security_indicator
+   case no_security_indicator, weak_security_indicator, strong_security_indicator, very_strong_security_indicator
     
     
     var uncryptedMessageColor: UIColor{
         switch  self {
-        case .No_security_indicator:
+        case .no_security_indicator:
             return defaultColor
-        case .Weak_security_indicator:
+        case .weak_security_indicator:
                 return defaultColor
         default:
             // orange
@@ -39,9 +39,9 @@ enum Theme: Int{
     
     var encryptedMessageColor: UIColor{
         switch  self {
-        case .No_security_indicator:
+        case .no_security_indicator:
             return defaultColor
-        case .Weak_security_indicator:
+        case .weak_security_indicator:
             return defaultColor
         default:
             // green
@@ -52,9 +52,9 @@ enum Theme: Int{
     
     var encryptedVerifiedMessageColor: UIColor{
         switch  self {
-        case .No_security_indicator:
+        case .no_security_indicator:
             return defaultColor
-        case .Weak_security_indicator:
+        case .weak_security_indicator:
             return defaultColor
         default:
             // green
@@ -64,9 +64,9 @@ enum Theme: Int{
     
     var troubleMessageColor: UIColor{
         switch  self {
-        case .No_security_indicator:
+        case .no_security_indicator:
             return defaultColor
-        case .Weak_security_indicator:
+        case .weak_security_indicator:
             return defaultColor
         default:
             // red
@@ -80,10 +80,10 @@ enum Theme: Int{
 
 struct ThemeManager{
     static func currentTheme() -> Theme {
-        if let storedTheme = NSUserDefaults.standardUserDefaults().valueForKey(SelectedThemeKey)?.integerValue {
+        if let storedTheme = (UserDefaults.standard.value(forKey: SelectedThemeKey)? as AnyObject).intValue {
             return Theme(rawValue: storedTheme)!
         } else {
-            return .Very_strong_security_indicator
+            return .very_strong_security_indicator
         }
     }
     
@@ -104,12 +104,12 @@ struct ThemeManager{
     }
     
     static func animation() -> Bool {
-            return currentTheme() == .Very_strong_security_indicator
+            return currentTheme() == .very_strong_security_indicator
     }
     
-    static func applyTheme(theme: Theme) {
-        NSUserDefaults.standardUserDefaults().setValue(theme.rawValue, forKey: SelectedThemeKey)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    static func applyTheme(_ theme: Theme) {
+        UserDefaults.standard.setValue(theme.rawValue, forKey: SelectedThemeKey)
+        UserDefaults.standard.synchronize()
     }
     
     static var defaultColor: UIColor = UIColor(red: 249/255, green: 249/255, blue: 249/255, alpha: 1.0)

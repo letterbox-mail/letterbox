@@ -17,7 +17,7 @@ class FrequentCell : UICollectionViewCell {
     var address = ""
     var identifier = ""
     
-    func drawBackgroud(color : UIColor){
+    func drawBackgroud(_ color : UIColor){
         var myBounds = CGRect()
         myBounds.size.width = 70
         myBounds.size.height = 70
@@ -28,16 +28,16 @@ class FrequentCell : UICollectionViewCell {
         //
         // Clip context to a circle
         //
-        let path = CGPathCreateWithEllipseInRect(myBounds, nil);
-        CGContextAddPath(context!, path);
-        CGContextClip(context!);
+        let path = CGPath(ellipseIn: myBounds, transform: nil);
+        context!.addPath(path);
+        context!.clip();
         
         
         //
         // Fill background of context
         //
-        CGContextSetFillColorWithColor(context!, color.CGColor)
-        CGContextFillRect(context!, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
+        context!.setFillColor(color.cgColor)
+        context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
         
         let snapshot = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();

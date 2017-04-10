@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(State)
-public class State: NSManagedObject {
+open class State: NSManagedObject {
     
 }

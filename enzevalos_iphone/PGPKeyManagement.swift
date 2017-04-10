@@ -22,59 +22,59 @@ class PGPKeyManagement {
         //get or create keyIDs
         var data = self.encryptionHandler.getPersistentData("keyIDs", encryptionType: self.encryptionType)
         if let unwrappedData = data {
-            self.keyIDs = (NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as! NSDictionary) as! [String: [String]]
+            self.keyIDs = (NSKeyedUnarchiver.unarchiveObject(with: unwrappedData) as! NSDictionary) as! [String: [String]]
         }
         else {
-            data = NSKeyedArchiver.archivedDataWithRootObject(keyIDs)
+            data = NSKeyedArchiver.archivedData(withRootObject: keyIDs)
             self.encryptionHandler.addPersistentData(data!, searchKey: "keyIDs", encryptionType: self.encryptionType)
         }
         data = self.encryptionHandler.getPersistentData("addresses", encryptionType: self.encryptionType)
         if let unwrappedData = data {
-            self.addresses = (NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as! NSDictionary) as! [String: [String]]
+            self.addresses = (NSKeyedUnarchiver.unarchiveObject(with: unwrappedData) as! NSDictionary) as! [String: [String]]
         }
         else {
-            data = NSKeyedArchiver.archivedDataWithRootObject(addresses)
+            data = NSKeyedArchiver.archivedData(withRootObject: addresses)
             self.encryptionHandler.addPersistentData(data!, searchKey: "addresses", encryptionType: self.encryptionType)
         }
         data = self.encryptionHandler.getPersistentData("actualPrivateKey", encryptionType: self.encryptionType)
         if let unwrappedData = data {
-            self.actualPrivateKey = NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as? String
+            self.actualPrivateKey = NSKeyedUnarchiver.unarchiveObject(with: unwrappedData) as? String
         }
         else {
             self.actualPrivateKey = nil
         }
         data = self.encryptionHandler.getPersistentData("privateKeys", encryptionType: self.encryptionType)
         if let unwrappedData = data {
-            self.privateKeys = NSKeyedUnarchiver.unarchiveObjectWithData(unwrappedData) as! [String]
+            self.privateKeys = NSKeyedUnarchiver.unarchiveObject(with: unwrappedData) as! [String]
         }
         else {
             self.privateKeys = []
-            let insertData = NSKeyedArchiver.archivedDataWithRootObject(self.privateKeys)
+            let insertData = NSKeyedArchiver.archivedData(withRootObject: self.privateKeys)
             encryptionHandler.addPersistentData(insertData, searchKey: "privateKeys", encryptionType: self.encryptionType)
         }
         self.pgp = ObjectivePGP.init()
     }
     
-    func getMaxIndex(fingerprint: String) -> Int64 {
+    func getMaxIndex(_ fingerprint: String) -> Int64 {
         var index : Int64 = 0
         if let indexData = encryptionHandler.getPersistentData(fingerprint+"-index", encryptionType: self.encryptionType){
-            indexData.getBytes(&index, length: sizeof(Int64))
+            (indexData as NSData).getBytes(&index, length: sizeof(Int64))
         }
         
         return index
     }
     
-    func addKey(key: PGPKeyWrapper, forMailAddresses: [String]) -> String{
+    func addKey(_ key: PGPKeyWrapper, forMailAddresses: [String]) -> String{
         var index : Int64 = 0
         let searchKey = key.key.keyID.longKeyString+"-index"
         var existent = false
         if let indexData = encryptionHandler.getPersistentData(searchKey, encryptionType: self.encryptionType){
             existent = true
-            indexData.getBytes(&index, length: sizeof(Int64))
+            (indexData as NSData).getBytes(&index, length: sizeof(Int64))
         }
         
         index += 1
-        let indexData = NSData(bytes: &index, length: sizeof(Int64))
+        let indexData = Data(bytes: UnsafePointer<UInt8>(&index), count: sizeof(Int64))
         if !existent {
             encryptionHandler.addPersistentData(indexData, searchKey: searchKey, encryptionType: self.encryptionType)
         }
@@ -85,7 +85,7 @@ class PGPKeyManagement {
         let keyID = key.key.keyID.longKeyString+"-"+String(index)
         key.setOnceKeyID(keyID)
         
-        let data = NSKeyedArchiver.archivedDataWithRootObject(key)
+        let data = NSKeyedArchiver.archivedData(withRootObject: key)
         //key-ID should be created once
         //encryptionHandler.addPersistentData(data, searchKey: key.keyID, encryptionType: self.encryptionType)
         
@@ -112,24 +112,24 @@ class PGPKeyManagement {
     }
     
     
-    func updateKey(key: PGPKeyWrapper) {
+    func updateKey(_ key: PGPKeyWrapper) {
         if encryptionHandler.hasPersistentData(key.keyID, encryptionType: self.encryptionType) {
-            let keyData = NSKeyedArchiver.archivedDataWithRootObject(key)
+            let keyData = NSKeyedArchiver.archivedData(withRootObject: key)
             encryptionHandler.replacePersistentData(key.keyID, replacementData: keyData, encryptionType: self.encryptionType)
             return
         }
     }
     
-    func findPublicKeyInBase64(key: PGPKeyWrapper)-> String{
+    func findPublicKeyInBase64(_ key: PGPKeyWrapper)-> String{
         if let data = self.pgp.exportKeyWithoutArmor(key.key){
             return data
         }
         return ""
     }
     
-    func addMailAddressesForKey(mailAddresses: [String], keyID: String){
+    func addMailAddressesForKey(_ mailAddresses: [String], keyID: String){
         for addr in mailAddresses{
-            let mailAddress = addr.lowercaseString
+            let mailAddress = addr.lowercased()
             //insert keyID in keyIDs
             if var keys = keyIDs[mailAddress]{
                 if !keys.contains(keyID) {
@@ -154,20 +154,20 @@ class PGPKeyManagement {
         saveDictionarys()
     }
     
-    func removeMailAddressesForKey(mailAddresses: [String], keyID: String) {
+    func removeMailAddressesForKey(_ mailAddresses: [String], keyID: String) {
         for addr in mailAddresses{
-            let mailAddress = addr.lowercaseString
+            let mailAddress = addr.lowercased()
             //remove keyID outof keyIDs
             if var keys = keyIDs[mailAddress]{
                 if keys.contains(keyID) {
-                    keys.removeAtIndex(keys.indexOf(keyID)!)
+                    keys.remove(at: keys.index(of: keyID)!)
                     keyIDs[mailAddress] = keys
                 }
             }
             //remove mailAddress outof addresses
             if var mAddresses = addresses[keyID]{
                 if mAddresses.contains(mailAddress) {
-                    mAddresses.removeAtIndex(mAddresses.indexOf(mailAddress)!)
+                    mAddresses.remove(at: mAddresses.index(of: mailAddress)!)
                     addresses[keyID] = mAddresses
                 }
             }
@@ -175,11 +175,11 @@ class PGPKeyManagement {
         saveDictionarys()
     }
     
-    func getKeyIDsForMailAddress(mailAddress: String) -> [String]?{
+    func getKeyIDsForMailAddress(_ mailAddress: String) -> [String]?{
         return keyIDs[mailAddress]
     }
     
-    func getActualKeyIDForMailaddress(mailaddress: String) -> String? {
+    func getActualKeyIDForMailaddress(_ mailaddress: String) -> String? {
         return keyIDs[mailaddress]?.last
     }
     
@@ -196,19 +196,19 @@ class PGPKeyManagement {
         return self.privateKeys
     }
     
-    func getKey(keyID: String) -> PGPKeyWrapper? {
+    func getKey(_ keyID: String) -> PGPKeyWrapper? {
         if let data = (encryptionHandler.getPersistentData(keyID, encryptionType: self.encryptionType)) {
-            let keywrapper = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? PGPKeyWrapper
+            let keywrapper = NSKeyedUnarchiver.unarchiveObject(with: data) as? PGPKeyWrapper
             return keywrapper
         }
         return nil
     }
     
-    func getMailAddressesForKeyID(keyID: String) -> [String]?{
+    func getMailAddressesForKeyID(_ keyID: String) -> [String]?{
         return addresses[keyID]
     }
     
-    func keyIDExists(keyID: String) -> Bool {
+    func keyIDExists(_ keyID: String) -> Bool {
         if let addr = addresses[keyID] {
             return addr != []
         }
@@ -216,7 +216,7 @@ class PGPKeyManagement {
     }
     
     //if the actualPrivateKey is removed a old key is set as actualPrivateKey, if availiable
-    func removeKey(keyID: String) {
+    func removeKey(_ keyID: String) {
         removePrivateKey(keyID)
         
         var addrs: [String] = []
@@ -227,8 +227,8 @@ class PGPKeyManagement {
         encryptionHandler.deletePersistentData(keyID, encryptionType: self.encryptionType)
     }
     
-    private func cleanIndex(keyID: String) {
-        let index = keyID.componentsSeparatedByString("-")[0]+"-index"
+    private func cleanIndex(_ keyID: String) {
+        let index = keyID.components(separatedBy: "-")[0]+"-index"
         encryptionHandler.deletePersistentData(index, encryptionType: self.encryptionType)
     }
     
@@ -241,7 +241,7 @@ class PGPKeyManagement {
         self.actualPrivateKey = nil
         encryptionHandler.deletePersistentData("actualPrivateKey", encryptionType: self.encryptionType)
         encryptionHandler.deletePersistentData("privateKeys", encryptionType: self.encryptionType)
-        let insertData = NSKeyedArchiver.archivedDataWithRootObject(self.privateKeys)
+        let insertData = NSKeyedArchiver.archivedData(withRootObject: self.privateKeys)
         encryptionHandler.addPersistentData(insertData, searchKey: "privateKeys", encryptionType: self.encryptionType)
         for keyID in addresses.keys {
             self.removeKey(keyID)
@@ -276,19 +276,19 @@ class PGPKeyManagement {
     
     
     private func saveDictionarys(){
-        var data = NSKeyedArchiver.archivedDataWithRootObject(keyIDs as NSDictionary)
+        var data = NSKeyedArchiver.archivedData(withRootObject: keyIDs as NSDictionary)
         encryptionHandler.replacePersistentData("keyIDs", replacementData: data, encryptionType: self.encryptionType)
-        data = NSKeyedArchiver.archivedDataWithRootObject(addresses as NSDictionary)
+        data = NSKeyedArchiver.archivedData(withRootObject: addresses as NSDictionary)
         encryptionHandler.replacePersistentData("addresses", replacementData: data, encryptionType: self.encryptionType)
     }
     
-    private func addPrivateKey(key: PGPKeyWrapper) {
-        if key.key.type == PGPKeyType.Secret {
+    private func addPrivateKey(_ key: PGPKeyWrapper) {
+        if key.key.type == PGPKeyType.secret {
             privateKeys.append(key.keyID)
-            var data = NSKeyedArchiver.archivedDataWithRootObject(privateKeys)
+            var data = NSKeyedArchiver.archivedData(withRootObject: privateKeys)
             encryptionHandler.replacePersistentData("privateKeys", replacementData: data, encryptionType: self.encryptionType)
             actualPrivateKey = key.keyID
-            data = NSKeyedArchiver.archivedDataWithRootObject(actualPrivateKey!)
+            data = NSKeyedArchiver.archivedData(withRootObject: actualPrivateKey!)
             if encryptionHandler.hasPersistentData("actualPrivateKey", encryptionType: self.encryptionType) {
                 encryptionHandler.replacePersistentData("actualPrivateKey", replacementData: data, encryptionType: self.encryptionType)
             }
@@ -299,18 +299,18 @@ class PGPKeyManagement {
         }
     }
     
-    private func removePrivateKey(keyID: String) {
+    private func removePrivateKey(_ keyID: String) {
         if privateKeys.contains(keyID) {
-            privateKeys.removeAtIndex(privateKeys.indexOf(keyID)!)
+            privateKeys.remove(at: privateKeys.index(of: keyID)!)
             actualPrivateKey = privateKeys.last
             if let key = actualPrivateKey {
-                let data = NSKeyedArchiver.archivedDataWithRootObject(key)
+                let data = NSKeyedArchiver.archivedData(withRootObject: key)
                 encryptionHandler.replacePersistentData("actualPrivateKey", replacementData: data, encryptionType: self.encryptionType)
             }
             else {
                 encryptionHandler.deletePersistentData("actualPrivateKey", encryptionType: self.encryptionType)
             }
-            let data = NSKeyedArchiver.archivedDataWithRootObject(privateKeys)
+            let data = NSKeyedArchiver.archivedData(withRootObject: privateKeys)
             encryptionHandler.addPersistentData(data, searchKey: "privateKeys", encryptionType: self.encryptionType)
             self.useOnlyActualPrivateKey()
         }

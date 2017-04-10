@@ -11,60 +11,60 @@ import Foundation
 
 
 enum Attribute: Int{
-    case Accountname, UserName, UserAddr, UserPW, SMTPHostname, SMTPPort, IMAPHostname, IMAPPort, PrefEncryption, PublicKey, AutocryptType, IMAPConnectionType, IMAPAuthType, SMTPConnectionType, SMTPAuthType
+    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType
     
     var defaultValue:AnyObject? {
         switch self {
-        case .Accountname:
-            return Attribute.attributeValues[Attribute.Accountname]! //return "Alice"
-        case .UserName:
-            return Attribute.attributeValues[Attribute.UserName]! //return "Alice2005"
-        case .UserAddr:
-            return Attribute.attributeValues[Attribute.UserAddr]! //return "alice2005@web.de"
-        case .UserPW:
-            return Attribute.attributeValues[Attribute.UserPW]! //return "WJ$CE:EtUo3E$"
-        case .SMTPHostname:
-            return Attribute.attributeValues[Attribute.SMTPHostname]! //return "smtp.web.de"
-        case .SMTPPort:
-            return 587
-        case .IMAPHostname:
-            return "imap.web.de"
-        case .IMAPPort:
-            return 993
-        case .PrefEncryption:
-            return "yes" // yes or no
-        case .AutocryptType:
-            return "p" // only openpgp 
-        case .IMAPConnectionType:
-            return MCOConnectionType.TLS.rawValue
-        case .IMAPAuthType:
-            return MCOAuthType.SASLPlain.rawValue
-        case .SMTPConnectionType:
-            return MCOConnectionType.StartTLS.rawValue
-        case .SMTPAuthType:
-            return MCOAuthType.SASLPlain.rawValue
+        case .accountname:
+            return Attribute.attributeValues[Attribute.accountname]! //return "Alice"
+        case .userName:
+            return Attribute.attributeValues[Attribute.userName]! //return "Alice2005"
+        case .userAddr:
+            return Attribute.attributeValues[Attribute.userAddr]! //return "alice2005@web.de"
+        case .userPW:
+            return Attribute.attributeValues[Attribute.userPW]! //return "WJ$CE:EtUo3E$"
+        case .smtpHostname:
+            return Attribute.attributeValues[Attribute.smtpHostname]! //return "smtp.web.de"
+        case .smtpPort:
+            return 587 as AnyObject?
+        case .imapHostname:
+            return "imap.web.de" as AnyObject?
+        case .imapPort:
+            return 993 as AnyObject?
+        case .prefEncryption:
+            return "yes" as AnyObject? // yes or no
+        case .autocryptType:
+            return "p" as AnyObject? // only openpgp 
+        case .imapConnectionType:
+            return MCOConnectionType.TLS.rawValue as AnyObject?
+        case .imapAuthType:
+            return MCOAuthType.SASLPlain.rawValue as AnyObject?
+        case .smtpConnectionType:
+            return MCOConnectionType.StartTLS.rawValue as AnyObject?
+        case .smtpAuthType:
+            return MCOAuthType.SASLPlain.rawValue as AnyObject?
             
-        case .PublicKey:
-            return ""
+        case .publicKey:
+            return "" as AnyObject?
         }
     }
     
-    static let allAttributes = [Accountname, UserName, UserAddr, UserPW, SMTPHostname, SMTPPort, IMAPHostname, IMAPPort, PrefEncryption, PublicKey, AutocryptType]
-    static var attributeValues: [Attribute : AnyObject?] = [.Accountname : "Alice", .UserName : "Alice2005", .UserAddr : "alice2005@web.de", .UserPW : "WJ$CE:EtUo3E$", .SMTPHostname : "smtp.web.de", .SMTPPort : 587, .IMAPHostname : "imap.web.de", .IMAPPort : 993, .PrefEncryption : "yes", .AutocryptType : "p", .PublicKey : ""]
+    static let allAttributes = [accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType]
+    static var attributeValues: [Attribute : AnyObject?] = [.accountname : "Alice" as AnyObject?, .userName : "Alice2005" as Optional<AnyObject>, .userAddr : "alice2005@web.de" as Optional<AnyObject>, .userPW : "WJ$CE:EtUo3E$" as Optional<AnyObject>, .smtpHostname : "smtp.web.de" as Optional<AnyObject>, .smtpPort : 587 as Optional<AnyObject>, .imapHostname : "imap.web.de" as Optional<AnyObject>, .imapPort : 993, .prefEncryption : "yes", .autocryptType : "p", .publicKey : ""]
 }
 
 
 struct UserManager{
-    static func storeUserValue(value: AnyObject?, attribute: Attribute) -> Bool{
-        NSUserDefaults.standardUserDefaults().setValue(value, forKey: "\(attribute.hashValue)")
-        NSUserDefaults.standardUserDefaults().synchronize()
+    static func storeUserValue(_ value: AnyObject?, attribute: Attribute) -> Bool{
+        UserDefaults.standard.setValue(value, forKey: "\(attribute.hashValue)")
+        UserDefaults.standard.synchronize()
         return true
     }
     
-    static func loadUserValue(attribute: Attribute) -> AnyObject?{
-        let value = NSUserDefaults.standardUserDefaults().valueForKey("\(attribute.hashValue)")
+    static func loadUserValue(_ attribute: Attribute) -> AnyObject?{
+        let value = UserDefaults.standard.value(forKey: "\(attribute.hashValue)")
         if((value) != nil){
-            return value
+            return value as AnyObject?
         }
         else{
             storeUserValue(attribute.defaultValue, attribute: attribute)
@@ -75,7 +75,7 @@ struct UserManager{
     
     static func resetUserValues(){
         for a in Attribute.allAttributes {
-            NSUserDefaults.standardUserDefaults().removeObjectForKey("\(a.hashValue)")
+            UserDefaults.standard.removeObject(forKey: "\(a.hashValue)")
         }
     }
 }
