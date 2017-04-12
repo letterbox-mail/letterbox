@@ -40,7 +40,7 @@ class ContactViewController: UIViewController {
     var highlightEmail: String? = nil
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
-    private var otherRecords: [KeyRecord]? = nil
+    fileprivate var otherRecords: [KeyRecord]? = nil
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -235,7 +235,7 @@ extension ContactViewController: UITableViewDataSource {
                     cell.detailLabel.text = address
                 }
                 if let label = keyRecord?.ezContact.getMailAddresses()[indexPath.item].label.label {
-                    cell.titleLabel.text = CNLabeledValue.localizedString(forLabel: label)
+                    cell.titleLabel.text = CNLabeledValue<NSString>.localizedString(forLabel: label)
                 } else {
                     cell.titleLabel.text = ""
                 }

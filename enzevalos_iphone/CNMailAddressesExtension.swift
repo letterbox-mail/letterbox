@@ -13,10 +13,10 @@ open class CNMailAddressExtension: MailAddress{
 
     open var mailAddress:String{
         get{
-            return label.value as! String
+            return label.value as String
         }
     }
-    open var label: CNLabeledValue<<#ValueType: NSCopying & NSSecureCoding#>>
+    open var label: CNLabeledValue<NSString> //FIXME: NSString hier richtig?
     
     open var prefEnc: Bool{
         get{
@@ -31,11 +31,11 @@ open class CNMailAddressExtension: MailAddress{
         }
     }
     
-    init(addr: CNLabeledValue<<#ValueType: NSCopying & NSSecureCoding#>>){
+    init(addr: CNLabeledValue<NSString>){ //FIXME: NSString hier richtig?
         self.label = addr
     }
     
-    convenience init(addr: String){
+    convenience init(addr: NSString){ //FIXME: manuell: String -> NSString
         self.init(addr: CNLabeledValue(label: CNLabelOther, value: addr))
     }
 }

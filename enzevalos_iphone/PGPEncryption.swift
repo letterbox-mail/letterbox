@@ -158,8 +158,10 @@ class PGPEncryption : Encryption {
                             let done : ObjCBool
                             do {
                                 try done = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid)[0])
-                            } catch err {
-                                <#statements#>
+                            }catch {
+                                mail.trouble = true
+                                mail.isCorrectlySigned = false
+                                break
                             }
 
                             if !done.boolValue {
@@ -391,7 +393,7 @@ class PGPEncryption : Encryption {
     fileprivate func getMaxIndex(_ fingerprint: String) -> Int64 {
         var index : Int64 = 0
         if let indexData = encryptionHandler.getPersistentData(fingerprint+"-index", encryptionType: self.encryptionType){
-            (indexData as NSData).getBytes(&index, length: sizeof(Int64))
+            (indexData as NSData).getBytes(&index, length: MemoryLayout<Int64>.size)
         }
         
         return index

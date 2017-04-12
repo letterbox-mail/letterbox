@@ -35,9 +35,9 @@ extension CNContact: Contact{
     }
     
     public func getMailAddresses() -> [MailAddress] {
-        var adr = [MailAddress] ()
+        var adr: [MailAddress] = []
         for a in  self.emailAddresses{
-            adr.append(CNMailAddressExtension(addr: a))
+            adr.append(CNMailAddressExtension(addr: a.value))
         }
         return adr
     }

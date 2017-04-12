@@ -38,8 +38,8 @@ class Onboarding {
     static var fail : () -> () = {Void in}
     static var work : () -> () = {Void in}
 
-    static var authenticationRows : [Int : String] = [MCOAuthType.SASLNone.rawValue : NSLocalizedString("None", comment: ""), MCOAuthType.SASLLogin.rawValue : "Login", MCOAuthType.SASLPlain.rawValue : NSLocalizedString("NormalPassword", comment: ""), MCOAuthType.SASLSRP.rawValue : "SRP", MCOAuthType.SASLCRAMMD5.rawValue : "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue : "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue : "NTLM", MCOAuthType.SASLGSSAPI.rawValue : "GSSAPI", MCOAuthType.SASLKerberosV4.rawValue : "KerberosV4"]
-    static var transportRows : [Int : String] = [MCOConnectionType.Clear.rawValue : NSLocalizedString("Plaintext", comment: ""), MCOConnectionType.StartTLS.rawValue : "StartTLS", MCOConnectionType.TLS.rawValue : "TLS"]
+    static var authenticationRows : [Int : String] = [MCOAuthType.saslLogin.rawValue : "Login", MCOAuthType.saslPlain.rawValue : NSLocalizedString("NormalPassword", comment: ""), MCOAuthType.SASLSRP.rawValue : "SRP", MCOAuthType.SASLCRAMMD5.rawValue : "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue : "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue : "NTLM", MCOAuthType.SASLGSSAPI.rawValue : "GSSAPI", MCOAuthType.saslKerberosV4.rawValue : "KerberosV4"]
+    static var transportRows : [Int : String] = [MCOConnectionType.clear.rawValue : NSLocalizedString("Plaintext", comment: ""), MCOConnectionType.startTLS.rawValue : "StartTLS", MCOConnectionType.TLS.rawValue : "TLS"]
     
     static func onboarding(_ callback: @escaping ()->()) -> UIViewController {
         
