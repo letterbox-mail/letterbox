@@ -58,7 +58,7 @@ class PGPKeyManagement {
     func getMaxIndex(_ fingerprint: String) -> Int64 {
         var index : Int64 = 0
         if let indexData = encryptionHandler.getPersistentData(fingerprint+"-index", encryptionType: self.encryptionType){
-            (indexData as NSData).getBytes(&index, length: sizeof(Int64))
+            (indexData as NSData).getBytes(&index, length: MemoryLayout<Int64>.size)
         }
         
         return index
@@ -70,11 +70,11 @@ class PGPKeyManagement {
         var existent = false
         if let indexData = encryptionHandler.getPersistentData(searchKey, encryptionType: self.encryptionType){
             existent = true
-            (indexData as NSData).getBytes(&index, length: sizeof(Int64))
+            (indexData as NSData).getBytes(&index, length: MemoryLayout<Int64>.size)
         }
         
         index += 1
-        let indexData = Data(bytes: UnsafePointer<UInt8>(&index), count: sizeof(Int64))
+        let indexData = Data(bytes: &index, count: MemoryLayout<Int64>.size)//Data(bytes: UnsafePointer<UInt8>(&index), length: MemoryLayout<Int64>.size)
         if !existent {
             encryptionHandler.addPersistentData(indexData, searchKey: searchKey, encryptionType: self.encryptionType)
         }

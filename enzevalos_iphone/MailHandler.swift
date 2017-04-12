@@ -210,7 +210,7 @@ class MailHandler {
     }
 
     //return if send successfully
-    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (NSError?) -> Void) {
+    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
         //http://stackoverflow.com/questions/31485359/sending-mailcore2-plain-emails-in-swift
 
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
@@ -249,7 +249,7 @@ class MailHandler {
                 sendOperation = session.sendOperation(with: sendData, from: userID, recipients: encPGP)
                 //sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
-                sendOperation.start(callback as! (Error?) -> Void)
+                sendOperation.start(callback)
                 builder.textBody = message
             }
                 else {
@@ -263,7 +263,7 @@ class MailHandler {
             sendData = builder.data()
             sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
             //TODO handle different callbacks
-            sendOperation.start(callback as! (Error?) -> Void)
+            sendOperation.start(callback)
         }
     }
 
@@ -495,11 +495,11 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
         
     }
     
-    func checkIMAP(_ completion: @escaping (NSError?) -> Void) {
+    func checkIMAP(_ completion: @escaping (Error?) -> Void) {
         self.setupIMAPSession()
         
-        self.IMAPSession.checkAccountOperation().start(completion as! (Error?) -> Void)
-        self.IMAPSession.connectOperation().start(completion as! (Error?) -> Void)
+        self.IMAPSession.checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
+        self.IMAPSession.connectOperation().start(completion/* as! (Error?) -> Void*/)
     }
     
     

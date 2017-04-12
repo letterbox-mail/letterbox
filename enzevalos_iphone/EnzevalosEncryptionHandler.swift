@@ -123,7 +123,7 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
     
     
     private init(){
-        keychain = Keychain(service: "Enzevalos").accessibility(.WhenUnlocked)
+        keychain = Keychain(service: "Enzevalos")//FIXME: .accessibility(.WhenUnlocked)
     }
     
     func hasPersistentData(_ searchKey: String, encryptionType: EncryptionType) -> Bool {

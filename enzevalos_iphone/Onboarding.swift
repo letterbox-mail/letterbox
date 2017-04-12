@@ -306,7 +306,7 @@ class Onboarding {
         return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
     }
     
-    static func checkContact(_ callback : (Bool) -> ()){
+    static func checkContact(_ callback : @escaping (Bool) -> ()){
         AppDelegate.getAppDelegate().requestForAccess(callback)
     }
     
@@ -328,7 +328,7 @@ class Onboarding {
         return true
     }
     
-    static func imapCompletion(_ error: NSError?) {
+    static func imapCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
         imapCheckDone = true
         imapCheck = error == nil
         if imapCheck {
@@ -338,7 +338,7 @@ class Onboarding {
         fail()
     }
     
-    static func smtpCompletion(_ error: NSError?){
+    static func smtpCompletion(_ error: Error?){ //FIXME: vorher NSError? Mit Error? immer noch gültig?
         smtpCheckDone = true
         smtpCheck = error == nil
         if smtpCheck {
@@ -353,43 +353,43 @@ class Onboarding {
         if let mailAddress = mailaddress.text, !manualSet && mailAddress != "" && mailAddress.contains("@") {
             let guessedUserName = mailAddress.components(separatedBy: "@")[0]
             let provider = mailAddress.components(separatedBy: "@")[1]
-            UserManager.storeUserValue(mailAddress, attribute: Attribute.userAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
-            UserManager.storeUserValue(guessedUserName, attribute: Attribute.userName)
+            UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
+            UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
             if provider == Provider.FU.rawValue {
                 Providers.setValues(Provider.FU)
-                UserManager.storeUserValue("jakobsbode", attribute: Attribute.accountname)
-                UserManager.storeUserValue("jakobsbode", attribute: Attribute.userName)
+                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.accountname)
+                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.userName)
             }
             if provider == Provider.ZEDAT.rawValue {
                 Providers.setValues(Provider.ZEDAT)
-                UserManager.storeUserValue("jakobsbode", attribute: Attribute.accountname)
-                UserManager.storeUserValue("jakobsbode", attribute: Attribute.userName)
+                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.accountname)
+                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.userName)
             }
             if provider == Provider.ENZEVALOS.rawValue {
                 Providers.setValues(Provider.ENZEVALOS)
-                UserManager.storeUserValue(guessedUserName, attribute: Attribute.accountname)
-                UserManager.storeUserValue(guessedUserName, attribute: Attribute.userName)
+                UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.accountname)
+                UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
             }
             if provider == Provider.WEB.rawValue {
                 Providers.setValues(Provider.WEB)
             }
         }
         if let pw = password.text, pw != "" {
-            UserManager.storeUserValue(pw, attribute: Attribute.userPW)
+            UserManager.storeUserValue(pw as AnyObject?, attribute: Attribute.userPW)
         }
         if manualSet {
-            UserManager.storeUserValue(imapServer.text, attribute: Attribute.imapHostname)
-            UserManager.storeUserValue(Int(imapPort.text!), attribute: Attribute.imapPort)
-            UserManager.storeUserValue(smtpServer.text, attribute: Attribute.smtpHostname)
-            UserManager.storeUserValue(Int(smtpPort.text!), attribute: Attribute.smtpPort)
-            UserManager.storeUserValue(mailaddress.text, attribute: Attribute.userAddr)
-            UserManager.storeUserValue(password.text!, attribute: Attribute.userPW)
-            UserManager.storeUserValue(username.text!, attribute: Attribute.userName)
-            UserManager.storeUserValue(username.text!, attribute: Attribute.accountname)
-            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0], attribute: Attribute.imapConnectionType)
-            UserManager.storeUserValue(keyForValue(authenticationRows, value: imapAuthDataDelegate.pickedValue)[0], attribute: Attribute.imapAuthType)
-            UserManager.storeUserValue(keyForValue(transportRows, value: smtpTransDataDelegate.pickedValue)[0], attribute: Attribute.smtpConnectionType)
-            UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0], attribute: Attribute.smtpAuthType)
+            UserManager.storeUserValue(imapServer.text as AnyObject?, attribute: Attribute.imapHostname)
+            UserManager.storeUserValue(Int(imapPort.text!) as AnyObject?, attribute: Attribute.imapPort)
+            UserManager.storeUserValue(smtpServer.text as AnyObject?, attribute: Attribute.smtpHostname)
+            UserManager.storeUserValue(Int(smtpPort.text!) as AnyObject?, attribute: Attribute.smtpPort)
+            UserManager.storeUserValue(mailaddress.text as AnyObject?, attribute: Attribute.userAddr)
+            UserManager.storeUserValue(password.text! as AnyObject?, attribute: Attribute.userPW)
+            UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.userName)
+            UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.accountname)
+            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapConnectionType)
+            UserManager.storeUserValue(keyForValue(authenticationRows, value: imapAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapAuthType)
+            UserManager.storeUserValue(keyForValue(transportRows, value: smtpTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpConnectionType)
+            UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
         }
         
     }

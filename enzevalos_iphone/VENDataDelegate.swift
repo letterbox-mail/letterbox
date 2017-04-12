@@ -89,13 +89,13 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         return tokenField.textTokens[Int(index)] as! String
     }
     
-    func numberOfTokensInTokenField(tokenField: VENTokenField) -> UInt {
+    func numberOfTokens(in tokenField: VENTokenField) -> UInt {
         return UInt((tokenField.textTokens.count))
     }
     
     func tokenFieldCollapsedText(_ tokenField: VENTokenField) -> String {
         var text : String = "names: "
-        text.appendContentsOf(String(tokenField.dataSource?.numberOfTokensInTokenField!(tokenField)))
+        text.append(String(describing: tokenField.dataSource?.numberOfTokens!(in: tokenField)))
         return text
     }
     

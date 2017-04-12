@@ -594,7 +594,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: self.mailSend)
     }
 
-    func mailSend(_ error: NSError?) {
+    func mailSend(_ error: Error?) {
         if (error != nil) {
             NSLog("Error sending email: \(error)")
             AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)

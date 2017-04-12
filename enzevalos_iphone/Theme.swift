@@ -80,7 +80,7 @@ enum Theme: Int{
 
 struct ThemeManager{
     static func currentTheme() -> Theme {
-        if let storedTheme = (UserDefaults.standard.value(forKey: SelectedThemeKey)? as AnyObject).intValue {
+        if let storedTheme = (UserDefaults.standard.value(forKey: SelectedThemeKey) as? Int) {
             return Theme(rawValue: storedTheme)!
         } else {
             return .very_strong_security_indicator

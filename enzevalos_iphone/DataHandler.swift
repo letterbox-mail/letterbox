@@ -164,7 +164,7 @@ class DataHandler {
     // Save, load, search
     
     private func find(_ entityName: String, type:String, search: String) -> [AnyObject]?{
-        let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
         fReq.predicate = NSPredicate(format:"\(type) CONTAINS '\(search)' ")
         let result: [AnyObject]?
         do {
@@ -177,7 +177,7 @@ class DataHandler {
     }
     
     private func findNum (_ entityName: String, type:String, search: UInt64) -> [AnyObject]?{
-        let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
         fReq.predicate = NSPredicate(format:"\(type) = %D ",search)
         let result: [AnyObject]?
         do {
@@ -191,7 +191,7 @@ class DataHandler {
 
     
     private func findAll(_ entityName:String)->[AnyObject]? {
-        let fReq: NSFetchRequest = NSFetchRequest(entityName: entityName)
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
         let result: [AnyObject]?
         do {
             result = try self.managedObjectContext.fetch(fReq)
@@ -209,7 +209,7 @@ class DataHandler {
         let search  = find("Mail_Address", type: "address", search: address)
         if search == nil || search!.count == 0 {
             if temporary{
-                return CNMailAddressExtension(addr: address)
+                return CNMailAddressExtension(addr: address as NSString)
             }
             else{
                 let mail_address =  NSEntityDescription.insertNewObject(forEntityName: "Mail_Address",into: managedObjectContext) as! Mail_Address

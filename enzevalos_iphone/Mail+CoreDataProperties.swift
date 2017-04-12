@@ -12,7 +12,7 @@ import CoreData
 
 extension Mail {
 
-    @nonobjc public override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         return NSFetchRequest(entityName: "Mail");
     }
 

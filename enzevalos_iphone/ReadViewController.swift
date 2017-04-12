@@ -345,7 +345,7 @@ class ReadViewController: UITableViewController {
             }
         } else if segue.identifier == "showContact" {
             let destinationVC = segue.destination as! ContactViewController
-            if let sender = sender {
+            if let sender = sender as? [String: AnyObject?] {
                 destinationVC.keyRecord = (sender["record"] as! KeyRecord)
                 destinationVC.highlightEmail = (sender["email"] as! String)
             }

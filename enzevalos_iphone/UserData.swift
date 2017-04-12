@@ -38,11 +38,11 @@ enum Attribute: Int{
         case .imapConnectionType:
             return MCOConnectionType.TLS.rawValue as AnyObject?
         case .imapAuthType:
-            return MCOAuthType.SASLPlain.rawValue as AnyObject?
+            return MCOAuthType.saslPlain.rawValue as AnyObject?
         case .smtpConnectionType:
-            return MCOConnectionType.StartTLS.rawValue as AnyObject?
+            return MCOConnectionType.startTLS.rawValue as AnyObject?
         case .smtpAuthType:
-            return MCOAuthType.SASLPlain.rawValue as AnyObject?
+            return MCOAuthType.saslPlain.rawValue as AnyObject?
             
         case .publicKey:
             return "" as AnyObject?
@@ -50,7 +50,7 @@ enum Attribute: Int{
     }
     
     static let allAttributes = [accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType]
-    static var attributeValues: [Attribute : AnyObject?] = [.accountname : "Alice" as AnyObject?, .userName : "Alice2005" as Optional<AnyObject>, .userAddr : "alice2005@web.de" as Optional<AnyObject>, .userPW : "WJ$CE:EtUo3E$" as Optional<AnyObject>, .smtpHostname : "smtp.web.de" as Optional<AnyObject>, .smtpPort : 587 as Optional<AnyObject>, .imapHostname : "imap.web.de" as Optional<AnyObject>, .imapPort : 993, .prefEncryption : "yes", .autocryptType : "p", .publicKey : ""]
+    static var attributeValues: [Attribute : AnyObject?] = [.accountname : "Alice" as AnyObject?, .userName : "Alice2005" as Optional<AnyObject>, .userAddr : "alice2005@web.de" as Optional<AnyObject>, .userPW : "WJ$CE:EtUo3E$" as Optional<AnyObject>, .smtpHostname : "smtp.web.de" as Optional<AnyObject>, .smtpPort : 587 as Optional<AnyObject>, .imapHostname : "imap.web.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .prefEncryption : "yes" as AnyObject?, .autocryptType : "p" as AnyObject?, .publicKey : "" as AnyObject?]
 }
 
 
