@@ -6,16 +6,12 @@
 //  Copyright © 2016 jakobsbode. All rights reserved.
 //
 
-import VENTokenField
-//import UIKit
 
 class TableViewDataDelegate : NSObject, UITableViewDelegate, UITableViewDataSource {
     
     var contacts : [String] = []
     var addresses : [String] = []
     var pictures : [UIImage?] = []
-    //var count = 0
-    //weak var tokenField : VENTokenField?
     var insertCallback : (String, String) -> Void = {(name : String, address : String) -> Void in return}
     
     init(insertCallback : @escaping (String, String) -> Void){
@@ -38,13 +34,11 @@ class TableViewDataDelegate : NSObject, UITableViewDelegate, UITableViewDataSour
             cell.img.image = img
         }
         
-        if !EnzevalosEncryptionHandler.hasKey(cell.address.text!) {//!AddressHandler.proveAddress(cell.address.text!)){
-            //cell.backgroundColor = UIColor.orangeColor()
+        if !EnzevalosEncryptionHandler.hasKey(cell.address.text!) {
             cell.name.textColor! = UIColor.orange
             cell.address.textColor! = UIColor.orange
         }
         else {
-            //cell.backgroundColor = nil
             cell.name.textColor! = UIColor.black
             cell.address.textColor! = UIColor.black
         }
@@ -52,13 +46,7 @@ class TableViewDataDelegate : NSObject, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*if (tokenField != nil) {
-            tokenField?.delegate?.tokenField!(tokenField!, didEnterText: contacts[indexPath.row], mail: addresses[indexPath.row])
-        }*/
         self.insertCallback(contacts[indexPath.row], addresses[indexPath.row])
     }
     
-    /*func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        
-    }*/
 }

@@ -85,9 +85,7 @@
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
 		A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
-		A18BCB3B1DDF3EFD004D81D8 /* test in Resources */ = {isa = PBXBuildFile; fileRef = A18BCB3A1DDF3EFD004D81D8 /* test */; };
 		A18C76871E81861C00B21414 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18C76861E81861C00B21414 /* OnboardingViewController.swift */; };
-		A196DF831E71A20D004AE144 /* FrequentCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A196DF821E71A20D004AE144 /* FrequentCollectionViewLayout.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
@@ -281,9 +279,7 @@
 		A17BEB371E55E21700403EBE /* PGPTemporaryDecryptionObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PGPTemporaryDecryptionObject.h; sourceTree = "<group>"; };
 		A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPTemporaryDecryptionObject.m; sourceTree = "<group>"; };
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
-		A18BCB3A1DDF3EFD004D81D8 /* test */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test; sourceTree = "<group>"; };
 		A18C76861E81861C00B21414 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
-		A196DF821E71A20D004AE144 /* FrequentCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrequentCollectionViewLayout.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jabo.asc; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
@@ -649,8 +645,6 @@
 				A17C04831DC6504E00F66EDB /* LogHandler.swift */,
 				A1EB05891D956890008659C1 /* ContactCell.xib */,
 				A1EB058B1D9568AB008659C1 /* FrequentCell.xib */,
-				A18BCB3A1DDF3EFD004D81D8 /* test */,
-				A196DF821E71A20D004AE144 /* FrequentCollectionViewLayout.swift */,
 			);
 			name = send;
 			sourceTree = "<group>";
@@ -825,7 +819,6 @@
 				A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */,
 				A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */,
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
-				A18BCB3B1DDF3EFD004D81D8 /* test in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
 				A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
@@ -1085,7 +1078,6 @@
 				A135CF091DD4BDD1007E3C29 /* PGPCryptoUtils.m in Sources */,
 				A135CF1A1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
-				A196DF831E71A20D004AE144 /* FrequentCollectionViewLayout.swift in Sources */,
 				F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */,
 				A135CF201DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
 				472F397E1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */,

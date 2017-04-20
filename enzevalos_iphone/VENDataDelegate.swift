@@ -10,19 +10,13 @@ import VENTokenField
 
 class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegate {
     
-    var changeFunc: ((VENTokenField) -> Void) = {(_ : VENTokenField) -> Void in
-        //print ("hallo")
-    }
+    var changeFunc: ((VENTokenField) -> Void) = {(_ : VENTokenField) -> Void in }
     
     var beginFunc: ((VENTokenField) -> Void) = {(_ : VENTokenField) -> Void in }
     
     var deleteFunc: (() -> Void) = {() -> Void in }
     
     var tappedWhenSelectedFunc: ((String) -> Void)? = nil
-    
-    //Used to show enzevalos-Contacts
-    //Have a look at tokenField(... didTappedTokenTwice ...)
-    //var doubleTapFunc
     
     override init() {
         super.init()
@@ -32,7 +26,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         self.changeFunc = changeFunc
         self.tappedWhenSelectedFunc = tappedWhenSelectedFunc
         self.deleteFunc = deleteFunc
-        //self.beginFunc = beginFunc
         super.init()
     }
     
@@ -48,8 +41,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenFieldDidBeginEditing(_ tokenField: VENTokenField) {
-        //print("begin")
-        //print(numberOfTokensInTokenField(tokenField))
         beginFunc(tokenField)
     }
     
@@ -100,11 +91,9 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenField(_ tokenField: VENTokenField, didChangeContentHeight height: CGFloat) {
-        //print("height: ",height)
         for c in tokenField.constraints {
             if (c.identifier == "tokenFieldHeight"){
                 c.constant = height
-                //print("set height")
             }
         }
     }
@@ -112,7 +101,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     //eigene Methoden
     
     func tokenFieldDidEndEditing(_ tokenF: VENTokenField){
-        //print("end")
         if let last = tokenF.inputText() {
             if last.replacingOccurrences(of: " ", with: "") != "" {
                 tokenField(tokenF, didEnterText: last)
@@ -120,14 +108,10 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         }
     }
     
-    /*func tokenStrings(tokenField: VENTokenField) -> [String]{
-        return tokenField.textTokens
-    }*/
-    
     func isSecure(_ tokenField: VENTokenField) -> Bool {
         var secure = true
         for entry in tokenField.mailTokens{
-            secure = secure && EnzevalosEncryptionHandler.hasKey(entry as! String) //KeyHandler.getHandler().addrHasKey(entry as! String)//AddressHandler.proveAddress(entry as! NSString)
+            secure = secure && EnzevalosEncryptionHandler.hasKey(entry as! String)
         }
         return secure
     }

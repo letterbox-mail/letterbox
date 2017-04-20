@@ -73,18 +73,79 @@ class AddressHandler {
         return list
     }
     
+    static var freqAlgorithm2: ([String]) -> [(UIImage, String, String, UIImage?, UIColor)] = {
+        (inserted : [String]) -> [(UIImage, String, String, UIImage?, UIColor)] in
+        
+        var cons = DataHandler.handler.contacts
+        var list: [(UIImage,String,String,UIImage?,UIColor)] = []
+        
+        for con: EnzevalosContact in cons {
+            if list.count >= CollectionDataDelegate.maxFrequent {
+                break
+            }
+            var insertedEntry = false
+            var address = con.getMailAddresses()[0]
+            for addr in con.getMailAddresses() {
+                if inserted.contains(addr.mailAddress) {
+                    insertedEntry = true
+                }
+                if addr.hasKey {
+                    address = addr
+                }
+            }
+            if !insertedEntry {
+                if let cn = con.cnContact {
+                    var addrType: UIImage? = nil
+                    
+                    if address.label.label == "_$!<Work>!$_" {
+                        addrType = UIImage(named: "work2_white")!
+                    }
+                    if address.label.label == "_$!<Home>!$_" {
+                        addrType = UIImage(named: "home2_white")!
+                    }
+                    
+                    var color = cn.getColor()
+                    if cn.thumbnailImageData != nil {
+                        color = UIColor.gray //blackColor()
+                    }
+                    
+                    //TODO: Add Image in EnzevalosContact
+                    var entry = (cn.getImageOrDefault(), con.displayname!, address.mailAddress, addrType, color)
+                    
+                    list.append(entry)
+                }
+            }
+        }
+        
+        
+        
+        
+        /*var entrys = CollectionDataDelegate.maxFrequent
+        if cons.count < entrys {
+            entrys = cons.count
+        }
+        if entrys <= 0 {
+            return []
+        }
+        for i in 0...entrys-1 {
+            //let index = abs(Int(arc4random())) % cons.count
+            let index = i % cons.count
+            list.append(cons[index])
+            cons.remove(at: index)
+        }*/
+        
+        return list
+    }
+    
     static func proveAddress(_ s: NSString) -> Bool {
         if addresses.contains((s as String).lowercased()){
             return true
         }
-        return EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress((s as String).lowercased()))//KeyHandler.getHandler().addrHasKey(s as String)//inContacts(s as String)
-        //return false
+        return EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress((s as String).lowercased()))
     }
     
     static func inContacts(_ name: String) -> Bool{
-        AppDelegate.getAppDelegate().requestForAccess({access in
-            print(access)
-        })
+        AppDelegate.getAppDelegate().requestForAccess({access in })
         let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
         if authorizationStatus == CNAuthorizationStatus.authorized {
             do {
@@ -101,7 +162,6 @@ class AddressHandler {
             catch {
                 print("exception")
             }
-            print("contacts done")
         }
         else {
             print("no Access!")
@@ -154,7 +214,7 @@ class AddressHandler {
 
     /*          [insertedEmail] -> [(contactImage, name, address, emailLabelImage, backgroundcolor)] */
     static func frequentAddresses (_ inserted: [String]) -> [(UIImage, String, String, UIImage?, UIColor)] {
-        return freqAlgorithm(inserted)
+        return freqAlgorithm2(inserted)
     }
     
     static func findContact(_ econtact: EnzevalosContact)-> [CNContact]{

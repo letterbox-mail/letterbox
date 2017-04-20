@@ -11,7 +11,7 @@ import VENTokenField
 import Contacts
 import KeychainAccess
 
-class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDelegate {
+class SendViewController: UIViewController {
 
     var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 5, width: 200, height: 45))
     @IBOutlet weak var button: UIBarButtonItem!
@@ -47,7 +47,7 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
     var dataDelegate = VENDataDelegate()
     var mailHandler = AppDelegate.getAppDelegate().mailHandler
     var tableDataDelegate = TableViewDataDelegate(insertCallback: { (name: String, address: String) -> Void in return })
-    var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: { (name: String, address: String) -> Void in return }, collectionView: nil)
+    var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: { (name: String, address: String) -> Void in return })
     var recognizer: UIGestureRecognizer = UIGestureRecognizer.init()
 
     var answerTo: Mail? = nil
@@ -55,9 +55,9 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, deleteFunc: /*{() -> Void in return}*/self.addFrequentCellIfPossible)
+        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, deleteFunc: {() -> Void in return})
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
-        collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName, collectionView: toCollectionview)
+        collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
         setAnimation()
 
         textView.delegate = self
@@ -84,15 +84,7 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
         ccCollectionview.dataSource = collectionDataDelegate
         ccCollectionview.register(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
         ccCollectionviewHeight.constant = 0
-        //ccCollectionview.translatesAutoresizingMaskIntoConstraints = true
-        //toCollectionview.translatesAutoresizingMaskIntoConstraints = true
         toCollectionviewHeight.constant = 0
-        
-        /*for constraint in toCollectionview.constraints {
-            if constraint.firstAttribute == NSLayoutAttribute.Height {
-                constraint.constant = 0
-            }
-        }*/
         
         subjectText.delegate = self
         subjectText.setColorScheme(self.view.tintColor)
@@ -175,59 +167,6 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
         //LogHandler.printLogs()
         //LogHandler.deleteLogs()
         LogHandler.newLog()
-        //LogHandler.printLogs()
-        //---------------------------------------
-        //Import private Key BEGIN
-        /*
-        let path = NSBundle.mainBundle().pathForResource("alice2005-private", ofType: "gpg")        //<---- Schlüsseldatei
-        let pgp = ObjectivePGP.init()
-        pgp.importKeysFromFile(path!, allowDuplicates: false)
-        let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-        do {
-            let data = try pgp.keys[0].export()
-            enc?.addKey(data, forMailAddresses: [])
-        }
-        catch _ {}
-        */
-        //Import private key END
-        //---------------------------------------
-        //---------------------------------------
-        //Import public Key BEGIN
-        /*
-         let path = NSBundle.mainBundle().pathForResource("alice2005-public", ofType: "gpg")               //<---- Schlüsseldatei
-         let pgp = ObjectivePGP.init()
-         pgp.importKeysFromFile(path!, allowDuplicates: false)
-         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-         do {
-         let data = try pgp.keys[0].export()
-         enc?.addKey(data, forMailAddresses: ["alice2005@web.de"])                           //<---- Emailadresse
-         }
-         catch _ {}
- */
-        //Import public key END
-        //---------------------------------------
-        
-        
-        //---------------------------------------
-        //ImportBobs Keys
-        /*
-         let path = NSBundle.mainBundle().pathForResource("bob2005", ofType: "asc")               //<---- Schlüsseldatei
-         let pgp = ObjectivePGP.init()
-         pgp.importKeysFromFile(path!, allowDuplicates: false)
-         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-         do {
-         let data = try pgp.keys[0].export()
-         enc?.addKey(data, forMailAddresses: ["bob2005@web.de"])                           //<---- Emailadresse
-         }
-         catch _ {}
-        do {
-            let data2 = try pgp.keys[1].export()
-            enc?.addKey(data2, forMailAddresses: [])                           //<---- Emailadresse
-        }
-        catch _ {}
-        */
-        //Import public key END
-        //---------------------------------------
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -242,113 +181,18 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
         }
     }
 
-    @IBAction func iconButtonPressed(_ sender: AnyObject) {
-        iconButton(sender)
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    
-
-    func tokenField(_ tokenField: VENTokenField, didChangeText text: String?) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve(subjectText.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: subjectText.inputText()!)
-        }
-        if text == "log" {
-            LogHandler.stopLogging()
-            textView.text = LogHandler.getLogs()
-            LogHandler.deleteLogs()
-            LogHandler.newLog()
-        }
-    }
-
-    func textViewDidChange(_ textView: UITextView) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve(textView.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: textView.text)
-        }
-    }
-    
-    func tokenFieldDidEndEditing(_ tokenField: VENTokenField) {}
     
     func reloadCollectionViews() {
-        //toCollectionview.collectionViewLayout.invalidateLayout()
-        //toCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
-        //ccCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
         collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
         DispatchQueue.main.async {
             self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
             self.toCollectionview.reloadData()
-            self.collectionDataDelegate.reloadBugfix(collectionView: self.toCollectionview)
-            print("reload")
+            self.ccCollectionview.reloadData()
         }
-        /*toCollectionviewHeight.constant += 200
-        ccCollectionviewHeight.constant += 200
-        toCollectionview.setNeedsDisplay()
-        ccCollectionview.setNeedsDisplay()
-        toCollectionviewHeight.constant -= 200
-        ccCollectionviewHeight.constant -= 200
-        toCollectionview.setNeedsDisplay()
-        ccCollectionview.setNeedsDisplay()*/
-        //toCollectionview.reloadItemsAtIndexPaths([NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0)])
-        //toCollectionview.beginInteractiveMovementForItemAtIndexPath(NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0))
-        //toCollectionview.collectionViewLayout.invalidateLayout()
-        //toCollectionview.collectionViewLayout.finalizeCollectionViewUpdates()
-    }
-    
-    func addFrequentCellIfPossible() {
-        /*toCollectionview.performBatchUpdates({
-            self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
-            self.toCollectionview.insertItems(at: [IndexPath.init(row: 0, section: 0)])
-            self.toCollectionview.collectionViewLayout.invalidateLayout()
-            self.toCollectionview.reloadData()
-            print(self.toCollectionview.contentSize)
-            print(self.toCollectionview.collectionViewLayout.collectionViewContentSize)
-        }, completion: nil)*/
-        //collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
-        //let len = collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)
-        //if len < CollectionDataDelegate.maxFrequent {
-            //let path = NSIndexPath.init(forRow: len-1, inSection: 0)
-            /*toCollectionview.performBatchUpdates({
-                var indexes : [NSIndexPath] = []
-                let len = self.collectionDataDelegate.collectionView(self.toCollectionview, numberOfItemsInSection: 0)
-                print("benjamin ", len)
-                var i = 0
-                //for i in 1..<len {
-                    indexes.append(NSIndexPath.init(forRow: i, inSection: 0))
-                //}
-                self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
-                self.toCollectionview.insertItemsAtIndexPaths(indexes)
-                }, completion: nil)*/
-            //toCollectionview.insertItemsAtIndexPaths([path])
-        //}
-        collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
-        DispatchQueue.main.async {
-            self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
-            self.toCollectionview.reloadData()
-            //self.toCollectionview.reloadSections(IndexSet.init(integer: self.collectionDataDelegate.numberOfSections(in: self.toCollectionview)-1))
-            print("reload")
-        }
-        /*toCollectionview.reloadData()
-        toCollectionview.collectionViewLayout.invalidateLayout()
-        (toCollectionview.collectionViewLayout as! UICollectionViewFlowLayout).itemSize = CGSize.init(width: 90, height: toCollectionview.contentSize.height)
-        toCollectionview.invalidateIntrinsicContentSize()
-        toCollectionview.contentSize = CGSize.init(width: toCollectionview.contentSize.width+90, height: toCollectionview.contentSize.height)
-        
-        print(toCollectionview.visibleCells)
-        toCollectionview.collectionViewLayout.finalizeCollectionViewUpdates()
-        ccCollectionview.collectionViewLayout.finalizeCollectionViewUpdates()
-        //toCollectionviewHeight.trans
-        //        toCollectionview.translatesAutoresizingMaskIntoConstraints = true
-        //toCollectionview.startInteractiveTransitionToCollectionViewLayout(toCollectionview.collectionViewLayout, completion: nil)
-        toCollectionview.reloadData()
-        ccCollectionview.reloadData()*/
     }
     
     func showContact(_ email: String) {
@@ -384,18 +228,12 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
             if inText != "" {
                 scrollview.isScrollEnabled = false
                 scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
-                //print(tokenField.frame.origin.y, " ", tokenField.frame.maxY)
                 tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
                 tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
                 searchContacts(inText)
             } else {
                 scrollview.isScrollEnabled = true
                 tableviewHeight.constant = 0
-                if tokenField == toText {
-                    //toCollectionviewHeight.constant = 100
-                } else {
-                    //ccCollectionviewHeight.constant = 100
-                }
             }
         }
     }
@@ -441,48 +279,23 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
             catch {
                 print("exception")
             }
-            //print("contacts done")
         } else {
             print("no Access!")
         }
     }
     
     func newInput(_ tokenField: VENTokenField){
-        print("input")
         animateIfNeeded()
-        /*collectionDataDelegate.alreadyInserted = []
-        toCollectionview.reloadData()
-        ccCollectionview.reloadData()
-        collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String]) + (ccText.mailTokens as NSArray as! [String])
-        toCollectionview.reloadData()
-//        toCollectionview.translatesAutoresizingMaskIntoConstraints = true
-        //toCollectionview.startInteractiveTransitionToCollectionViewLayout(toCollectionview.collectionViewLayout, completion: nil)
-        toCollectionview.setNeedsLayout()
-        toCollectionview.setNeedsDisplay()
-//        toCollectionview.translatesAutoresizingMaskIntoConstraints = false
-        toCollectionview.reloadData()
-        ccCollectionview.reloadData()*/
         reloadCollectionViews()
-        //let path = NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0)
-        //toCollectionview.reloadItemsAtIndexPaths([path])
-        //toCollectionview.reloadData()
-        //toCollectionview.collectionViewLayout.prepareLayout()// .invalidateLayout()
-        //ccCollectionview.collectionViewLayout.prepareLayout()//.invalidateLayout()
-        //toCollectionview.invalidateIntrinsicContentSize()
-        //toCollectionview.updateConstraints()
-        
-        //reloadCollectionViews()
     }
 
     func keyboardOpen(_ notification: Notification) {
-        //if reducedSize == 0{
         LogHandler.doLog("keyboard", interaction: "open", point: CGPoint(x: 0, y: 0), comment: "")
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         reducedSize = keyboardFrame.size.height
 
         keyboardY = keyboardFrame.origin.y
-        //print("keyboard ", keyboardY)
 
         if toText.isFirstResponder {
             toCollectionview.reloadData()
@@ -529,12 +342,100 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
         }
     }
 
+    func mailSend(_ error: Error?) {
+        if (error != nil) {
+            NSLog("Error sending email: \(error)")
+            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
+        } else {
+            NSLog("Send successful!")
+            if (self.answerTo != nil) {
+                AppDelegate.getAppDelegate().mailHandler.addFlag((self.answerTo?.uid)!, flags: MCOMessageFlag.answered)
+            }
+            self.sendCompleted()
+        }
+    }
+
+    func sendCompleted() {
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+//subject field
+extension SendViewController: VENTokenFieldDelegate {
+    func tokenField(_ tokenField: VENTokenField, didChangeText text: String?) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve(subjectText.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: subjectText.inputText()!)
+        }
+        if text == "log" {
+            LogHandler.stopLogging()
+            textView.text = LogHandler.getLogs()
+            LogHandler.deleteLogs()
+            LogHandler.newLog()
+        }
+    }
+    
+    func tokenFieldDidEndEditing(_ tokenField: VENTokenField) {}
+}
+
+//messagefield
+extension SendViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve(textView.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: textView.text)
+        }
+    }
+}
+
+
+//Navigationbar
+extension SendViewController {
+    func getContemporarySecurityState() -> Bool {
+        toSecure = toText.dataSource!.isSecure!(toText) //TODO: Add pref enc field.
+        ccSecure = ccText.dataSource!.isSecure!(ccText)
+        return toSecure && ccSecure
+    }
+    
+    func updateNavigationBar() {
+        if(getContemporarySecurityState()) {
+            self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
+        } else {
+            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+        }
+    }
+    
+    func animateIfNeeded() {
+        let contemporarySecureState = getContemporarySecurityState()
+        if (contemporarySecureState) != self.secureState {
+            if(ThemeManager.animation()) {
+                setAnimation()
+                if contemporarySecureState {
+                    UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                        self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
+                    }, completion: nil)
+                } else {
+                    UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn], animations: {
+                        self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+                    }, completion: { (_: Bool) in
+                        sleep(1)
+                        UIView.animate(withDuration: 0.5, delay: 1.5, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+                        }, completion: nil)
+                    })
+                }
+                imageView.startAnimating()
+            }
+        }
+        updateNavigationBar()
+        self.secureState = getContemporarySecurityState()
+    }
+    
+    func setAnimation() {
+        if let view = iconButton.subviews.first as? AnimatedSendIcon {
+            view.switchIcons()
+        }
+    }
+    
     func iconButton(_ sender: AnyObject) {
-        //print(sender.absoluteString)
-        //print(recognizer.locationOfTouch(recognizer.numberOfTouches()-1, inView: imageView))
-        /*for var i in 1 ..< recognizer.numberOfTouches(){
-         print(recognizer.locationOfTouch(i, inView: self.view))
-         }*/
         let m = self.secureState
         let alert: UIAlertController
         let url: String
@@ -551,7 +452,11 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
             self.present(alert, animated: true, completion: nil)
         })
     }
-
+    
+    @IBAction func iconButtonPressed(_ sender: AnyObject) {
+        iconButton(sender)
+    }
+    
     @IBAction func pressCancel(_ sender: AnyObject) {
         var alert: UIAlertController
         var firstResponder: UIView?
@@ -576,103 +481,26 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
             })
         }
     }
-
+    
     @IBAction func pressSend(_ sender: AnyObject) {
         let toEntrys = toText.mailTokens
         let ccEntrys = ccText.mailTokens
         let subject = subjectText.inputText()!
         let message = textView.text!
-
+        
         mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: self.mailSend)
-    }
-
-    func mailSend(_ error: Error?) {
-        if (error != nil) {
-            NSLog("Error sending email: \(error)")
-            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
-        } else {
-            NSLog("Send successful!")
-            if (self.answerTo != nil) {
-                AppDelegate.getAppDelegate().mailHandler.addFlag((self.answerTo?.uid)!, flags: MCOMessageFlag.answered)
-            }
-            //AppDelegate.getAppDelegate().showMessage("Send successfully", completion: self.sendCompleted)
-            self.sendCompleted()
-        }
-    }
-
-    func sendCompleted() {
-        self.navigationController?.dismiss(animated: true, completion: nil)
-    }
-
-    func getContemporarySecurityState() -> Bool {
-        toSecure = toText.dataSource!.isSecure!(toText) //TODO: Add pref enc field.
-        ccSecure = ccText.dataSource!.isSecure!(ccText)
-        return toSecure && ccSecure
-    }
-
-    func updateNavigationBar() {
-        if(getContemporarySecurityState()) {
-            self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
-        } else {
-            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
-        }
-    }
-
-    // TODO: remove if not necessary anymore
-    //    func animateIfNeeded(secure : Bool){
-    //        if secure != self.secureState {
-    //            setAnimation(secure)
-    //            if secure {
-    //                imageView.image = UIImage(named: "Icon_animated001-001_alpha_verschoben-90.png")!
-    //            }
-    //            else {
-    //                imageView.image = UIImage(named: "Icon_animated001-007_alpha_verschoben-90.png")!
-    //            }
-    //            imageView.startAnimating()
-    //            self.secureState = secure
-    //        }
-    //    }
-
-    func animateIfNeeded() {
-        let contemporarySecureState = getContemporarySecurityState()
-        if (contemporarySecureState) != self.secureState {
-            if(ThemeManager.animation()) {
-                setAnimation()
-                if contemporarySecureState {
-                    UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                        self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
-                    }, completion: nil)
-                } else {
-                    UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn/*, UIViewAnimationOptions.Autoreverse*/], animations: {
-                        self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
-                    }, completion: { (_: Bool) in
-                        sleep(1)
-                        UIView.animate(withDuration: 0.5, delay: 1.5, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
-                        }, completion: nil)
-                    })
-                    /*UIView.animateWithDuration(0.5, delay: 1.5, options: UIViewAnimationOptions.CurveEaseIn ,animations: {
-                     self.navigationController?.navigationBar.barTintColor = UIColor.groupTableViewBackgroundColor()
-                     }, completion: nil)*/
-                }
-                imageView.startAnimating()
-            }
-        }
-        updateNavigationBar()
-        self.secureState = getContemporarySecurityState()
-    }
-
-    func setAnimation() {
-        if let view = iconButton.subviews.first as? AnimatedSendIcon {
-            view.switchIcons()
-        }
     }
 }
 
+
+//Logging
 extension SendViewController: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        //print(sender.description)
-        //print(String(sender.view?.valueForKey("UILoggingName")))
         if LogHandler.logging {
             LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "tap", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: self.view), /*debugDescription: sender.view.debugDescription,*/ comment: "")
         }
@@ -681,10 +509,10 @@ extension SendViewController: UIGestureRecognizerDelegate {
     @IBAction func panned(_ sender: UIPanGestureRecognizer) {
         if LogHandler.logging {
             if sender.state == .began {
-                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "beginPan", point: sender.location(in: sender.view)/*CGPoint(x: 0,y: 0)*/, comment: String(describing: sender.translation(in: sender.view)))
+                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "beginPan", point: sender.location(in: sender.view), comment: String(describing: sender.translation(in: sender.view)))
             }
             if sender.state == .ended {
-                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "endPan", point: sender.location(in: sender.view)/*CGPoint(x: 0,y: 0)*/, comment: String(describing: sender.translation(in: sender.view)))
+                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "endPan", point: sender.location(in: sender.view), comment: String(describing: sender.translation(in: sender.view)))
             }
         }
     }
