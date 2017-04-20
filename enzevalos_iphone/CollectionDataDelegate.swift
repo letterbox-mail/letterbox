@@ -65,10 +65,10 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "frequent", for: indexPath) as! FrequentCell
         cell.autoresizingMask = UIViewAutoresizing.flexibleHeight
         //cell.translatesAutoresizingMaskIntoConstraints = false
-        cell.frame = CGRect.init(x: 90*indexPath.row, y: 0, width: 90, height: 90)
+        //cell.frame = CGRect.init(x: 90*indexPath.row, y: 0, width: 90, height: 90)
         cell.clipsToBounds = true
-        cell.bounds = CGRect.init(x: 90*indexPath.row, y: 0, width: 90, height: 90)
-        cell.contentView.frame = CGRect.init(x: 90*indexPath.row, y: 0, width: 90, height: 90)
+        //cell.bounds = CGRect.init(x: 90*indexPath.row, y: 0, width: 90, height: 100)
+        //cell.contentView.frame = CGRect.init(x: 90*indexPath.row, y: 0, width: 90, height: 90)
         let index = indexPath.row
         cell.img.layer.cornerRadius = cell.img.frame.height/2
         cell.img.clipsToBounds = true
@@ -106,7 +106,7 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
         //collectionView.insertItems(at: [IndexPath.init(row: 0, section: 0)])
         let loop = self.collectionView(collectionView, numberOfItemsInSection: 0)
         for i in 0..<loop {
-            collectionView.selectItem(at: IndexPath.init(row: i, section: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.bottom)
+            //collectionView.selectItem(at: IndexPath.init(row: i, section: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.bottom)
         }
         //collectionView.selectItem(at: IndexPath.init(row: 0, section: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.bottom)
         reloading = false

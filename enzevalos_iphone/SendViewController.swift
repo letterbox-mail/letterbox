@@ -487,17 +487,20 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
         if toText.isFirstResponder {
             toCollectionview.reloadData()
             UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.toCollectionviewHeight.constant = 100 }, completion: nil)
+            toCollectionview.isHidden = false
         }
         if ccText.isFirstResponder {
-            ccCollectionviewHeight.constant = 100
             ccCollectionview.reloadData()
+            ccCollectionviewHeight.constant = 100
+            ccCollectionview.isHidden = false
         }
         if !toText.isFirstResponder {
-            //UIView.animate(withDuration: 2.5, animations: { () -> Void in self.toCollectionviewHeight.constant = 0 })
-            //toCollectionview.isHidden = true
+            UIView.animate(withDuration: 2.5, animations: { () -> Void in self.toCollectionviewHeight.constant = 1 })
+            toCollectionview.isHidden = true
         }
         if !ccText.isFirstResponder {
-            //ccCollectionviewHeight.constant = 0
+            ccCollectionviewHeight.constant = 1
+            ccCollectionview.isHidden = true
         }
 
         UIView.animate(withDuration: 0.1, animations: { () -> Void in
@@ -516,10 +519,12 @@ class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDel
                 self.scrollview!.contentInset = contentInsets
             })
             if !toText.isFirstResponder {
-                toCollectionviewHeight.constant = 0
+                toCollectionviewHeight.constant = 1
+                toCollectionview.isHidden = true
             }
             if !ccText.isFirstResponder {
-                ccCollectionviewHeight.constant = 0
+                ccCollectionviewHeight.constant = 1
+                ccCollectionview.isHidden = true
             }
         }
     }

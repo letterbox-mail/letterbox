@@ -31,7 +31,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PpF-WH-X3b">
-                        <rect key="frame" x="24" y="82" width="33" height="8"/>
+                        <rect key="frame" x="28.5" y="82" width="33" height="8"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -48,7 +48,7 @@
                 <constraint firstItem="PpF-WH-X3b" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="w2v-x8-dyj" secondAttribute="leading" constant="5" id="3br-Vm-olJ"/>
                 <constraint firstAttribute="trailing" secondItem="EAf-Ln-NIo" secondAttribute="trailing" constant="10" id="7ga-yh-RtT"/>
                 <constraint firstAttribute="bottom" secondItem="PpF-WH-X3b" secondAttribute="bottom" id="FO3-Bu-Mfq" userLabel="bottom = Name.bottom"/>
-                <constraint firstItem="PpF-WH-X3b" firstAttribute="centerX" secondItem="w2v-x8-dyj" secondAttribute="centerX" constant="-4.5" id="J0p-Wn-JmD"/>
+                <constraint firstItem="PpF-WH-X3b" firstAttribute="centerX" secondItem="w2v-x8-dyj" secondAttribute="centerX" id="J0p-Wn-JmD"/>
                 <constraint firstItem="PpF-WH-X3b" firstAttribute="top" secondItem="EAf-Ln-NIo" secondAttribute="bottom" constant="4" id="q6O-5t-WCb"/>
                 <constraint firstItem="EAf-Ln-NIo" firstAttribute="top" secondItem="w2v-x8-dyj" secondAttribute="topMargin" id="tSd-gS-rCL"/>
                 <constraint firstItem="EAf-Ln-NIo" firstAttribute="leading" secondItem="w2v-x8-dyj" secondAttribute="leading" constant="10" id="wBg-8I-TqR" userLabel="Img.leading = leading + 5"/>
