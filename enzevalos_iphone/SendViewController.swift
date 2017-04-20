@@ -11,7 +11,7 @@ import VENTokenField
 import Contacts
 import KeychainAccess
 
-class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecognizerDelegate, VENTokenFieldDelegate {
+class SendViewController: UIViewController, UITextViewDelegate, VENTokenFieldDelegate {
 
     var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 5, width: 200, height: 45))
     @IBOutlet weak var button: UIBarButtonItem!
@@ -47,7 +47,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     var dataDelegate = VENDataDelegate()
     var mailHandler = AppDelegate.getAppDelegate().mailHandler
     var tableDataDelegate = TableViewDataDelegate(insertCallback: { (name: String, address: String) -> Void in return })
-    var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: { (name: String, address: String) -> Void in return })
+    var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: { (name: String, address: String) -> Void in return }, collectionView: nil)
     var recognizer: UIGestureRecognizer = UIGestureRecognizer.init()
 
     var answerTo: Mail? = nil
@@ -57,7 +57,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         super.viewDidLoad()
         dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, deleteFunc: /*{() -> Void in return}*/self.addFrequentCellIfPossible)
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
-        collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
+        collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName, collectionView: toCollectionview)
         setAnimation()
 
         textView.delegate = self
@@ -255,36 +255,7 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         return true
     }
 
-    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        //print(sender.description)
-        //print(String(sender.view?.valueForKey("UILoggingName")))
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "tap", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: self.view), /*debugDescription: sender.view.debugDescription,*/ comment: "")
-        }
-    }
-
-    @IBAction func panned(_ sender: UIPanGestureRecognizer) {
-        if LogHandler.logging {
-            if sender.state == .began {
-                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "beginPan", point: sender.location(in: sender.view)/*CGPoint(x: 0,y: 0)*/, comment: String(describing: sender.translation(in: sender.view)))
-            }
-            if sender.state == .ended {
-                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "endPan", point: sender.location(in: sender.view)/*CGPoint(x: 0,y: 0)*/, comment: String(describing: sender.translation(in: sender.view)))
-            }
-        }
-    }
-
-    @IBAction func swiped(_ sender: UISwipeGestureRecognizer) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "swipe", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: sender.view), comment: String(describing: sender.direction))
-        }
-    }
-
-    @IBAction func rotated(_ sender: UIRotationGestureRecognizer) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "rotate", point: CGPoint(x: 0, y: 0), comment: String(describing: sender.rotation))
-        }
-    }
+    
 
     func tokenField(_ tokenField: VENTokenField, didChangeText text: String?) {
         if LogHandler.logging {
@@ -308,8 +279,15 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     
     func reloadCollectionViews() {
         //toCollectionview.collectionViewLayout.invalidateLayout()
-        toCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
-        ccCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
+        //toCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
+        //ccCollectionview.reloadData()//collectionViewLayout.invalidateLayout()
+        collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
+        DispatchQueue.main.async {
+            self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
+            self.toCollectionview.reloadData()
+            self.collectionDataDelegate.reloadBugfix(collectionView: self.toCollectionview)
+            print("reload")
+        }
         /*toCollectionviewHeight.constant += 200
         ccCollectionviewHeight.constant += 200
         toCollectionview.setNeedsDisplay()
@@ -325,6 +303,14 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
     
     func addFrequentCellIfPossible() {
+        /*toCollectionview.performBatchUpdates({
+            self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
+            self.toCollectionview.insertItems(at: [IndexPath.init(row: 0, section: 0)])
+            self.toCollectionview.collectionViewLayout.invalidateLayout()
+            self.toCollectionview.reloadData()
+            print(self.toCollectionview.contentSize)
+            print(self.toCollectionview.collectionViewLayout.collectionViewContentSize)
+        }, completion: nil)*/
         //collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
         //let len = collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)
         //if len < CollectionDataDelegate.maxFrequent {
@@ -343,12 +329,26 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             //toCollectionview.insertItemsAtIndexPaths([path])
         //}
         collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
-        toCollectionview.reloadData()
+        DispatchQueue.main.async {
+            self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
+            self.toCollectionview.reloadData()
+            //self.toCollectionview.reloadSections(IndexSet.init(integer: self.collectionDataDelegate.numberOfSections(in: self.toCollectionview)-1))
+            print("reload")
+        }
+        /*toCollectionview.reloadData()
+        toCollectionview.collectionViewLayout.invalidateLayout()
+        (toCollectionview.collectionViewLayout as! UICollectionViewFlowLayout).itemSize = CGSize.init(width: 90, height: toCollectionview.contentSize.height)
+        toCollectionview.invalidateIntrinsicContentSize()
+        toCollectionview.contentSize = CGSize.init(width: toCollectionview.contentSize.width+90, height: toCollectionview.contentSize.height)
+        
+        print(toCollectionview.visibleCells)
+        toCollectionview.collectionViewLayout.finalizeCollectionViewUpdates()
+        ccCollectionview.collectionViewLayout.finalizeCollectionViewUpdates()
         //toCollectionviewHeight.trans
         //        toCollectionview.translatesAutoresizingMaskIntoConstraints = true
         //toCollectionview.startInteractiveTransitionToCollectionViewLayout(toCollectionview.collectionViewLayout, completion: nil)
         toCollectionview.reloadData()
-        ccCollectionview.reloadData()
+        ccCollectionview.reloadData()*/
     }
     
     func showContact(_ email: String) {
@@ -446,29 +446,13 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             print("no Access!")
         }
     }
-
-    func doContact() {
-        AppDelegate.getAppDelegate().requestForAccess({ access in
-            print(access)
-        })
-        let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
-        if authorizationStatus == CNAuthorizationStatus.authorized {
-            do {
-                print(try AppDelegate.getAppDelegate().contactStore.unifiedContacts(matching: CNContact.predicateForContacts(matchingName: "o"), keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor]))
-            }
-            catch {
-                print("exception")
-            }
-            print("contacts done")
-        } else {
-            print("no Access!")
-        }
-    }
     
     func newInput(_ tokenField: VENTokenField){
         print("input")
         animateIfNeeded()
-
+        /*collectionDataDelegate.alreadyInserted = []
+        toCollectionview.reloadData()
+        ccCollectionview.reloadData()
         collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String]) + (ccText.mailTokens as NSArray as! [String])
         toCollectionview.reloadData()
 //        toCollectionview.translatesAutoresizingMaskIntoConstraints = true
@@ -477,6 +461,8 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
         toCollectionview.setNeedsDisplay()
 //        toCollectionview.translatesAutoresizingMaskIntoConstraints = false
         toCollectionview.reloadData()
+        ccCollectionview.reloadData()*/
+        reloadCollectionViews()
         //let path = NSIndexPath.init(forRow: collectionDataDelegate.collectionView(toCollectionview, numberOfItemsInSection: 0)-1, inSection: 0)
         //toCollectionview.reloadItemsAtIndexPaths([path])
         //toCollectionview.reloadData()
@@ -507,10 +493,11 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
             ccCollectionview.reloadData()
         }
         if !toText.isFirstResponder {
-            UIView.animate(withDuration: 2.5, animations: { () -> Void in self.toCollectionviewHeight.constant = 0 })
+            //UIView.animate(withDuration: 2.5, animations: { () -> Void in self.toCollectionviewHeight.constant = 0 })
+            //toCollectionview.isHidden = true
         }
         if !ccText.isFirstResponder {
-            ccCollectionviewHeight.constant = 0
+            //ccCollectionviewHeight.constant = 0
         }
 
         UIView.animate(withDuration: 0.1, animations: { () -> Void in
@@ -677,3 +664,35 @@ class SendViewController: UIViewController, UITextViewDelegate, UIGestureRecogni
     }
 }
 
+extension SendViewController: UIGestureRecognizerDelegate {
+    @IBAction func tapped(_ sender: UITapGestureRecognizer) {
+        //print(sender.description)
+        //print(String(sender.view?.valueForKey("UILoggingName")))
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "tap", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: self.view), /*debugDescription: sender.view.debugDescription,*/ comment: "")
+        }
+    }
+    
+    @IBAction func panned(_ sender: UIPanGestureRecognizer) {
+        if LogHandler.logging {
+            if sender.state == .began {
+                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "beginPan", point: sender.location(in: sender.view)/*CGPoint(x: 0,y: 0)*/, comment: String(describing: sender.translation(in: sender.view)))
+            }
+            if sender.state == .ended {
+                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "endPan", point: sender.location(in: sender.view)/*CGPoint(x: 0,y: 0)*/, comment: String(describing: sender.translation(in: sender.view)))
+            }
+        }
+    }
+    
+    @IBAction func swiped(_ sender: UISwipeGestureRecognizer) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "swipe", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: sender.view), comment: String(describing: sender.direction))
+        }
+    }
+    
+    @IBAction func rotated(_ sender: UIRotationGestureRecognizer) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "rotate", point: CGPoint(x: 0, y: 0), comment: String(describing: sender.rotation))
+        }
+    }
+}

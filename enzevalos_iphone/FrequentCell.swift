@@ -17,6 +17,18 @@ class FrequentCell : UICollectionViewCell {
     var address = ""
     var identifier = ""
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        print("Rect")
+        self.frame = CGRect.init(x: 0, y: 0, width: 90, height: 90)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        print("Coder")
+        super.init(coder: aDecoder)
+        self.frame = CGRect.init(x: 0, y: 33, width: 90, height: 90)
+    }
+    
     func drawBackgroud(_ color : UIColor){
         var myBounds = CGRect()
         myBounds.size.width = 70

@@ -6,7 +6,7 @@
 //  Copyright © 2016 fu-berlin. All rights reserved.
 //
 
-import XCTest
+/*import XCTest
 @testable import enzevalos_iphone
 
 class enzevalos_iphoneTests: XCTestCase {
@@ -54,4 +54,4 @@ class enzevalos_iphoneTests: XCTestCase {
         return true
     }
     
-}
+}*/
