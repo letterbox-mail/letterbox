@@ -69,7 +69,7 @@ class AnimatedSendIcon: UIView {
         })
         
         if !isOnTop {
-            UIView.animateKeyframes(withDuration: 0.75, delay: 0, options: .calculationModeCubicPaced, animations: {
+            UIView.animateKeyframes(withDuration: 0.75, delay: 0, options: [.calculationModeCubicPaced, .allowUserInteraction], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.25, animations: {
                     self.square.frame = CGRect(x: 10, y: 20, width: self.width*0.95, height: self.height*0.95)
                     self.square2.frame = CGRect(x: 120, y: 20, width: self.width*0.85, height: self.height*0.85)
@@ -88,7 +88,7 @@ class AnimatedSendIcon: UIView {
                 
                 }, completion: nil)
         } else {
-            UIView.animateKeyframes(withDuration: 0.75, delay: 0, options: .calculationModeCubicPaced, animations: {
+            UIView.animateKeyframes(withDuration: 0.75, delay: 0, options: [.calculationModeCubicPaced, .allowUserInteraction], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.25, animations: {
                     self.square2.frame = CGRect(x: 10, y: 20, width: self.width*0.95, height: self.height*0.95)
                     self.square.frame = CGRect(x: 120, y: 20, width: self.width*0.85, height: self.height*0.85)

@@ -409,15 +409,14 @@ extension SendViewController {
             if(ThemeManager.animation()) {
                 setAnimation()
                 if contemporarySecureState {
-                    UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
                         self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
                     }, completion: nil)
                 } else {
-                    UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn], animations: {
+                    UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
                         self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
                     }, completion: { (_: Bool) in
-                        sleep(1)
-                        UIView.animate(withDuration: 0.5, delay: 1.5, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                        UIView.animate(withDuration: 0.5, delay: 1.5, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
                             self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
                         }, completion: nil)
                     })

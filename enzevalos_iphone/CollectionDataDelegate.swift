@@ -15,6 +15,7 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
     var suggestionFunc : (([String]) -> [(UIImage, String, String, UIImage?, UIColor)])
                     //[bereits eingetragene emailadresse] -> [(Kontaktbild, Name, Emailadresse, emailTypeImage)]
     var alreadyInserted : [String] = []
+    var suggestion: [(UIImage, String, String, UIImage?, UIColor)] = []
     var insertCallback : (String, String) -> Void = {(name : String, address : String) -> Void in return}
     
     
@@ -28,7 +29,8 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return suggestionFunc(alreadyInserted).count
+        suggestion = suggestionFunc(alreadyInserted)
+        return suggestion.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -39,12 +41,12 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
         let index = indexPath.row
         cell.img.layer.cornerRadius = cell.img.frame.height/2
         cell.img.clipsToBounds = true
-        cell.img.image = suggestionFunc(alreadyInserted)[index].0
-        cell.name.text = suggestionFunc(alreadyInserted)[index].1
-        cell.address = suggestionFunc(alreadyInserted)[index].2
-        if suggestionFunc(alreadyInserted)[index].3 != nil {
-            cell.type.image = suggestionFunc(alreadyInserted)[index].3
-            cell.drawBackgroud(suggestionFunc(alreadyInserted)[index].4)
+        cell.img.image = suggestion[index].0
+        cell.name.text = suggestion[index].1
+        cell.address = suggestion[index].2
+        if suggestion[index].3 != nil {
+            cell.type.image = suggestion[index].3
+            cell.drawBackgroud(suggestion[index].4)
         }
         else {
             cell.type.image = UIImage()
@@ -58,7 +60,7 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let tuple = suggestionFunc(alreadyInserted)[indexPath.row]
+        let tuple = suggestion[indexPath.row]
         insertCallback(tuple.1, tuple.2)
     }
     
