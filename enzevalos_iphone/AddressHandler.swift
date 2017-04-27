@@ -76,16 +76,17 @@ class AddressHandler {
     static var freqAlgorithm2: ([String]) -> [(UIImage, String, String, UIImage?, UIColor)] = {
         (inserted : [String]) -> [(UIImage, String, String, UIImage?, UIColor)] in
         
-        var cons = DataHandler.handler.contacts
+//        var cons = DataHandler.handler.contacts
+        var cons = DataHandler.handler.receiverRecords
         var list: [(UIImage,String,String,UIImage?,UIColor)] = []
         
-        for con: EnzevalosContact in cons {
+        for con: KeyRecord in cons {
             if list.count >= CollectionDataDelegate.maxFrequent {
                 break
             }
             var insertedEntry = false
-            var address = con.getMailAddresses()[0]
-            for addr in con.getMailAddresses() {
+            var address = con.ezContact.getMailAddresses()[0]
+            for addr in con.ezContact.getMailAddresses() {
                 if inserted.contains(addr.mailAddress) {
                     insertedEntry = true
                 }
@@ -110,7 +111,7 @@ class AddressHandler {
                     }
                     
                     //TODO: Add Image in EnzevalosContact
-                    var entry = (cn.getImageOrDefault(), con.displayname!, address.mailAddress, addrType, color)
+                    var entry = (cn.getImageOrDefault(), con.ezContact.displayname!, address.mailAddress, addrType, color)
                     
                     list.append(entry)
                 }
