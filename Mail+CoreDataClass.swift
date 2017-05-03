@@ -31,7 +31,7 @@ open class Mail: NSManagedObject, Comparable {
             } else {
                 flag.insert(MCOMessageFlag.seen)
             }
-            DataHandler.handler.save()
+            _ = DataHandler.handler.save()
         }
     }
 

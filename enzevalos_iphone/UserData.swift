@@ -67,7 +67,7 @@ struct UserManager{
             return value as AnyObject?
         }
         else{
-            storeUserValue(attribute.defaultValue, attribute: attribute)
+            _ = storeUserValue(attribute.defaultValue, attribute: attribute)
             return attribute.defaultValue
 
         }

@@ -72,7 +72,7 @@ open class KeyRecord: Record {
         mails.append(mail)
         mails.sort()
         self.ezContact = mail.from.contact
-        addNewAddress(mail.from)        
+        _ = addNewAddress(mail.from)
     }
 
     open static func deleteRecordFromRecordArray(_ records: [KeyRecord], delRecord: KeyRecord) -> [KeyRecord] {
@@ -138,7 +138,7 @@ open class KeyRecord: Record {
             if mail.from.keyID == self.key {
                 mails.append(mail)
                 mails.sort()
-                addNewAddress(mail.from)
+                _ = addNewAddress(mail.from)
                 return true
             }
             return false
@@ -161,7 +161,7 @@ open class KeyRecord: Record {
 
             mails.append(mail)
             mails.sort()
-            addNewAddress(mail.from)
+            _ = addNewAddress(mail.from)
             return true
         }
         return false

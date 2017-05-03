@@ -116,15 +116,12 @@ class DataHandler {
         save()
     }
     
-    func save() -> Bool {
-        var succ = false
+    func save(){
         do{
             try managedObjectContext.save()
-            succ = true
         } catch{
             fatalError("Failure to save context\(error)")
         }
-        return succ
     }
     
     private func cleanContacts() {
@@ -295,7 +292,7 @@ class DataHandler {
         let contact = getContactByAddress(address)
         contact.displayname = name
         contact.getAddress(address)?.keyID = key
-        contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
+        _ = contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
         return contact
     }
  
