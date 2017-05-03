@@ -247,7 +247,7 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard"
             }
-            alert.addAction(UIAlertAction(title: "Mehr Informationen", style: .default, handler: { (action: UIAlertAction!) -> Void in UIApplication.shared.openURL(URL(string: url)!) }))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in UIApplication.shared.openURL(URL(string: url)!) }))
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             DispatchQueue.main.async(execute: {
                 self.present(alert, animated: true, completion: nil)
@@ -312,8 +312,7 @@ class ReadViewController: UITableViewController {
 
             if m.isEncrypted && !m.unableToDecrypt {
                 messageBody.text = m.decryptedBody
-            }
-            else {
+            } else {
                 messageBody.text = m.body
             }
             // NavigationBar Icon
