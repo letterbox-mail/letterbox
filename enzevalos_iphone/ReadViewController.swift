@@ -76,7 +76,7 @@ class ReadViewController: UITableViewController {
                 if !mail.showMessage {
                     answerButton.isEnabled = false
                 }
-                navigationController?.navigationBar
+                _ = navigationController?.navigationBar
             } else if mail.isSecure {
                 self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
             } else {
@@ -127,7 +127,7 @@ class ReadViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         if let mail = mail {
-            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact.hasKey {
+            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact.hasKey || mail.isEncrypted && mail.unableToDecrypt {
                 return 3
             }
         }
@@ -175,6 +175,13 @@ class ReadViewController: UITableViewController {
                     } else if indexPath.row == 1 {
                         return infoButtonCell
                     }
+                } else if mail.isEncrypted && mail.unableToDecrypt {
+                    infoSymbol.text = "?"
+                    infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                    infoHeadline.text = NSLocalizedString("couldNotDecryptHeadline", comment: "Message could not be decrypted")
+                    infoHeadline.textColor = UIColor.gray
+                    infoText.text = NSLocalizedString("couldNotDecryptText", comment: "Message could not be decrypted")
+                    return infoCell
                 } else if mail.from.hasKey && !mail.isSecure {
                     infoSymbol.text = "?"
                     infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
@@ -212,16 +219,16 @@ class ReadViewController: UITableViewController {
     }
 
     @IBAction func ignoreEmailButton(_ sender: AnyObject) {
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
 
     @IBAction func markUnreadButton(_ sender: AnyObject) {
         mail?.isRead = false
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
 
     @IBAction func deleteButton(_ sender: AnyObject) {
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
 
     @IBAction func iconButton(_ sender: AnyObject) {
