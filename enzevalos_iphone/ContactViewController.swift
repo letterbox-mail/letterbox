@@ -11,31 +11,6 @@ import UIKit
 import Contacts
 import ContactsUI
 
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
-
 class ContactViewController: UIViewController {
     var keyRecord: KeyRecord? = nil
     var highlightEmail: String? = nil
@@ -209,7 +184,7 @@ extension ContactViewController: UITableViewDataSource {
                         cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
                     } else if keyRecord!.hasKey {
                         cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
-                    } else if otherRecords?.filter({ $0.hasKey }).count > 0 {
+                    } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         cell.contactStatus.text = NSLocalizedString("otherEncryption", comment: "Contact is using encryption, this is the unsecure collection")
                     } else {
                         cell.contactStatus.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
@@ -219,7 +194,7 @@ extension ContactViewController: UITableViewDataSource {
                     let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
                     if keyRecord!.hasKey {
                         actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
-                    } else if otherRecords?.filter({ $0.hasKey }).count > 0 {
+                    } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
                     } else {
                         actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
@@ -295,7 +270,7 @@ extension ContactViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         var sections = 3
-        if keyRecord?.ezContact.records.count > 1 {
+        if (keyRecord?.ezContact.records.count ?? 0) > 1 {
             sections += 1
         }
         if let hasKey = keyRecord?.hasKey, hasKey {
