@@ -295,8 +295,6 @@ class DataHandler {
         _ = contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
         return contact
     }
- 
-
     
     func getContacts(_ receivers: [MCOAddress]) -> [EnzevalosContact] {
         var contacts = [EnzevalosContact]()

@@ -25,8 +25,11 @@ open class KeyRecord: Record {
         return ezContact.name
     }
     open var hasKey: Bool {
+        // Public encryption key. May missing for secure mails since mail is only signed and encrypted
         return key != nil
     }
+    
+    open var isSecure: Bool = false
 
     open var isVerified: Bool {
         if let key = self.key {
@@ -63,7 +66,8 @@ open class KeyRecord: Record {
 
 
     public init(mail: Mail) {
-        if(mail.isSecure) {
+        self.isSecure = mail.isSecure
+        if(mail.from.hasKey) {
             self.key = mail.from.keyID
         }
             else {
@@ -133,8 +137,8 @@ open class KeyRecord: Record {
     }
 
     open func addNewMail(_ mail: Mail) -> Bool {
-        //TODO: signed only mails are dropped ??
-        if mail.isSecure && self.hasKey {
+        // TODO: signed only mails are dropped ??
+        if mail.isSecure && self.isSecure {
             if mail.from.keyID == self.key {
                 mails.append(mail)
                 mails.sort()
@@ -144,7 +148,7 @@ open class KeyRecord: Record {
             return false
 
         }
-            else if mail.isSecure && !self.hasKey || !mail.isSecure && self.hasKey {
+            else if mail.isSecure != self.isSecure {
             return false
         }
 
@@ -187,7 +191,6 @@ public func == (lhs: KeyRecord, rhs: KeyRecord) -> Bool {
     if isEmpty(rhs) {
         return false
     }
-
     return lhs.mails.first!.date == rhs.mails.first!.date && lhs.hasKey == rhs.hasKey && lhs.key == rhs.key
 }
 
