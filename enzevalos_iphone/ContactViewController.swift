@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Contacts
 import ContactsUI
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -145,7 +146,7 @@ class ContactViewController: UIViewController {
     }
 
     func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) {
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
         prepareContactSheet()
     }
 

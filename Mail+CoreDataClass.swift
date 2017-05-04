@@ -61,6 +61,10 @@ open class Mail: NSManagedObject, Comparable {
     }
 
     var shortBodyString: String? {
+        guard !trouble else {
+            return nil
+        }
+        
         var message: String? = ""
         if isEncrypted && !unableToDecrypt {
             message = decryptedBody
