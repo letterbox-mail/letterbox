@@ -344,7 +344,7 @@ class SendViewController: UIViewController {
 
     func mailSend(_ error: Error?) {
         if (error != nil) {
-            NSLog("Error sending email: \(error)")
+            NSLog("Error sending email: \(String(describing: error))")
             AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
         } else {
             NSLog("Send successful!")

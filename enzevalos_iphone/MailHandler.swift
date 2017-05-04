@@ -412,7 +412,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
                         enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
                     }
                     catch {
-                        print("Could not conntect key! \(autocrypt?.toString())")
+                        print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
                     }
                 }
                 

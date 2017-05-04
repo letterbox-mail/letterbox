@@ -64,7 +64,7 @@ class PGPKeyManagement {
         return index
     }
     
-    func addKey(_ key: PGPKeyWrapper, forMailAddresses: [String]) -> String{
+    @discardableResult func addKey(_ key: PGPKeyWrapper, forMailAddresses: [String]) -> String{
         var index : Int64 = 0
         let searchKey = key.key.keyID.longKeyString+"-index"
         var existent = false

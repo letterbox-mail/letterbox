@@ -59,6 +59,6 @@
 - (nullable NSData *) decryptData:(nonnull NSData *)messageDataToDecrypt passphrase:(nullable NSString *)passphrase verifyWithPublicKey:(nullable PGPKey *)publicKey signed:(nullable BOOL*)isSigned valid:(nullable BOOL*)isValid integrityProtected:(nullable BOOL*)isIntegrityProtected error:(NSError * __autoreleasing __nullable * __nullable)error;
 
 - (nonnull PGPTemporaryDecryptionObject *) decryptDataFirstPart:(nonnull NSData *)messageDataToDecrypt passphrase:(nullable NSString *)passphrase integrityProtected:(nullable BOOL*)isIntegrityProtected error:(NSError * __autoreleasing __nullable * __nullable)error;
-- (BOOL *) decryptDataSecondPart:(nonnull PGPTemporaryDecryptionObject *)temporaryDecryptionObject verifyWithPublicKey:(nullable PGPKey *)publicKey signed:(nullable BOOL*)isSigned valid:(nullable BOOL*)isValid error:(NSError * __autoreleasing __nullable * __nullable)error;
+- (BOOL *_Nonnull) decryptDataSecondPart:(nonnull PGPTemporaryDecryptionObject *)temporaryDecryptionObject verifyWithPublicKey:(nullable PGPKey *)publicKey signed:(nullable BOOL*)isSigned valid:(nullable BOOL*)isValid error:(NSError * __autoreleasing __nullable * __nullable)error;
 
 @end

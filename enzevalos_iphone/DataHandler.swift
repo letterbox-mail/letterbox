@@ -345,7 +345,7 @@ class DataHandler {
     
     // -------- End handle to, cc, from addresses --------
     
-    func createMail(_ uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) -> Mail {
+    func createMail(_ uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) /*-> Mail*/ {
         
         let finding = findNum("Mail", type: "uid", search: uid)
         let mail: Mail
@@ -374,7 +374,7 @@ class DataHandler {
             mail.decryptIfPossible()
         }
         else {
-            return finding![0] as! Mail
+            return //finding![0] as! Mail
         }
             
         save()
@@ -392,7 +392,7 @@ class DataHandler {
         }
        
         
-        return mail
+        //return mail
     }
 
     private func readMails() -> [Mail] {

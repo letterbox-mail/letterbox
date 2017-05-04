@@ -11,6 +11,13 @@ import Foundation
 public protocol EncryptionHandler {
     //var keychain
     
+    //----- static stuff -----
+    // static func getEncryption(_ encryptionType: EncryptionType) -> Encryption?
+    // static func hasKey(_ enzContact: EnzevalosContact) -> Bool
+    // static func hasKey(_ mailAddress: String) -> Bool
+    // static func getEncryptionTypeForMail(_ mail: Mail) -> EncryptionType
+    // static func sortMailaddressesByEncryption(_ mailaddresses: [String]) -> [EncryptionType: [String]]
+    // static func sortMailaddressesByEncryptionMCOAddress(_ mailaddresses: [String]) -> [EncryptionType: [MCOAddress]]
     
     
     //handle entrys in keychain for different Encryptions

@@ -20,7 +20,7 @@ class InitViewController : UIViewController {
         let manager = MCOMailProvidersManager.shared()!//.init() //sharedManager()
         print(manager)
         let path = Bundle.main.path(forResource: "providers", ofType: "json")
-        print(path)
+        print(path ?? "nil")
         manager.registerProviders(withFilename: path)
         print(manager.provider(forEmail: "alice2005@web.de") == nil)
         print(manager.provider(forEmail: "alice2005@aol.com") == nil)   //x
@@ -37,7 +37,7 @@ class InitViewController : UIViewController {
         print(manager.provider(forMX: "web.de").imapServices())
         print(manager.provider(forMX: "web.de").smtpServices())
         
-        var nService : MCONetService = (manager.provider(forMX: "web.de").smtpServices() as! [MCONetService])[0]
+        let nService : MCONetService = (manager.provider(forMX: "web.de").smtpServices() as! [MCONetService])[0]
         print(nService.info())
     }
     
