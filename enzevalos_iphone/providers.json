@@ -1,24 +1,25 @@
 {
     "web":{
         "servers":{
-            "imap:"
+            "imap":[
                 {
                     "port":993,
                     "hostname":"imap.web.de",
-                    "ssl":true
+                    "ssl":true,
+                    "auth":"saslPlain"
                 }
-            ,
-            "smtp":
-                {
+                     ],
+            "smtp":[
+                    {
                     "port":587,
                     "hostname":"smtp.web.de",
-                    "starttls":true
-                }
-            ]
+                    "starttls":true,
+                    "auth":"saslPlain"
+                    }
+                    ]
         },
         "domain-match":[
-            //"web\\.de",
-            "web\\.de",
+            "web.de",
             "web"
         ],
         "mx-match": [
@@ -27,15 +28,43 @@
             ""
         ]
     },
+    "enzevalos":{
+        "servers":{
+            "imap":[
+                    {
+                    "port":993,
+                    "hostname":"mail.enzevalos.de",
+                    "ssl":true,
+                    "auth":"saslPlain"
+                    }
+                    ],
+            "smtp":[
+                    {
+                    "port":465,
+                    "hostname":"mail.enzevalos.de",
+                    "ssl":true,
+                    "auth":"saslPlain"
+                    }
+                    ]
+        },
+        "domain-match":[
+                        "enzevalos.de",
+                        "enzevalos"
+                        ],
+        "mx-match": [
+                     "enzevalos",
+                     "enzevalos.de",
+                     ]
+    },
     "aol":{
         "servers":{
-            "imap:"[
-                    {
+            "imap" : [
+                {
                     "port":993,
                     "hostname":"imap.aol.com",
                     "ssl":true
-                    }
-                    ],
+                }
+            ],
             "smtp":[
                     {
                     "port":587,
@@ -45,7 +74,6 @@
                     ]
         },
         "domain-match":[
-                        //"web\\.de",
                         "aol\\.com",
                         "aol"
                         ],
