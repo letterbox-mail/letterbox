@@ -1344,6 +1344,7 @@
                         <outlet property="seperator3Leading" destination="yXj-sj-waX" id="b9Q-d9-eDe"/>
                         <outlet property="subjectText" destination="zbn-j5-Dz7" id="5wb-G0-ipJ"/>
                         <outlet property="tableview" destination="iEa-Rh-6bS" id="DWg-RH-6ph"/>
+                        <outlet property="tableviewBegin" destination="fYk-q4-9QZ" id="WFK-6z-jOv"/>
                         <outlet property="tableviewHeight" destination="fcx-4L-TLn" id="onv-6z-sYk"/>
                         <outlet property="textView" destination="quA-hP-Xkp" id="bsZ-Gx-Cds"/>
                         <outlet property="textViewLeading" destination="7wJ-8N-go2" id="uKC-m1-WGE"/>
