@@ -15,7 +15,7 @@ import Contacts
 open class Mail_Address: NSManagedObject, MailAddress {
 
     open var mailAddress: String {
-        return address
+        return address.lowercased()
     }
 
     open var label: CNLabeledValue<NSString> { //Wie in MailAddress; Ist der NSString hier richtig? (http://stackoverflow.com/questions/39648830/how-to-add-new-email-to-cnmutablecontact-in-swift-3)
@@ -38,9 +38,12 @@ open class Mail_Address: NSManagedObject, MailAddress {
         }
     }
 
-    //TODO think about it!
+    //TODO think about it! Better safe state or update state???
     open var keyID: String? {
         get {
+            if self.encryptionType == EncryptionType.unknown{
+                self.encryptionType = EnzevalosEncryptionHandler.getEncryptionType(self.address)
+            }
             if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
                 return encryption.getActualKeyID(self.address)
             }
@@ -57,7 +60,7 @@ open class Mail_Address: NSManagedObject, MailAddress {
                     }
                 }
             }
-                else {
+            else {
                 if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
                     if let currentID = self.keyID {
                         encryption.removeMailAddressForKey(self.mailAddress, keyID: currentID)

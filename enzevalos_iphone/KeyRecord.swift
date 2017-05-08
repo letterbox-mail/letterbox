@@ -70,7 +70,7 @@ open class KeyRecord: Record {
         if(mail.from.hasKey) {
             self.key = mail.from.keyID
         }
-            else {
+        else {
             self.key = nil
         }
         mails.append(mail)
@@ -148,7 +148,7 @@ open class KeyRecord: Record {
             return false
 
         }
-            else if mail.isSecure != self.isSecure {
+        else if mail.isSecure != self.isSecure {
             return false
         }
 
@@ -161,8 +161,6 @@ open class KeyRecord: Record {
                     break
                 }
             }
-
-
             mails.append(mail)
             mails.sort()
             _ = addNewAddress(mail.from)

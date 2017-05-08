@@ -59,9 +59,6 @@ extension Mail {
             self.willAccessValue(forKey: "trouble")
             let text = self.primitiveValue(forKey: "trouble") as? Bool
             self.didAccessValue(forKey: "trouble")
-            if(text == nil){
-                print("NIL!!!")
-            }
             return text!
         }
     

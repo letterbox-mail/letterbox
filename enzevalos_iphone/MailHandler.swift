@@ -140,7 +140,7 @@ class AutocryptContact {
     }
 
     func toString() -> String {
-        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption) | key: \(key)"
+        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption)"
     }
 }
 
@@ -363,6 +363,7 @@ class MailHandler {
                 return
             }
             if let msgs = msg {
+                print("#mails on server: \(msgs.count)")
                 let dispatchGroup = DispatchGroup()
                 for m in msgs {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
@@ -402,7 +403,6 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
             var autocrypt: AutocryptContact? = nil
             if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER){
                 autocrypt = AutocryptContact(header: header!)
-                print(autocrypt?.toString() ?? "nil")
                 if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0){
                     let pgp = ObjectivePGP.init()
                     pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)

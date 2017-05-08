@@ -205,7 +205,10 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
     }
     
     func getAddressByMCOAddress(_ mcoaddress: MCOAddress)-> Mail_Address?{
-        return getAddress(mcoaddress.mailbox!)
+        if (mcoaddress.mailbox) != nil{
+            return getAddress(mcoaddress.mailbox.lowercased())
+        }
+        return nil
     }
     
     open func getMailAddresses()->[MailAddress]{
