@@ -51,12 +51,6 @@ open class KeyRecord: Record {
         return ezContact.cnContact
     }
 
-    public init(contact: EnzevalosContact, key: String?) {
-        self.ezContact = contact
-        self.key = key
-        self.mails = [Mail] ()
-    }
-
     open var image: UIImage {
         return ezContact.getImageOrDefault()
     }
@@ -67,7 +61,7 @@ open class KeyRecord: Record {
 
     public init(mail: Mail) {
         self.isSecure = mail.isSecure
-        if(mail.from.hasKey) {
+        if(mail.isSecure && mail.from.hasKey) {
             self.key = mail.from.keyID
         }
         else {

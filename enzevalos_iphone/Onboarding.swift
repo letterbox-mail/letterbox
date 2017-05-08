@@ -462,7 +462,7 @@ class Onboarding {
     }
     
     static func keyHandling() {
-        for encType in iterateEnum(EncryptionType) {
+        for encType in iterateEnum(EncryptionType.self) {
             let encryption = EnzevalosEncryptionHandler.getEncryption(encType)
             if let enc = encryption {
                 enc.removeAllKeys()
@@ -481,7 +481,7 @@ class Onboarding {
             var enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
             do {
                 let data = try pgp.keys[0].export()
-                enc?.addKey(data, forMailAddresses: [])
+                _ = enc?.addKey(data, forMailAddresses: [])
             }
             catch _ {}
             
@@ -496,7 +496,7 @@ class Onboarding {
             enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
             do {
                 let data = try pgp.keys[0].export()
-                enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])                           //<---- Emailadresse
+                _ = enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])                           //<---- Emailadresse
             }
             catch _ {}
             
@@ -511,7 +511,7 @@ class Onboarding {
             enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
             do {
                 let data = try pgp.keys[0].export()
-                enc?.addKey(data, forMailAddresses: ["alice2005@web.de"])                           //<---- Emailadresse
+                _ = enc?.addKey(data, forMailAddresses: ["alice2005@web.de"])                           //<---- Emailadresse
             }
             catch _ {}
             
@@ -526,7 +526,7 @@ class Onboarding {
             enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
             do {
                 let data = try pgp.keys[0].export()
-                enc?.addKey(data, forMailAddresses: ["quizer1@enzevalos.de"])                           //<---- Emailadresse
+                _ = enc?.addKey(data, forMailAddresses: ["quizer1@enzevalos.de"])                           //<---- Emailadresse
             }
             catch _ {}
             
