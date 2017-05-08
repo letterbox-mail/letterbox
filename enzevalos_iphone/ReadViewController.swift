@@ -322,7 +322,7 @@ class ReadViewController: UITableViewController {
             } else {
                 messageBody.text = m.body
             }
-            messageBody.text = messageBody.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            messageBody.text = messageBody.text?.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
             
             // NavigationBar Icon
             let iconView = UIImageView()
