@@ -462,7 +462,7 @@ class Onboarding {
     }
     
     static func keyHandling() {
-        for encType in iterateEnum(EncryptionType) {
+        for encType in iterateEnum(EncryptionType.self) {
             let encryption = EnzevalosEncryptionHandler.getEncryption(encType)
             if let enc = encryption {
                 enc.removeAllKeys()
@@ -496,7 +496,7 @@ class Onboarding {
             enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
             do {
                 let data = try pgp.keys[0].export()
-                enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])                           //<---- Emailadresse
+                _ = enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])                           //<---- Emailadresse
             }
             catch _ {}
             

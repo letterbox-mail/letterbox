@@ -246,7 +246,7 @@ open class LabelStyleKit : NSObject {
         set {
             Cache.homeTargets = newValue
             for target: AnyObject in newValue {
-                target.perform(NSSelectorFromString("setImage:"), with: LabelStyleKit.imageOfHome)
+                _ = target.perform(NSSelectorFromString("setImage:"), with: LabelStyleKit.imageOfHome)
             }
         }
     }
@@ -256,7 +256,7 @@ open class LabelStyleKit : NSObject {
         set {
             Cache.workTargets = newValue
             for target: AnyObject in newValue {
-                target.perform(NSSelectorFromString("setImage:"), with: LabelStyleKit.imageOfWork)
+                _ = target.perform(NSSelectorFromString("setImage:"), with: LabelStyleKit.imageOfWork)
             }
         }
     }
@@ -266,7 +266,7 @@ open class LabelStyleKit : NSObject {
         set {
             Cache.otherTargets = newValue
             for target: AnyObject in newValue {
-                target.perform(NSSelectorFromString("setImage:"), with: LabelStyleKit.imageOfOther)
+                _ = target.perform(NSSelectorFromString("setImage:"), with: LabelStyleKit.imageOfOther)
             }
         }
     }
