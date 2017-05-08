@@ -446,9 +446,6 @@ class DataHandler {
         records.sort()
         print("#KeyRecords: \(records.count) ")
         print("#Mails: \(mails.count)")
-        for r in records{
-            r.showInfos()
-        }
         return records
     }
     
