@@ -139,6 +139,7 @@ class ReadViewController: UITableViewController {
         if section == 0 {
             return 3
         }
+
         if let mail = mail {
             if section == 1 && mail.trouble && !mail.showMessage {
                 return 2
@@ -163,31 +164,13 @@ class ReadViewController: UITableViewController {
             if let mail = mail {
                 if mail.trouble {
                     if indexPath.row == 0 {
-                        infoSymbol.text = "!"
-                        infoSymbol.textColor = ThemeManager.troubleMessageColor()
-                        infoHeadline.text = NSLocalizedString("corruptedHeadline", comment: "This mail is corrupted")
-                        infoHeadline.textColor = UIColor.black
-                        infoText.text = NSLocalizedString("corruptedText", comment: "This mail is corrupted")
-                        infoCell.setNeedsLayout()
-                        infoCell.layoutIfNeeded()
-                        infoCell.translatesAutoresizingMaskIntoConstraints = true
                         return infoCell
                     } else if indexPath.row == 1 {
                         return infoButtonCell
                     }
                 } else if mail.isEncrypted && mail.unableToDecrypt {
-                    infoSymbol.text = "?"
-                    infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
-                    infoHeadline.text = NSLocalizedString("couldNotDecryptHeadline", comment: "Message could not be decrypted")
-                    infoHeadline.textColor = UIColor.gray
-                    infoText.text = NSLocalizedString("couldNotDecryptText", comment: "Message could not be decrypted")
                     return infoCell
                 } else if mail.from.hasKey && !mail.isSecure {
-                    infoSymbol.text = "?"
-                    infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
-                    infoHeadline.text = NSLocalizedString("encryptedBeforeHeadline", comment: "The sender has encrypted before")
-                    infoHeadline.textColor = UIColor.gray
-                    infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
                     return infoCell
                 }
             } else {
@@ -196,14 +179,6 @@ class ReadViewController: UITableViewController {
         }
 
         return messageCell
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 && indexPath.row == 0 {
-            // get the tableview to use the correct height for this cell; please replace this with a better way if you know one
-            tableView.beginUpdates()
-            tableView.endUpdates()
-        }
     }
 
     @IBAction func showEmailButton(_ sender: UIButton) {
@@ -323,7 +298,7 @@ class ReadViewController: UITableViewController {
                 messageBody.text = m.body
             }
             messageBody.text = messageBody.text?.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines)
-            
+
             // NavigationBar Icon
             let iconView = UIImageView()
             iconView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -338,6 +313,30 @@ class ReadViewController: UITableViewController {
             }
             iconView.image = icon
             iconButton.setImage(icon, for: UIControlState())
+
+            // Mail info text
+            if m.trouble {
+                infoSymbol.text = "!"
+                infoSymbol.textColor = ThemeManager.troubleMessageColor()
+                infoHeadline.text = NSLocalizedString("corruptedHeadline", comment: "This mail is corrupted")
+                infoHeadline.textColor = UIColor.black
+                infoText.text = NSLocalizedString("corruptedText", comment: "This mail is corrupted")
+                infoCell.setNeedsLayout()
+                infoCell.layoutIfNeeded()
+                infoCell.translatesAutoresizingMaskIntoConstraints = true
+            } else if m.isEncrypted && m.unableToDecrypt {
+                infoSymbol.text = "?"
+                infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                infoHeadline.text = NSLocalizedString("couldNotDecryptHeadline", comment: "Message could not be decrypted")
+                infoHeadline.textColor = UIColor.gray
+                infoText.text = NSLocalizedString("couldNotDecryptText", comment: "Message could not be decrypted")
+            } else if m.from.hasKey && !m.isSecure {
+                infoSymbol.text = "?"
+                infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                infoHeadline.text = NSLocalizedString("encryptedBeforeHeadline", comment: "The sender has encrypted before")
+                infoHeadline.textColor = UIColor.gray
+                infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
+            }
 
             print("enc: ", m.isEncrypted, ", unableDec: ", m.unableToDecrypt, ", signed: ", m.isSigned, ", correctlySig: ", m.isCorrectlySigned, ", oldPrivK: ", m.decryptedWithOldPrivateKey)
             EnzevalosEncryptionHandler.getEncryption(.PGP)?.decryptAndSignatureCheck(m)
