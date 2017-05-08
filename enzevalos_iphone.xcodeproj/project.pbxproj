@@ -383,6 +383,34 @@
 			name = protocols;
 			sourceTree = "<group>";
 		};
+		47B91AC01EC0C1CF000AE3EE /* coredata */ = {
+			isa = PBXGroup;
+			children = (
+				472F39781E1D0B0B009260FB /* Mail+CoreDataProperties.swift */,
+				472F39711E1D09C4009260FB /* State+CoreDataClass.swift */,
+				472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */,
+				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
+				472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */,
+				472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */,
+				472F39281E1277D2009260FB /* Mail+CoreDataClass.swift */,
+				472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */,
+			);
+			name = coredata;
+			sourceTree = "<group>";
+		};
+		47B91AC11EC0C1FB000AE3EE /* data */ = {
+			isa = PBXGroup;
+			children = (
+				472F396F1E14F75C009260FB /* DataHandler.swift */,
+				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
+				472F39871E1FA377009260FB /* KeyRecord.swift */,
+				472F398F1E252470009260FB /* CNMailAddressesExtension.swift */,
+				A1EB05871D956879008659C1 /* AddressHandler.swift */,
+				47B91AC01EC0C1CF000AE3EE /* coredata */,
+			);
+			name = data;
+			sourceTree = "<group>";
+		};
 		78280F99990BFF65543B7F0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -445,6 +473,7 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
+				47B91AC11EC0C1FB000AE3EE /* data */,
 				472F39921E279792009260FB /* protocols */,
 				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
@@ -456,25 +485,12 @@
 				F1ACF21D1E0C290500C1B843 /* contactView */,
 				A1D5076D1E80254D00B68B38 /* keyView */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
-				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				476142071E07E52B00FD5E4F /* Theme.swift */,
 				A1230BD81E2F881E006642C7 /* Encryption */,
 				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
 				476373C11E09BA88004D5EFE /* UserData.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
-				472F39871E1FA377009260FB /* KeyRecord.swift */,
-				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
-				472F398F1E252470009260FB /* CNMailAddressesExtension.swift */,
-				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
-				472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */,
-				472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */,
-				472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */,
-				472F39281E1277D2009260FB /* Mail+CoreDataClass.swift */,
-				A1EB05871D956879008659C1 /* AddressHandler.swift */,
-				472F39781E1D0B0B009260FB /* Mail+CoreDataProperties.swift */,
-				472F39711E1D09C4009260FB /* State+CoreDataClass.swift */,
-				472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
 				A1F9922B1DA7C9100073BF1B /* Main.storyboard */,
 				F1984D731E1E92B300804E1E /* LabelStyleKit.swift */,
