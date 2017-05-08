@@ -51,32 +51,32 @@ class ReadViewController: UITableViewController {
         senderTokenField.delegate = VENDelegate
         senderTokenField.dataSource = VENDelegate
         senderTokenField.toLabelText = "\(NSLocalizedString("From", comment: "From field")):"
-        senderTokenField.toLabelTextColor = UIColor.darkGrayColor()
+        senderTokenField.toLabelTextColor = UIColor.darkGray
         senderTokenField.readOnly = true
 
         toTokenField.delegate = VENDelegate
         toTokenField.dataSource = VENDelegate
         toTokenField.toLabelText = "\(NSLocalizedString("To", comment: "To field")):"
-        toTokenField.toLabelTextColor = UIColor.darkGrayColor()
+        toTokenField.toLabelTextColor = UIColor.darkGray
         toTokenField.setColorScheme(self.view.tintColor)
         toTokenField.readOnly = true
 
         // not possible to set in IB
-        SeperatorConstraint.constant = 1 / UIScreen.mainScreen().scale
-        infoCell.layoutMargins = UIEdgeInsetsZero
+        SeperatorConstraint.constant = 1 / UIScreen.main.scale
+        infoCell.layoutMargins = UIEdgeInsets.zero
 
         setUItoMail()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         // NavigationBar color
         if let mail = mail {
             if mail.trouble {
                 self.navigationController?.navigationBar.barTintColor = ThemeManager.troubleMessageColor()
                 if !mail.showMessage {
-                    answerButton.enabled = false
+                    answerButton.isEnabled = false
                 }
-                navigationController?.navigationBar
+                _ = navigationController?.navigationBar
             } else if mail.isSecure {
                 self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
             } else {
@@ -85,20 +85,20 @@ class ReadViewController: UITableViewController {
         }
     }
 
-    override func willMoveToParentViewController(parent: UIViewController?) {
-        super.willMoveToParentViewController(parent)
+    override func willMove(toParentViewController parent: UIViewController?) {
+        super.willMove(toParentViewController: parent)
 
         if parent == nil {
-            UIView.animateWithDuration(0.3, animations: { self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor })
+            UIView.animate(withDuration: 0.3, animations: { self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor })
         }
     }
 
-    func showContact(email: String) {
+    func showContact(_ email: String) {
         let records = DataHandler.handler.getContactByAddress(email).records
         for r in records {
             for address in r.addresses {
                 if address.mailAddress == email && address.prefEnc == r.hasKey {
-                    performSegueWithIdentifier("showContact", sender: ["record": r, "email": email])
+                    performSegue(withIdentifier: "showContact", sender: ["record": r, "email": email])
                     return
                 }
             }
@@ -108,14 +108,14 @@ class ReadViewController: UITableViewController {
     }
 
     // set top seperator height
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return 8
         }
         return tableView.sectionHeaderHeight
     }
 
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 1 {
             if toTokenField.frame.height < 60 {
                 return 44.0
@@ -125,9 +125,9 @@ class ReadViewController: UITableViewController {
         return UITableViewAutomaticDimension
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         if let mail = mail {
-            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact.hasKey {
+            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact.hasKey || mail.isEncrypted && mail.unableToDecrypt {
                 return 3
             }
         }
@@ -135,7 +135,7 @@ class ReadViewController: UITableViewController {
         return 2
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 3
         }
@@ -148,7 +148,7 @@ class ReadViewController: UITableViewController {
         return 1
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             switch indexPath.row {
             case 0:
@@ -166,7 +166,7 @@ class ReadViewController: UITableViewController {
                         infoSymbol.text = "!"
                         infoSymbol.textColor = ThemeManager.troubleMessageColor()
                         infoHeadline.text = NSLocalizedString("corruptedHeadline", comment: "This mail is corrupted")
-                        infoHeadline.textColor = UIColor.blackColor()
+                        infoHeadline.textColor = UIColor.black
                         infoText.text = NSLocalizedString("corruptedText", comment: "This mail is corrupted")
                         infoCell.setNeedsLayout()
                         infoCell.layoutIfNeeded()
@@ -175,11 +175,18 @@ class ReadViewController: UITableViewController {
                     } else if indexPath.row == 1 {
                         return infoButtonCell
                     }
+                } else if mail.isEncrypted && mail.unableToDecrypt {
+                    infoSymbol.text = "?"
+                    infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                    infoHeadline.text = NSLocalizedString("couldNotDecryptHeadline", comment: "Message could not be decrypted")
+                    infoHeadline.textColor = UIColor.gray
+                    infoText.text = NSLocalizedString("couldNotDecryptText", comment: "Message could not be decrypted")
+                    return infoCell
                 } else if mail.from.hasKey && !mail.isSecure {
                     infoSymbol.text = "?"
                     infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
                     infoHeadline.text = NSLocalizedString("encryptedBeforeHeadline", comment: "The sender has encrypted before")
-                    infoHeadline.textColor = UIColor.grayColor()
+                    infoHeadline.textColor = UIColor.gray
                     infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
                     return infoCell
                 }
@@ -191,7 +198,7 @@ class ReadViewController: UITableViewController {
         return messageCell
     }
 
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.section == 1 && indexPath.row == 0 {
             // get the tableview to use the correct height for this cell; please replace this with a better way if you know one
             tableView.beginUpdates()
@@ -199,58 +206,58 @@ class ReadViewController: UITableViewController {
         }
     }
 
-    @IBAction func showEmailButton(sender: UIButton) {
+    @IBAction func showEmailButton(_ sender: UIButton) {
         mail?.showMessage = true
 
         self.tableView.beginUpdates()
-        let path = NSIndexPath(forRow: 1, inSection: 1)
-        self.tableView.deleteRowsAtIndexPaths([path], withRowAnimation: .Fade)
-        self.tableView.insertSections(NSIndexSet(index: 2), withRowAnimation: .Fade)
+        let path = IndexPath(row: 1, section: 1)
+        self.tableView.deleteRows(at: [path], with: .fade)
+        self.tableView.insertSections(IndexSet(integer: 2), with: .fade)
         self.tableView.endUpdates()
 
-        answerButton.enabled = true
+        answerButton.isEnabled = true
     }
 
-    @IBAction func ignoreEmailButton(sender: AnyObject) {
-        navigationController?.popViewControllerAnimated(true)
+    @IBAction func ignoreEmailButton(_ sender: AnyObject) {
+        _ = navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func markUnreadButton(sender: AnyObject) {
+    @IBAction func markUnreadButton(_ sender: AnyObject) {
         mail?.isRead = false
-        navigationController?.popViewControllerAnimated(true)
+        _ = navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func deleteButton(sender: AnyObject) {
-        navigationController?.popViewControllerAnimated(true)
+    @IBAction func deleteButton(_ sender: AnyObject) {
+        _ = navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func iconButton(sender: AnyObject) {
+    @IBAction func iconButton(_ sender: AnyObject) {
         if let m = mail {
             let alert: UIAlertController
             let url: String
             if m.trouble {
-                alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: NSLocalizedString("ReceiveDamagedInfo", comment: "Modefied email infotext"), preferredStyle: .Alert)
+                alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: NSLocalizedString("ReceiveDamagedInfo", comment: "Modefied email infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/corrupted"
             } else if m.isSecure {
-                alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .Alert)
+                alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/letter"
             } else if m.isCorrectlySigned {
-                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .Alert)
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard_verified"
             } else if m.isEncrypted && !m.unableToDecrypt {
-                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoEncrypted", comment: "Postcard infotext"), preferredStyle: .Alert)
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoEncrypted", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard_encrypted"
             } else if m.isEncrypted && m.unableToDecrypt {
-                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoDecryptionFailed", comment: "Postcard infotext"), preferredStyle: .Alert)
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoDecryptionFailed", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard_decryption_failed"
             } else {
-                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .Alert)
+                alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard"
             }
-            alert.addAction(UIAlertAction(title: "Mehr Informationen", style: .Default, handler: { (action: UIAlertAction!) -> Void in UIApplication.sharedApplication().openURL(NSURL(string: url)!) }))
-            alert.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
-            dispatch_async(dispatch_get_main_queue(), {
-                self.presentViewController(alert, animated: true, completion: nil)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in UIApplication.shared.openURL(URL(string: url)!) }))
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            DispatchQueue.main.async(execute: {
+                self.present(alert, animated: true, completion: nil)
             })
         }
     }
@@ -259,11 +266,11 @@ class ReadViewController: UITableViewController {
         if let m = mail {
 
             // mark mail as read if viewcontroller is open for more than 1.5 sec
-            let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(1.5 * Double(NSEC_PER_SEC)))
-            dispatch_after(delay, dispatch_get_main_queue()) {
+            let delay = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: delay) {
                 if let viewControllers = self.navigationController?.viewControllers {
                     for viewController in viewControllers {
-                        if viewController.isKindOfClass(ReadViewController) {
+                        if viewController.isKind(of: ReadViewController.self) {
                             m.isRead = true
                         }
                     }
@@ -303,7 +310,7 @@ class ReadViewController: UITableViewController {
             receivedTime.text = m.timeString
 
             if let subj = m.subject {
-                if subj.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()).characters.count > 0 {
+                if subj.trimmingCharacters(in: CharacterSet.whitespaces).characters.count > 0 {
                     subject.text = subj
                 } else {
                     subject.text = NSLocalizedString("SubjectNo", comment: "This mail has no subject")
@@ -312,16 +319,15 @@ class ReadViewController: UITableViewController {
 
             if m.isEncrypted && !m.unableToDecrypt {
                 messageBody.text = m.decryptedBody
-            }
-            else {
+            } else {
                 messageBody.text = m.body
             }
             messageBody.text = messageBody.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             
             // NavigationBar Icon
             let iconView = UIImageView()
-            iconView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-            iconView.contentMode = .ScaleAspectFit
+            iconView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+            iconView.contentMode = .scaleAspectFit
             var icon: UIImage
             if m.trouble {
                 icon = IconsStyleKit.imageOfLetterCorrupted
@@ -331,23 +337,23 @@ class ReadViewController: UITableViewController {
                 icon = IconsStyleKit.imageOfPostcard
             }
             iconView.image = icon
-            iconButton.setImage(icon, forState: UIControlState.Normal)
+            iconButton.setImage(icon, for: UIControlState())
 
             print("enc: ", m.isEncrypted, ", unableDec: ", m.unableToDecrypt, ", signed: ", m.isSigned, ", correctlySig: ", m.isCorrectlySigned, ", oldPrivK: ", m.decryptedWithOldPrivateKey)
             EnzevalosEncryptionHandler.getEncryption(.PGP)?.decryptAndSignatureCheck(m)
         }
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "answerTo" {
-            let navigationController = segue.destinationViewController as? UINavigationController
+            let navigationController = segue.destination as? UINavigationController
             let controller = navigationController?.topViewController as? SendViewController
             if controller != nil {
                 controller?.answerTo = mail
             }
         } else if segue.identifier == "showContact" {
-            let destinationVC = segue.destinationViewController as! ContactViewController
-            if let sender = sender {
+            let destinationVC = segue.destination as! ContactViewController
+            if let sender = sender as? [String: AnyObject?] {
                 destinationVC.keyRecord = (sender["record"] as! KeyRecord)
                 destinationVC.highlightEmail = (sender["email"] as! String)
             }

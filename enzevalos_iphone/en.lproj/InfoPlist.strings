@@ -1,0 +1,8 @@
+/* 
+  InfoPlist.strings
+  enzevalos_iphone
+
+  Created by jakobsbode on 06.04.17.
+  Copyright © 2017 fu-berlin. All rights reserved.
+*/
+NSContactsUsageDescription = "To resolve the mailaddresses to your contacts, we need to access them";

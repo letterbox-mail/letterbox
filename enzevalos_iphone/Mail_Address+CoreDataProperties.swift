@@ -13,7 +13,7 @@ import CoreData
 
 extension Mail_Address {
 
-    @nonobjc public override class func fetchRequest() -> NSFetchRequest {
+    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         return NSFetchRequest(entityName: "Mail_Address");
     }
 
@@ -24,16 +24,16 @@ extension Mail_Address {
     public var encryptionType: EncryptionType{
         set {
             let name = "encryptionType"
-            self.willChangeValueForKey(name)
+            self.willChangeValue(forKey: name)
             self.setPrimitiveValue(newValue.rawValue, forKey: name)
-            self.didChangeValueForKey(name)
+            self.didChangeValue(forKey: name)
         }
         get {
             
             let name = "encryptionType"
-            self.willAccessValueForKey(name)
-            let string = self.primitiveValueForKey(name) as! String?
-            self.didAccessValueForKey(name)
+            self.willAccessValue(forKey: name)
+            let string = self.primitiveValue(forKey: name) as! String?
+            self.didAccessValue(forKey: name)
             return EncryptionType.fromString(string)
          }
     }
@@ -51,16 +51,16 @@ extension Mail_Address {
 extension Mail_Address {
     
     @objc(addBccObject:)
-    @NSManaged public func addToBcc(value: Mail)
+    @NSManaged public func addToBcc(_ value: Mail)
     
     @objc(removeBccObject:)
-    @NSManaged public func removeFromBcc(value: Mail)
+    @NSManaged public func removeFromBcc(_ value: Mail)
     
     @objc(addBcc:)
-    @NSManaged public func addToBcc(values: NSSet)
+    @NSManaged public func addToBcc(_ values: NSSet)
     
     @objc(removeBcc:)
-    @NSManaged public func removeFromBcc(values: NSSet)
+    @NSManaged public func removeFromBcc(_ values: NSSet)
     
 }
 
@@ -68,16 +68,16 @@ extension Mail_Address {
 extension Mail_Address {
     
     @objc(addCcObject:)
-    @NSManaged public func addToCc(value: Mail)
+    @NSManaged public func addToCc(_ value: Mail)
     
     @objc(removeCcObject:)
-    @NSManaged public func removeFromCc(value: Mail)
+    @NSManaged public func removeFromCc(_ value: Mail)
     
     @objc(addCc:)
-    @NSManaged public func addToCc(values: NSSet)
+    @NSManaged public func addToCc(_ values: NSSet)
     
     @objc(removeCc:)
-    @NSManaged public func removeFromCc(values: NSSet)
+    @NSManaged public func removeFromCc(_ values: NSSet)
     
 }
 
@@ -85,15 +85,15 @@ extension Mail_Address {
 extension Mail_Address {
     
     @objc(addToObject:)
-    @NSManaged public func addToTo(value: Mail)
+    @NSManaged public func addToTo(_ value: Mail)
     
     @objc(removeToObject:)
-    @NSManaged public func removeFromTo(value: Mail)
+    @NSManaged public func removeFromTo(_ value: Mail)
     
     @objc(addTo:)
-    @NSManaged public func addToTo(values: NSSet)
+    @NSManaged public func addToTo(_ values: NSSet)
     
     @objc(removeTo:)
-    @NSManaged public func removeFromTo(values: NSSet)
+    @NSManaged public func removeFromTo(_ values: NSSet)
     
 }

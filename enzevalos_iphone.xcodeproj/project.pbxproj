@@ -28,6 +28,7 @@
 		476373C21E09BA88004D5EFE /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
 		9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */; };
 		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
+		A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1083A531E8BFEA6003666B7 /* Onboarding.swift */; };
 		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
 		A1182C571E30F45C0024D389 /* PGPKeyManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1182C561E30F45C0024D389 /* PGPKeyManagement.swift */; };
 		A1230BD71E2F8818006642C7 /* PGPEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1230BD61E2F8818006642C7 /* PGPEncryption.swift */; };
@@ -83,13 +84,14 @@
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
 		A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
-		A18BCB3B1DDF3EFD004D81D8 /* test in Resources */ = {isa = PBXBuildFile; fileRef = A18BCB3A1DDF3EFD004D81D8 /* test */; };
-		A196DF831E71A20D004AE144 /* FrequentCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A196DF821E71A20D004AE144 /* FrequentCollectionViewLayout.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
+		A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
+		A1C7FF8F1E895367000D1E92 /* quizer1-public.asc in Resources */ = {isa = PBXBuildFile; fileRef = A1C7FF8E1E895367000D1E92 /* quizer1-public.asc */; };
+		A1C7FF911E8955BD000D1E92 /* quizer1-private.asc in Resources */ = {isa = PBXBuildFile; fileRef = A1C7FF901E8955BD000D1E92 /* quizer1-private.asc */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
@@ -109,6 +111,7 @@
 		A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
+		A1F2A5691E85586300320275 /* Providers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2A5681E85586300320275 /* Providers.swift */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
 		A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */; };
@@ -170,6 +173,7 @@
 		796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 		9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A1083A531E8BFEA6003666B7 /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		A1123E6B1DA682850069551C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A1182C561E30F45C0024D389 /* PGPKeyManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPKeyManagement.swift; sourceTree = "<group>"; };
@@ -271,13 +275,15 @@
 		A17BEB371E55E21700403EBE /* PGPTemporaryDecryptionObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PGPTemporaryDecryptionObject.h; sourceTree = "<group>"; };
 		A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPTemporaryDecryptionObject.m; sourceTree = "<group>"; };
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
-		A18BCB3A1DDF3EFD004D81D8 /* test */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test; sourceTree = "<group>"; };
-		A196DF821E71A20D004AE144 /* FrequentCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrequentCollectionViewLayout.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jabo.asc; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
+		A1BE3FF71E9664660040114B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A1BE3FF91E96646A0040114B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
+		A1C7FF8E1E895367000D1E92 /* quizer1-public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "quizer1-public.asc"; sourceTree = "<group>"; };
+		A1C7FF901E8955BD000D1E92 /* quizer1-private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "quizer1-private.asc"; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -297,6 +303,7 @@
 		A1EB059B1D956957008659C1 /* NSDateCompare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateCompare.swift; sourceTree = "<group>"; };
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1F2A5681E85586300320275 /* Providers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Providers.swift; sourceTree = "<group>"; };
 		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992321DA7D2360073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992341DA7DA570073BF1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -441,7 +448,9 @@
 				472F39921E279792009260FB /* protocols */,
 				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
+				A1C7FF8B1E895316000D1E92 /* keys */,
 				A11E733A1E019AB5006574DD /* init */,
+				A18C76851E8185ED00B21414 /* onboarding */,
 				A1EB05761D9567F2008659C1 /* read */,
 				A1EB05751D956748008659C1 /* send */,
 				F1ACF21D1E0C290500C1B843 /* contactView */,
@@ -450,7 +459,6 @@
 				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				476142071E07E52B00FD5E4F /* Theme.swift */,
 				A1230BD81E2F881E006642C7 /* Encryption */,
-				A1EB05871D956879008659C1 /* AddressHandler.swift */,
 				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
 				476373C11E09BA88004D5EFE /* UserData.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
@@ -463,6 +471,7 @@
 				472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */,
 				472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */,
 				472F39281E1277D2009260FB /* Mail+CoreDataClass.swift */,
+				A1EB05871D956879008659C1 /* AddressHandler.swift */,
 				472F39781E1D0B0B009260FB /* Mail+CoreDataProperties.swift */,
 				472F39711E1D09C4009260FB /* State+CoreDataClass.swift */,
 				472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */,
@@ -475,6 +484,7 @@
 				A1EB05A31D956E32008659C1 /* Assets.xcassets */,
 				476142091E082F9C00FD5E4F /* Settings.bundle */,
 				A13526871D955BDF00D3BFE1 /* Info.plist */,
+				A1BE3FF81E9664660040114B /* InfoPlist.strings */,
 				A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */,
 			);
 			path = enzevalos_iphone;
@@ -580,6 +590,29 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		A18C76851E8185ED00B21414 /* onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				A1F2A5681E85586300320275 /* Providers.swift */,
+				A1083A531E8BFEA6003666B7 /* Onboarding.swift */,
+			);
+			name = onboarding;
+			sourceTree = "<group>";
+		};
+		A1C7FF8B1E895316000D1E92 /* keys */ = {
+			isa = PBXGroup;
+			children = (
+				A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */,
+				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
+				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
+				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
+				A19C12461DE602FF007F72E7 /* jabo.asc */,
+				A1C7FF901E8955BD000D1E92 /* quizer1-private.asc */,
+				A1C7FF8E1E895367000D1E92 /* quizer1-public.asc */,
+			);
+			name = keys;
+			sourceTree = "<group>";
+		};
 		A1D5076D1E80254D00B68B38 /* keyView */ = {
 			isa = PBXGroup;
 			children = (
@@ -593,12 +626,7 @@
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
 				F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */,
-				A19C12461DE602FF007F72E7 /* jabo.asc */,
-				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
-				A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */,
-				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
 				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
-				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
 				A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */,
 				A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */,
@@ -608,8 +636,6 @@
 				A17C04831DC6504E00F66EDB /* LogHandler.swift */,
 				A1EB05891D956890008659C1 /* ContactCell.xib */,
 				A1EB058B1D9568AB008659C1 /* FrequentCell.xib */,
-				A18BCB3A1DDF3EFD004D81D8 /* test */,
-				A196DF821E71A20D004AE144 /* FrequentCollectionViewLayout.swift */,
 			);
 			name = send;
 			sourceTree = "<group>";
@@ -724,7 +750,7 @@
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 4377G946WP;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -734,11 +760,12 @@
 					A135268B1D955BE000D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 4377G946WP;
-						TestTargetID = A13526741D955BDF00D3BFE1;
+						LastSwiftMigration = 0820;
 					};
 					A13526961D955BE000D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 4377G946WP;
+						LastSwiftMigration = 0820;
 						TestTargetID = A13526741D955BDF00D3BFE1;
 					};
 				};
@@ -774,12 +801,14 @@
 				4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */,
 				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
 				A16BA2121E0439B6005E29E3 /* providers.json in Resources */,
+				A1C7FF8F1E895367000D1E92 /* quizer1-public.asc in Resources */,
+				A1C7FF911E8955BD000D1E92 /* quizer1-private.asc in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
+				A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */,
 				A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */,
 				A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */,
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
-				A18BCB3B1DDF3EFD004D81D8 /* test in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
 				A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
@@ -831,7 +860,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		6C4CB727DDC2AC31CCE50B26 /* [CP] Embed Pods Frameworks */ = {
@@ -876,7 +905,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		D6F0EB205D61EA8C8A045390 /* [CP] Check Pods Manifest.lock */ = {
@@ -891,7 +920,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E98D3D9213C0A8CF7EDD28B1 /* [CP] Copy Pods Resources */ = {
@@ -950,6 +979,7 @@
 				472F39861E1FA34E009260FB /* Record.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */,
+				A1F2A5691E85586300320275 /* Providers.swift in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A15B7BE61E2931AD0024E499 /* KeyWrapper.swift in Sources */,
@@ -1016,6 +1046,7 @@
 				A135CF131DD4BDD1007E3C29 /* PGPPKCSEme.m in Sources */,
 				A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */,
 				A135CF151DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
+				A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */,
 				472F39741E1D09C4009260FB /* State+CoreDataProperties.swift in Sources */,
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
 				A135CF0E1DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.m in Sources */,
@@ -1036,7 +1067,6 @@
 				A135CF091DD4BDD1007E3C29 /* PGPCryptoUtils.m in Sources */,
 				A135CF1A1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
-				A196DF831E71A20D004AE144 /* FrequentCollectionViewLayout.swift in Sources */,
 				F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */,
 				A135CF201DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
 				472F397E1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */,
@@ -1094,6 +1124,15 @@
 				A1F992321DA7D2360073BF1B /* en */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A1BE3FF81E9664660040114B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1BE3FF71E9664660040114B /* en */,
+				A1BE3FF91E96646A0040114B /* de */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		A1F9922B1DA7C9100073BF1B /* Main.storyboard */ = {
@@ -1165,6 +1204,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -1207,6 +1247,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1256,7 +1297,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1304,7 +1345,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[sdk=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1312,13 +1353,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/enzevalos_iphone.app/enzevalos_iphone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1326,13 +1365,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/enzevalos_iphone.app/enzevalos_iphone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1344,7 +1381,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = enzevalos_iphone;
 			};
 			name = Debug;
@@ -1357,7 +1394,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = enzevalos_iphone;
 			};
 			name = Release;

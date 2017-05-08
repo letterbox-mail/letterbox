@@ -12,33 +12,33 @@ import CoreData
 
 extension Mail {
 
-    @nonobjc public override class func fetchRequest() -> NSFetchRequest {
+    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         return NSFetchRequest(entityName: "Mail");
     }
 
     @NSManaged public var body: String?
     @NSManaged public var visibleBody: String?
     @NSManaged public var decryptedBody: String?
-    @NSManaged public var date: NSDate
+    @NSManaged public var date: Date
     public var flag: MCOMessageFlag{
         set {
             if newValue != flag{
                 AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid, flags: newValue)
-                self.willChangeValueForKey("flag")
+                self.willChangeValue(forKey: "flag")
                 self.setPrimitiveValue(newValue.rawValue, forKey: "flag")
-                self.didChangeValueForKey("flag")
+                self.didChangeValue(forKey: "flag")
                 
             }
             
         }
         get {
-            self.willAccessValueForKey("flag")
-            var value = MCOMessageFlag.None.rawValue
-            if let flagInt = self.primitiveValueForKey("flag"){
+            self.willAccessValue(forKey: "flag")
+            var value = MCOMessageFlag().rawValue
+            if let flagInt = self.primitiveValue(forKey: "flag"){
                 value = flagInt as! Int
             }
             let text = MCOMessageFlag(rawValue: value)
-            self.didAccessValueForKey("flag")
+            self.didAccessValue(forKey: "flag")
             return text
         }
 
@@ -51,17 +51,14 @@ extension Mail {
     @NSManaged public var subject: String?
     public var trouble: Bool{
         set {
-            self.willChangeValueForKey("trouble")
+            self.willChangeValue(forKey: "trouble")
             self.setPrimitiveValue(newValue, forKey: "trouble")
-            self.didChangeValueForKey("trouble")
+            self.didChangeValue(forKey: "trouble")
         }
         get {
-            self.willAccessValueForKey("trouble")
-            let text = self.primitiveValueForKey("trouble") as? Bool
-            self.didAccessValueForKey("trouble")
-            if(text == nil){
-                print("NIL!!!")
-            }
+            self.willAccessValue(forKey: "trouble")
+            let text = self.primitiveValue(forKey: "trouble") as? Bool
+            self.didAccessValue(forKey: "trouble")
             return text!
         }
     
@@ -69,14 +66,14 @@ extension Mail {
     public var uid: UInt64{
     
         set {
-            self.willChangeValueForKey("uid")
-            self.setPrimitiveValue(NSDecimalNumber.init(unsignedLongLong: newValue), forKey: "uid")
-            self.didChangeValueForKey("uid")
+            self.willChangeValue(forKey: "uid")
+            self.setPrimitiveValue(NSDecimalNumber.init(value: newValue as UInt64), forKey: "uid")
+            self.didChangeValue(forKey: "uid")
         }
         get {
-            self.willAccessValueForKey("uid")
-            let text = (self.primitiveValueForKey("uid") as? NSDecimalNumber)?.unsignedLongLongValue
-            self.didAccessValueForKey("uid")
+            self.willAccessValue(forKey: "uid")
+            let text = (self.primitiveValue(forKey: "uid") as? NSDecimalNumber)?.uint64Value
+            self.didAccessValue(forKey: "uid")
             return text!
         }
     }
@@ -91,16 +88,16 @@ extension Mail {
 extension Mail {
 
     @objc(addBccObject:)
-    @NSManaged public func addToBcc(value: Mail_Address)
+    @NSManaged public func addToBcc(_ value: Mail_Address)
 
     @objc(removeBccObject:)
-    @NSManaged public func removeFromBcc(value: Mail_Address)
+    @NSManaged public func removeFromBcc(_ value: Mail_Address)
 
     @objc(addBcc:)
-    @NSManaged public func addToBcc(values: NSSet)
+    @NSManaged public func addToBcc(_ values: NSSet)
 
     @objc(removeBcc:)
-    @NSManaged public func removeFromBcc(values: NSSet)
+    @NSManaged public func removeFromBcc(_ values: NSSet)
 
 }
 
@@ -108,16 +105,16 @@ extension Mail {
 extension Mail {
 
     @objc(addCcObject:)
-    @NSManaged public func addToCc(value: Mail_Address)
+    @NSManaged public func addToCc(_ value: Mail_Address)
 
     @objc(removeCcObject:)
-    @NSManaged public func removeFromCc(value: Mail_Address)
+    @NSManaged public func removeFromCc(_ value: Mail_Address)
 
     @objc(addCc:)
-    @NSManaged public func addToCc(values: NSSet)
+    @NSManaged public func addToCc(_ values: NSSet)
 
     @objc(removeCc:)
-    @NSManaged public func removeFromCc(values: NSSet)
+    @NSManaged public func removeFromCc(_ values: NSSet)
 
 }
 
@@ -125,15 +122,15 @@ extension Mail {
 extension Mail {
 
     @objc(addToObject:)
-    @NSManaged public func addToTo(value: Mail_Address)
+    @NSManaged public func addToTo(_ value: Mail_Address)
 
     @objc(removeToObject:)
-    @NSManaged public func removeFromTo(value: Mail_Address)
+    @NSManaged public func removeFromTo(_ value: Mail_Address)
 
     @objc(addTo:)
-    @NSManaged public func addToTo(values: NSSet)
+    @NSManaged public func addToTo(_ values: NSSet)
 
     @objc(removeTo:)
-    @NSManaged public func removeFromTo(values: NSSet)
+    @NSManaged public func removeFromTo(_ values: NSSet)
 
 }

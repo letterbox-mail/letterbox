@@ -9,37 +9,37 @@ import Foundation
 import UIKit
 
 class FlipTransition: NSObject, UIViewControllerAnimatedTransitioning {
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
 
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let fromVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-        let toVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-        let container = transitionContext.containerView()
-        container.backgroundColor = UIColor.darkGrayColor()
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)
+        let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+        let container = transitionContext.containerView
+        container.backgroundColor = UIColor.darkGray
         container.addSubview(toVC.view)
-        container.bringSubviewToFront(fromVC!.view)
+        container.bringSubview(toFront: fromVC!.view)
 
         var transfrom = CATransform3DIdentity
         transfrom.m34 = -0.001
         container.layer.sublayerTransform = transfrom
 
-        let initalFrame = transitionContext.initialFrameForViewController(fromVC!)
+        let initalFrame = transitionContext.initialFrame(for: fromVC!)
         toVC.view.frame = initalFrame
         fromVC!.view.frame = initalFrame
         toVC.view.layer.transform = CATransform3DMakeRotation(CGFloat(M_PI_2), 0, 1, 0)
 
-        UIView.animateWithDuration(transitionDuration(transitionContext), delay: 0, options: .CurveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: .curveEaseOut, animations: { () -> Void in
             fromVC!.view.layer.transform = CATransform3DMakeRotation(CGFloat(-M_PI_2), 0, 1, 0)
         }) { (finished: Bool) -> Void in
-            container.bringSubviewToFront(toVC.view)
-            UIView.animateWithDuration(self.transitionDuration(transitionContext), delay: 0, options: .CurveEaseOut, animations: { () -> Void in
+            container.bringSubview(toFront: toVC.view)
+            UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay: 0, options: .curveEaseOut, animations: { () -> Void in
                 toVC.view.layer.transform = CATransform3DIdentity
             }) { (finished: Bool) -> Void in
 
                 fromVC!.view.layer.transform = CATransform3DIdentity
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             }
         }
     }

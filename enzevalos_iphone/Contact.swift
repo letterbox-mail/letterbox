@@ -17,7 +17,7 @@ public protocol Contact {
     func getMailAddresses()-> [MailAddress]
 }
 extension Contact{
-    private func makeImageFromName(name: String)->UIImage{
+    private func makeImageFromName(_ name: String)->UIImage{
         var text : NSAttributedString
         var tag:  String
         tag = String()
@@ -25,7 +25,7 @@ extension Contact{
             tag = String(name.characters.first!)
         }
         
-        text = NSAttributedString(string: tag.capitalizedString, attributes: [NSForegroundColorAttributeName : UIColor.whiteColor(), NSFontAttributeName : UIFont.systemFontOfSize(32.2)])
+        text = NSAttributedString(string: tag.capitalized, attributes: [NSForegroundColorAttributeName : UIColor.white, NSFontAttributeName : UIFont.systemFont(ofSize: 32.2)])
         
         var myBounds = CGRect()
         myBounds.size.width = 70
@@ -37,15 +37,15 @@ extension Contact{
         //
         // Clip context to a circle
         //
-        let path = CGPathCreateWithEllipseInRect(myBounds, nil);
-        CGContextAddPath(context!, path);
-        CGContextClip(context!);
+        let path = CGPath(ellipseIn: myBounds, transform: nil);
+        context!.addPath(path);
+        context!.clip();
         
         //
         // Fill background of context
         //
-        CGContextSetFillColorWithColor(context!, self.getColor().CGColor)
-        CGContextFillRect(context!, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
+        context!.setFillColor(self.getColor().cgColor)
+        context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
         
         
         //
@@ -53,7 +53,7 @@ extension Contact{
         //
         let textSize = text.size()
         
-        text.drawInRect(CGRectMake(myBounds.size.width/2 - textSize.width/2, myBounds.size.height/2 - textSize.height/2,textSize.width, textSize.height))
+        text.draw(in: CGRect(x: myBounds.size.width/2 - textSize.width/2, y: myBounds.size.height/2 - textSize.height/2,width: textSize.width, height: textSize.height))
         
         
         let snapshot = UIGraphicsGetImageFromCurrentImageContext();

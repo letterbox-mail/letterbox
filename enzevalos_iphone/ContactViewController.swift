@@ -16,7 +16,7 @@ class ContactViewController: UIViewController {
     var highlightEmail: String? = nil
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
-    private var otherRecords: [KeyRecord]? = nil
+    fileprivate var otherRecords: [KeyRecord]? = nil
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -42,34 +42,34 @@ class ContactViewController: UIViewController {
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if let row = tableView.indexPathForSelectedRow {
-            tableView.deselectRowAtIndexPath(row, animated: false)
+            tableView.deselectRow(at: row, animated: false)
         }
     }
 
     func prepareContactSheet() {
-        let authorizationStatus = CNContactStore.authorizationStatusForEntityType(CNEntityType.Contacts)
-        if authorizationStatus == CNAuthorizationStatus.Authorized {
+        let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
+        if authorizationStatus == CNAuthorizationStatus.authorized {
             do {
-                uiContact = try AppDelegate.getAppDelegate().contactStore.unifiedContactWithIdentifier(keyRecord!.cnContact!.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
+                uiContact = try AppDelegate.getAppDelegate().contactStore.unifiedContact(withIdentifier: keyRecord!.cnContact!.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
             } catch {
                 //contact doesn't exist or we don't have authorization
                 //TODO: handle missing authorization
             }
         }
         if let conUI = uiContact {
-            let infoButton = UIButton(type: .InfoLight)
-            vc = CNContactViewController(forContact: conUI)
+            let infoButton = UIButton(type: .infoLight)
+            vc = CNContactViewController(for: conUI)
             vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
-            infoButton.addTarget(self, action: #selector(ContactViewController.showContact), forControlEvents: .TouchUpInside)
+            infoButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: infoButton)
         } else {
-            let addButton = UIButton(type: .ContactAdd)
+            let addButton = UIButton(type: .contactAdd)
             vc = CNContactViewController(forNewContact: keyRecord!.cnContact)
             vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
             vc!.delegate = self
-            addButton.addTarget(self, action: #selector(ContactViewController.showContact), forControlEvents: .TouchUpInside)
+            addButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
         }
     }
@@ -86,29 +86,29 @@ class ContactViewController: UIViewController {
         let context = UIGraphicsGetCurrentContext()
 
         // Clip context to a circle
-        let path = CGPathCreateWithEllipseInRect(myBounds, nil);
-        CGContextAddPath(context!, path);
-        CGContextClip(context!);
+        let path = CGPath(ellipseIn: myBounds, transform: nil);
+        context!.addPath(path);
+        context!.clip();
 
         // Fill background of context
-        var bgColor: CGColor = ThemeManager.defaultColor.CGColor
+        var bgColor: CGColor = ThemeManager.defaultColor.cgColor
         if keyRecord!.isVerified {
-            bgColor = Theme.Very_strong_security_indicator.encryptedVerifiedMessageColor.CGColor
+            bgColor = Theme.very_strong_security_indicator.encryptedVerifiedMessageColor.cgColor
         } else if !keyRecord!.hasKey {
-            bgColor = Theme.Very_strong_security_indicator.uncryptedMessageColor.CGColor
+            bgColor = Theme.very_strong_security_indicator.uncryptedMessageColor.cgColor
         }
-        CGContextSetFillColorWithColor(context!, bgColor)
-        CGContextFillRect(context!, CGRectMake(0, 0, myBounds.size.width, myBounds.size.height));
+        context!.setFillColor(bgColor)
+        context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
 
         let iconSize = CGFloat(50)
-        let frame = CGRectMake(myBounds.size.width / 2 - iconSize / 2, myBounds.size.height / 2 - iconSize / 2, iconSize, iconSize)
+        let frame = CGRect(x: myBounds.size.width / 2 - iconSize / 2, y: myBounds.size.height / 2 - iconSize / 2, width: iconSize, height: iconSize)
 
         if keyRecord!.hasKey {
             IconsStyleKit.drawLetter(frame: frame, fillBackground: true)
         } else if keyRecord!.isVerified {
-            IconsStyleKit.drawLetter(frame: frame, color: UIColor.whiteColor())
+            IconsStyleKit.drawLetter(frame: frame, color: UIColor.white)
         } else {
-            IconsStyleKit.drawPostcard(frame: frame, resizing: .AspectFit, color: UIColor.whiteColor())
+            IconsStyleKit.drawPostcard(frame: frame, resizing: .aspectFit, color: UIColor.white)
         }
 
         let img = UIGraphicsGetImageFromCurrentImageContext();
@@ -120,22 +120,22 @@ class ContactViewController: UIViewController {
         self.navigationController?.pushViewController(vc!, animated: true)
     }
 
-    func contactViewController(viewController: CNContactViewController, didCompleteWithContact contact: CNContact?) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) {
+        _ = self.navigationController?.popViewController(animated: true)
         prepareContactSheet()
     }
 
-    @IBAction func actionButton(sender: AnyObject) {
+    @IBAction func actionButton(_ sender: AnyObject) {
         if (sender as? UIButton)?.titleLabel?.text == NSLocalizedString("toEncrypted", comment: "switch to encrypted") {
-            let myPath = NSIndexPath(forRow: 1, inSection: 0)
-            tableView.selectRowAtIndexPath(myPath, animated: false, scrollPosition: .None)
-            performSegueWithIdentifier("otherRecord", sender: nil)
+            let myPath = IndexPath(row: 1, section: 0)
+            tableView.selectRow(at: myPath, animated: false, scrollPosition: .none)
+            performSegue(withIdentifier: "otherRecord", sender: nil)
         }
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newMail" {
-            let navigationController = segue.destinationViewController as? UINavigationController
+            let navigationController = segue.destination as? UINavigationController
             let controller = navigationController?.topViewController as? SendViewController
             let indexPath = tableView.indexPathForSelectedRow
             if controller != nil {
@@ -145,13 +145,13 @@ class ContactViewController: UIViewController {
                 }
             }
         } else if segue.identifier == "mailList" {
-            let DestinationViewController: ListViewController = segue.destinationViewController as! ListViewController
+            let DestinationViewController: ListViewController = segue.destination as! ListViewController
             DestinationViewController.contact = keyRecord
         } else if segue.identifier == "otherRecord" {
-            let DestinationViewController: ContactViewController = segue.destinationViewController as! ContactViewController
+            let DestinationViewController: ContactViewController = segue.destination as! ContactViewController
             let indexPath = tableView.indexPathForSelectedRow
             if let r = otherRecords {
-                if let indexPath = indexPath where indexPath.section == 3 && !(keyRecord?.hasKey ?? false) || indexPath.section == 4 && (keyRecord?.hasKey ?? false) {
+                if let indexPath = indexPath, indexPath.section == 3 && !(keyRecord?.hasKey ?? false) || indexPath.section == 4 && (keyRecord?.hasKey ?? false) {
                     let destinationRecord = r[indexPath.row]
                     DestinationViewController.keyRecord = destinationRecord
                 } else {
@@ -159,7 +159,7 @@ class ContactViewController: UIViewController {
                 }
             }
         } else if segue.identifier == "keyView" {
-            let destinationViewController: KeyViewController = segue.destinationViewController as! KeyViewController
+            let destinationViewController: KeyViewController = segue.destination as! KeyViewController
             destinationViewController.record = keyRecord
         }
     }
@@ -170,12 +170,12 @@ extension ContactViewController: CNContactViewControllerDelegate {
 }
 
 extension ContactViewController: UITableViewDataSource {
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if keyRecord != nil {
             switch indexPath.section {
             case 0:
                 if indexPath.row == 0 {
-                    let cell = tableView.dequeueReusableCellWithIdentifier("ContactViewCell") as! ContactViewCell
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "ContactViewCell") as! ContactViewCell
                     cell.contactImage.image = keyRecord!.cnContact!.getImageOrDefault()
                     cell.contactImage.layer.cornerRadius = cell.contactImage.frame.height / 2
                     cell.contactImage.clipsToBounds = true
@@ -184,55 +184,55 @@ extension ContactViewController: UITableViewDataSource {
                         cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
                     } else if keyRecord!.hasKey {
                         cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
-                    } else if otherRecords?.filter({ $0.hasKey }).count > 0 {
+                    } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         cell.contactStatus.text = NSLocalizedString("otherEncryption", comment: "Contact is using encryption, this is the unsecure collection")
                     } else {
                         cell.contactStatus.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
                     }
                     return cell
                 } else if indexPath.row == 1 {
-                    let actionCell = tableView.dequeueReusableCellWithIdentifier("ActionCell", forIndexPath: indexPath) as! ActionCell
+                    let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
                     if keyRecord!.hasKey {
-                        actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), forState: .Normal)
-                    } else if otherRecords?.filter({ $0.hasKey }).count > 0 {
-                        actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), forState: .Normal)
+                        actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
+                    } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
+                        actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
                     } else {
-                        actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), forState: .Normal)
+                        actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
                     }
                     return actionCell
                 }
             case 1:
-                let cell = tableView.dequeueReusableCellWithIdentifier("MailCell") as! MailCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MailCell") as! MailCell
                 if let address = keyRecord?.ezContact.getMailAddresses()[indexPath.item].mailAddress {
-                    if let highlightEmail = highlightEmail where highlightEmail.containsString(address) {
+                    if let highlightEmail = highlightEmail, highlightEmail.contains(address) {
                         cell.detailLabel.textColor = view.tintColor
                         cell.titleLabel.textColor = view.tintColor
                     }
                     cell.detailLabel.text = address
                 }
                 if let label = keyRecord?.ezContact.getMailAddresses()[indexPath.item].label.label {
-                    cell.titleLabel.text = CNLabeledValue.localizedStringForLabel(label)
+                    cell.titleLabel.text = CNLabeledValue<NSString>.localizedString(forLabel: label)
                 } else {
                     cell.titleLabel.text = ""
                 }
 
                 return cell
             case 2:
-                let cell = tableView.dequeueReusableCellWithIdentifier("AllMails", forIndexPath: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AllMails", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("allMessages", comment: "show all messages")
                 return cell
             case 3 where (keyRecord?.hasKey) ?? false:
-                let cell = tableView.dequeueReusableCellWithIdentifier("KeyCell", forIndexPath: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "KeyCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("Details", comment: "Details")
                 return cell
             case 3 where !((keyRecord?.hasKey) ?? false):
-                let cell = tableView.dequeueReusableCellWithIdentifier("RecordCell", forIndexPath: indexPath) as! RecordCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! RecordCell
                 if let r = otherRecords {
                     if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
-                        let dateFormatter = NSDateFormatter()
-                        dateFormatter.locale = NSLocale.currentLocale()
-                        dateFormatter.dateStyle = .MediumStyle
-                        cell.dateLabel.text = dateFormatter.stringFromDate(time)
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.locale = Locale.current
+                        dateFormatter.dateStyle = .medium
+                        cell.dateLabel.text = dateFormatter.string(from: time)
                         cell.iconImage.image = IconsStyleKit.imageOfLetter
                     } else {
                         cell.dateLabel.text = ""
@@ -242,17 +242,17 @@ extension ContactViewController: UITableViewDataSource {
                 }
                 return cell
             case 4 where !((keyRecord?.hasKey) ?? false):
-                let cell = tableView.dequeueReusableCellWithIdentifier("KeyCell", forIndexPath: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "KeyCell", for: indexPath)
                 cell.textLabel?.text = "abc"
                 return cell
             case 4 where (keyRecord?.hasKey) ?? false:
-                let cell = tableView.dequeueReusableCellWithIdentifier("RecordCell", forIndexPath: indexPath) as! RecordCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! RecordCell
                 if let r = otherRecords {
                     if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
-                        let dateFormatter = NSDateFormatter()
-                        dateFormatter.locale = NSLocale.currentLocale()
-                        dateFormatter.dateStyle = .MediumStyle
-                        cell.dateLabel.text = dateFormatter.stringFromDate(time)
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.locale = Locale.current
+                        dateFormatter.dateStyle = .medium
+                        cell.dateLabel.text = dateFormatter.string(from: time)
                         cell.iconImage.image = IconsStyleKit.imageOfLetter
                     } else {
                         cell.dateLabel.text = ""
@@ -265,21 +265,21 @@ extension ContactViewController: UITableViewDataSource {
                 break
             }
         }
-        return tableView.dequeueReusableCellWithIdentifier("MailCell", forIndexPath: indexPath)
+        return tableView.dequeueReusableCell(withIdentifier: "MailCell", for: indexPath)
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         var sections = 3
-        if keyRecord?.ezContact.records.count > 1 {
+        if (keyRecord?.ezContact.records.count ?? 0) > 1 {
             sections += 1
         }
-        if let hasKey = keyRecord?.hasKey where hasKey {
+        if let hasKey = keyRecord?.hasKey, hasKey {
             sections += 1
         }
         return sections
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let con = keyRecord {
             switch section {
             case 0:
@@ -305,7 +305,7 @@ extension ContactViewController: UITableViewDataSource {
         return 1
     }
 
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 1:
             return NSLocalizedString("connectedAddresses", comment: "All addresses connected to this keyrecord")
@@ -318,7 +318,7 @@ extension ContactViewController: UITableViewDataSource {
         }
     }
 
-    func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0 {
             return "Mit diesem Kontakt kommunizieren Sie zu 93% verschlüsselt und im Durchschnitt 2,3 x pro Woche." // Nur ein Test
         }
@@ -327,41 +327,41 @@ extension ContactViewController: UITableViewDataSource {
 }
 
 extension ContactViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, shouldShowMenuForRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section == 1 {
             return true
         }
         return false
     }
 
-    func tableView(tableView: UITableView, canPerformAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+    func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
         return action == #selector(copy(_:))
     }
 
-    func tableView(tableView: UITableView, performAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
+    func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
         if indexPath.section == 1 {
-            UIPasteboard.generalPasteboard().string = keyRecord!.ezContact.getMailAddresses()[indexPath.row].mailAddress
+            UIPasteboard.general.string = keyRecord!.ezContact.getMailAddresses()[indexPath.row].mailAddress
         }
     }
 }
 
 extension ContactViewController: UINavigationControllerDelegate {
-    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
-        case .Push where (tableView.indexPathForSelectedRow?.section == 4 && ((keyRecord?.hasKey) ?? false) || tableView.indexPathForSelectedRow?.section == 3 && !((keyRecord?.hasKey) ?? false)) || tableView.indexPathForSelectedRow?.section == 0:
+        case .push where (tableView.indexPathForSelectedRow?.section == 4 && ((keyRecord?.hasKey) ?? false) || tableView.indexPathForSelectedRow?.section == 3 && !((keyRecord?.hasKey) ?? false)) || tableView.indexPathForSelectedRow?.section == 0:
             return FlipTransition()
         default:
             return nil
         }
     }
 
-    func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return nil
     }
 }
 
 extension ContactViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailByGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 }

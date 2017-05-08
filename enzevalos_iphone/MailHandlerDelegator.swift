@@ -9,6 +9,6 @@
 import Foundation
 
 protocol MailHandlerDelegator {
-    func addNewMail(mail: Mail)
+    func addNewMail(_ mail: Mail)
     func getMailCompleted()
 }

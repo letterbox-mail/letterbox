@@ -12,7 +12,7 @@ import CoreData
 
 extension EnzevalosContact {
 
-    @nonobjc public override class func fetchRequest() -> NSFetchRequest {
+    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         return NSFetchRequest(entityName: "EnzevalosContact");
     }
 
@@ -27,16 +27,16 @@ extension EnzevalosContact {
 extension EnzevalosContact {
     
     @objc(addAddressesObject:)
-    @NSManaged public func addToAddresses(value: Mail_Address)
+    @NSManaged public func addToAddresses(_ value: Mail_Address)
     
     @objc(removeAddressesObject:)
-    @NSManaged public func removeFromAddresses(value: Mail_Address)
+    @NSManaged public func removeFromAddresses(_ value: Mail_Address)
     
     @objc(addAddresses:)
-    @NSManaged public func addToAddresses(values: NSSet)
+    @NSManaged public func addToAddresses(_ values: NSSet)
     
     @objc(removeAddresses:)
-    @NSManaged public func removeFromAddresses(values: NSSet)
+    @NSManaged public func removeFromAddresses(_ values: NSSet)
     
 }
 

@@ -10,9 +10,9 @@
 class PGPTemporaryDecryptionObject {
     let onePassSignaturePacket: PGPOnePassSignaturePacket
     let signaturePacket: PGPSignaturePacket
-    let plaintextData: NSData?
+    let plaintextData: Data?
     
-    init(onePassSignaturePacket: PGPOnePassSignaturePacket, signaturePacket: PGPSignaturePacket, plaintextData: NSData?){
+    init(onePassSignaturePacket: PGPOnePassSignaturePacket, signaturePacket: PGPSignaturePacket, plaintextData: Data?){
         self.onePassSignaturePacket = onePassSignaturePacket
         self.signaturePacket = signaturePacket
         self.plaintextData = plaintextData

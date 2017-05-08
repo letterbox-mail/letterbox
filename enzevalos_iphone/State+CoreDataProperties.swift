@@ -12,22 +12,22 @@ import CoreData
 
 extension State {
 
-    @nonobjc public override class func fetchRequest() -> NSFetchRequest {
+    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         return NSFetchRequest(entityName: "State");
     }
 
     public var currentMails: Int{
         set {
             let name = "currentMails"
-            self.willChangeValueForKey(name)
+            self.willChangeValue(forKey: name)
             self.setPrimitiveValue(newValue, forKey: name)
-            self.didChangeValueForKey(name)
+            self.didChangeValue(forKey: name)
         }
         get {
             let name = "currentMails"
-            self.willAccessValueForKey(name)
-            let result = Int(self.primitiveValueForKey(name) as! Int64)
-            self.didAccessValueForKey(name)
+            self.willAccessValue(forKey: name)
+            let result = Int(self.primitiveValue(forKey: name) as! Int64)
+            self.didAccessValue(forKey: name)
             return result
         }
     }
@@ -35,15 +35,15 @@ extension State {
     public var currentContacts: Int{
         set {
             let name = "currentContacts"
-            self.willChangeValueForKey(name)
+            self.willChangeValue(forKey: name)
             self.setPrimitiveValue(newValue, forKey: name)
-            self.didChangeValueForKey(name)
+            self.didChangeValue(forKey: name)
         }
         get {
             let name = "currentContacts"
-            self.willAccessValueForKey(name)
-            let result = Int(self.primitiveValueForKey(name) as! Int64)
-            self.didAccessValueForKey(name)
+            self.willAccessValue(forKey: name)
+            let result = Int(self.primitiveValue(forKey: name) as! Int64)
+            self.didAccessValue(forKey: name)
             return result
         }
     }
@@ -51,15 +51,15 @@ extension State {
     public var maxUID: UInt64{
         set {
             let name = "maxUID"
-            self.willChangeValueForKey(name)
-            self.setPrimitiveValue(NSDecimalNumber(unsignedLongLong: newValue), forKey: name)
-            self.didChangeValueForKey(name)
+            self.willChangeValue(forKey: name)
+            self.setPrimitiveValue(NSDecimalNumber(value: newValue as UInt64), forKey: name)
+            self.didChangeValue(forKey: name)
         }
         get {
             let name = "maxUID"
-            self.willAccessValueForKey(name)
-            let result = (self.primitiveValueForKey(name) as! NSDecimalNumber).unsignedLongLongValue
-            self.didAccessValueForKey(name)
+            self.willAccessValue(forKey: name)
+            let result = (self.primitiveValue(forKey: name) as! NSDecimalNumber).uint64Value
+            self.didAccessValue(forKey: name)
             return result
         }
 

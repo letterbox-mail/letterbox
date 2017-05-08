@@ -5,27 +5,40 @@
   Created by jakobsbode on 06.10.16.
   Copyright © 2016 fu-berlin. All rights reserved.
 */
+"AccessContacts" = "Zugriff auf Kontakte";
+"AccessContactsDescription" = "Damit diese App richtig funktioniert, brauchen wir Zugriff auf deine Kontakte. Wir teilen diese Daten mit niemandem und senden sie auch nicht über das Internet.";
+"AccessNotGranted" = "Bitte schalte unter Einstellungen den Zugriff auf die Kontakte frei, wenn du möchtest, dass die App richtig funktioniert";
 "Address" = "Adresse";
 "Addressbook" = "Adressbuch";
 "Attach" = "Anhängen";
 "Attachment" = "Anhang";
+"Authentification" = "Authentifizierung";
 "Back" = "Zurück";
 "Bcc" = "Blindkopie";
 "Cancel" = "Abbrechen";
 "Cc" = "Kopie";
+"CouldNotConnect" = "Die Verbindung zum Server konnte nicht hergestellt werden. Bitte überprüfe die folgenden Angaben und passe sie ggf. an.";
+"ConnectingToMailServer" = "Verbinde zum Mailserver";
 "Contacts" = "Kontakte";
 "Content" = "Inhalt";
 "ContentNo" = "Kein Inhalt";
+"CreateAndManageKeys" = "Erstelle und verwalte Schlüssel";
 "Details" = "Key Details";
 "DiscoveryTime" = "Bekannt seit";
 "Checkmarks" = "Du hast Nachrichten von den Adressen mit Haken bekommen";
 "Drafts" = "Entwürfe";
 "Emailaddress" = "Emailadresse";
 "EncryptionType" = "Verschlüsselungsart";
+"EverythingCorrect" = "Alles richtig?";
 "Forward" = "Weiterleiten";
 "From" = "Von";
+"Hello" = "Hallo";
 "Inbox" = "Postfach";//Briefkasten?
 "Insecure" = "Unsicher";
+"InsertMailAddress" = "Bitte gib deine Emailadresse ein";
+"InsertPassword" = "Bitte gib\ndein Passwort ein";
+"InsertUSername" = "Bitte gib deinen Nutzernamen ein";
+"InterestedInSecureMail" = "Schön, dass du dich für sichere Email interessierst!";
 "Junk" = "Spam";
 "KeyAddresses" = "Mailadressen im Schlüssel";
 "KeyDetails" = "Key Details";
@@ -39,9 +52,14 @@
 "mail from" = "Nachricht von";
 "Message" = "Nachricht";
 "MoreInformation" = "Mehr Informationen";
+"next" = "weiter";
+"None" = "Keine";
+"NormalPassword" = "Normal, Passwort";
 "Now" = "jetzt";
 "OneMinuteAgo" = "vor 1 min";
 "original message" = "originale Nachricht";
+"Password" = "Passwort";
+"Plaintext" = "Klartext";
 "Postcard" = "Postkarte";
 "Re" = "AW";
 "Receive" = "Empfangen";
@@ -70,8 +88,11 @@
 "SubjectNo" = "Kein Betreff";
 "To" = "An";
 "to" = "an";
+"Transportencryption" = "Transferverschlüsselung";
 "Trash" = "Papierkorb";
 "TwoDaysAgo" = "Vorgestern";
+"Username" = "Nutzername";
+"WhatAShame" = "Schade!";
 "write" = "verfassen";
 "Yesterday" = "Gestern";
 "NoFurtherMessages" = "Keine weiteren Nachrichten...";
@@ -100,3 +121,5 @@
 "corruptedText" = "Diese E-Mail könnte verändert worden sein! Bitte misstrauen Sie dem Inhalt, falls Sie ihn trotzdem lesen möchten.";
 "corruptedHeadline" = "Achtung!";
 "answer" = "Antworten";
+"couldNotDecryptHeadline" = "Nachricht konnte nicht entschlüsselt werden";
+"couldNotDecryptText" = "Diese Nachricht konnte nicht entschlüsselt werden. Vielleicht hat der Absender den falschen Schlüssel verwendet. Falls du von diesem Absender eine Nachricht erwartest könntest du versuchen auf einem anderen Weg in Verbindung zu treten.";

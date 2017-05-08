@@ -11,18 +11,31 @@ import Foundation
 import CoreData
 import UIKit
 import Contacts
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 @objc(EnzevalosContact)
-public class EnzevalosContact: NSManagedObject, Contact, Comparable {
+open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         
-    public var name:String{
+    open var name:String{
         get{
             return getName()
         }
     }
     
     
-    public var to: [Mail]{
+    open var to: [Mail]{
         get{
             var mails = [Mail]()
             if let adrs = addresses{
@@ -39,7 +52,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     }
     
-    public var bcc: [Mail]{
+    open var bcc: [Mail]{
         get{
             var mails = [Mail]()
             if let adrs = addresses{
@@ -58,7 +71,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     
     
     
-    public var cc: [Mail]{
+    open var cc: [Mail]{
         get{
             var mails = [Mail]()
             if let adrs = addresses{
@@ -75,7 +88,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     }
     
-    public var from: [Mail]{
+    open var from: [Mail]{
         get{
             var mails = [Mail]()
             if let adrs = addresses{
@@ -92,7 +105,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     }
     
-    public var records: [KeyRecord] {
+    open var records: [KeyRecord] {
         get{
             var myrecords = [KeyRecord]()
             for r in DataHandler.handler.receiverRecords{
@@ -105,7 +118,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     
     }
-    public var hasKey: Bool{
+    open var hasKey: Bool{
         get {
             for item in addresses!{
                 let adr = item as! MailAddress
@@ -117,7 +130,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     }
     
-    public var cnContact: CNContact?{
+    open var cnContact: CNContact?{
         get{
             let contactFromBook = AddressHandler.findContact(self)
             if contactFromBook.count > 0 {
@@ -129,7 +142,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
             let con = CNMutableContact()
             let name = self.displayname
             if let n = name {
-                let nameArray = n.characters.split(" ").map(String.init)
+                let nameArray = n.characters.split(separator: " ").map(String.init)
                 switch nameArray.count {
                 case 1:
                     con.givenName = nameArray.first!
@@ -145,7 +158,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
             let adr: Mail_Address
             if let adrs = self.addresses{
                  adr = adrs.anyObject() as! Mail_Address
-                con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address))
+                con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address as NSString))
             }
            
             
@@ -178,7 +191,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         return name
     }
     
-    func getAddress(address: String)-> Mail_Address?{
+    func getAddress(_ address: String)-> Mail_Address?{
         var addr: Mail_Address
         if addresses != nil {
             for obj in addresses! {
@@ -191,11 +204,14 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
         return nil
     }
     
-    func getAddressByMCOAddress(mcoaddress: MCOAddress)-> Mail_Address?{
-        return getAddress(mcoaddress.mailbox!)
+    func getAddressByMCOAddress(_ mcoaddress: MCOAddress)-> Mail_Address?{
+        if (mcoaddress.mailbox) != nil{
+            return getAddress(mcoaddress.mailbox.lowercased())
+        }
+        return nil
     }
     
-    public func getMailAddresses()->[MailAddress]{
+    open func getMailAddresses()->[MailAddress]{
         var adr = [MailAddress] ()
         if self.addresses != nil {
             for a in addresses!{
@@ -207,7 +223,7 @@ public class EnzevalosContact: NSManagedObject, Contact, Comparable {
     }
 }
 
-private func isEmpty(contact: EnzevalosContact)-> Bool{
+private func isEmpty(_ contact: EnzevalosContact)-> Bool{
     let mails = contact.from
         if(mails.count == 0){
             return true

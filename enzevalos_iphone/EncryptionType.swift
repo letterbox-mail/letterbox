@@ -19,7 +19,7 @@ public enum EncryptionType : String {
         
     }
     
-    static func typeFromAutocrypt(symbol: String)-> EncryptionType{
+    static func typeFromAutocrypt(_ symbol: String)-> EncryptionType{
         switch symbol {
         case "p":
             return .PGP
@@ -28,7 +28,7 @@ public enum EncryptionType : String {
         }
     }
     
-    static func fromString(string: String?)->EncryptionType{
+    static func fromString(_ string: String?)->EncryptionType{
         if let symbol = string{
             switch symbol {
             case "PGP":

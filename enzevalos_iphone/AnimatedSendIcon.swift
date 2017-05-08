@@ -24,9 +24,9 @@ class AnimatedSendIcon: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.userInteractionEnabled = false
+        self.isUserInteractionEnabled = false
         
-        let resizing: ResizingBehavior = .AspectFit
+        let resizing: ResizingBehavior = .aspectFit
 //        let context = UIGraphicsGetCurrentContext()!
 //        //// Resize to Target Frame
 //        CGContextSaveGState(context)
@@ -36,9 +36,9 @@ class AnimatedSendIcon: UIView {
 //        
 //        self.view.transform = CGAffineTransformMakeScale(2, 2)
         
-        self.transform = CGAffineTransformMakeScale(resizedFrame.width / 200, resizedFrame.height / 110)
+        self.transform = CGAffineTransform(scaleX: resizedFrame.width / 200, y: resizedFrame.height / 110)
         //        self = UIView(frame: frame) //UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 110))
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.white
         
         size = CGSize(width: width, height: height)
         sizeSmall = CGSize(width: width*f, height: height*f)
@@ -61,7 +61,7 @@ class AnimatedSendIcon: UIView {
     }
     
     func switchIcons() {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.001 * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.001 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
             print("zPosition") // TODO: In swift 3, the layer switch seems to work, remove this then
             self.square.layer.zPosition = self.isOnTop ? 1 : 0
             self.square2.layer.zPosition = !self.isOnTop ? 1 : 0
@@ -69,38 +69,38 @@ class AnimatedSendIcon: UIView {
         })
         
         if !isOnTop {
-            UIView.animateKeyframesWithDuration(0.75, delay: 0, options: .CalculationModeCubicPaced, animations: {
-                UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 0.25, animations: {
+            UIView.animateKeyframes(withDuration: 0.75, delay: 0, options: [.calculationModeCubicPaced, .allowUserInteraction], animations: {
+                UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.25, animations: {
                     self.square.frame = CGRect(x: 10, y: 20, width: self.width*0.95, height: self.height*0.95)
                     self.square2.frame = CGRect(x: 120, y: 20, width: self.width*0.85, height: self.height*0.85)
                 })
-                UIView.addKeyframeWithRelativeStartTime(0.25, relativeDuration: 0.5, animations: {
+                UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.5, animations: {
                     self.square.frame = CGRect(x: 70, y: 5, width: self.width*0.78, height: self.height*0.78)
                     self.square.alpha = 0.6
                     self.square2.alpha = 1.0
                     self.square2.frame = CGRect(x: 60, y: 40, width: self.width*0.95, height: self.height*0.95)
                 })
                 
-                UIView.addKeyframeWithRelativeStartTime(0.75, relativeDuration: 0.25, animations: {
+                UIView.addKeyframe(withRelativeStartTime: 0.75, relativeDuration: 0.25, animations: {
                     self.square.frame = CGRect(origin: self.back, size: self.sizeSmall)
                     self.square2.frame = CGRect(origin: self.front, size: self.size)
                 })
                 
                 }, completion: nil)
         } else {
-            UIView.animateKeyframesWithDuration(0.75, delay: 0, options: .CalculationModeCubicPaced, animations: {
-                UIView.addKeyframeWithRelativeStartTime(0.0, relativeDuration: 0.25, animations: {
+            UIView.animateKeyframes(withDuration: 0.75, delay: 0, options: [.calculationModeCubicPaced, .allowUserInteraction], animations: {
+                UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.25, animations: {
                     self.square2.frame = CGRect(x: 10, y: 20, width: self.width*0.95, height: self.height*0.95)
                     self.square.frame = CGRect(x: 120, y: 20, width: self.width*0.85, height: self.height*0.85)
                 })
-                UIView.addKeyframeWithRelativeStartTime(0.25, relativeDuration: 0.5, animations: {
+                UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.5, animations: {
                     self.square2.frame = CGRect(x: 70, y: 5, width: self.width*0.85, height: self.height*0.85)
                     self.square2.alpha = 0.6
                     self.square.alpha = 1.0
                     self.square.frame = CGRect(x: 60, y: 40, width: self.width*0.95, height: self.height*0.95)
                 })
                 
-                UIView.addKeyframeWithRelativeStartTime(0.75, relativeDuration: 0.25, animations: {
+                UIView.addKeyframe(withRelativeStartTime: 0.75, relativeDuration: 0.25, animations: {
                     self.square2.frame = CGRect(origin: self.back, size: self.sizeSmall)
                     self.square.frame = CGRect(origin: self.front, size: self.size)
                 })
@@ -110,12 +110,12 @@ class AnimatedSendIcon: UIView {
     }
     
     @objc internal enum ResizingBehavior: Int {
-        case AspectFit /// The content is proportionally resized to fit into the target rectangle.
-        case AspectFill /// The content is proportionally resized to completely fill the target rectangle.
-        case Stretch /// The content is stretched to match the entire target rectangle.
-        case Center /// The content is centered in the target rectangle, but it is NOT resized.
+        case aspectFit /// The content is proportionally resized to fit into the target rectangle.
+        case aspectFill /// The content is proportionally resized to completely fill the target rectangle.
+        case stretch /// The content is stretched to match the entire target rectangle.
+        case center /// The content is centered in the target rectangle, but it is NOT resized.
         
-        internal func apply(rect rect: CGRect, target: CGRect) -> CGRect {
+        internal func apply(rect: CGRect, target: CGRect) -> CGRect {
             if rect == target || target == CGRect.zero {
                 return rect
             }
@@ -125,15 +125,15 @@ class AnimatedSendIcon: UIView {
             scales.height = abs(target.height / rect.height)
             
             switch self {
-            case .AspectFit:
+            case .aspectFit:
                 scales.width = min(scales.width, scales.height)
                 scales.height = scales.width
-            case .AspectFill:
+            case .aspectFill:
                 scales.width = max(scales.width, scales.height)
                 scales.height = scales.width
-            case .Stretch:
+            case .stretch:
                 break
-            case .Center:
+            case .center:
                 scales.width = 1
                 scales.height = 1
             }

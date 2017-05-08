@@ -12,7 +12,7 @@ import Foundation
 import CoreData
 
 @objc(Mail)
-public class Mail: NSManagedObject, Comparable {
+open class Mail: NSManagedObject, Comparable {
 
     var showMessage: Bool = false
 
@@ -22,45 +22,49 @@ public class Mail: NSManagedObject, Comparable {
 
     var isRead: Bool {
         get {
-            let value = flag.contains(MCOMessageFlag.Seen)
+            let value = flag.contains(MCOMessageFlag.seen)
             return value
         }
         set {
             if !newValue {
-                flag.remove(MCOMessageFlag.Seen)
+                flag.remove(MCOMessageFlag.seen)
             } else {
-                flag.insert(MCOMessageFlag.Seen)
+                flag.insert(MCOMessageFlag.seen)
             }
-            DataHandler.handler.save()
+            _ = DataHandler.handler.save()
         }
     }
 
     var timeString: String {
         var returnString = ""
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale.currentLocale()
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
         let mailTime = self.date
-        let interval = NSDate().timeIntervalSinceDate(mailTime)
+        let interval = Date().timeIntervalSince(mailTime as Date)
         switch interval {
         case -55..<55:
             returnString = NSLocalizedString("Now", comment: "New email")
         case 55..<120:
             returnString = NSLocalizedString("OneMinuteAgo", comment: "Email came one minute ago")
         case 120..<24 * 60 * 60:
-            dateFormatter.timeStyle = .ShortStyle
-            returnString = dateFormatter.stringFromDate(mailTime)
+            dateFormatter.timeStyle = .short
+            returnString = dateFormatter.string(from: mailTime as Date)
         case 24 * 60 * 60..<48 * 60 * 60:
             returnString = NSLocalizedString("Yesterday", comment: "Email came yesterday")
         case 48 * 60 * 60..<72 * 60 * 60:
             returnString = NSLocalizedString("TwoDaysAgo", comment: "Email came two days ago")
         default:
-            dateFormatter.dateStyle = .ShortStyle
-            returnString = dateFormatter.stringFromDate(mailTime)
+            dateFormatter.dateStyle = .short
+            returnString = dateFormatter.string(from: mailTime as Date)
         }
         return returnString
     }
 
     var shortBodyString: String? {
+        guard !trouble else {
+            return nil
+        }
+        
         var message: String? = ""
         if isEncrypted && !unableToDecrypt {
             message = decryptedBody
@@ -69,12 +73,12 @@ public class Mail: NSManagedObject, Comparable {
         }
 
         if message != nil {
-            message = message!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            message = message!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             if message!.characters.count > 50 {
-                message = message!.substringToIndex(message!.startIndex.advancedBy(50))
+                message = message!.substring(to: message!.characters.index(message!.startIndex, offsetBy: 50))
             }
-            let messageArray = message!.componentsSeparatedByString("\n")
-            return messageArray.joinWithSeparator(" ")
+            let messageArray = message!.components(separatedBy: "\n")
+            return messageArray.joined(separator: " ")
         } else {
             return nil
         }
@@ -159,19 +163,19 @@ public class Mail: NSManagedObject, Comparable {
             subj = subject!
         }
         if self.trouble {
-            returnString.appendContentsOf("❗️ ")
+            returnString.append("❗️ ")
         }
         if !self.isRead {
-            returnString.appendContentsOf("🔵 ")
+            returnString.append("🔵 ")
         }
-        if MCOMessageFlag.Answered.isSubsetOf(flag) {
-            returnString.appendContentsOf("↩️ ")
+        if MCOMessageFlag.answered.isSubset(of: flag) {
+            returnString.append("↩️ ")
         }
-        if MCOMessageFlag.Forwarded.isSubsetOf(flag) {
-            returnString.appendContentsOf("➡️ ")
+        if MCOMessageFlag.forwarded.isSubset(of: flag) {
+            returnString.append("➡️ ")
         }
-        if MCOMessageFlag.Flagged.isSubsetOf(flag) {
-            returnString.appendContentsOf("⭐️ ")
+        if MCOMessageFlag.flagged.isSubset(of: flag) {
+            returnString.append("⭐️ ")
         }
         return "\(returnString)\(subj)"
     }

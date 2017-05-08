@@ -5,27 +5,40 @@
   Created by jakobsbode on 06.10.16.
   Copyright © 2016 fu-berlin. All rights reserved.
 */
+"AccessContacts" = "Access contacts";
+"AccessContactsDescription" = "This App requires access to your contacts to work properly. We do not share your data with others or transfer it over the internet.";
+"AccessNotGranted" = "Please allow access to contacts in Settings, to get to know the true promise of this App";
 "Address" = "Address";
 "Addressbook" = "Addressbook";
 "Attach" = "Attach";
 "Attachment" = "Attachment";
+"Authentification" = "Authentification";
 "Back" = "Back";
 "Bcc" = "Bcc";//"Blindkopie";
 "Cancel" = "Cancel";
 "Cc" = "Cc";//"Kopie";
+"CouldNotConnect" = "Couldn't connect to server. Please check your data and modify it maybe.";
+"ConnectingToMailServer" = "Connecting to mailserver";
 "Contacts" = "Contacts";
 "Content" = "Content";
 "ContentNo" = "No content";
+"CreateAndManageKeys" = "Create and manage keys";
 "Details" = "Key Details";
 "Checkmarks" = "You received Mails from Mailadresses with checkmarks";
 "DiscoveryTime" = "Discoverytime";
 "Drafts" = "Drafts";
 "Emailaddress" = "Emailaddress";
 "EncryptionType" = "Encryption Type";
+"EverythingCorrect" = "Everything correct?";
 "Forward" = "Forward";
 "From" = "From";
+"Hello" = "Hello";
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
+"InsertMailAddress" = "Please insert your mailaddress";
+"InsertPassword" = "Please insert your password";
+"InsertUsername" = "Please insert your username";
+"InterestedInSecureMail" = "Nice to see you interested in secure mail!";
 "Junk" = "Junk";
 "KeyAddresses" = "Mailaddresses from the key";
 "KeyDetails" = "Key Details";
@@ -38,9 +51,14 @@
 "mail from" = "mail from";
 "Message" = "Message";
 "MoreInformation" = "More Information";
+"next" = "next";
+"None" = "None";
+"NormalPassword" = "Normal, password";
 "Now" = "just now";
 "OneMinuteAgo" = "1 min ago";
 "original message" = "original message";
+"Password" = "Password";
+"Plaintext" = "Plaintext";
 "Postcard" = "Postcard";
 "Re" = "Re";
 "Receive" = "Receive";
@@ -69,8 +87,11 @@
 "SubjectNo" = "No subject";
 "To" = "To";
 "to" = "to";
+"Transportencryption" = "Transportencryption";
 "Trash" = "Trash";
 "TwoDaysAgo" = "2 days ago";
+"Username" = "Username";
+"WhatAShame" = "What a shame!";
 "write" = "write";
 "Yesterday" = "yesterday";
 "NoFurtherMessages" = "No further messages...";
@@ -99,4 +120,5 @@
 "corruptedText" = "This E-Mail may have been modified! If you want to read it anyways, please be weary of its content.";
 "corruptedHeadline" = "Attention!";
 "answer" = "Answer";
-
+"couldNotDecryptHeadline" = "Could not decrypt Message";
+"couldNotDecryptText" = "It was not possible to decrypt this message. This might be because the sender used the wrong key. If you expect a message from this contact, you could try reaching out on another channel.";

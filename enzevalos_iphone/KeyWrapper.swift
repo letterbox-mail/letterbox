@@ -11,16 +11,16 @@ import Foundation
 public protocol KeyWrapper {
     
     var revoked: Bool {get set}
-    var revokeTime: NSDate? {get}
+    var revokeTime: Date? {get}
     var trustlevel: Int {get set}
     var verified: Bool {get set}
-    var verifyTime: NSDate? {get}
-    var discoveryTime: NSDate {get}
+    var verifyTime: Date? {get}
+    var discoveryTime: Date {get}
     var discoveryMailUID: UInt64? {get}
     var type: EncryptionType {get}
     var keyID: String {get}
-    var creationDate: NSDate {get}
-    var expireDate: NSDate? {get}
+    var creationDate: Date {get}
+    var expireDate: Date? {get}
     
     //Mailaddresses we discovered using this key
     var mailAddresses: [String]? {get set}
@@ -30,5 +30,5 @@ public protocol KeyWrapper {
     
     init(coder: NSCoder)
     
-    func encodeWithCoder(coder: NSCoder)
+    func encodeWithCoder(_ coder: NSCoder)
 }

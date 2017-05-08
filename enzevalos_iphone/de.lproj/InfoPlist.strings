@@ -1,0 +1,8 @@
+/* 
+  InfoPlist.strings
+  enzevalos_iphone
+
+  Created by jakobsbode on 06.04.17.
+  Copyright © 2017 fu-berlin. All rights reserved.
+*/
+NSContactsUsageDescription = "Um die Emailadressen deinen Kontakten zuordnen zu können, müssen wir auf diese zugreifen";
