@@ -85,12 +85,12 @@ extension KeyViewController: UITableViewDataSource {
             }
                 else if toRowType(indexPath) == .verified {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "VerifiedCell")!
-                cell.textLabel?.text = NSLocalizedString("KeyIsVerified", comment: "The Key is verified. The time when the Key was verified") + "\(keyWrapper?.verifyTime)"
+                cell.textLabel?.text = NSLocalizedString("KeyIsVerified", comment: "The Key is verified. The time when the Key was verified") + "\(String(describing: keyWrapper?.verifyTime))"
                 return cell
             }
                 else if toRowType(indexPath) == .revoked {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RevokedCell")!
-                cell.textLabel?.text = NSLocalizedString("KeyIsRevoked", comment: "The Key is revoked. The time when the Key was revoked") + "\(keyWrapper?.revokeTime)"
+                cell.textLabel?.text = NSLocalizedString("KeyIsRevoked", comment: "The Key is revoked. The time when the Key was revoked") + "\(String(describing: keyWrapper?.revokeTime))"
                 return cell
             }
         }

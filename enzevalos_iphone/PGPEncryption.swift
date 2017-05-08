@@ -126,14 +126,17 @@ class PGPEncryption : Encryption {
         if self.isUsed(mail) {
             let bodyData = mail.body!.data(using: String.Encoding.utf8)!
             var data: Data?
+            //has to be var because it is given as pointer to obj-c-code
             var error: NSErrorPointer = NSErrorPointer.none
             var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
             var maybeUsedKeys: [String] = []
+            //has to be var because it is given as pointer to obj-c-code
             var signed = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
             signed[0] = false
+            //has to be var because it is given as pointer to obj-c-code
             var valid = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
             valid[0] = false
-            print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
+            //print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
                 data = temp.plaintextData
                 if data == nil {
                     self.keyManager.useAllPrivateKeys()
@@ -156,9 +159,8 @@ class PGPEncryption : Encryption {
                         if let key = self.keyManager.getKey(maybeUsedKey) {
                             //FIXME
                             let done : ObjCBool
-                            do {
-                                try done = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid)[0])
-                            }catch {
+                            done = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: error)[0])
+                            if let errorHappening = (error?.debugDescription.contains("Missing")), errorHappening {
                                 mail.trouble = true
                                 mail.isCorrectlySigned = false
                                 break

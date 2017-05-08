@@ -81,6 +81,7 @@ class Onboarding {
         mailaddress.autocorrectionType = UITextAutocorrectionType.no
         mailaddress.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
         mailaddress.placeholder = NSLocalizedString("Address", comment: "")
+        mailaddress.isUserInteractionEnabled = true
         let page2 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
         
         password = UITextField.init()
@@ -353,25 +354,26 @@ class Onboarding {
         if let mailAddress = mailaddress.text, !manualSet && mailAddress != "" && mailAddress.contains("@") {
             let guessedUserName = mailAddress.components(separatedBy: "@")[0]
             let provider = mailAddress.components(separatedBy: "@")[1]
+            setServerValues(mailaddress: mailAddress)
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
             UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
             if provider == Provider.FU.rawValue {
-                Providers.setValues(Provider.FU)
+                //Providers.setValues(Provider.FU)
                 UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.accountname)
                 UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.userName)
             }
             if provider == Provider.ZEDAT.rawValue {
-                Providers.setValues(Provider.ZEDAT)
+                //Providers.setValues(Provider.ZEDAT)
                 UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.accountname)
                 UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.userName)
             }
             if provider == Provider.ENZEVALOS.rawValue {
-                Providers.setValues(Provider.ENZEVALOS)
+                //Providers.setValues(Provider.ENZEVALOS)
                 UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.accountname)
                 UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
             }
             if provider == Provider.WEB.rawValue {
-                Providers.setValues(Provider.WEB)
+                //Providers.setValues(Provider.WEB)
             }
         }
         if let pw = password.text, pw != "" {
@@ -392,6 +394,71 @@ class Onboarding {
             UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
         }
         
+    }
+    
+    static func setServerValues(mailaddress: String) {
+        let manager = MCOMailProvidersManager.shared()!
+        let path = Bundle.main.path(forResource: "providers", ofType: "json")
+        manager.registerProviders(withFilename: path)
+        
+        //------- DEBUG -------
+        if let provider = manager.provider(forEmail: mailaddress) {
+            if let imap = (provider.imapServices() as? [MCONetService]), let smtp = (provider.smtpServices() as? [MCONetService]) {
+                print(imap)
+                print(smtp)
+            }
+        }
+        //------- DEBUG -------
+        
+        if let provider = manager.provider(forEmail: mailaddress), let imap = (provider.imapServices() as? [MCONetService]), imap != [], let smtp = (provider.smtpServices() as? [MCONetService]), smtp != [] {
+            let imapService = imap[0]
+            UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.web.de") as AnyObject?, attribute: Attribute.imapHostname)
+            UserManager.storeUserValue((imapService.info()["port"] ?? 587) as AnyObject?, attribute: Attribute.imapPort)
+            
+            //TODO add all
+            if let trans = imapService.info()["ssl"] as? Bool, trans {
+                UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
+            } else if let trans = imapService.info()["starttls"] as? Bool, trans {
+                UserManager.storeUserValue(MCOConnectionType.startTLS.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
+            } else {
+                UserManager.storeUserValue(MCOConnectionType.clear.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
+            }
+            
+            //TODO add all
+            if let auth = imapService.info()["auth"] as? String, auth == "saslPlain" {
+                UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else if let auth = imapService.info()["auth"] as? String, auth == "saslLogin" {
+                UserManager.storeUserValue(MCOAuthType.saslLogin.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else if let auth = imapService.info()["auth"] as? String, auth == "saslKerberosV4" {
+                UserManager.storeUserValue(MCOAuthType.saslKerberosV4.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else {
+                UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            }
+            
+            let smtpService = smtp[0]
+            UserManager.storeUserValue((smtpService.info()["hostname"] ?? "smtp.web.de") as AnyObject?, attribute: Attribute.smtpHostname)
+            UserManager.storeUserValue((smtpService.info()["port"] ?? 993) as AnyObject?, attribute: Attribute.smtpPort)
+            
+            //TODO add all
+            if let trans = smtpService.info()["ssl"] as? Bool, trans {
+                UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.smtpConnectionType)
+            } else if let trans = smtpService.info()["starttls"] as? Bool, trans {
+                UserManager.storeUserValue(MCOConnectionType.startTLS.rawValue as AnyObject?, attribute: Attribute.smtpConnectionType)
+            } else {
+                UserManager.storeUserValue(MCOConnectionType.clear.rawValue as AnyObject?, attribute: Attribute.smtpConnectionType)
+            }
+            
+            //TODO add all
+            if let auth = smtpService.info()["auth"] as? String, auth == "saslPlain" {
+                UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else if let auth = smtpService.info()["auth"] as? String, auth == "saslLogin" {
+                UserManager.storeUserValue(MCOAuthType.saslLogin.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else if let auth = smtpService.info()["auth"] as? String, auth == "saslKerberosV4" {
+                UserManager.storeUserValue(MCOAuthType.saslKerberosV4.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else {
+                UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            }
+        }
     }
     
     static func keyHandling() {

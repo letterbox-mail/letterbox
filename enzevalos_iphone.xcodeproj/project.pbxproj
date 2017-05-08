@@ -80,12 +80,10 @@
 		A15B7BE81E2934CB0024E499 /* EncryptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15B7BE71E2934CB0024E499 /* EncryptionType.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A172F90D1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A172F90C1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift */; };
-		A17A06E91E8190C300C8AEF6 /* OnboardingViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A06E81E8190C300C8AEF6 /* OnboardingViewCells.swift */; };
 		A17A18F71DDCBE530058D934 /* PGPKeyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17A18F61DDCBE530058D934 /* PGPKeyWrapper.swift */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
 		A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
-		A18C76871E81861C00B21414 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18C76861E81861C00B21414 /* OnboardingViewController.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
@@ -113,7 +111,6 @@
 		A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
-		A1F1D7E41E83E93D0009CBDF /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F1D7E31E83E93D0009CBDF /* SwitchCell.xib */; };
 		A1F2A5691E85586300320275 /* Providers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2A5681E85586300320275 /* Providers.swift */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
@@ -273,13 +270,11 @@
 		A15B7BE71E2934CB0024E499 /* EncryptionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionType.swift; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A172F90C1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPTemporaryDecryptionObject.swift; sourceTree = "<group>"; };
-		A17A06E81E8190C300C8AEF6 /* OnboardingViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewCells.swift; sourceTree = "<group>"; };
 		A17A18F61DDCBE530058D934 /* PGPKeyWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPKeyWrapper.swift; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JakobBode.asc; sourceTree = "<group>"; };
 		A17BEB371E55E21700403EBE /* PGPTemporaryDecryptionObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PGPTemporaryDecryptionObject.h; sourceTree = "<group>"; };
 		A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPTemporaryDecryptionObject.m; sourceTree = "<group>"; };
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
-		A18C76861E81861C00B21414 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jabo.asc; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "alice2005-2.gpg"; sourceTree = "<group>"; };
@@ -308,7 +303,6 @@
 		A1EB059B1D956957008659C1 /* NSDateCompare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateCompare.swift; sourceTree = "<group>"; };
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A1F1D7E31E83E93D0009CBDF /* SwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
 		A1F2A5681E85586300320275 /* Providers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Providers.swift; sourceTree = "<group>"; };
 		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992321DA7D2360073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -600,9 +594,6 @@
 			isa = PBXGroup;
 			children = (
 				A1F2A5681E85586300320275 /* Providers.swift */,
-				A18C76861E81861C00B21414 /* OnboardingViewController.swift */,
-				A17A06E81E8190C300C8AEF6 /* OnboardingViewCells.swift */,
-				A1F1D7E31E83E93D0009CBDF /* SwitchCell.xib */,
 				A1083A531E8BFEA6003666B7 /* Onboarding.swift */,
 			);
 			name = onboarding;
@@ -806,7 +797,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */,
-				A1F1D7E41E83E93D0009CBDF /* SwitchCell.xib in Resources */,
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
 				4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */,
 				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
@@ -1071,7 +1061,6 @@
 				472F398E1E251B8D009260FB /* MailAddress.swift in Sources */,
 				A135CF101DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
-				A17A06E91E8190C300C8AEF6 /* OnboardingViewCells.swift in Sources */,
 				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
 				A15B7BE81E2934CB0024E499 /* EncryptionType.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
@@ -1083,7 +1072,6 @@
 				472F397E1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */,
 				A135CF1B1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.m in Sources */,
 				A172F90D1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift in Sources */,
-				A18C76871E81861C00B21414 /* OnboardingViewController.swift in Sources */,
 				A135CF071DD4BDD1007E3C29 /* PGPCompressedPacket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

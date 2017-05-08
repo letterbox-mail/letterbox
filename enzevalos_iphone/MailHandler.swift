@@ -383,7 +383,7 @@ class MailHandler {
     }
 func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: (() -> ())) {
       guard error == nil else {
-            print("Error while fetching mail: \(error)")
+            print("Error while fetching mail: \(String(describing: error))")
             return
         }
         if let data = parser?.data() {
@@ -412,7 +412,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
                         _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
                     }
                     catch {
-                        print("Could not conntect key! \(autocrypt?.toString())")
+                        print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
                     }
                 }
                 
