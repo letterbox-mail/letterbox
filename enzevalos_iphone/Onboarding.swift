@@ -423,7 +423,6 @@ class Onboarding {
                 UserManager.storeUserValue(MCOConnectionType.clear.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
             }
             
-            //TODO add all
             if let auth = imapService.info()["auth"] as? String, auth == "saslPlain" {
                 UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
             } else if let auth = imapService.info()["auth"] as? String, auth == "saslLogin" {
@@ -460,7 +459,6 @@ class Onboarding {
                 UserManager.storeUserValue(MCOConnectionType.clear.rawValue as AnyObject?, attribute: Attribute.smtpConnectionType)
             }
             
-            //TODO add all
             if let auth = smtpService.info()["auth"] as? String, auth == "saslPlain" {
                 UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
             } else if let auth = smtpService.info()["auth"] as? String, auth == "saslLogin" {
