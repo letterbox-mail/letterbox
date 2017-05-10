@@ -190,6 +190,28 @@ class SendViewController: UIViewController {
         collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
         DispatchQueue.main.async {
             self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
+            if self.ccText.isFirstResponder {
+                if self.collectionDataDelegate.collectionView(self.ccCollectionview, numberOfItemsInSection: 0) > 0 {
+                    self.ccCollectionview.reloadData()
+                    self.ccCollectionviewHeight.constant = 100
+                    self.ccCollectionview.isHidden = false
+                }
+                else {
+                    self.ccCollectionviewHeight.constant = 1
+                    self.ccCollectionview.isHidden = true
+                }
+            }
+            if self.toText.isFirstResponder {
+                if self.collectionDataDelegate.collectionView(self.toCollectionview, numberOfItemsInSection: 0) > 0 {
+                    self.toCollectionview.reloadData()
+                    self.toCollectionviewHeight.constant = 100
+                    self.toCollectionview.isHidden = false
+                }
+                else {
+                    self.toCollectionviewHeight.constant = 1
+                    self.toCollectionview.isHidden = true
+                }
+            }
             self.toCollectionview.reloadData()
             self.ccCollectionview.reloadData()
         }
