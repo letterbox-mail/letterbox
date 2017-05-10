@@ -280,14 +280,14 @@ extension ContactViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let con = keyRecord {
+        if let record = keyRecord {
             switch section {
             case 0:
-                if !con.isVerified {
+                if !record.isVerified {
                     return 2
                 }
             case 1:
-                return con.ezContact.getMailAddresses().count
+                return record.ezContact.getMailAddresses().count
             case 3 where !((keyRecord?.hasKey) ?? false):
                 if let rec = otherRecords {
                     return rec.count
