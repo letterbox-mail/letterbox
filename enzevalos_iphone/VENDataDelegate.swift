@@ -24,10 +24,12 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         super.init()
     }
     
-    init(changeFunc: @escaping ((VENTokenField) -> Void), tappedWhenSelectedFunc: ((String) -> Void)?, beginFunc: ((VENTokenField) -> Void), endFunc: ((VENTokenField) -> Void), deleteFunc: @escaping (() -> Void)){
+    init(changeFunc: @escaping ((VENTokenField) -> Void), tappedWhenSelectedFunc: ((String) -> Void)?, beginFunc: @escaping ((VENTokenField) -> Void), endFunc: @escaping ((VENTokenField) -> Void), deleteFunc: @escaping (() -> Void)){
         self.changeFunc = changeFunc
         self.tappedWhenSelectedFunc = tappedWhenSelectedFunc
         self.deleteFunc = deleteFunc
+        self.beginFunc = beginFunc
+        self.endFunc = endFunc
         super.init()
     }
     
