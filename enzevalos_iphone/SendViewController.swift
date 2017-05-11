@@ -55,7 +55,7 @@ class SendViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, deleteFunc: {() -> Void in return})
+        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, beginFunc: self.beginEditing, endFunc: self.endEditing, deleteFunc: {() -> Void in return})
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
         setAnimation()
@@ -151,6 +151,7 @@ class SendViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardOpen(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardClose(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil);
 
+        
         toText.tag = UIViewResolver.toText.rawValue
         ccText.tag = UIViewResolver.ccText.rawValue
         textView.tag = UIViewResolver.textView.rawValue
@@ -190,6 +191,28 @@ class SendViewController: UIViewController {
         collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
         DispatchQueue.main.async {
             self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
+            if self.ccText.isFirstResponder {
+                if self.collectionDataDelegate.collectionView(self.ccCollectionview, numberOfItemsInSection: 0) > 0 {
+                    self.ccCollectionview.reloadData()
+                    self.ccCollectionviewHeight.constant = 100
+                    self.ccCollectionview.isHidden = false
+                }
+                else {
+                    self.ccCollectionviewHeight.constant = 1
+                    self.ccCollectionview.isHidden = true
+                }
+            }
+            if self.toText.isFirstResponder {
+                if self.collectionDataDelegate.collectionView(self.toCollectionview, numberOfItemsInSection: 0) > 0 {
+                    self.toCollectionview.reloadData()
+                    self.toCollectionviewHeight.constant = 100
+                    self.toCollectionview.isHidden = false
+                }
+                else {
+                    self.toCollectionviewHeight.constant = 1
+                    self.toCollectionview.isHidden = true
+                }
+            }
             self.toCollectionview.reloadData()
             self.ccCollectionview.reloadData()
         }
@@ -235,6 +258,40 @@ class SendViewController: UIViewController {
                 scrollview.isScrollEnabled = true
                 tableviewHeight.constant = 0
             }
+        }
+    }
+    
+    func beginEditing(_ tokenField: VENTokenField){
+        if tokenField == toText {
+            if self.collectionDataDelegate.collectionView(self.toCollectionview, numberOfItemsInSection: 0) > 0 {
+                self.toCollectionview.reloadData()
+                self.toCollectionviewHeight.constant = 100
+                self.toCollectionview.isHidden = false
+            }
+            else {
+                self.toCollectionviewHeight.constant = 1
+                self.toCollectionview.isHidden = true
+            }
+        } else if tokenField == ccText {
+            if self.collectionDataDelegate.collectionView(self.ccCollectionview, numberOfItemsInSection: 0) > 0 {
+                self.ccCollectionview.reloadData()
+                self.ccCollectionviewHeight.constant = 100
+                self.ccCollectionview.isHidden = false
+            }
+            else {
+                self.ccCollectionviewHeight.constant = 1
+                self.ccCollectionview.isHidden = true
+            }
+        }
+    }
+    
+    func endEditing(_ tokenField: VENTokenField){
+        if tokenField == toText {
+            self.toCollectionviewHeight.constant = 1
+            self.toCollectionview.isHidden = true
+        } else if tokenField == ccText {
+            self.ccCollectionviewHeight.constant = 1
+            self.ccCollectionview.isHidden = true
         }
     }
 
@@ -316,21 +373,21 @@ class SendViewController: UIViewController {
             ccCollectionview.isHidden = true
         }
 
-        UIView.animate(withDuration: 0.1, animations: { () -> Void in
+        /*UIView.animate(withDuration: 0.1, animations: { () -> Void in
 
             let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.0, self.reducedSize, 0.0)
             self.scrollview!.contentInset = contentInsets
-        })
+        })*/
     }
 
     func keyboardClose(_ notification: Notification) {
         LogHandler.doLog("keyboard", interaction: "close", point: CGPoint(x: 0, y: 0), comment: "")
         if reducedSize != 0 {
-            UIView.animate(withDuration: 0.1, animations: { () -> Void in
+            /*UIView.animate(withDuration: 0.1, animations: { () -> Void in
                 self.reducedSize = 0
                 let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.0, self.reducedSize, 0.0)
                 self.scrollview!.contentInset = contentInsets
-            })
+            })*/
             if !toText.isFirstResponder {
                 toCollectionviewHeight.constant = 1
                 toCollectionview.isHidden = true

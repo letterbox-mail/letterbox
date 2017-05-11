@@ -415,7 +415,6 @@ class Onboarding {
             UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.web.de") as AnyObject?, attribute: Attribute.imapHostname)
             UserManager.storeUserValue((imapService.info()["port"] ?? 587) as AnyObject?, attribute: Attribute.imapPort)
             
-            //TODO add all
             if let trans = imapService.info()["ssl"] as? Bool, trans {
                 UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
             } else if let trans = imapService.info()["starttls"] as? Bool, trans {
@@ -424,13 +423,26 @@ class Onboarding {
                 UserManager.storeUserValue(MCOConnectionType.clear.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
             }
             
-            //TODO add all
             if let auth = imapService.info()["auth"] as? String, auth == "saslPlain" {
                 UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
             } else if let auth = imapService.info()["auth"] as? String, auth == "saslLogin" {
                 UserManager.storeUserValue(MCOAuthType.saslLogin.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
             } else if let auth = imapService.info()["auth"] as? String, auth == "saslKerberosV4" {
                 UserManager.storeUserValue(MCOAuthType.saslKerberosV4.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else if let auth = imapService.info()["auth"] as? String, auth == "saslCRAMMD5" {
+                UserManager.storeUserValue(MCOAuthType.SASLCRAMMD5.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else if let auth = imapService.info()["auth"] as? String, auth == "saslDIGESTMD5" {
+                UserManager.storeUserValue(MCOAuthType.SASLDIGESTMD5.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else if let auth = imapService.info()["auth"] as? String, auth == "saslGSSAPI" {
+                UserManager.storeUserValue(MCOAuthType.SASLGSSAPI.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else if let auth = imapService.info()["auth"] as? String, auth == "saslSRP" {
+                UserManager.storeUserValue(MCOAuthType.SASLSRP.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else if let auth = imapService.info()["auth"] as? String, auth == "saslNTLM" {
+                UserManager.storeUserValue(MCOAuthType.SASLNTLM.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else if let auth = imapService.info()["auth"] as? String, auth == "xoAuth2" {
+                UserManager.storeUserValue(MCOAuthType.xoAuth2.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+            } else if let auth = imapService.info()["auth"] as? String, auth == "xoAuth2Outlook" {
+                UserManager.storeUserValue(MCOAuthType.SASLCRAMMD5.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
             } else {
                 UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
             }
@@ -439,7 +451,6 @@ class Onboarding {
             UserManager.storeUserValue((smtpService.info()["hostname"] ?? "smtp.web.de") as AnyObject?, attribute: Attribute.smtpHostname)
             UserManager.storeUserValue((smtpService.info()["port"] ?? 993) as AnyObject?, attribute: Attribute.smtpPort)
             
-            //TODO add all
             if let trans = smtpService.info()["ssl"] as? Bool, trans {
                 UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.smtpConnectionType)
             } else if let trans = smtpService.info()["starttls"] as? Bool, trans {
@@ -448,13 +459,26 @@ class Onboarding {
                 UserManager.storeUserValue(MCOConnectionType.clear.rawValue as AnyObject?, attribute: Attribute.smtpConnectionType)
             }
             
-            //TODO add all
             if let auth = smtpService.info()["auth"] as? String, auth == "saslPlain" {
                 UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
             } else if let auth = smtpService.info()["auth"] as? String, auth == "saslLogin" {
                 UserManager.storeUserValue(MCOAuthType.saslLogin.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
             } else if let auth = smtpService.info()["auth"] as? String, auth == "saslKerberosV4" {
                 UserManager.storeUserValue(MCOAuthType.saslKerberosV4.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else if let auth = smtpService.info()["auth"] as? String, auth == "saslCRAMMD5" {
+                UserManager.storeUserValue(MCOAuthType.SASLCRAMMD5.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else if let auth = smtpService.info()["auth"] as? String, auth == "saslDIGESTMD5" {
+                UserManager.storeUserValue(MCOAuthType.SASLDIGESTMD5.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else if let auth = smtpService.info()["auth"] as? String, auth == "saslGSSAPI" {
+                UserManager.storeUserValue(MCOAuthType.SASLGSSAPI.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else if let auth = smtpService.info()["auth"] as? String, auth == "saslSRP" {
+                UserManager.storeUserValue(MCOAuthType.SASLSRP.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else if let auth = smtpService.info()["auth"] as? String, auth == "saslNTLM" {
+                UserManager.storeUserValue(MCOAuthType.SASLNTLM.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else if let auth = smtpService.info()["auth"] as? String, auth == "xoAuth2" {
+                UserManager.storeUserValue(MCOAuthType.xoAuth2.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+            } else if let auth = smtpService.info()["auth"] as? String, auth == "xoAuth2Outlook" {
+                UserManager.storeUserValue(MCOAuthType.SASLCRAMMD5.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
             } else {
                 UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
             }
