@@ -40,7 +40,6 @@ class SendViewController: UIViewController {
 
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
-    var reducedSize: CGFloat = 0
     var secureState = true
     var toSecure = true
     var ccSecure = true
@@ -63,9 +62,9 @@ class SendViewController: UIViewController {
         textView.delegate = self
         textView.font = UIFont.systemFont(ofSize: 17)
         textView.text = ""
-
+        
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
-
+        
         iconButton.addSubview(AnimatedSendIcon())
         toText.delegate = dataDelegate
         toText.dataSource = dataDelegate
@@ -88,11 +87,11 @@ class SendViewController: UIViewController {
         
         subjectText.delegate = self
         subjectText.setColorScheme(self.view.tintColor)
-
+        
         //will always be thrown, when a token was editied
         toText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
         ccText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
-
+        
         if let to = toField {
             let ezCon = DataHandler.handler.getContactByAddress(to)
             toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
@@ -123,34 +122,34 @@ class SendViewController: UIViewController {
             }
             textView.text = TextFormatter.insertBeforeEveryLine("> ", text: textView.text)
         }
-
+        
         let sepConst: CGFloat = 1 / UIScreen.main.scale
         seperator1Height.constant = sepConst//0.5
         seperator2Height.constant = sepConst//0.5
         seperator3Height.constant = sepConst//0.5
-
+        
         seperator1Leading.constant += toText.horizontalInset
         seperator2Leading.constant += ccText.horizontalInset
         seperator3Leading.constant += subjectText.horizontalInset
-
+        
         textViewLeading.constant = seperator3Leading.constant - 4
-
+        
         ccText.inputTextFieldKeyboardType = UIKeyboardType.emailAddress
         scrollview.clipsToBounds = true
-
+        
         tableview.delegate = tableDataDelegate
         tableview.dataSource = tableDataDelegate
         tableview.register(UINib(nibName: "ContactCell", bundle: nil), forCellReuseIdentifier: "contacts")
         tableviewHeight.constant = 0
-
-
+        
+        
         let indexPath = IndexPath()
         tableview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-
+        
         //register KeyBoardevents
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardOpen(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardClose(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil);
-
+        
         
         toText.tag = UIViewResolver.toText.rawValue
         ccText.tag = UIViewResolver.ccText.rawValue
@@ -350,53 +349,11 @@ class SendViewController: UIViewController {
         LogHandler.doLog("keyboard", interaction: "open", point: CGPoint(x: 0, y: 0), comment: "")
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        reducedSize = keyboardFrame.size.height
-
         keyboardY = keyboardFrame.origin.y
-
-        /*if toText.isFirstResponder {
-            toCollectionview.reloadData()
-            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.toCollectionviewHeight.constant = 100 }, completion: nil)
-            toCollectionview.isHidden = false
-        }
-        if ccText.isFirstResponder {
-            ccCollectionview.reloadData()
-            ccCollectionviewHeight.constant = 100
-            ccCollectionview.isHidden = false
-        }
-        if !toText.isFirstResponder {
-            UIView.animate(withDuration: 2.5, animations: { () -> Void in self.toCollectionviewHeight.constant = 1 })
-            toCollectionview.isHidden = true
-        }
-        if !ccText.isFirstResponder {
-            ccCollectionviewHeight.constant = 1
-            ccCollectionview.isHidden = true
-        }*/
-
-        /*UIView.animate(withDuration: 0.1, animations: { () -> Void in
-
-            let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.0, self.reducedSize, 0.0)
-            self.scrollview!.contentInset = contentInsets
-        })*/
     }
 
     func keyboardClose(_ notification: Notification) {
         LogHandler.doLog("keyboard", interaction: "close", point: CGPoint(x: 0, y: 0), comment: "")
-        if reducedSize != 0 {
-            /*UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                self.reducedSize = 0
-                let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.0, self.reducedSize, 0.0)
-                self.scrollview!.contentInset = contentInsets
-            })*/
-            /*if !toText.isFirstResponder {
-                toCollectionviewHeight.constant = 1
-                toCollectionview.isHidden = true
-            }
-            if !ccText.isFirstResponder {
-                ccCollectionviewHeight.constant = 1
-                ccCollectionview.isHidden = true
-            }*/
-        }
     }
 
     func mailSend(_ error: Error?) {
