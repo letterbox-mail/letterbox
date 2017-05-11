@@ -121,5 +121,5 @@
 "corruptedText" = "Diese E-Mail könnte verändert worden sein! Bitte misstrauen Sie dem Inhalt, falls Sie ihn trotzdem lesen möchten.\n";
 "corruptedHeadline" = "Achtung!";
 "answer" = "Antworten";
-"couldNotDecryptHeadline" = "Nachricht konnte nicht entschlüsselt werden";
+"couldNotDecryptHeadline" = "Entschlüsseln nicht möglich";
 "couldNotDecryptText" = "Diese Nachricht konnte nicht entschlüsselt werden. Vielleicht hat der Absender den falschen Schlüssel verwendet. Falls du von diesem Absender eine Nachricht erwartest könntest du versuchen auf einem anderen Weg in Verbindung zu treten.\n";

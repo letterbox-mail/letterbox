@@ -117,7 +117,7 @@
 "more" = "more";
 "encryptedBeforeHeadline" = "Insecure Message";
 "encryptedBeforeText" = "You received secure messages from this contact before. Maybe don't trust this email too much.\n";
-"corruptedText" = "This E-Mail may have been modified! If you want to read it anyways, please be weary of its content.\n";
+"corruptedText" = "This E-Mail may have been modified! If you want to read it anyways, please be weary of its content.";
 "corruptedHeadline" = "Attention!";
 "answer" = "Answer";
 "couldNotDecryptHeadline" = "Could not decrypt Message";
