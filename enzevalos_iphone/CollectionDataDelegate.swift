@@ -34,7 +34,6 @@ class CollectionDataDelegate : NSObject, UICollectionViewDataSource, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print(indexPath.row, indexPath.description)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "frequent", for: indexPath) as! FrequentCell
         cell.autoresizingMask = UIViewAutoresizing.flexibleHeight
         cell.clipsToBounds = true

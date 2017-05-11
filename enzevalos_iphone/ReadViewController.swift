@@ -346,9 +346,8 @@ class ReadViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "answerTo" {
             let navigationController = segue.destination as? UINavigationController
-            let controller = navigationController?.topViewController as? SendViewController
-            if controller != nil {
-                controller?.answerTo = mail
+            if let controller = navigationController?.topViewController as? SendViewController {
+                controller.answerTo = mail
             }
         } else if segue.identifier == "showContact" {
             let destinationVC = segue.destination as! ContactViewController
