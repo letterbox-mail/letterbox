@@ -354,7 +354,7 @@ class SendViewController: UIViewController {
 
         keyboardY = keyboardFrame.origin.y
 
-        if toText.isFirstResponder {
+        /*if toText.isFirstResponder {
             toCollectionview.reloadData()
             UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions.curveLinear, animations: { self.toCollectionviewHeight.constant = 100 }, completion: nil)
             toCollectionview.isHidden = false
@@ -371,7 +371,7 @@ class SendViewController: UIViewController {
         if !ccText.isFirstResponder {
             ccCollectionviewHeight.constant = 1
             ccCollectionview.isHidden = true
-        }
+        }*/
 
         /*UIView.animate(withDuration: 0.1, animations: { () -> Void in
 
@@ -388,14 +388,14 @@ class SendViewController: UIViewController {
                 let contentInsets = UIEdgeInsetsMake(self.topLayoutGuide.length, 0.0, self.reducedSize, 0.0)
                 self.scrollview!.contentInset = contentInsets
             })*/
-            if !toText.isFirstResponder {
+            /*if !toText.isFirstResponder {
                 toCollectionviewHeight.constant = 1
                 toCollectionview.isHidden = true
             }
             if !ccText.isFirstResponder {
                 ccCollectionviewHeight.constant = 1
                 ccCollectionview.isHidden = true
-            }
+            }*/
         }
     }
 
