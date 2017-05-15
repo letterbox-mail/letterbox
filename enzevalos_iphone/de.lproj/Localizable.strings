@@ -35,7 +35,7 @@
 "Hello" = "Hallo";
 "Inbox" = "Postfach";//Briefkasten?
 "Insecure" = "Unsicher";
-"InsertMailAddress" = "Bitte gib deine Emailadresse ein";
+"InsertMailAddress" = "Bitte gib deine E-Mail-Adresse ein";
 "InsertPassword" = "Bitte gib\ndein Passwort ein";
 "InsertUSername" = "Bitte gib deinen Nutzernamen ein";
 "InterestedInSecureMail" = "Schön, dass du dich für sichere Email interessierst!";

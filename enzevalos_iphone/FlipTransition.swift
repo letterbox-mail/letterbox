@@ -28,10 +28,10 @@ class FlipTransition: NSObject, UIViewControllerAnimatedTransitioning {
         let initalFrame = transitionContext.initialFrame(for: fromVC!)
         toVC.view.frame = initalFrame
         fromVC!.view.frame = initalFrame
-        toVC.view.layer.transform = CATransform3DMakeRotation(CGFloat(M_PI_2), 0, 1, 0)
+        toVC.view.layer.transform = CATransform3DMakeRotation(.pi / 2, 0, 1, 0)
 
         UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: .curveEaseOut, animations: { () -> Void in
-            fromVC!.view.layer.transform = CATransform3DMakeRotation(CGFloat(-M_PI_2), 0, 1, 0)
+            fromVC!.view.layer.transform = CATransform3DMakeRotation(.pi / -2, 0, 1, 0)
         }) { (finished: Bool) -> Void in
             container.bringSubview(toFront: toVC.view)
             UIView.animate(withDuration: self.transitionDuration(using: transitionContext), delay: 0, options: .curveEaseOut, animations: { () -> Void in
