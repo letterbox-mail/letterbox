@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-extension Mail {
+extension PersistentMail {
 
     @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         return NSFetchRequest(entityName: "Mail");
@@ -85,7 +85,7 @@ extension Mail {
 }
 
 // MARK: Generated accessors for bcc
-extension Mail {
+extension PersistentMail {
 
     @objc(addBccObject:)
     @NSManaged public func addToBcc(_ value: Mail_Address)
@@ -102,7 +102,7 @@ extension Mail {
 }
 
 // MARK: Generated accessors for cc
-extension Mail {
+extension PersistentMail {
 
     @objc(addCcObject:)
     @NSManaged public func addToCc(_ value: Mail_Address)
@@ -119,7 +119,7 @@ extension Mail {
 }
 
 // MARK: Generated accessors for to
-extension Mail {
+extension PersistentMail {
 
     @objc(addToObject:)
     @NSManaged public func addToTo(_ value: Mail_Address)
