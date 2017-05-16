@@ -27,7 +27,7 @@
 "DiscoveryTime" = "Bekannt seit";
 "Checkmarks" = "Du hast Nachrichten von den Adressen mit Haken bekommen";
 "Drafts" = "Entwürfe";
-"Emailaddress" = "Emailadresse";
+"Emailaddress" = "E-Mail-adresse";
 "EncryptionType" = "Verschlüsselungsart";
 "EverythingCorrect" = "Alles richtig?";
 "Forward" = "Weiterleiten";
@@ -36,9 +36,10 @@
 "Inbox" = "Postfach";//Briefkasten?
 "Insecure" = "Unsicher";
 "InsertMailAddress" = "Bitte gib deine E-Mail-Adresse ein";
+"InsertMailAddressAndPassword" = "Bitte gib deine E-Mail-Adresse und dein Passwort ein";
 "InsertPassword" = "Bitte gib\ndein Passwort ein";
 "InsertUSername" = "Bitte gib deinen Nutzernamen ein";
-"InterestedInSecureMail" = "Schön, dass du dich für sichere Email interessierst!";
+"InterestedInSecureMail" = "Schön, dass du dich für sichere E-Mail interessierst!";
 "Junk" = "Spam";
 "KeyAddresses" = "Mailadressen im Schlüssel";
 "KeyDetails" = "Key Details";
