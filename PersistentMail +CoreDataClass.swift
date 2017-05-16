@@ -12,7 +12,7 @@ import Foundation
 import CoreData
 
 @objc(PersistentMail)
-open class PersistentMail: NSManagedObject, Comparable {
+open class PersistentMail: NSManagedObject, Mail {
 
     var showMessage: Bool = false
 
@@ -180,12 +180,3 @@ open class PersistentMail: NSManagedObject, Comparable {
         return "\(returnString)\(subj)"
     }
 }
-
-public func == (lhs: PersistentMail, rhs: PersistentMail) -> Bool {
-    return lhs.date == rhs.date && lhs.uid == rhs.uid
-}
-
-public func < (lhs: PersistentMail, rhs: PersistentMail) -> Bool {
-    return lhs.date > rhs.date
-}
-
