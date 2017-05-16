@@ -35,10 +35,10 @@
 "Hello" = "Hello";
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
-"InsertMailAddress" = "Please insert your mailaddress";
-"InsertPassword" = "Please insert your password";
-"InsertUsername" = "Please insert your username";
-"InterestedInSecureMail" = "Nice to see you interested in secure mail!";
+"InsertMailAddress" = "Please enter your email address";
+"InsertPassword" = "Please enter your password";
+"InsertUsername" = "Please enter your username";
+"InterestedInSecureMail" = "Nice to see that you are interested in secure mail!";
 "Junk" = "Junk";
 "KeyAddresses" = "Mailaddresses from the key";
 "KeyDetails" = "Key Details";
@@ -117,7 +117,7 @@
 "more" = "more";
 "encryptedBeforeHeadline" = "Insecure Message";
 "encryptedBeforeText" = "You received secure messages from this contact before. Maybe don't trust this email too much.\n";
-"corruptedText" = "This E-Mail may have been modified! If you want to read it anyways, please be weary of its content.\n";
+"corruptedText" = "This E-Mail may have been modified! If you want to read it anyways, please be weary of its content.";
 "corruptedHeadline" = "Attention!";
 "answer" = "Answer";
 "couldNotDecryptHeadline" = "Could not decrypt Message";
