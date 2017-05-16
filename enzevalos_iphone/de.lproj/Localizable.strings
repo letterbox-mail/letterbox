@@ -76,8 +76,8 @@
 "Secure" = "Sicher";
 "Send" = "Senden";
 "SendError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
-"SendInsecureInfo" = "Diese Nachricht wird unverschlüsselt an alle orange eingefärbten Kontakte gesendet. Somit kann sie unterwegs von anderen gelesen und manipuliert werden."; //anstatt unterwegs: auf ihrem Weg
-"SendSecureInfo" = "Super! Diese Nachricht wird verschlüsselt gesendet. Somit kann sie unterwegs nicht gelesen oder ihr Inhalt verändert werden.";
+"SendInsecureInfo" = "Diese Nachricht würde unsicher an alle orange eingefärbten Kontakte gesendet werden. Somit kann sie unterwegs von anderen gelesen oder manipuliert werden. Du könntest die orangen Kontakte einladen Enzavalos zu verwenden, um sicher mit ihnen zu kommunizieren."; //anstatt unterwegs: auf ihrem Weg
+"SendSecureInfo" = "Super! Diese Nachricht würde sicher versendet werden. Somit ist ihr Inhalt vor neugierigen Augen geschützt und kann nicht manipuliert werden.";
 "SendSuccess" = "Erfolgreich gesendet";
 "Sent" = "Gesendet";
 "sent at" = "gesendet am";
