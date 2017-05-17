@@ -343,12 +343,12 @@ class DataHandler {
     
     func createMail(_ uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) /*-> Mail*/ {
         
-        let finding = findNum("Mail", type: "uid", search: uid)
+        let finding = findNum("PersistentMail", type: "uid", search: uid)
         let mail: PersistentMail
         
         if finding == nil || finding!.count == 0 {
             // create new mail object
-            mail  = NSEntityDescription.insertNewObject(forEntityName: "Mail", into: managedObjectContext) as! PersistentMail
+            mail  = NSEntityDescription.insertNewObject(forEntityName: "PersistentMail", into: managedObjectContext) as! PersistentMail
           
             mail.body = body
             mail.date = time
@@ -393,7 +393,7 @@ class DataHandler {
 
     private func readMails() -> [PersistentMail] {
         var mails = [PersistentMail]()
-        let result = findAll("Mail")
+        let result = findAll("PersistentMail")
         if result != nil {
             for r in result! {
                 let m = r as! PersistentMail
