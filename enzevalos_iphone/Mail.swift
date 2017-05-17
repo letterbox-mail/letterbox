@@ -9,25 +9,22 @@
 import Foundation
 
 
-public protocol Mail:  Comparable{
-    
-    
-    var cc: NSSet? {get}
-    var bcc: NSSet? {get}
-    var from: MailAddress {get}
-    var to: NSSet {get}
-    var date: Date{get}
-    var subject: String?{get}
-    var body: String?{get}
-    var uid: UInt64{get}
-    
-        
+public protocol Mail: Comparable {
+
+    var cc: NSSet? { get }
+    var bcc: NSSet? { get }
+    var from: MailAddress { get }
+    var to: NSSet { get }
+    var date: Date { get }
+    var subject: String? { get }
+    var body: String? { get }
+    var uid: UInt64 { get }
 }
 
-public func ==<T: Mail> (lhs: T, rhs: T) -> Bool {
+public func == <T: Mail> (lhs: T, rhs: T) -> Bool {
     return lhs.date == rhs.date && lhs.uid == rhs.uid
 }
 
-public func <<T: Mail> (lhs: T, rhs: T) -> Bool {
+public func << T: Mail > (lhs: T, rhs: T) -> Bool {
     return lhs.date > rhs.date
 }

@@ -346,8 +346,23 @@ class ReadViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "answerTo" {
             let navigationController = segue.destination as? UINavigationController
-            if let controller = navigationController?.topViewController as? SendViewController {
+            if let controller = navigationController?.topViewController as? SendViewController, mail != nil {
+                var body = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
+                body.append(mail!.from.mailAddress)
+                body.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + mail!.timeString)
+                body.append("\n" + NSLocalizedString("to", comment: "describing adressee") + ": ")
+                body.append(UserManager.loadUserValue(Attribute.userAddr) as! String)
+//                if mail!.cc?.count ?? 0 > 0 {
+//                    body.append(", ")
+//                }
+//                body.append(ccText.mailTokens.componentsJoined(by: ", "))
+                body.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (mail!.subject ?? ""))
+                body.append("\n--------------------\n\n" + (mail!.decryptedBody ?? mail!.body ?? ""))
+                body = TextFormatter.insertBeforeEveryLine("> ", text: body)
+                let answerMail = EphemeralMail(from: mail!.to.anyObject() as! MailAddress, to: [mail!.from], cc: mail!.cc?.allObjects as! [MailAddress], bcc: mail!.bcc?.allObjects as! [MailAddress], date: mail!.date, subject: NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (mail!.subject ?? ""), body: body, uid: mail!.uid)
+
                 controller.answerTo = mail
+//                controller.prefilledMail = answerMail  //TODO @jakob: change this when sendView has been updated for ephemeral mails
             }
         } else if segue.identifier == "showContact" {
             let destinationVC = segue.destination as! ContactViewController

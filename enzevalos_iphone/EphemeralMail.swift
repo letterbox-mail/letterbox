@@ -7,11 +7,9 @@
 //
 
 import Foundation
-open class EphemeralMail: Mail{
 
-    
-    
-    
+open class EphemeralMail: Mail {
+
     public var cc: NSSet?
     public var bcc: NSSet?
     public var from: MailAddress
@@ -20,9 +18,8 @@ open class EphemeralMail: Mail{
     public var subject: String?
     public var body: String?
     public var uid: UInt64
-    
-    
-    public init(from: MailAddress, to: [MailAddress], cc: [MailAddress], bcc: [MailAddress], date: Date, subject: String?, body: String?, uid: UInt64){
+
+    public init(from: MailAddress, to: [MailAddress], cc: [MailAddress], bcc: [MailAddress], date: Date, subject: String?, body: String?, uid: UInt64) { //TODO: is casting cc and bcc necessary?
         self.cc = NSMutableSet()
         self.cc?.addingObjects(from: cc)
         self.bcc = NSMutableSet()
@@ -32,11 +29,7 @@ open class EphemeralMail: Mail{
         self.to.addingObjects(from: to)
         self.body = body
         self.date = date
-        self.subject =  subject
+        self.subject = subject
         self.uid = uid
     }
-    
-    
-    
-    
 }
