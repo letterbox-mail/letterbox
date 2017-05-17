@@ -56,7 +56,7 @@ class Onboarding: NSObject {
         myBounds.size.height = 70
         UIGraphicsBeginImageContextWithOptions(myBounds.size, true, 0) //try 200 here
         var context = UIGraphicsGetCurrentContext()
-        context!.setFillColor(ThemeManager.encryptedMessageColor().cgColor)
+        context!.setFillColor(UIColor.init(red: 1, green: 1, blue: 1, alpha: 1).cgColor)//ThemeManager.encryptedMessageColor().cgColor)//
         context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
         let snapshot = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
@@ -73,6 +73,7 @@ class Onboarding: NSObject {
         
         background = snapshot!
         let postcardBg = snapshot2!
+        let defaultColor = UIColor.init(red: 0.6, green: 0.6, blue: 1, alpha: 1)
         
         //Introduction
         let intro1 = OnboardingContentViewController.content(withTitle: "Brief", body: "• Eine vertrauliche E-Mail\n• Sie stammt tatsächlich vom angegebenen Absender\n• Benötigt Beteiligung von Sender und Empfänger. Dafür besteht in der App die Möglichkeit Kontakte einzuladen.", image: /*IconsStyleKit.imageOfLetterBG*/ nil, buttonText: nil, action: nil)
@@ -110,11 +111,8 @@ class Onboarding: NSObject {
         mailaddress.isUserInteractionEnabled = true
         mailaddress.delegate = textDelegate
         
-        
-        
         //let page2 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
     
-        
         password = UITextField.init()
         //text.textColor = UIColor.whiteColor()
         //text.tintColor = UIColor.whiteColor()
@@ -142,18 +140,46 @@ class Onboarding: NSObject {
         
         //let page4 = OnboardingContentViewController.content(withTitle: NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
         
-        let vc = Onboard.OnboardingViewController(backgroundImage: nil/*background*/, contents: [page1, intro1, intro2, /*page2,*/ page3/*, page4*/])
+        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, intro1, intro2, /*page2,*/ page3/*, page4*/])
         //vc?.shouldBlurBackground = true
-        vc?.view.backgroundColor = UIColor.green
+        vc?.view.backgroundColor = defaultColor//UIColor.white//UIColor.init(red: 1, green: 1, blue: 1, alpha: 0)
+        //vc?.backgroundImage = postcardBg
         vc?.shouldFadeTransitions = true
-        vc?.shouldMaskBackground = false
+        //vc?.shouldMaskBackground = false
         
         intro2.viewWillAppearBlock = {
-            UIView.animate(withDuration: 0.3, animations: { vc?.view.backgroundColor = ThemeManager.uncryptedMessageColor()})
             //vc?.backgroundImage = postcardBg
+            //UIView.animate(withDuration: 1.3, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.backgroundImageView.image = postcardBg; vc?.view.setNeedsDisplay()})
+            UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                vc?.view.backgroundColor = ThemeManager.uncryptedMessageColor()
+                vc?.view.setNeedsDisplay()
+            })
+            //vc?.fadeBackground(postcardBg)
         }
         intro2.viewWillDisappearBlock = {
-            UIView.animate(withDuration: 0.3, animations: { vc?.view.backgroundColor = ThemeManager.encryptedMessageColor()})
+            //UIView.animate(withDuration: 0.3, animations: { vc?.backgroundImageView.image = background})
+            UIView.animate(withDuration: 0.7, delay: 0.05, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                if (vc?.view.backgroundColor != ThemeManager.encryptedMessageColor()) {
+                    vc?.view.backgroundColor = defaultColor
+                    vc?.view.setNeedsDisplay()
+                }
+            })
+        }
+        intro1.viewWillAppearBlock = {
+            //vc?.backgroundImage = postcardBg
+            //UIView.animate(withDuration: 1.3, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.backgroundImageView.image = postcardBg; vc?.view.setNeedsDisplay()})
+            UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.view.backgroundColor = ThemeManager.encryptedMessageColor(); vc?.view.setNeedsDisplay()})
+            //vc?.fadeBackground(postcardBg)
+        }
+        intro1.viewWillDisappearBlock = {
+            //UIView.animate(withDuration: 0.3, animations: { vc?.backgroundImageView.image = background})
+            //UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.view.backgroundColor = UIColor.white; vc?.view.setNeedsDisplay()})
+            UIView.animate(withDuration: 0.7, delay: 0.05, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                if (vc?.view.backgroundColor != ThemeManager.uncryptedMessageColor()) {
+                    vc?.view.backgroundColor = defaultColor
+                    vc?.view.setNeedsDisplay()
+                }
+            })
         }
         
         return vc!
