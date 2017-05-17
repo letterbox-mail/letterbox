@@ -359,7 +359,10 @@ class ReadViewController: UITableViewController {
                 body.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (mail!.subject ?? ""))
                 body.append("\n--------------------\n\n" + (mail!.decryptedBody ?? mail!.body ?? ""))
                 body = TextFormatter.insertBeforeEveryLine("> ", text: body)
-                let answerMail = EphemeralMail(from: mail!.to.anyObject() as! MailAddress, to: [mail!.from], cc: mail!.cc?.allObjects as! [MailAddress], bcc: mail!.bcc?.allObjects as! [MailAddress], date: mail!.date, subject: NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (mail!.subject ?? ""), body: body, uid: mail!.uid)
+                let answerFrom = mail!.to.anyObject() as! MailAddress  //TODO: this is just a hack, we don't need that field
+                let answerTo = [mail!.from]  //TODO: we also need to add potential other normal receivers
+                let answerCC = mail!.cc?.allObjects as! [MailAddress]
+                let answerMail = EphemeralMail(from: answerFrom, to: answerTo, cc: answerCC, bcc: [], date: mail!.date, subject: NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (mail!.subject ?? ""), body: body, uid: mail!.uid)
 
                 controller.answerTo = mail
 //                controller.prefilledMail = answerMail  //TODO @jakob: change this when sendView has been updated for ephemeral mails
