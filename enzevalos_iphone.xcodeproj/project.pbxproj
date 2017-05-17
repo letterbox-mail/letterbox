@@ -404,6 +404,7 @@
 		47B91AC11EC0C1FB000AE3EE /* data */ = {
 			isa = PBXGroup;
 			children = (
+				472F39921E279792009260FB /* protocols */,
 				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
 				472F39871E1FA377009260FB /* KeyRecord.swift */,
@@ -477,7 +478,6 @@
 			isa = PBXGroup;
 			children = (
 				47B91AC11EC0C1FB000AE3EE /* data */,
-				472F39921E279792009260FB /* protocols */,
 				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
 				A1C7FF8B1E895316000D1E92 /* keys */,
