@@ -19,7 +19,7 @@ extension Mail_Address {
 
     @NSManaged public var address: String
     @NSManaged public var prefer_encryption: Bool
-    @NSManaged public var contact: EnzevalosContact
+    @NSManaged public var contact: EnzevalosContact?
     
     public var encryptionType: EncryptionType{
         set {
@@ -51,10 +51,10 @@ extension Mail_Address {
 extension Mail_Address {
     
     @objc(addBccObject:)
-    @NSManaged public func addToBcc(_ value: Mail)
+    @NSManaged public func addToBcc(_ value: PersistentMail)
     
     @objc(removeBccObject:)
-    @NSManaged public func removeFromBcc(_ value: Mail)
+    @NSManaged public func removeFromBcc(_ value: PersistentMail)
     
     @objc(addBcc:)
     @NSManaged public func addToBcc(_ values: NSSet)
@@ -68,10 +68,10 @@ extension Mail_Address {
 extension Mail_Address {
     
     @objc(addCcObject:)
-    @NSManaged public func addToCc(_ value: Mail)
+    @NSManaged public func addToCc(_ value: PersistentMail)
     
     @objc(removeCcObject:)
-    @NSManaged public func removeFromCc(_ value: Mail)
+    @NSManaged public func removeFromCc(_ value: PersistentMail)
     
     @objc(addCc:)
     @NSManaged public func addToCc(_ values: NSSet)
@@ -85,10 +85,10 @@ extension Mail_Address {
 extension Mail_Address {
     
     @objc(addToObject:)
-    @NSManaged public func addToTo(_ value: Mail)
+    @NSManaged public func addToTo(_ value: PersistentMail)
     
     @objc(removeToObject:)
-    @NSManaged public func removeFromTo(_ value: Mail)
+    @NSManaged public func removeFromTo(_ value: PersistentMail)
     
     @objc(addTo:)
     @NSManaged public func addToTo(_ values: NSSet)

@@ -1,5 +1,5 @@
 //
-//  Mail+CoreDataClass.swift
+//  PersistentMail+CoreDataClass.swift
 //  enzevalos_iphone
 //
 //  Created by Oliver Wiese on 27/12/16.
@@ -13,7 +13,7 @@ import CoreData
 
 @objc(PersistentMail)
 open class PersistentMail: NSManagedObject, Mail {
-
+    
     var showMessage: Bool = false
 
     var isSecure: Bool {

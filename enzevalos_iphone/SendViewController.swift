@@ -49,7 +49,7 @@ class SendViewController: UIViewController {
     var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: { (name: String, address: String) -> Void in return })
     var recognizer: UIGestureRecognizer = UIGestureRecognizer.init()
 
-    var answerTo: Mail? = nil
+    var answerTo: PersistentMail? = nil
     var toField: String? = nil
 
     override func viewDidLoad() {
@@ -96,7 +96,7 @@ class SendViewController: UIViewController {
             let ezCon = DataHandler.handler.getContactByAddress(to)
             toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
         } else if answerTo != nil {
-            toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.from.address)!)
+            toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.from.mailAddress)!)
             for r in (answerTo?.getReceivers())! {
                 if r.address != UserManager.loadUserValue(Attribute.userAddr) as! String {
                     ccText.delegate?.tokenField!(ccText, didEnterText: r.address)
@@ -104,7 +104,7 @@ class SendViewController: UIViewController {
             }
             subjectText.setText(NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (answerTo?.subject!)!)
             textView.text = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
-            textView.text.append((answerTo?.from.address)!)
+            textView.text.append((answerTo?.from.mailAddress)!)
             textView.text.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + (answerTo?.timeString)!)
             textView.text.append("\n" + NSLocalizedString("to", comment: "describing adressee") + ": ")
             textView.text.append(UserManager.loadUserValue(Attribute.userAddr) as! String)

@@ -31,6 +31,19 @@ open class CNMailAddressExtension: MailAddress{
         }
     }
     
+    
+    open var keyID: String?{
+        get{
+            return nil
+        }
+    }
+    
+    open var contact: EnzevalosContact?{
+        get{
+            return nil
+        }
+    }
+    
     init(addr: CNLabeledValue<NSString>){ //FIXME: NSString hier richtig?
         self.label = addr
     }

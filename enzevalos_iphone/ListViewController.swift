@@ -46,7 +46,7 @@ fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class ListViewController: UITableViewController {
     let searchController = UISearchController(searchResultsController: nil)
-    var filteredMails = [Mail]()
+    var filteredMails = [PersistentMail]()
     var contact: KeyRecord? {
         didSet {
             self.title = contact!.name
@@ -160,7 +160,7 @@ class ListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let mail: Mail?
+        let mail: PersistentMail?
 
         if searchController.isActive && searchController.searchBar.text != "" {
             mail = filteredMails[indexPath.row]
@@ -186,7 +186,7 @@ class ListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let mail: Mail?
+        let mail: PersistentMail?
 
         if searchController.isActive && searchController.searchBar.text != "" {
             mail = filteredMails[indexPath.row]
@@ -218,7 +218,7 @@ class ListViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "readMailSegue" {
-            if let mail = sender as? Mail {
+            if let mail = sender as? PersistentMail {
                 let DestinationViewController: ReadViewController = segue.destination as! ReadViewController
                 DestinationViewController.mail = mail
             }

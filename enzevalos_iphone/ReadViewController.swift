@@ -36,7 +36,7 @@ class ReadViewController: UITableViewController {
 
     var VENDelegate: ReadVENDelegate?
 
-    var mail: Mail? = nil
+    var mail: PersistentMail? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +127,7 @@ class ReadViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         if let mail = mail {
-            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact.hasKey || mail.isEncrypted && mail.unableToDecrypt {
+            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey || mail.isEncrypted && mail.unableToDecrypt {
                 return 3
             }
         }
@@ -252,10 +252,10 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-            senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: m.from.contact.displayname!, mail: m.from.address)
+            senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: (m.from.contact?.displayname!)!, mail: m.from.mailAddress)
 
             for receiver in m.getReceivers() {
-                if let displayname = receiver.contact.displayname {
+                if let displayname = receiver.contact?.displayname {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
@@ -263,7 +263,7 @@ class ReadViewController: UITableViewController {
             }
 
             for receiver in m.getCCs() {
-                if let displayname = receiver.contact.displayname {
+                if let displayname = receiver.contact?.displayname {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
@@ -271,7 +271,7 @@ class ReadViewController: UITableViewController {
             }
 
             for receiver in m.getBCCs() {
-                if let displayname = receiver.contact.displayname {
+                if let displayname = receiver.contact?.displayname {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)

@@ -144,7 +144,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         return 0.01
     }
 
-    func callSegueFromCell(_ mail: Mail?) {
+    func callSegueFromCell(_ mail: PersistentMail?) {
         performSegue(withIdentifier: "readMailSegue", sender: mail)
     }
 
@@ -160,7 +160,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "readMailSegue" {
-            if let mail = sender as? Mail {
+            if let mail = sender as? PersistentMail {
                 let DestinationViewController: ReadViewController = segue.destination as! ReadViewController
                 DestinationViewController.mail = mail
             }
