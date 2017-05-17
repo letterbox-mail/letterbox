@@ -147,10 +147,12 @@ class Onboarding: NSObject {
         vc?.shouldFadeTransitions = true
         //vc?.shouldMaskBackground = false
         
+        let duration = 0.5
+        
         intro2.viewWillAppearBlock = {
             //vc?.backgroundImage = postcardBg
             //UIView.animate(withDuration: 1.3, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.backgroundImageView.image = postcardBg; vc?.view.setNeedsDisplay()})
-            UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 vc?.view.backgroundColor = ThemeManager.uncryptedMessageColor()
                 vc?.view.setNeedsDisplay()
             })
@@ -158,7 +160,7 @@ class Onboarding: NSObject {
         }
         intro2.viewWillDisappearBlock = {
             //UIView.animate(withDuration: 0.3, animations: { vc?.backgroundImageView.image = background})
-            UIView.animate(withDuration: 0.7, delay: 0.05, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            UIView.animate(withDuration: duration, delay: 0.05, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 if (vc?.view.backgroundColor != ThemeManager.encryptedMessageColor()) {
                     vc?.view.backgroundColor = defaultColor
                     vc?.view.setNeedsDisplay()
@@ -168,13 +170,13 @@ class Onboarding: NSObject {
         intro1.viewWillAppearBlock = {
             //vc?.backgroundImage = postcardBg
             //UIView.animate(withDuration: 1.3, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.backgroundImageView.image = postcardBg; vc?.view.setNeedsDisplay()})
-            UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.view.backgroundColor = ThemeManager.encryptedMessageColor(); vc?.view.setNeedsDisplay()})
+            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.view.backgroundColor = ThemeManager.encryptedMessageColor(); vc?.view.setNeedsDisplay()})
             //vc?.fadeBackground(postcardBg)
         }
         intro1.viewWillDisappearBlock = {
             //UIView.animate(withDuration: 0.3, animations: { vc?.backgroundImageView.image = background})
             //UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.view.backgroundColor = UIColor.white; vc?.view.setNeedsDisplay()})
-            UIView.animate(withDuration: 0.7, delay: 0.05, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            UIView.animate(withDuration: duration, delay: 0.05, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 if (vc?.view.backgroundColor != ThemeManager.uncryptedMessageColor()) {
                     vc?.view.backgroundColor = defaultColor
                     vc?.view.setNeedsDisplay()
