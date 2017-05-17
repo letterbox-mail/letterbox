@@ -95,32 +95,32 @@ class SendViewController: UIViewController {
         if let to = toField {
             let ezCon = DataHandler.handler.getContactByAddress(to)
             toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
-        } else if answerTo != nil {
-            toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.from.mailAddress)!)
-            for r in (answerTo?.getReceivers())! {
+        } else if let answerTo = answerTo {
+            toText.delegate?.tokenField!(toText, didEnterText: answerTo.from.mailAddress)
+            for r in answerTo.getReceivers() {
+                if r.address != UserManager.loadUserValue(Attribute.userAddr) as! String {
+                    toText.delegate?.tokenField!(toText, didEnterText: r.address)
+                }
+            }
+            for r in answerTo.getCCs() {
                 if r.address != UserManager.loadUserValue(Attribute.userAddr) as! String {
                     ccText.delegate?.tokenField!(ccText, didEnterText: r.address)
                 }
             }
-            subjectText.setText(NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (answerTo?.subject!)!)
-            textView.text = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
-            textView.text.append((answerTo?.from.mailAddress)!)
-            textView.text.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + (answerTo?.timeString)!)
-            textView.text.append("\n" + NSLocalizedString("to", comment: "describing adressee") + ": ")
-            textView.text.append(UserManager.loadUserValue(Attribute.userAddr) as! String)
-            if ccText.mailTokens.count > 0 {
-                textView.text.append(", ")
+            
+            if let subject = answerTo.subject {
+                subjectText.setText(subject)
             }
-            textView.text.append(ccText.mailTokens.componentsJoined(by: ", "))
-            textView.text.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (answerTo?.subject!)!)
-            if answerTo!.isEncrypted {
-                if answerTo?.decryptedBody != nil {
-                    textView.text.append("\n--------------------\n\n" + (answerTo?.decryptedBody)!)
+            
+            if answerTo.isEncrypted {
+                if let body = answerTo.decryptedBody{
+                    textView.text.append(body)
                 }
             } else {
-                textView.text.append("\n--------------------\n\n" + (answerTo?.body)!) //textView.text.appendContentsOf("\n"+NSLocalizedString("original message", comment: "describing contents of the original message")+": \n\n"+(answerTo?.body)!)
+                if let body = answerTo.body{
+                    textView.text.append(body)
+                }
             }
-            textView.text = TextFormatter.insertBeforeEveryLine("> ", text: textView.text)
         }
         
         let sepConst: CGFloat = 1 / UIScreen.main.scale
