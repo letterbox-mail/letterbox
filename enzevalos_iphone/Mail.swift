@@ -13,7 +13,6 @@ public protocol Mail: Comparable {
 
     var cc: NSSet? { get }
     var bcc: NSSet? { get }
-    var from: MailAddress { get }
     var to: NSSet { get }
     var date: Date { get }
     var subject: String? { get }
