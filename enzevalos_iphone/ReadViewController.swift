@@ -350,22 +350,25 @@ class ReadViewController: UITableViewController {
                 var body = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
                 body.append(mail!.from.mailAddress)
                 body.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + mail!.timeString)
-                body.append("\n" + NSLocalizedString("to", comment: "describing adressee") + ": ")
+                body.append("\n" + NSLocalizedString("To", comment: "describing adressee") + ": ")
                 body.append(UserManager.loadUserValue(Attribute.userAddr) as! String)
-//                if mail!.cc?.count ?? 0 > 0 {
-//                    body.append(", ")
-//                }
-//                body.append(ccText.mailTokens.componentsJoined(by: ", "))
+                if mail!.cc?.count ?? 0 > 0 {
+                    body.append(", ")
+                    for r in mail!.cc! {
+                        if let r = r as? Mail_Address {
+                            body.append("\(r.address), ")
+                        }
+                    }
+                }
                 body.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (mail!.subject ?? ""))
-                body.append("\n--------------------\n\n" + (mail!.decryptedBody ?? mail!.body ?? ""))
+                body.append("\n------------------------\n\n" + (mail!.decryptedBody ?? mail!.body ?? ""))
                 body = TextFormatter.insertBeforeEveryLine("> ", text: body)
-                let answerFrom = mail!.to.anyObject() as! MailAddress  //TODO: this is just a hack, we don't need that field
-                let answerTo = [mail!.from]  //TODO: we also need to add potential other normal receivers
-                let answerCC = mail!.cc?.allObjects as! [MailAddress]
-                let answerMail = EphemeralMail(from: answerFrom, to: answerTo, cc: answerCC, bcc: [], date: mail!.date, subject: NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (mail!.subject ?? ""), body: body, uid: mail!.uid)
+                body = "\n\n" + body
+                let answerTo = NSSet.init(array: [mail!.from]) //TODO: we also need to add potential other normal receivers
+                let answerCC = mail!.cc
+                let answerMail = EphemeralMail(to: answerTo, cc: answerCC ?? NSSet.init(), bcc: [], date: mail!.date, subject: NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (mail!.subject ?? ""), body: body, uid: mail!.uid)
 
-                controller.answerTo = mail
-//                controller.prefilledMail = answerMail  //TODO @jakob: change this when sendView has been updated for ephemeral mails
+                controller.prefilledMail = answerMail
             }
         } else if segue.identifier == "showContact" {
             let destinationVC = segue.destination as! ContactViewController
