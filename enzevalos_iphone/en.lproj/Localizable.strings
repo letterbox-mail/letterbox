@@ -14,9 +14,9 @@
 "Attachment" = "Attachment";
 "Authentification" = "Authentification";
 "Back" = "Back";
-"Bcc" = "Bcc";//"Blindkopie";
+"Bcc" = "BCC";//"Blindkopie";
 "Cancel" = "Cancel";
-"Cc" = "Cc";//"Kopie";
+"Cc" = "CC";//"Kopie";
 "CouldNotConnect" = "Couldn't connect to server. Please check your data and modify it maybe.";
 "ConnectingToMailServer" = "Connecting to mailserver";
 "Contacts" = "Contacts";

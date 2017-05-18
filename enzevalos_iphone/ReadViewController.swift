@@ -347,16 +347,27 @@ class ReadViewController: UITableViewController {
         if segue.identifier == "answerTo" {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController, mail != nil {
+                var answerTo = [mail!.from]
+                var answerCC = [Mail_Address]()
                 var body = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
                 body.append(mail!.from.mailAddress)
                 body.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + mail!.timeString)
                 body.append("\n" + NSLocalizedString("To", comment: "describing adressee") + ": ")
-                body.append(UserManager.loadUserValue(Attribute.userAddr) as! String)
+                let myAddress = UserManager.loadUserValue(Attribute.userAddr) as! String
+                if mail!.to.count > 0 {
+                    for case let mail as Mail_Address in mail!.to {
+                        body.append("\(mail.address), ")
+                        if mail.address != myAddress {
+                            answerTo.append(mail)
+                        }
+                    }
+                }
                 if mail!.cc?.count ?? 0 > 0 {
-                    body.append(", ")
-                    for r in mail!.cc! {
-                        if let r = r as? Mail_Address {
-                            body.append("\(r.address), ")
+                    body.append("\n\(NSLocalizedString("Cc", comment: "")): ")
+                    for case let mail as Mail_Address in mail!.cc! {
+                        body.append("\(mail.address), ")
+                        if mail.address != myAddress {
+                            answerCC.append(mail)
                         }
                     }
                 }
@@ -364,9 +375,8 @@ class ReadViewController: UITableViewController {
                 body.append("\n------------------------\n\n" + (mail!.decryptedBody ?? mail!.body ?? ""))
                 body = TextFormatter.insertBeforeEveryLine("> ", text: body)
                 body = "\n\n" + body
-                let answerTo = NSSet.init(array: [mail!.from]) //TODO: we also need to add potential other normal receivers
-                let answerCC = mail!.cc
-                let answerMail = EphemeralMail(to: answerTo, cc: answerCC ?? NSSet.init(), bcc: [], date: mail!.date, subject: NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (mail!.subject ?? ""), body: body, uid: mail!.uid)
+
+                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (mail!.subject ?? ""), body: body, uid: mail!.uid)
 
                 controller.prefilledMail = answerMail
             }

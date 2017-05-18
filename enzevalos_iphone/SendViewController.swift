@@ -96,24 +96,18 @@ class SendViewController: UIViewController {
             let ezCon = DataHandler.handler.getContactByAddress(to)
             toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
         } else if let prefilledMail = prefilledMail {
-            for r in prefilledMail.to {
-                if let r = r as? Mail_Address {
-                    if r.address != UserManager.loadUserValue(Attribute.userAddr) as! String {
-                        toText.delegate?.tokenField!(toText, didEnterText: r.address)
-                    }
+            for case let mail as MailAddress in prefilledMail.to {
+                if mail.mailAddress != UserManager.loadUserValue(Attribute.userAddr) as! String {
+                    toText.delegate?.tokenField!(toText, didEnterText: mail.mailAddress)
                 }
             }
-            for r in prefilledMail.cc ?? [] {
-                if let r = r as? Mail_Address {
-                    if r.address != UserManager.loadUserValue(Attribute.userAddr) as! String {
-                        ccText.delegate?.tokenField!(ccText, didEnterText: r.address)
-                    }
+            for case let mail as MailAddress in prefilledMail.cc ?? [] {
+                if mail.mailAddress != UserManager.loadUserValue(Attribute.userAddr) as! String {
+                    ccText.delegate?.tokenField!(ccText, didEnterText: mail.mailAddress)
                 }
-            }
-            if let subject = prefilledMail.subject {
-                subjectText.setText(subject)
             }
 
+            subjectText.setText(prefilledMail.subject ?? "")
             textView.text.append(prefilledMail.body ?? "")
         }
 
@@ -236,9 +230,22 @@ class SendViewController: UIViewController {
         } else if segue.identifier == "inviteSegue" {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController {
-                let mail = EphemeralMail(to: NSSet.init(array: toText.mailTokens as! [Any]), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: NSLocalizedString("inviteText", comment: "Body for the invitation mail"), uid: 0)
-                
-                
+                var to = [MailAddress]()
+                var cc = [MailAddress]()
+                for mail in toText.mailTokens {
+                    if let mail = mail as? String, !EnzevalosEncryptionHandler.hasKey(mail) {
+                        to.append(DataHandler.handler.getMailAddress(mail, temporary: true))
+                    }
+                }
+                for mail in ccText.mailTokens {
+                    if let mail = mail as? String, !EnzevalosEncryptionHandler.hasKey(mail) {
+                        cc.append(DataHandler.handler.getMailAddress(mail, temporary: true))
+                    }
+                }
+
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: NSLocalizedString("inviteText", comment: "Body for the invitation mail"), uid: 0)
+
+
                 controller.prefilledMail = mail
             }
         }
@@ -457,10 +464,12 @@ extension SendViewController {
         if !secureState {
             alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
             url = "https://enzevalos.org/infos/postcard"
-            alert.addAction(UIAlertAction(title: NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key"), style: .default, handler: {
-                (action: UIAlertAction) -> Void in
+            if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") {
+                alert.addAction(UIAlertAction(title: NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key"), style: .default, handler: {
+                    (action: UIAlertAction) -> Void in
                     self.performSegue(withIdentifier: "inviteSegue", sender: nil)
-            }))
+                }))
+            }
         } else {
             alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
             url = "https://enzevalos.org/infos/letter"
