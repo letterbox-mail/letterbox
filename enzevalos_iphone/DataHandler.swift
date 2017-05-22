@@ -42,7 +42,7 @@ class DataHandler {
     static let handler: DataHandler = DataHandler()
     
     private var managedObjectContext: NSManagedObjectContext
-    lazy var mails: [Mail] = self.readMails()
+    lazy var mails: [PersistentMail] = self.readMails()
     lazy var contacts: [EnzevalosContact] = self.getContacts()
     lazy var currentstate: State = self.getCurrentState()
     
@@ -147,7 +147,7 @@ class DataHandler {
         for c in contacts {
             while c.from.count > MaxMailsPerRecord {
                 let last = c.from.last!
-                print("delete \(last.uid) of \(last.from.address)")
+                print("delete \(last.uid) of \(last.from.mailAddress)")
                 managedObjectContext.delete(last)
                 save()
                 if let index = mails.index(of: last) {
@@ -318,7 +318,7 @@ class DataHandler {
     
     
     // -------- Start handle to, cc, from addresses --------
-    private func handleFromAddress(_ sender: MCOAddress, fromMail: Mail, autocrypt: AutocryptContact?) {
+    private func handleFromAddress(_ sender: MCOAddress, fromMail: PersistentMail, autocrypt: AutocryptContact?) {
         let adr: Mail_Address
         let contact = getContactByMCOAddress(sender)
         adr = contact.getAddressByMCOAddress(sender)!
@@ -329,11 +329,11 @@ class DataHandler {
         fromMail.from = adr
     }
     
-    private func handleToAddresses(_ receivers: [MCOAddress], mail: Mail) {
+    private func handleToAddresses(_ receivers: [MCOAddress], mail: PersistentMail) {
         mail.addToTo(NSSet(array: getMailAddressesByMCOAddresses(receivers)))
     }
     
-    private func handleCCAddresses(_ cc: [MCOAddress], mail: Mail) {
+    private func handleCCAddresses(_ cc: [MCOAddress], mail: PersistentMail) {
         mail.addToCc(NSSet(array: getMailAddressesByMCOAddresses(cc)))
     }
     
@@ -343,12 +343,12 @@ class DataHandler {
     
     func createMail(_ uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) /*-> Mail*/ {
         
-        let finding = findNum("Mail", type: "uid", search: uid)
-        let mail: Mail
+        let finding = findNum("PersistentMail", type: "uid", search: uid)
+        let mail: PersistentMail
         
         if finding == nil || finding!.count == 0 {
             // create new mail object
-            mail  = NSEntityDescription.insertNewObject(forEntityName: "Mail", into: managedObjectContext) as! Mail
+            mail  = NSEntityDescription.insertNewObject(forEntityName: "PersistentMail", into: managedObjectContext) as! PersistentMail
           
             mail.body = body
             mail.date = time
@@ -391,12 +391,12 @@ class DataHandler {
         //return mail
     }
 
-    private func readMails() -> [Mail] {
-        var mails = [Mail]()
-        let result = findAll("Mail")
+    private func readMails() -> [PersistentMail] {
+        var mails = [PersistentMail]()
+        let result = findAll("PersistentMail")
         if result != nil {
             for r in result! {
-                let m = r as! Mail
+                let m = r as! PersistentMail
                 mails.append(m)
                 if  getCurrentState().maxUID < m.uid {
                     getCurrentState().maxUID = m.uid
@@ -449,7 +449,7 @@ class DataHandler {
         return records
     }
     
-    private func addToRecords(_ m:Mail, records: inout [KeyRecord] ){
+    private func addToRecords(_ m: PersistentMail, records: inout [KeyRecord] ){
     
         var found = false
         for r in records {
@@ -501,7 +501,7 @@ class DataHandler {
         }
     }
     
-    private func addToReceiverRecords(_ m: Mail){
+    private func addToReceiverRecords(_ m: PersistentMail){
         addToRecords(m, records: &receiverRecords)
     }
     

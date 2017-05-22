@@ -49,12 +49,12 @@ class SendViewController: UIViewController {
     var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: { (name: String, address: String) -> Void in return })
     var recognizer: UIGestureRecognizer = UIGestureRecognizer.init()
 
-    var answerTo: Mail? = nil
+    var prefilledMail: EphemeralMail? = nil
     var toField: String? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, beginFunc: self.beginEditing, endFunc: self.endEditing, deleteFunc: {() -> Void in return})
+        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, beginFunc: self.beginEditing, endFunc: self.endEditing, deleteFunc: { () -> Void in return })
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
         setAnimation()
@@ -62,9 +62,9 @@ class SendViewController: UIViewController {
         textView.delegate = self
         textView.font = UIFont.systemFont(ofSize: 17)
         textView.text = ""
-        
+
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
-        
+
         iconButton.addSubview(AnimatedSendIcon())
         toText.delegate = dataDelegate
         toText.dataSource = dataDelegate
@@ -84,73 +84,61 @@ class SendViewController: UIViewController {
         ccCollectionview.register(UINib(nibName: "FrequentCell", bundle: nil), forCellWithReuseIdentifier: "frequent")
         ccCollectionviewHeight.constant = 0
         toCollectionviewHeight.constant = 0
-        
+
         subjectText.delegate = self
         subjectText.setColorScheme(self.view.tintColor)
-        
+
         //will always be thrown, when a token was editied
         toText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
         ccText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
-        
+
         if let to = toField {
             let ezCon = DataHandler.handler.getContactByAddress(to)
             toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
-        } else if answerTo != nil {
-            toText.delegate?.tokenField!(toText, didEnterText: (answerTo?.from.address)!)
-            for r in (answerTo?.getReceivers())! {
-                if r.address != UserManager.loadUserValue(Attribute.userAddr) as! String {
-                    ccText.delegate?.tokenField!(ccText, didEnterText: r.address)
+        } else if let prefilledMail = prefilledMail {
+            for case let mail as MailAddress in prefilledMail.to {
+                if mail.mailAddress != UserManager.loadUserValue(Attribute.userAddr) as! String {
+                    toText.delegate?.tokenField!(toText, didEnterText: mail.mailAddress)
                 }
             }
-            subjectText.setText(NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (answerTo?.subject!)!)
-            textView.text = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
-            textView.text.append((answerTo?.from.address)!)
-            textView.text.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + (answerTo?.timeString)!)
-            textView.text.append("\n" + NSLocalizedString("to", comment: "describing adressee") + ": ")
-            textView.text.append(UserManager.loadUserValue(Attribute.userAddr) as! String)
-            if ccText.mailTokens.count > 0 {
-                textView.text.append(", ")
-            }
-            textView.text.append(ccText.mailTokens.componentsJoined(by: ", "))
-            textView.text.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (answerTo?.subject!)!)
-            if answerTo!.isEncrypted {
-                if answerTo?.decryptedBody != nil {
-                    textView.text.append("\n--------------------\n\n" + (answerTo?.decryptedBody)!)
+            for case let mail as MailAddress in prefilledMail.cc ?? [] {
+                if mail.mailAddress != UserManager.loadUserValue(Attribute.userAddr) as! String {
+                    ccText.delegate?.tokenField!(ccText, didEnterText: mail.mailAddress)
                 }
-            } else {
-                textView.text.append("\n--------------------\n\n" + (answerTo?.body)!) //textView.text.appendContentsOf("\n"+NSLocalizedString("original message", comment: "describing contents of the original message")+": \n\n"+(answerTo?.body)!)
             }
-            textView.text = TextFormatter.insertBeforeEveryLine("> ", text: textView.text)
+
+            subjectText.setText(prefilledMail.subject ?? "")
+            textView.text.append(prefilledMail.body ?? "")
         }
-        
+
         let sepConst: CGFloat = 1 / UIScreen.main.scale
         seperator1Height.constant = sepConst//0.5
         seperator2Height.constant = sepConst//0.5
         seperator3Height.constant = sepConst//0.5
-        
+
         seperator1Leading.constant += toText.horizontalInset
         seperator2Leading.constant += ccText.horizontalInset
         seperator3Leading.constant += subjectText.horizontalInset
-        
+
         textViewLeading.constant = seperator3Leading.constant - 4
-        
+
         ccText.inputTextFieldKeyboardType = UIKeyboardType.emailAddress
         scrollview.clipsToBounds = true
-        
+
         tableview.delegate = tableDataDelegate
         tableview.dataSource = tableDataDelegate
         tableview.register(UINib(nibName: "ContactCell", bundle: nil), forCellReuseIdentifier: "contacts")
         tableviewHeight.constant = 0
-        
-        
+
+
         let indexPath = IndexPath()
         tableview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-        
+
         //register KeyBoardevents
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardOpen(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardClose(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil);
-        
-        
+
+
         toText.tag = UIViewResolver.toText.rawValue
         ccText.tag = UIViewResolver.ccText.rawValue
         textView.tag = UIViewResolver.textView.rawValue
@@ -185,20 +173,20 @@ class SendViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     func reloadCollectionViews() {
-        collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String])+(ccText.mailTokens as NSArray as! [String])
+        collectionDataDelegate.alreadyInserted = (toText.mailTokens as NSArray as! [String]) + (ccText.mailTokens as NSArray as! [String])
         DispatchQueue.main.async {
-            self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String])+(self.ccText.mailTokens as NSArray as! [String])
+            self.collectionDataDelegate.alreadyInserted = (self.toText.mailTokens as NSArray as! [String]) + (self.ccText.mailTokens as NSArray as! [String])
             if self.ccText.isFirstResponder {
                 if self.collectionDataDelegate.collectionView(self.ccCollectionview, numberOfItemsInSection: 0) > 0 {
                     self.ccCollectionview.reloadData()
                     self.ccCollectionviewHeight.constant = 100
                     self.ccCollectionview.isHidden = false
                 }
-                else {
-                    self.ccCollectionviewHeight.constant = 1
-                    self.ccCollectionview.isHidden = true
+                    else {
+                        self.ccCollectionviewHeight.constant = 1
+                        self.ccCollectionview.isHidden = true
                 }
             }
             if self.toText.isFirstResponder {
@@ -207,16 +195,16 @@ class SendViewController: UIViewController {
                     self.toCollectionviewHeight.constant = 100
                     self.toCollectionview.isHidden = false
                 }
-                else {
-                    self.toCollectionviewHeight.constant = 1
-                    self.toCollectionview.isHidden = true
+                    else {
+                        self.toCollectionviewHeight.constant = 1
+                        self.toCollectionview.isHidden = true
                 }
             }
             self.toCollectionview.reloadData()
             self.ccCollectionview.reloadData()
         }
     }
-    
+
     func showContact(_ email: String) {
         let records = DataHandler.handler.getContactByAddress(email).records
         for r in records {
@@ -239,6 +227,27 @@ class SendViewController: UIViewController {
                 destinationVC.keyRecord = (sender["record"] as! KeyRecord)
                 destinationVC.highlightEmail = (sender["email"] as! String)
             }
+        } else if segue.identifier == "inviteSegue" {
+            let navigationController = segue.destination as? UINavigationController
+            if let controller = navigationController?.topViewController as? SendViewController {
+                var to = [MailAddress]()
+                var cc = [MailAddress]()
+                for mail in toText.mailTokens {
+                    if let mail = mail as? String, !EnzevalosEncryptionHandler.hasKey(mail) {
+                        to.append(DataHandler.handler.getMailAddress(mail, temporary: true))
+                    }
+                }
+                for mail in ccText.mailTokens {
+                    if let mail = mail as? String, !EnzevalosEncryptionHandler.hasKey(mail) {
+                        cc.append(DataHandler.handler.getMailAddress(mail, temporary: true))
+                    }
+                }
+
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: NSLocalizedString("inviteText", comment: "Body for the invitation mail"), uid: 0)
+
+
+                controller.prefilledMail = mail
+            }
         }
     }
 
@@ -259,17 +268,17 @@ class SendViewController: UIViewController {
             }
         }
     }
-    
-    func beginEditing(_ tokenField: VENTokenField){
+
+    func beginEditing(_ tokenField: VENTokenField) {
         if tokenField == toText {
             if self.collectionDataDelegate.collectionView(self.toCollectionview, numberOfItemsInSection: 0) > 0 {
                 self.toCollectionview.reloadData()
                 self.toCollectionviewHeight.constant = 100
                 self.toCollectionview.isHidden = false
             }
-            else {
-                self.toCollectionviewHeight.constant = 1
-                self.toCollectionview.isHidden = true
+                else {
+                    self.toCollectionviewHeight.constant = 1
+                    self.toCollectionview.isHidden = true
             }
         } else if tokenField == ccText {
             if self.collectionDataDelegate.collectionView(self.ccCollectionview, numberOfItemsInSection: 0) > 0 {
@@ -277,14 +286,14 @@ class SendViewController: UIViewController {
                 self.ccCollectionviewHeight.constant = 100
                 self.ccCollectionview.isHidden = false
             }
-            else {
-                self.ccCollectionviewHeight.constant = 1
-                self.ccCollectionview.isHidden = true
+                else {
+                    self.ccCollectionviewHeight.constant = 1
+                    self.ccCollectionview.isHidden = true
             }
         }
     }
-    
-    func endEditing(_ tokenField: VENTokenField){
+
+    func endEditing(_ tokenField: VENTokenField) {
         if tokenField == toText {
             self.toCollectionviewHeight.constant = 1
             self.toCollectionview.isHidden = true
@@ -339,8 +348,8 @@ class SendViewController: UIViewController {
             print("no Access!")
         }
     }
-    
-    func newInput(_ tokenField: VENTokenField){
+
+    func newInput(_ tokenField: VENTokenField) {
         animateIfNeeded()
         reloadCollectionViews()
     }
@@ -362,8 +371,8 @@ class SendViewController: UIViewController {
             AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
         } else {
             NSLog("Send successful!")
-            if (self.answerTo != nil) {
-                AppDelegate.getAppDelegate().mailHandler.addFlag((self.answerTo?.uid)!, flags: MCOMessageFlag.answered)
+            if (self.prefilledMail != nil) {
+                AppDelegate.getAppDelegate().mailHandler.addFlag((self.prefilledMail?.uid)!, flags: MCOMessageFlag.answered)
             }
             self.sendCompleted()
         }
@@ -387,8 +396,8 @@ extension SendViewController: VENTokenFieldDelegate {
             LogHandler.newLog()
         }
     }
-    
-    func tokenFieldDidEndEditing(_ tokenField: VENTokenField) {}
+
+    func tokenFieldDidEndEditing(_ tokenField: VENTokenField) { }
 }
 
 //messagefield
@@ -408,7 +417,7 @@ extension SendViewController {
         ccSecure = ccText.dataSource!.isSecure!(ccText)
         return toSecure && ccSecure
     }
-    
+
     func updateNavigationBar() {
         if(getContemporarySecurityState()) {
             self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
@@ -416,7 +425,7 @@ extension SendViewController {
             self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
         }
     }
-    
+
     func animateIfNeeded() {
         let contemporarySecureState = getContemporarySecurityState()
         if (contemporarySecureState) != self.secureState {
@@ -441,20 +450,26 @@ extension SendViewController {
         updateNavigationBar()
         self.secureState = getContemporarySecurityState()
     }
-    
+
     func setAnimation() {
         if let view = iconButton.subviews.first as? AnimatedSendIcon {
             view.switchIcons()
         }
     }
-    
+
     func iconButton(_ sender: AnyObject) {
-        let m = self.secureState
+        let secureState = self.secureState
         let alert: UIAlertController
         let url: String
-        if !m {
+        if !secureState {
             alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
             url = "https://enzevalos.org/infos/postcard"
+            if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") {
+                alert.addAction(UIAlertAction(title: NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key"), style: .default, handler: {
+                    (action: UIAlertAction) -> Void in
+                    self.performSegue(withIdentifier: "inviteSegue", sender: nil)
+                }))
+            }
         } else {
             alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
             url = "https://enzevalos.org/infos/letter"
@@ -465,11 +480,11 @@ extension SendViewController {
             self.present(alert, animated: true, completion: nil)
         })
     }
-    
+
     @IBAction func iconButtonPressed(_ sender: AnyObject) {
         iconButton(sender)
     }
-    
+
     @IBAction func pressCancel(_ sender: AnyObject) {
         var alert: UIAlertController
         var firstResponder: UIView?
@@ -494,13 +509,13 @@ extension SendViewController {
             })
         }
     }
-    
+
     @IBAction func pressSend(_ sender: AnyObject) {
         let toEntrys = toText.mailTokens
         let ccEntrys = ccText.mailTokens
         let subject = subjectText.inputText()!
         let message = textView.text!
-        
+
         mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: self.mailSend)
     }
 }
@@ -508,17 +523,17 @@ extension SendViewController {
 
 //Logging
 extension SendViewController: UIGestureRecognizerDelegate {
-    
+
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
+
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         if LogHandler.logging {
             LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "tap", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: self.view), /*debugDescription: sender.view.debugDescription,*/ comment: "")
         }
     }
-    
+
     @IBAction func panned(_ sender: UIPanGestureRecognizer) {
         if LogHandler.logging {
             if sender.state == .began {
@@ -529,13 +544,13 @@ extension SendViewController: UIGestureRecognizerDelegate {
             }
         }
     }
-    
+
     @IBAction func swiped(_ sender: UISwipeGestureRecognizer) {
         if LogHandler.logging {
             LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "swipe", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: sender.view), comment: String(describing: sender.direction))
         }
     }
-    
+
     @IBAction func rotated(_ sender: UIRotationGestureRecognizer) {
         if LogHandler.logging {
             LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "rotate", point: CGPoint(x: 0, y: 0), comment: String(describing: sender.rotation))

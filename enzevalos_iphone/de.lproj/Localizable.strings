@@ -124,3 +124,6 @@
 "answer" = "Antworten";
 "couldNotDecryptHeadline" = "Entschlüsseln nicht möglich";
 "couldNotDecryptText" = "Diese Nachricht konnte nicht entschlüsselt werden. Vielleicht hat der Absender den falschen Schlüssel verwendet. Falls du von diesem Absender eine Nachricht erwartest könntest du versuchen auf einem anderen Weg in Verbindung zu treten.\n";
+"inviteContacts" = "Unsichere Kontakte einladen";
+"inviteSubject" = "Lass uns unsere E-Mails verschlüsseln!";
+"inviteText" = "Hallo!\n\nEs gibt eine neue App die es super einfach macht verschlüsselt über E-Mail zu kommunizieren. Sie heißt Enzevalos und ist kostenlos im App Store zu finden.\n\nEs wäre toll wenn du sie mal ausprobieren würdest!\n\nViele Grüße!";

@@ -36,7 +36,7 @@ class ReadViewController: UITableViewController {
 
     var VENDelegate: ReadVENDelegate?
 
-    var mail: Mail? = nil
+    var mail: PersistentMail? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,7 +127,7 @@ class ReadViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         if let mail = mail {
-            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact.hasKey || mail.isEncrypted && mail.unableToDecrypt {
+            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey || mail.isEncrypted && mail.unableToDecrypt {
                 return 3
             }
         }
@@ -252,10 +252,10 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-            senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: m.from.contact.displayname!, mail: m.from.address)
+            senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: (m.from.contact?.displayname!)!, mail: m.from.mailAddress)
 
             for receiver in m.getReceivers() {
-                if let displayname = receiver.contact.displayname {
+                if let displayname = receiver.contact?.displayname {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
@@ -263,7 +263,7 @@ class ReadViewController: UITableViewController {
             }
 
             for receiver in m.getCCs() {
-                if let displayname = receiver.contact.displayname {
+                if let displayname = receiver.contact?.displayname {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
@@ -271,7 +271,7 @@ class ReadViewController: UITableViewController {
             }
 
             for receiver in m.getBCCs() {
-                if let displayname = receiver.contact.displayname {
+                if let displayname = receiver.contact?.displayname {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
@@ -346,8 +346,39 @@ class ReadViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "answerTo" {
             let navigationController = segue.destination as? UINavigationController
-            if let controller = navigationController?.topViewController as? SendViewController {
-                controller.answerTo = mail
+            if let controller = navigationController?.topViewController as? SendViewController, mail != nil {
+                var answerTo = [mail!.from]
+                var answerCC = [Mail_Address]()
+                var body = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
+                body.append(mail!.from.mailAddress)
+                body.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + mail!.timeString)
+                body.append("\n" + NSLocalizedString("To", comment: "describing adressee") + ": ")
+                let myAddress = UserManager.loadUserValue(Attribute.userAddr) as! String
+                if mail!.to.count > 0 {
+                    for case let mail as Mail_Address in mail!.to {
+                        body.append("\(mail.address), ")
+                        if mail.address != myAddress {
+                            answerTo.append(mail)
+                        }
+                    }
+                }
+                if mail!.cc?.count ?? 0 > 0 {
+                    body.append("\n\(NSLocalizedString("Cc", comment: "")): ")
+                    for case let mail as Mail_Address in mail!.cc! {
+                        body.append("\(mail.address), ")
+                        if mail.address != myAddress {
+                            answerCC.append(mail)
+                        }
+                    }
+                }
+                body.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (mail!.subject ?? ""))
+                body.append("\n------------------------\n\n" + (mail!.decryptedBody ?? mail!.body ?? ""))
+                body = TextFormatter.insertBeforeEveryLine("> ", text: body)
+                body = "\n\n" + body
+
+                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (mail!.subject ?? ""), body: body, uid: mail!.uid)
+
+                controller.prefilledMail = answerMail
             }
         } else if segue.identifier == "showContact" {
             let destinationVC = segue.destination as! ContactViewController
