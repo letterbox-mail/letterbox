@@ -1005,8 +1005,6 @@
     
     NSData *armoredData = [armoredMessage dataUsingEncoding:NSASCIIStringEncoding];
     
-    //TODO REMOVE
-    NSString *aString  = [[NSString alloc] initWithData:armoredData encoding:NSUTF8StringEncoding];
     return [self importKeysFromData: armoredData allowDuplicates:allowDuplicates];
     
 

@@ -11,6 +11,7 @@ import Contacts
 import UIKit
 
 open class KeyRecord: Record {
+
     /*
      A record contains a signing key (or none because of insecure communication), a contact (inlucding mail-addresses) and mails.
      For each key we have a different record for mailboxes. Mails and contact are affliate with the key.
@@ -25,8 +26,11 @@ open class KeyRecord: Record {
         return ezContact.name
     }
     open var hasKey: Bool {
+        // Public encryption key. May missing for secure mails since mail is only signed and encrypted
         return key != nil
     }
+    
+    open var isSecure: Bool = false
 
     open var isVerified: Bool {
         if let key = self.key {
@@ -39,19 +43,13 @@ open class KeyRecord: Record {
     }
 
 
-    open var mails: [Mail] = [Mail]()
+    open var mails: [PersistentMail] = [PersistentMail]()
 
 
     open var ezContact: EnzevalosContact
 
     open var cnContact: CNContact? {
         return ezContact.cnContact
-    }
-
-    public init(contact: EnzevalosContact, key: String?) {
-        self.ezContact = contact
-        self.key = key
-        self.mails = [Mail] ()
     }
 
     open var image: UIImage {
@@ -62,17 +60,18 @@ open class KeyRecord: Record {
     }
 
 
-    public init(mail: Mail) {
-        if(mail.isSecure) {
+    public init(mail: PersistentMail) {
+        self.isSecure = mail.isSecure
+        if(mail.isSecure && mail.from.hasKey) {
             self.key = mail.from.keyID
         }
-            else {
+        else {
             self.key = nil
         }
         mails.append(mail)
         mails.sort()
-        self.ezContact = mail.from.contact
-        addNewAddress(mail.from)        
+        self.ezContact = mail.from.contact!
+        _ = addNewAddress(mail.from)
     }
 
     open static func deleteRecordFromRecordArray(_ records: [KeyRecord], delRecord: KeyRecord) -> [KeyRecord] {
@@ -118,7 +117,7 @@ open class KeyRecord: Record {
     open func showInfos() {
         print("-----------------")
         print("Name: \(ezContact.displayname) | State: \(hasKey) | #Mails: \(mails.count)")
-        print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.from.address) | date: \(mails.first?.date.description) ")
+        print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.from.mailAddress) | date: \(mails.first?.date.description) ")
         print("subj: \(mails.first?.subject?.capitalized)")
     }
 
@@ -132,23 +131,23 @@ open class KeyRecord: Record {
         return true
     }
 
-    open func addNewMail(_ mail: Mail) -> Bool {
-        //TODO: signed only mails are dropped ??
-        if mail.isSecure && self.hasKey {
+    open func addNewMail(_ mail: PersistentMail) -> Bool {
+        // TODO: signed only mails are dropped ??
+        if mail.isSecure && self.isSecure {
             if mail.from.keyID == self.key {
                 mails.append(mail)
                 mails.sort()
-                addNewAddress(mail.from)
+                _ = addNewAddress(mail.from)
                 return true
             }
             return false
 
         }
-            else if mail.isSecure && !self.hasKey || !mail.isSecure && self.hasKey {
+        else if mail.isSecure != self.isSecure {
             return false
         }
 
-        if ezContact.getAddress(mail.from.address) != nil {
+        if ezContact.getAddress(mail.from.mailAddress) != nil {
             for m in mails {
                 if m.uid == mail.uid {
                     return true
@@ -157,11 +156,9 @@ open class KeyRecord: Record {
                     break
                 }
             }
-
-
             mails.append(mail)
             mails.sort()
-            addNewAddress(mail.from)
+            _ = addNewAddress(mail.from)
             return true
         }
         return false
@@ -187,7 +184,6 @@ public func == (lhs: KeyRecord, rhs: KeyRecord) -> Bool {
     if isEmpty(rhs) {
         return false
     }
-
     return lhs.mails.first!.date == rhs.mails.first!.date && lhs.hasKey == rhs.hasKey && lhs.key == rhs.key
 }
 

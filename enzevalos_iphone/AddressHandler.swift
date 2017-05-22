@@ -79,6 +79,7 @@ class AddressHandler {
 //        var cons = DataHandler.handler.contacts
         var cons = DataHandler.handler.receiverRecords
         var list: [(UIImage,String,String,UIImage?,UIColor)] = []
+        var localInserted = inserted
         
         for con: KeyRecord in cons {
             if list.count >= CollectionDataDelegate.maxFrequent {
@@ -87,7 +88,7 @@ class AddressHandler {
             var insertedEntry = false
             var address = con.ezContact.getMailAddresses()[0]
             for addr in con.ezContact.getMailAddresses() {
-                if inserted.contains(addr.mailAddress) {
+                if localInserted.contains(addr.mailAddress) {
                     insertedEntry = true
                 }
                 if addr.hasKey {
@@ -114,6 +115,7 @@ class AddressHandler {
                     var entry = (cn.getImageOrDefault(), con.ezContact.displayname!, address.mailAddress, addrType, color)
                     
                     list.append(entry)
+                    localInserted.append(address.mailAddress)
                 }
             }
         }

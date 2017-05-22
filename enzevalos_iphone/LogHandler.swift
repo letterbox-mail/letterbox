@@ -73,7 +73,7 @@ class LogHandler {
         print()
         print("--------------------LOG OUTPUT--------------------")
         print("LoggingSession ",session)
-        print(defaults.object(forKey: String(session)+"-date"))
+        print(defaults.object(forKey: String(session)+"-date") as Any)
         print()
         for i in 0 ..< defaults.integer(forKey: String(session)+"-index")+1{
             if let entry = defaults.object(forKey: String(session)+"-"+String(i)) {

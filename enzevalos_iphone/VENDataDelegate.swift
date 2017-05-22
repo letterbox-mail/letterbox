@@ -14,6 +14,8 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     
     var beginFunc: ((VENTokenField) -> Void) = {(_ : VENTokenField) -> Void in }
     
+    var endFunc: ((VENTokenField) -> Void) = {(_ : VENTokenField) -> Void in }
+    
     var deleteFunc: (() -> Void) = {() -> Void in }
     
     var tappedWhenSelectedFunc: ((String) -> Void)? = nil
@@ -22,10 +24,12 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         super.init()
     }
     
-    init(changeFunc: @escaping ((VENTokenField) -> Void), tappedWhenSelectedFunc: ((String) -> Void)?/*, beginFunc: (VENTokenField -> Void)*/, deleteFunc: @escaping (() -> Void)){
+    init(changeFunc: @escaping ((VENTokenField) -> Void), tappedWhenSelectedFunc: ((String) -> Void)?, beginFunc: @escaping ((VENTokenField) -> Void), endFunc: @escaping ((VENTokenField) -> Void), deleteFunc: @escaping (() -> Void)){
         self.changeFunc = changeFunc
         self.tappedWhenSelectedFunc = tappedWhenSelectedFunc
         self.deleteFunc = deleteFunc
+        self.beginFunc = beginFunc
+        self.endFunc = endFunc
         super.init()
     }
     
@@ -106,6 +110,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
                 tokenField(tokenF, didEnterText: last)
             }
         }
+        endFunc(tokenF)
     }
     
     func isSecure(_ tokenField: VENTokenField) -> Bool {

@@ -234,7 +234,7 @@
             break;
         default:
 #ifdef DEBUG
-            NSLog(@"Unsuported subpacket type %d", self.type);
+           // NSLog(@"Unsuported subpacket type %d", self.type);
 #endif
             break;
     }
@@ -376,7 +376,7 @@
             break;
         default:
 #ifdef DEBUG
-            NSLog(@"Unsuported subpacket type %d", self.type);
+          //  NSLog(@"Unsuported subpacket type %d", self.type);
 #endif
             break;
     }

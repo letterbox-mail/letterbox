@@ -35,15 +35,15 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
     }
     
     
-    open var to: [Mail]{
+    open var to: [PersistentMail]{
         get{
-            var mails = [Mail]()
+            var mails = [PersistentMail]()
             if let adrs = addresses{
                 for adr in adrs{
                     let a  = adr as! Mail_Address
                     if a.to != nil {
                         for m in a.to!{
-                            mails.append(m as! Mail)
+                            mails.append(m as! PersistentMail)
                         }
                     }
                 }
@@ -52,15 +52,15 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     }
     
-    open var bcc: [Mail]{
+    open var bcc: [PersistentMail]{
         get{
-            var mails = [Mail]()
+            var mails = [PersistentMail]()
             if let adrs = addresses{
                 for adr in adrs{
                     let a  = adr as! Mail_Address
                     if a.bcc != nil {
                         for m in a.bcc!{
-                            mails.append(m as! Mail)
+                            mails.append(m as! PersistentMail)
                         }
                     }
                 }
@@ -71,15 +71,15 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
     
     
     
-    open var cc: [Mail]{
+    open var cc: [PersistentMail]{
         get{
-            var mails = [Mail]()
+            var mails = [PersistentMail]()
             if let adrs = addresses{
                 for adr in adrs{
                     let a  = adr as! Mail_Address
                     if a.cc != nil {
                         for m in a.cc!{
-                            mails.append(m as! Mail)
+                            mails.append(m as! PersistentMail)
                         }
                     }
                 }
@@ -88,15 +88,15 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
     }
     
-    open var from: [Mail]{
+    open var from: [PersistentMail]{
         get{
-            var mails = [Mail]()
+            var mails = [PersistentMail]()
             if let adrs = addresses{
                 for adr in adrs{
                     let a  = adr as! Mail_Address
                     if a.from != nil {
                         for m in a.from!{
-                            mails.append(m as! Mail)
+                            mails.append(m as! PersistentMail )
                         }
                     }
                 }
@@ -205,7 +205,10 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
     }
     
     func getAddressByMCOAddress(_ mcoaddress: MCOAddress)-> Mail_Address?{
-        return getAddress(mcoaddress.mailbox!)
+        if (mcoaddress.mailbox) != nil{
+            return getAddress(mcoaddress.mailbox.lowercased())
+        }
+        return nil
     }
     
     open func getMailAddresses()->[MailAddress]{

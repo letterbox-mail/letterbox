@@ -10,30 +10,6 @@ import Foundation
 import UIKit
 import Contacts
 import ContactsUI
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 class ContactViewController: UIViewController {
     var keyRecord: KeyRecord? = nil
@@ -70,6 +46,7 @@ class ContactViewController: UIViewController {
         if let row = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: row, animated: false)
         }
+        navigationController?.toolbar.isHidden = false
     }
 
     func prepareContactSheet() {
@@ -142,10 +119,11 @@ class ContactViewController: UIViewController {
 
     func showContact() {
         self.navigationController?.pushViewController(vc!, animated: true)
+        navigationController?.toolbar.isHidden = true
     }
 
     func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) {
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
         prepareContactSheet()
     }
 
@@ -154,18 +132,23 @@ class ContactViewController: UIViewController {
             let myPath = IndexPath(row: 1, section: 0)
             tableView.selectRow(at: myPath, animated: false, scrollPosition: .none)
             performSegue(withIdentifier: "otherRecord", sender: nil)
+        } else if (sender as? UIButton)?.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
+            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0)
+            performSegue(withIdentifier: "newMail", sender: mail)
         }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newMail" {
             let navigationController = segue.destination as? UINavigationController
-            let controller = navigationController?.topViewController as? SendViewController
-            let indexPath = tableView.indexPathForSelectedRow
-            if controller != nil {
-                // TODO: add address to SendView
-                if indexPath!.row < keyRecord!.ezContact.getMailAddresses().count {
-                    controller!.toField = keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+            if let controller = navigationController?.topViewController as? SendViewController {
+                if let mail = sender as? EphemeralMail {
+                    controller.prefilledMail = mail
+                } else {
+                    let indexPath = tableView.indexPathForSelectedRow
+                    if indexPath!.row < keyRecord!.ezContact.getMailAddresses().count {
+                        controller.toField = keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                    }
                 }
             }
         } else if segue.identifier == "mailList" {
@@ -208,7 +191,7 @@ extension ContactViewController: UITableViewDataSource {
                         cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
                     } else if keyRecord!.hasKey {
                         cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
-                    } else if otherRecords?.filter({ $0.hasKey }).count > 0 {
+                    } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         cell.contactStatus.text = NSLocalizedString("otherEncryption", comment: "Contact is using encryption, this is the unsecure collection")
                     } else {
                         cell.contactStatus.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
@@ -218,7 +201,7 @@ extension ContactViewController: UITableViewDataSource {
                     let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
                     if keyRecord!.hasKey {
                         actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
-                    } else if otherRecords?.filter({ $0.hasKey }).count > 0 {
+                    } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
                     } else {
                         actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
@@ -294,7 +277,7 @@ extension ContactViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         var sections = 3
-        if keyRecord?.ezContact.records.count > 1 {
+        if (keyRecord?.ezContact.records.count ?? 0) > 1 {
             sections += 1
         }
         if let hasKey = keyRecord?.hasKey, hasKey {
@@ -304,14 +287,14 @@ extension ContactViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let con = keyRecord {
+        if let record = keyRecord {
             switch section {
             case 0:
-                if !con.isVerified {
+                if !record.isVerified {
                     return 2
                 }
             case 1:
-                return con.ezContact.getMailAddresses().count
+                return record.ezContact.getMailAddresses().count
             case 3 where !((keyRecord?.hasKey) ?? false):
                 if let rec = otherRecords {
                     return rec.count

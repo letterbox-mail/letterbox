@@ -46,9 +46,18 @@ class EnzevalosEncryptionHandler : EncryptionHandler {
         return false
     }
     
+    static func getEncryptionType(_ mailAddress: String) -> EncryptionType {
+        for (_, enc) in encryptions {
+            if enc.hasKey(mailAddress){
+                return enc.encryptionType
+            }
+        }
+        return EncryptionType.unknown
+    }
     
     
-    static func getEncryptionTypeForMail(_ mail: Mail) -> EncryptionType {
+    
+    static func getEncryptionTypeForMail(_ mail: PersistentMail) -> EncryptionType {
         for (type, enc) in encryptions {
             if enc.isUsed(mail) {
                 return type

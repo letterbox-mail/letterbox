@@ -1,5 +1,5 @@
 //
-//  Mail+CoreDataProperties.swift
+//  PersistentMail+CoreDataProperties.swift
 //  enzevalos_iphone
 //
 //  Created by Oliver Wiese on 04/01/17.
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension Mail {
+extension PersistentMail {
 
     @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
-        return NSFetchRequest(entityName: "Mail");
+        return NSFetchRequest(entityName: "PersistentMail");
     }
 
     @NSManaged public var body: String?
@@ -59,9 +59,6 @@ extension Mail {
             self.willAccessValue(forKey: "trouble")
             let text = self.primitiveValue(forKey: "trouble") as? Bool
             self.didAccessValue(forKey: "trouble")
-            if(text == nil){
-                print("NIL!!!")
-            }
             return text!
         }
     
@@ -80,15 +77,36 @@ extension Mail {
             return text!
         }
     }
+    
+    
+    public var from: MailAddress{
+        set {
+            if newValue is Mail_Address{
+                let adr = newValue as! Mail_Address
+                self.willChangeValue(forKey: "from")
+                self.setValue(adr, forKey: "from" )
+                self.didChangeValue(forKey: "from")
+            }
+            
+        }
+        get {
+            self.willAccessValue(forKey: "from")
+            let text = (self.primitiveValue(forKey: "from") as? Mail_Address)
+            self.didAccessValue(forKey: "from")
+            return text as! MailAddress
+        }
+    
+    }
+    
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
-    @NSManaged public var from: Mail_Address
+    //@NSManaged public var from: Mail_Address
     @NSManaged public var to: NSSet
 
 }
 
 // MARK: Generated accessors for bcc
-extension Mail {
+extension PersistentMail {
 
     @objc(addBccObject:)
     @NSManaged public func addToBcc(_ value: Mail_Address)
@@ -105,7 +123,7 @@ extension Mail {
 }
 
 // MARK: Generated accessors for cc
-extension Mail {
+extension PersistentMail {
 
     @objc(addCcObject:)
     @NSManaged public func addToCc(_ value: Mail_Address)
@@ -122,7 +140,7 @@ extension Mail {
 }
 
 // MARK: Generated accessors for to
-extension Mail {
+extension PersistentMail {
 
     @objc(addToObject:)
     @NSManaged public func addToTo(_ value: Mail_Address)

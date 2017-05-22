@@ -539,7 +539,7 @@ open class IconsStyleKit : NSObject {
         set {
             Cache.letterTargets = newValue
             for target: AnyObject in newValue {
-                target.perform(NSSelectorFromString("setImage:"), with: IconsStyleKit.imageOfLetter)
+                _ = target.perform(NSSelectorFromString("setImage:"), with: IconsStyleKit.imageOfLetter)
             }
         }
     }
@@ -549,7 +549,7 @@ open class IconsStyleKit : NSObject {
         set {
             Cache.letterCorruptedTargets = newValue
             for target: AnyObject in newValue {
-                target.perform(NSSelectorFromString("setImage:"), with: IconsStyleKit.imageOfLetterCorrupted)
+                _ = target.perform(NSSelectorFromString("setImage:"), with: IconsStyleKit.imageOfLetterCorrupted)
             }
         }
     }
@@ -559,7 +559,7 @@ open class IconsStyleKit : NSObject {
         set {
             Cache.postcardTargets = newValue
             for target: AnyObject in newValue {
-                target.perform(NSSelectorFromString("setImage:"), with: IconsStyleKit.imageOfPostcard)
+                _ = target.perform(NSSelectorFromString("setImage:"), with: IconsStyleKit.imageOfPostcard)
             }
         }
     }
@@ -569,7 +569,7 @@ open class IconsStyleKit : NSObject {
         set {
             Cache.letterOpenTargets = newValue
             for target: AnyObject in newValue {
-                target.perform(NSSelectorFromString("setImage:"), with: IconsStyleKit.imageOfLetterOpen)
+                _ = target.perform(NSSelectorFromString("setImage:"), with: IconsStyleKit.imageOfLetterOpen)
             }
         }
     }

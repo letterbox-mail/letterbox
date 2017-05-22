@@ -7,7 +7,6 @@
 //
 
 public protocol Encryption {
-    
     /**
      * ATTENTION: always have a look at the concrete Encryption you are working with! It my differ in some cases from this definition. e.g. some parameters may be used or unused.
      * In some functions nil is returned, if there is no answer to be made at the moment. An example for this case is the PGPEncryption. You have to decrypt the message before you can see, if there is a signature
@@ -19,41 +18,41 @@ public protocol Encryption {
     init(encHandler: EncryptionHandler)
     
     //check whether this encryption is used in this mail. This means is it used for encryption OR signing.
-    func isUsed(_ mail: Mail) -> Bool
+    func isUsed(_ mail: PersistentMail) -> Bool
     
     //check whether this encryption is used in this text. This means is it used for encryption OR signing. the key is not known to be used. nil is returned, if there is no answer to be made at the moment.
     func isUsed(_ text: String, key: KeyWrapper?) -> Bool
     
     //check whether this encryption is used in this mail for encryption. nil is returned, if there is no answer to be made at the moment.
-    func isUsedForEncryption(_ mail: Mail) -> Bool?
+    func isUsedForEncryption(_ mail: PersistentMail) -> Bool?
     
     //check whether this encryption is used in this text for encryption. the key is not known to be used. nil is returned, if there is no answer to be made at the moment.
     func isUsedForEncryption(_ text: String, key: KeyWrapper?) -> Bool?
     
     //check whether this encryption is used in this mail for signing. nil is returned, if there is no answer to be made at the moment.
-    func isUsedForSignature(_ mail: Mail) -> Bool?
+    func isUsedForSignature(_ mail: PersistentMail) -> Bool?
     
     //check whether this encryption is used in this text for signing. nil is returned, if there is no answer to be made at the moment.
     func isUsedForSignature(_ text: String, key: KeyWrapper?) -> Bool?
     
     //decrypt the mails body. the decryted body will be saved in the mail object.
-    func decrypt(_ mail: Mail) -> String?
+    func decrypt(_ mail: PersistentMail) -> String?
     
     //decrypt the mails body. the decryted body will be saved in the mail object.
     //Signaturechecking included. will be set in mail object too.
-    func decryptAndSignatureCheck(_ mail: Mail)
+    func decryptAndSignatureCheck(_ mail: PersistentMail)
     
     //decrypt the text with the given key and return it.
     func decrypt(_ text: String, keyID: String) -> String?
     
     //check whether the mail is correctly signed with this encryption. nil is returned, if there is no answer to be made at the moment.
-    func isCorrectlySigned(_ mail: Mail) -> Bool?
+    func isCorrectlySigned(_ mail: PersistentMail) -> Bool?
     
     //check whether the text is correctly signed with this encryption.
     func isCorrectlySigned(_ text: String, key: KeyWrapper) -> Bool?
     
     //encrypt mail for contact
-    func encrypt(_ mail: Mail)
+    func encrypt(_ mail: PersistentMail)
     
     func encrypt(_ text: String, mailaddresses: [String]) -> Data?
     
@@ -61,22 +60,22 @@ public protocol Encryption {
     func encrypt(_ text: String, keyIDs: [String]) -> Data?
     
     //sign mail
-    func sign(_ mail: Mail)
+    func sign(_ mail: PersistentMail)
     
     //sign text
     func sign(_ text: String, key: KeyWrapper) -> String
     
     //sign and encrypt mail for contact
-    func signAndEncrypt(_ mail: Mail, forContact: KeyRecord)
+    func signAndEncrypt(_ mail: PersistentMail, forContact: KeyRecord)
     func signAndEncrypt(_ text: String, keyIDs: [String]) -> Data?
     func signAndEncrypt(_ text: String, mailaddresses: [String]) -> Data?
     
-    func addKey(_ keyData: Data, forMailAddresses: [String]?) -> String?
+    @discardableResult func addKey(_ keyData: Data, forMailAddresses: [String]?) -> String?
     
-    func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?) -> String?
+    @discardableResult func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?) -> String?
     
     //key is connected to the senders address, if discoveryMail is set
-    func addKey(_ keyData: Data, discoveryMail: Mail?) -> String?
+    @discardableResult func addKey(_ keyData: Data, discoveryMail: PersistentMail?) -> String?
     
     //will be maybe deleted... because keyWrapper will be added when constructed
     //func addKey(key: KeyWrapper, forMailAddress: [String]?, callBack: ((success: Bool) -> Void)?)

@@ -8,7 +8,6 @@
 
 class PGPEncryption : Encryption {
     
-    
     internal let encryptionHandler: EncryptionHandler
     internal let keyManager: PGPKeyManagement
     //internal let keyIDs : []
@@ -28,7 +27,7 @@ class PGPEncryption : Encryption {
         return keyManager
     }
     
-    func isUsed(_ mail: Mail) -> Bool {
+    func isUsed(_ mail: PersistentMail) -> Bool {
         if let plain = mail.body {
             return isUsed(plain, key: nil)
         }
@@ -44,7 +43,7 @@ class PGPEncryption : Encryption {
     }
     
     //check whether this encryption is used in this mail for encryption. nil is returned, if there is no answer to be made at the moment.
-    func isUsedForEncryption(_ mail: Mail) -> Bool? {
+    func isUsedForEncryption(_ mail: PersistentMail) -> Bool? {
         if let plain = mail.body {
             return isUsedForEncryption(plain, key: nil)
         }
@@ -58,7 +57,7 @@ class PGPEncryption : Encryption {
     }
     
     //check whether this encryption is used in this mail for signing. nil is returned, if there is no answer to be made at the moment.
-    func isUsedForSignature(_ mail: Mail) -> Bool?{
+    func isUsedForSignature(_ mail: PersistentMail) -> Bool?{
         //TODO api-check
         //baut auf der Annahme auf, dass der signierte Teil nach dem entschlüsseln noch vorhanden ist.
         if let plain = mail.decryptedBody {
@@ -81,7 +80,7 @@ class PGPEncryption : Encryption {
     
     //TODO
     //decrypt the mails body. the decryted body will be saved in the mail object.
-    func decrypt(_ mail: Mail)-> String?{
+    func decrypt(_ mail: PersistentMail)-> String?{
         if self.isUsed(mail) {
             let bodyData = mail.body!.data(using: String.Encoding.utf8)!
             var data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
@@ -122,18 +121,21 @@ class PGPEncryption : Encryption {
         return nil
     }
     
-    func decryptAndSignatureCheck(_ mail: Mail) {
+    func decryptAndSignatureCheck(_ mail: PersistentMail) {
         if self.isUsed(mail) {
             let bodyData = mail.body!.data(using: String.Encoding.utf8)!
             var data: Data?
+            //has to be var because it is given as pointer to obj-c-code
             var error: NSErrorPointer = NSErrorPointer.none
             var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
             var maybeUsedKeys: [String] = []
+            //has to be var because it is given as pointer to obj-c-code
             var signed = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
             signed[0] = false
+            //has to be var because it is given as pointer to obj-c-code
             var valid = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
             valid[0] = false
-            print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
+            //print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
                 data = temp.plaintextData
                 if data == nil {
                     self.keyManager.useAllPrivateKeys()
@@ -149,16 +151,15 @@ class PGPEncryption : Encryption {
             }
                 if let unwrappedData = data {
                     mail.decryptedBody = String(data: unwrappedData, encoding: String.Encoding.utf8)
-                    if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(mail.from.address), let theirKeyID = temp.incompleteKeyID {
+                    if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(mail.from.mailAddress), let theirKeyID = temp.incompleteKeyID {
                         maybeUsedKeys = self.getLibaryKeyIDOverlap(theirKeyID, ourKeyIDs: allKeyIDs)
                     }
                     for maybeUsedKey in maybeUsedKeys {
                         if let key = self.keyManager.getKey(maybeUsedKey) {
                             //FIXME
                             let done : ObjCBool
-                            do {
-                                try done = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid)[0])
-                            }catch {
+                            done = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: error)[0])
+                            if let errorHappening = (error?.debugDescription.contains("Missing")), errorHappening {
                                 mail.trouble = true
                                 mail.isCorrectlySigned = false
                                 break
@@ -205,7 +206,7 @@ class PGPEncryption : Encryption {
     
     //TODO
     //check whether the mail is correctly signed with this encryption. nil is returned, if there is no answer to be made at the moment.
-    func isCorrectlySigned(_ mail: Mail) -> Bool?{
+    func isCorrectlySigned(_ mail: PersistentMail) -> Bool?{
         return false
     }
     
@@ -217,7 +218,7 @@ class PGPEncryption : Encryption {
     
     //TODO
     //encrypt mail for contact
-    func encrypt(_ mail: Mail){
+    func encrypt(_ mail: PersistentMail){
         
     }
     
@@ -266,7 +267,7 @@ class PGPEncryption : Encryption {
     
     //TODO
     //sign mail
-    func sign(_ mail: Mail){
+    func sign(_ mail: PersistentMail){
         
     }
     
@@ -278,7 +279,7 @@ class PGPEncryption : Encryption {
     
     //TODO
     //sign and encrypt mail for contact
-    func signAndEncrypt(_ mail: Mail, forContact: KeyRecord){
+    func signAndEncrypt(_ mail: PersistentMail, forContact: KeyRecord){
         
     }
     
@@ -362,12 +363,12 @@ class PGPEncryption : Encryption {
     }
     
     //chooses first key in data. others will be ignored
-    func addKey(_ keyData: Data, discoveryMail: Mail?) -> String? {
+    func addKey(_ keyData: Data, discoveryMail: PersistentMail?) -> String? {
         var discoveryMailUID: UInt64? = nil
         var forMailAddresses: [String]? = nil
         if let mail = discoveryMail {
             discoveryMailUID = mail.uid
-            forMailAddresses = [mail.from.address]
+            forMailAddresses = [mail.from.mailAddress]
         }
         return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: discoveryMailUID)
     }

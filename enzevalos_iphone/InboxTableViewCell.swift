@@ -87,7 +87,7 @@ class InboxTableViewCell: UITableViewCell {
                     secondMessageLabel.text = NSLocalizedString("NoFurtherMessages", comment: "There is only one message from this sender.")
                     secondButton.isEnabled = false
                 }
-                if con.hasKey {
+                if con.isSecure {
                     iconView.image = IconsStyleKit.imageOfLetterBG
                 } else {
                     iconView.image = IconsStyleKit.imageOfPostcardBG
@@ -102,7 +102,7 @@ class InboxTableViewCell: UITableViewCell {
         }
     }
 
-    var firstMail: Mail? {
+    var firstMail: PersistentMail? {
         didSet {
             if let mail = firstMail {
                 if !mail.isRead {
@@ -120,7 +120,7 @@ class InboxTableViewCell: UITableViewCell {
         }
     }
 
-    var secondMail: Mail? {
+    var secondMail: PersistentMail? {
         didSet {
             if let mail = secondMail {
                 if !mail.isRead {

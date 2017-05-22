@@ -69,7 +69,7 @@ class AutocryptContact {
     init(addr: String, type: String, prefer_encryption: String, key: String) {
         self.addr = addr
         self.type = EncryptionType.typeFromAutocrypt(type)
-        setPrefer_encryption(prefer_encryption)
+        _ = setPrefer_encryption(prefer_encryption)
         self.key = key
     }
 
@@ -140,7 +140,7 @@ class AutocryptContact {
     }
 
     func toString() -> String {
-        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption) | key: \(key)"
+        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption)"
     }
 }
 
@@ -363,6 +363,7 @@ class MailHandler {
                 return
             }
             if let msgs = msg {
+                print("#mails on server: \(msgs.count)")
                 let dispatchGroup = DispatchGroup()
                 for m in msgs {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
@@ -382,7 +383,7 @@ class MailHandler {
     }
 func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: (() -> ())) {
       guard error == nil else {
-            print("Error while fetching mail: \(error)")
+            print("Error while fetching mail: \(String(describing: error))")
             return
         }
         if let data = parser?.data() {
@@ -402,17 +403,16 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
             var autocrypt: AutocryptContact? = nil
             if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER){
                 autocrypt = AutocryptContact(header: header!)
-                print(autocrypt?.toString() ?? "nil")
                 if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0){
                     let pgp = ObjectivePGP.init()
                     pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
                     let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                     do {
                         let pgpKey = try pgp.keys[0].export()
-                        enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
+                        _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
                     }
                     catch {
-                        print("Could not conntect key! \(autocrypt?.toString())")
+                        print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
                     }
                 }
                 
@@ -428,7 +428,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
                 }
             }
 
-            DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from)!, receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
+            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from)!, receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
             newMailCallback()
         }
     }

@@ -42,7 +42,7 @@ class DataHandler {
     static let handler: DataHandler = DataHandler()
     
     private var managedObjectContext: NSManagedObjectContext
-    lazy var mails: [Mail] = self.readMails()
+    lazy var mails: [PersistentMail] = self.readMails()
     lazy var contacts: [EnzevalosContact] = self.getContacts()
     lazy var currentstate: State = self.getCurrentState()
     
@@ -116,15 +116,12 @@ class DataHandler {
         save()
     }
     
-    func save() -> Bool {
-        var succ = false
+    func save(){
         do{
             try managedObjectContext.save()
-            succ = true
         } catch{
             fatalError("Failure to save context\(error)")
         }
-        return succ
     }
     
     private func cleanContacts() {
@@ -150,7 +147,7 @@ class DataHandler {
         for c in contacts {
             while c.from.count > MaxMailsPerRecord {
                 let last = c.from.last!
-                print("delete \(last.uid) of \(last.from.address)")
+                print("delete \(last.uid) of \(last.from.mailAddress)")
                 managedObjectContext.delete(last)
                 save()
                 if let index = mails.index(of: last) {
@@ -251,11 +248,12 @@ class DataHandler {
     
     func getContactByAddress(_ address: String) -> EnzevalosContact {
         // Core function
+        let lowerAdr = address.lowercased()
         for c in contacts {
             if c.addresses != nil {
                 for adr in c.addresses!{
                     let a = adr as! MailAddress
-                    if a.mailAddress ==  address {
+                    if a.mailAddress ==  lowerAdr {
                         return c
                     }
                 }
@@ -263,8 +261,8 @@ class DataHandler {
             if let cnContact = c.cnContact {
                 for adr in cnContact.emailAddresses {
                     let name = adr.value as String
-                    if name == address {
-                        let adr = getMailAddress(address, temporary: false) as! Mail_Address
+                    if name == lowerAdr {
+                        let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
                         c.addToAddresses(adr)
                         adr.contact = c
                         return c
@@ -273,12 +271,12 @@ class DataHandler {
             }
         }
         
-        let search = find("EnzevalosContact", type: "addresses", search: address)
+        let search = find("EnzevalosContact", type: "addresses", search: lowerAdr)
         var contact: EnzevalosContact
         if search == nil || search!.count == 0 {
             contact = NSEntityDescription.insertNewObject(forEntityName: "EnzevalosContact", into: managedObjectContext) as! EnzevalosContact
-            contact.displayname = address
-            let adr = getMailAddress(address, temporary: false)as! Mail_Address
+            contact.displayname = lowerAdr
+            let adr = getMailAddress(lowerAdr, temporary: false)as! Mail_Address
             contact.addToAddresses(adr)
             adr.contact = contact
             contacts.append(contact)
@@ -295,11 +293,9 @@ class DataHandler {
         let contact = getContactByAddress(address)
         contact.displayname = name
         contact.getAddress(address)?.keyID = key
-        contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
+        _ = contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
         return contact
     }
- 
-
     
     func getContacts(_ receivers: [MCOAddress]) -> [EnzevalosContact] {
         var contacts = [EnzevalosContact]()
@@ -322,7 +318,7 @@ class DataHandler {
     
     
     // -------- Start handle to, cc, from addresses --------
-    private func handleFromAddress(_ sender: MCOAddress, fromMail: Mail, autocrypt: AutocryptContact?) {
+    private func handleFromAddress(_ sender: MCOAddress, fromMail: PersistentMail, autocrypt: AutocryptContact?) {
         let adr: Mail_Address
         let contact = getContactByMCOAddress(sender)
         adr = contact.getAddressByMCOAddress(sender)!
@@ -333,11 +329,11 @@ class DataHandler {
         fromMail.from = adr
     }
     
-    private func handleToAddresses(_ receivers: [MCOAddress], mail: Mail) {
+    private func handleToAddresses(_ receivers: [MCOAddress], mail: PersistentMail) {
         mail.addToTo(NSSet(array: getMailAddressesByMCOAddresses(receivers)))
     }
     
-    private func handleCCAddresses(_ cc: [MCOAddress], mail: Mail) {
+    private func handleCCAddresses(_ cc: [MCOAddress], mail: PersistentMail) {
         mail.addToCc(NSSet(array: getMailAddressesByMCOAddresses(cc)))
     }
     
@@ -345,14 +341,14 @@ class DataHandler {
     
     // -------- End handle to, cc, from addresses --------
     
-    func createMail(_ uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) -> Mail {
+    func createMail(_ uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) /*-> Mail*/ {
         
-        let finding = findNum("Mail", type: "uid", search: uid)
-        let mail: Mail
+        let finding = findNum("PersistentMail", type: "uid", search: uid)
+        let mail: PersistentMail
         
         if finding == nil || finding!.count == 0 {
             // create new mail object
-            mail  = NSEntityDescription.insertNewObject(forEntityName: "Mail", into: managedObjectContext) as! Mail
+            mail  = NSEntityDescription.insertNewObject(forEntityName: "PersistentMail", into: managedObjectContext) as! PersistentMail
           
             mail.body = body
             mail.date = time
@@ -374,7 +370,7 @@ class DataHandler {
             mail.decryptIfPossible()
         }
         else {
-            return finding![0] as! Mail
+            return //finding![0] as! Mail
         }
             
         save()
@@ -392,15 +388,15 @@ class DataHandler {
         }
        
         
-        return mail
+        //return mail
     }
 
-    private func readMails() -> [Mail] {
-        var mails = [Mail]()
-        let result = findAll("Mail")
+    private func readMails() -> [PersistentMail] {
+        var mails = [PersistentMail]()
+        let result = findAll("PersistentMail")
         if result != nil {
             for r in result! {
-                let m = r as! Mail
+                let m = r as! PersistentMail
                 mails.append(m)
                 if  getCurrentState().maxUID < m.uid {
                     getCurrentState().maxUID = m.uid
@@ -448,10 +444,12 @@ class DataHandler {
             r.mails.sort()
         }
         records.sort()
+        print("#KeyRecords: \(records.count) ")
+        print("#Mails: \(mails.count)")
         return records
     }
     
-    private func addToRecords(_ m:Mail, records: inout [KeyRecord] ){
+    private func addToRecords(_ m: PersistentMail, records: inout [KeyRecord] ){
     
         var found = false
         for r in records {
@@ -463,12 +461,47 @@ class DataHandler {
         }
         if !found {
             let r = KeyRecord(mail: m)
+            mergeRecords(newRecord: r, records: &records)
             records.append(r)
             records.sort()
         }
     }
     
-    private func addToReceiverRecords(_ m: Mail){
+    
+    private func mergeRecords(newRecord: KeyRecord, records: inout[KeyRecord]){
+        var j = 0
+        if !newRecord.hasKey{
+            return
+        }
+        while j < records.count{
+            let r = records[j]
+            if !r.hasKey && r.ezContact == newRecord.ezContact{
+                var i = 0
+                while i < r.mails.count{
+                    let mail = r.mails[i]
+                    var remove = false
+                    if mail.from.keyID == newRecord.key{
+                        remove = newRecord.addNewMail(mail)
+                        if remove{
+                            r.mails.remove(at: i)
+                        }
+                    }
+                    if !remove{
+                        i = i + 1
+                    }
+                }
+                if r.mails.count == 0{
+                    records.remove(at: j)
+                } else{
+                    j = j + 1
+                }
+            } else{
+                j = j + 1
+            }
+        }
+    }
+    
+    private func addToReceiverRecords(_ m: PersistentMail){
         addToRecords(m, records: &receiverRecords)
     }
     
