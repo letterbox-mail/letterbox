@@ -36,6 +36,7 @@
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
 "InsertMailAddress" = "Please enter your email address";
+"InsertMailAddressAndPassword" = "Please enter your email address and password";
 "InsertPassword" = "Please enter your password";
 "InsertUsername" = "Please enter your username";
 "InterestedInSecureMail" = "Nice to see that you are interested in secure mail!";
