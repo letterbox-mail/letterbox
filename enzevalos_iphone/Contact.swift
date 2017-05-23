@@ -20,13 +20,13 @@ public protocol Contact {
 extension Contact {
     private func makeImageFromName(_ name: String) -> UIImage {
         var text: NSAttributedString
-        var tag: String
-        tag = String()
+        var tag = String()
         if name.characters.count > 0 {
-            tag = String(name.characters.first!)
+            let seperated = name.components(separatedBy: " ")
+            tag = seperated.map({ "\($0.characters.first!)" }).joined()
         }
 
-        text = NSAttributedString(string: tag.capitalized, attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.systemFont(ofSize: 32.2)])
+        text = NSAttributedString(string: tag.uppercased(), attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.systemFont(ofSize: 32.2)])
 
         var myBounds = CGRect()
         myBounds.size.width = 70
