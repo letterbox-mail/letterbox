@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G1421" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
-    <entity name="Mail" representedClassName="Mail" syncable="YES">
+    <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
+        <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
+        <attribute name="encryptionType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="prefer_encryption" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="bcc" inverseEntity="PersistentMail" syncable="YES"/>
+        <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="cc" inverseEntity="PersistentMail" syncable="YES"/>
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" inverseName="addresses" inverseEntity="EnzevalosContact" syncable="YES"/>
+        <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="from" inverseEntity="PersistentMail" syncable="YES"/>
+        <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="to" inverseEntity="PersistentMail" syncable="YES"/>
+    </entity>
+    <entity name="PersistentMail" representedClassName="PersistentMail" syncable="YES">
         <attribute name="body" attributeType="String" syncable="YES"/>
         <attribute name="date" attributeType="Date" defaultDateTimeInterval="-31582140" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="decryptedBody" optional="YES" attributeType="String" syncable="YES"/>
@@ -24,16 +34,6 @@
         <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="from" inverseEntity="Mail_Address" syncable="YES"/>
         <relationship name="to" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="to" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
-    <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
-        <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
-        <attribute name="encryptionType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="prefer_encryption" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" inverseName="bcc" inverseEntity="Mail" syncable="YES"/>
-        <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" inverseName="cc" inverseEntity="Mail" syncable="YES"/>
-        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" inverseName="addresses" inverseEntity="EnzevalosContact" syncable="YES"/>
-        <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" inverseName="from" inverseEntity="Mail" syncable="YES"/>
-        <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail" inverseName="to" inverseEntity="Mail" syncable="YES"/>
-    </entity>
     <entity name="State" representedClassName="State" syncable="YES">
         <attribute name="currentContacts" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="currentMails" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -41,7 +41,7 @@
     </entity>
     <elements>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>
-        <element name="Mail" positionX="-416" positionY="-189" width="128" height="300"/>
+        <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="300"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="165"/>
         <element name="State" positionX="-306" positionY="-27" width="128" height="90"/>
     </elements>

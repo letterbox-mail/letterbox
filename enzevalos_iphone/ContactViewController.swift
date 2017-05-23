@@ -46,6 +46,7 @@ class ContactViewController: UIViewController {
         if let row = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: row, animated: false)
         }
+        navigationController?.toolbar.isHidden = false
     }
 
     func prepareContactSheet() {
@@ -118,6 +119,7 @@ class ContactViewController: UIViewController {
 
     func showContact() {
         self.navigationController?.pushViewController(vc!, animated: true)
+        navigationController?.toolbar.isHidden = true
     }
 
     func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) {
@@ -130,18 +132,23 @@ class ContactViewController: UIViewController {
             let myPath = IndexPath(row: 1, section: 0)
             tableView.selectRow(at: myPath, animated: false, scrollPosition: .none)
             performSegue(withIdentifier: "otherRecord", sender: nil)
+        } else if (sender as? UIButton)?.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
+            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0)
+            performSegue(withIdentifier: "newMail", sender: mail)
         }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newMail" {
             let navigationController = segue.destination as? UINavigationController
-            let controller = navigationController?.topViewController as? SendViewController
-            let indexPath = tableView.indexPathForSelectedRow
-            if controller != nil {
-                // TODO: add address to SendView
-                if indexPath!.row < keyRecord!.ezContact.getMailAddresses().count {
-                    controller!.toField = keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+            if let controller = navigationController?.topViewController as? SendViewController {
+                if let mail = sender as? EphemeralMail {
+                    controller.prefilledMail = mail
+                } else {
+                    let indexPath = tableView.indexPathForSelectedRow
+                    if indexPath!.row < keyRecord!.ezContact.getMailAddresses().count {
+                        controller.toField = keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                    }
                 }
             }
         } else if segue.identifier == "mailList" {

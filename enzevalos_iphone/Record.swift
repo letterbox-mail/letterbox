@@ -12,11 +12,12 @@ import UIKit
 
 
 public protocol Record: Comparable {
+    
     var name: String { get }
     var hasKey: Bool { get }
     var isVerified: Bool { get }
     var ezContact: EnzevalosContact { get }
-    var mails: [Mail] { get }
+    var mails: [PersistentMail] { get }
     var cnContact: CNContact? { get }
     var color: UIColor { get }
     var image: UIImage { get }
@@ -24,5 +25,5 @@ public protocol Record: Comparable {
 
 
     func addNewAddress(_ adr: MailAddress) -> Bool
-    func addNewMail(_ mail: Mail) -> Bool
+    func addNewMail(_ mail:PersistentMail) -> Bool
 }

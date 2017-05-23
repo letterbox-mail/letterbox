@@ -14,9 +14,9 @@
 "Attachment" = "Attachment";
 "Authentification" = "Authentification";
 "Back" = "Back";
-"Bcc" = "Bcc";//"Blindkopie";
+"Bcc" = "BCC";//"Blindkopie";
 "Cancel" = "Cancel";
-"Cc" = "Cc";//"Kopie";
+"Cc" = "CC";//"Kopie";
 "CouldNotConnect" = "Couldn't connect to server. Please check your data and modify it maybe.";
 "ConnectingToMailServer" = "Connecting to mailserver";
 "Contacts" = "Contacts";
@@ -127,3 +127,6 @@
 "answer" = "Answer";
 "couldNotDecryptHeadline" = "Could not decrypt Message";
 "couldNotDecryptText" = "It was not possible to decrypt this message. This might be because the sender used the wrong key. If you expect a message from this contact, you could try reaching out on another channel.\n";
+"inviteContacts" = "Invite unsecure Contacts";
+"inviteSubject" = "Lets use secure email!";
+"inviteText" = "Hey there!\n\nThere is this new App called Enzevalos which makes it really easy to communicate encrypted over email.\n\nI would love for you to try it!\n\nBest regards!";

@@ -1,5 +1,5 @@
 //
-//  Mail+CoreDataClass.swift
+//  PersistentMail+CoreDataClass.swift
 //  enzevalos_iphone
 //
 //  Created by Oliver Wiese on 27/12/16.
@@ -11,9 +11,9 @@
 import Foundation
 import CoreData
 
-@objc(Mail)
-open class Mail: NSManagedObject, Comparable {
-
+@objc(PersistentMail)
+open class PersistentMail: NSManagedObject, Mail {
+    
     var showMessage: Bool = false
 
     var isSecure: Bool {
@@ -180,12 +180,3 @@ open class Mail: NSManagedObject, Comparable {
         return "\(returnString)\(subj)"
     }
 }
-
-public func == (lhs: Mail, rhs: Mail) -> Bool {
-    return lhs.date == rhs.date && lhs.uid == rhs.uid
-}
-
-public func < (lhs: Mail, rhs: Mail) -> Bool {
-    return lhs.date > rhs.date
-}
-
