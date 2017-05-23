@@ -65,13 +65,13 @@ class ContactViewController: UIViewController {
         if let conUI = uiContact {
             let infoButton = UIButton(type: .infoLight)
             vc = CNContactViewController(for: conUI)
-            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
+//            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
             infoButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: infoButton)
         } else {
             let addButton = UIButton(type: .contactAdd)
-            vc = CNContactViewController(forNewContact: keyRecord!.cnContact)
-            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
+            vc = CNContactViewController(forNewContact: keyRecord!.ezContact.newCnContact)
+//            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
             vc!.delegate = self
             addButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)

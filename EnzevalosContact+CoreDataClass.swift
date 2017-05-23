@@ -165,31 +165,34 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
                 self.cnidentifier = con?.identifier
                 return con!
             }
-            // New contact has to be added
-//            let con = CNMutableContact()
-//            let name = self.displayname
-//            if let n = name {
-//                let nameArray = n.characters.split(separator: " ").map(String.init)
-//                switch nameArray.count {
-//                case 1:
-//                    con.givenName = nameArray.first!
-//                case 2..<20: // who has more than two names?!
-//                    con.givenName = nameArray.first!
-//                    con.familyName = nameArray.last!
-//                default:
-//                    con.givenName = "NO"
-//                    con.familyName = "NAME"
-//                }
-//            }
-//
-//            let adr: Mail_Address
-//            if let adrs = self.addresses {
-//                adr = adrs.anyObject() as! Mail_Address
-//                con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address as NSString))
-//            }
 
             return nil
         }
+    }
+    
+    open var newCnContact: CNContact {
+        let con = CNMutableContact()
+        let name = self.displayname
+        if let n = name {
+            let nameArray = n.characters.split(separator: " ").map(String.init)
+            switch nameArray.count {
+            case 1:
+                con.givenName = nameArray.first!
+            case 2..<20: // who has more than two names?!
+                con.givenName = nameArray.first!
+                con.familyName = nameArray.last!
+            default:
+                con.givenName = "NO"
+                con.familyName = "NAME"
+            }
+        }
+
+        let adr: Mail_Address
+        if let adrs = self.addresses {
+            adr = adrs.anyObject() as! Mail_Address
+            con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address as NSString))
+        }
+        return con
     }
 
     func getAddress(_ address: String) -> Mail_Address? {
