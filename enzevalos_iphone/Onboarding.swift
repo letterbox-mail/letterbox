@@ -422,7 +422,7 @@ class Onboarding: NSObject {
         let view = UIView.init()
         view.addSubview(activity)
         view.frame = activity.frame
-        let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("AccessContacts", comment: ""), body: NSLocalizedString("AccessContactsDescription", comment: "Description, why we need access"), videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
+        let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("AccessContacts", comment: ""), body: NSLocalizedString("AccessContactsDescription", comment: "Description, why we need access"), videoURL: nil, inputView: nil, buttonText: NSLocalizedString("GotIt", comment: ""), actionBlock: callback)
         
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])!
         vc.pageControl = UIPageControl.init()
