@@ -62,9 +62,8 @@ class AnimatedSendIcon: UIView {
     
     func switchIcons() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.001 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-            print("zPosition") // TODO: In swift 3, the layer switch seems to work, remove this then
             self.square.layer.zPosition = self.isOnTop ? 1 : 0
-            self.square2.layer.zPosition = !self.isOnTop ? 1 : 0
+            self.square2.layer.zPosition = self.isOnTop ? 0 : 1
             self.isOnTop = !self.isOnTop
         })
         
