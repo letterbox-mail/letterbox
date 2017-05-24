@@ -485,15 +485,17 @@ class PGPEncryption : Encryption {
         return nil
     }
     
-    func autocryptHeader(_ adr: String) -> String {
-        let keyId = self.getActualKeyID(adr)
-        let key = self.getKey(keyId!) as! PGPKeyWrapper
-        let pgpManger = self.keyManager
-        var string = "to=" + adr + "; type=p;prefer-encrypted=" + (UserManager.loadUserValue(Attribute.prefEncryption) as! String) + ";key="
-        if let keyBase64 = pgpManger.pgp.exportKeyWithoutArmor(key.key){
-         string = string + keyBase64
+    func autocryptHeader(_ adr: String) -> String? {
+        if let keyId = self.getActualKeyID(adr){
+            let key = self.getKey(keyId) as! PGPKeyWrapper
+            let pgpManger = self.keyManager
+            var string = "to=" + adr + "; type=p;prefer-encrypted=" + (UserManager.loadUserValue(Attribute.prefEncryption) as! String) + ";key="
+            if let keyBase64 = pgpManger.pgp.exportKeyWithoutArmor(key.key){
+                string = string + keyBase64
+            }
+            return string
         }
-        return string
+        return nil
     }
     
     

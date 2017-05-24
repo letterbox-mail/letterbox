@@ -174,7 +174,9 @@ class MailHandler {
     func add_autocrypt_header(_ builder: MCOMessageBuilder) {
         let adr = UserManager.loadUserValue(Attribute.userAddr) as! String
         let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
-        builder.header.setExtraHeaderValue(pgpenc.autocryptHeader(adr), forName: AUTOCRYPTHEADER)
+        if let header = pgpenc.autocryptHeader(adr){
+            builder.header.setExtraHeaderValue(header, forName: AUTOCRYPTHEADER)
+        }
     }
     
     fileprivate func createHeader(_ builder: MCOMessageBuilder, toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String){

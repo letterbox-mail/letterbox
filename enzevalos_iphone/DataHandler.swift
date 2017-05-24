@@ -108,6 +108,8 @@ class DataHandler {
         }
         receiverRecords = [KeyRecord] ()
         receiverRecords = self.getRecords()
+        managedObjectContext.mergePolicy = NSMergePolicy(merge: NSMergePolicyType.mergeByPropertyObjectTrumpMergePolicyType);
+
     }
     
     func terminate() {
@@ -122,6 +124,31 @@ class DataHandler {
         } catch{
             fatalError("Failure to save context\(error)")
         }
+    }
+    
+    
+    private func removeAll(entity:String){
+        let DelAllReqVar = NSBatchDeleteRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>(entityName: entity))
+        do {
+            try managedObjectContext.execute(DelAllReqVar)
+        }
+        catch {
+            print(error)
+        }
+    }
+    
+    
+    
+    
+    func reset(){
+        removeAll(entity: "EnzevalosContact")
+        removeAll(entity:"PersistentMail")
+        removeAll(entity: "Mail_Address")
+        removeAll(entity: "State")
+        mails.removeAll()
+        contacts.removeAll()
+        receiverRecords.removeAll()
+        currentstate.maxUID = 1
     }
     
     private func cleanContacts() {
