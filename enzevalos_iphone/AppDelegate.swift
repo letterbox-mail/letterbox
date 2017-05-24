@@ -71,17 +71,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 var m = DataHandler.handler.countMails
                 print("Mails: \(m)")
                 DataHandler.handler.reset()
-                Onboarding.keyHandling()
-                UserDefaults.standard.set(false, forKey: "launchedBefore")
-                UserDefaults.standard.set(false, forKey: "reset")
                 m = DataHandler.handler.countMails
                 print("Mails: \(m)")
                 self.window = UIWindow(frame: UIScreen.main.bounds)
                 //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
                 self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
                 self.window?.makeKeyAndVisible()
-
-
+                UserDefaults.standard.set(false, forKey: "launchedBefore")
+                UserDefaults.standard.set(false, forKey: "reset")
             }
         }
     }
