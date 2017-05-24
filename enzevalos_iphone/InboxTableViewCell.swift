@@ -93,9 +93,14 @@ class InboxTableViewCell: UITableViewCell {
                     iconView.image = IconsStyleKit.imageOfPostcardBG
                 }
 
-                self.contact = con.cnContact
-                nameLabel.text = con.name
-                faceView.image = con.getImageOrDefault()
+                var cont: Contact
+                if let contact = con.cnContact {
+                    cont = contact
+                } else {
+                    cont = con.ezContact
+                }
+                nameLabel.text = cont.name
+                faceView.image = cont.getImageOrDefault()
                 faceView.layer.cornerRadius = faceView.frame.height / 2
                 faceView.clipsToBounds = true
             }
@@ -139,8 +144,6 @@ class InboxTableViewCell: UITableViewCell {
             }
         }
     }
-
-    var contact: CNContact?
 
     func cellTouched(_ sender: AnyObject) {
         if let button = sender as? UIButton {

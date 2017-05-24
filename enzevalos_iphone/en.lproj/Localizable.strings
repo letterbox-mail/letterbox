@@ -32,6 +32,8 @@
 "EverythingCorrect" = "Everything correct?";
 "Forward" = "Forward";
 "From" = "From";
+"GetHelp" = "To get help, tap on the letter or postcard in the app.";
+"GotIt" = "Got it!";
 "Hello" = "Hello";
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
@@ -49,6 +51,7 @@
 "KeyNotFound" = "No Key Found. This is an error, contact the developers!";
 "Letter" = "Letter";
 "LetterDamaged" = "Damaged Letter";
+"LetterDescription" = "• a confidential mail\n• written by the stated sender\n• needs participation of sender and receiver. Therefore you can invite contacts in the app.";
 "mail from" = "mail from";
 "Message" = "Message";
 "MoreInformation" = "More Information";
@@ -61,7 +64,9 @@
 "Password" = "Password";
 "Plaintext" = "Plaintext";
 "Postcard" = "Postcard";
+"PostcardDescription" = "• the kind of mail you know\n• neighter confidential, nor you know if it's a forgery\n• everybody can read and manipulate it";
 "Re" = "Re";
+"ReadFollowingPages" = "We try to make secure mail easy to use.\nTherefore please read the next three pages.";
 "Receive" = "Receive";
 "ReceiveError" = "An error occured"; //mehr spezifizieren?
 "ReceiveDamagedInfo" = "Something is wrong with this message. It might have been tempered with.";
@@ -126,3 +131,4 @@
 "inviteContacts" = "Invite unsecure Contacts";
 "inviteSubject" = "Lets use secure email!";
 "inviteText" = "Hey there!\n\nThere is this new App called Enzevalos which makes it really easy to communicate encrypted over email.\n\nI would love for you to try it!\n\nBest regards!";
+"noName" = "NO NAME";

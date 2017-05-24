@@ -16,6 +16,8 @@ class Onboarding: NSObject {
     }
     
     static var textDelegate = TextFieldDelegate.init()
+    static let defaultColor = UIColor.darkGray//UIColor.init(red: 0.6, green: 0.6, blue: 1, alpha: 1)
+    static let textColor = UIColor.white
     static var mailaddress = UITextField.init()
     static var username = UITextField.init()
     static var password = UITextField.init()
@@ -73,10 +75,11 @@ class Onboarding: NSObject {
         
         background = snapshot!
         let postcardBg = snapshot2!
-        let defaultColor = UIColor.init(red: 0.6, green: 0.6, blue: 1, alpha: 1)
         
         //Introduction
-        let intro1 = OnboardingContentViewController.content(withTitle: "Brief", body: "• Eine vertrauliche E-Mail\n• Sie stammt tatsächlich vom angegebenen Absender\n• Benötigt Beteiligung von Sender und Empfänger. Dafür besteht in der App die Möglichkeit Kontakte einzuladen.", image: /*IconsStyleKit.imageOfLetterBG*/ nil, buttonText: nil, action: nil)
+        let intro0 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("ReadFollowingPages", comment: ""), image: nil, buttonText: nil, action: nil)
+        
+        let intro1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Letter", comment: ""), body: NSLocalizedString("LetterDescription", comment: "describe the letter"), image: /*IconsStyleKit.imageOfLetterBG*/ nil, buttonText: nil, action: nil)
         
         intro1.iconHeight = 70
         intro1.iconWidth = 100
@@ -86,7 +89,7 @@ class Onboarding: NSObject {
         UIGraphicsEndImageContext()
         intro1.bodyLabel.textAlignment = NSTextAlignment.left
         
-        let intro2 = OnboardingContentViewController.content(withTitle: "Postkarte", body: "• Eine E-Mail, wie du sie bisher kennst\n• Weder vertraulich, noch steht fest, ob sie gefälscht wurde\n• Von jedem lesbar und veränderbar", image: IconsStyleKit.imageOfPostcardBG, buttonText: nil, action: nil)
+        let intro2 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Postcard", comment: ""), body: NSLocalizedString("PostcardDescription", comment: "describe the postcard"), image: IconsStyleKit.imageOfPostcardBG, buttonText: nil, action: nil)
         
         intro2.iconHeight = 70
         intro2.iconWidth = 100
@@ -96,51 +99,65 @@ class Onboarding: NSObject {
         UIGraphicsEndImageContext()
         intro2.bodyLabel.textAlignment = NSTextAlignment.left
         
+        let intro3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("GetHelp", comment: ""), image: nil, buttonText: nil, action: nil)
+        
         //Content
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Hello", comment: "Welcome"), body: NSLocalizedString("InterestedInSecureMail", comment: "commendation to user for using secure mail"), image: nil, buttonText: nil, action: nil)
         
+        
         mailaddress = UITextField.init()
-        //text.textColor = UIColor.whiteColor()
-        //text.tintColor = UIColor.whiteColor()
-        mailaddress.borderStyle = UITextBorderStyle.line
+        mailaddress.textColor = textColor
+        mailaddress.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Address", comment: ""), attributes: [NSForegroundColorAttributeName : textColor])
+        mailaddress.tintColor = textColor
+        mailaddress.borderStyle = UITextBorderStyle.none
         mailaddress.keyboardType = UIKeyboardType.emailAddress
         mailaddress.returnKeyType = UIReturnKeyType.next
         mailaddress.autocorrectionType = UITextAutocorrectionType.no
         mailaddress.frame = CGRect.init(x: 0, y: /*mailaddressLabel.frame.height+padding*/ 0, width: 50, height: 30)
-        mailaddress.placeholder = NSLocalizedString("Address", comment: "")
         mailaddress.isUserInteractionEnabled = true
         mailaddress.delegate = textDelegate
+        
+        let mailaddressUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.maxY, width: mailaddress.frame.width, height: 0.5))
+        mailaddressUnderline.backgroundColor = textColor
         
         //let page2 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
     
         password = UITextField.init()
-        //text.textColor = UIColor.whiteColor()
-        //text.tintColor = UIColor.whiteColor()
+        password.textColor = textColor
+        password.tintColor = textColor
         password.borderStyle = UITextBorderStyle.none
         password.isSecureTextEntry = true
         password.returnKeyType = UIReturnKeyType.done
-        password.frame = CGRect.init(x: 0, y: mailaddress.frame.height+padding, width: 50, height: 30)
-        password.placeholder = NSLocalizedString("Password", comment: "")
+        password.frame = CGRect.init(x: 0, y: mailaddress.frame.height+padding+mailaddressUnderline.frame.height, width: 50, height: 30)
+        password.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Password", comment: ""), attributes: [NSForegroundColorAttributeName : textColor])
         password.delegate = textDelegate
+        
+        let passwordUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.height+padding+mailaddressUnderline.frame.height+password.frame.height, width: password.frame.width, height: 0.5))
+        passwordUnderline.backgroundColor = textColor
         
         let keyboardToolbar = UIToolbar()
         keyboardToolbar.sizeToFit()
+        keyboardToolbar.barTintColor = defaultColor
+        keyboardToolbar.backgroundColor = defaultColor
         let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissKeyboard))
         keyboardToolbar.items = [flexBarButton, doneBarButton]
         mailaddress.inputAccessoryView = keyboardToolbar
         password.inputAccessoryView = keyboardToolbar
         
-        let credentials = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: mailaddress.frame.height+padding+password.frame.height))
+        let credentials = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: mailaddress.frame.height+mailaddressUnderline.frame.height+padding+password.frame.height+passwordUnderline.frame.height))
         credentials.addSubview(mailaddress)
+        credentials.addSubview(mailaddressUnderline)
         credentials.addSubview(password)
+        credentials.addSubview(passwordUnderline)
         
         let page3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
+        page3.topPadding = 0
         //page3.onlyInputView = true
         
         //let page4 = OnboardingContentViewController.content(withTitle: NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
         
-        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, intro1, intro2, /*page2,*/ page3/*, page4*/])
+        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, intro0, intro1, intro2, intro3, page3/*, page4*/])
         //vc?.shouldBlurBackground = true
         vc?.view.backgroundColor = defaultColor//UIColor.white//UIColor.init(red: 1, green: 1, blue: 1, alpha: 0)
         //vc?.backgroundImage = postcardBg
@@ -204,6 +221,7 @@ class Onboarding: NSObject {
         
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])!
         vc.pageControl = UIPageControl.init()
+        vc.view.backgroundColor = defaultColor
         return vc
     }
     
@@ -215,8 +233,9 @@ class Onboarding: NSObject {
         view.addSubview(activity)
         view.frame = activity.frame
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("CreateAndManageKeys", comment: ""), body: nil, videoURL: nil, inputView: view, buttonText: nil, actionBlock: nil)
-        
-        return Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
+        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
+        vc?.view.backgroundColor = defaultColor
+        return vc!
     }
     
     //UI Definition
@@ -392,7 +411,9 @@ class Onboarding: NSObject {
         
         let last = OnboardingContentViewController.content(withTitle: NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
         
-        return Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, passwd, imap1, imap2, smtp1, smtp2, last])
+        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, passwd, imap1, imap2, smtp1, smtp2, last])
+        vc?.view.backgroundColor = defaultColor
+        return vc!
     }
     
     static func contactView(_ callback: @escaping () -> ()) -> UIViewController {
@@ -401,10 +422,11 @@ class Onboarding: NSObject {
         let view = UIView.init()
         view.addSubview(activity)
         view.frame = activity.frame
-        let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("AccessContacts", comment: ""), body: NSLocalizedString("AccessContactsDescription", comment: "Description, why we need access"), videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
+        let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("AccessContacts", comment: ""), body: NSLocalizedString("AccessContactsDescription", comment: "Description, why we need access"), videoURL: nil, inputView: nil, buttonText: NSLocalizedString("GotIt", comment: ""), actionBlock: callback)
         
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])!
         vc.pageControl = UIPageControl.init()
+        vc.view.backgroundColor = defaultColor
         return vc
     }
     

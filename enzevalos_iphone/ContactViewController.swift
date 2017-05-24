@@ -53,7 +53,10 @@ class ContactViewController: UIViewController {
         let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
         if authorizationStatus == CNAuthorizationStatus.authorized {
             do {
-                uiContact = try AppDelegate.getAppDelegate().contactStore.unifiedContact(withIdentifier: keyRecord!.cnContact!.identifier, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
+                let identifier = keyRecord?.cnContact?.identifier
+                if let id = identifier {
+                    uiContact = try AppDelegate.getAppDelegate().contactStore.unifiedContact(withIdentifier: id, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])
+                }
             } catch {
                 //contact doesn't exist or we don't have authorization
                 //TODO: handle missing authorization
@@ -62,13 +65,13 @@ class ContactViewController: UIViewController {
         if let conUI = uiContact {
             let infoButton = UIButton(type: .infoLight)
             vc = CNContactViewController(for: conUI)
-            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
+//            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
             infoButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: infoButton)
         } else {
             let addButton = UIButton(type: .contactAdd)
-            vc = CNContactViewController(forNewContact: keyRecord!.cnContact)
-            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
+            vc = CNContactViewController(forNewContact: keyRecord!.ezContact.newCnContact)
+//            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
             vc!.delegate = self
             addButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
@@ -183,7 +186,7 @@ extension ContactViewController: UITableViewDataSource {
             case 0:
                 if indexPath.row == 0 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "ContactViewCell") as! ContactViewCell
-                    cell.contactImage.image = keyRecord!.cnContact!.getImageOrDefault()
+                    cell.contactImage.image = keyRecord!.ezContact.getImageOrDefault()
                     cell.contactImage.layer.cornerRadius = cell.contactImage.frame.height / 2
                     cell.contactImage.clipsToBounds = true
                     cell.iconImage.image = drawStatusCircle()

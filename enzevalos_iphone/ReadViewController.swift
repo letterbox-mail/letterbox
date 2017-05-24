@@ -252,10 +252,14 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-            senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: (m.from.contact?.displayname!)!, mail: m.from.mailAddress)
+            if let name = m.from.contact?.nameOptional {
+                senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: name, mail: m.from.mailAddress)
+            } else {
+                senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: m.from.mailAddress, mail: m.from.mailAddress)
+            }
 
             for receiver in m.getReceivers() {
-                if let displayname = receiver.contact?.displayname {
+                if let displayname = receiver.contact?.nameOptional {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
@@ -263,7 +267,7 @@ class ReadViewController: UITableViewController {
             }
 
             for receiver in m.getCCs() {
-                if let displayname = receiver.contact?.displayname {
+                if let displayname = receiver.contact?.nameOptional {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
@@ -271,7 +275,7 @@ class ReadViewController: UITableViewController {
             }
 
             for receiver in m.getBCCs() {
-                if let displayname = receiver.contact?.displayname {
+                if let displayname = receiver.contact?.nameOptional {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: receiver.address, mail: receiver.address)
