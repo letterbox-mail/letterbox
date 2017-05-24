@@ -496,7 +496,7 @@ class Onboarding: NSObject {
                 UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
             }
             if provider == Provider.WEB.rawValue {
-                //Providers.setValues(Provider.WEB)
+                Providers.setValues(Provider.WEB)
             }
         }
         if let pw = password.text, pw != "" {

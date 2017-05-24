@@ -108,5 +108,5 @@ public protocol Encryption {
     
     func keyOfThisEncryption(_ keyData: Data) -> Bool?
     
-    func autocryptHeader(_ adr: String) -> String
+    func autocryptHeader(_ adr: String) -> String?
 }

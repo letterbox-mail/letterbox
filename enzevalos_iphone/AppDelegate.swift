@@ -23,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
         
+       
+        
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
@@ -62,6 +64,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    
+    func resetApp(){
+        if let reset = (UserDefaults.standard.value(forKey: "reset" ) as? Bool) {
+            if reset == true{
+                var m = DataHandler.handler.countMails
+                print("Mails: \(m)")
+                DataHandler.handler.reset()
+                Onboarding.keyHandling()
+                UserDefaults.standard.set(false, forKey: "launchedBefore")
+                UserDefaults.standard.set(false, forKey: "reset")
+                m = DataHandler.handler.countMails
+                print("Mails: \(m)")
+                self.window = UIWindow(frame: UIScreen.main.bounds)
+                //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
+                self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
+                self.window?.makeKeyAndVisible()
+
+
+            }
+        }
+    }
+    
     func setupKeys() {
         self.window?.rootViewController = Onboarding.keyHandlingView()
         DispatchQueue.main.async(execute: {
@@ -90,6 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        resetApp()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
