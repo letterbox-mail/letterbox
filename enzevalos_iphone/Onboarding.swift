@@ -10,11 +10,11 @@ import Foundation
 import Onboard
 
 class Onboarding: NSObject {
-    
+
     override init() {
         super.init()
     }
-    
+
     static var textDelegate = TextFieldDelegate.init()
     static let defaultColor = UIColor.darkGray//UIColor.init(red: 0.6, green: 0.6, blue: 1, alpha: 1)
     static let textColor = UIColor.white
@@ -39,20 +39,20 @@ class Onboarding: NSObject {
     static var imapCheck = false
     static var imapCheckDone = false
     static var manualSet = false
-    
-    static let font = UIFont.init(name: "Helvetica-Light", size: 28)
-    static let padding : CGFloat = 30
-    
-    static var fail : () -> () = {Void in}
-    static var work : () -> () = {Void in}
 
-    static var authenticationRows : [Int : String] = [MCOAuthType.saslLogin.rawValue : "Login", MCOAuthType.saslPlain.rawValue : NSLocalizedString("NormalPassword", comment: ""), MCOAuthType.SASLSRP.rawValue : "SRP", MCOAuthType.SASLCRAMMD5.rawValue : "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue : "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue : "NTLM", MCOAuthType.SASLGSSAPI.rawValue : "GSSAPI", MCOAuthType.saslKerberosV4.rawValue : "KerberosV4"]
-    static var transportRows : [Int : String] = [MCOConnectionType.clear.rawValue : NSLocalizedString("Plaintext", comment: ""), MCOConnectionType.startTLS.rawValue : "StartTLS", MCOConnectionType.TLS.rawValue : "TLS"]
-    
-    static func onboarding(_ callback: @escaping ()->()) -> UIViewController {
-        
+    static let font = UIFont.init(name: "Helvetica-Light", size: 28)
+    static let padding: CGFloat = 30
+
+    static var fail: () -> () = { Void in }
+    static var work: () -> () = { Void in }
+
+    static var authenticationRows: [Int: String] = [MCOAuthType.saslLogin.rawValue: "Login", MCOAuthType.saslPlain.rawValue: NSLocalizedString("NormalPassword", comment: ""), MCOAuthType.SASLSRP.rawValue: "SRP", MCOAuthType.SASLCRAMMD5.rawValue: "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue: "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue: "NTLM", MCOAuthType.SASLGSSAPI.rawValue: "GSSAPI", MCOAuthType.saslKerberosV4.rawValue: "KerberosV4"]
+    static var transportRows: [Int: String] = [MCOConnectionType.clear.rawValue: NSLocalizedString("Plaintext", comment: ""), MCOConnectionType.startTLS.rawValue: "StartTLS", MCOConnectionType.TLS.rawValue: "TLS"]
+
+    static func onboarding(_ callback: @escaping () -> ()) -> UIViewController {
+
         //Background
-        
+
         var myBounds = CGRect()
         myBounds.size.width = 70
         myBounds.size.height = 70
@@ -62,7 +62,7 @@ class Onboarding: NSObject {
         context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
         let snapshot = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        
+
         myBounds = CGRect()
         myBounds.size.width = 70
         myBounds.size.height = 70
@@ -72,42 +72,42 @@ class Onboarding: NSObject {
         context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
         let snapshot2 = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        
+
         background = snapshot!
         let postcardBg = snapshot2!
-        
+
         //Introduction
         let intro0 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("ReadFollowingPages", comment: ""), image: nil, buttonText: nil, action: nil)
-        
+
         let intro1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Letter", comment: ""), body: NSLocalizedString("LetterDescription", comment: "describe the letter"), image: /*IconsStyleKit.imageOfLetterBG*/ nil, buttonText: nil, action: nil)
-        
+
         intro1.iconHeight = 70
         intro1.iconWidth = 100
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 100, height: 70), false, 0)
-        IconsStyleKit.drawLetter(frame:  CGRect(x: 0, y: 0, width: 100, height: 70), fillBackground: true)
+        IconsStyleKit.drawLetter(frame: CGRect(x: 0, y: 0, width: 100, height: 70), fillBackground: true)
         intro1.iconImageView.image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         intro1.bodyLabel.textAlignment = NSTextAlignment.left
-        
+
         let intro2 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Postcard", comment: ""), body: NSLocalizedString("PostcardDescription", comment: "describe the postcard"), image: IconsStyleKit.imageOfPostcardBG, buttonText: nil, action: nil)
-        
+
         intro2.iconHeight = 70
         intro2.iconWidth = 100
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 100, height: 70), false, 0)
-        IconsStyleKit.drawPostcard(frame:  CGRect(x: 0, y: 0, width: 100, height: 70), fillBackground: true)
+        IconsStyleKit.drawPostcard(frame: CGRect(x: 0, y: 0, width: 100, height: 70), fillBackground: true)
         intro2.iconImageView.image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         intro2.bodyLabel.textAlignment = NSTextAlignment.left
-        
+
         let intro3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("GetHelp", comment: ""), image: nil, buttonText: nil, action: nil)
-        
+
         //Content
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Hello", comment: "Welcome"), body: NSLocalizedString("InterestedInSecureMail", comment: "commendation to user for using secure mail"), image: nil, buttonText: nil, action: nil)
-        
-        
+
+
         mailaddress = UITextField.init()
         mailaddress.textColor = textColor
-        mailaddress.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Address", comment: ""), attributes: [NSForegroundColorAttributeName : textColor])
+        mailaddress.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Address", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
         mailaddress.tintColor = textColor
         mailaddress.borderStyle = UITextBorderStyle.none
         mailaddress.keyboardType = UIKeyboardType.emailAddress
@@ -116,25 +116,25 @@ class Onboarding: NSObject {
         mailaddress.frame = CGRect.init(x: 0, y: /*mailaddressLabel.frame.height+padding*/ 0, width: 50, height: 30)
         mailaddress.isUserInteractionEnabled = true
         mailaddress.delegate = textDelegate
-        
+
         let mailaddressUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.maxY, width: mailaddress.frame.width, height: 0.5))
         mailaddressUnderline.backgroundColor = textColor
-        
+
         //let page2 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
-    
+
         password = UITextField.init()
         password.textColor = textColor
         password.tintColor = textColor
         password.borderStyle = UITextBorderStyle.none
         password.isSecureTextEntry = true
         password.returnKeyType = UIReturnKeyType.done
-        password.frame = CGRect.init(x: 0, y: mailaddress.frame.height+padding+mailaddressUnderline.frame.height, width: 50, height: 30)
-        password.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Password", comment: ""), attributes: [NSForegroundColorAttributeName : textColor])
+        password.frame = CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height, width: 50, height: 30)
+        password.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Password", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
         password.delegate = textDelegate
-        
-        let passwordUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.height+padding+mailaddressUnderline.frame.height+password.frame.height, width: password.frame.width, height: 0.5))
+
+        let passwordUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height + password.frame.height, width: password.frame.width, height: 0.5))
         passwordUnderline.backgroundColor = textColor
-        
+
         let keyboardToolbar = UIToolbar()
         keyboardToolbar.sizeToFit()
         keyboardToolbar.barTintColor = defaultColor
@@ -144,28 +144,28 @@ class Onboarding: NSObject {
         keyboardToolbar.items = [flexBarButton, doneBarButton]
         mailaddress.inputAccessoryView = keyboardToolbar
         password.inputAccessoryView = keyboardToolbar
-        
-        let credentials = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: mailaddress.frame.height+mailaddressUnderline.frame.height+padding+password.frame.height+passwordUnderline.frame.height))
+
+        let credentials = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: mailaddress.frame.height + mailaddressUnderline.frame.height + padding + password.frame.height + passwordUnderline.frame.height))
         credentials.addSubview(mailaddress)
         credentials.addSubview(mailaddressUnderline)
         credentials.addSubview(password)
         credentials.addSubview(passwordUnderline)
-        
+
         let page3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
         page3.topPadding = 0
         //page3.onlyInputView = true
-        
+
         //let page4 = OnboardingContentViewController.content(withTitle: NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
-        
+
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, intro0, intro1, intro2, intro3, page3/*, page4*/])
         //vc?.shouldBlurBackground = true
         vc?.view.backgroundColor = defaultColor//UIColor.white//UIColor.init(red: 1, green: 1, blue: 1, alpha: 0)
         //vc?.backgroundImage = postcardBg
         vc?.shouldFadeTransitions = true
         //vc?.shouldMaskBackground = false
-        
+
         let duration = 0.5
-        
+
         intro2.viewWillAppearBlock = {
             //vc?.backgroundImage = postcardBg
             //UIView.animate(withDuration: 1.3, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.backgroundImageView.image = postcardBg; vc?.view.setNeedsDisplay()})
@@ -187,7 +187,7 @@ class Onboarding: NSObject {
         intro1.viewWillAppearBlock = {
             //vc?.backgroundImage = postcardBg
             //UIView.animate(withDuration: 1.3, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.backgroundImageView.image = postcardBg; vc?.view.setNeedsDisplay()})
-            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.view.backgroundColor = ThemeManager.encryptedMessageColor(); vc?.view.setNeedsDisplay()})
+            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.view.backgroundColor = ThemeManager.encryptedMessageColor(); vc?.view.setNeedsDisplay() })
             //vc?.fadeBackground(postcardBg)
         }
         intro1.viewWillDisappearBlock = {
@@ -200,31 +200,31 @@ class Onboarding: NSObject {
                 }
             })
         }
-        
+
         return vc!
     }
-    
-    static func dismissKeyboard(){
+
+    static func dismissKeyboard() {
         mailaddress.endEditing(true)
         password.endEditing(true)
     }
-    
+
     //UI Definition
     static func checkConfigView() -> UIViewController {
         let activity = UIActivityIndicatorView.init()
         activity.startAnimating()
-        
+
         let view = UIView.init()
         view.addSubview(activity)
         view.frame = activity.frame
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("ConnectingToMailServer", comment: ""), body: nil, videoURL: nil, inputView: view, buttonText: nil, actionBlock: nil)
-        
+
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])!
         vc.pageControl = UIPageControl.init()
         vc.view.backgroundColor = defaultColor
         return vc
     }
-    
+
     //UI Definition
     static func keyHandlingView() -> UIViewController {
         let activity = UIActivityIndicatorView.init()
@@ -237,15 +237,15 @@ class Onboarding: NSObject {
         vc?.view.backgroundColor = defaultColor
         return vc!
     }
-    
+
     //UI Definition
-    static func detailOnboarding(_ callback: @escaping ()->()) -> UIViewController {
-        
+    static func detailOnboarding(_ callback: @escaping () -> ()) -> UIViewController {
+
         let start = OnboardingContentViewController.content(withTitle: NSLocalizedString("WhatAShame", comment: ""), body: NSLocalizedString("CouldNotConnect", comment: ""), videoURL: nil, inputView: nil, buttonText: nil, actionBlock: nil)
-        
-        
+
+
         let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
-        
+
         username = UITextField.init()
         //text.textColor = UIColor.whiteColor()
         //text.tintColor = UIColor.whiteColor()
@@ -255,38 +255,38 @@ class Onboarding: NSObject {
         username.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
         username.placeholder = NSLocalizedString("Username", comment: "")
         username.text = UserManager.loadUserValue(Attribute.userName) as? String
-        
+
         let user = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertUsername", comment: ""), videoURL: nil, inputView: username, buttonText: nil, actionBlock: nil)
-        
+
         let passwd = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertPassword", comment: ""), videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
-        
+
         imapServer.borderStyle = UITextBorderStyle.roundedRect
         imapServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
         imapServer.text = UserManager.loadUserValue(Attribute.imapHostname) as? String
-        
+
         let imapLabel = UILabel.init()
         imapLabel.text = "IMAP-Port"
-        
+
         imapLabel.textColor = UIColor.white;
         imapLabel.font = font
         imapLabel.numberOfLines = 0;
         imapLabel.textAlignment = NSTextAlignment.center;
-        imapLabel.frame = CGRect.init(x: 0, y: imapServer.frame.height+padding, width: 50, height: 30)
+        imapLabel.frame = CGRect.init(x: 0, y: imapServer.frame.height + padding, width: 50, height: 30)
         imapPort.borderStyle = UITextBorderStyle.roundedRect
         imapPort.text = "0"
         if let port = UserManager.loadUserValue(Attribute.imapPort) {
             imapPort.text = "\(port as! Int)"
         }
         imapPort.keyboardType = UIKeyboardType.numberPad
-        imapPort.frame = CGRect.init(x: 0, y: imapServer.frame.height+padding+imapLabel.frame.height+padding, width: 50, height: 30)
-        
-        let imap = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: imapServer.frame.height+padding+imapLabel.frame.height+padding+imapPort.frame.height))
+        imapPort.frame = CGRect.init(x: 0, y: imapServer.frame.height + padding + imapLabel.frame.height + padding, width: 50, height: 30)
+
+        let imap = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: imapServer.frame.height + padding + imapLabel.frame.height + padding + imapPort.frame.height))
         imap.addSubview(imapServer)
         imap.addSubview(imapLabel)
         imap.addSubview(imapPort)
-        
+
         let imap1 = OnboardingContentViewController.content(withTitle: nil, body: "IMAP-Server", videoURL: nil, inputView: imap, buttonText: nil, actionBlock: nil)
-        
+
         imapTransportEncryption = UIPickerView()
         imapTransDataDelegate = PickerDataDelegate.init(rows: Array(transportRows.values))
         imapTransportEncryption.dataSource = imapTransDataDelegate
@@ -298,23 +298,23 @@ class Onboarding: NSObject {
         imapTransDataDelegate.pickedValue = transportRows[row]!
         row = imapTransDataDelegate.rows.index(of: transportRows[row]!)!
         //if Array(transportRows.keys).contains(row){
-            imapTransportEncryption.selectRow(row, inComponent: 0, animated: false)
+        imapTransportEncryption.selectRow(row, inComponent: 0, animated: false)
         //}
-        
+
         let imapAuthLabel = UILabel.init()
-        imapAuthLabel.text = "IMAP-"+NSLocalizedString("Authentification", comment: "")
-        
+        imapAuthLabel.text = "IMAP-" + NSLocalizedString("Authentification", comment: "")
+
         imapAuthLabel.textColor = UIColor.white;
         imapAuthLabel.font = font
         imapAuthLabel.numberOfLines = 0;
         imapAuthLabel.textAlignment = NSTextAlignment.center;
         imapAuthLabel.frame = CGRect.init(x: 0, y: imapTransportEncryption.frame.height, width: 50, height: 30)
-        
+
         imapAuthentication = UIPickerView()
         imapAuthDataDelegate = PickerDataDelegate.init(rows: Array(authenticationRows.values))
         imapAuthentication.dataSource = imapAuthDataDelegate
         imapAuthentication.delegate = imapAuthDataDelegate
-        imapAuthentication.frame = CGRect.init(x: 0, y: imapTransportEncryption.frame.height+imapAuthLabel.frame.height, width: 50, height: 100)
+        imapAuthentication.frame = CGRect.init(x: 0, y: imapTransportEncryption.frame.height + imapAuthLabel.frame.height, width: 50, height: 100)
         imapAuthentication.reloadAllComponents()
         imapAuthentication.reloadInputViews()
         imapAuthentication.tintColor = UIColor.white
@@ -323,45 +323,45 @@ class Onboarding: NSObject {
         imapAuthDataDelegate.pickedValue = authenticationRows[row]!
         row = Array(authenticationRows.values).index(of: authenticationRows[row]!)!
         //if Array(authenticationRows.keys).contains(row){
-            imapAuthentication.selectRow(row, inComponent: 0, animated: false)
+        imapAuthentication.selectRow(row, inComponent: 0, animated: false)
         //}
-        
-        let imapAuth = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: imapTransportEncryption.frame.height+padding+imapAuthLabel.frame.height+imapAuthentication.frame.height))
+
+        let imapAuth = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: imapTransportEncryption.frame.height + padding + imapAuthLabel.frame.height + imapAuthentication.frame.height))
         imapAuth.addSubview(imapTransportEncryption)
         imapAuth.addSubview(imapAuthLabel)
         imapAuth.addSubview(imapAuthentication)
         let boolPointer = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
         boolPointer[0] = false
-        let imap2 = OnboardingContentViewController.content(withTitle: nil, body: "IMAP-"+NSLocalizedString("Transportencryption", comment: ""), videoURL: nil, inputView: imapAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
-        
-        
+        let imap2 = OnboardingContentViewController.content(withTitle: nil, body: "IMAP-" + NSLocalizedString("Transportencryption", comment: ""), videoURL: nil, inputView: imapAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
+
+
         smtpServer.borderStyle = UITextBorderStyle.roundedRect
         smtpServer.text = UserManager.loadUserValue(Attribute.smtpHostname) as? String
         smtpServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
-        
+
         let smtpLabel = UILabel.init()
         smtpLabel.text = "SMTP-Port"
-        
+
         smtpLabel.textColor = UIColor.white;
         smtpLabel.font = font
         smtpLabel.numberOfLines = 0;
         smtpLabel.textAlignment = NSTextAlignment.center;
-        smtpLabel.frame = CGRect.init(x: 0, y: smtpServer.frame.height+padding, width: 50, height: 30)
+        smtpLabel.frame = CGRect.init(x: 0, y: smtpServer.frame.height + padding, width: 50, height: 30)
         smtpPort.borderStyle = UITextBorderStyle.roundedRect
         smtpPort.text = "0"
         if let port = UserManager.loadUserValue(Attribute.smtpPort) {
             smtpPort.text = "\(port as! Int)"
         }
         smtpPort.keyboardType = UIKeyboardType.numberPad
-        smtpPort.frame = CGRect.init(x: 0, y: smtpServer.frame.height+padding+smtpLabel.frame.height+padding, width: 50, height: 30)
-        
-        let smtp = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: smtpServer.frame.height+padding+smtpLabel.frame.height+padding+smtpPort.frame.height))
+        smtpPort.frame = CGRect.init(x: 0, y: smtpServer.frame.height + padding + smtpLabel.frame.height + padding, width: 50, height: 30)
+
+        let smtp = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: smtpServer.frame.height + padding + smtpLabel.frame.height + padding + smtpPort.frame.height))
         smtp.addSubview(smtpServer)
         smtp.addSubview(smtpLabel)
         smtp.addSubview(smtpPort)
-        
+
         let smtp1 = OnboardingContentViewController.content(withTitle: nil, body: "SMTP-Server", videoURL: nil, inputView: smtp, buttonText: nil, actionBlock: nil)
-        
+
         smtpTransportEncryption = UIPickerView()
         smtpTransDataDelegate = PickerDataDelegate.init(rows: Array(transportRows.values))
         smtpTransportEncryption.dataSource = smtpTransDataDelegate
@@ -375,21 +375,21 @@ class Onboarding: NSObject {
         //if Array(transportRows.keys).contains(row){
         smtpTransportEncryption.selectRow(row, inComponent: 0, animated: false)
         //}
-        
+
         let smtpAuthLabel = UILabel.init()
-        smtpAuthLabel.text = "SMTP-"+NSLocalizedString("Authentification", comment: "")
-        
+        smtpAuthLabel.text = "SMTP-" + NSLocalizedString("Authentification", comment: "")
+
         smtpAuthLabel.textColor = UIColor.white;
         smtpAuthLabel.font = font
         smtpAuthLabel.numberOfLines = 0;
         smtpAuthLabel.textAlignment = NSTextAlignment.center;
         smtpAuthLabel.frame = CGRect.init(x: 0, y: smtpTransportEncryption.frame.height, width: 50, height: 30)
-        
+
         smtpAuthentication = UIPickerView()
         smtpAuthDataDelegate = PickerDataDelegate.init(rows: Array(authenticationRows.values))
         smtpAuthentication.dataSource = smtpAuthDataDelegate
         smtpAuthentication.delegate = smtpAuthDataDelegate
-        smtpAuthentication.frame = CGRect.init(x: 0, y: smtpTransportEncryption.frame.height+smtpAuthLabel.frame.height, width: 50, height: 100)
+        smtpAuthentication.frame = CGRect.init(x: 0, y: smtpTransportEncryption.frame.height + smtpAuthLabel.frame.height, width: 50, height: 100)
         smtpAuthentication.reloadAllComponents()
         smtpAuthentication.reloadInputViews()
         smtpAuthentication.tintColor = UIColor.white
@@ -400,22 +400,22 @@ class Onboarding: NSObject {
         //if Array(authenticationRows.keys).contains(row){
         smtpAuthentication.selectRow(row, inComponent: 0, animated: false)
         //}
-        
-        let smtpAuth = UIView.init(frame: CGRect.init(x:0, y:0, width: 50, height: smtpTransportEncryption.frame.height+padding+smtpAuthLabel.frame.height+smtpAuthentication.frame.height))
+
+        let smtpAuth = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: smtpTransportEncryption.frame.height + padding + smtpAuthLabel.frame.height + smtpAuthentication.frame.height))
         smtpAuth.addSubview(smtpTransportEncryption)
         smtpAuth.addSubview(smtpAuthLabel)
         smtpAuth.addSubview(smtpAuthentication)
         boolPointer[0] = false
-        let smtp2 = OnboardingContentViewController.content(withTitle: nil, body: "SMTP-"+NSLocalizedString("Transportencryption", comment: ""), videoURL: nil, inputView: smtpAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
+        let smtp2 = OnboardingContentViewController.content(withTitle: nil, body: "SMTP-" + NSLocalizedString("Transportencryption", comment: ""), videoURL: nil, inputView: smtpAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
 
-        
+
         let last = OnboardingContentViewController.content(withTitle: NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
-        
+
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, passwd, imap1, imap2, smtp1, smtp2, last])
         vc?.view.backgroundColor = defaultColor
         return vc!
     }
-    
+
     static func contactView(_ callback: @escaping () -> ()) -> UIViewController {
         let activity = UIActivityIndicatorView.init()
         activity.startAnimating()
@@ -423,17 +423,17 @@ class Onboarding: NSObject {
         view.addSubview(activity)
         view.frame = activity.frame
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("AccessContacts", comment: ""), body: NSLocalizedString("AccessContactsDescription", comment: "Description, why we need access"), videoURL: nil, inputView: nil, buttonText: NSLocalizedString("GotIt", comment: ""), actionBlock: callback)
-        
+
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])!
         vc.pageControl = UIPageControl.init()
         vc.view.backgroundColor = defaultColor
         return vc
     }
-    
-    static func checkContact(_ callback : @escaping (Bool) -> ()){
+
+    static func checkContact(_ callback: @escaping (Bool) -> ()) {
         AppDelegate.getAppDelegate().requestForAccess(callback)
     }
-    
+
     static func checkConfig(_ fail: @escaping () -> (), work: @escaping () -> ()) -> Bool {
         smtpCheckDone = false
         imapCheckDone = false
@@ -451,7 +451,7 @@ class Onboarding: NSObject {
         //print(UserManager.loadUserValue(Attribute.ConnectionType) as! MCOConnectionType)
         return true
     }
-    
+
     static func imapCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
         imapCheckDone = true
         imapCheck = error == nil
@@ -461,8 +461,8 @@ class Onboarding: NSObject {
         }
         fail()
     }
-    
-    static func smtpCompletion(_ error: Error?){ //FIXME: vorher NSError? Mit Error? immer noch gültig?
+
+    static func smtpCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
         smtpCheckDone = true
         smtpCheck = error == nil
         if smtpCheck {
@@ -471,10 +471,10 @@ class Onboarding: NSObject {
         }
         fail()
     }
-    
+
     static func setGuessValues() {
-        
-        if let mailAddress = mailaddress.text, !manualSet && mailAddress != "" && mailAddress.contains("@") {
+
+        if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), !manualSet && mailAddress != "" && mailAddress.contains("@") {
             let guessedUserName = mailAddress.components(separatedBy: "@")[0]
             let provider = mailAddress.components(separatedBy: "@")[1]
             setServerValues(mailaddress: mailAddress)
@@ -516,14 +516,14 @@ class Onboarding: NSObject {
             UserManager.storeUserValue(keyForValue(transportRows, value: smtpTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpConnectionType)
             UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
         }
-        
+
     }
-    
+
     static func setServerValues(mailaddress: String) {
         let manager = MCOMailProvidersManager.shared()!
         let path = Bundle.main.path(forResource: "providers", ofType: "json")
         manager.registerProviders(withFilename: path)
-        
+
         //------- DEBUG -------
         if let provider = manager.provider(forEmail: mailaddress) {
             if let imap = (provider.imapServices() as? [MCONetService]), let smtp = (provider.smtpServices() as? [MCONetService]) {
@@ -532,12 +532,12 @@ class Onboarding: NSObject {
             }
         }
         //------- DEBUG -------
-        
+
         if let provider = manager.provider(forEmail: mailaddress), let imap = (provider.imapServices() as? [MCONetService]), imap != [], let smtp = (provider.smtpServices() as? [MCONetService]), smtp != [] {
             let imapService = imap[0]
             UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.web.de") as AnyObject?, attribute: Attribute.imapHostname)
             UserManager.storeUserValue((imapService.info()["port"] ?? 587) as AnyObject?, attribute: Attribute.imapPort)
-            
+
             if let trans = imapService.info()["ssl"] as? Bool, trans {
                 UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
             } else if let trans = imapService.info()["starttls"] as? Bool, trans {
@@ -545,7 +545,7 @@ class Onboarding: NSObject {
             } else {
                 UserManager.storeUserValue(MCOConnectionType.clear.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
             }
-            
+
             if let auth = imapService.info()["auth"] as? String, auth == "saslPlain" {
                 UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
             } else if let auth = imapService.info()["auth"] as? String, auth == "saslLogin" {
@@ -569,11 +569,11 @@ class Onboarding: NSObject {
             } else {
                 UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
             }
-            
+
             let smtpService = smtp[0]
             UserManager.storeUserValue((smtpService.info()["hostname"] ?? "smtp.web.de") as AnyObject?, attribute: Attribute.smtpHostname)
             UserManager.storeUserValue((smtpService.info()["port"] ?? 993) as AnyObject?, attribute: Attribute.smtpPort)
-            
+
             if let trans = smtpService.info()["ssl"] as? Bool, trans {
                 UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.smtpConnectionType)
             } else if let trans = smtpService.info()["starttls"] as? Bool, trans {
@@ -581,7 +581,7 @@ class Onboarding: NSObject {
             } else {
                 UserManager.storeUserValue(MCOConnectionType.clear.rawValue as AnyObject?, attribute: Attribute.smtpConnectionType)
             }
-            
+
             if let auth = smtpService.info()["auth"] as? String, auth == "saslPlain" {
                 UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
             } else if let auth = smtpService.info()["auth"] as? String, auth == "saslLogin" {
@@ -607,7 +607,7 @@ class Onboarding: NSObject {
             }
         }
     }
-    
+
     static func keyHandling() {
         for encType in iterateEnum(EncryptionType.self) {
             if let enc = EnzevalosEncryptionHandler.getEncryption(encType) {
@@ -615,165 +615,191 @@ class Onboarding: NSObject {
             }
         }
         EnzevalosEncryptionHandler.getEncryption(.PGP)?.printAllKeyIDs()
-            //---------------------------------------
-            //Import private Key BEGIN
-            
-            var path = Bundle.main.path(forResource: "alice2005-private", ofType: "gpg")        //<---- Schlüsseldatei
-            if UserManager.loadUserValue(Attribute.userAddr)!.contains("@") && UserManager.loadUserValue(Attribute.userAddr)!.components(separatedBy: "@")[1] == Provider.ENZEVALOS.rawValue {
-                path = Bundle.main.path(forResource: "quizer1-private", ofType: "asc")
-            }
-            var pgp = ObjectivePGP.init()
-            pgp.importKeys(fromFile: path!, allowDuplicates: false)
-            var enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-            do {
-                let data = try pgp.keys[0].export()
-                _ = enc?.addKey(data, forMailAddresses: [])
-            }
-            catch _ {}
-            
-            //Import private key END
-            //---------------------------------------
-            //---------------------------------------
-            //Import public Key BEGIN
-            
-            path = Bundle.main.path(forResource: "JakobBode", ofType: "asc")               //<---- Schlüsseldatei
-            pgp = ObjectivePGP.init()
-            pgp.importKeys(fromFile: path!, allowDuplicates: false)
-            enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-            do {
-                let data = try pgp.keys[0].export()
-                _ = enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"])                           //<---- Emailadresse
-            }
-            catch _ {}
-            
-            //Import public key END
-            //---------------------------------------
-            //---------------------------------------
-            //Import public Key BEGIN
-            
-            path = Bundle.main.path(forResource: "alice2005-public", ofType: "gpg")               //<---- Schlüsseldatei
-            pgp = ObjectivePGP.init()
-            pgp.importKeys(fromFile: path!, allowDuplicates: false)
-            enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-            do {
-                let data = try pgp.keys[0].export()
-                _ = enc?.addKey(data, forMailAddresses: ["alice2005@web.de"])                           //<---- Emailadresse
-            }
-            catch _ {}
-            
-            //Import public key END
-            //---------------------------------------
-            //---------------------------------------
-            //Import public Key BEGIN
-            
-            path = Bundle.main.path(forResource: "quizer1-public", ofType: "asc")               //<---- Schlüsseldatei
-            pgp = ObjectivePGP.init()
-            pgp.importKeys(fromFile: path!, allowDuplicates: false)
-            enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-            do {
-                let data = try pgp.keys[0].export()
-                _ = enc?.addKey(data, forMailAddresses: ["quizer1@enzevalos.de"])                           //<---- Emailadresse
-            }
-            catch _ {}
-            
-            //Import public key END
-            //---------------------------------------
+        //---------------------------------------
+        //Import private Key BEGIN
+
+        var path: String?
+        print(UserManager.loadUserValue(Attribute.userAddr)! as! String)
+        switch UserManager.loadUserValue(Attribute.userAddr)! as! String {
+        case "idsolutions@enzevalos.de":
+            path = Bundle.main.path(forResource: "idsolutions-private", ofType: "gpg")
+        case "nchr@enzevalos.de":
+            path = Bundle.main.path(forResource: "nchr-private", ofType: "gpg")
+        case "ncpayroll@enzevalos.de":
+            path = Bundle.main.path(forResource: "ncpayroll-private", ofType: "gpg")
+        case "ullimuelle@web.de":
+            path = Bundle.main.path(forResource: "ullimuelle-private", ofType: "gpg")
+        default:
+            path = Bundle.main.path(forResource: "alice2005-private", ofType: "gpg")
+        }
+
+        var pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: [])
+        }
+        catch _ { }
+
+        //Import private key END
+        //---------------------------------------
+        //---------------------------------------
+        //Import public Key BEGIN
+
+        path = Bundle.main.path(forResource: "JakobBode", ofType: "asc") //<---- Schlüsseldatei
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"]) //<---- Emailadresse
+        }
+        catch _ { }
+
+        //Import public key END
+        //---------------------------------------
+        //---------------------------------------
+        //Import public Key BEGIN
+
+        path = Bundle.main.path(forResource: "alice2005-public", ofType: "gpg") //<---- Schlüsseldatei
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["alice2005@web.de"]) //<---- Emailadresse
+        }
+        catch _ { }
+
+        //Import public key END
+        //---------------------------------------
+        //---------------------------------------
+        //Import public keys for labstudy BEGIN
+
+        path = Bundle.main.path(forResource: "idsolutions-public", ofType: "gpg")
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["idsolutions@enzevalos.de"])
+        }
+        catch _ { }
+
+//        path = Bundle.main.path(forResource: "nchr-public", ofType: "gpg")
+//        pgp = ObjectivePGP.init()
+//        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+//        do {
+//            let data = try pgp.keys[0].export()
+//            _ = enc?.addKey(data, forMailAddresses: ["nchr@enzevalos.de"])
+//        }
+//        catch _ { }
+//
+//        path = Bundle.main.path(forResource: "ncpayroll-public", ofType: "gpg")
+//        pgp = ObjectivePGP.init()
+//        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+//        do {
+//            let data = try pgp.keys[0].export()
+//            _ = enc?.addKey(data, forMailAddresses: ["ncpayroll@enzevalos.de"])
+//        }
+//        catch _ { }
+
+        //Import public keys for labstudy END
+        //---------------------------------------
     }
-    
+
     static func iterateEnum<T: Hashable>(_: T.Type) -> AnyIterator<T> {
         var i = 0
         return AnyIterator {
             let next = withUnsafePointer(to: &i) { UnsafeRawPointer($0).load(as: T.self) }
             i = i + 1
-            return next.hashValue == (i-1) ? next : nil
+            return next.hashValue == (i - 1) ? next : nil
         }
     }
-    
-    
+
+
     //Inspired by http://stackoverflow.com/questions/32692450/swift-dictionary-get-key-for-values
-    static func keyForValue(_ dict : [Int : String], value : String) -> [Int]{
+    static func keyForValue(_ dict: [Int: String], value: String) -> [Int] {
         let keys = dict.filter {
             return $0.1 == value
-            }.map {
-                return $0.0
+        }.map {
+            return $0.0
         }
         return keys
     }
 }
 
 class TextFieldDelegate: NSObject, UITextFieldDelegate {
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print("hallo")
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == Onboarding.mailaddress {
             textField.resignFirstResponder()
             Onboarding.password.becomeFirstResponder()
             return false
         }
-        else if textField == Onboarding.password {
-            textField.resignFirstResponder()
-            return true
+            else if textField == Onboarding.password {
+                textField.resignFirstResponder()
+                return true
         }
         return true
     }
-    
+
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
         return true
     }
 }
 
-class PickerDataDelegate : NSObject, UIPickerViewDataSource {
+class PickerDataDelegate: NSObject, UIPickerViewDataSource {
     var rows = ["Keine", "Normal, Password", "Login"]
     var pickedValue = ""
-    
-    init(rows : [String]){
+
+    init(rows: [String]) {
         super.init()
         self.rows = rows
     }
-    
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return rows.count
     }
-    
-    
-    
+
+
+
 }
-extension PickerDataDelegate : UIPickerViewDelegate {
-    
+extension PickerDataDelegate: UIPickerViewDelegate {
+
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 50
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return rows[row]
     }
-    
+
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let label = UILabel(frame: CGRect.init(x: 0, y: 0, width: 0/*pickerView.frame.width*/, height: 30))
         label.text = rows[row]
         label.textAlignment = NSTextAlignment.center
-        label.font = Onboarding.font?.withSize((Onboarding.font?.pointSize)!-CGFloat(5))
+        label.font = Onboarding.font?.withSize((Onboarding.font?.pointSize)! - CGFloat(5))
         //label.backgroundColor = UIColor.greenColor()
         label.textColor = UIColor.white
         return label
     }
-    
+
     /*func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         if row < 0 || row >= rows.count {
             return nil
         }
         return NSAttributedString(string: rows[row])
     }*/
-    
-    
+
+
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         pickedValue = rows[row]
     }

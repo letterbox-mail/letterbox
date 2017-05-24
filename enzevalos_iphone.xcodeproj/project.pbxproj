@@ -122,6 +122,8 @@
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
+		F189C17F1ED59FEF00BAE9B3 /* idsolutions-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */; };
+		F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */; };
 		F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445D1E7044B70080C041 /* FlipTransition.swift */; };
 		F18B44601E704C550080C041 /* ReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445F1E704C550080C041 /* ReplaceSegue.swift */; };
 		F18B44621E73286C0080C041 /* ReadVENDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B44611E73286C0080C041 /* ReadVENDelegate.swift */; };
@@ -325,6 +327,8 @@
 		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
+		F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "idsolutions-private.gpg"; sourceTree = "<group>"; };
+		F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "idsolutions-public.gpg"; sourceTree = "<group>"; };
 		F18B445D1E7044B70080C041 /* FlipTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipTransition.swift; sourceTree = "<group>"; };
 		F18B445F1E704C550080C041 /* ReplaceSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaceSegue.swift; sourceTree = "<group>"; };
 		F18B44611E73286C0080C041 /* ReadVENDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadVENDelegate.swift; sourceTree = "<group>"; };
@@ -624,6 +628,8 @@
 		A1C7FF8B1E895316000D1E92 /* keys */ = {
 			isa = PBXGroup;
 			children = (
+				F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */,
+				F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */,
 				A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */,
 				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
 				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
@@ -824,7 +830,9 @@
 				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
 				A16BA2121E0439B6005E29E3 /* providers.json in Resources */,
 				A1C7FF8F1E895367000D1E92 /* quizer1-public.asc in Resources */,
+				F189C17F1ED59FEF00BAE9B3 /* idsolutions-private.gpg in Resources */,
 				A1C7FF911E8955BD000D1E92 /* quizer1-private.asc in Resources */,
+				F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
 				A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */,
