@@ -610,8 +610,7 @@ class Onboarding: NSObject {
     
     static func keyHandling() {
         for encType in iterateEnum(EncryptionType.self) {
-            let encryption = EnzevalosEncryptionHandler.getEncryption(encType)
-            if let enc = encryption {
+            if let enc = EnzevalosEncryptionHandler.getEncryption(encType) {
                 enc.removeAllKeys()
             }
         }
