@@ -304,6 +304,7 @@ class SendViewController: UIViewController {
     }
 
     func insertName(_ name: String, address: String) {
+        let address = address.lowercased()
         if toText.isFirstResponder {
             toText.delegate?.tokenField!(toText, didEnterText: name, mail: address)
             if LogHandler.logging {

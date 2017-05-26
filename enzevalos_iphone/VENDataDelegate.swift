@@ -49,7 +49,8 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenField(_ tokenField: VENTokenField, didEnterText text: String) {
-        tokenField.textTokens.add(text.lowercased())
+        let text = text.lowercased()
+        tokenField.textTokens.add(text)
         if AddressHandler.inContacts(text) {
             //TODO Mailadresse aus Kontakt holen
         }
@@ -62,6 +63,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenField(_ tokenField: VENTokenField, didEnterText text: String, mail email: String) {
+        let email = email.lowercased()
         tokenField.textTokens.add(text)
         tokenField.mailTokens.add(email)
         tokenField.reloadData()
