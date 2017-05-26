@@ -474,7 +474,7 @@ class Onboarding: NSObject {
 
     static func setGuessValues() {
 
-        if let mailAddress = mailaddress.text, !manualSet && mailAddress != "" && mailAddress.contains("@") {
+        if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), !manualSet && mailAddress != "" && mailAddress.contains("@") {
             let guessedUserName = mailAddress.components(separatedBy: "@")[0]
             let provider = mailAddress.components(separatedBy: "@")[1]
             setServerValues(mailaddress: mailAddress)
@@ -619,6 +619,7 @@ class Onboarding: NSObject {
         //Import private Key BEGIN
 
         var path: String?
+        print(UserManager.loadUserValue(Attribute.userAddr)! as! String)
         switch UserManager.loadUserValue(Attribute.userAddr)! as! String {
         case "idsolutions@enzevalos.de":
             path = Bundle.main.path(forResource: "idsolutions-private", ofType: "gpg")
