@@ -99,6 +99,7 @@
 "TwoDaysAgo" = "Vorgestern";
 "Username" = "Nutzername";
 "WhatAShame" = "Schade!";
+"WrongMailAddressOrPassword" = "Die E-Mail-Adresse oder das Passwort waren falsch. Bitte probiere es erneut!";
 "write" = "verfassen";
 "Yesterday" = "Gestern";
 "NoFurtherMessages" = "Keine weiteren Nachrichten...";

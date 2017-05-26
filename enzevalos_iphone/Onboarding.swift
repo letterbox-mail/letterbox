@@ -45,6 +45,8 @@ class Onboarding: NSObject {
 
     static var fail: () -> () = { Void in }
     static var work: () -> () = { Void in }
+    
+    static var credentialFails = 0
 
     static var authenticationRows: [Int: String] = [MCOAuthType.saslLogin.rawValue: "Login", MCOAuthType.saslPlain.rawValue: NSLocalizedString("NormalPassword", comment: ""), MCOAuthType.SASLSRP.rawValue: "SRP", MCOAuthType.SASLCRAMMD5.rawValue: "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue: "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue: "NTLM", MCOAuthType.SASLGSSAPI.rawValue: "GSSAPI", MCOAuthType.saslKerberosV4.rawValue: "KerberosV4"]
     static var transportRows: [Int: String] = [MCOConnectionType.clear.rawValue: NSLocalizedString("Plaintext", comment: ""), MCOConnectionType.startTLS.rawValue: "StartTLS", MCOConnectionType.TLS.rawValue: "TLS"]
@@ -151,8 +153,15 @@ class Onboarding: NSObject {
         credentials.addSubview(password)
         credentials.addSubview(passwordUnderline)
 
-        let page3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
+        var bodyText = NSLocalizedString("InsertMailAddressAndPassword", comment: "")
+        if self.credentialFails > 0 {
+            bodyText = NSLocalizedString("WrongMailAddressOrPassword", comment: "")
+        }
+        let page3 = OnboardingContentViewController.content(withTitle: nil, body: bodyText, videoURL: nil, inputView: credentials, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
         page3.topPadding = 0
+        if self.credentialFails > 0 {
+            page3.bodyLabel.textColor = UIColor.orange
+        }
         //page3.onlyInputView = true
 
         //let page4 = OnboardingContentViewController.content(withTitle: NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
@@ -163,7 +172,7 @@ class Onboarding: NSObject {
         //vc?.backgroundImage = postcardBg
         vc?.shouldFadeTransitions = true
         //vc?.shouldMaskBackground = false
-
+        
         let duration = 0.5
 
         intro2.viewWillAppearBlock = {
@@ -201,6 +210,10 @@ class Onboarding: NSObject {
             })
         }
 
+        if self.credentialFails > 0 {
+            //vc!.pageControl.currentPage = (vc?.pageControl.numberOfPages)!-1
+        }
+        
         return vc!
     }
 
@@ -609,6 +622,7 @@ class Onboarding: NSObject {
     }
 
     static func keyHandling() {
+        self.credentialFails = 0
         for encType in iterateEnum(EncryptionType.self) {
             if let enc = EnzevalosEncryptionHandler.getEncryption(encType) {
                 enc.removeAllKeys()

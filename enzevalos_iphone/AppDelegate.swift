@@ -44,7 +44,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func credentialsFailed(){
-        self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
+        Onboarding.credentialFails += 1
+        if Onboarding.credentialFails >= 3 {
+            self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
+        }
+        else {
+            let contr = (Onboarding.onboarding(self.credentialCheck) as! OnboardingViewController)
+            self.window?.rootViewController = contr
+            contr.gotoLastPage()
+        }
     }
     
     func credentialsWork() {

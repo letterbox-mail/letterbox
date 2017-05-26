@@ -98,6 +98,7 @@
 "TwoDaysAgo" = "2 days ago";
 "Username" = "Username";
 "WhatAShame" = "What a shame!";
+"WrongMailAddressOrPassword" = "Email address or password were wrong. Please try again!";
 "write" = "write";
 "Yesterday" = "yesterday";
 "NoFurtherMessages" = "No further messages...";
