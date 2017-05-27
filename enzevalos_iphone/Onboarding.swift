@@ -524,7 +524,7 @@ class Onboarding: NSObject {
             UserManager.storeUserValue(password.text! as AnyObject?, attribute: Attribute.userPW)
             UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.userName)
             UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.accountname)
-            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapConnectionType)
+            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapConnectionType) //TODO: fatal error: Index out of range
             UserManager.storeUserValue(keyForValue(authenticationRows, value: imapAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapAuthType)
             UserManager.storeUserValue(keyForValue(transportRows, value: smtpTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpConnectionType)
             UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
@@ -698,23 +698,23 @@ class Onboarding: NSObject {
         }
         catch _ { }
 
-//        path = Bundle.main.path(forResource: "nchr-public", ofType: "gpg")
-//        pgp = ObjectivePGP.init()
-//        pgp.importKeys(fromFile: path!, allowDuplicates: false)
-//        do {
-//            let data = try pgp.keys[0].export()
-//            _ = enc?.addKey(data, forMailAddresses: ["nchr@enzevalos.de"])
-//        }
-//        catch _ { }
-//
-//        path = Bundle.main.path(forResource: "ncpayroll-public", ofType: "gpg")
-//        pgp = ObjectivePGP.init()
-//        pgp.importKeys(fromFile: path!, allowDuplicates: false)
-//        do {
-//            let data = try pgp.keys[0].export()
-//            _ = enc?.addKey(data, forMailAddresses: ["ncpayroll@enzevalos.de"])
-//        }
-//        catch _ { }
+        path = Bundle.main.path(forResource: "nchr-public", ofType: "gpg")
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["nchr@enzevalos.de"])
+        }
+        catch _ { }
+
+        path = Bundle.main.path(forResource: "ncpayroll-public", ofType: "gpg")
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["ncpayroll@enzevalos.de"])
+        }
+        catch _ { }
 
         //Import public keys for labstudy END
         //---------------------------------------
