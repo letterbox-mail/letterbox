@@ -511,8 +511,8 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
         for m in mails{
             uids.add(m.uid)
         }
+        self.setupIMAPSession()
         self.IMAPSession.moveMessagesOperationWithFolder(from, uids, to)
-        
     }
     
     
