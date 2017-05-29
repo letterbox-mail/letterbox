@@ -506,4 +506,14 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
     
     
     
+    func moveMails(mails: [Mail], from: String, to: String){
+        let uids = MCOIndexSet()
+        for m in mails{
+            uids.add(m.uid)
+        }
+        self.IMAPSession.moveMessagesOperationWithFolder(from, uids, to)
+        
+    }
+    
+    
 }
