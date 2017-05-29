@@ -17,6 +17,7 @@ class ContactViewController: UIViewController {
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
     fileprivate var otherRecords: [KeyRecord]? = nil
+    var isUser: Bool = false
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -33,7 +34,14 @@ class ContactViewController: UIViewController {
 
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
         if let con = keyRecord {
-            self.title = con.name
+            let myAddress = UserManager.loadUserValue(Attribute.userAddr) as! String
+            if con.addresses.contains(where: { $0.mailAddress.lowercased() == myAddress
+            }) {
+                self.title = NSLocalizedString("you", comment: "String decribing this as the account of the user")
+                isUser = true
+            } else {
+                self.title = con.name
+            }
 //            self.title = CNContactFormatter.stringFromContact(con.ezContact.cnContact, style: .FullName)
 
             prepareContactSheet()
@@ -190,7 +198,9 @@ extension ContactViewController: UITableViewDataSource {
                     cell.contactImage.layer.cornerRadius = cell.contactImage.frame.height / 2
                     cell.contactImage.clipsToBounds = true
                     cell.iconImage.image = drawStatusCircle()
-                    if keyRecord!.isVerified {
+                    if isUser {
+                        cell.contactStatus.text = NSLocalizedString("thisIsYou", comment: "This contact is the user")
+                    } else if keyRecord!.isVerified {
                         cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
                     } else if keyRecord!.hasKey {
                         cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
@@ -293,7 +303,7 @@ extension ContactViewController: UITableViewDataSource {
         if let record = keyRecord {
             switch section {
             case 0:
-                if !record.isVerified {
+                if !record.isVerified && !isUser {
                     return 2
                 }
             case 1:
@@ -330,7 +340,7 @@ extension ContactViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0 {
-            return "Mit diesem Kontakt kommunizieren Sie zu 93% verschlüsselt und im Durchschnitt 2,3 x pro Woche." // Nur ein Test
+//            return "Mit diesem Kontakt kommunizieren Sie zu 93% verschlüsselt und im Durchschnitt 2,3 x pro Woche." // Nur ein Test
         }
         return nil
     }
