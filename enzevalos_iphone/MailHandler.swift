@@ -506,4 +506,34 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
     
     
     
+    func moveMails(mails: [PersistentMail], from: String, to: String){
+        let uids = MCOIndexSet()
+        for m in mails{
+            uids.add(m.uid)
+        }
+        self.setupIMAPSession()
+        let op = self.IMAPSession.copyMessagesOperation(withFolder: from, uids: uids, destFolder: to)
+        op?.start{
+            (err, vanished) -> Void in
+            guard err == nil else {
+                print("Error while fetching inbox: \(err)")
+                return
+            }
+        }
+        let mark = self.IMAPSession.storeFlagsOperation(withFolder: from, uids: uids, kind: MCOIMAPStoreFlagsRequestKind.add, flags: MCOMessageFlag.deleted)
+        mark?.start{ err -> Void in
+            guard err == nil else {
+                print("Error while fetching inbox: \(err)")
+                return
+            }
+        }
+        let expunge = self.IMAPSession.expungeOperation(from)
+        expunge?.start{
+            err -> Void in
+            guard err == nil else {
+                print("Error while fetching inbox: \(err)")
+                return
+            }
+        }
+    }
 }
