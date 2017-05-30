@@ -360,7 +360,7 @@ class MailHandler {
         
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
-                print("Error while fetching inbox: \(err)")
+                print("Error while fetching inbox: \(String(describing: err))")
                 completionCallback(true)
                 return
             }
@@ -462,7 +462,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folder, requestKind: requestKind, uids: uids)
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
-                print("Error while fetching inbox: \(err)")
+                print("Error while fetching inbox: \(String(describing: err))")
                 return
             }
             if let msgs = msg {
@@ -516,23 +516,22 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
         op?.start{
             (err, vanished) -> Void in
             guard err == nil else {
-                print("Error while fetching inbox: \(err)")
+                print("Error while moving inbox: \(String(describing: err))")
                 return
             }
-        }
-        let mark = self.IMAPSession.storeFlagsOperation(withFolder: from, uids: uids, kind: MCOIMAPStoreFlagsRequestKind.add, flags: MCOMessageFlag.deleted)
-        mark?.start{ err -> Void in
-            guard err == nil else {
-                print("Error while fetching inbox: \(err)")
-                return
-            }
-        }
-        let expunge = self.IMAPSession.expungeOperation(from)
-        expunge?.start{
-            err -> Void in
-            guard err == nil else {
-                print("Error while fetching inbox: \(err)")
-                return
+            let mark = self.IMAPSession.storeFlagsOperation(withFolder: from, uids: uids, kind: MCOIMAPStoreFlagsRequestKind.add, flags: MCOMessageFlag.deleted)
+                mark?.start{ err -> Void in
+                    guard err == nil else {
+                        print("Error while deleting inbox: \(String(describing: err))")
+                        return
+                    }
+                    let expunge = self.IMAPSession.expungeOperation(from)
+                        expunge?.start{err -> Void in
+                            guard err == nil else {
+                                print("Error while expunging  inbox: \(String(describing: err))")
+                                return
+                                }
+                }
             }
         }
     }

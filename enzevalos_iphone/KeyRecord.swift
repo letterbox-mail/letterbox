@@ -116,9 +116,9 @@ open class KeyRecord: Record {
 
     open func showInfos() {
         print("-----------------")
-        print("Name: \(ezContact.displayname) | State: \(hasKey) | #Mails: \(mails.count)")
-        print("First mail: \(mails.first?.uid) | Adr: \(mails.first?.from.mailAddress) | date: \(mails.first?.date.description) ")
-        print("subj: \(mails.first?.subject?.capitalized)")
+        print("Name: \(String(describing: ezContact.displayname)) | State: \(hasKey) | #Mails: \(mails.count)")
+        print("First mail: \(String(describing: mails.first?.uid)) | Adr: \(String(describing: mails.first?.from.mailAddress)) | date: \(String(describing: mails.first?.date.description)) ")
+        print("subj: \(String(describing: mails.first?.subject?.capitalized))")
     }
 
     open func addNewAddress(_ adr: MailAddress) -> Bool {

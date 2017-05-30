@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4725C4F61EDDADA10068235E /* bob-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F41EDDADA10068235E /* bob-private.gpg */; };
+		4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F51EDDADA10068235E /* bob-public.gpg */; };
 		472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
 		472F392C1E1277D2009260FB /* PersistentMail +CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */; };
 		472F396E1E14F384009260FB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472F396D1E14F384009260FB /* CoreData.framework */; };
@@ -159,6 +161,8 @@
 
 /* Begin PBXFileReference section */
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4725C4F41EDDADA10068235E /* bob-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-private.gpg"; path = "keys/bob-private.gpg"; sourceTree = "<group>"; };
+		4725C4F51EDDADA10068235E /* bob-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-public.gpg"; path = "keys/bob-public.gpg"; sourceTree = "<group>"; };
 		472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "EnzevalosContact+CoreDataClass.swift"; path = "../EnzevalosContact+CoreDataClass.swift"; sourceTree = "<group>"; };
 		472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PersistentMail +CoreDataClass.swift"; path = "../PersistentMail +CoreDataClass.swift"; sourceTree = "<group>"; };
 		472F396D1E14F384009260FB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -642,6 +646,8 @@
 		A1C7FF8B1E895316000D1E92 /* keys */ = {
 			isa = PBXGroup;
 			children = (
+				4725C4F41EDDADA10068235E /* bob-private.gpg */,
+				4725C4F51EDDADA10068235E /* bob-public.gpg */,
 				F14D18981ED880680080515D /* nchr-private.gpg */,
 				F14D18991ED880680080515D /* nchr-public.gpg */,
 				F14D189A1ED880680080515D /* ncpayroll-private.gpg */,
@@ -855,6 +861,7 @@
 				F14D189C1ED880680080515D /* nchr-private.gpg in Resources */,
 				F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */,
 				F14D189E1ED880680080515D /* ncpayroll-private.gpg in Resources */,
+				4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
 				F14D18A21ED8811F0080515D /* ullimuelle-private.gpg in Resources */,
@@ -867,6 +874,7 @@
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
 				A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
+				4725C4F61EDDADA10068235E /* bob-private.gpg in Resources */,
 				A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
