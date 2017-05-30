@@ -102,8 +102,14 @@ class Onboarding: NSObject {
         UIGraphicsEndImageContext()
         intro2.bodyLabel.textAlignment = NSTextAlignment.left
 
-        let intro3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("GetHelp", comment: ""), image: nil, buttonText: nil, action: nil)
-
+        let path = Bundle.main.path(forResource: "videoOnboarding2", ofType: "m4v")
+        let url = URL.init(fileURLWithPath: path!)
+        
+        let videoView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 30, height: (AppDelegate.getAppDelegate().window?.frame.height)! - 70))
+        //videoView.backgroundColor = defaultColor
+        
+        let intro3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("GetHelp", comment: ""), videoURL: url, inputView: videoView, buttonText: nil, actionBlock: nil)
+        
         //Content
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Hello", comment: "Welcome"), body: NSLocalizedString("InterestedInSecureMail", comment: "commendation to user for using secure mail"), image: nil, buttonText: nil, action: nil)
 
@@ -283,30 +289,40 @@ class Onboarding: NSObject {
 
         //let passwd = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertPassword", comment: ""), videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
 
-        imapServer.borderStyle = UITextBorderStyle.roundedRect
+        imapServer.borderStyle = UITextBorderStyle.none
+        imapServer.textColor = textColor
         imapServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
         imapServer.text = UserManager.loadUserValue(Attribute.imapHostname) as? String
 
+        let imapServerUnderline = UIView.init(frame: CGRect.init(x: 0, y: imapServer.frame.maxY, width: imapServer.frame.width, height: 0.5))
+        imapServerUnderline.backgroundColor = textColor
+        
         let imapLabel = UILabel.init()
         imapLabel.text = "IMAP-Port"
 
-        imapLabel.textColor = UIColor.white;
+        imapLabel.textColor = textColor//UIColor.white
         imapLabel.font = font
-        imapLabel.numberOfLines = 0;
-        imapLabel.textAlignment = NSTextAlignment.center;
-        imapLabel.frame = CGRect.init(x: 0, y: imapServer.frame.height + padding, width: 50, height: 30)
-        imapPort.borderStyle = UITextBorderStyle.roundedRect
+        imapLabel.numberOfLines = 0
+        imapLabel.textAlignment = NSTextAlignment.center
+        imapLabel.frame = CGRect.init(x: 0, y: imapServer.frame.height + imapServerUnderline.frame.height + padding, width: 50, height: 30)
+        imapPort.borderStyle = UITextBorderStyle.none
         imapPort.text = "0"
+        imapPort.textColor = textColor
         if let port = UserManager.loadUserValue(Attribute.imapPort) {
             imapPort.text = "\(port as! Int)"
         }
         imapPort.keyboardType = UIKeyboardType.numberPad
         imapPort.frame = CGRect.init(x: 0, y: imapServer.frame.height + padding + imapLabel.frame.height + padding, width: 50, height: 30)
 
-        let imap = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: imapServer.frame.height + padding + imapLabel.frame.height + padding + imapPort.frame.height))
+        let imapPortUnderline = UIView.init(frame: CGRect.init(x: 0, y: imapPort.frame.maxY, width: imapPort.frame.width, height: 0.5))
+        imapPortUnderline.backgroundColor = textColor
+        
+        let imap = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: imapServer.frame.height + imapServerUnderline.frame.height + padding + imapLabel.frame.height + padding + imapPort.frame.height + imapPortUnderline.frame.height))
         imap.addSubview(imapServer)
+        imap.addSubview(imapServerUnderline)
         imap.addSubview(imapLabel)
         imap.addSubview(imapPort)
+        imap.addSubview(imapPortUnderline)
 
         let imap1 = OnboardingContentViewController.content(withTitle: nil, body: "IMAP-Server", videoURL: nil, inputView: imap, buttonText: nil, actionBlock: nil)
 
@@ -358,9 +374,13 @@ class Onboarding: NSObject {
         let imap2 = OnboardingContentViewController.content(withTitle: nil, body: "IMAP-" + NSLocalizedString("Transportencryption", comment: ""), videoURL: nil, inputView: imapAuth, buttonText: nil, actionBlock: nil, withPadding: boolPointer)
 
 
-        smtpServer.borderStyle = UITextBorderStyle.roundedRect
+        smtpServer.borderStyle = UITextBorderStyle.none
+        smtpServer.textColor = textColor
         smtpServer.text = UserManager.loadUserValue(Attribute.smtpHostname) as? String
         smtpServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
+        
+        let smtpServerUnderline = UIView.init(frame: CGRect.init(x: 0, y: smtpServer.frame.maxY, width: smtpServer.frame.width, height: 0.5))
+        smtpServerUnderline.backgroundColor = textColor
 
         let smtpLabel = UILabel.init()
         smtpLabel.text = "SMTP-Port"
@@ -369,19 +389,24 @@ class Onboarding: NSObject {
         smtpLabel.font = font
         smtpLabel.numberOfLines = 0;
         smtpLabel.textAlignment = NSTextAlignment.center;
-        smtpLabel.frame = CGRect.init(x: 0, y: smtpServer.frame.height + padding, width: 50, height: 30)
+        smtpLabel.frame = CGRect.init(x: 0, y: smtpServer.frame.height + smtpServerUnderline.frame.height + padding, width: 50, height: 30)
         smtpPort.borderStyle = UITextBorderStyle.roundedRect
         smtpPort.text = "0"
         if let port = UserManager.loadUserValue(Attribute.smtpPort) {
             smtpPort.text = "\(port as! Int)"
         }
         smtpPort.keyboardType = UIKeyboardType.numberPad
-        smtpPort.frame = CGRect.init(x: 0, y: smtpServer.frame.height + padding + smtpLabel.frame.height + padding, width: 50, height: 30)
+        smtpPort.frame = CGRect.init(x: 0, y: smtpServer.frame.height + smtpServerUnderline.frame.height + padding + smtpLabel.frame.height + padding, width: 50, height: 30)
 
-        let smtp = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: smtpServer.frame.height + padding + smtpLabel.frame.height + padding + smtpPort.frame.height))
+        let smtpPortUnderline = UIView.init(frame: CGRect.init(x: 0, y: smtpPort.frame.maxY, width: smtpPort.frame.width, height: 0.5))
+        smtpPortUnderline.backgroundColor = textColor
+        
+        let smtp = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: smtpServer.frame.height + smtpServerUnderline.frame.height + padding + smtpLabel.frame.height + padding + smtpPort.frame.height + smtpPortUnderline.frame.height))
         smtp.addSubview(smtpServer)
+        smtp.addSubview(smtpServerUnderline)
         smtp.addSubview(smtpLabel)
         smtp.addSubview(smtpPort)
+        smtp.addSubview(smtpPortUnderline)
 
         let smtp1 = OnboardingContentViewController.content(withTitle: nil, body: "SMTP-Server", videoURL: nil, inputView: smtp, buttonText: nil, actionBlock: nil)
 

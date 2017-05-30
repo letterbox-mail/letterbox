@@ -31,7 +31,6 @@ class InboxTableViewCell: UITableViewCell {
     @IBAction func firstButtonPressed(_ sender: AnyObject) {
         if let delegate = delegate, firstMail != nil {
             firstButton.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
-            print("Open mail \(firstMail?.subject) | read status: \(firstMail?.isRead)")
             delegate.callSegueFromCell(firstMail)
         }
     }
