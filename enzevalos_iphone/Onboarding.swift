@@ -107,9 +107,7 @@ class Onboarding: NSObject {
         //Content
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Hello", comment: "Welcome"), body: NSLocalizedString("InterestedInSecureMail", comment: "commendation to user for using secure mail"), image: nil, buttonText: nil, action: nil)
 
-        
-        if let tmpCredentials = credentials {}
-        else {
+        if credentials == nil {
             mailaddress = UITextField.init()
             mailaddress.textColor = textColor
             mailaddress.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Address", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
@@ -121,12 +119,12 @@ class Onboarding: NSObject {
             mailaddress.frame = CGRect.init(x: 0, y: /*mailaddressLabel.frame.height+padding*/ 0, width: 50, height: 30)
             mailaddress.isUserInteractionEnabled = true
             mailaddress.delegate = textDelegate
-            
+
             let mailaddressUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.maxY, width: mailaddress.frame.width, height: 0.5))
             mailaddressUnderline.backgroundColor = textColor
-            
+
             //let page2 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
-            
+
             password = UITextField.init()
             password.textColor = textColor
             password.tintColor = textColor
@@ -136,10 +134,10 @@ class Onboarding: NSObject {
             password.frame = CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height, width: 50, height: 30)
             password.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Password", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
             password.delegate = textDelegate
-            
+
             let passwordUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height + password.frame.height, width: password.frame.width, height: 0.5))
             passwordUnderline.backgroundColor = textColor
-            
+
             let keyboardToolbar = UIToolbar()
             keyboardToolbar.sizeToFit()
             keyboardToolbar.barTintColor = defaultColor
@@ -149,7 +147,7 @@ class Onboarding: NSObject {
             keyboardToolbar.items = [flexBarButton, doneBarButton]
             mailaddress.inputAccessoryView = keyboardToolbar
             password.inputAccessoryView = keyboardToolbar
-            
+
             credentials = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: mailaddress.frame.height + mailaddressUnderline.frame.height + padding + password.frame.height + passwordUnderline.frame.height))
             credentials?.addSubview(mailaddress)
             credentials?.addSubview(mailaddressUnderline)
@@ -276,11 +274,11 @@ class Onboarding: NSObject {
 
         let usernameUnderline = UIView.init(frame: CGRect.init(x: 0, y: username.frame.maxY, width: username.frame.width, height: 0.5))
         usernameUnderline.backgroundColor = textColor
-        
+
         let userView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: username.frame.height + usernameUnderline.frame.height))
         userView.addSubview(username)
         userView.addSubview(usernameUnderline)
-        
+
         let user = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertUsername", comment: ""), videoURL: nil, inputView: userView, buttonText: nil, actionBlock: nil)
 
         //let passwd = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertPassword", comment: ""), videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
@@ -525,7 +523,7 @@ class Onboarding: NSObject {
             if provider == Provider.WEB.rawValue {
                 Providers.setValues(Provider.WEB)
             }
-            
+
             // set a displayname for the lab study
             switch mailAddress {
             case "ullimuelle@web.de":
@@ -672,6 +670,8 @@ class Onboarding: NSObject {
             path = Bundle.main.path(forResource: "ncpayroll-private", ofType: "gpg")
         case "ullimuelle@web.de":
             path = Bundle.main.path(forResource: "ullimuelle-private", ofType: "gpg")
+        case "bob2005@web.de":
+            path = Bundle.main.path(forResource: "bob-private", ofType: "gpg")
         default:
             path = Bundle.main.path(forResource: "alice2005-private", ofType: "gpg")
         }
@@ -742,15 +742,6 @@ class Onboarding: NSObject {
         do {
             let data = try pgp.keys[0].export()
             _ = enc?.addKey(data, forMailAddresses: ["ncpayroll@enzevalos.de"])
-        }
-        catch _ { }
-
-        path = Bundle.main.path(forResource: "ullimuelle-public", ofType: "gpg")
-        pgp = ObjectivePGP.init()
-        pgp.importKeys(fromFile: path!, allowDuplicates: false)
-        do {
-            let data = try pgp.keys[0].export()
-            _ = enc?.addKey(data, forMailAddresses: ["ullimuelle@web.de"])
         }
         catch _ { }
 

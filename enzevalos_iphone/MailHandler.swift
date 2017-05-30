@@ -30,25 +30,25 @@ import Contacts
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 
@@ -106,9 +106,8 @@ class AutocryptContact {
                         pref = value
                         break
                     case KEY:
-                        if value.characters.count > 0{
+                        if value.characters.count > 0 {
                             key = value
-                            
                         }
                         break
                     default:
@@ -119,7 +118,7 @@ class AutocryptContact {
         }
         self.init(addr: addr, type: type, prefer_encryption: pref, key: key)
     }
-    
+
     func validateContact() -> Bool {
         if addr != "" && type != .unknown && key != "" {
             return true
@@ -131,8 +130,7 @@ class AutocryptContact {
         if input == "yes" || input == "YES" || input == "Yes" {
             prefer_encryption = true
             return true
-        }
-            else if input == "no" || input == "NO" || input == "No" {
+        } else if input == "no" || input == "NO" || input == "No" {
             prefer_encryption = false
             return true
         }
@@ -153,7 +151,7 @@ class MailHandler {
 
 
     fileprivate let concurrentMailServer = DispatchQueue(
-                                                             label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent)
+        label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent)
 
     var IMAPSes: MCOIMAPSession?
 
@@ -174,41 +172,41 @@ class MailHandler {
     func add_autocrypt_header(_ builder: MCOMessageBuilder) {
         let adr = UserManager.loadUserValue(Attribute.userAddr) as! String
         let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
-        if let header = pgpenc.autocryptHeader(adr){
+        if let header = pgpenc.autocryptHeader(adr) {
             builder.header.setExtraHeaderValue(header, forName: AUTOCRYPTHEADER)
         }
     }
-    
-    fileprivate func createHeader(_ builder: MCOMessageBuilder, toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String){
-        
+
+    fileprivate func createHeader(_ builder: MCOMessageBuilder, toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String) {
+
         let username = UserManager.loadUserValue(Attribute.userName) as! String
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
 
-    
+
         var toReady: [MCOAddress] = []
         for addr in toEntrys {
             toReady.append(MCOAddress(displayName: addr, mailbox: addr))
         }
         builder.header.to = toReady
-        
+
         var ccReady: [MCOAddress] = []
         for addr in ccEntrys {
             ccReady.append(MCOAddress(displayName: addr, mailbox: addr))
         }
         builder.header.cc = ccReady
-        
+
         var bccReady: [MCOAddress] = []
         for addr in bccEntrys {
             bccReady.append(MCOAddress(displayName: addr, mailbox: addr))
         }
         builder.header.bcc = bccReady
-        
+
         builder.header.from = MCOAddress(displayName: username, mailbox: useraddr)
-        
+
         builder.header.subject = subject
-        
+
         add_autocrypt_header(builder)
-    
+
     }
 
     //return if send successfully
@@ -220,7 +218,7 @@ class MailHandler {
         let builder = MCOMessageBuilder()
 
         createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
-        
+
 
         // MailAddresses statt strings??
 
@@ -241,10 +239,10 @@ class MailHandler {
         var sendOperation: MCOSMTPSendOperation
 
         //TODO: Consider pref enc = false
-        
+
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
-            if let encData = encryption.signAndEncrypt("\n"+message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+            if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
                 //sendData = encData
                 builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
                 sendData = builder.data()
@@ -253,8 +251,7 @@ class MailHandler {
                 //TODO handle different callbacks
                 sendOperation.start(callback)
                 builder.textBody = message
-            }
-                else {
+            } else {
                 //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
             }
@@ -279,8 +276,8 @@ class MailHandler {
         imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)//MCOConnectionType.TLS
         self.IMAPSes = imapsession
     }
-    
-    fileprivate func createSMTPSession()-> MCOSMTPSession{
+
+    fileprivate func createSMTPSession() -> MCOSMTPSession {
         let session = MCOSMTPSession()
         session.hostname = UserManager.loadUserValue(Attribute.smtpHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
@@ -334,6 +331,7 @@ class MailHandler {
                     completionCallback(true)
                     return
                 }
+
                 let ids = indices as MCOIndexSet?
                 if var setOfIndices = ids {
                     for mail in record.mails {
@@ -355,9 +353,9 @@ class MailHandler {
 
     func loadMessagesFromServer(_ uids: MCOIndexSet, folder: String = "INBOX", record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
-        let fetchOperation : MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folder, requestKind: requestKind, uids: uids)
+        let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER]
-        
+
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
                 print("Error while fetching inbox: \(err)")
@@ -383,17 +381,19 @@ class MailHandler {
             }
         }
     }
-func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: (() -> ())) {
-      guard error == nil else {
+
+    func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: (() -> ())) {
+        guard error == nil else {
             print("Error while fetching mail: \(String(describing: error))")
             return
         }
+
         if let data = parser?.data() {
             let msgParser = MCOMessageParser(data: data)
 
             let html: String = msgParser!.plainTextRendering()
             var lineArray = html.components(separatedBy: "\n")
-           
+
             lineArray.removeFirst(4)
             var body = lineArray.joined(separator: "\n")
             body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
@@ -403,9 +403,9 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
 
             let header = message.header
             var autocrypt: AutocryptContact? = nil
-            if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER){
+            if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
                 autocrypt = AutocryptContact(header: header!)
-                if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0){
+                if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0) {
                     let pgp = ObjectivePGP.init()
                     print("Autocryptkey: \(autocrypt?.key) from \(header?.from.mailbox)")
                     pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
@@ -418,7 +418,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
                         print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
                     }
                 }
-                
+
             }
             if let to = header?.to {
                 for r in to {
@@ -485,7 +485,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
     func checkSMTP(_ completion: @escaping (Error?) -> Void) {
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let username = UserManager.loadUserValue(Attribute.userName) as! String
-        
+
         let session = MCOSMTPSession()
         session.hostname = UserManager.loadUserValue(Attribute.smtpHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
@@ -493,45 +493,43 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
         session.password = UserManager.loadUserValue(Attribute.userPW) as! String
         session.authType = MCOAuthType.init(rawValue: UserManager.loadUserValue(Attribute.smtpAuthType) as! Int)//MCOAuthType.SASLPlain
         session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)//MCOConnectionType.StartTLS
-        
+
         session.checkAccountOperationWith(from: MCOAddress.init(mailbox: useraddr)).start(completion)
-        
+
     }
-    
+
     func checkIMAP(_ completion: @escaping (Error?) -> Void) {
         self.setupIMAPSession()
-        
+
         self.IMAPSession.checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
         self.IMAPSession.connectOperation().start(completion/* as! (Error?) -> Void*/)
     }
-    
-    
-    
-    func moveMails(mails: [PersistentMail], from: String, to: String){
+
+    func moveMails(mails: [PersistentMail], from: String, to: String) {
         let uids = MCOIndexSet()
-        for m in mails{
+        for m in mails {
             uids.add(m.uid)
         }
         self.setupIMAPSession()
         let op = self.IMAPSession.copyMessagesOperation(withFolder: from, uids: uids, destFolder: to)
-        op?.start{
+        op?.start {
             (err, vanished) -> Void in
             guard err == nil else {
                 print("Error while moving inbox: \(String(describing: err))")
                 return
             }
             let mark = self.IMAPSession.storeFlagsOperation(withFolder: from, uids: uids, kind: MCOIMAPStoreFlagsRequestKind.add, flags: MCOMessageFlag.deleted)
-                mark?.start{ err -> Void in
+            mark?.start { err -> Void in
+                guard err == nil else {
+                    print("Error while deleting inbox: \(String(describing: err))")
+                    return
+                }
+                let expunge = self.IMAPSession.expungeOperation(from)
+                expunge?.start { err -> Void in
                     guard err == nil else {
-                        print("Error while deleting inbox: \(String(describing: err))")
+                        print("Error while expunging  inbox: \(String(describing: err))")
                         return
                     }
-                    let expunge = self.IMAPSession.expungeOperation(from)
-                        expunge?.start{err -> Void in
-                            guard err == nil else {
-                                print("Error while expunging  inbox: \(String(describing: err))")
-                                return
-                                }
                 }
             }
         }
