@@ -107,6 +107,7 @@
 "notVerified" = "Contact is not verified jet";
 "noEncryption" = "Contact is not jet using encryption";
 "otherEncryption" = "This is the unsafe tray with this Contact";
+"hasKeyButNoMail" = "Contact has a key, but you haven't received a safe email jet.";
 "Verified" = "Contact is verified";
 "verifyNow" = "Verify now";
 "toEncrypted" = "Switch to secure tray";

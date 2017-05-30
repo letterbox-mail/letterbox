@@ -21,6 +21,7 @@ class Onboarding: NSObject {
     static var mailaddress = UITextField.init()
     static var username = UITextField.init()
     static var password = UITextField.init()
+    static var credentials: UIView? = nil
     static var imapServer = UITextField.init()
     static var smtpServer = UITextField.init()
     static var imapPort = UITextField.init()
@@ -106,52 +107,55 @@ class Onboarding: NSObject {
         //Content
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Hello", comment: "Welcome"), body: NSLocalizedString("InterestedInSecureMail", comment: "commendation to user for using secure mail"), image: nil, buttonText: nil, action: nil)
 
-
-        mailaddress = UITextField.init()
-        mailaddress.textColor = textColor
-        mailaddress.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Address", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
-        mailaddress.tintColor = textColor
-        mailaddress.borderStyle = UITextBorderStyle.none
-        mailaddress.keyboardType = UIKeyboardType.emailAddress
-        mailaddress.returnKeyType = UIReturnKeyType.next
-        mailaddress.autocorrectionType = UITextAutocorrectionType.no
-        mailaddress.frame = CGRect.init(x: 0, y: /*mailaddressLabel.frame.height+padding*/ 0, width: 50, height: 30)
-        mailaddress.isUserInteractionEnabled = true
-        mailaddress.delegate = textDelegate
-
-        let mailaddressUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.maxY, width: mailaddress.frame.width, height: 0.5))
-        mailaddressUnderline.backgroundColor = textColor
-
-        //let page2 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
-
-        password = UITextField.init()
-        password.textColor = textColor
-        password.tintColor = textColor
-        password.borderStyle = UITextBorderStyle.none
-        password.isSecureTextEntry = true
-        password.returnKeyType = UIReturnKeyType.done
-        password.frame = CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height, width: 50, height: 30)
-        password.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Password", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
-        password.delegate = textDelegate
-
-        let passwordUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height + password.frame.height, width: password.frame.width, height: 0.5))
-        passwordUnderline.backgroundColor = textColor
-
-        let keyboardToolbar = UIToolbar()
-        keyboardToolbar.sizeToFit()
-        keyboardToolbar.barTintColor = defaultColor
-        keyboardToolbar.backgroundColor = defaultColor
-        let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissKeyboard))
-        keyboardToolbar.items = [flexBarButton, doneBarButton]
-        mailaddress.inputAccessoryView = keyboardToolbar
-        password.inputAccessoryView = keyboardToolbar
-
-        let credentials = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: mailaddress.frame.height + mailaddressUnderline.frame.height + padding + password.frame.height + passwordUnderline.frame.height))
-        credentials.addSubview(mailaddress)
-        credentials.addSubview(mailaddressUnderline)
-        credentials.addSubview(password)
-        credentials.addSubview(passwordUnderline)
+        
+        if let tmpCredentials = credentials {}
+        else {
+            mailaddress = UITextField.init()
+            mailaddress.textColor = textColor
+            mailaddress.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Address", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
+            mailaddress.tintColor = textColor
+            mailaddress.borderStyle = UITextBorderStyle.none
+            mailaddress.keyboardType = UIKeyboardType.emailAddress
+            mailaddress.returnKeyType = UIReturnKeyType.next
+            mailaddress.autocorrectionType = UITextAutocorrectionType.no
+            mailaddress.frame = CGRect.init(x: 0, y: /*mailaddressLabel.frame.height+padding*/ 0, width: 50, height: 30)
+            mailaddress.isUserInteractionEnabled = true
+            mailaddress.delegate = textDelegate
+            
+            let mailaddressUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.maxY, width: mailaddress.frame.width, height: 0.5))
+            mailaddressUnderline.backgroundColor = textColor
+            
+            //let page2 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
+            
+            password = UITextField.init()
+            password.textColor = textColor
+            password.tintColor = textColor
+            password.borderStyle = UITextBorderStyle.none
+            password.isSecureTextEntry = true
+            password.returnKeyType = UIReturnKeyType.done
+            password.frame = CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height, width: 50, height: 30)
+            password.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Password", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
+            password.delegate = textDelegate
+            
+            let passwordUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height + password.frame.height, width: password.frame.width, height: 0.5))
+            passwordUnderline.backgroundColor = textColor
+            
+            let keyboardToolbar = UIToolbar()
+            keyboardToolbar.sizeToFit()
+            keyboardToolbar.barTintColor = defaultColor
+            keyboardToolbar.backgroundColor = defaultColor
+            let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissKeyboard))
+            keyboardToolbar.items = [flexBarButton, doneBarButton]
+            mailaddress.inputAccessoryView = keyboardToolbar
+            password.inputAccessoryView = keyboardToolbar
+            
+            credentials = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: mailaddress.frame.height + mailaddressUnderline.frame.height + padding + password.frame.height + passwordUnderline.frame.height))
+            credentials?.addSubview(mailaddress)
+            credentials?.addSubview(mailaddressUnderline)
+            credentials?.addSubview(password)
+            credentials?.addSubview(passwordUnderline)
+        }
 
         var bodyText = NSLocalizedString("InsertMailAddressAndPassword", comment: "")
         if self.credentialFails > 0 {
@@ -257,21 +261,29 @@ class Onboarding: NSObject {
         let start = OnboardingContentViewController.content(withTitle: NSLocalizedString("WhatAShame", comment: ""), body: NSLocalizedString("CouldNotConnect", comment: ""), videoURL: nil, inputView: nil, buttonText: nil, actionBlock: nil)
 
 
-        let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
+        let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: nil, actionBlock: callback)//OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
 
         username = UITextField.init()
         //text.textColor = UIColor.whiteColor()
         //text.tintColor = UIColor.whiteColor()
-        username.borderStyle = UITextBorderStyle.roundedRect
+        username.borderStyle = UITextBorderStyle.none
         username.keyboardType = UIKeyboardType.emailAddress
         username.autocorrectionType = UITextAutocorrectionType.no
         username.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
         username.placeholder = NSLocalizedString("Username", comment: "")
         username.text = UserManager.loadUserValue(Attribute.userName) as? String
+        username.textColor = textColor
 
-        let user = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertUsername", comment: ""), videoURL: nil, inputView: username, buttonText: nil, actionBlock: nil)
+        let usernameUnderline = UIView.init(frame: CGRect.init(x: 0, y: username.frame.maxY, width: username.frame.width, height: 0.5))
+        usernameUnderline.backgroundColor = textColor
+        
+        let userView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: username.frame.height + usernameUnderline.frame.height))
+        userView.addSubview(username)
+        userView.addSubview(usernameUnderline)
+        
+        let user = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertUsername", comment: ""), videoURL: nil, inputView: userView, buttonText: nil, actionBlock: nil)
 
-        let passwd = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertPassword", comment: ""), videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
+        //let passwd = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertPassword", comment: ""), videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
 
         imapServer.borderStyle = UITextBorderStyle.roundedRect
         imapServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
@@ -424,7 +436,7 @@ class Onboarding: NSObject {
 
         let last = OnboardingContentViewController.content(withTitle: NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
 
-        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, passwd, imap1, imap2, smtp1, smtp2, last])
+        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, /*passwd,*/ imap1, imap2, smtp1, smtp2, last])
         vc?.view.backgroundColor = defaultColor
         return vc!
     }
@@ -450,7 +462,9 @@ class Onboarding: NSObject {
     static func checkConfig(_ fail: @escaping () -> (), work: @escaping () -> ()) -> Bool {
         smtpCheckDone = false
         imapCheckDone = false
-        manualSet = true
+        if credentialFails > 2 {
+            manualSet = true
+        }
         self.work = work
         self.fail = fail
         //AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)

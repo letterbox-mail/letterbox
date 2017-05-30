@@ -108,6 +108,7 @@
 "notVerified" = "Kontakt ist noch nicht verifiziert";
 "noEncryption" = "Kontakt nutzt noch keine Verschlüsselung";
 "otherEncryption" = "Dies ist die unsichere Ablage dieses Kontakt";
+"hasKeyButNoMail" = "Kontakt nutzt verschlüsselung, hat dir aber noch keine sichere E-Mail gesendet";
 "Verified" = "Kontakt ist verifiziert";
 "verifyNow" = "Jetzt verifizieren";
 "toEncrypted" = "Zur sicheren Ablage";
