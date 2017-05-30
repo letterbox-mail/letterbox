@@ -78,6 +78,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if reset == true{
                 var m = DataHandler.handler.countMails
                 print("Mails: \(m)")
+                let mailhandler = MailHandler.init()
+                mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
                 DataHandler.handler.reset()
                 m = DataHandler.handler.countMails
                 print("Mails: \(m)")

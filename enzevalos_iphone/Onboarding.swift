@@ -46,7 +46,7 @@ class Onboarding: NSObject {
 
     static var fail: () -> () = { Void in }
     static var work: () -> () = { Void in }
-    
+
     static var credentialFails = 0
 
     static var authenticationRows: [Int: String] = [MCOAuthType.saslLogin.rawValue: "Login", MCOAuthType.saslPlain.rawValue: NSLocalizedString("NormalPassword", comment: ""), MCOAuthType.SASLSRP.rawValue: "SRP", MCOAuthType.SASLCRAMMD5.rawValue: "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue: "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue: "NTLM", MCOAuthType.SASLGSSAPI.rawValue: "GSSAPI", MCOAuthType.saslKerberosV4.rawValue: "KerberosV4"]
@@ -176,7 +176,7 @@ class Onboarding: NSObject {
         //vc?.backgroundImage = postcardBg
         vc?.shouldFadeTransitions = true
         //vc?.shouldMaskBackground = false
-        
+
         let duration = 0.5
 
         intro2.viewWillAppearBlock = {
@@ -217,7 +217,7 @@ class Onboarding: NSObject {
         if self.credentialFails > 0 {
             //vc!.pageControl.currentPage = (vc?.pageControl.numberOfPages)!-1
         }
-        
+
         return vc!
     }
 
@@ -538,7 +538,7 @@ class Onboarding: NSObject {
             UserManager.storeUserValue(password.text! as AnyObject?, attribute: Attribute.userPW)
             UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.userName)
             UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.accountname)
-            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapConnectionType)
+            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapConnectionType) //TODO: fatal error: Index out of range when reset button was used
             UserManager.storeUserValue(keyForValue(authenticationRows, value: imapAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapAuthType)
             UserManager.storeUserValue(keyForValue(transportRows, value: smtpTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpConnectionType)
             UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
@@ -712,23 +712,32 @@ class Onboarding: NSObject {
         }
         catch _ { }
 
-//        path = Bundle.main.path(forResource: "nchr-public", ofType: "gpg")
-//        pgp = ObjectivePGP.init()
-//        pgp.importKeys(fromFile: path!, allowDuplicates: false)
-//        do {
-//            let data = try pgp.keys[0].export()
-//            _ = enc?.addKey(data, forMailAddresses: ["nchr@enzevalos.de"])
-//        }
-//        catch _ { }
-//
-//        path = Bundle.main.path(forResource: "ncpayroll-public", ofType: "gpg")
-//        pgp = ObjectivePGP.init()
-//        pgp.importKeys(fromFile: path!, allowDuplicates: false)
-//        do {
-//            let data = try pgp.keys[0].export()
-//            _ = enc?.addKey(data, forMailAddresses: ["ncpayroll@enzevalos.de"])
-//        }
-//        catch _ { }
+        path = Bundle.main.path(forResource: "nchr-public", ofType: "gpg")
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["nchr@enzevalos.de"])
+        }
+        catch _ { }
+
+        path = Bundle.main.path(forResource: "ncpayroll-public", ofType: "gpg")
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["ncpayroll@enzevalos.de"])
+        }
+        catch _ { }
+        
+        path = Bundle.main.path(forResource: "ullimuelle-public", ofType: "gpg")
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["ullimuelle@web.de"])
+        }
+        catch _ { }
 
         //Import public keys for labstudy END
         //---------------------------------------
@@ -758,7 +767,6 @@ class Onboarding: NSObject {
 class TextFieldDelegate: NSObject, UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("hallo")
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -766,10 +774,9 @@ class TextFieldDelegate: NSObject, UITextFieldDelegate {
             textField.resignFirstResponder()
             Onboarding.password.becomeFirstResponder()
             return false
-        }
-            else if textField == Onboarding.password {
-                textField.resignFirstResponder()
-                return true
+        } else if textField == Onboarding.password {
+            textField.resignFirstResponder()
+            return true
         }
         return true
     }

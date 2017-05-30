@@ -13,10 +13,12 @@ import ContactsUI
 
 class ContactViewController: UIViewController {
     var keyRecord: KeyRecord? = nil
+    var hasKey: Bool = false
     var highlightEmail: String? = nil
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
     fileprivate var otherRecords: [KeyRecord]? = nil
+    var isUser: Bool = false
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -33,7 +35,16 @@ class ContactViewController: UIViewController {
 
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
         if let con = keyRecord {
-            self.title = con.name
+            hasKey = EnzevalosEncryptionHandler.hasKey(con.ezContact)
+            
+            let myAddress = UserManager.loadUserValue(Attribute.userAddr) as! String
+            if con.addresses.contains(where: { $0.mailAddress.lowercased() == myAddress
+            }) {
+                self.title = NSLocalizedString("you", comment: "String decribing this as the account of the user")
+                isUser = true
+            } else {
+                self.title = con.name
+            }
 //            self.title = CNContactFormatter.stringFromContact(con.ezContact.cnContact, style: .FullName)
 
             prepareContactSheet()
@@ -190,12 +201,16 @@ extension ContactViewController: UITableViewDataSource {
                     cell.contactImage.layer.cornerRadius = cell.contactImage.frame.height / 2
                     cell.contactImage.clipsToBounds = true
                     cell.iconImage.image = drawStatusCircle()
-                    if keyRecord!.isVerified {
+                    if isUser {
+                        cell.contactStatus.text = NSLocalizedString("thisIsYou", comment: "This contact is the user")
+                    } else if keyRecord!.isVerified {
                         cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
                     } else if keyRecord!.hasKey {
                         cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
                     } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         cell.contactStatus.text = NSLocalizedString("otherEncryption", comment: "Contact is using encryption, this is the unsecure collection")
+                    } else if hasKey {
+                        cell.contactStatus.text = NSLocalizedString("hasKeyButNoMail", comment: "We have a key to this contact but haven't received an encrypted mail jet")
                     } else {
                         cell.contactStatus.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
                     }
@@ -206,6 +221,8 @@ extension ContactViewController: UITableViewDataSource {
                         actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
                     } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
+                    } else if hasKey {
+                        actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
                     } else {
                         actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
                     }
@@ -293,7 +310,7 @@ extension ContactViewController: UITableViewDataSource {
         if let record = keyRecord {
             switch section {
             case 0:
-                if !record.isVerified {
+                if !record.isVerified && !isUser {
                     return 2
                 }
             case 1:
@@ -330,7 +347,7 @@ extension ContactViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0 {
-            return "Mit diesem Kontakt kommunizieren Sie zu 93% verschlüsselt und im Durchschnitt 2,3 x pro Woche." // Nur ein Test
+//            return "Mit diesem Kontakt kommunizieren Sie zu 93% verschlüsselt und im Durchschnitt 2,3 x pro Woche." // Nur ein Test
         }
         return nil
     }
