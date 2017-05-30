@@ -511,6 +511,21 @@ class Onboarding: NSObject {
             if provider == Provider.WEB.rawValue {
                 Providers.setValues(Provider.WEB)
             }
+            
+            // set a displayname for the lab study
+            switch mailAddress {
+            case "ullimuelle@web.de":
+                UserManager.storeUserValue("Ulli Müller" as AnyObject, attribute: Attribute.accountname)
+            case "bob2005@web.de":
+                UserManager.storeUserValue("Bob" as AnyObject, attribute: Attribute.accountname)
+            case "nchr@enzevalos.de":
+                UserManager.storeUserValue("NC Human Resources" as AnyObject, attribute: Attribute.accountname)
+            case "ncpayroll@enzevalos.de":
+                UserManager.storeUserValue("NC Payroll" as AnyObject, attribute: Attribute.accountname)
+            case "idsolutions@enzevalos.de":
+                UserManager.storeUserValue("Identity Solutions" as AnyObject, attribute: Attribute.accountname)
+            default: break
+            }
         }
         if let pw = password.text, pw != "" {
             UserManager.storeUserValue(pw as AnyObject?, attribute: Attribute.userPW)
@@ -715,7 +730,7 @@ class Onboarding: NSObject {
             _ = enc?.addKey(data, forMailAddresses: ["ncpayroll@enzevalos.de"])
         }
         catch _ { }
-        
+
         path = Bundle.main.path(forResource: "ullimuelle-public", ofType: "gpg")
         pgp = ObjectivePGP.init()
         pgp.importKeys(fromFile: path!, allowDuplicates: false)
