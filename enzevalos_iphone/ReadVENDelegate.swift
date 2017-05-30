@@ -30,7 +30,7 @@ class ReadVENDelegate: NSObject, VENTokenFieldDataSource {
         if tokenField.textTokens.count > 1 {
             return "\(tokenField.textTokens.firstObject!) \(NSLocalizedString("and", comment: "and")) \(tokenField.textTokens.count - 1) \(NSLocalizedString("more", comment: "more"))"
         }
-        return "\(tokenField.textTokens.firstObject)"
+        return "\(String(describing: tokenField.textTokens.firstObject))"
     }
 }
 

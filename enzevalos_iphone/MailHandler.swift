@@ -360,7 +360,7 @@ class MailHandler {
         
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
-                print("Error while fetching inbox: \(err)")
+                print("Error while fetching inbox: \(String(describing: err))")
                 completionCallback(true)
                 return
             }
@@ -407,7 +407,6 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
                 autocrypt = AutocryptContact(header: header!)
                 if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0){
                     let pgp = ObjectivePGP.init()
-                    print("Autocryptkey: \(autocrypt?.key) from \(header?.from.mailbox)")
                     pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
                     let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                     do {
@@ -463,7 +462,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folder, requestKind: requestKind, uids: uids)
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
-                print("Error while fetching inbox: \(err)")
+                print("Error while fetching inbox: \(String(describing: err))")
                 return
             }
             if let msgs = msg {

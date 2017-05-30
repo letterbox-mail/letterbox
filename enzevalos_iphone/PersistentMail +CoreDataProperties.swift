@@ -93,7 +93,7 @@ extension PersistentMail {
             self.willAccessValue(forKey: "from")
             let text = (self.primitiveValue(forKey: "from") as? Mail_Address)
             self.didAccessValue(forKey: "from")
-            return text as! MailAddress
+            return text!
         }
     
     }
