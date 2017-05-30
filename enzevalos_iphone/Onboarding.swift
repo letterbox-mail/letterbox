@@ -104,12 +104,12 @@ class Onboarding: NSObject {
 
         let path = Bundle.main.path(forResource: "videoOnboarding2", ofType: "m4v")
         let url = URL.init(fileURLWithPath: path!)
-        
+
         let videoView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 30, height: (AppDelegate.getAppDelegate().window?.frame.height)! - 70))
         //videoView.backgroundColor = defaultColor
-        
+
         let intro3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("GetHelp", comment: ""), videoURL: url, inputView: videoView, buttonText: nil, actionBlock: nil)
-        
+
         //Content
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Hello", comment: "Welcome"), body: NSLocalizedString("InterestedInSecureMail", comment: "commendation to user for using secure mail"), image: nil, buttonText: nil, action: nil)
 
@@ -296,7 +296,7 @@ class Onboarding: NSObject {
 
         let imapServerUnderline = UIView.init(frame: CGRect.init(x: 0, y: imapServer.frame.maxY, width: imapServer.frame.width, height: 0.5))
         imapServerUnderline.backgroundColor = textColor
-        
+
         let imapLabel = UILabel.init()
         imapLabel.text = "IMAP-Port"
 
@@ -316,7 +316,7 @@ class Onboarding: NSObject {
 
         let imapPortUnderline = UIView.init(frame: CGRect.init(x: 0, y: imapPort.frame.maxY, width: imapPort.frame.width, height: 0.5))
         imapPortUnderline.backgroundColor = textColor
-        
+
         let imap = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: imapServer.frame.height + imapServerUnderline.frame.height + padding + imapLabel.frame.height + padding + imapPort.frame.height + imapPortUnderline.frame.height))
         imap.addSubview(imapServer)
         imap.addSubview(imapServerUnderline)
@@ -378,7 +378,7 @@ class Onboarding: NSObject {
         smtpServer.textColor = textColor
         smtpServer.text = UserManager.loadUserValue(Attribute.smtpHostname) as? String
         smtpServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
-        
+
         let smtpServerUnderline = UIView.init(frame: CGRect.init(x: 0, y: smtpServer.frame.maxY, width: smtpServer.frame.width, height: 0.5))
         smtpServerUnderline.backgroundColor = textColor
 
@@ -400,7 +400,7 @@ class Onboarding: NSObject {
 
         let smtpPortUnderline = UIView.init(frame: CGRect.init(x: 0, y: smtpPort.frame.maxY, width: smtpPort.frame.width, height: 0.5))
         smtpPortUnderline.backgroundColor = textColor
-        
+
         let smtp = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: smtpServer.frame.height + smtpServerUnderline.frame.height + padding + smtpLabel.frame.height + padding + smtpPort.frame.height + smtpPortUnderline.frame.height))
         smtp.addSubview(smtpServer)
         smtp.addSubview(smtpServerUnderline)
@@ -769,6 +769,29 @@ class Onboarding: NSObject {
             _ = enc?.addKey(data, forMailAddresses: ["ncpayroll@enzevalos.de"])
         }
         catch _ { }
+
+        switch UserManager.loadUserValue(Attribute.userAddr)! as! String {
+        case "bob2005@web.de":
+            path = Bundle.main.path(forResource: "bob-public", ofType: "gpg")
+            pgp = ObjectivePGP.init()
+            pgp.importKeys(fromFile: path!, allowDuplicates: false)
+            do {
+                let data = try pgp.keys[0].export()
+                _ = enc?.addKey(data, forMailAddresses: ["bob2005@web.de"])
+            }
+            catch _ { }
+        case "ullimuelle@web.de":
+            path = Bundle.main.path(forResource: "ullimuelle-public", ofType: "gpg")
+            pgp = ObjectivePGP.init()
+            pgp.importKeys(fromFile: path!, allowDuplicates: false)
+            do {
+                let data = try pgp.keys[0].export()
+                _ = enc?.addKey(data, forMailAddresses: ["ullimuelle@web.de"])
+            }
+            catch _ { }
+        default:
+            break
+        }
 
         //Import public keys for labstudy END
         //---------------------------------------

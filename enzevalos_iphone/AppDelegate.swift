@@ -74,14 +74,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let reset = (UserDefaults.standard.value(forKey: "reset") as? Bool) {
             if reset == true {
                 if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
-                    var m = DataHandler.handler.countMails
-                    print("Mails: \(m)")
                     let mailhandler = MailHandler.init()
                     mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
-                    DataHandler.handler.reset()
-                    m = DataHandler.handler.countMails
-                    print("Mails: \(m)")
                 }
+                DataHandler.handler.reset()
                 self.window = UIWindow(frame: UIScreen.main.bounds)
                 //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
                 self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
