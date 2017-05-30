@@ -407,6 +407,7 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
                 autocrypt = AutocryptContact(header: header!)
                 if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0){
                     let pgp = ObjectivePGP.init()
+                    print("Autocryptkey: \(autocrypt?.key) from \(header?.from.mailbox)")
                     pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
                     let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                     do {
@@ -516,23 +517,22 @@ func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessa
         op?.start{
             (err, vanished) -> Void in
             guard err == nil else {
-                print("Error while fetching inbox: \(err)")
+                print("Error while moving inbox: \(String(describing: err))")
                 return
             }
-        }
-        let mark = self.IMAPSession.storeFlagsOperation(withFolder: from, uids: uids, kind: MCOIMAPStoreFlagsRequestKind.add, flags: MCOMessageFlag.deleted)
-        mark?.start{ err -> Void in
-            guard err == nil else {
-                print("Error while fetching inbox: \(err)")
-                return
-            }
-        }
-        let expunge = self.IMAPSession.expungeOperation(from)
-        expunge?.start{
-            err -> Void in
-            guard err == nil else {
-                print("Error while fetching inbox: \(err)")
-                return
+            let mark = self.IMAPSession.storeFlagsOperation(withFolder: from, uids: uids, kind: MCOIMAPStoreFlagsRequestKind.add, flags: MCOMessageFlag.deleted)
+                mark?.start{ err -> Void in
+                    guard err == nil else {
+                        print("Error while deleting inbox: \(String(describing: err))")
+                        return
+                    }
+                    let expunge = self.IMAPSession.expungeOperation(from)
+                        expunge?.start{err -> Void in
+                            guard err == nil else {
+                                print("Error while expunging  inbox: \(String(describing: err))")
+                                return
+                                }
+                }
             }
         }
     }
