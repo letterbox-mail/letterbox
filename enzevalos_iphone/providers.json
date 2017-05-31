@@ -56,6 +56,38 @@
                      "enzevalos.de"
                      ]
     },
+    "zedat.fu\-berlin":{
+        "servers":{
+            "imap":[
+                    {
+                    "port":144,
+                    "hostname":"mail.zedat.fu-berlin.de",
+                    "starttls":true,
+                    "auth":"saslPlain"
+                    }
+                    ],
+            "smtp":[
+                    {
+                    "port":587,
+                    "hostname":"mail.zedat.fu-berlin.de",
+                    "starttls":true,
+                    "auth":"saslPlain"
+                    }
+                    ]
+        },
+        "domain-match":[
+                        "zedat.fu-berlin.de",
+                        "zedat.fu-berlin",
+                        "fu-berlin.de",
+                        "fu-berlin"
+                        ],
+        "mx-match": [
+                     "zedat.fu-berlin.de",
+                     "zedat.fu-berlin",
+                     "fu-berlin.de",
+                     "fu-berlin"
+                     ]
+    },
     "aol":{
         "servers":{
             "imap" : [
