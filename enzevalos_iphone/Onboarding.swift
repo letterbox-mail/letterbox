@@ -61,7 +61,7 @@ class Onboarding: NSObject {
         myBounds.size.height = 70
         UIGraphicsBeginImageContextWithOptions(myBounds.size, true, 0) //try 200 here
         var context = UIGraphicsGetCurrentContext()
-        context!.setFillColor(UIColor.init(red: 1, green: 1, blue: 1, alpha: 1).cgColor)//ThemeManager.encryptedMessageColor().cgColor)//
+        context!.setFillColor(UIColor.init(red: 1, green: 1, blue: 1, alpha: 1).cgColor)
         context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
         let snapshot = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
@@ -82,7 +82,7 @@ class Onboarding: NSObject {
         //Introduction
         let intro0 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("ReadFollowingPages", comment: ""), image: nil, buttonText: nil, action: nil)
 
-        let intro1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Letter", comment: ""), body: NSLocalizedString("LetterDescription", comment: "describe the letter"), image: /*IconsStyleKit.imageOfLetterBG*/ nil, buttonText: nil, action: nil)
+        let intro1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Letter", comment: ""), body: NSLocalizedString("LetterDescription", comment: "describe the letter"), image: nil, buttonText: nil, action: nil)
 
         intro1.iconHeight = 70
         intro1.iconWidth = 100
@@ -106,7 +106,6 @@ class Onboarding: NSObject {
         let url = URL.init(fileURLWithPath: path!)
 
         let videoView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 30, height: (AppDelegate.getAppDelegate().window?.frame.height)! - 70))
-        //videoView.backgroundColor = defaultColor
 
         let intro3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("GetHelp", comment: ""), videoURL: url, inputView: videoView, buttonText: nil, actionBlock: nil)
 
@@ -122,14 +121,12 @@ class Onboarding: NSObject {
             mailaddress.keyboardType = UIKeyboardType.emailAddress
             mailaddress.returnKeyType = UIReturnKeyType.next
             mailaddress.autocorrectionType = UITextAutocorrectionType.no
-            mailaddress.frame = CGRect.init(x: 0, y: /*mailaddressLabel.frame.height+padding*/ 0, width: 50, height: 30)
+            mailaddress.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
             mailaddress.isUserInteractionEnabled = true
             mailaddress.delegate = textDelegate
 
             let mailaddressUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.maxY, width: mailaddress.frame.width, height: 0.5))
             mailaddressUnderline.backgroundColor = textColor
-
-            //let page2 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
 
             password = UITextField.init()
             password.textColor = textColor
@@ -170,30 +167,20 @@ class Onboarding: NSObject {
         if self.credentialFails > 0 {
             page3.bodyLabel.textColor = UIColor.orange
         }
-        //page3.onlyInputView = true
 
-        //let page4 = OnboardingContentViewController.content(withTitle: NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
-
-        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, intro0, intro1, intro2, intro3, page3/*, page4*/])
-        //vc?.shouldBlurBackground = true
-        vc?.view.backgroundColor = defaultColor//UIColor.white//UIColor.init(red: 1, green: 1, blue: 1, alpha: 0)
-        //vc?.backgroundImage = postcardBg
+        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, intro0, intro1, intro2, intro3, page3])
+        vc?.view.backgroundColor = defaultColor
         vc?.shouldFadeTransitions = true
-        //vc?.shouldMaskBackground = false
 
         let duration = 0.5
 
         intro2.viewWillAppearBlock = {
-            //vc?.backgroundImage = postcardBg
-            //UIView.animate(withDuration: 1.3, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.backgroundImageView.image = postcardBg; vc?.view.setNeedsDisplay()})
             UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 vc?.view.backgroundColor = ThemeManager.uncryptedMessageColor()
                 vc?.view.setNeedsDisplay()
             })
-            //vc?.fadeBackground(postcardBg)
         }
         intro2.viewWillDisappearBlock = {
-            //UIView.animate(withDuration: 0.3, animations: { vc?.backgroundImageView.image = background})
             UIView.animate(withDuration: duration, delay: 0.05, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 if (vc?.view.backgroundColor != ThemeManager.encryptedMessageColor()) {
                     vc?.view.backgroundColor = defaultColor
@@ -202,24 +189,15 @@ class Onboarding: NSObject {
             })
         }
         intro1.viewWillAppearBlock = {
-            //vc?.backgroundImage = postcardBg
-            //UIView.animate(withDuration: 1.3, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.backgroundImageView.image = postcardBg; vc?.view.setNeedsDisplay()})
             UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.view.backgroundColor = ThemeManager.encryptedMessageColor(); vc?.view.setNeedsDisplay() })
-            //vc?.fadeBackground(postcardBg)
         }
         intro1.viewWillDisappearBlock = {
-            //UIView.animate(withDuration: 0.3, animations: { vc?.backgroundImageView.image = background})
-            //UIView.animate(withDuration: 0.7, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { vc?.view.backgroundColor = UIColor.white; vc?.view.setNeedsDisplay()})
             UIView.animate(withDuration: duration, delay: 0.05, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 if (vc?.view.backgroundColor != ThemeManager.uncryptedMessageColor()) {
                     vc?.view.backgroundColor = defaultColor
                     vc?.view.setNeedsDisplay()
                 }
             })
-        }
-
-        if self.credentialFails > 0 {
-            //vc!.pageControl.currentPage = (vc?.pageControl.numberOfPages)!-1
         }
 
         return vc!
@@ -265,11 +243,8 @@ class Onboarding: NSObject {
         let start = OnboardingContentViewController.content(withTitle: NSLocalizedString("WhatAShame", comment: ""), body: NSLocalizedString("CouldNotConnect", comment: ""), videoURL: nil, inputView: nil, buttonText: nil, actionBlock: nil)
 
 
-        let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: nil, actionBlock: callback)//OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddress", comment: ""), videoURL: nil, inputView: mailaddress, buttonText: nil, actionBlock: nil)
-
+        let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: nil, actionBlock: callback)
         username = UITextField.init()
-        //text.textColor = UIColor.whiteColor()
-        //text.tintColor = UIColor.whiteColor()
         username.borderStyle = UITextBorderStyle.none
         username.keyboardType = UIKeyboardType.emailAddress
         username.autocorrectionType = UITextAutocorrectionType.no
@@ -277,6 +252,7 @@ class Onboarding: NSObject {
         username.placeholder = NSLocalizedString("Username", comment: "")
         username.text = UserManager.loadUserValue(Attribute.userName) as? String
         username.textColor = textColor
+        username.tintColor = textColor
         username.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Username", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
 
         let usernameUnderline = UIView.init(frame: CGRect.init(x: 0, y: username.frame.maxY, width: username.frame.width, height: 0.5))
@@ -288,12 +264,11 @@ class Onboarding: NSObject {
 
         let user = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertUsername", comment: ""), videoURL: nil, inputView: userView, buttonText: nil, actionBlock: nil)
 
-        //let passwd = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertPassword", comment: ""), videoURL: nil, inputView: password, buttonText: nil, actionBlock: nil)
-
         imapServer.borderStyle = UITextBorderStyle.none
         imapServer.textColor = textColor
         imapServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
         imapServer.text = UserManager.loadUserValue(Attribute.imapHostname) as? String
+        imapServer.autocorrectionType = UITextAutocorrectionType.no
 
         let imapServerUnderline = UIView.init(frame: CGRect.init(x: 0, y: imapServer.frame.maxY, width: imapServer.frame.width, height: 0.5))
         imapServerUnderline.backgroundColor = textColor
@@ -301,7 +276,7 @@ class Onboarding: NSObject {
         let imapLabel = UILabel.init()
         imapLabel.text = "IMAP-Port"
 
-        imapLabel.textColor = textColor//UIColor.white
+        imapLabel.textColor = textColor
         imapLabel.font = font
         imapLabel.numberOfLines = 0
         imapLabel.textAlignment = NSTextAlignment.center
@@ -333,13 +308,10 @@ class Onboarding: NSObject {
         imapTransportEncryption.delegate = imapTransDataDelegate
         imapTransportEncryption.frame = CGRect.init(x: 0, y: 0, width: 50, height: 100)
         imapTransportEncryption.reloadAllComponents()
-        //imapAuthentication.backgroundColor = UIColor.whiteColor()
         var row = UserManager.loadUserValue(Attribute.imapConnectionType) as! Int
         imapTransDataDelegate.pickedValue = transportRows[row]!
         row = imapTransDataDelegate.rows.index(of: transportRows[row]!)!
-        //if Array(transportRows.keys).contains(row){
         imapTransportEncryption.selectRow(row, inComponent: 0, animated: false)
-        //}
 
         let imapAuthLabel = UILabel.init()
         imapAuthLabel.text = "IMAP-" + NSLocalizedString("Authentification", comment: "")
@@ -357,14 +329,11 @@ class Onboarding: NSObject {
         imapAuthentication.frame = CGRect.init(x: 0, y: imapTransportEncryption.frame.height + imapAuthLabel.frame.height, width: 50, height: 100)
         imapAuthentication.reloadAllComponents()
         imapAuthentication.reloadInputViews()
-        imapAuthentication.tintColor = UIColor.white
-        //imapAuthentication.backgroundColor = UIColor.whiteColor()
+        imapAuthentication.tintColor = textColor
         row = UserManager.loadUserValue(Attribute.imapAuthType) as! Int
         imapAuthDataDelegate.pickedValue = authenticationRows[row]!
         row = Array(authenticationRows.values).index(of: authenticationRows[row]!)!
-        //if Array(authenticationRows.keys).contains(row){
         imapAuthentication.selectRow(row, inComponent: 0, animated: false)
-        //}
 
         let imapAuth = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: imapTransportEncryption.frame.height + padding + imapAuthLabel.frame.height + imapAuthentication.frame.height))
         imapAuth.addSubview(imapTransportEncryption)
@@ -379,6 +348,7 @@ class Onboarding: NSObject {
         smtpServer.textColor = textColor
         smtpServer.text = UserManager.loadUserValue(Attribute.smtpHostname) as? String
         smtpServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
+        smtpServer.autocorrectionType = UITextAutocorrectionType.no
 
         let smtpServerUnderline = UIView.init(frame: CGRect.init(x: 0, y: smtpServer.frame.maxY, width: smtpServer.frame.width, height: 0.5))
         smtpServerUnderline.backgroundColor = textColor
@@ -443,14 +413,11 @@ class Onboarding: NSObject {
         smtpAuthentication.frame = CGRect.init(x: 0, y: smtpTransportEncryption.frame.height + smtpAuthLabel.frame.height, width: 50, height: 100)
         smtpAuthentication.reloadAllComponents()
         smtpAuthentication.reloadInputViews()
-        smtpAuthentication.tintColor = UIColor.white
-        //smtpAuthentication.backgroundColor = UIColor.whiteColor()
+        smtpAuthentication.tintColor = textColor
         row = UserManager.loadUserValue(Attribute.smtpAuthType) as! Int
         smtpAuthDataDelegate.pickedValue = authenticationRows[row]!
         row = Array(authenticationRows.values).index(of: authenticationRows[row]!)!
-        //if Array(authenticationRows.keys).contains(row){
         smtpAuthentication.selectRow(row, inComponent: 0, animated: false)
-        //}
 
         let smtpAuth = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 50, height: smtpTransportEncryption.frame.height + padding + smtpAuthLabel.frame.height + smtpAuthentication.frame.height))
         smtpAuth.addSubview(smtpTransportEncryption)
@@ -462,7 +429,7 @@ class Onboarding: NSObject {
 
         let last = OnboardingContentViewController.content(withTitle: NSLocalizedString("EverythingCorrect", comment: ""), body: nil, videoURL: nil, inputView: nil, buttonText: NSLocalizedString("next", comment: ""), actionBlock: callback)
 
-        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, /*passwd,*/ imap1, imap2, smtp1, smtp2, last])
+        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, imap1, imap2, smtp1, smtp2, last])
         vc?.view.backgroundColor = defaultColor
         return vc!
     }
@@ -490,15 +457,7 @@ class Onboarding: NSObject {
         imapCheckDone = false
         self.work = work
         self.fail = fail
-        //AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)
         AppDelegate.getAppDelegate().mailHandler.checkIMAP(imapCompletion)
-        /*print("called2")
-        print("checks ", imapCheck, smtpCheck)
-        print(MCOAuthType(rawValue: UserManager.loadUserValue(Attribute.IMAPAuthType) as! Int))
-        print(MCOAuthType.SASLPlain)
-        print(MCOAuthType.SASLPlain.rawValue)
-        print(MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.IMAPConnectionType) as! Int))*/
-        //print(UserManager.loadUserValue(Attribute.ConnectionType) as! MCOConnectionType)
         return true
     }
 
@@ -524,31 +483,15 @@ class Onboarding: NSObject {
 
     static func setGuessValues() {
 
-        if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), !manualSet && mailAddress != "" && mailAddress.contains("@") {
+        if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), !manualSet && mailAddress != "" {
             let guessedUserName = mailAddress.components(separatedBy: "@")[0]
-            let provider = mailAddress.components(separatedBy: "@")[1]
-            setServerValues(mailaddress: mailAddress)
-            UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)//Attribute.attributeValues[Attribute.UserAddr] = addr
             UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
-            if provider == Provider.FU.rawValue {
-                //Providers.setValues(Provider.FU)
-                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.accountname)
-                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.userName)
-            }
-            if provider == Provider.ZEDAT.rawValue {
-                //Providers.setValues(Provider.ZEDAT)
-                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.accountname)
-                UserManager.storeUserValue("jakobsbode" as AnyObject?, attribute: Attribute.userName)
-            }
-            if provider == Provider.ENZEVALOS.rawValue {
-                //Providers.setValues(Provider.ENZEVALOS)
-                UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.accountname)
-                UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
-            }
-            if provider == Provider.WEB.rawValue {
-                Providers.setValues(Provider.WEB)
-            }
-
+            /*if mailAddress.contains("@") {
+                let provider = mailAddress.components(separatedBy: "@")[1]
+            }*/
+            setServerValues(mailaddress: mailAddress)
+            UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
+            
             // set a displayname for the lab study
             switch mailAddress {
             case "ullimuelle@web.de":
@@ -590,12 +533,12 @@ class Onboarding: NSObject {
         manager.registerProviders(withFilename: path)
 
         //------- DEBUG -------
-        if let provider = manager.provider(forEmail: mailaddress) {
+        /*if let provider = manager.provider(forEmail: mailaddress) {
             if let imap = (provider.imapServices() as? [MCONetService]), let smtp = (provider.smtpServices() as? [MCONetService]) {
                 print(imap)
                 print(smtp)
             }
-        }
+        }*/
         //------- DEBUG -------
 
         if let provider = manager.provider(forEmail: mailaddress), let imap = (provider.imapServices() as? [MCONetService]), imap != [], let smtp = (provider.smtpServices() as? [MCONetService]), smtp != [] {
