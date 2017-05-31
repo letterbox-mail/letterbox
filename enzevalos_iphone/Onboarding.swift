@@ -277,6 +277,7 @@ class Onboarding: NSObject {
         username.placeholder = NSLocalizedString("Username", comment: "")
         username.text = UserManager.loadUserValue(Attribute.userName) as? String
         username.textColor = textColor
+        username.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Username", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
 
         let usernameUnderline = UIView.init(frame: CGRect.init(x: 0, y: username.frame.maxY, width: username.frame.width, height: 0.5))
         usernameUnderline.backgroundColor = textColor
@@ -385,13 +386,15 @@ class Onboarding: NSObject {
         let smtpLabel = UILabel.init()
         smtpLabel.text = "SMTP-Port"
 
-        smtpLabel.textColor = UIColor.white;
+        smtpLabel.textColor = textColor;
         smtpLabel.font = font
         smtpLabel.numberOfLines = 0;
         smtpLabel.textAlignment = NSTextAlignment.center;
         smtpLabel.frame = CGRect.init(x: 0, y: smtpServer.frame.height + smtpServerUnderline.frame.height + padding, width: 50, height: 30)
         smtpPort.borderStyle = UITextBorderStyle.roundedRect
         smtpPort.text = "0"
+        smtpPort.textColor = textColor
+        smtpPort.borderStyle = UITextBorderStyle.none
         if let port = UserManager.loadUserValue(Attribute.smtpPort) {
             smtpPort.text = "\(port as! Int)"
         }
@@ -485,9 +488,6 @@ class Onboarding: NSObject {
     static func checkConfig(_ fail: @escaping () -> (), work: @escaping () -> ()) -> Bool {
         smtpCheckDone = false
         imapCheckDone = false
-        if credentialFails > 2 {
-            manualSet = true
-        }
         self.work = work
         self.fail = fail
         //AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)

@@ -45,7 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func credentialsFailed() {
         Onboarding.credentialFails += 1
-        if Onboarding.credentialFails >= 1/*3*/ {
+        if Onboarding.credentialFails >= 3 {
+            Onboarding.manualSet = true
             self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
         } else {
             let contr = (Onboarding.onboarding(self.credentialCheck) as! OnboardingViewController)
