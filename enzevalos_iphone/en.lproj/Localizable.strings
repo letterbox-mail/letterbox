@@ -124,7 +124,7 @@
 "and" = "and";
 "more" = "more";
 "encryptedBeforeHeadline" = "Insecure Message";
-"encryptedBeforeText" = "You received secure messages from this contact before. Maybe don't trust this email too much.\n";
+"encryptedBeforeText" = "You received secure messages from this contact before. Maybe don't trust this email too much or ask the contact via secure message or other channel whether this message is legitimate.\n";
 "corruptedText" = "This E-Mail may have been modified! If you want to read it anyways, please be weary of its content.";
 "corruptedHeadline" = "Attention!";
 "answer" = "Answer";
@@ -136,3 +136,5 @@
 "noName" = "NO NAME";
 "you" = "Your Tray";
 "thisIsYou" = "Emails you sent yourself are collected heree";
+"didYouSendThis" = "Hey, did you send me this email?\n\n";
+"reactButton" = "Request Confirmation";

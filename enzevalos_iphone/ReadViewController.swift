@@ -21,6 +21,7 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var infoText: UILabel!
     @IBOutlet weak var infoSymbol: UILabel!
     @IBOutlet weak var answerButton: UIBarButtonItem!
+    @IBOutlet weak var reactButton: UIButton!
 
     // Cells
     @IBOutlet weak var senderCell: UITableViewCell!
@@ -28,6 +29,7 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var subjectCell: UITableViewCell!
     @IBOutlet weak var infoCell: UITableViewCell!
     @IBOutlet weak var infoButtonCell: UITableViewCell!
+    @IBOutlet weak var infoReactButtonCell: UITableViewCell!
     @IBOutlet weak var messageCell: MessageBodyTableViewCell!
 
     @IBOutlet weak var iconButton: UIButton!
@@ -64,6 +66,8 @@ class ReadViewController: UITableViewController {
         // not possible to set in IB
         SeperatorConstraint.constant = 1 / UIScreen.main.scale
         infoCell.layoutMargins = UIEdgeInsets.zero
+        
+        reactButton.titleLabel?.text = NSLocalizedString("reactButton", comment: "Title of the reaction Button") // TODO: This is not working for some reason
 
         setUItoMail()
     }
@@ -139,7 +143,7 @@ class ReadViewController: UITableViewController {
         }
 
         if let mail = mail {
-            if section == 1 && mail.trouble && !mail.showMessage {
+            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && !mail.showMessage) {
                 return 2
             }
         }
@@ -169,7 +173,11 @@ class ReadViewController: UITableViewController {
                 } else if mail.isEncrypted && mail.unableToDecrypt {
                     return infoCell
                 } else if mail.from.hasKey && !mail.isSecure {
-                    return infoCell
+                    if indexPath.row == 0 {
+                        return infoCell
+                    } else if indexPath.row == 1 {
+                        return infoReactButtonCell
+                    }
                 }
             } else {
                 return messageCell
@@ -193,6 +201,11 @@ class ReadViewController: UITableViewController {
 
     @IBAction func ignoreEmailButton(_ sender: AnyObject) {
         _ = navigationController?.popViewController(animated: true)
+    }
+
+    @IBAction func reactButton(_ sender: Any) {
+        performSegue(withIdentifier: "answerTo", sender: "reactButton")
+        reactButton.isEnabled = false
     }
 
     @IBAction func markUnreadButton(_ sender: AnyObject) {
@@ -236,7 +249,7 @@ class ReadViewController: UITableViewController {
     }
 
     func setUItoMail() {
-        if let m = mail {
+        if let mail = mail {
 
             // mark mail as read if viewcontroller is open for more than 1.5 sec
             let delay = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -244,19 +257,19 @@ class ReadViewController: UITableViewController {
                 if let viewControllers = self.navigationController?.viewControllers {
                     for viewController in viewControllers {
                         if viewController.isKind(of: ReadViewController.self) {
-                            m.isRead = true
+                            mail.isRead = true
                         }
                     }
                 }
             }
 
-            if let name = m.from.contact?.nameOptional {
-                senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: name, mail: m.from.mailAddress)
+            if let name = mail.from.contact?.nameOptional {
+                senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: name, mail: mail.from.mailAddress)
             } else {
-                senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: m.from.mailAddress, mail: m.from.mailAddress)
+                senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: mail.from.mailAddress, mail: mail.from.mailAddress)
             }
 
-            for receiver in m.getReceivers() {
+            for receiver in mail.getReceivers() {
                 if let displayname = receiver.contact?.nameOptional {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
@@ -264,7 +277,7 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-            for receiver in m.getCCs() {
+            for receiver in mail.getCCs() {
                 if let displayname = receiver.contact?.nameOptional {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
@@ -272,7 +285,7 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-            for receiver in m.getBCCs() {
+            for receiver in mail.getBCCs() {
                 if let displayname = receiver.contact?.nameOptional {
                     toTokenField.delegate?.tokenField!(toTokenField, didEnterText: displayname, mail: receiver.address)
                 } else {
@@ -284,9 +297,9 @@ class ReadViewController: UITableViewController {
                 toTokenField.collapse()
             }
 
-            receivedTime.text = m.timeString
+            receivedTime.text = mail.timeString
 
-            if let subj = m.subject {
+            if let subj = mail.subject {
                 if subj.trimmingCharacters(in: CharacterSet.whitespaces).characters.count > 0 {
                     subject.text = subj
                 } else {
@@ -294,10 +307,10 @@ class ReadViewController: UITableViewController {
                 }
             }
 
-            if m.isEncrypted && !m.unableToDecrypt {
-                messageBody.text = m.decryptedBody
+            if mail.isEncrypted && !mail.unableToDecrypt {
+                messageBody.text = mail.decryptedBody
             } else {
-                messageBody.text = m.body
+                messageBody.text = mail.body
             }
             messageBody.text = messageBody.text?.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines).appending("\n")
 
@@ -306,9 +319,9 @@ class ReadViewController: UITableViewController {
             iconView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
             iconView.contentMode = .scaleAspectFit
             var icon: UIImage
-            if m.trouble {
+            if mail.trouble {
                 icon = IconsStyleKit.imageOfLetterCorrupted
-            } else if m.isSecure {
+            } else if mail.isSecure {
                 icon = IconsStyleKit.imageOfLetterOpen
             } else {
                 icon = IconsStyleKit.imageOfPostcard
@@ -317,7 +330,7 @@ class ReadViewController: UITableViewController {
             iconButton.setImage(icon, for: UIControlState())
 
             // Mail info text
-            if m.trouble {
+            if mail.trouble {
                 infoSymbol.text = "!"
                 infoSymbol.textColor = ThemeManager.troubleMessageColor()
                 infoHeadline.text = NSLocalizedString("corruptedHeadline", comment: "This mail is corrupted")
@@ -326,13 +339,13 @@ class ReadViewController: UITableViewController {
                 infoCell.setNeedsLayout()
                 infoCell.layoutIfNeeded()
                 infoCell.translatesAutoresizingMaskIntoConstraints = true
-            } else if m.isEncrypted && m.unableToDecrypt {
+            } else if mail.isEncrypted && mail.unableToDecrypt {
                 infoSymbol.text = "?"
                 infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
                 infoHeadline.text = NSLocalizedString("couldNotDecryptHeadline", comment: "Message could not be decrypted")
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("couldNotDecryptText", comment: "Message could not be decrypted")
-            } else if m.from.hasKey && !m.isSecure {
+            } else if mail.from.hasKey && !mail.isSecure {
                 infoSymbol.text = "?"
                 infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
                 infoHeadline.text = NSLocalizedString("encryptedBeforeHeadline", comment: "The sender has encrypted before")
@@ -340,8 +353,8 @@ class ReadViewController: UITableViewController {
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
             }
 
-            print("enc: ", m.isEncrypted, ", unableDec: ", m.unableToDecrypt, ", signed: ", m.isSigned, ", correctlySig: ", m.isCorrectlySigned, ", oldPrivK: ", m.decryptedWithOldPrivateKey)
-            EnzevalosEncryptionHandler.getEncryption(.PGP)?.decryptAndSignatureCheck(m)
+            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey)
+            EnzevalosEncryptionHandler.getEncryption(.PGP)?.decryptAndSignatureCheck(mail)
         }
     }
 
@@ -376,9 +389,23 @@ class ReadViewController: UITableViewController {
                 body.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (mail!.subject ?? ""))
                 body.append("\n------------------------\n\n" + (mail!.decryptedBody ?? mail!.body ?? ""))
                 body = TextFormatter.insertBeforeEveryLine("> ", text: body)
-                body = "\n\n" + body
 
-                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + (mail!.subject ?? ""), body: body, uid: mail!.uid)
+                if let s = sender as? String, s == "reactButton" {
+                    body = NSLocalizedString("didYouSendThis", comment: "") + body
+                } else {
+                    body = "\n\n" + body
+                }
+
+                var subject = NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + NSLocalizedString("SubjectNo", comment: "there is no subject")
+                if let subj = mail!.subject {
+                    if subj.hasPrefix("Re:") || subj.hasPrefix("RE:") || subj.hasPrefix("Aw:") || subj.hasPrefix("AW:") {
+                        subject = subj
+                    } else {
+                        subject = NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + subj
+                    }
+                }
+
+                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: subject, body: body, uid: mail!.uid)
 
                 controller.prefilledMail = answerMail
             }

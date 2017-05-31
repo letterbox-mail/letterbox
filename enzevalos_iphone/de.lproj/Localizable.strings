@@ -125,7 +125,7 @@
 "and" = "und";
 "more" = "weitere";
 "encryptedBeforeHeadline" = "Unsichere Nachricht";
-"encryptedBeforeText" = "Früher hat dieser Kontakt sichere Nachrichten gesendet. Vertraue dem Inhalt vielleicht nicht zu sehr.\n";
+"encryptedBeforeText" = "Früher hat dieser Kontakt sichere Nachrichten gesendet. Vertraue dem Inhalt vielleicht nicht zu sehr oder kontaktiere den Absender ob die Nachricht legitim ist.\n";
 "corruptedText" = "Diese E-Mail könnte verändert worden sein! Bitte misstrauen Sie dem Inhalt, falls Sie ihn trotzdem lesen möchten.\n";
 "corruptedHeadline" = "Achtung!";
 "answer" = "Antworten";
@@ -137,3 +137,5 @@
 "noName" = "OHNE NAME";
 "you" = "Deine Ablage";
 "thisIsYou" = "Hier werden E-Mails die du dir selber schickst gesammelt";
+"didYouSendThis" = "Hey, hast du mir diese E-Mail geschickt?\n\n";
+"reactButton" = "Bestätigung erfragen";
