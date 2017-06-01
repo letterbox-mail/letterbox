@@ -234,6 +234,7 @@ class Onboarding: NSObject {
         view.frame = activity.frame
         let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("CreateAndManageKeys", comment: ""), body: nil, videoURL: nil, inputView: view, buttonText: nil, actionBlock: nil)
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
+        vc?.pageControl = UIPageControl.init()
         vc?.view.backgroundColor = defaultColor
         return vc!
     }
@@ -244,6 +245,8 @@ class Onboarding: NSObject {
         let start = OnboardingContentViewController.content(withTitle: NSLocalizedString("WhatAShame", comment: ""), body: NSLocalizedString("CouldNotConnect", comment: ""), videoURL: nil, inputView: nil, buttonText: nil, actionBlock: nil)
 
         Onboarding.password.returnKeyType = .done
+        password.text = UserManager.loadUserValue(.userPW) as? String
+        mailaddress.text = UserManager.loadUserValue(.userAddr) as? String
         doWhenDone = { Void in }
         
         let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: nil, actionBlock: callback)

@@ -71,18 +71,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func resetApp() {
-        if UserDefaults.standard.bool(forKey: "reset") {
-            if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
-                let mailhandler = MailHandler.init()
-                mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
+        func resetApp() {
+            if UserDefaults.standard.bool(forKey: "reset") {
+                if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
+                    let mailhandler = MailHandler.init()
+                    mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
+                }
+                DataHandler.handler.reset()
+                Onboarding.credentials = nil
+                Onboarding.credentialFails = 0
+                Onboarding.manualSet = false
+                UserManager.resetUserValues()
+                UserManager.storeUserValue(Attribute.accountname.defaultValue, attribute: Attribute.accountname)
+                UserManager.storeUserValue(Attribute.userName.defaultValue, attribute: Attribute.userName)
+                UserManager.storeUserValue(Attribute.userAddr.defaultValue, attribute: Attribute.userAddr)
+                UserManager.storeUserValue(Attribute.userPW.defaultValue, attribute: Attribute.userPW)
+                self.window = UIWindow(frame: UIScreen.main.bounds)
+                //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
+                self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
+                self.window?.makeKeyAndVisible()
+                UserDefaults.standard.set(false, forKey: "launchedBefore")
+                UserDefaults.standard.set(false, forKey: "reset")
             }
-            DataHandler.handler.reset()
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
-            self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
-            self.window?.makeKeyAndVisible()
-            UserDefaults.standard.set(false, forKey: "launchedBefore")
-            UserDefaults.standard.set(false, forKey: "reset")
         }
     }
 
@@ -104,6 +114,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        resetApp()
+
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -119,6 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        resetApp()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

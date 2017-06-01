@@ -67,8 +67,8 @@ class ReadViewController: UITableViewController {
         SeperatorConstraint.constant = 1 / UIScreen.main.scale
         infoCell.layoutMargins = UIEdgeInsets.zero
         
-        reactButton.titleLabel?.text = NSLocalizedString("reactButton", comment: "Title of the reaction Button") // TODO: This is not working for some reason
-
+        reactButton.setTitle(NSLocalizedString("reactButton", comment: "Title of the reaction Button"), for: .normal)
+        
         setUItoMail()
     }
 

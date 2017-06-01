@@ -60,7 +60,7 @@
         "servers":{
             "imap":[
                     {
-                    "port":144,
+                    "port":143,
                     "hostname":"mail.zedat.fu-berlin.de",
                     "starttls":true,
                     "auth":"saslPlain"
