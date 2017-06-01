@@ -135,6 +135,6 @@
 "inviteText" = "Hey there!\n\nThere is this new App called Enzevalos which makes it really easy to communicate encrypted over email.\n\nI would love for you to try it!\n\nBest regards!";
 "noName" = "NO NAME";
 "you" = "Your Tray";
-"thisIsYou" = "Emails you sent yourself are collected heree";
+"thisIsYou" = "Emails you sent yourself are collected here";
 "didYouSendThis" = "Hey, did you send me this email?\n\n";
 "reactButton" = "Request Confirmation";
