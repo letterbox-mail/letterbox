@@ -143,7 +143,7 @@ class ReadViewController: UITableViewController {
         }
 
         if let mail = mail {
-            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && !mail.showMessage) {
+            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
                 return 2
             }
         }
