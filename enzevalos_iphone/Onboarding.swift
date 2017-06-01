@@ -83,7 +83,7 @@ class Onboarding: NSObject {
         let postcardBg = snapshot2!
 
         //Introduction
-        let intro0 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("ReadFollowingPages", comment: ""), image: nil, buttonText: nil, action: nil)
+        let intro0 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Welcome", comment: "Welcome"), body: NSLocalizedString("ReadFollowingPages", comment: ""), image: nil, buttonText: nil, action: nil)
 
         let intro1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Letter", comment: ""), body: NSLocalizedString("LetterDescription", comment: "describe the letter"), image: nil, buttonText: nil, action: nil)
 
@@ -113,8 +113,6 @@ class Onboarding: NSObject {
         let intro3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("GetHelp", comment: ""), videoURL: url, inputView: videoView, buttonText: nil, actionBlock: nil)
 
         //Content
-        let page1 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Hello", comment: "Welcome"), body: NSLocalizedString("InterestedInSecureMail", comment: "commendation to user for using secure mail"), image: nil, buttonText: nil, action: nil)
-
         if credentials == nil {
             mailaddress = UITextField.init()
             mailaddress.textColor = textColor
@@ -171,7 +169,7 @@ class Onboarding: NSObject {
             page3.bodyLabel.textColor = UIColor.orange
         }
 
-        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1, intro0, intro1, intro2, intro3, page3])
+        let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [intro0, intro1, intro2, intro3, page3])
         vc?.view.backgroundColor = defaultColor
         vc?.shouldFadeTransitions = true
 

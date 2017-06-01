@@ -34,7 +34,6 @@
 "From" = "From";
 "GetHelp" = "To get help, tap on the letter or postcard in the app.";
 "GotIt" = "Got it!";
-"Hello" = "Hello";
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
 "InsertMailAddress" = "Please enter your email address";
@@ -66,7 +65,7 @@
 "Postcard" = "Postcard";
 "PostcardDescription" = "• the kind of mail you know\n• neighter confidential, nor you know if it's a forgery\n• everybody can read and manipulate it";
 "Re" = "Re";
-"ReadFollowingPages" = "We try to make secure mail easy to use.\nTherefore please read the next three pages.";
+"ReadFollowingPages" = "We want to make secure mail easy to use.\nTherefore please read the next three pages.";
 "Receive" = "Receive";
 "ReceiveError" = "An error occured"; //mehr spezifizieren?
 "ReceiveDamagedInfo" = "Something is wrong with this message. It might have been tempered with.";
@@ -97,6 +96,7 @@
 "Trash" = "Trash";
 "TwoDaysAgo" = "2 days ago";
 "Username" = "Username";
+"Welcome" = "Welcome";
 "WhatAShame" = "What a shame!";
 "WrongMailAddressOrPassword" = "Email address or password were wrong. Please try again!";
 "write" = "write";
