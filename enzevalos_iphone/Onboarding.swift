@@ -44,6 +44,7 @@ class Onboarding: NSObject {
     static let font = UIFont.init(name: "Helvetica-Light", size: 28)
     static let padding: CGFloat = 30
 
+    static var doWhenDone: () -> () = { Void in }
     static var fail: () -> () = { Void in }
     static var work: () -> () = { Void in }
 
@@ -54,6 +55,8 @@ class Onboarding: NSObject {
 
     static func onboarding(_ callback: @escaping () -> ()) -> UIViewController {
 
+        doWhenDone = callback
+        
         //Background
 
         var myBounds = CGRect()
@@ -133,7 +136,7 @@ class Onboarding: NSObject {
             password.tintColor = textColor
             password.borderStyle = UITextBorderStyle.none
             password.isSecureTextEntry = true
-            password.returnKeyType = UIReturnKeyType.done
+            password.returnKeyType = UIReturnKeyType.continue
             password.frame = CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height, width: 50, height: 30)
             password.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Password", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
             password.delegate = textDelegate
@@ -242,12 +245,16 @@ class Onboarding: NSObject {
 
         let start = OnboardingContentViewController.content(withTitle: NSLocalizedString("WhatAShame", comment: ""), body: NSLocalizedString("CouldNotConnect", comment: ""), videoURL: nil, inputView: nil, buttonText: nil, actionBlock: nil)
 
-
+        Onboarding.password.returnKeyType = .done
+        doWhenDone = { Void in }
+        
         let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: nil, actionBlock: callback)
         username = UITextField.init()
         username.borderStyle = UITextBorderStyle.none
         username.keyboardType = UIKeyboardType.emailAddress
         username.autocorrectionType = UITextAutocorrectionType.no
+        username.returnKeyType = .done
+        username.delegate = textDelegate
         username.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
         username.placeholder = NSLocalizedString("Username", comment: "")
         username.text = UserManager.loadUserValue(Attribute.userName) as? String
@@ -269,6 +276,8 @@ class Onboarding: NSObject {
         imapServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
         imapServer.text = UserManager.loadUserValue(Attribute.imapHostname) as? String
         imapServer.autocorrectionType = UITextAutocorrectionType.no
+        imapServer.returnKeyType = .done
+        imapServer.delegate = textDelegate
 
         let imapServerUnderline = UIView.init(frame: CGRect.init(x: 0, y: imapServer.frame.maxY, width: imapServer.frame.width, height: 0.5))
         imapServerUnderline.backgroundColor = textColor
@@ -288,6 +297,8 @@ class Onboarding: NSObject {
             imapPort.text = "\(port as! Int)"
         }
         imapPort.keyboardType = UIKeyboardType.numberPad
+        imapPort.returnKeyType = .done
+        imapPort.delegate = textDelegate
         imapPort.frame = CGRect.init(x: 0, y: imapServer.frame.height + padding + imapLabel.frame.height + padding, width: 50, height: 30)
 
         let imapPortUnderline = UIView.init(frame: CGRect.init(x: 0, y: imapPort.frame.maxY, width: imapPort.frame.width, height: 0.5))
@@ -349,6 +360,8 @@ class Onboarding: NSObject {
         smtpServer.text = UserManager.loadUserValue(Attribute.smtpHostname) as? String
         smtpServer.frame = CGRect.init(x: 0, y: 0, width: 50, height: 30)
         smtpServer.autocorrectionType = UITextAutocorrectionType.no
+        smtpServer.returnKeyType = .done
+        smtpServer.delegate = textDelegate
 
         let smtpServerUnderline = UIView.init(frame: CGRect.init(x: 0, y: smtpServer.frame.maxY, width: smtpServer.frame.width, height: 0.5))
         smtpServerUnderline.backgroundColor = textColor
@@ -369,6 +382,8 @@ class Onboarding: NSObject {
             smtpPort.text = "\(port as! Int)"
         }
         smtpPort.keyboardType = UIKeyboardType.numberPad
+        smtpPort.returnKeyType = .done
+        smtpPort.delegate = textDelegate
         smtpPort.frame = CGRect.init(x: 0, y: smtpServer.frame.height + smtpServerUnderline.frame.height + padding + smtpLabel.frame.height + padding, width: 50, height: 30)
 
         let smtpPortUnderline = UIView.init(frame: CGRect.init(x: 0, y: smtpPort.frame.maxY, width: smtpPort.frame.width, height: 0.5))
@@ -481,7 +496,7 @@ class Onboarding: NSObject {
         fail()
     }
 
-    static func setGuessValues() {
+    static func setValues() {
 
         if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), !manualSet && mailAddress != "" {
             let guessedUserName = mailAddress.components(separatedBy: "@")[0]
@@ -511,6 +526,21 @@ class Onboarding: NSObject {
             UserManager.storeUserValue(pw as AnyObject?, attribute: Attribute.userPW)
         }
         if manualSet {
+            if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) {
+                switch mailAddress {
+                case "ullimuelle@web.de":
+                    UserManager.storeUserValue("Ulli Müller" as AnyObject, attribute: Attribute.accountname)
+                case "bob2005@web.de":
+                    UserManager.storeUserValue("Bob" as AnyObject, attribute: Attribute.accountname)
+                case "nchr@enzevalos.de":
+                    UserManager.storeUserValue("NC Human Resources" as AnyObject, attribute: Attribute.accountname)
+                case "ncpayroll@enzevalos.de":
+                    UserManager.storeUserValue("NC Payroll" as AnyObject, attribute: Attribute.accountname)
+                case "idsolutions@enzevalos.de":
+                    UserManager.storeUserValue("Identity Solutions" as AnyObject, attribute: Attribute.accountname)
+                default: break
+                }
+            }
             UserManager.storeUserValue(imapServer.text as AnyObject?, attribute: Attribute.imapHostname)
             UserManager.storeUserValue(Int(imapPort.text!) as AnyObject?, attribute: Attribute.imapPort)
             UserManager.storeUserValue(smtpServer.text as AnyObject?, attribute: Attribute.smtpHostname)
@@ -773,7 +803,11 @@ class TextFieldDelegate: NSObject, UITextFieldDelegate {
             return false
         } else if textField == Onboarding.password {
             textField.resignFirstResponder()
+            Onboarding.doWhenDone()
             return true
+        }
+        else {
+            textField.resignFirstResponder()
         }
         return true
     }

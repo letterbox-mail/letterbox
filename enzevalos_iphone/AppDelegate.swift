@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func credentialCheck() {
         self.window?.rootViewController = Onboarding.checkConfigView()
-        Onboarding.setGuessValues()
+        Onboarding.setValues()
         if !Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork) {
             self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
             return
