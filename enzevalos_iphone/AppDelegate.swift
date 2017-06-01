@@ -23,8 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
 
-
-
+        resetApp()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
@@ -72,20 +71,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func resetApp() {
-        if let reset = (UserDefaults.standard.value(forKey: "reset") as? Bool) {
-            if reset == true {
-                if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
-                    let mailhandler = MailHandler.init()
-                    mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
-                }
-                DataHandler.handler.reset()
-                self.window = UIWindow(frame: UIScreen.main.bounds)
-                //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
-                self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
-                self.window?.makeKeyAndVisible()
-                UserDefaults.standard.set(false, forKey: "launchedBefore")
-                UserDefaults.standard.set(false, forKey: "reset")
+        if UserDefaults.standard.bool(forKey: "reset") {
+            if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
+                let mailhandler = MailHandler.init()
+                mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
             }
+            DataHandler.handler.reset()
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
+            self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
+            self.window?.makeKeyAndVisible()
+            UserDefaults.standard.set(false, forKey: "launchedBefore")
+            UserDefaults.standard.set(false, forKey: "reset")
         }
     }
 
