@@ -74,7 +74,8 @@ struct UserManager{
     
     static func resetUserValues(){
         for a in Attribute.allAttributes {
-            UserDefaults.standard.removeObject(forKey: "\(a.hashValue)")
+            storeUserValue(a.defaultValue, attribute: a)
+            //UserDefaults.standard.removeObject(forKey: "\(a.hashValue)")
         }
     }
 }
