@@ -72,10 +72,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func resetApp() {
         if UserDefaults.standard.bool(forKey: "reset") {
-            if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
+            //if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
                 let mailhandler = MailHandler.init()
                 mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
-            }
+            //}
             DataHandler.handler.reset()
             Onboarding.credentials = nil
             Onboarding.credentialFails = 0
