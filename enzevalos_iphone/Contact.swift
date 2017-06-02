@@ -23,7 +23,7 @@ extension Contact {
         var tag = String()
         if name.characters.count > 0 {
             let seperated = name.components(separatedBy: " ")
-            tag = seperated.map({ "\($0.characters.first!)" }).joined()
+            tag = seperated.map({if let a = $0.characters.first { return "\(a)" }; return "" }).joined()
         }
 
         text = NSAttributedString(string: tag.uppercased(), attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.systemFont(ofSize: 32.2)])
