@@ -23,8 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
 
-
-
+        resetApp()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
@@ -72,28 +71,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func resetApp() {
-        if let reset = (UserDefaults.standard.value(forKey: "reset") as? Bool) {
-            if reset == true {
-                if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
-                    let mailhandler = MailHandler.init()
-                    mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
-                }
-                DataHandler.handler.reset()
-                Onboarding.credentials = nil
-                Onboarding.credentialFails = 0
-                Onboarding.manualSet = false
-                UserManager.resetUserValues()
-                UserManager.storeUserValue(Attribute.accountname.defaultValue, attribute: Attribute.accountname)
-                UserManager.storeUserValue(Attribute.userName.defaultValue, attribute: Attribute.userName)
-                UserManager.storeUserValue(Attribute.userAddr.defaultValue, attribute: Attribute.userAddr)
-                UserManager.storeUserValue(Attribute.userPW.defaultValue, attribute: Attribute.userPW)
-                self.window = UIWindow(frame: UIScreen.main.bounds)
-                //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
-                self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
-                self.window?.makeKeyAndVisible()
-                UserDefaults.standard.set(false, forKey: "launchedBefore")
-                UserDefaults.standard.set(false, forKey: "reset")
+        if UserDefaults.standard.bool(forKey: "reset") {
+            if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
+                let mailhandler = MailHandler.init()
+                mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
             }
+            DataHandler.handler.reset()
+            Onboarding.credentials = nil
+            Onboarding.credentialFails = 0
+            Onboarding.manualSet = false
+            UserManager.resetUserValues()
+            UserManager.storeUserValue(Attribute.accountname.defaultValue, attribute: Attribute.accountname)
+            UserManager.storeUserValue(Attribute.userName.defaultValue, attribute: Attribute.userName)
+            UserManager.storeUserValue(Attribute.userAddr.defaultValue, attribute: Attribute.userAddr)
+            UserManager.storeUserValue(Attribute.userPW.defaultValue, attribute: Attribute.userPW)
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
+            self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
+            self.window?.makeKeyAndVisible()
+            UserDefaults.standard.set(false, forKey: "launchedBefore")
+            UserDefaults.standard.set(false, forKey: "reset")
         }
     }
 
@@ -125,11 +122,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-        resetApp()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        resetApp()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

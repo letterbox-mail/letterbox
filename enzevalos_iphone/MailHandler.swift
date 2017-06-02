@@ -506,8 +506,14 @@ class MailHandler {
 
     func moveMails(mails: [PersistentMail], from: String, to: String) {
         let uids = MCOIndexSet()
+        let except = MCOIndexSet()
+        except.add(9)
+        except.add(6)
+        except.add(15)
         for m in mails {
-            uids.add(m.uid)
+            if !except.contains(m.uid) {
+                uids.add(m.uid)
+            }
         }
         self.setupIMAPSession()
         let op = self.IMAPSession.copyMessagesOperation(withFolder: from, uids: uids, destFolder: to)

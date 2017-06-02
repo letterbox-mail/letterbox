@@ -97,7 +97,7 @@
 "TwoDaysAgo" = "2 days ago";
 "Username" = "Username";
 "Welcome" = "Welcome";
-"WhatAShame" = "What a shame!";
+"WhatAShame" = "Too bad";
 "WrongMailAddressOrPassword" = "Email address or password were wrong. Please try again!";
 "write" = "write";
 "Yesterday" = "yesterday";
@@ -135,6 +135,6 @@
 "inviteText" = "Hey there!\n\nThere is this new App called Enzevalos which makes it really easy to communicate encrypted over email.\n\nI would love for you to try it!\n\nBest regards!";
 "noName" = "NO NAME";
 "you" = "Your Tray";
-"thisIsYou" = "Emails you sent yourself are collected heree";
-"didYouSendThis" = "Hey, did you send me this email?\n\n";
+"thisIsYou" = "Emails you sent yourself are collected here";
+"didYouSendThis" = "Hey, did you send me this email?\nI'm just asking because it was sent insecurely.\n\n";
 "reactButton" = "Request Confirmation";
