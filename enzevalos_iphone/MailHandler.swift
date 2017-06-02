@@ -507,6 +507,7 @@ class MailHandler {
     func moveMails(mails: [PersistentMail], from: String, to: String) {
         let uids = MCOIndexSet()
         let except = MCOIndexSet()
+        //TODO: Remove later
         except.add(9)
         except.add(6)
         except.add(15)
@@ -516,26 +517,12 @@ class MailHandler {
             }
         }
         self.setupIMAPSession()
-        let op = self.IMAPSession.copyMessagesOperation(withFolder: from, uids: uids, destFolder: to)
-        op?.start {
+        let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
+        op?.start{
             (err, vanished) -> Void in
             guard err == nil else {
-                print("Error while moving inbox: \(String(describing: err))")
+                print("Error while moving mails: \(String(describing: err))")
                 return
-            }
-            let mark = self.IMAPSession.storeFlagsOperation(withFolder: from, uids: uids, kind: MCOIMAPStoreFlagsRequestKind.add, flags: MCOMessageFlag.deleted)
-            mark?.start { err -> Void in
-                guard err == nil else {
-                    print("Error while deleting inbox: \(String(describing: err))")
-                    return
-                }
-                let expunge = self.IMAPSession.expungeOperation(from)
-                expunge?.start { err -> Void in
-                    guard err == nil else {
-                        print("Error while expunging  inbox: \(String(describing: err))")
-                        return
-                    }
-                }
             }
         }
     }
