@@ -27,7 +27,7 @@
 "DiscoveryTime" = "Bekannt seit";
 "Checkmarks" = "Du hast Nachrichten von den Adressen mit Haken bekommen";
 "Drafts" = "Entwürfe";
-"Emailaddress" = "E-Mail-adresse";
+"Emailaddress" = "E-Mail-Adresse";
 "EncryptionType" = "Verschlüsselungsart";
 "EverythingCorrect" = "Alles richtig?";
 "Forward" = "Weiterleiten";
@@ -109,7 +109,7 @@
 "notVerified" = "Kontakt ist noch nicht verifiziert";
 "noEncryption" = "Kontakt nutzt noch keine Verschlüsselung";
 "otherEncryption" = "Dies ist die unsichere Ablage dieses Kontakt";
-"hasKeyButNoMail" = "Kontakt nutzt verschlüsselung, hat dir aber noch keine sichere E-Mail gesendet";
+"hasKeyButNoMail" = "Kontakt nutzt Verschlüsselung, hat dir aber noch keine sichere E-Mail gesendet";
 "Verified" = "Kontakt ist verifiziert";
 "verifyNow" = "Jetzt verifizieren";
 "toEncrypted" = "Zur sicheren Ablage";
