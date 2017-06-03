@@ -110,6 +110,7 @@
 "noEncryption" = "Kontakt nutzt noch keine Verschlüsselung";
 "otherEncryption" = "Dies ist die unsichere Ablage dieses Kontakt";
 "hasKeyButNoMail" = "Kontakt nutzt Verschlüsselung, hat dir aber noch keine sichere E-Mail gesendet";
+"Encrypted" = "Kontakt nutzt sichere E-Mail";
 "Verified" = "Kontakt ist verifiziert";
 "verifyNow" = "Jetzt verifizieren";
 "toEncrypted" = "Zur sicheren Ablage";

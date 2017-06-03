@@ -206,7 +206,8 @@ extension ContactViewController: UITableViewDataSource {
                     } else if keyRecord!.isVerified {
                         cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
                     } else if keyRecord!.hasKey {
-                        cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
+//                        cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
+                        cell.contactStatus.text = NSLocalizedString("Encrypted", comment: "Contact is using encryption")
                     } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         cell.contactStatus.text = NSLocalizedString("otherEncryption", comment: "Contact is using encryption, this is the unsecure collection")
                     } else if hasKey {
@@ -310,7 +311,7 @@ extension ContactViewController: UITableViewDataSource {
         if let record = keyRecord {
             switch section {
             case 0:
-                if !record.isVerified && !isUser {
+                if !record.isVerified && !isUser && !record.hasKey {
                     return 2
                 }
             case 1:
