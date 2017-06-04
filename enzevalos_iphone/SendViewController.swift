@@ -373,7 +373,8 @@ class SendViewController: UIViewController {
         } else {
             NSLog("Send successful!")
             if (self.prefilledMail != nil) {
-                AppDelegate.getAppDelegate().mailHandler.addFlag((self.prefilledMail?.uid)!, flags: MCOMessageFlag.answered)
+                self.prefilledMail?.isRead = true
+               // AppDelegate.getAppDelegate().mailHandler.addFlag((self.prefilledMail?.uid)!, flags: MCOMessageFlag.answered)
             }
             self.sendCompleted()
         }
