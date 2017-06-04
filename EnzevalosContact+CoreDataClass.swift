@@ -30,14 +30,12 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 open class EnzevalosContact: NSManagedObject, Contact, Comparable {
 
     open var name: String {
-        let name = nameOptional
-
-        if displayname != nil {
-            return displayname!
-        } else if name == nil {
-            return NSLocalizedString("noName", comment: "We have no name for this one")
+        if let name = nameOptional {
+            return name
+        } else if let displayname = displayname {
+            return displayname
         } else {
-            return name!
+            return NSLocalizedString("noName", comment: "We have no name for this one")
         }
     }
 
