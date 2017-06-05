@@ -310,7 +310,7 @@ class MailHandler {
         let session = MCOSMTPSession()
         session.hostname = UserManager.loadUserValue(Attribute.smtpHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
-        session.username = (UserManager.loadUserValue(Attribute.userAddr) as! String)
+        session.username = UserManager.loadUserValue(Attribute.userAddr) as! String
         session.password = UserManager.loadUserValue(Attribute.userPW) as! String
         session.authType = MCOAuthType(rawValue: UserManager.loadUserValue(Attribute.smtpAuthType) as! Int)
         session.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
@@ -510,7 +510,7 @@ class MailHandler {
     }
 
     func checkSMTP(_ completion: @escaping (Error?) -> Void) { //TODO: @Jakob is there a reason this doesn't use createSMTPSession?
-        let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
+        let useraddr = UserManager.loadUserValue(Attribute.userAddr) as! String
         let username = UserManager.loadUserValue(Attribute.userName) as! String
 
         let session = MCOSMTPSession()
@@ -526,8 +526,8 @@ class MailHandler {
     }
 
     func checkIMAP(_ completion: @escaping (Error?) -> Void) {
-        self.IMAPSession.checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
-        self.IMAPSession.connectOperation().start(completion/* as! (Error?) -> Void*/) //TODO: @Jakob Is this operation usefull after the first one?
+        self.setupIMAPSession().checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
+        //self.IMAPSession.connectOperation().start(completion/* as! (Error?) -> Void*/) //TODO: @Jakob Is this operation usefull after the first one?
     }
 
     func moveMails(mails: [PersistentMail], from: String, to: String) {
