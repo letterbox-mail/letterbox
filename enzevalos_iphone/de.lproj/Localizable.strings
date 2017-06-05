@@ -27,7 +27,7 @@
 "DiscoveryTime" = "Bekannt seit";
 "Checkmarks" = "Du hast Nachrichten von den Adressen mit Haken bekommen";
 "Drafts" = "Entwürfe";
-"Emailaddress" = "E-Mail-adresse";
+"Emailaddress" = "E-Mail-Adresse";
 "EncryptionType" = "Verschlüsselungsart";
 "EverythingCorrect" = "Alles richtig?";
 "Forward" = "Weiterleiten";
@@ -49,10 +49,9 @@
 "KeyIsRevoked" = "Der Schlüssel ist zurückgezogen. Zurückgezogen wurde er am ";
 "KeyIsVerified" = "Der Schlüssel ist verifiziert. Verifiziert wurde er am ";
 "KeyNotFound" = "Schlüssel konnte nicht gefunden werden. Dies ist ein Fehler, bitte wende dich an die Entwickler!";
-"KeyIsVerified" = "Der Schlüssel ist verifiziert. Verifiziert wurde er am ";
 "Letter" = "Brief";
 "LetterDamaged" = "Angerissener Brief";
-"LetterDescription" = "• Eine vertrauliche E-Mail\n• Sie stammt tatsächlich vom angegebenen Absender\n• Benötigt Beteiligung von Sender und Empfänger. Dafür besteht in der App die Möglichkeit Kontakte einzuladen.";
+"LetterDescription" = "• Das ist eine sichere E-Mail\n• Sie stammt tatsächlich vom angegebenen Absender\n• Nur Empfänger und Sender können die Nachricht lesen.\n• Benötigt Beteiligung von Sender und Empfänger. Dafür können in der App Kontakte eingeladen werden.";
 "mail from" = "Nachricht von";
 "Message" = "Nachricht";
 "MoreInformation" = "Mehr Informationen";
@@ -109,7 +108,7 @@
 "notVerified" = "Kontakt ist noch nicht verifiziert";
 "noEncryption" = "Kontakt nutzt noch keine Verschlüsselung";
 "otherEncryption" = "Dies ist die unsichere Ablage dieses Kontakt";
-"hasKeyButNoMail" = "Kontakt nutzt verschlüsselung, hat dir aber noch keine sichere E-Mail gesendet";
+"hasKeyButNoMail" = "Kontakt nutzt Verschlüsselung, hat dir aber noch keine sichere E-Mail gesendet";
 "Verified" = "Kontakt ist verifiziert";
 "verifyNow" = "Jetzt verifizieren";
 "toEncrypted" = "Zur sicheren Ablage";

@@ -288,8 +288,6 @@ class MailHandler {
         return session
     }
 
-
-
     func addFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String = "INBOX") {
         let op = self.IMAPSession.storeFlagsOperation(withFolder: folder, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.set, flags: flags)
         op?.start { error -> Void in
@@ -310,7 +308,6 @@ class MailHandler {
             }
         }
     }
-
 
     func receiveAll(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let uids: MCOIndexSet
