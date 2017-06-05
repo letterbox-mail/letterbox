@@ -56,12 +56,12 @@ enum Attribute: Int{
 
 struct UserManager{
     static func storeUserValue(_ value: AnyObject?, attribute: Attribute) {
-        UserDefaults.standard.setValue(value, forKey: "\(attribute.hashValue)")
+        UserDefaults.standard.set(value, forKey: "\(attribute.rawValue)")
         UserDefaults.standard.synchronize()
     }
     
     static func loadUserValue(_ attribute: Attribute) -> AnyObject?{
-        let value = UserDefaults.standard.value(forKey: "\(attribute.hashValue)")
+        let value = UserDefaults.standard.value(forKey: "\(attribute.rawValue)")
         if((value) != nil){
             return value as AnyObject?
         }

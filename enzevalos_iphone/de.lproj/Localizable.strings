@@ -40,7 +40,7 @@
 "InsertMailAddress" = "Bitte gib deine E-Mail-Adresse ein";
 "InsertMailAddressAndPassword" = "Bitte gib deine E-Mail-Adresse und dein Passwort ein";
 "InsertPassword" = "Bitte gib\ndein Passwort ein";
-"InsertUSername" = "Bitte gib deinen Nutzernamen ein";
+"InsertUsername" = "Bitte gib deinen Nutzernamen ein";
 "InterestedInSecureMail" = "Schön, dass du dich für sichere E-Mail interessierst!";
 "Junk" = "Spam";
 "KeyAddresses" = "Mailadressen im Schlüssel";
