@@ -311,7 +311,7 @@ extension ContactViewController: UITableViewDataSource {
         if let record = keyRecord {
             switch section {
             case 0:
-                if !record.isVerified && !isUser && !record.hasKey {
+                if !record.isVerified && !isUser && !record.hasKey && !EnzevalosEncryptionHandler.hasKey(record.ezContact) {
                     return 2
                 }
             case 1:
