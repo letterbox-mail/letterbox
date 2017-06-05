@@ -12,7 +12,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Hide Warning Messages</string>
+			<string>B</string>
 			<key>Key</key>
 			<string>hideWarnings</string>
 			<key>DefaultValue</key>
