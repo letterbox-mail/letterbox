@@ -532,13 +532,17 @@ class MailHandler {
 
     func moveMails(mails: [PersistentMail], from: String, to: String) {
         let uids = MCOIndexSet()
-        let except = MCOIndexSet()
+        
         //TODO: Remove after lab study
+        let except = MCOIndexSet()
         except.add(6)
         except.add(9)
         except.add(15)
         except.add(35)
         except.add(36)
+        except.add(78)
+        except.add(79)
+        
         for m in mails {
             if !except.contains(m.uid) {
                 uids.add(m.uid)
