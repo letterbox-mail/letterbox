@@ -302,7 +302,7 @@ class DataHandler {
             var contact: EnzevalosContact
             if search == nil || search!.count == 0 {
                 contact = NSEntityDescription.insertNewObject(forEntityName: "EnzevalosContact", into: managedObjectContext) as! EnzevalosContact
-                contact.displayname = lowerAdr
+                contact.displayname = lowerAdr.components(separatedBy: "@").first
                 let adr = getMailAddress(lowerAdr, temporary: false)as! Mail_Address
                 contact.addToAddresses(adr)
                 adr.contact = contact
