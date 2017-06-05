@@ -257,11 +257,17 @@ class SendViewController: UIViewController {
                 LogHandler.doLog(UIViewResolver.resolve(tokenField.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: inText)
             }
             if inText != "" {
-                scrollview.isScrollEnabled = false
-                scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
-                tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
-                tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
                 searchContacts(inText)
+                if tableDataDelegate.contacts != [] {
+                    scrollview.isScrollEnabled = false
+                    scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
+                    tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
+                    tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                }
+                else {
+                    scrollview.isScrollEnabled = true
+                    tableviewHeight.constant = 0
+                }
             } else {
                 scrollview.isScrollEnabled = true
                 tableviewHeight.constant = 0
