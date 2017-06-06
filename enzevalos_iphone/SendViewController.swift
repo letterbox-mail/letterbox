@@ -243,7 +243,7 @@ class SendViewController: UIViewController {
                     }
                 }
 
-                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: NSLocalizedString("inviteText", comment: "Body for the invitation mail"), uid: 0)
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: NSLocalizedString("inviteText", comment: "Body for the invitation mail"), uid: 0,predecessor: nil)
 
 
                 controller.prefilledMail = mail
@@ -379,7 +379,9 @@ class SendViewController: UIViewController {
         } else {
             NSLog("Send successful!")
             if (self.prefilledMail != nil) {
-                AppDelegate.getAppDelegate().mailHandler.addFlag((self.prefilledMail?.uid)!, flags: MCOMessageFlag.answered)
+                if self.prefilledMail?.predecessor != nil {
+                    self.prefilledMail?.predecessor?.isAnwered = true
+                }
             }
             self.sendCompleted()
         }

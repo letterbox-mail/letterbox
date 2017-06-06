@@ -16,12 +16,12 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var toTokenField: VENTokenField!
     @IBOutlet weak var receivedTime: UILabel!
     @IBOutlet weak var subject: UILabel!
-    @IBOutlet weak var messageBody: UILabel!
     @IBOutlet weak var infoHeadline: UILabel!
     @IBOutlet weak var infoText: UILabel!
     @IBOutlet weak var infoSymbol: UILabel!
     @IBOutlet weak var answerButton: UIBarButtonItem!
     @IBOutlet weak var reactButton: UIButton!
+    @IBOutlet weak var messageBody: UITextView!
 
     // Cells
     @IBOutlet weak var senderCell: UITableViewCell!
@@ -412,7 +412,7 @@ class ReadViewController: UITableViewController {
                     }
                 }
 
-                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: subject, body: body, uid: mail!.uid)
+                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: subject, body: body, uid: mail!.uid, predecessor: mail)
 
                 controller.prefilledMail = answerMail
             }

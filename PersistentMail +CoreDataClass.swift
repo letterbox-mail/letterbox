@@ -13,6 +13,8 @@ import CoreData
 
 @objc(PersistentMail)
 open class PersistentMail: NSManagedObject, Mail {
+    public var predecessor: PersistentMail? = nil
+
     
     var showMessage: Bool = false
 
@@ -30,6 +32,21 @@ open class PersistentMail: NSManagedObject, Mail {
                 flag.remove(MCOMessageFlag.seen)
             } else {
                 flag.insert(MCOMessageFlag.seen)
+            }
+            _ = DataHandler.handler.save()
+        }
+    }
+    
+    var isAnwered: Bool{
+        get {
+            let value = flag.contains(MCOMessageFlag.answered)
+            return value
+        }
+        set {
+            if !newValue {
+                flag.remove(MCOMessageFlag.answered)
+            } else {
+                flag.insert(MCOMessageFlag.answered)
             }
             _ = DataHandler.handler.save()
         }
