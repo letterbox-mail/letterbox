@@ -147,7 +147,7 @@ class ContactViewController: UIViewController {
             tableView.selectRow(at: myPath, animated: false, scrollPosition: .none)
             performSegue(withIdentifier: "otherRecord", sender: nil)
         } else if (sender as? UIButton)?.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
-            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0)
+            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0,predecessor: nil)
             performSegue(withIdentifier: "newMail", sender: mail)
         }
     }

@@ -412,7 +412,7 @@ class ReadViewController: UITableViewController {
                     }
                 }
 
-                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: subject, body: body, uid: mail!.uid)
+                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: subject, body: body, uid: mail!.uid, predecessor: mail)
 
                 controller.prefilledMail = answerMail
             }
