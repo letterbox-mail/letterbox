@@ -249,18 +249,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="djb-A5-Dwe">
-                                                    <rect key="frame" x="8" y="12" width="359" height="23"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="oLv-OU-RRD">
+                                                    <rect key="frame" x="8" y="12" width="359" height="32"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="djb-A5-Dwe" secondAttribute="bottom" id="6pO-xi-ovB"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="djb-A5-Dwe" secondAttribute="trailing" id="7AP-Yj-VvH"/>
-                                                <constraint firstAttribute="leadingMargin" secondItem="djb-A5-Dwe" secondAttribute="leading" id="92e-Kh-ibK"/>
-                                                <constraint firstItem="djb-A5-Dwe" firstAttribute="top" secondItem="MwJ-Pq-fRD" secondAttribute="topMargin" constant="-8" id="j1y-EV-9ca"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="oLv-OU-RRD" secondAttribute="bottom" constant="-8" id="Bjo-Li-8F5"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="oLv-OU-RRD" secondAttribute="leading" id="Oo4-60-gsP"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="oLv-OU-RRD" secondAttribute="trailing" id="bzx-fr-q3b"/>
+                                                <constraint firstItem="oLv-OU-RRD" firstAttribute="top" secondItem="MwJ-Pq-fRD" secondAttribute="topMargin" constant="-8" id="jV2-iN-VUo"/>
                                             </constraints>
                                             <edgeInsets key="layoutMargins" top="20" left="8" bottom="8" right="8"/>
                                         </tableViewCellContentView>
@@ -322,7 +323,7 @@
                         <outlet property="infoReactButtonCell" destination="fAy-9i-SAk" id="kbB-zU-7Ee"/>
                         <outlet property="infoSymbol" destination="4Fp-ob-0Ch" id="Wtm-Ss-KqZ"/>
                         <outlet property="infoText" destination="lYr-bv-gD0" id="eTg-4o-G0t"/>
-                        <outlet property="messageBody" destination="djb-A5-Dwe" id="Bmh-D7-tfV"/>
+                        <outlet property="messageBody" destination="oLv-OU-RRD" id="cCc-fC-idB"/>
                         <outlet property="messageCell" destination="VrX-Dg-aLu" id="YCC-3f-gVa"/>
                         <outlet property="reactButton" destination="M5u-fF-YGn" id="4zF-Rq-qmL"/>
                         <outlet property="receivedTime" destination="EB5-Z7-WoN" id="6n0-oF-MLl"/>
