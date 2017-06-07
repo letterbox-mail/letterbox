@@ -502,9 +502,12 @@ class Onboarding: NSObject {
         if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), !manualSet && mailAddress != "" {
             let guessedUserName = mailAddress.components(separatedBy: "@")[0]
             UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
-            /*if mailAddress.contains("@") {
-                let provider = mailAddress.components(separatedBy: "@")[1]
-            }*/
+            if mailAddress.contains("@gmail") || mailAddress.contains("@googlemail") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            }
+            else if mailAddress.contains("@gmx") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            }
             setServerValues(mailaddress: mailAddress)
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
             
