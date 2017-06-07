@@ -48,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Onboarding.manualSet = true
             self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
         } else {
+            Onboarding.manualSet = false
             let contr = (Onboarding.onboarding(self.credentialCheck) as! OnboardingViewController)
             self.window?.rootViewController = contr
             contr.gotoLastPage()

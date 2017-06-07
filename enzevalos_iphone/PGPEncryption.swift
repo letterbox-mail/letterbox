@@ -53,7 +53,7 @@ class PGPEncryption : Encryption {
     //check whether this encryption is used in this text for encryption. the key is not known to be used. nil is returned, if there is no answer to be made at the moment.
     //key unused
     func isUsedForEncryption(_ text: String, key: KeyWrapper?) -> Bool?{
-        return text.hasPrefix("-----BEGIN PGP MESSAGE-----") && (text.hasSuffix("-----END PGP MESSAGE-----\n") || text.hasSuffix("-----END PGP MESSAGE-----"))
+        return getCipher(text: text) != "" //text.hasPrefix("-----BEGIN PGP MESSAGE-----") && (text.hasSuffix("-----END PGP MESSAGE-----\n") || text.hasSuffix("-----END PGP MESSAGE-----"))
     }
     
     //check whether this encryption is used in this mail for signing. nil is returned, if there is no answer to be made at the moment.
@@ -82,7 +82,8 @@ class PGPEncryption : Encryption {
     //decrypt the mails body. the decryted body will be saved in the mail object.
     func decrypt(_ mail: PersistentMail)-> String?{
         if self.isUsed(mail) {
-            let bodyData = mail.body!.data(using: String.Encoding.utf8)!
+            //let bodyData = mail.body!.data(using: String.Encoding.utf8)!
+            let bodyData = getCipher(text: mail.body!).data(using: String.Encoding.utf8)!
             var data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
             if data == nil {
                 self.keyManager.useAllPrivateKeys()
@@ -123,7 +124,8 @@ class PGPEncryption : Encryption {
     
     func decryptAndSignatureCheck(_ mail: PersistentMail) {
         if self.isUsed(mail) {
-            let bodyData = mail.body!.data(using: String.Encoding.utf8)!
+            //let bodyData = mail.body!.data(using: String.Encoding.utf8)!
+            let bodyData = getCipher(text: mail.body!).data(using: String.Encoding.utf8)!
             var data: Data?
             //has to be var because it is given as pointer to obj-c-code
             var error: NSErrorPointer = NSErrorPointer.none
@@ -484,6 +486,20 @@ class PGPEncryption : Encryption {
     func keyOfThisEncryption(_ keyData: Data) -> Bool? {
         return nil
     }
+    
+    //TODO: Add for signature only
+    func getCipher(text: String) -> String {
+        var range = text.range(of: "-----BEGIN PGP MESSAGE-----")
+        if let lower = range?.lowerBound {
+            range = text.range(of: "-----END PGP MESSAGE-----")
+            if let upper = range?.upperBound {
+                let retValue = text.substring(to: upper).substring(from: lower)
+                return retValue
+            }
+        }
+        return ""
+    }
+
     
     func autocryptHeader(_ adr: String) -> String? {
         if let keyId = self.getActualKeyID(adr){
