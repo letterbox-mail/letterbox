@@ -257,8 +257,10 @@ class MailHandler {
             }
         }
 
+        
         if let unenc = ordered[EncryptionType.unknown] {
             builder.textBody = message
+            builder.data
             sendData = builder.data()
             sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
             //TODO handle different callbacks
@@ -387,9 +389,12 @@ class MailHandler {
             print("Error while fetching mail: \(String(describing: error))")
             return
         }
+        
 
         if let data = parser?.data() {
             let msgParser = MCOMessageParser(data: data)
+            
+            
 
             let html: String = msgParser!.plainTextRendering()
             var lineArray = html.components(separatedBy: "\n")
