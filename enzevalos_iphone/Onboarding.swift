@@ -671,6 +671,17 @@ class Onboarding: NSObject {
             path = Bundle.main.path(forResource: "ullimuelle-private", ofType: "gpg")
         case "bob2005@web.de":
             path = Bundle.main.path(forResource: "bob-private", ofType: "gpg")
+        case "payroll@gmx.de":
+            path = Bundle.main.path(forResource: "payroll-phishing-public", ofType: "asc") //<---- Schlüsseldatei
+            let pgp = ObjectivePGP.init()
+            pgp.importKeys(fromFile: path!, allowDuplicates: false)
+            let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+            do {
+                let data = try pgp.keys[0].export()
+                _ = enc?.addKey(data, forMailAddresses: ["ncpayroll@gmx.de"]) //<---- Emailadresse
+            }
+            catch _ { }
+            path = Bundle.main.path(forResource: "payroll-phishing-private", ofType: "asc")
         default:
             path = Bundle.main.path(forResource: "alice2005-private", ofType: "gpg")
         }
