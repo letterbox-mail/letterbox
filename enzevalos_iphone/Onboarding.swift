@@ -508,6 +508,9 @@ class Onboarding: NSObject {
             else if mailAddress.contains("@gmx") {
                 UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
+            else if mailAddress.contains("@posteo") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            }
             setServerValues(mailaddress: mailAddress)
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
             

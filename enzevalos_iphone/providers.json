@@ -213,9 +213,9 @@
         "servers":{
             "imap":[
                     {
-                    "port":993,
+                    "port":143,
                     "hostname":"posteo.de",
-                    "ssl":true,
+                    "starttls":true,
                     "auth":"saslPlain"
                     }
                     ],
