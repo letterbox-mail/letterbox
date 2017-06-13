@@ -106,12 +106,20 @@
                     ]
         },
         "domain-match":[
-                        "aol\\.com",
-                        "aol"
+                        "aol.com",
+                        "aol",
+                        "games",
+                        "games.com",
+                        "love",
+                        "love.com"
                         ],
         "mx-match": [
                      "aol",
                      "aol.com",
+                     "games",
+                     "games.com",
+                     "love",
+                     "love.com"
                      ""
                      ]
     },

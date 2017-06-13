@@ -480,6 +480,7 @@ class Onboarding: NSObject {
     static func imapCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
         imapCheckDone = true
         imapCheck = error == nil
+        print(error)
         if imapCheck {
             AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)
             return
@@ -509,6 +510,9 @@ class Onboarding: NSObject {
                 UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
             else if mailAddress.contains("@posteo") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            }
+            else if mailAddress.contains("@aol.com") || mailAddress.contains("@games.com") || mailAddress.contains("@love.com") {
                 UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
             setServerValues(mailaddress: mailAddress)
@@ -570,12 +574,12 @@ class Onboarding: NSObject {
         manager.registerProviders(withFilename: path)
 
         //------- DEBUG -------
-        /*if let provider = manager.provider(forEmail: mailaddress) {
+        if let provider = manager.provider(forEmail: mailaddress) {
             if let imap = (provider.imapServices() as? [MCONetService]), let smtp = (provider.smtpServices() as? [MCONetService]) {
                 print(imap)
                 print(smtp)
             }
-        }*/
+        }
         //------- DEBUG -------
 
         if let provider = manager.provider(forEmail: mailaddress), let imap = (provider.imapServices() as? [MCONetService]), imap != [], let smtp = (provider.smtpServices() as? [MCONetService]), smtp != [] {
