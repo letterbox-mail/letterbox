@@ -14,5 +14,6 @@
 
 
 int mre2ee_driver_create_keypair(uint8_t* adr, char* pk, char* sk);//const char* addr);
+pgp_key_t generateSecretKey(uint8_t* adr);
 
 #endif /* autocryptgen_h */

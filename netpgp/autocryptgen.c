@@ -8,10 +8,23 @@
 
 #include "autocryptgen.h"
 
+pgp_key_t
+generateSecretKey(uint8_t* adr)
+{
+    pgp_key_t        seckey;
+    uint8_t*         user_id = NULL;
+    
+    memset(&seckey, 0, sizeof(pgp_key_t));
+    user_id = adr;
+    /* generate two keypairs */
+    pgp_rsa_generate_keypair(&seckey, 2048/*bits*/, 65537UL/*e*/, NULL, NULL, NULL, 0);
+    return seckey;
+    
+}
 
-/* portable replacement for strdup(3) */
+
 char *
-netpgp_strdup(const char *s)
+netpgp2_strdup(const char *s)
 {
     size_t	 len;
     char	*cp;
@@ -26,13 +39,12 @@ netpgp_strdup(const char *s)
 
 
 char *
-pgp_export_key(pgp_io_t *io, const pgp_key_t *keydata, uint8_t *passphrase)
+pgp_export_my_key(pgp_io_t *io, const pgp_key_t *keydata, uint8_t *passphrase)
 {
     pgp_output_t	*output;
     pgp_memory_t	*mem;
     char		*cp;
     
-    //__PGP_USED(io);
     pgp_setup_memory_write(&output, &mem, 128);
     pgp_write_xfer_key(output, keydata, 1);
     
@@ -40,11 +52,11 @@ pgp_export_key(pgp_io_t *io, const pgp_key_t *keydata, uint8_t *passphrase)
      pgp_write_xfer_seckey(output, keydata, passphrase,
 					strlen((char *)passphrase), 1);
      */
-    cp = netpgp_strdup(pgp_mem_data(mem));
+    cp = netpgp2_strdup(pgp_mem_data(mem));
     pgp_teardown_memory_write(output, mem);
+    printf("CP: %s \n",cp);
     return cp;
 }
-
 
 
 /*******************************************************************************
@@ -228,6 +240,8 @@ int mre2ee_driver_create_keypair(uint8_t* adr, char* pk, char* sk)//const char* 
     /* Done with key generation, write binary keys to memory
      ------------------------------------------------------------------------ */
     
+    printf("Write in mem \n");
+    
     pgp_writer_set_memory(pubout, pubmem);
     if( !pgp_write_xfer_key(pubout, &pubkey, 1/*armored*/)
        || pubmem->buf == NULL || pubmem->length <= 0 ) {
@@ -240,30 +254,30 @@ int mre2ee_driver_create_keypair(uint8_t* adr, char* pk, char* sk)//const char* 
         goto cleanup;
     }
     
+    
+    
     //pgp_filewrite(pk,  pubmem->buf, pubmem->length, 1);
     //pgp_filewrite(sk,  secmem->buf, secmem->length, 1);
-
-    char s [5000];
-    for (int i = 0; i < 5000; i++) {
-        s[i] = i;
-    }
-    pgp_write(pubout, s, 1);
     
-    printf("My new key %s \n", s);
 
-    printf("My key??? %s \n",pgp_mem_data(pubmem));
+    printf("\n My key??? %s \n",pgp_mem_data(pubmem));
     
     pgp_io_t s_io;
 
     memset(&s_io, 0, sizeof(pgp_io_t));
     s_io.outs = stdout;
-    s_io.errs = stderr;
-    s_io.res  = stderr;
+    s_io.errs = stdout;
+    s_io.res  = stdout;
     
-    //memcpy(pk, pubout, pubmem->length);
-   // memcpy(sk, secout, secmem->length);
-    pgp_export_key(&s_io, &pubkey, NULL);
+    // memcpy(pk, pubout, pubmem->length);
+    // memcpy(sk, secout, secmem->length);
+    printf("before export\n");
+    sk = pgp_export_my_key(&s_io, &pubkey, NULL);
+    printf("after export\n");
 
+    
+    
+    
     success = 1;
     
 cleanup:
