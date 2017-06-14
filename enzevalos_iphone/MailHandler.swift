@@ -243,11 +243,11 @@ class MailHandler {
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
             if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
-                //sendData = encData
-                builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
-                sendData = builder.data()
-                sendOperation = session.sendOperation(with: sendData, from: userID, recipients: encPGP)
-                //sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(sendData), from: userID, recipients: encPGP)
+                sendData = encData
+               // builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
+               // sendData = builder.data()
+                //sendOperation = session.sendOperation(with: sendData, from: userID, recipients: encPGP)
+                sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
                 builder.textBody = message
@@ -317,6 +317,8 @@ class MailHandler {
     func receiveAll(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let uids: MCOIndexSet
         uids = MCOIndexSet(range: MCORangeMake(DataHandler.handler.maxUID, UINT64_MAX))
+        
+        print("#Mails on Server: \(uids.count())")
         loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
 
@@ -389,24 +391,78 @@ class MailHandler {
             print("Error while fetching mail: \(String(describing: error))")
             return
         }
+    
         
 
+
         if let data = parser?.data() {
-            let msgParser = MCOMessageParser(data: data)
+            var msgParser = MCOMessageParser(data: data)
             
+            var enc = false
+           
+            for a in (msgParser?.attachments())!{
+                let at = a as! MCOAttachment
+                if at.mimeType == "application/pgp-encrypted"{
+                    print("Enc mail from: \(message.header.from.mailbox)")
+                    enc = true
+                    
+                }
+                if enc && at.mimeType == "application/octet-stream"{
+                    msgParser = MCOMessageParser(data: at.data)
+                }
+            }
             
+            if enc{
+                print("Enc mail from \(message.header.from.mailbox) about \(message.header.subject)")
+            
+            }
+            let html: String
+            var body: String
+            if enc{
+                html = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
+                
+                
+                var lineArray = html.components(separatedBy: "\n")
+                
+              //  lineArray.removeFirst(4)
+                body = lineArray.joined(separator: "\n")
+                body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                if body.contains("-----END PGP MESSAGE--") && !body.contains("-----END PGP MESSAGE-----"){
+                   body = body.replacingOccurrences(of: "-----END PGP MESSAGE--", with: "-----END PGP MESSAGE-----")
+                }
+                
+                if body.contains("-----END PGP MESSAGE-----"){
+                    body = body.replacingOccurrences(of: "-----END PGP MESSAGE-----", with: "-----END PGP MESSAGE-----")
+                }
+                
+                
+                if body.contains("-----BEGIN PGP MESSAGE--") && !body.contains("-----BEGIN PGP MESSAGE-----"){
+                    body = body.replacingOccurrences(of: "-----BEGIN PGP MESSAGE--", with: "-----BEGIN PGP MESSAGE-----")
+                }
+                
+                if body.contains("-----BEGIN PGP MESSAGE-----"){
+                    body = body.replacingOccurrences(of: "-----BEGIN PGP MESSAGE-----", with: "-----BEGIN PGP MESSAGE-----")
+                }
 
-            let html: String = msgParser!.plainTextRendering()
-            var lineArray = html.components(separatedBy: "\n")
+                body.append("\n")
+                print(body)
+                
+            } else{
+                html = msgParser!.plainTextRendering()
+                
+                var lineArray = html.components(separatedBy: "\n")
 
-            lineArray.removeFirst(4)
-            var body = lineArray.joined(separator: "\n")
-            body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            body.append("\n")
+                lineArray.removeFirst(4)
+                body = lineArray.joined(separator: "\n")
+                body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                body.append("\n")
+            }
+            
             var rec: [MCOAddress] = []
             var cc: [MCOAddress] = []
 
             let header = message.header
+
             var autocrypt: AutocryptContact? = nil
             if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
                 autocrypt = AutocryptContact(header: header!)
@@ -424,6 +480,7 @@ class MailHandler {
                 }
 
             }
+            
             if let to = header?.to {
                 for r in to {
                     rec.append(r as! MCOAddress)
