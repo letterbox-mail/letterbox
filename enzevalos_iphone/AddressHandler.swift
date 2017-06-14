@@ -96,15 +96,16 @@ class AddressHandler {
                 }
             }
             if !insertedEntry {
+                var addrType: UIImage? = nil
+                
+                if address.label.label == "_$!<Work>!$_" {
+                    addrType = UIImage(named: "work2_white")!
+                }
+                if address.label.label == "_$!<Home>!$_" {
+                    addrType = UIImage(named: "home2_white")!
+                }
                 if let cn = con.cnContact {
-                    var addrType: UIImage? = nil
-
-                    if address.label.label == "_$!<Work>!$_" {
-                        addrType = UIImage(named: "work2_white")!
-                    }
-                    if address.label.label == "_$!<Home>!$_" {
-                        addrType = UIImage(named: "home2_white")!
-                    }
+                    
 
                     var color = cn.getColor()
                     if cn.thumbnailImageData != nil {
@@ -114,6 +115,11 @@ class AddressHandler {
                     //TODO: Add Image in EnzevalosContact
                     var entry = (cn.getImageOrDefault(), con.ezContact.displayname!, address.mailAddress, addrType, color)
 
+                    list.append(entry)
+                    localInserted.append(address.mailAddress)
+                }
+                else {
+                    var entry = (con.ezContact.getImageOrDefault(), con.ezContact.displayname ?? address.mailAddress, address.mailAddress, addrType, con.ezContact.getColor())
                     list.append(entry)
                     localInserted.append(address.mailAddress)
                 }
@@ -136,7 +142,7 @@ class AddressHandler {
 
         return list
     }
-
+    
     static func proveAddress(_ s: NSString) -> Bool {
         if addresses.contains((s as String).lowercased()) {
             return true
