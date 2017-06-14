@@ -78,6 +78,23 @@ class PGPEncryption : Encryption {
         return nil
     }
     
+    
+    func decryptMime(_ data: Data) -> Data?{
+        let s = String.init(data: data, encoding: String.Encoding.utf8)
+        self.getPGPKeyManagement().pgp.bin
+        if s != nil  && self.isUsed(s!, key: nil) {
+                var plain = try? keyManager.pgp.decryptData(data, passphrase: nil)
+                if plain == nil {
+                    self.keyManager.useAllPrivateKeys()
+                    //TODO add oldKeyUsed attribute in Mail object
+                    plain = try? keyManager.pgp.decryptData(data, passphrase: nil)
+                    self.keyManager.useOnlyActualPrivateKey()
+                }
+                return plain
+            }
+        return nil
+    }
+    
     //TODO
     //decrypt the mails body. the decryted body will be saved in the mail object.
     func decrypt(_ mail: PersistentMail)-> String?{
@@ -489,7 +506,7 @@ class PGPEncryption : Encryption {
         if let keyId = self.getActualKeyID(adr){
             let key = self.getKey(keyId) as! PGPKeyWrapper
             let pgpManger = self.keyManager
-            var string = "to=" + adr + "; type=p;prefer-encrypted=" + (UserManager.loadUserValue(Attribute.prefEncryption) as! String) + ";key="
+            var string = "to = " + adr + "; type = p;prefer-encrypted = " + (UserManager.loadUserValue(Attribute.prefEncryption) as! String) + ";key = "
             if let keyBase64 = pgpManger.pgp.exportKeyWithoutArmor(key.key){
                 string = string + keyBase64
             }

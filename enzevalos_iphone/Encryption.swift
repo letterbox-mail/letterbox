@@ -38,6 +38,9 @@ public protocol Encryption {
     //decrypt the mails body. the decryted body will be saved in the mail object.
     func decrypt(_ mail: PersistentMail) -> String?
     
+    // decrypt the mime data. OLIVER TODO
+    func decryptMime(_ data: Data)-> Data?
+    
     //decrypt the mails body. the decryted body will be saved in the mail object.
     //Signaturechecking included. will be set in mail object too.
     func decryptAndSignatureCheck(_ mail: PersistentMail)

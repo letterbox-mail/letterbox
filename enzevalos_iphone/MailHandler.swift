@@ -392,7 +392,40 @@ class MailHandler {
             return
         }
     
+        var rec: [MCOAddress] = []
+        var cc: [MCOAddress] = []
         
+        let header = message.header
+        
+        var autocrypt: AutocryptContact? = nil
+        if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
+            autocrypt = AutocryptContact(header: header!)
+            if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0) {
+                let pgp = ObjectivePGP.init()
+                pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
+                let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+                do {
+                    let pgpKey = try pgp.keys[0].export()
+                    _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
+                }
+                catch {
+                    print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
+                }
+            }
+            
+        }
+        
+        if let to = header?.to {
+            for r in to {
+                rec.append(r as! MCOAddress)
+            }
+        }
+        if let c = header?.cc {
+            for r in c {
+                cc.append(r as! MCOAddress)
+            }
+        }
+
 
 
         if let data = parser?.data() {
@@ -446,6 +479,18 @@ class MailHandler {
 
                 body.append("\n")
                 print(body)
+                print("\n =================================== \n")
+                
+                let dec = decryptText(body: body, from: message.header.from.mailbox)
+                if (dec != nil){
+                    msgParser = MCOMessageParser(data: dec)
+                    body =  msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
+                    
+                    print("\n =================================== \n")
+
+                    print(body)
+                    
+                }
                 
             } else{
                 html = msgParser!.plainTextRendering()
@@ -458,43 +503,20 @@ class MailHandler {
                 body.append("\n")
             }
             
-            var rec: [MCOAddress] = []
-            var cc: [MCOAddress] = []
-
-            let header = message.header
-
-            var autocrypt: AutocryptContact? = nil
-            if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
-                autocrypt = AutocryptContact(header: header!)
-                if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0) {
-                    let pgp = ObjectivePGP.init()
-                    pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
-                    let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-                    do {
-                        let pgpKey = try pgp.keys[0].export()
-                        _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
-                    }
-                    catch {
-                        print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
-                    }
-                }
-
-            }
             
-            if let to = header?.to {
-                for r in to {
-                    rec.append(r as! MCOAddress)
-                }
-            }
-            if let c = header?.cc {
-                for r in c {
-                    cc.append(r as! MCOAddress)
-                }
-            }
-
             _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from)!, receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
             newMailCallback()
         }
+    }
+    
+    private func decryptText(body: String, from: String) -> Data?{
+        //let encType = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+        if let encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) {
+            if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: false) as Data?{
+                return encryption.decryptMime(data)
+            }
+        }
+        return nil
     }
 
 
