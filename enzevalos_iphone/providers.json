@@ -56,14 +56,14 @@
                      "enzevalos.de"
                      ]
     },
-    "zedat.fu\-berlin":{
+    "zedat.fu-berlin":{
         "servers":{
             "imap":[
                     {
                     "port":143,
                     "hostname":"mail.zedat.fu-berlin.de",
                     "starttls":true,
-                    "auth":"saslPlain"
+                    "auth":"none"
                     }
                     ],
             "smtp":[
@@ -120,7 +120,6 @@
                      "games.com",
                      "love",
                      "love.com"
-                     ""
                      ]
     },
     "gmail":{

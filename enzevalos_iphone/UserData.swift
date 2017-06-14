@@ -72,6 +72,20 @@ struct UserManager{
         }
     }
     
+    static func loadImapAuthType() -> MCOAuthType {
+        if let auth = UserManager.loadUserValue(Attribute.imapAuthType) as? Int, auth != 0 {
+            return MCOAuthType.init(rawValue: auth)
+        }
+        return []
+    }
+    
+    static func loadSmtpAuthType() -> MCOAuthType {
+        if let auth = UserManager.loadUserValue(Attribute.smtpAuthType) as? Int, auth != 0 {
+            return MCOAuthType.init(rawValue: auth)
+        }
+        return []
+    }
+    
     static func resetUserValues(){
         for a in Attribute.allAttributes {
             storeUserValue(a.defaultValue, attribute: a)
