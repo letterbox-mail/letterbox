@@ -81,7 +81,6 @@ class PGPEncryption : Encryption {
     
     func decryptMime(_ data: Data) -> Data?{
         let s = String.init(data: data, encoding: String.Encoding.utf8)
-        self.getPGPKeyManagement().pgp.bin
         if s != nil  && self.isUsed(s!, key: nil) {
                 var plain = try? keyManager.pgp.decryptData(data, passphrase: nil)
                 if plain == nil {
