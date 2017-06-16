@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4715B0F51EF3D58100520DE5 /* DecryptedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4715B0F41EF3D58100520DE5 /* DecryptedData.swift */; };
+		4715B0F71EF3D96E00520DE5 /* CryptoProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4715B0F61EF3D96E00520DE5 /* CryptoProtocol.swift */; };
 		4725C4F61EDDADA10068235E /* bob-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F41EDDADA10068235E /* bob-private.gpg */; };
 		4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F51EDDADA10068235E /* bob-public.gpg */; };
 		472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
@@ -175,6 +177,8 @@
 
 /* Begin PBXFileReference section */
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4715B0F41EF3D58100520DE5 /* DecryptedData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptedData.swift; sourceTree = "<group>"; };
+		4715B0F61EF3D96E00520DE5 /* CryptoProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoProtocol.swift; sourceTree = "<group>"; };
 		4725C4F41EDDADA10068235E /* bob-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-private.gpg"; path = "keys/bob-private.gpg"; sourceTree = "<group>"; };
 		4725C4F51EDDADA10068235E /* bob-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-public.gpg"; path = "keys/bob-public.gpg"; sourceTree = "<group>"; };
 		472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "EnzevalosContact+CoreDataClass.swift"; path = "../EnzevalosContact+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -578,6 +582,8 @@
 				A172F90C1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift */,
 				A17BEB371E55E21700403EBE /* PGPTemporaryDecryptionObject.h */,
 				A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */,
+				4715B0F41EF3D58100520DE5 /* DecryptedData.swift */,
+				4715B0F61EF3D96E00520DE5 /* CryptoProtocol.swift */,
 			);
 			name = Encryption;
 			sourceTree = "<group>";
@@ -1156,6 +1162,7 @@
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				A135CF121DD4BDD1007E3C29 /* PGPPacketFactory.m in Sources */,
 				A135CF111DD4BDD1007E3C29 /* PGPPacket.m in Sources */,
+				4715B0F51EF3D58100520DE5 /* DecryptedData.swift in Sources */,
 				472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */,
 				47F9638F1EEFC36F00460308 /* compress.c in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
@@ -1197,6 +1204,7 @@
 				A135CF1D1DD4BDD1007E3C29 /* PGPSignatureSubpacket.m in Sources */,
 				F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */,
 				A135CF041DD4BDD1007E3C29 /* NSValue+PGPUtils.m in Sources */,
+				4715B0F71EF3D96E00520DE5 /* CryptoProtocol.swift in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,

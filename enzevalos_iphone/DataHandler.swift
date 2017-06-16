@@ -368,7 +368,7 @@ class DataHandler {
 
         // -------- End handle to, cc, from addresses --------
 
-    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, wasDecrpted: Bool) {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: DecryptedData?) {
 
             let finding = findNum("PersistentMail", type: "uid", search: uid)
             let mail: PersistentMail
@@ -396,19 +396,47 @@ class DataHandler {
                 handleCCAddresses(cc, mail: mail)
 
                 mail.unableToDecrypt = false
-                if !wasDecrpted{
+                if decryptedData == nil{
                     // Maybe PGPInline?
                     // TODO: Refactoring!
                     mail.decryptIfPossible()
                 }
                 else{
+                    let encState: EncryptionState = (decryptedData?.encryptionState)!
+                    let signState: SignatureState = (decryptedData?.signatureState)!
+                    
+                    //print("Mail From: \(sender?.mailbox) about \(subject) has encryption state: \(encState) and sign state: \(signState)")
+                    switch encState {
+                    case EncryptionState.NoEncryption:
+                        mail.isEncrypted = false
+                        mail.trouble = false
+                    case EncryptionState.UnableToDecrypt:
+                        mail.unableToDecrypt = true
+                        mail.isEncrypted = true
+                        mail.trouble = true
+                    default:
+                        mail.isEncrypted = true
+                        mail.trouble = false
+                    }
+                    
+                    switch signState {
+                    case SignatureState.NoSignature:
+                        mail.isSigned = false
+                    case SignatureState.InvalidSignature:
+                        mail.isSigned = true
+                        mail.isCorrectlySigned = true
+                        mail.trouble = true
+                    case SignatureState.ValidSignature:
+                        mail.isCorrectlySigned = true
+                        mail.isSigned = true
+                    }
                     mail.decryptedBody = body
-                    mail.isEncrypted = true
-                    // TODO: Andle
+                    //print("Mail from \(mail.from.mailAddress) about \(mail.subject) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) ")
+                    save()
                 }
             }
-                else {
-                    return //finding![0] as! Mail
+            else {
+                return 
             }
 
             save()

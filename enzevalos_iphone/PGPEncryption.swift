@@ -94,6 +94,82 @@ class PGPEncryption : Encryption {
         return nil
     }
     
+    func decryptedMime(_ data: Data, from: String) -> DecryptedData?{
+        var sigState: SignatureState = SignatureState.NoSignature
+        var encState: EncryptionState = EncryptionState.NoEncryption
+        var handeledData: Data?
+        var signkey: String?
+        
+        if true {
+            //has to be var because it is given as pointer to obj-c-code
+            var error: NSErrorPointer = NSErrorPointer.none
+            var temp = keyManager.pgp.decryptDataFirstPart(data, passphrase: nil, integrityProtected: nil, error: error)
+            var maybeUsedKeys: [String] = []
+            //has to be var because it is given as pointer to obj-c-code
+            var signed = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
+            signed[0] = false
+            //has to be var because it is given as pointer to obj-c-code
+            var valid = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
+            valid[0] = false
+            //print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
+            handeledData = temp.plaintextData
+            if handeledData != nil{
+                encState = EncryptionState.ValidedEncryptedWithActualKey
+            }
+            else {
+                self.keyManager.useAllPrivateKeys()
+                temp = keyManager.pgp.decryptDataFirstPart(data, passphrase: nil, integrityProtected: nil, error: error)
+                handeledData = temp.plaintextData //TODO Does this works?
+                self.keyManager.useOnlyActualPrivateKey()
+                if handeledData != nil {
+                    encState = EncryptionState.ValidEncryptedWithOldKey
+                }
+            }
+            if error.debugDescription == "MDC validation failed" {
+                encState = EncryptionState.UnableToDecrypt
+            }
+            if let unwrappedData = handeledData {
+                handeledData = unwrappedData
+                if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(from), let theirKeyID = temp.incompleteKeyID {
+                    maybeUsedKeys = self.getLibaryKeyIDOverlap(theirKeyID, ourKeyIDs: allKeyIDs)
+                }
+                for maybeUsedKey in maybeUsedKeys {
+                    if let key = self.keyManager.getKey(maybeUsedKey) {
+                        //FIXME
+                        let done : ObjCBool
+                        done = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: error)[0])
+                        if let errorHappening = (error?.debugDescription.contains("Missing")), errorHappening {
+                            sigState = SignatureState.InvalidSignature
+                            break
+                        }
+                        
+                        if !done.boolValue {
+                            sigState = SignatureState.NoSignature
+                            break
+                        }
+                        if valid.pointee.boolValue{
+                            sigState = SignatureState.ValidSignature
+                            signkey = key.keyID
+                            break
+                        }
+                        else{
+                            sigState = SignatureState.InvalidSignature
+                            break
+                        }
+                    }
+                }
+                return  DecryptedData.init(decryptedBody: handeledData, sigState: sigState, encState: encState, key: signkey, encType: EncryptionType.PGP)
+            }
+        }
+        encState = EncryptionState.UnableToDecrypt
+        
+        return DecryptedData.init(decryptedBody: handeledData, sigState: sigState, encState: encState, key: signkey, encType: EncryptionType.PGP)
+    
+    }
+    
+    
+    
+    
     //TODO
     //decrypt the mails body. the decryted body will be saved in the mail object.
     func decrypt(_ mail: PersistentMail)-> String?{

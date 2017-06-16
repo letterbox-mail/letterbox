@@ -434,6 +434,7 @@ class MailHandler {
             let html: String
             var body: String
             var lineArray: [String]
+            var dec: DecryptedData? = nil
             
             for a in (msgParser?.attachments())!{
                 let at = a as! MCOAttachment
@@ -453,9 +454,9 @@ class MailHandler {
                 body = lineArray.joined(separator: "\n")
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                 body.append("\n")
-                let dec = decryptText(body: body, from: message.header.from.mailbox)
+                dec = decryptText(body: body, from: message.header.from.mailbox)
                 if (dec != nil){
-                    msgParser = MCOMessageParser(data: dec)
+                    msgParser = MCOMessageParser(data: dec?.decryptedBody)
                     body =  msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
                 }
                 
@@ -471,16 +472,16 @@ class MailHandler {
             
             
             
-            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from), receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, wasDecrpted: isEnc) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
+            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from), receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
             newMailCallback()
         }
     }
     
-    private func decryptText(body: String, from: String) -> Data?{
+    private func decryptText(body: String, from: String) -> DecryptedData?{
         //let encType = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
         if let encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) {
             if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data?{
-                return encryption.decryptMime(data)
+                return encryption.decryptedMime(data,from: from)
             }
         }
         return nil
