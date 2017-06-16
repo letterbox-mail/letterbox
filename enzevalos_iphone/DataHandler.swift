@@ -56,6 +56,23 @@ class DataHandler {
             return currentstate.maxUID
         }
     }
+    
+    var uids: MCOIndexSet{
+        get{
+            let uids = MCOIndexSet()
+            let result = findAll("PersistentMail")
+            if result != nil {
+                for r in result! {
+                    let m = r as! PersistentMail
+                    uids.add(m.uid)
+                }
+            }
+            
+            print("We have #\(uids.count()) stored!")
+            return uids
+        }
+    
+    }
 
     var countMails: Int {
         get {

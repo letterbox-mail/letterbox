@@ -146,7 +146,7 @@ class MailHandler {
 
     var delegate: MailHandlerDelegator?
 
-    fileprivate static let MAXMAILS: Int = 10
+    fileprivate static let MAXMAILS: Int = 5
 
 
 
@@ -315,8 +315,12 @@ class MailHandler {
 
 
     func receiveAll(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        let uids: MCOIndexSet
-        uids = MCOIndexSet(range: MCORangeMake(DataHandler.handler.maxUID, UINT64_MAX))
+        var uids: MCOIndexSet
+        uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX)) // DataHandler.handler.maxUID
+        uids.remove(DataHandler.handler.uids)
+        print("call for #\(uids.count()) uids")
+        
+        
         
         print("#Mails on Server: \(uids.count())")
         loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
@@ -355,7 +359,7 @@ class MailHandler {
         }
     }
 
-    func loadMessagesFromServer(_ uids: MCOIndexSet, folder: String = "INBOX", record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMessagesFromServer(_ uids: MCOIndexSet, folder: String = "INBOX", maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER]
@@ -366,16 +370,21 @@ class MailHandler {
                 completionCallback(true)
                 return
             }
+            var calledMails = 0
             if let msgs = msg {
                 print("#mails on server: \(msgs.count)")
                 let dispatchGroup = DispatchGroup()
-                for m in msgs {
+                for m in msgs.reversed() {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
                     dispatchGroup.enter()
 
                     let op = self.IMAPSession.fetchParsedMessageOperation(withFolder: folder, uid: message.uid)
                     op?.start { err, data in self.parseMail(err, parser: data, message: message, record: record, newMailCallback: newMailCallback)
                         dispatchGroup.leave()
+                    }
+                    calledMails += 1
+                    if calledMails > maxLoad{
+                        break
                     }
                 }
                 dispatchGroup.notify(queue: DispatchQueue.main) {
@@ -470,6 +479,10 @@ class MailHandler {
                 body.append("\n")
             }
             
+            if header?.from == nil{
+                // Drops mails with no from field. Otherwise it becomes ugly with no ezcontact,fromadress etc.
+                return
+            }
             
             
             _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from), receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
