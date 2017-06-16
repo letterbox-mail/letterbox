@@ -430,73 +430,39 @@ class MailHandler {
 
         if let data = parser?.data() {
             var msgParser = MCOMessageParser(data: data)
+            var isEnc = false
+            let html: String
+            var body: String
+            var lineArray: [String]
             
-            var enc = false
-           
             for a in (msgParser?.attachments())!{
                 let at = a as! MCOAttachment
                 if at.mimeType == "application/pgp-encrypted"{
-                    print("Enc mail from: \(message.header.from.mailbox)")
-                    enc = true
-                    
+                    isEnc = true
                 }
-                if enc && at.mimeType == "application/octet-stream"{
+                if isEnc && at.mimeType == "application/octet-stream"{
                     msgParser = MCOMessageParser(data: at.data)
                 }
             }
             
-            if enc{
-                print("Enc mail from \(message.header.from.mailbox) about \(message.header.subject)")
-            
-            }
-            let html: String
-            var body: String
-            if enc{
+            if isEnc{
                 html = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
                 
+                lineArray = html.components(separatedBy: "\n")
                 
-                var lineArray = html.components(separatedBy: "\n")
-                
-              //  lineArray.removeFirst(4)
                 body = lineArray.joined(separator: "\n")
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                if body.contains("-----END PGP MESSAGE--") && !body.contains("-----END PGP MESSAGE-----"){
-                   body = body.replacingOccurrences(of: "-----END PGP MESSAGE--", with: "-----END PGP MESSAGE-----")
-                }
-                
-                if body.contains("-----END PGP MESSAGE-----"){
-                    body = body.replacingOccurrences(of: "-----END PGP MESSAGE-----", with: "-----END PGP MESSAGE-----")
-                }
-                
-                
-                if body.contains("-----BEGIN PGP MESSAGE--") && !body.contains("-----BEGIN PGP MESSAGE-----"){
-                    body = body.replacingOccurrences(of: "-----BEGIN PGP MESSAGE--", with: "-----BEGIN PGP MESSAGE-----")
-                }
-                
-                if body.contains("-----BEGIN PGP MESSAGE-----"){
-                    body = body.replacingOccurrences(of: "-----BEGIN PGP MESSAGE-----", with: "-----BEGIN PGP MESSAGE-----")
-                }
-
                 body.append("\n")
-                print(body)
-                print("\n =================================== \n")
-                
                 let dec = decryptText(body: body, from: message.header.from.mailbox)
                 if (dec != nil){
                     msgParser = MCOMessageParser(data: dec)
                     body =  msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
-                    
-                    print("\n =================================== \n")
-
-                    print(body)
-                    
                 }
                 
             } else{
                 html = msgParser!.plainTextRendering()
                 
-                var lineArray = html.components(separatedBy: "\n")
-
+                lineArray = html.components(separatedBy: "\n")
                 lineArray.removeFirst(4)
                 body = lineArray.joined(separator: "\n")
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
@@ -504,7 +470,8 @@ class MailHandler {
             }
             
             
-            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from)!, receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
+            
+            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from), receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, wasDecrpted: isEnc) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
             newMailCallback()
         }
     }
@@ -512,7 +479,7 @@ class MailHandler {
     private func decryptText(body: String, from: String) -> Data?{
         //let encType = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
         if let encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) {
-            if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: false) as Data?{
+            if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data?{
                 return encryption.decryptMime(data)
             }
         }

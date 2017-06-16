@@ -334,7 +334,7 @@
         return nil;
     }
     
-    NSAssert(eskPacket, @"Valid PublicKeyEncryptedSessionKeyPacket not found");
+    //NSAssert(eskPacket, @"Valid PublicKeyEncryptedSessionKeyPacket not found");
     if (!eskPacket) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Valid PublicKeyEncryptedSessionKeyPacket not found"}];

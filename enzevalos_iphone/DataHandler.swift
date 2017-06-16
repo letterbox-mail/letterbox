@@ -368,7 +368,7 @@ class DataHandler {
 
         // -------- End handle to, cc, from addresses --------
 
-        func createMail(_ uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) /*-> Mail*/ {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, wasDecrpted: Bool) {
 
             let finding = findNum("PersistentMail", type: "uid", search: uid)
             let mail: PersistentMail
@@ -389,12 +389,23 @@ class DataHandler {
                 mail.isEncrypted = false
                 mail.trouble = false
 
-                handleFromAddress(sender, fromMail: mail, autocrypt: autocrypt)
+                if sender != nil{
+                    handleFromAddress(sender!, fromMail: mail, autocrypt: autocrypt)
+                }
                 handleToAddresses(receivers, mail: mail)
                 handleCCAddresses(cc, mail: mail)
 
                 mail.unableToDecrypt = false
-                mail.decryptIfPossible()
+                if !wasDecrpted{
+                    // Maybe PGPInline?
+                    // TODO: Refactoring!
+                    mail.decryptIfPossible()
+                }
+                else{
+                    mail.decryptedBody = body
+                    mail.isEncrypted = true
+                    // TODO: Andle
+                }
             }
                 else {
                     return //finding![0] as! Mail
