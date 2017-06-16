@@ -255,7 +255,7 @@ class DataHandler {
                     else {
                         let mail_address = NSEntityDescription.insertNewObject(forEntityName: "Mail_Address", into: managedObjectContext) as! Mail_Address
                         mail_address.address = address
-                        mail_address.prefer_encryption = false
+                        mail_address.prefer_encryption = EncState.NOAUTOCRYPT
                         return mail_address
                 }
             }
@@ -320,7 +320,8 @@ class DataHandler {
             if search == nil || search!.count == 0 {
                 contact = NSEntityDescription.insertNewObject(forEntityName: "EnzevalosContact", into: managedObjectContext) as! EnzevalosContact
                 contact.displayname = lowerAdr
-                let adr = getMailAddress(lowerAdr, temporary: false)as! Mail_Address
+                print(getMailAddress(lowerAdr, temporary: false))
+                let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
                 contact.addToAddresses(adr)
                 adr.contact = contact
                 contacts.append(contact)
@@ -364,11 +365,25 @@ class DataHandler {
         // -------- Start handle to, cc, from addresses --------
         private func handleFromAddress(_ sender: MCOAddress, fromMail: PersistentMail, autocrypt: AutocryptContact?) {
             let adr: Mail_Address
+            print("sender: \(sender.mailbox) about \(fromMail.subject)")
             let contact = getContactByMCOAddress(sender)
             adr = contact.getAddressByMCOAddress(sender)!
+            if adr.lastSeen > fromMail.date{
+                adr.lastSeen = fromMail.date
+            }
             if let ac = autocrypt {
                 adr.prefEnc = ac.prefer_encryption
                 adr.encryptionType = ac.type
+                if adr.lastSeenAutocrypt != nil && adr.lastSeenAutocrypt > fromMail.date{
+                    adr.lastSeenAutocrypt = fromMail.date
+                }
+                else if adr.lastSeenAutocrypt == nil{
+                    adr.lastSeenAutocrypt = fromMail.date
+                }
+                
+            }
+            else if adr.lastSeen < adr.lastSeenAutocrypt && adr.prefer_encryption != EncState.NOAUTOCRYPT{
+                adr.prefer_encryption = EncState.RESET
             }
             fromMail.from = adr
         }

@@ -18,9 +18,9 @@ open class CNMailAddressExtension: MailAddress{
     }
     open var label: CNLabeledValue<NSString> //FIXME: NSString hier richtig?
     
-    open var prefEnc: Bool{
+    open var prefEnc: EncState{
         get{
-            return false
+            return EncState.NOAUTOCRYPT
         }
         set{
         }

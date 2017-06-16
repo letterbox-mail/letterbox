@@ -581,7 +581,12 @@ class PGPEncryption : Encryption {
         if let keyId = self.getActualKeyID(adr){
             let key = self.getKey(keyId) as! PGPKeyWrapper
             let pgpManger = self.keyManager
-            var string = "to = " + adr + "; type = p;prefer-encrypted = " + (UserManager.loadUserValue(Attribute.prefEncryption) as! String) + ";key = "
+            var string = "adr = " + adr + "; type = 1;"
+            let enc = UserManager.loadUserValue(Attribute.prefEncryption) as! Bool
+            if enc{
+                string = string + "prefer-encrypted = mutal"
+            }
+            string = string + ";key = "
             if let keyBase64 = pgpManger.pgp.exportKeyWithoutArmor(key.key){
                 string = string + keyBase64
             }

@@ -54,7 +54,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 let AUTOCRYPTHEADER = "Autocrypt"
-let TO = "to"
+let ADDR = "adr"
 let TYPE = "type"
 let ENCRYPTION = "prefer-encrypted"
 let KEY = "key"
@@ -63,7 +63,7 @@ let KEY = "key"
 class AutocryptContact {
     var addr: String = ""
     var type: EncryptionType = .PGP
-    var prefer_encryption: Bool = true
+    var prefer_encryption: EncState = EncState.NOAUTOCRYPT
     var key: String = ""
 
     init(addr: String, type: String, prefer_encryption: String, key: String) {
@@ -78,8 +78,8 @@ class AutocryptContact {
         let autocrypt = header.extraHeaderValue(forName: AUTOCRYPTHEADER)
         var field: [String]
         var addr = ""
-        var type = "p" // Default value since no one else uses autocrypt...
-        var pref = "true"
+        var type = "1" // Default value since no one else uses autocrypt...
+        var pref = ""
         var key = ""
 
         if(autocrypt != nil) {
@@ -96,7 +96,7 @@ class AutocryptContact {
                         }
                     }
                     switch flag {
-                    case TO:
+                    case ADDR:
                         addr = value
                         break
                     case TYPE:
@@ -127,13 +127,15 @@ class AutocryptContact {
     }
 
     func setPrefer_encryption(_ input: String) -> Bool {
-        if input == "yes" || input == "YES" || input == "Yes" {
-            prefer_encryption = true
+        let pref = input.lowercased()
+        if pref == "yes" || pref == "mutal" {
+            prefer_encryption = EncState.MUTAL
             return true
-        } else if input == "no" || input == "NO" || input == "No" {
-            prefer_encryption = false
+        } else if pref == "no"  {
+            prefer_encryption = EncState.NOPREFERENCE
             return true
         }
+        prefer_encryption = EncState.NOPREFERENCE
         return false
     }
 

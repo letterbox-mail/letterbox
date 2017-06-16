@@ -10,7 +10,6 @@
 import Foundation
 import CoreData
 
-
 extension Mail_Address {
 
     @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
@@ -18,8 +17,29 @@ extension Mail_Address {
     }
 
     @NSManaged public var address: String
-    @NSManaged public var prefer_encryption: Bool
     @NSManaged public var contact: EnzevalosContact?
+    @NSManaged public var lastSeen: Date?
+    @NSManaged public var lastSeenAutocrypt: Date?
+    
+    public var prefer_encryption: EncState{
+        set {
+            let name = "prefer_encryption"
+            self.willChangeValue(forKey: name)
+            self.setPrimitiveValue(newValue.asInt(), forKey: name)
+            self.didChangeValue(forKey: name)
+        }
+        get {
+            
+            let name = "prefer_encryption"
+            self.willAccessValue(forKey: name)
+            let i = self.primitiveValue(forKey: name) as! Int
+            self.didAccessValue(forKey: name)
+            return EncState.find(i: i)
+        }
+
+        
+    }
+
     
     public var encryptionType: EncryptionType{
         set {
