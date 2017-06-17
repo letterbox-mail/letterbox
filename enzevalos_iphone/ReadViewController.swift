@@ -369,7 +369,11 @@ class ReadViewController: UITableViewController {
                 var answerCC = [Mail_Address]()
                 var body = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
                 body.append(mail!.from.mailAddress)
-                body.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + mail!.timeString)
+                let time = DateFormatter.init()
+                time.dateStyle = .short
+                time.timeStyle = .short
+                time.locale = Locale.current
+                body.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + time.string(from: mail!.date))
                 body.append("\n" + NSLocalizedString("To", comment: "describing adressee") + ": ")
                 let myAddress = UserManager.loadUserValue(Attribute.userAddr) as! String
                 if mail!.to.count > 0 {
@@ -408,7 +412,7 @@ class ReadViewController: UITableViewController {
                     }
                 }
 
-                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: subject, body: body, uid: mail!.uid)
+                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: subject, body: body, uid: mail!.uid, predecessor: mail)
 
                 controller.prefilledMail = answerMail
             }

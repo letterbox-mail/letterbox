@@ -50,6 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Onboarding.manualSet = true
             self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
         } else {
+            Onboarding.manualSet = false
             let contr = (Onboarding.onboarding(self.credentialCheck) as! OnboardingViewController)
             self.window?.rootViewController = contr
             contr.gotoLastPage()
@@ -76,11 +77,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UserDefaults.standard.bool(forKey: "reset") {
             if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
                 let mailhandler = MailHandler.init()
-                mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
+                mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "Archive")
             }
-            
-            
-        
             DataHandler.handler.reset()
             Onboarding.credentials = nil
             Onboarding.credentialFails = 0

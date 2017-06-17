@@ -50,7 +50,7 @@ class Onboarding: NSObject {
 
     static var credentialFails = 0
 
-    static var authenticationRows: [Int: String] = [MCOAuthType.saslLogin.rawValue: "Login", MCOAuthType.saslPlain.rawValue: NSLocalizedString("NormalPassword", comment: ""), MCOAuthType.SASLSRP.rawValue: "SRP", MCOAuthType.SASLCRAMMD5.rawValue: "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue: "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue: "NTLM", MCOAuthType.SASLGSSAPI.rawValue: "GSSAPI", MCOAuthType.saslKerberosV4.rawValue: "KerberosV4"]
+    static var authenticationRows: [Int: String] = [MCOAuthType.saslLogin.rawValue: "Login", MCOAuthType.saslPlain.rawValue: NSLocalizedString("NormalPassword", comment: ""), MCOAuthType.SASLSRP.rawValue: "SRP", MCOAuthType.SASLCRAMMD5.rawValue: "CRAMMD5", MCOAuthType.SASLDIGESTMD5.rawValue: "DIGESTMD5", MCOAuthType.SASLNTLM.rawValue: "NTLM", MCOAuthType.SASLGSSAPI.rawValue: "GSSAPI", MCOAuthType.saslKerberosV4.rawValue: "KerberosV4", 0: "None"]
     static var transportRows: [Int: String] = [MCOConnectionType.clear.rawValue: NSLocalizedString("Plaintext", comment: ""), MCOConnectionType.startTLS.rawValue: "StartTLS", MCOConnectionType.TLS.rawValue: "TLS"]
 
     static func onboarding(_ callback: @escaping () -> ()) -> UIViewController {
@@ -480,6 +480,7 @@ class Onboarding: NSObject {
     static func imapCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
         imapCheckDone = true
         imapCheck = error == nil
+        print(error)
         if imapCheck {
             AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)
             return
@@ -502,9 +503,18 @@ class Onboarding: NSObject {
         if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), !manualSet && mailAddress != "" {
             let guessedUserName = mailAddress.components(separatedBy: "@")[0]
             UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
-            /*if mailAddress.contains("@") {
-                let provider = mailAddress.components(separatedBy: "@")[1]
-            }*/
+            if mailAddress.contains("@gmail") || mailAddress.contains("@googlemail") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            }
+            else if mailAddress.contains("@gmx") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            }
+            else if mailAddress.contains("@posteo") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            }
+            else if mailAddress.contains("@aol.com") || mailAddress.contains("@games.com") || mailAddress.contains("@love.com") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            }
             setServerValues(mailaddress: mailAddress)
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
             
@@ -550,7 +560,7 @@ class Onboarding: NSObject {
             UserManager.storeUserValue(password.text! as AnyObject?, attribute: Attribute.userPW)
             UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.userName)
             UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.accountname)
-            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapConnectionType) //TODO: fatal error: Index out of range when reset button was used
+            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapConnectionType)
             UserManager.storeUserValue(keyForValue(authenticationRows, value: imapAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapAuthType)
             UserManager.storeUserValue(keyForValue(transportRows, value: smtpTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpConnectionType)
             UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
@@ -606,7 +616,7 @@ class Onboarding: NSObject {
             } else if let auth = imapService.info()["auth"] as? String, auth == "xoAuth2Outlook" {
                 UserManager.storeUserValue(MCOAuthType.SASLCRAMMD5.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
             } else {
-                UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+                UserManager.storeUserValue(0 as AnyObject?, attribute: Attribute.imapAuthType)
             }
 
             let smtpService = smtp[0]
@@ -642,7 +652,7 @@ class Onboarding: NSObject {
             } else if let auth = smtpService.info()["auth"] as? String, auth == "xoAuth2Outlook" {
                 UserManager.storeUserValue(MCOAuthType.SASLCRAMMD5.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
             } else {
-                UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+                UserManager.storeUserValue(0 as AnyObject?, attribute: Attribute.smtpAuthType)
             }
         }
     }

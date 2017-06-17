@@ -18,6 +18,7 @@ public protocol Mail: Comparable {
     var subject: String? { get }
     var body: String? { get }
     var uid: UInt64 { get }
+    var predecessor: PersistentMail?{get}
 }
 
 public func == <T: Mail> (lhs: T, rhs: T) -> Bool {
