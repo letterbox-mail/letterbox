@@ -91,7 +91,9 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
     func refresh(_ refreshControl: UIRefreshControl) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
-        AppDelegate.getAppDelegate().mailHandler.receiveAll(newMailCallback: addNewMail, completionCallback: getMailCompleted)
+        AppDelegate.getAppDelegate().mailHandler.firstLookUp(newMailCallback: addNewMail, completionCallback: getMailCompleted)
+        AppDelegate.getAppDelegate().mailHandler.olderMailsFolder(newMailCallback: addNewMail, completionCallback: getMailCompleted)
+
     }
 
     func getMailCompleted(_ error: Bool) {

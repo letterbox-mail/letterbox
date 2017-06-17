@@ -111,7 +111,6 @@ class PGPEncryption : Encryption {
             //has to be var because it is given as pointer to obj-c-code
             var valid = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
             valid[0] = false
-            //print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
             handeledData = temp.plaintextData
             if handeledData != nil{
                 encState = EncryptionState.ValidedEncryptedWithActualKey
@@ -229,7 +228,6 @@ class PGPEncryption : Encryption {
             //has to be var because it is given as pointer to obj-c-code
             var valid = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
             valid[0] = false
-            //print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
                 data = temp.plaintextData
                 if data == nil {
                     self.keyManager.useAllPrivateKeys()

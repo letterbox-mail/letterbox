@@ -18,9 +18,7 @@ class InitViewController : UIViewController {
     
     func getDefaultSettings(){
         let manager = MCOMailProvidersManager.shared()!//.init() //sharedManager()
-        print(manager)
         let path = Bundle.main.path(forResource: "providers", ofType: "json")
-        print(path ?? "nil")
         manager.registerProviders(withFilename: path)
         print(manager.provider(forEmail: "alice2005@web.de") == nil)
         print(manager.provider(forEmail: "alice2005@aol.com") == nil)   //x

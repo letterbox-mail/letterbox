@@ -148,7 +148,7 @@ class MailHandler {
 
     var delegate: MailHandlerDelegator?
 
-    fileprivate static let MAXMAILS: Int = 5
+    fileprivate static let MAXMAILS: Int = 100
 
 
 
@@ -313,17 +313,51 @@ class MailHandler {
         }
     }
 
-    func receiveAll(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        var uids: MCOIndexSet
-        uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX)) // DataHandler.handler.maxUID
-        uids.remove(DataHandler.handler.uids)
-        print("call for #\(uids.count()) uids")
+    func firstLookUp(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         
+        findMaxUID(){max in
+            var uids: MCOIndexSet
+            print("Max uid: \(max)")
+            var (min, overflow) = UInt64.subtractWithOverflow(max, UInt64(MailHandler.MAXMAILS))
+            if min <= 0 || overflow{
+                min = 1
+            }
+            uids = MCOIndexSet(range: MCORangeMake(min, max)) // DataHandler.handler.maxUID
+            print("call for #\(uids.count()) uids \(uids.rangesCount())")
+            uids.remove(DataHandler.handler.uids)
+            self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
         
+        }
         
-        print("#Mails on Server: \(uids.count())")
-        loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
+    
+    
+    func olderMailsFolder(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        var uids: MCOIndexSet
+        var max = DataHandler.handler.maxUID
+        
+        if max <= 1{
+            return firstLookUp(newMailCallback: newMailCallback, completionCallback: completionCallback)
+        }
+        for uid in DataHandler.handler.uids.nsIndexSet(){
+            if max.distance(to: UInt64(uid)) < 0{
+                max = UInt64(uid)
+            }
+        }
+        
+        var min = max - 100
+        if min < 1{
+            min = 1
+        }
+        print("look for more mails: \(min) to \(max)")
+        
+        uids = MCOIndexSet(range: MCORangeMake(min, max))
+        uids.remove(DataHandler.handler.uids)
+        
+        self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+    }
+    
+    
 
     func loadMoreMails(_ record: KeyRecord, folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let addresses: [MailAddress]
@@ -348,9 +382,7 @@ class MailHandler {
                         completionCallback(false)
                         return
                     }
-                    print("Size first: \(setOfIndices.count())")
                     setOfIndices = self.cutIndexSet(setOfIndices)
-                    print("Size first: \(setOfIndices.count())")
 
                     self.loadMessagesFromServer(setOfIndices, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
                 }

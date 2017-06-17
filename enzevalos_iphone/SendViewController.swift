@@ -326,7 +326,6 @@ class SendViewController: UIViewController {
 
     func searchContacts(_ prefix: String) {
         AppDelegate.getAppDelegate().requestForAccess({ access in
-            //print(access)
         })
         let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
         if authorizationStatus == CNAuthorizationStatus.authorized {

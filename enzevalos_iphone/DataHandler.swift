@@ -191,7 +191,6 @@ class DataHandler {
             for c in contacts {
                 while c.from.count > MaxMailsPerRecord {
                     let last = c.from.last!
-                    print("delete \(last.uid) of \(last.from.mailAddress)")
                     managedObjectContext.delete(last)
                     save()
                     if let index = mails.index(of: last) {
@@ -320,7 +319,6 @@ class DataHandler {
             if search == nil || search!.count == 0 {
                 contact = NSEntityDescription.insertNewObject(forEntityName: "EnzevalosContact", into: managedObjectContext) as! EnzevalosContact
                 contact.displayname = lowerAdr
-                print(getMailAddress(lowerAdr, temporary: false))
                 let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
                 contact.addToAddresses(adr)
                 adr.contact = contact
@@ -365,7 +363,6 @@ class DataHandler {
         // -------- Start handle to, cc, from addresses --------
         private func handleFromAddress(_ sender: MCOAddress, fromMail: PersistentMail, autocrypt: AutocryptContact?) {
             let adr: Mail_Address
-            print("sender: \(sender.mailbox) about \(fromMail.subject)")
             let contact = getContactByMCOAddress(sender)
             adr = contact.getAddressByMCOAddress(sender)!
             if adr.lastSeen > fromMail.date{
@@ -437,7 +434,6 @@ class DataHandler {
                     let encState: EncryptionState = (decryptedData?.encryptionState)!
                     let signState: SignatureState = (decryptedData?.signatureState)!
                     
-                    //print("Mail From: \(sender?.mailbox) about \(subject) has encryption state: \(encState) and sign state: \(signState)")
                     switch encState {
                     case EncryptionState.NoEncryption:
                         mail.isEncrypted = false

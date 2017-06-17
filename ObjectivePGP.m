@@ -432,7 +432,7 @@
     NSData *binaryMessageToDecrypt = binaryMessages.count > 0 ? binaryMessages.firstObject : nil;
     //printf("jakob auskommentierte Assertion line 218 ObjectivePGP.m");
    
-    NSAssert(binaryMessageToDecrypt != nil, @"Invalid input data");
+    //NSAssert(binaryMessageToDecrypt != nil, @"Invalid input data");
     if (!binaryMessageToDecrypt) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Invalid input data"}];
