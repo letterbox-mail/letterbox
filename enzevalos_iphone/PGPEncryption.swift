@@ -113,7 +113,7 @@ class PGPEncryption : Encryption {
             valid[0] = false
             handeledData = temp.plaintextData
             if handeledData != nil{
-                encState = EncryptionState.ValidedEncryptedWithActualKey
+                encState = EncryptionState.ValidedEncryptedWithCurrentKey
             }
             else {
                 self.keyManager.useAllPrivateKeys()
@@ -596,8 +596,9 @@ class PGPEncryption : Encryption {
             let key = self.getKey(keyId) as! PGPKeyWrapper
             let pgpManger = self.keyManager
             var string = "adr = " + adr + "; type = 1;"
-            let enc = UserManager.loadUserValue(Attribute.prefEncryption) as! Bool
-            if enc{
+            let enc = UserManager.loadUserValue(Attribute.prefEncryption) as! String
+            print ("Enc: \(enc)")
+            if enc == "yes"{
                 string = string + "prefer-encrypted = mutal"
             }
             string = string + ";key = "

@@ -18,7 +18,7 @@ enum EncryptionState {
     case NoEncryption
     case UnableToDecrypt
     case ValidEncryptedWithOldKey
-    case ValidedEncryptedWithActualKey
+    case ValidedEncryptedWithCurrentKey
 }
 
 public class DecryptedData{

@@ -148,7 +148,7 @@ class MailHandler {
 
     var delegate: MailHandlerDelegator?
 
-    fileprivate static let MAXMAILS: Int = 100
+    fileprivate static let MAXMAILS: Int = 50
 
 
 
@@ -345,7 +345,7 @@ class MailHandler {
             }
         }
         
-        var min = max - 100
+        var min = max - 200
         if min < 1{
             min = 1
         }
