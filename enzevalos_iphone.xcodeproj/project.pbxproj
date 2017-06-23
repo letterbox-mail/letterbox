@@ -26,26 +26,11 @@
 		472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398B1E2519C8009260FB /* CNContactExtension.swift */; };
 		472F398E1E251B8D009260FB /* MailAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398D1E251B8D009260FB /* MailAddress.swift */; };
 		472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398F1E252470009260FB /* CNMailAddressesExtension.swift */; };
-		472FC12C1EEFC55E00585D38 /* autocryptgen.c in Sources */ = {isa = PBXBuildFile; fileRef = 472FC12A1EEFC55E00585D38 /* autocryptgen.c */; };
-		472FC12E1EEFC5E200585D38 /* PGPKeyGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472FC12D1EEFC5E200585D38 /* PGPKeyGeneration.swift */; };
 		476142081E07E52B00FD5E4F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476142071E07E52B00FD5E4F /* Theme.swift */; };
 		4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 476142091E082F9C00FD5E4F /* Settings.bundle */; };
 		476373C21E09BA88004D5EFE /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
 		47691A8A1ECB56D1004BCFC5 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		47691A8C1ECC3EC7004BCFC5 /* EphemeralMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */; };
-		47F9638F1EEFC36F00460308 /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F963651EEFC36F00460308 /* compress.c */; };
-		47F963901EEFC36F00460308 /* create.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F963661EEFC36F00460308 /* create.c */; };
-		47F963911EEFC36F00460308 /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F963671EEFC36F00460308 /* crypto.c */; };
-		47F963931EEFC36F00460308 /* keyring.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F9636A1EEFC36F00460308 /* keyring.c */; };
-		47F963941EEFC36F00460308 /* misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F9636B1EEFC36F00460308 /* misc.c */; };
-		47F963951EEFC36F00460308 /* openssl_crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F963841EEFC36F00460308 /* openssl_crypto.c */; };
-		47F963961EEFC36F00460308 /* packet-parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F963851EEFC36F00460308 /* packet-parse.c */; };
-		47F963971EEFC36F00460308 /* packet-show.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F963861EEFC36F00460308 /* packet-show.c */; };
-		47F9639A1EEFC36F00460308 /* reader.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F963891EEFC36F00460308 /* reader.c */; };
-		47F9639B1EEFC36F00460308 /* signature.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F9638A1EEFC36F00460308 /* signature.c */; };
-		47F9639C1EEFC36F00460308 /* symmetric.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F9638B1EEFC36F00460308 /* symmetric.c */; };
-		47F9639D1EEFC36F00460308 /* validate.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F9638C1EEFC36F00460308 /* validate.c */; };
-		47F9639E1EEFC36F00460308 /* writer.c in Sources */ = {isa = PBXBuildFile; fileRef = 47F9638D1EEFC36F00460308 /* writer.c */; };
 		9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */; };
 		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
 		A102AA8A1EDDB4F40024B457 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
@@ -195,50 +180,11 @@
 		472F398B1E2519C8009260FB /* CNContactExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CNContactExtension.swift; sourceTree = "<group>"; };
 		472F398D1E251B8D009260FB /* MailAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailAddress.swift; sourceTree = "<group>"; };
 		472F398F1E252470009260FB /* CNMailAddressesExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CNMailAddressesExtension.swift; sourceTree = "<group>"; };
-		472FC12A1EEFC55E00585D38 /* autocryptgen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = autocryptgen.c; sourceTree = "<group>"; };
-		472FC12B1EEFC55E00585D38 /* autocryptgen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = autocryptgen.h; sourceTree = "<group>"; };
-		472FC12D1EEFC5E200585D38 /* PGPKeyGeneration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPKeyGeneration.swift; sourceTree = "<group>"; };
 		476142071E07E52B00FD5E4F /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		476142091E082F9C00FD5E4F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		476373C11E09BA88004D5EFE /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		47691A891ECB56D1004BCFC5 /* Mail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
 		47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralMail.swift; sourceTree = "<group>"; };
-		47F963651EEFC36F00460308 /* compress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compress.c; sourceTree = "<group>"; };
-		47F963661EEFC36F00460308 /* create.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = create.c; sourceTree = "<group>"; };
-		47F963671EEFC36F00460308 /* crypto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crypto.c; sourceTree = "<group>"; };
-		47F9636A1EEFC36F00460308 /* keyring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keyring.c; sourceTree = "<group>"; };
-		47F9636B1EEFC36F00460308 /* misc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = misc.c; sourceTree = "<group>"; };
-		47F9636D1EEFC36F00460308 /* config-netpgp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "config-netpgp.h"; sourceTree = "<group>"; };
-		47F9636E1EEFC36F00460308 /* config-original-as-configured-for-ubuntu-16.04-64bit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "config-original-as-configured-for-ubuntu-16.04-64bit.h"; sourceTree = "<group>"; };
-		47F9636F1EEFC36F00460308 /* config-pep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "config-pep.h"; sourceTree = "<group>"; };
-		47F963701EEFC36F00460308 /* create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = create.h; sourceTree = "<group>"; };
-		47F963711EEFC36F00460308 /* crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto.h; sourceTree = "<group>"; };
-		47F963721EEFC36F00460308 /* defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = defs.h; sourceTree = "<group>"; };
-		47F963731EEFC36F00460308 /* errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = errors.h; sourceTree = "<group>"; };
-		47F963741EEFC36F00460308 /* keyring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyring.h; sourceTree = "<group>"; };
-		47F963751EEFC36F00460308 /* memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memory.h; sourceTree = "<group>"; };
-		47F963761EEFC36F00460308 /* netpgpdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netpgpdefs.h; sourceTree = "<group>"; };
-		47F963771EEFC36F00460308 /* netpgpdigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netpgpdigest.h; sourceTree = "<group>"; };
-		47F963781EEFC36F00460308 /* netpgpsdk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netpgpsdk.h; sourceTree = "<group>"; };
-		47F963791EEFC36F00460308 /* openssl11stub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openssl11stub.h; sourceTree = "<group>"; };
-		47F9637A1EEFC36F00460308 /* packet-parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "packet-parse.h"; sourceTree = "<group>"; };
-		47F9637B1EEFC36F00460308 /* packet-show.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "packet-show.h"; sourceTree = "<group>"; };
-		47F9637C1EEFC36F00460308 /* packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet.h; sourceTree = "<group>"; };
-		47F9637D1EEFC36F00460308 /* readerwriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = readerwriter.h; sourceTree = "<group>"; };
-		47F9637E1EEFC36F00460308 /* signature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = signature.h; sourceTree = "<group>"; };
-		47F9637F1EEFC36F00460308 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		47F963801EEFC36F00460308 /* validate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = validate.h; sourceTree = "<group>"; };
-		47F963811EEFC36F00460308 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
-		47F963821EEFC36F00460308 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
-		47F963831EEFC36F00460308 /* netpgp-extra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "netpgp-extra.h"; sourceTree = "<group>"; };
-		47F963841EEFC36F00460308 /* openssl_crypto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = openssl_crypto.c; sourceTree = "<group>"; };
-		47F963851EEFC36F00460308 /* packet-parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "packet-parse.c"; sourceTree = "<group>"; };
-		47F963861EEFC36F00460308 /* packet-show.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "packet-show.c"; sourceTree = "<group>"; };
-		47F963891EEFC36F00460308 /* reader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reader.c; sourceTree = "<group>"; };
-		47F9638A1EEFC36F00460308 /* signature.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = signature.c; sourceTree = "<group>"; };
-		47F9638B1EEFC36F00460308 /* symmetric.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = symmetric.c; sourceTree = "<group>"; };
-		47F9638C1EEFC36F00460308 /* validate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = validate.c; sourceTree = "<group>"; };
-		47F9638D1EEFC36F00460308 /* writer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = writer.c; sourceTree = "<group>"; };
 		48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -492,61 +438,6 @@
 			name = data;
 			sourceTree = "<group>";
 		};
-		47F963621EEFC36F00460308 /* netpgp */ = {
-			isa = PBXGroup;
-			children = (
-				472FC12D1EEFC5E200585D38 /* PGPKeyGeneration.swift */,
-				472FC12A1EEFC55E00585D38 /* autocryptgen.c */,
-				472FC12B1EEFC55E00585D38 /* autocryptgen.h */,
-				47F963651EEFC36F00460308 /* compress.c */,
-				47F963661EEFC36F00460308 /* create.c */,
-				47F963671EEFC36F00460308 /* crypto.c */,
-				47F9636A1EEFC36F00460308 /* keyring.c */,
-				47F9636B1EEFC36F00460308 /* misc.c */,
-				47F9636C1EEFC36F00460308 /* netpgp */,
-				47F963831EEFC36F00460308 /* netpgp-extra.h */,
-				47F963841EEFC36F00460308 /* openssl_crypto.c */,
-				47F963851EEFC36F00460308 /* packet-parse.c */,
-				47F963861EEFC36F00460308 /* packet-show.c */,
-				47F963891EEFC36F00460308 /* reader.c */,
-				47F9638A1EEFC36F00460308 /* signature.c */,
-				47F9638B1EEFC36F00460308 /* symmetric.c */,
-				47F9638C1EEFC36F00460308 /* validate.c */,
-				47F9638D1EEFC36F00460308 /* writer.c */,
-			);
-			name = netpgp;
-			path = ../netpgp;
-			sourceTree = "<group>";
-		};
-		47F9636C1EEFC36F00460308 /* netpgp */ = {
-			isa = PBXGroup;
-			children = (
-				47F9636D1EEFC36F00460308 /* config-netpgp.h */,
-				47F9636E1EEFC36F00460308 /* config-original-as-configured-for-ubuntu-16.04-64bit.h */,
-				47F9636F1EEFC36F00460308 /* config-pep.h */,
-				47F963701EEFC36F00460308 /* create.h */,
-				47F963711EEFC36F00460308 /* crypto.h */,
-				47F963721EEFC36F00460308 /* defs.h */,
-				47F963731EEFC36F00460308 /* errors.h */,
-				47F963741EEFC36F00460308 /* keyring.h */,
-				47F963751EEFC36F00460308 /* memory.h */,
-				47F963761EEFC36F00460308 /* netpgpdefs.h */,
-				47F963771EEFC36F00460308 /* netpgpdigest.h */,
-				47F963781EEFC36F00460308 /* netpgpsdk.h */,
-				47F963791EEFC36F00460308 /* openssl11stub.h */,
-				47F9637A1EEFC36F00460308 /* packet-parse.h */,
-				47F9637B1EEFC36F00460308 /* packet-show.h */,
-				47F9637C1EEFC36F00460308 /* packet.h */,
-				47F9637D1EEFC36F00460308 /* readerwriter.h */,
-				47F9637E1EEFC36F00460308 /* signature.h */,
-				47F9637F1EEFC36F00460308 /* types.h */,
-				47F963801EEFC36F00460308 /* validate.h */,
-				47F963811EEFC36F00460308 /* version.h */,
-				47F963821EEFC36F00460308 /* writer.h */,
-			);
-			path = netpgp;
-			sourceTree = "<group>";
-		};
 		78280F99990BFF65543B7F0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -610,7 +501,6 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
-				47F963621EEFC36F00460308 /* netpgp */,
 				47B91AC11EC0C1FB000AE3EE /* data */,
 				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
@@ -1161,7 +1051,6 @@
 				A135CF111DD4BDD1007E3C29 /* PGPPacket.m in Sources */,
 				4715B0F51EF3D58100520DE5 /* DecryptedData.swift in Sources */,
 				472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */,
-				47F9638F1EEFC36F00460308 /* compress.c in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
 				A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
@@ -1185,18 +1074,15 @@
 				A135CF0F1DD4BDD1007E3C29 /* PGPMPI.m in Sources */,
 				472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */,
 				F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */,
-				47F963951EEFC36F00460308 /* openssl_crypto.c in Sources */,
 				A135CF191DD4BDD1007E3C29 /* PGPS2K.m in Sources */,
 				A135CF061DD4BDD1007E3C29 /* PGPArmor.m in Sources */,
 				A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */,
 				A135CF0C1DD4BDD1007E3C29 /* PGPKeyID.m in Sources */,
 				A135CF021DD4BDD1007E3C29 /* NSData+compression.m in Sources */,
-				47F963971EEFC36F00460308 /* packet-show.c in Sources */,
 				476142081E07E52B00FD5E4F /* Theme.swift in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
 				A135CF1E1DD4BDD1007E3C29 /* PGPSubKey.m in Sources */,
 				472F392C1E1277D2009260FB /* PersistentMail +CoreDataClass.swift in Sources */,
-				47F963961EEFC36F00460308 /* packet-parse.c in Sources */,
 				A135CF0D1DD4BDD1007E3C29 /* PGPLiteralPacket.m in Sources */,
 				A135CF1D1DD4BDD1007E3C29 /* PGPSignatureSubpacket.m in Sources */,
 				F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */,
@@ -1205,7 +1091,6 @@
 				A135CF0A1DD4BDD1007E3C29 /* PGPFingerprint.m in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				A1416C191E268EFB001809F3 /* EncryptionHandler.swift in Sources */,
-				47F963941EEFC36F00460308 /* misc.c in Sources */,
 				A135CF1C1DD4BDD1007E3C29 /* PGPSignaturePacket.m in Sources */,
 				A135CF1F1DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
 				A135CF211DD4BDD1007E3C29 /* PGPTrustPacket.m in Sources */,
@@ -1217,44 +1102,34 @@
 				A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */,
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
 				472F39731E1D09C4009260FB /* State+CoreDataClass.swift in Sources */,
-				47F9639B1EEFC36F00460308 /* signature.c in Sources */,
 				A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */,
-				47F9639C1EEFC36F00460308 /* symmetric.c in Sources */,
 				A1416C1B1E268F1A001809F3 /* Encryption.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
 				A15B7BE41E29306D0024E499 /* EnzevalosEncryptionHandler.swift in Sources */,
 				472F397C1E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				A135CF131DD4BDD1007E3C29 /* PGPPKCSEme.m in Sources */,
-				47F9639D1EEFC36F00460308 /* validate.c in Sources */,
 				A135CF241DD4BDD1007E3C29 /* PGPUserAttributeSubpacket.m in Sources */,
 				A135CF151DD4BDD1007E3C29 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
-				472FC12E1EEFC5E200585D38 /* PGPKeyGeneration.swift in Sources */,
 				A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */,
-				47F9639A1EEFC36F00460308 /* reader.c in Sources */,
 				472F39741E1D09C4009260FB /* State+CoreDataProperties.swift in Sources */,
-				47F963901EEFC36F00460308 /* create.c in Sources */,
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
 				A135CF0E1DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.m in Sources */,
 				A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */,
 				A135CF161DD4BDD1007E3C29 /* PGPPublicKeyPacket.m in Sources */,
-				47F963911EEFC36F00460308 /* crypto.c in Sources */,
 				A135CF0B1DD4BDD1007E3C29 /* PGPKey.m in Sources */,
 				A1182C571E30F45C0024D389 /* PGPKeyManagement.swift in Sources */,
 				A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */,
 				472F39701E14F75C009260FB /* DataHandler.swift in Sources */,
-				472FC12C1EEFC55E00585D38 /* autocryptgen.c in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
 				A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */,
 				472F398E1E251B8D009260FB /* MailAddress.swift in Sources */,
 				A135CF101DD4BDD1007E3C29 /* PGPOnePassSignaturePacket.m in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
-				47F9639E1EEFC36F00460308 /* writer.c in Sources */,
 				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
 				A15B7BE81E2934CB0024E499 /* EncryptionType.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
 				A135CF091DD4BDD1007E3C29 /* PGPCryptoUtils.m in Sources */,
-				47F963931EEFC36F00460308 /* keyring.c in Sources */,
 				A135CF1A1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
 				F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */,

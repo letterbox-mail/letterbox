@@ -92,7 +92,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     func refresh(_ refreshControl: UIRefreshControl) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         AppDelegate.getAppDelegate().mailHandler.firstLookUp(newMailCallback: addNewMail, completionCallback: getMailCompleted)
-        AppDelegate.getAppDelegate().mailHandler.olderMailsFolder(newMailCallback: addNewMail, completionCallback: getMailCompleted)
+      
 
     }
 

@@ -15,5 +15,3 @@
 #import "PGPSignaturePacket.h"
 #import "PGPKeyID.h"
 #import "PGPPublicKeyPacket.h"
-#import "netpgp-extra.h"
-#import "autocryptgen.h"
