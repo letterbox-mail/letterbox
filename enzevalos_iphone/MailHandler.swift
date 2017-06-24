@@ -150,8 +150,6 @@ class MailHandler {
 
     fileprivate static let MAXMAILS: Int = 50
 
-
-
     fileprivate let concurrentMailServer = DispatchQueue(
         label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent)
 

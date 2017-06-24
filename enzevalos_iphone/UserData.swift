@@ -26,9 +26,9 @@ enum Attribute: Int{
         case .smtpHostname:
             return Attribute.attributeValues[Attribute.smtpHostname]! //return "smtp.web.de"
         case .smtpPort:
-            return 587 as AnyObject?
+            return 465 as AnyObject?
         case .imapHostname:
-            return "imap.web.de" as AnyObject?
+            return "mail.enzevalos.de" as AnyObject?
         case .imapPort:
             return 993 as AnyObject?
         case .prefEncryption:
@@ -40,7 +40,7 @@ enum Attribute: Int{
         case .imapAuthType:
             return MCOAuthType.saslPlain.rawValue as AnyObject?
         case .smtpConnectionType:
-            return MCOConnectionType.startTLS.rawValue as AnyObject?
+            return MCOConnectionType.TLS.rawValue as AnyObject?
         case .smtpAuthType:
             return MCOAuthType.saslPlain.rawValue as AnyObject?
             
@@ -50,7 +50,11 @@ enum Attribute: Int{
     }
     
     static let allAttributes = [accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType]
-    static var attributeValues: [Attribute : AnyObject?] = [.accountname : "Alice" as AnyObject?, .userName : "Alice2005" as Optional<AnyObject>, .userAddr : "alice2005@web.de" as Optional<AnyObject>, .userPW : "WJ$CE:EtUo3E$" as Optional<AnyObject>, .smtpHostname : "smtp.web.de" as Optional<AnyObject>, .smtpPort : 587 as Optional<AnyObject>, .imapHostname : "imap.web.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .prefEncryption : "yes" as AnyObject?, .autocryptType : "p" as AnyObject?, .publicKey : "" as AnyObject?]
+    static let name = "Bob"
+    static let pw = "VagotOshaicceov"
+    static var attributeValues: [Attribute : AnyObject?] = [.accountname : name as AnyObject?, .userName : name as Optional<AnyObject>, .userAddr : name+"@enzevalos.de" as Optional<AnyObject>, .userPW : pw as Optional<AnyObject>, .smtpHostname : "mail.enzevalos.de" as Optional<AnyObject>, .smtpPort : 465 as Optional<AnyObject>, .imapHostname : "mail.enzevalos.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .prefEncryption : "yes" as AnyObject?, .autocryptType : "p" as AnyObject?, .publicKey : "" as AnyObject?]
+    
+
 }
 
 

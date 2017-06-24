@@ -671,6 +671,10 @@ class Onboarding: NSObject {
         var path: String?
         print(UserManager.loadUserValue(Attribute.userAddr)! as! String)
         switch UserManager.loadUserValue(Attribute.userAddr)! as! String {
+        case "alice@enzevalos.de":
+            path = Bundle.main.path(forResource: "alice_enzevalos_private", ofType: "asc")
+        case "bob@enzevalos.de":
+            path = Bundle.main.path(forResource: "bob_enzevalos_private", ofType: "asc")
         case "idsolutions@enzevalos.de":
             path = Bundle.main.path(forResource: "idsolutions-private", ofType: "gpg")
         case "nchr@enzevalos.de":
@@ -721,7 +725,32 @@ class Onboarding: NSObject {
             _ = enc?.addKey(data, forMailAddresses: ["alice2005@web.de"]) //<---- Emailadresse
         }
         catch _ { }
-
+        path = Bundle.main.path(forResource: "alice_enzevalos_public", ofType: "asc") //<---- Schlüsseldatei
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["alice@enzevalos.de"]) //<---- Emailadresse
+        }
+        catch _ { }
+        path = Bundle.main.path(forResource: "bob_enzevalos_public", ofType: "asc") //<---- Schlüsseldatei
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["bob@enzevalos.de"]) //<---- Emailadresse
+        }
+        catch _ { }
+      /*
+        path = Bundle.main.path(forResource: "dave_enzevalos_public", ofType: "asc") //<---- Schlüsseldatei
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["dave@enzevalos.de"]) //<---- Emailadresse
+        }
+        catch _ { }
+        */
         //Import public key END
         //---------------------------------------
         //---------------------------------------
