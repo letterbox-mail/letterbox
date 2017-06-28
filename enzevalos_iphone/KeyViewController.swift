@@ -60,13 +60,19 @@ extension KeyViewController: UITableViewDataSource {
                 cell.detailTextLabel?.text = keyWrapper?.keyID
                 return cell
             }
-                else if toRowType(indexPath) == .encryptionType {
+            else if toRowType(indexPath) == .fingerprint {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "FingerprintCell")!
+                cell.detailTextLabel?.text = keyWrapper?.fingerprint
+                cell.textLabel?.text = NSLocalizedString("Fingerprint", comment: "Fingerprint of key")
+                return cell
+            }
+            else if toRowType(indexPath) == .encryptionType {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "EncryptionTypeCell")!
                 cell.detailTextLabel?.text = keyWrapper?.type.rawValue
                 cell.textLabel?.text = NSLocalizedString("EncryptionType", comment: "Type of Encryption")
                 return cell
             }
-                else if toRowType(indexPath) == .discoveryTime {
+            else if toRowType(indexPath) == .discoveryTime {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoveryTimeCell")!
                 cell.textLabel?.text = NSLocalizedString("DiscoveryTime", comment: "Time of keydiscovery")
                 let formatter = DateFormatter()
@@ -78,17 +84,17 @@ extension KeyViewController: UITableViewDataSource {
                 }
                 return cell
             }
-                else if toRowType(indexPath) == .discoveryMail {
+            else if toRowType(indexPath) == .discoveryMail {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoveryMailCell")!
                 cell.textLabel?.text = "Mail"
                 return cell
             }
-                else if toRowType(indexPath) == .verified {
+            else if toRowType(indexPath) == .verified {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "VerifiedCell")!
                 cell.textLabel?.text = NSLocalizedString("KeyIsVerified", comment: "The Key is verified. The time when the Key was verified") + "\(String(describing: keyWrapper?.verifyTime))"
                 return cell
             }
-                else if toRowType(indexPath) == .revoked {
+            else if toRowType(indexPath) == .revoked {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RevokedCell")!
                 cell.textLabel?.text = NSLocalizedString("KeyIsRevoked", comment: "The Key is revoked. The time when the Key was revoked") + "\(String(describing: keyWrapper?.revokeTime))"
                 return cell
@@ -99,7 +105,7 @@ extension KeyViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MailAddressCell")!
             if let addr = keyWrapper?.mailAddressesInKey?[indexPath.row] {
                 for ourAddr in (keyWrapper?.mailAddresses)! {
-                    if addr.contains(ourAddr) {
+                    if addr.localizedCaseInsensitiveContains(ourAddr) {
                         cell.accessoryType = UITableViewCellAccessoryType.checkmark
                         break
                     }
@@ -160,6 +166,11 @@ extension KeyViewController: UITableViewDataSource {
         var row = index.row
         if let key = keyWrapper, toSectionType(index.section) == .keyDetails {
             returnValue = .keyID
+            //Fingerprint
+            if row != 0 {
+                returnValue = KeyViewRowType(rawValue: returnValue.rawValue + 1)!
+                row -= 1
+            }
             //EncryptionType
             if row != 0 {
                 returnValue = KeyViewRowType(rawValue: returnValue.rawValue + 1)!
@@ -203,5 +214,5 @@ enum KeyViewSectionType: Int {
 }
 
 enum KeyViewRowType: Int {
-    case noKey = 0, keyID, encryptionType, discoveryTime, discoveryMail, verified, revoked
+    case noKey = 0, keyID, fingerprint, encryptionType, discoveryTime, discoveryMail, verified, revoked
 }

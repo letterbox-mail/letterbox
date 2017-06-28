@@ -106,6 +106,8 @@ open class PGPKeyWrapper : NSObject, KeyWrapper {
 
     open fileprivate(set) var keyID: String //will look like key.longKeyString+"-1" for the key with this longKeyString at index 1
     
+    open fileprivate(set) var fingerprint: String
+    
     fileprivate let keyManager: PGPKeyManagement
     
     open var mailAddresses : [String]? {
@@ -161,6 +163,12 @@ open class PGPKeyWrapper : NSObject, KeyWrapper {
         self.discoveryTime = Date.init()
         self.discoveryMailUID = discoveryMailUID
         self.keyID = ""
+        do {
+            try self.fingerprint = PGPFingerprint.init(data: key.export()).description
+        }
+        catch {
+            self.fingerprint = "Error" //TODO: find a secure way
+        }
         revoked = false
         trustlevel = 0
         verified = false
@@ -179,6 +187,7 @@ open class PGPKeyWrapper : NSObject, KeyWrapper {
         verified = coder.decodeBool(forKey: "verified")
         verifyTime = coder.decodeObject(forKey: "verifyTime") as! Date?
         keyID = coder.decodeObject(forKey: "keyID") as! String
+        fingerprint = coder.decodeObject(forKey: "fingerprint") as! String
         if let dmailUID = coder.decodeObject(forKey: "discoveryMailUID"){
             self.discoveryMailUID = (dmailUID as! NSNumber).uint64Value
         }
@@ -205,6 +214,7 @@ open class PGPKeyWrapper : NSObject, KeyWrapper {
             coder.encode(NSNumber.init(value: dmailUID as UInt64), forKey: "discoveryMailUID")
         }
         coder.encode(keyID, forKey: "keyID")
+        coder.encode(fingerprint, forKey: "fingerprint")
         coder.encode(discoveryTime, forKey: "discoveryTime")
     }
     
