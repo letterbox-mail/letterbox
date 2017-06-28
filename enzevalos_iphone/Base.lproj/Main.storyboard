@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="E2s-3z-74R">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Amm-QN-vA7">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -355,7 +355,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="X5Y-Rf-Qzd" kind="relationship" relationship="rootViewController" id="ltb-vV-hAM"/>
+                        <segue destination="eRp-By-lS3" kind="relationship" relationship="rootViewController" id="TgN-rB-esa"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bg6-Th-yQH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -467,7 +467,7 @@
         <!--Folder View Controller-->
         <scene sceneID="QFr-kU-bDH">
             <objects>
-                <tableViewController id="eRp-By-lS3" customClass="FolderViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController restorationIdentifier="folderViewController" id="eRp-By-lS3" customClass="FolderViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="CQV-hi-gCk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -517,12 +517,16 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="qTG-y6-efi"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="i7r-Oq-y5T">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
+                    <connections>
+                        <segue destination="X5Y-Rf-Qzd" kind="show" identifier="showInboxSegue" id="Qjs-MH-bHU"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cjd-cY-a5S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="677.60000000000002" y="-953.07346326836591"/>
+            <point key="canvasLocation" x="646" y="-949"/>
         </scene>
         <!--Inbox-->
         <scene sceneID="ue1-yd-fJq">
@@ -1364,9 +1368,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="bUY-Me-dje"/>
-        <segue reference="j4Q-k1-ud3"/>
-        <segue reference="GWh-iO-bPb"/>
+        <segue reference="TgN-rB-esa"/>
         <segue reference="kND-73-kqr"/>
+        <segue reference="bUY-Me-dje"/>
+        <segue reference="GWh-iO-bPb"/>
+        <segue reference="j4Q-k1-ud3"/>
     </inferredMetricsTieBreakers>
 </document>
