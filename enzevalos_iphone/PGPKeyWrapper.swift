@@ -163,10 +163,11 @@ open class PGPKeyWrapper : NSObject, KeyWrapper {
         self.discoveryTime = Date.init()
         self.discoveryMailUID = discoveryMailUID
         self.keyID = ""
-        do {
-            try self.fingerprint = PGPFingerprint.init(data: key.export()).description
+        
+        if let keyPacket = (key.primaryKeyPacket as? PGPPublicKeyPacket), let fp = keyPacket.fingerprint {
+            self.fingerprint = fp.description()
         }
-        catch {
+        else {
             self.fingerprint = "Error" //TODO: find a secure way
         }
         revoked = false

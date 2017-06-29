@@ -62,8 +62,10 @@ extension KeyViewController: UITableViewDataSource {
             }
             else if toRowType(indexPath) == .fingerprint {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "FingerprintCell")!
+                cell.detailTextLabel?.numberOfLines = 0
                 cell.detailTextLabel?.text = keyWrapper?.fingerprint
                 cell.textLabel?.text = NSLocalizedString("Fingerprint", comment: "Fingerprint of key")
+                cell.frame = CGRect(x: cell.frame.minX, y: cell.frame.minY, width: cell.frame.width, height: cell.frame.height+20.5)
                 return cell
             }
             else if toRowType(indexPath) == .encryptionType {
