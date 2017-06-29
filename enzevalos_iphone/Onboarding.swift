@@ -681,6 +681,8 @@ class Onboarding: NSObject {
             path = Bundle.main.path(forResource: "ullimuelle-private", ofType: "gpg")
         case "bob2005@web.de":
             path = Bundle.main.path(forResource: "bob-private", ofType: "gpg")
+        case "alice@enzevalos.de":
+            path = Bundle.main.path(forResource: "alice_enzevalos_private", ofType: "asc")
         default:
             path = Bundle.main.path(forResource: "alice2005-private", ofType: "gpg")
         }
@@ -709,19 +711,46 @@ class Onboarding: NSObject {
         catch _ { }
 
         //Import public key END
-        //---------------------------------------
-        //---------------------------------------
+        //---------------------------------------//---------------------------------------
         //Import public Key BEGIN
-
-        path = Bundle.main.path(forResource: "alice2005-public", ofType: "gpg") //<---- Schlüsseldatei
+        
+        path = Bundle.main.path(forResource: "JakobBode", ofType: "asc") //<---- Schlüsseldatei
         pgp = ObjectivePGP.init()
         pgp.importKeys(fromFile: path!, allowDuplicates: false)
         do {
             let data = try pgp.keys[0].export()
-            _ = enc?.addKey(data, forMailAddresses: ["alice2005@web.de"]) //<---- Emailadresse
+            _ = enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"]) //<---- Emailadresse
+        }
+        catch _ { }
+        
+        //Import public key END
+        //---------------------------------------
+        //---------------------------------------
+        //Import public Key BEGIN
+
+        path = Bundle.main.path(forResource: "alice_enzevalos_public", ofType: "asc") //<---- Schlüsseldatei
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["alice@enzevalos.de"]) //<---- Emailadresse
         }
         catch _ { }
 
+        //Import public key END
+        //---------------------------------------
+        //---------------------------------------
+        //Import public Key BEGIN
+        
+        path = Bundle.main.path(forResource: "bob_enzevalos_public", ofType: "asc") //<---- Schlüsseldatei
+        pgp = ObjectivePGP.init()
+        pgp.importKeys(fromFile: path!, allowDuplicates: false)
+        do {
+            let data = try pgp.keys[0].export()
+            _ = enc?.addKey(data, forMailAddresses: ["bob@enzevalos.de"]) //<---- Emailadresse
+        }
+        catch _ { }
+        
         //Import public key END
         //---------------------------------------
         //---------------------------------------
