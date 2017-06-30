@@ -1076,29 +1076,6 @@ netpgp_export_key(netpgp_t *netpgp, char *name)
 	return result;
 }
 
-/* export a given key */
-char * netpgp_export_private_key(netpgp_t *netpgp, char *name) {
-    const __ops_key_t *key;
-    __ops_io_t *io;
-    io=netpgp->io;
-    if((key = resolve_userid(netpgp, netpgp->secring, name)) == NULL) {
-        return NULL;
-    }
-    char pass[MAX_PASSPHRASE_LENGTH];
-    __ops_forget(pass, (unsigned)sizeof(pass));
-    if(netpgp->passfp) {
-        __ops_getpassphrase(netpgp->passfp, pass, sizeof(pass));
-    }
-    key = __ops_get_seckey(key);
-    
-    char *result = __ops_export_key(io, key, (strlen(pass) > 0) ? (uint8_t *)pass : NULL);
-    
-    __ops_forget(pass, (unsigned)sizeof(pass));
-    
-    return result;
-}
-
-
 #define IMPORT_ARMOR_HEAD	"-----BEGIN PGP PUBLIC KEY BLOCK-----"
 
 /* import a key into our keyring */
@@ -1234,7 +1211,7 @@ int
 netpgp_generate_key_rich(netpgp_t *netpgp, char *id, int numbits, char *output_directory, int save_to_default_keyring)
 {
 	__ops_output_t		*create;
-	const unsigned		 noarmor = 0; //0
+	const unsigned		 noarmor = 0;
 	__ops_key_t		*key;
 	__ops_io_t		*io;
 	uint8_t			*uid;
@@ -1255,14 +1232,9 @@ netpgp_generate_key_rich(netpgp_t *netpgp, char *id, int numbits, char *output_d
 			"RSA %d-bit key <%s@localhost>", numbits, getenv("LOGNAME"));
 	}
 	uid = (uint8_t *)newid;
-    
-    //TODO: Generate subkey!!!!!
-    
-    
 	key = __ops_rsa_new_selfsign_key(numbits, 65537UL, uid,
 			netpgp_getvar(netpgp, "hash"),
 			netpgp_getvar(netpgp, "cipher"));
-    
 	if (key == NULL) {
 		(void) fprintf(io->errs, "Cannot generate key\n");
 		return 0;
@@ -1294,17 +1266,11 @@ netpgp_generate_key_rich(netpgp_t *netpgp, char *id, int numbits, char *output_d
 		__ops_keyring_free(netpgp->pubring);
 	}
     
-    
     char pass[MAX_PASSPHRASE_LENGTH];
     __ops_forget(pass, (unsigned)sizeof(pass)); //clear pass array
     if (netpgp->passfp) {
         __ops_getpassphrase(netpgp->passfp, pass, sizeof(pass));
-        printf("Unknown PW %s", pass);
     }
-     
-    
-     
-    
     
 	/* write secret key */
     if (output_directory) {
@@ -1333,7 +1299,7 @@ netpgp_generate_key_rich(netpgp_t *netpgp, char *id, int numbits, char *output_d
             (void) fprintf(io->errs, "can't append secring '%s'\n", ringfile);
             return 0;
         }
-        if (!__ops_write_xfer_seckey(create, key, (strlen(pass) > 0) ? (uint8_t *)pass : NULL, strlen(pass), noarmor)) { 
+        if (!__ops_write_xfer_seckey(create, key, (strlen(pass) > 0) ? (uint8_t *)pass : NULL, strlen(pass), noarmor)) {
             (void) fprintf(io->errs, "Cannot write seckey\n");
             return 0;
         }
@@ -1343,7 +1309,7 @@ netpgp_generate_key_rich(netpgp_t *netpgp, char *id, int numbits, char *output_d
 		__ops_keyring_free(netpgp->secring);
 	}
     
-    //__ops_forget(pass, (unsigned)sizeof(pass));
+    __ops_forget(pass, (unsigned)sizeof(pass));
 	__ops_keydata_free(key);
 	free(cp);
 	return 1;
@@ -2002,5 +1968,3 @@ netpgp_write_sshkey(netpgp_t *netpgp, char *s, const char *userid, char *out, si
 	free(keyring);
 	return (int)MIN(cc,INT_MAX);
 }
-
-

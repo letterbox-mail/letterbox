@@ -950,11 +950,10 @@ encrypt_writer(const uint8_t *src,
 	while (remaining > 0) {
 		unsigned        size = (remaining < BUFSZ) ? remaining : BUFSZ;
 
-		//memcpy(encbuf,src,size); // \todo copy needed here? */
+		/* memcpy(buf,src,size); // \todo copy needed here? */
 		pgp_encrypt->crypt->cfb_encrypt(pgp_encrypt->crypt, encbuf,
 					src + done, size);
 
-         
 		if (__ops_get_debug_level(__FILE__)) {
 			hexdump(stderr, "unencrypted", &src[done], 16);
 			hexdump(stderr, "encrypted", encbuf, 16);

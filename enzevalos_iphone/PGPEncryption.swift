@@ -37,28 +37,22 @@ class PGPEncryption : Encryption {
        // pgp?.generateKey(2048, named: name, toDirectory: dir)
         
         pgp?.generateKey(2048)
-        let sk = pgp?.exportPrivateKeyNamed(name)
+        let sk = pgp?.exportKeyNamed(name)
         print("My secret key: \(String(describing: sk)) \n")
         //print("My home folder: \(dir) \n ")
         print("UNNETPGP password: \(String(describing: pgp?.password)) \n")
         print("SecretKeyPath: \( pgp?.secretKeyRingPath) \n")
 
-        let objectivePGP  =  ObjectivePGP.init() //self.getPGPKeyManagement().pgp
+        let objectivePGP  = self.getPGPKeyManagement().pgp
         
         if let keydir = pgp?.secretKeyRingPath{
             if let keys = objectivePGP.importKeys(fromFile: keydir , allowDuplicates: false){
                 for k in keys {
                     let newKey = k as! PGPKey
-                    let owner = newKey.users[0] as! PGPUser
-                    print("Key! #packets: \(newKey.allKeyPackets().count) keyId: \(newKey.keyID.description) #owner: \(owner.userID)")
-                    getPGPKeyManagement().addMailAddressesForKey([owner.userID], keyID: newKey.keyID.description)
-                    
                     do{
                         let ak = try newKey.export()
                         _ = self.addKey(ak, forMailAddresses: ["bob@enzevalos.de"])
-                    } catch _ {
-                        print("Cant export key!")
-                    }
+                    } catch _ {}
                     
                 }
                 print ("imported keys: \(String(describing: keys.count))")
@@ -99,6 +93,7 @@ class PGPEncryption : Encryption {
             }
             
             if (actual != nil) {
+                
                 return getKey(actual!)
             }
             

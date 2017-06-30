@@ -389,7 +389,7 @@ write_seckey_body(const __ops_seckey_t *key,
 			if (key->s2k_specifier == OPS_S2KS_SALTED) {
 				hash.add(&hash, key->salt, OPS_SALT_SIZE);
 			}
-			//hash.add(&hash, passphrase, (unsigned)pplen);
+			hash.add(&hash, passphrase, (unsigned)pplen);
 			hash.finish(&hash, hashed); // this is crashing 'i' value is completly wrong after this
 
 			/*
@@ -422,7 +422,6 @@ write_seckey_body(const __ops_seckey_t *key,
 
 	/* use this session key to encrypt */
 
-    
 	__ops_crypt_any(&crypted, key->alg);
 	crypted.set_iv(&crypted, key->iv);
 	crypted.set_crypt_key(&crypted, sesskey);
@@ -592,9 +591,6 @@ __ops_write_xfer_seckey(__ops_output_t *output,
 	 * subkey packets and corresponding signatures and optional
 	 * revocation
 	 */
-    
-    
-    // TODO SUBKEYS!!!
 
 	if (armoured) {
 		__ops_writer_info_finalise(&output->errors, &output->writer);
@@ -680,7 +676,7 @@ __ops_fast_create_rsa_seckey(__ops_seckey_t *key, time_t t,
 	key->key.rsa.q = q;
 	key->key.rsa.u = u;
 
-	key->s2k_usage = OPS_S2KU_ENCRYPTED_AND_HASHED;
+	key->s2k_usage = OPS_S2KU_NONE;
 
 	/* XXX: sanity check and add errors... */
 }

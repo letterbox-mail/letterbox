@@ -144,12 +144,12 @@ __ops_getpassphrase(void *in, char *phrase, size_t size)
 	if (in == NULL) {
 		while ((p = getpass("netpgp passphrase: ")) == NULL) {
 		}
-		(void) snprintf(phrase, size, "%s", "enzevalos\0");
+		(void) snprintf(phrase, size, "%s", p);
 	} else {
 		if (fgets(phrase, (int)size, in) == NULL) {
 			return 0;
 		}
-		phrase[strlen(phrase)] = 0x0; // -1
+		phrase[strlen(phrase) - 1] = 0x0;
 	}
 	return 1;
 }
