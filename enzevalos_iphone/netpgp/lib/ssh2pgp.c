@@ -362,7 +362,7 @@ __ops_ssh2seckey(__ops_io_t *io, const char *f, __ops_key_t *key, __ops_pubkey_t
 	}
 	/* let's add some sane defaults */
 	(void) memcpy(&key->key.seckey.pubkey, pubkey, sizeof(*pubkey));
-	key->key.seckey.s2k_usage = OPS_S2KU_ENCRYPTED_AND_HASHED;
+    key->key.seckey.s2k_usage = OPS_S2KU_ENCRYPTED_AND_HASHED;
 	key->key.seckey.alg = OPS_SA_CAST5;
 	key->key.seckey.s2k_specifier = OPS_S2KS_SALTED;
 	key->key.seckey.hash_alg = OPS_HASH_SHA1;

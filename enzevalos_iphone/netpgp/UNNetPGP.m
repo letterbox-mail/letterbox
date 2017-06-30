@@ -396,6 +396,30 @@ static dispatch_queue_t lock_queue;
     });
 }
 
+- (NSString *)exportPrivateKeyNamed:(NSString *)keyName
+{
+    __block NSString *keyData;
+    
+    dispatch_sync(lock_queue, ^{
+        netpgp_t *netpgp = [self buildnetpgp];
+        if (netpgp) {
+            char keyname[keyName.length+1]; //+1 for terminating NULL character
+            strcpy(keyname, keyName.UTF8String);
+            
+            char *keydata = netpgp_export_private_key(netpgp, keyname);
+            if (keydata) {
+                keyData = [NSString stringWithCString:keydata encoding:NSASCIIStringEncoding];
+                free(keydata);
+            }
+            
+            [self finishnetpgp:netpgp];
+        }
+    });
+    return keyData;
+
+}
+
+
 - (NSString *)exportKeyNamed:(NSString *)keyName
 {
     __block NSString *keyData;
@@ -571,8 +595,9 @@ static dispatch_queue_t lock_queue;
     }
     
     if (self.password) {
-        const char* cstr = [self.password stringByAppendingString:@"\n"].UTF8String;
-        netpgp->passfp = fmemopen((void *)cstr, sizeof(char) * (self.password.length + 1), "r");
+        //const char* cstr = [self.password stringByAppendingString:@"\n"].UTF8String;
+        const char* cstr = self.password.UTF8String;
+        netpgp->passfp = fmemopen((void *)cstr, sizeof(char) * (self.password.length ), "r"); // +1
     }
 
     /* 4 MiB for a memory file */

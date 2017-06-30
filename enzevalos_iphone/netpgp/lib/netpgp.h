@@ -78,6 +78,7 @@ int netpgp_list_keys_json(netpgp_t *, char **, const int);
 int netpgp_find_key(netpgp_t *, char *);
 char *netpgp_get_key(netpgp_t *, const char *, const char *);
 char *netpgp_export_key(netpgp_t *, char *);
+char *netpgp_export_private_key(netpgp_t *netpgp, char *name);
 int netpgp_import_key(netpgp_t *netpgp, char *f);
 int netpgp_import_public_key(netpgp_t *netpgp, char *f);
 //int netpgp_import_secure_key(netpgp_t *netpgp, char *f);

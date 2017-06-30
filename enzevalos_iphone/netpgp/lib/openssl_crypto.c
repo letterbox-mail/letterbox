@@ -712,8 +712,8 @@ rsa_generate_keypair(__ops_key_t *keydata,
 	seckey->pubkey.key.rsa.n = BN_dup(rsa->n);
 	seckey->pubkey.key.rsa.e = BN_dup(rsa->e);
 
-	seckey->s2k_usage = OPS_S2KU_ENCRYPTED_AND_HASHED;
-	seckey->s2k_specifier = OPS_S2KS_SALTED;
+    seckey->s2k_usage = OPS_S2KU_ENCRYPTED_AND_HASHED;
+    seckey->s2k_specifier =  OPS_S2KS_SALTED;
 	/* seckey->s2k_specifier=OPS_S2KS_SIMPLE; */
 	if ((seckey->hash_alg = __ops_str_to_hash_alg(hashalg)) == OPS_HASH_UNKNOWN) {
 		seckey->hash_alg = OPS_HASH_SHA1;

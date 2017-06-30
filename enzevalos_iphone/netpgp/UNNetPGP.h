@@ -95,6 +95,7 @@ typedef NS_OPTIONS(NSUInteger, UNEncryptOption)
 - (BOOL) importPublicKeyFromFileAtPath:(NSString *)inFilePath;
 //- (BOOL) importSecureKeyFromFileAtPath:(NSString *)inFilePath;
 - (NSString *)exportKeyNamed:(NSString *)keyName;
+- (NSString *)exportPrivateKeyNamed:(NSString *)keyName;
 
 /** Generate pair of keys and store in keyring */
 - (BOOL) generateKey:(int)numberOfBits;

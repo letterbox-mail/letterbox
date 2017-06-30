@@ -422,7 +422,7 @@ write_seckey_body(const __ops_seckey_t *key,
 
 	/* use this session key to encrypt */
 
-    /*
+    
 	__ops_crypt_any(&crypted, key->alg);
 	crypted.set_iv(&crypted, key->iv);
 	crypted.set_crypt_key(&crypted, sesskey);
@@ -434,7 +434,7 @@ write_seckey_body(const __ops_seckey_t *key,
 		(void) fprintf(stderr, "\nturning encryption on...\n");
 	}
 	__ops_push_enc_crypt(output, &crypted);
-*/
+
 	switch (key->pubkey.alg) {
 		/* case OPS_PKA_DSA: */
 		/* return __ops_write_mpi(output, key->key.dsa.x); */
@@ -680,7 +680,7 @@ __ops_fast_create_rsa_seckey(__ops_seckey_t *key, time_t t,
 	key->key.rsa.q = q;
 	key->key.rsa.u = u;
 
-	key->s2k_usage = OPS_S2KU_NONE;
+	key->s2k_usage = OPS_S2KU_ENCRYPTED_AND_HASHED;
 
 	/* XXX: sanity check and add errors... */
 }
