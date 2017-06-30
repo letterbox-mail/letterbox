@@ -17,6 +17,9 @@ public protocol Encryption {
     
     init(encHandler: EncryptionHandler)
     
+    
+    func generateKey(name: String) -> KeyWrapper?
+    
     //check whether this encryption is used in this mail. This means is it used for encryption OR signing.
     func isUsed(_ mail: PersistentMail) -> Bool
     

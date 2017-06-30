@@ -670,6 +670,7 @@ class Onboarding: NSObject {
 
         var path: String?
         print(UserManager.loadUserValue(Attribute.userAddr)! as! String)
+        /*
         switch UserManager.loadUserValue(Attribute.userAddr)! as! String {
         case "alice@enzevalos.de":
             path = Bundle.main.path(forResource: "alice_enzevalos_private", ofType: "asc")
@@ -698,11 +699,16 @@ class Onboarding: NSObject {
         }
         catch _ { }
 
+ */
         //Import private key END
         //---------------------------------------
         //---------------------------------------
         //Import public Key BEGIN
 
+        var pgp = ObjectivePGP.init()
+        let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+        
+        
         path = Bundle.main.path(forResource: "JakobBode", ofType: "asc") //<---- Schlüsseldatei
         pgp = ObjectivePGP.init()
         pgp.importKeys(fromFile: path!, allowDuplicates: false)

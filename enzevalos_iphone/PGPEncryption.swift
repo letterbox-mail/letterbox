@@ -23,6 +23,82 @@ class PGPEncryption : Encryption {
         self.keyManager = PGPKeyManagement(encryptionHandler: self.encryptionHandler)
     }
     
+    
+    func generateKey(name: String) -> KeyWrapper?{
+        let pgp = UNNetPGP.init(userId: name)
+        
+      //  pgp?.generateKey(2048, named: name, toDirectory: pgp?.secretKeyRingPath)
+        
+        pgp?.generateKey(2048)
+        let sk = pgp?.exportKeyNamed(name)
+        print("My secret key: \(String(describing: sk))")
+        
+        pgp?.password = "enzevalos"
+        print("PW: \(String(describing: pgp?.password))")
+        
+        let objectivePGP  =  ObjectivePGP.init() //self.getPGPKeyManagement().pgp
+        
+        print("SecretKeyPath: \( pgp?.secretKeyRingPath)")
+        
+        if let keydir = pgp?.secretKeyRingPath{
+            if let keys = objectivePGP.importKeys(fromFile: keydir , allowDuplicates: false){
+                for k in keys {
+                    let newKey = k as! PGPKey
+                    let owner = newKey.users[0] as! PGPUser
+                    print("Key! #packets: \(newKey.allKeyPackets().count) keyId: \(newKey.keyID.description) #owner: \(owner.userID)")
+                    getPGPKeyManagement().addMailAddressesForKey([owner.userID], keyID: newKey.keyID.description)
+                    
+                    do{
+                        let ak = try newKey.export()
+                        _ = self.addKey(ak, forMailAddresses: [])
+                        print("Key added: \(ak)")
+                    } catch _ {
+                        print("Cant export key!")
+                    }
+                    
+                }
+                print ("imported keys: \(String(describing: keys.count))")
+            }
+            let fileManager = FileManager.default
+            let url = URL.init(fileURLWithPath: keydir)
+            do{
+               try fileManager.removeItem(at: url)
+            }
+            catch _ {
+             print("Cant remove key ring")
+            }
+        }
+        
+        let actual = getActualKeyID(name)
+        print("actual key: \(String(describing: actual))")
+        
+        
+
+        if let keyId = getKeyIDs(name){
+            print("#keys: \(keyId.count)")
+            for k in keyId{
+                print(k)
+                if let key = self.getKey(k){
+                    print("Found Key! \(key.keyID) from \(key.creationDate)")
+                
+                }
+                
+
+            }
+            
+            if (actual != nil) {
+                return getKey(actual!)
+            }
+            
+            if keyId.count > 0{
+                return getKey(keyId[0])
+            }
+        }
+        return nil
+    }
+
+    
+    
     func getPGPKeyManagement() -> PGPKeyManagement {
         return keyManager
     }
@@ -378,7 +454,7 @@ class PGPEncryption : Encryption {
     func signAndEncrypt(_ text: String, keyIDs: [String]) -> Data? {
         var encData : Data? = nil
         var keys : [PGPKey] = []
-        for id in keyIDs {
+        for id in keyIDs {            
             if let key = keyManager.getKey(id) {
                 keys.append(key.key)
             }

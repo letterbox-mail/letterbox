@@ -23,6 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
         
+        let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+        if let key = enc?.generateKey(name: "bob@enzevalos.de"){
+            print("My Key: \(key.keyID) type: \(key.type) date: \(key.creationDate)")
+        }
         resetApp()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             self.window = UIWindow(frame: UIScreen.main.bounds)

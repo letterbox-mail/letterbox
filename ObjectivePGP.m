@@ -1091,10 +1091,18 @@
         NSUInteger nextPacketOffset;
         PGPPacket *packet = [PGPPacketFactory packetWithData:messageData offset:offset nextPacketOffset:&nextPacketOffset];
         if (packet) {
+            NSLog(@"Packet tag: @%hhu", packet.tag);
             if ((accumulatedPackets.count > 1) && ((packet.tag == PGPPublicKeyPacketTag) || (packet.tag == PGPSecretKeyPacketTag))) {
                 PGPKey *key = [[PGPKey alloc] initWithPackets:accumulatedPackets];
                 [keys addObject:key];
                 [accumulatedPackets removeAllObjects];
+                
+            }
+            
+            if (packet.tag == PGPSecretKeyPacketTag){
+                PGPSecretKeyPacket *skp = packet;
+                //PGPSecretKeyPacket *dskp =[skp decryptedKeyPacket:@"" error:nil];
+            
             }
             [accumulatedPackets addObject:packet];
         }

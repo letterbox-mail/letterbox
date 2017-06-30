@@ -157,6 +157,7 @@
     if (result) {
         PGPSignatureSubpacket *subpacket = [[self subpacketsOfType:PGPSignatureSubpacketTypeKeyFlags] firstObject];
         NSArray *flags = subpacket.value;
+        return YES;
         if ([flags containsObject:@(PGPSignatureFlagAllowSignData)]) {
             return YES;
         }
@@ -355,7 +356,13 @@
         signingKeyPacket = [signingKeyPacket decryptedKeyPacket:passphrase error:&decryptError];
         NSAssert(signingKeyPacket && !decryptError, @"decrypt error %@", decryptError);
     }
-
+    else if(signingKeyPacket.isEncryptedWithPassword) {
+        NSError *decryptError;
+        passphrase = @"";
+        //Copy secret key instance, then decrypt on copy, not on the original (do not leave unencrypted instance around)
+        signingKeyPacket = [signingKeyPacket decryptedKeyPacket:passphrase error:&decryptError];
+        NSAssert(signingKeyPacket && !decryptError, @"decrypt error %@", decryptError);
+    }
     // signed part data
     // timestamp subpacket is required
     PGPSignatureSubpacket *creationTimeSubpacket = [PGPSignatureSubpacket subpacketWithType:PGPSignatureSubpacketTypeSignatureCreationTime andValue:[NSDate date]];
