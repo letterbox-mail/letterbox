@@ -157,7 +157,7 @@
     if (result) {
         PGPSignatureSubpacket *subpacket = [[self subpacketsOfType:PGPSignatureSubpacketTypeKeyFlags] firstObject];
         NSArray *flags = subpacket.value;
-        return YES;
+        //return YES;
         if ([flags containsObject:@(PGPSignatureFlagAllowSignData)]) {
             return YES;
         }
