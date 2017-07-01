@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
         
         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-        if let key = enc?.generateKey(name: "bob@enzevalos.de"){
+        if let key = enc?.generateKey(adr: "bob@enzevalos.de"){
             print("My Key: \(key.keyID) type: \(key.type) date: \(key.creationDate)")
         }
         resetApp()

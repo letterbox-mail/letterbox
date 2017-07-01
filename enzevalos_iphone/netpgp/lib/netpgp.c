@@ -1239,6 +1239,8 @@ netpgp_generate_key_rich(netpgp_t *netpgp, char *id, int numbits, char *output_d
 		(void) fprintf(io->errs, "Cannot generate key\n");
 		return 0;
 	}
+    
+    
 	cp = NULL;
 	__ops_sprint_keydata(netpgp->io, NULL, key, &cp, "signature ", &key->key.seckey.pubkey, 0);
 	(void) fprintf(stdout, "%s", cp);

@@ -157,7 +157,6 @@
     if (result) {
         PGPSignatureSubpacket *subpacket = [[self subpacketsOfType:PGPSignatureSubpacketTypeKeyFlags] firstObject];
         NSArray *flags = subpacket.value;
-        //return YES;
         if ([flags containsObject:@(PGPSignatureFlagAllowSignData)]) {
             return YES;
         }
@@ -338,7 +337,6 @@
     NSAssert(secretKey.type == PGPKeySecret,@"Need secret key");
     NSAssert([secretKey.primaryKeyPacket isKindOfClass:[PGPSecretKeyPacket class]], @"Signing key packet not found");
 
-    passphrase = @"enzevalos";
     
     PGPSecretKeyPacket *signingKeyPacket = (PGPSecretKeyPacket *)secretKey.signingKeyPacket;
     NSAssert(signingKeyPacket, @"No signing signature found");

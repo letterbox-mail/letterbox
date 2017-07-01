@@ -304,6 +304,16 @@ enum {
 	OPS_REVOCATION_NO_LONGER_VALID	= 0x20
 };
 
+typedef enum {
+    OPS_KEYFLAG_CERT_KEYS = 0x01,
+    OPS_KEYFLAG_SIGN_DATA = 0x02,
+    OPS_KEYFLAG_ENC_COMM = 0x04,
+    OPS_KEYFLAG_ENC_STORAGE = 0x08,
+    OPS_KEYFLAG_SPLIT = 0x10,
+    OPS_KEYFLAG_AUTH = 0x20,
+    OPS_KEYFLAG_GROUP = 0x80
+} ops_key_flags_t;
+
 /** Structure to hold one error code */
 typedef struct {
 	__ops_errcode_t   errcode;

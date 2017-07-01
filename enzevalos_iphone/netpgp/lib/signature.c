@@ -843,6 +843,20 @@ __ops_add_time(__ops_create_sig_t *sig, int64_t when, const char *type)
 		__ops_write_scalar(sig->output, (uint32_t)when, (unsigned)sizeof(uint32_t));
 }
 
+/* add key flags to the output by Oliver */
+unsigned
+__ops_add_key_flags(__ops_create_sig_t *sig, uint8_t flags)
+{
+
+    __ops_content_enum tag;
+    
+    tag = OPS_PTAG_SS_KEY_FLAGS;
+    
+    return __ops_write_ss_header(sig->output, 2, tag) &&
+    __ops_write_scalar(sig->output, (unsigned int) flags, 1);
+
+}
+
 /**
  * \ingroup Core_Signature
  *

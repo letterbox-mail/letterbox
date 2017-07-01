@@ -105,6 +105,7 @@ unsigned __ops_write_sig(__ops_output_t *, __ops_create_sig_t *,
 unsigned   __ops_add_time(__ops_create_sig_t *, int64_t, const char *);
 unsigned __ops_add_issuer_keyid(__ops_create_sig_t *,
 			const uint8_t *);
+unsigned __ops_add_key_flags(__ops_create_sig_t *sig, uint8_t flags);
 void __ops_add_primary_userid(__ops_create_sig_t *, unsigned);
 
 /* Standard Interface */
