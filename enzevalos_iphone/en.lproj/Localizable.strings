@@ -30,6 +30,7 @@
 "Emailaddress" = "Emailaddress";
 "EncryptionType" = "Encryption Type";
 "EverythingCorrect" = "Everything correct?";
+"Fingerprint" = "Fingerprint";
 "Forward" = "Forward";
 "From" = "From";
 "GetHelp" = "To get help, tap on the letter or postcard in the app.";
