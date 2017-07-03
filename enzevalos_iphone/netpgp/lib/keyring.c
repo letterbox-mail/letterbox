@@ -509,7 +509,7 @@ __ops_add_selfsigned_userid(__ops_key_t *key, uint8_t *userid)
 	sig = __ops_create_sig_new();
 	__ops_sig_start_key_sig(sig, &key->key.seckey.pubkey, userid, OPS_CERT_POSITIVE);
 	__ops_add_time(sig, (int64_t)time(NULL), "birth");
-    __ops_add_key_flags(sig, OPS_KEYFLAG_SIGN_DATA | OPS_KEYFLAG_CERT_KEYS);
+    __ops_add_key_flags(sig, OPS_KEYFLAG_SIGN_DATA | OPS_KEYFLAG_CERT_KEYS | OPS_KEYFLAG_ENC_COMM | OPS_KEYFLAG_ENC_STORAGE);
 	__ops_add_issuer_keyid(sig, key->sigid);
 	__ops_add_primary_userid(sig, 1);
 	__ops_end_hashed_subpkts(sig);

@@ -296,7 +296,7 @@
 - (PGPSecretKeyPacket *) decryptedKeyPacket:(NSString *)passphrase error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(passphrase);
-    NSParameterAssert(error);
+    //NSParameterAssert(error); ????? Uncomment oliver
 
     if (!self.isEncryptedWithPassword) {
         return self;
@@ -326,9 +326,9 @@
     // now read mpis
     if (decryptedData) {
         [encryptedKey parseUnencryptedPart:decryptedData error:error];
-        if (*error) {
-            return nil;
-        }
+       // if (*error) {
+         //   return nil;
+        //}
     }
     encryptedKey.wasDecrypted = YES;
     return encryptedKey;

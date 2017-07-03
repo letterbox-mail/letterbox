@@ -75,7 +75,7 @@ class AutocryptContact {
 
 
     convenience init(header: MCOMessageHeader) {
-        let autocrypt = header.extraHeaderValue(forName: AUTOCRYPTHEADER)
+        var autocrypt = header.extraHeaderValue(forName: AUTOCRYPTHEADER)
         var field: [String]
         var addr = ""
         var type = "1" // Default value since no one else uses autocrypt...
@@ -83,11 +83,12 @@ class AutocryptContact {
         var key = ""
 
         if(autocrypt != nil) {
+            autocrypt = autocrypt?.trimmingCharacters(in: .whitespacesAndNewlines)
             let autocrypt_fields = autocrypt?.components(separatedBy: ";")
             for f in autocrypt_fields! {
                 field = f.components(separatedBy: "=")
                 if field.count > 1 {
-                    let flag = field[0].trimmingCharacters(in: CharacterSet.whitespaces)
+                    let flag = field[0].trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                     var value = field[1]
                     if field.count > 2 {
                         for i in 2...(field.count - 1) {
@@ -97,13 +98,13 @@ class AutocryptContact {
                     }
                     switch flag {
                     case ADDR:
-                        addr = value
+                        addr = value.trimmingCharacters(in: .whitespacesAndNewlines)
                         break
                     case TYPE:
-                        type = value
+                        type = value.trimmingCharacters(in: .whitespacesAndNewlines)
                         break
                     case ENCRYPTION:
-                        pref = value
+                        pref = value.trimmingCharacters(in: .whitespacesAndNewlines)
                         break
                     case KEY:
                         if value.characters.count > 0 {
@@ -127,12 +128,12 @@ class AutocryptContact {
     }
 
     func setPrefer_encryption(_ input: String) -> Bool {
-        let pref = input.lowercased()
+        var pref = input.lowercased()
         if pref == "yes" || pref == "mutal" {
-            prefer_encryption = EncState.MUTAL
+            self.prefer_encryption = EncState.MUTAL
             return true
         } else if pref == "no"  {
-            prefer_encryption = EncState.NOPREFERENCE
+            self.prefer_encryption = EncState.NOPREFERENCE
             return true
         }
         prefer_encryption = EncState.NOPREFERENCE
@@ -140,7 +141,7 @@ class AutocryptContact {
     }
 
     func toString() -> String {
-        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption)"
+        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption) key size: \(key.characters.count)"
     }
 }
 
@@ -170,7 +171,7 @@ class MailHandler {
 
 
     func add_autocrypt_header(_ builder: MCOMessageBuilder) {
-        let adr = UserManager.loadUserValue(Attribute.userAddr) as! String
+        let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
         let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
         if let header = pgpenc.autocryptHeader(adr) {
             builder.header.setExtraHeaderValue(header, forName: AUTOCRYPTHEADER)
@@ -242,6 +243,8 @@ class MailHandler {
 
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
+            let keyID = encryption.getActualKeyID(allRec[0])
+            print("Keyid : \(String(describing: keyID)) of \(allRec[0])")
             if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
                 sendData = encData
                // builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
@@ -438,6 +441,8 @@ class MailHandler {
         var autocrypt: AutocryptContact? = nil
         if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
             autocrypt = AutocryptContact(header: header!)
+            print("Header: \n\(autocrypt?.toString())")
+            print("Header of \(String(describing: header?.from.mailbox)))")
             if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0) {
                 let pgp = ObjectivePGP.init()
                 pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
@@ -445,6 +450,7 @@ class MailHandler {
                 do {
                     let pgpKey = try pgp.keys[0].export()
                     _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
+                    print("Key added!!!")
                 }
                 catch {
                     print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
@@ -473,6 +479,7 @@ class MailHandler {
             var body: String
             var lineArray: [String]
             var dec: DecryptedData? = nil
+            
             
             for a in (msgParser?.attachments())!{
                 let at = a as! MCOAttachment

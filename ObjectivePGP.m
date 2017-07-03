@@ -1096,13 +1096,6 @@
                 PGPKey *key = [[PGPKey alloc] initWithPackets:accumulatedPackets];
                 [keys addObject:key];
                 [accumulatedPackets removeAllObjects];
-                
-            }
-            
-            if (packet.tag == PGPSecretKeyPacketTag){
-                PGPSecretKeyPacket *skp = packet;
-                //PGPSecretKeyPacket *dskp =[skp decryptedKeyPacket:@"" error:nil];
-            
             }
             [accumulatedPackets addObject:packet];
         }

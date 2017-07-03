@@ -75,11 +75,14 @@ class PGPEncryption : Encryption {
         
         unnetpgp?.generateKey(2048)
         
-        // import public key
-        _ = importKeys(dir: unnetpgp?.publicKeyRingPath, adr: adr)
+        
         
         // import private key
-        return importKeys(dir: unnetpgp?.secretKeyRingPath, adr: adr)
+        let key =  importKeys(dir: unnetpgp?.secretKeyRingPath, adr: adr)
+        
+        // import public key
+        _ = importKeys(dir: unnetpgp?.publicKeyRingPath, adr: adr)
+        return key
     }
 
     
@@ -138,23 +141,7 @@ class PGPEncryption : Encryption {
         }
         return nil
     }
-    
-    
-    func decryptMime(_ data: Data) -> Data?{
-        let s = String.init(data: data, encoding: String.Encoding.utf8)
-        if s != nil  && self.isUsed(s!, key: nil) {
-                var plain = try? keyManager.pgp.decryptData(data, passphrase: password)
-                if plain == nil {
-                    self.keyManager.useAllPrivateKeys()
-                    //TODO add oldKeyUsed attribute in Mail object
-                    plain = try? keyManager.pgp.decryptData(data, passphrase: password)
-                    self.keyManager.useOnlyActualPrivateKey()
-                }
-                return plain
-            }
-        return nil
-    }
-    
+
     func decryptedMime(_ data: Data, from: String) -> DecryptedData?{
         var sigState: SignatureState = SignatureState.NoSignature
         var encState: EncryptionState = EncryptionState.NoEncryption
@@ -196,6 +183,7 @@ class PGPEncryption : Encryption {
                 for maybeUsedKey in maybeUsedKeys {
                     if let key = self.keyManager.getKey(maybeUsedKey) {
                         //FIXME
+                        
                         let done : ObjCBool
                         done = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: error)[0])
                         if let errorHappening = (error?.debugDescription.contains("Missing")), errorHappening {
@@ -583,7 +571,12 @@ class PGPEncryption : Encryption {
     }
     
     func getActualKeyID(_ mailaddress: String) -> String? {
-        return self.keyManager.getActualKeyIDForMailaddress(mailaddress)
+        if let key = self.keyManager.getActualKeyIDForMailaddress(mailaddress){
+            let pk = self.getKey(key)
+            return key
+        }
+        return nil
+       
     }
     
     
