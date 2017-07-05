@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "08634A2A40CAF434DAE2F242AB5514BB7A368848",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "08634A2A40CAF434DAE2F242AB5514BB7A368848" : 9223372036854775807,
+    "D2C7EA0F1A440C91BD6EBA17F1863FAC9BB7F993" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "58AEEA4D-40DB-4A72-8DC0-F394C44FE99A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "08634A2A40CAF434DAE2F242AB5514BB7A368848" : "enzevalos_iphone\/",
+    "D2C7EA0F1A440C91BD6EBA17F1863FAC9BB7F993" : "workspace\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "enzevalos_iphone",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "enzevalos_iphone.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "git.imp.fu-berlin.de:enzevalos\/enzevalos_iphone.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "08634A2A40CAF434DAE2F242AB5514BB7A368848"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "git.imp.fu-berlin.de:enzevalos\/enzevalos_iphone_workspace.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "D2C7EA0F1A440C91BD6EBA17F1863FAC9BB7F993"
+    }
+  ]
+}

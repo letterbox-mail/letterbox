@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>enzevalos_iphone.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>A13526741D955BDF00D3BFE1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A135268B1D955BE000D3BFE1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A13526961D955BE000D3BFE1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>

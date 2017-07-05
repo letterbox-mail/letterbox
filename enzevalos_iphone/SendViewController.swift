@@ -209,7 +209,7 @@ class SendViewController: UIViewController {
         let records = DataHandler.handler.getContactByAddress(email).records
         for r in records {
             for address in r.addresses {
-                if address.mailAddress == email && address.prefEnc == r.hasKey {
+                if address.mailAddress == email && address.prefEnc.canEnc() == r.hasKey {
                     performSegue(withIdentifier: "showContact", sender: ["record": r, "email": email])
                     self.view.endEditing(true)
                     return
@@ -326,7 +326,6 @@ class SendViewController: UIViewController {
 
     func searchContacts(_ prefix: String) {
         AppDelegate.getAppDelegate().requestForAccess({ access in
-            //print(access)
         })
         let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
         if authorizationStatus == CNAuthorizationStatus.authorized {

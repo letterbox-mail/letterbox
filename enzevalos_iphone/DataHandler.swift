@@ -56,6 +56,23 @@ class DataHandler {
             return currentstate.maxUID
         }
     }
+    
+    var uids: MCOIndexSet{
+        get{
+            let uids = MCOIndexSet()
+            let result = findAll("PersistentMail")
+            if result != nil {
+                for r in result! {
+                    let m = r as! PersistentMail
+                    uids.add(m.uid)
+                }
+            }
+            
+            print("We have #\(uids.count()) stored!")
+            return uids
+        }
+    
+    }
 
     var countMails: Int {
         get {
@@ -174,7 +191,6 @@ class DataHandler {
             for c in contacts {
                 while c.from.count > MaxMailsPerRecord {
                     let last = c.from.last!
-                    print("delete \(last.uid) of \(last.from.mailAddress)")
                     managedObjectContext.delete(last)
                     save()
                     if let index = mails.index(of: last) {
@@ -238,7 +254,7 @@ class DataHandler {
                     else {
                         let mail_address = NSEntityDescription.insertNewObject(forEntityName: "Mail_Address", into: managedObjectContext) as! Mail_Address
                         mail_address.address = address
-                        mail_address.prefer_encryption = false
+                        mail_address.prefer_encryption = EncState.NOAUTOCRYPT
                         return mail_address
                 }
             }
@@ -303,7 +319,7 @@ class DataHandler {
             if search == nil || search!.count == 0 {
                 contact = NSEntityDescription.insertNewObject(forEntityName: "EnzevalosContact", into: managedObjectContext) as! EnzevalosContact
                 contact.displayname = lowerAdr
-                let adr = getMailAddress(lowerAdr, temporary: false)as! Mail_Address
+                let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
                 contact.addToAddresses(adr)
                 adr.contact = contact
                 contacts.append(contact)
@@ -349,9 +365,22 @@ class DataHandler {
             let adr: Mail_Address
             let contact = getContactByMCOAddress(sender)
             adr = contact.getAddressByMCOAddress(sender)!
+            if adr.lastSeen > fromMail.date{
+                adr.lastSeen = fromMail.date
+            }
             if let ac = autocrypt {
                 adr.prefEnc = ac.prefer_encryption
                 adr.encryptionType = ac.type
+                if adr.lastSeenAutocrypt != nil && adr.lastSeenAutocrypt > fromMail.date{
+                    adr.lastSeenAutocrypt = fromMail.date
+                }
+                else if adr.lastSeenAutocrypt == nil{
+                    adr.lastSeenAutocrypt = fromMail.date
+                }
+                
+            }
+            else if adr.lastSeen < adr.lastSeenAutocrypt && adr.prefer_encryption != EncState.NOAUTOCRYPT{
+                adr.prefer_encryption = EncState.RESET
             }
             fromMail.from = adr
         }
@@ -368,7 +397,7 @@ class DataHandler {
 
         // -------- End handle to, cc, from addresses --------
 
-        func createMail(_ uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) /*-> Mail*/ {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: DecryptedData?) {
 
             let finding = findNum("PersistentMail", type: "uid", search: uid)
             let mail: PersistentMail
@@ -389,15 +418,55 @@ class DataHandler {
                 mail.isEncrypted = false
                 mail.trouble = false
 
-                handleFromAddress(sender, fromMail: mail, autocrypt: autocrypt)
+                if sender != nil{
+                    handleFromAddress(sender!, fromMail: mail, autocrypt: autocrypt)
+                }
                 handleToAddresses(receivers, mail: mail)
                 handleCCAddresses(cc, mail: mail)
 
                 mail.unableToDecrypt = false
-                mail.decryptIfPossible()
+                if decryptedData == nil{
+                    // Maybe PGPInline?
+                    // TODO: Refactoring!
+                    mail.decryptIfPossible()
+                }
+                else{
+                    let encState: EncryptionState = (decryptedData?.encryptionState)!
+                    let signState: SignatureState = (decryptedData?.signatureState)!
+                    
+                    switch encState {
+                    case EncryptionState.NoEncryption:
+                        mail.isEncrypted = false
+                        mail.trouble = false
+                        mail.unableToDecrypt = false
+                    case EncryptionState.UnableToDecrypt:
+                        mail.unableToDecrypt = true
+                        mail.isEncrypted = true
+                        mail.trouble = true
+                    default:
+                        mail.isEncrypted = true
+                        mail.trouble = false
+                        mail.unableToDecrypt = false
+                    }
+                    
+                    switch signState {
+                    case SignatureState.NoSignature:
+                        mail.isSigned = false
+                    case SignatureState.InvalidSignature:
+                        mail.isSigned = true
+                        mail.isCorrectlySigned = true
+                        mail.trouble = true
+                    case SignatureState.ValidSignature:
+                        mail.isCorrectlySigned = true
+                        mail.isSigned = true
+                    }
+                    mail.decryptedBody = body
+                    print("Mail from \(mail.from.mailAddress) about \(String(describing: mail.subject)) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) unable to decrypt? \(mail.unableToDecrypt)")
+                    save()
+                }
             }
-                else {
-                    return //finding![0] as! Mail
+            else {
+                return 
             }
 
             save()

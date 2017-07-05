@@ -54,7 +54,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 let AUTOCRYPTHEADER = "Autocrypt"
-let TO = "to"
+let ADDR = "adr"
 let TYPE = "type"
 let ENCRYPTION = "prefer-encrypted"
 let KEY = "key"
@@ -63,7 +63,7 @@ let KEY = "key"
 class AutocryptContact {
     var addr: String = ""
     var type: EncryptionType = .PGP
-    var prefer_encryption: Bool = true
+    var prefer_encryption: EncState = EncState.NOAUTOCRYPT
     var key: String = ""
 
     init(addr: String, type: String, prefer_encryption: String, key: String) {
@@ -75,19 +75,20 @@ class AutocryptContact {
 
 
     convenience init(header: MCOMessageHeader) {
-        let autocrypt = header.extraHeaderValue(forName: AUTOCRYPTHEADER)
+        var autocrypt = header.extraHeaderValue(forName: AUTOCRYPTHEADER)
         var field: [String]
         var addr = ""
-        var type = "p" // Default value since no one else uses autocrypt...
-        var pref = "true"
+        var type = "1" // Default value since no one else uses autocrypt...
+        var pref = ""
         var key = ""
 
         if(autocrypt != nil) {
+            autocrypt = autocrypt?.trimmingCharacters(in: .whitespacesAndNewlines)
             let autocrypt_fields = autocrypt?.components(separatedBy: ";")
             for f in autocrypt_fields! {
                 field = f.components(separatedBy: "=")
                 if field.count > 1 {
-                    let flag = field[0].trimmingCharacters(in: CharacterSet.whitespaces)
+                    let flag = field[0].trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                     var value = field[1]
                     if field.count > 2 {
                         for i in 2...(field.count - 1) {
@@ -96,14 +97,14 @@ class AutocryptContact {
                         }
                     }
                     switch flag {
-                    case TO:
-                        addr = value
+                    case ADDR:
+                        addr = value.trimmingCharacters(in: .whitespacesAndNewlines)
                         break
                     case TYPE:
-                        type = value
+                        type = value.trimmingCharacters(in: .whitespacesAndNewlines)
                         break
                     case ENCRYPTION:
-                        pref = value
+                        pref = value.trimmingCharacters(in: .whitespacesAndNewlines)
                         break
                     case KEY:
                         if value.characters.count > 0 {
@@ -127,18 +128,20 @@ class AutocryptContact {
     }
 
     func setPrefer_encryption(_ input: String) -> Bool {
-        if input == "yes" || input == "YES" || input == "Yes" {
-            prefer_encryption = true
+        var pref = input.lowercased()
+        if pref == "yes" || pref == "mutal" {
+            self.prefer_encryption = EncState.MUTAL
             return true
-        } else if input == "no" || input == "NO" || input == "No" {
-            prefer_encryption = false
+        } else if pref == "no"  {
+            self.prefer_encryption = EncState.NOPREFERENCE
             return true
         }
+        prefer_encryption = EncState.NOPREFERENCE
         return false
     }
 
     func toString() -> String {
-        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption)"
+        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption) key size: \(key.characters.count)"
     }
 }
 
@@ -146,9 +149,7 @@ class MailHandler {
 
     var delegate: MailHandlerDelegator?
 
-    fileprivate static let MAXMAILS: Int = 10
-
-
+    fileprivate static let MAXMAILS: Int = 50
 
     fileprivate let concurrentMailServer = DispatchQueue(
         label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent)
@@ -170,7 +171,7 @@ class MailHandler {
 
 
     func add_autocrypt_header(_ builder: MCOMessageBuilder) {
-        let adr = UserManager.loadUserValue(Attribute.userAddr) as! String
+        let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
         let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
         if let header = pgpenc.autocryptHeader(adr) {
             builder.header.setExtraHeaderValue(header, forName: AUTOCRYPTHEADER)
@@ -242,12 +243,14 @@ class MailHandler {
 
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
+            let keyID = encryption.getActualKeyID(allRec[0])
+            print("Keyid : \(String(describing: keyID)) of \(allRec[0])")
             if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
-                //sendData = encData
-                builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
-                sendData = builder.data()
-                sendOperation = session.sendOperation(with: sendData, from: userID, recipients: encPGP)
-                //sendOperation = session.sendOperationWithData(builder.openPGPEncryptedMessageDataWithEncryptedData(sendData), from: userID, recipients: encPGP)
+                sendData = encData
+               // builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
+               // sendData = builder.data()
+                //sendOperation = session.sendOperation(with: sendData, from: userID, recipients: encPGP)
+                sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
                 builder.textBody = message
@@ -257,8 +260,10 @@ class MailHandler {
             }
         }
 
+        
         if let unenc = ordered[EncryptionType.unknown] {
             builder.textBody = message
+            builder.data
             sendData = builder.data()
             sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
             //TODO handle different callbacks
@@ -309,11 +314,51 @@ class MailHandler {
         }
     }
 
-    func receiveAll(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        let uids: MCOIndexSet
-        uids = MCOIndexSet(range: MCORangeMake(DataHandler.handler.maxUID, UINT64_MAX))
-        loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+    func firstLookUp(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        
+        findMaxUID(){max in
+            var uids: MCOIndexSet
+            print("Max uid: \(max)")
+            var (min, overflow) = UInt64.subtractWithOverflow(max, UInt64(MailHandler.MAXMAILS))
+            if min <= 0 || overflow{
+                min = 1
+            }
+            uids = MCOIndexSet(range: MCORangeMake(min, max)) // DataHandler.handler.maxUID
+            print("call for #\(uids.count()) uids \(uids.rangesCount())")
+            uids.remove(DataHandler.handler.uids)
+            self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+        
+        }
+        
     }
+    
+    
+    func olderMailsFolder(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        var uids: MCOIndexSet
+        var max = DataHandler.handler.maxUID
+        
+        if max <= 1{
+            return firstLookUp(newMailCallback: newMailCallback, completionCallback: completionCallback)
+        }
+        for uid in DataHandler.handler.uids.nsIndexSet(){
+            if max.distance(to: UInt64(uid)) < 0{
+                max = UInt64(uid)
+            }
+        }
+        
+        var min = max - 200
+        if min < 1{
+            min = 1
+        }
+        print("look for more mails: \(min) to \(max)")
+        
+        uids = MCOIndexSet(range: MCORangeMake(min, max))
+        uids.remove(DataHandler.handler.uids)
+        
+        self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+    }
+    
+    
 
     func loadMoreMails(_ record: KeyRecord, folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let addresses: [MailAddress]
@@ -338,9 +383,7 @@ class MailHandler {
                         completionCallback(false)
                         return
                     }
-                    print("Size first: \(setOfIndices.count())")
                     setOfIndices = self.cutIndexSet(setOfIndices)
-                    print("Size first: \(setOfIndices.count())")
 
                     self.loadMessagesFromServer(setOfIndices, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
                 }
@@ -348,7 +391,7 @@ class MailHandler {
         }
     }
 
-    func loadMessagesFromServer(_ uids: MCOIndexSet, folder: String = "INBOX", record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMessagesFromServer(_ uids: MCOIndexSet, folder: String = "INBOX", maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folder, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER]
@@ -359,16 +402,21 @@ class MailHandler {
                 completionCallback(true)
                 return
             }
+            var calledMails = 0
             if let msgs = msg {
                 print("#mails on server: \(msgs.count)")
                 let dispatchGroup = DispatchGroup()
-                for m in msgs {
+                for m in msgs.reversed() {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
                     dispatchGroup.enter()
 
                     let op = self.IMAPSession.fetchParsedMessageOperation(withFolder: folder, uid: message.uid)
                     op?.start { err, data in self.parseMail(err, parser: data, message: message, record: record, newMailCallback: newMailCallback)
                         dispatchGroup.leave()
+                    }
+                    calledMails += 1
+                    if calledMails > maxLoad{
+                        break
                     }
                 }
                 dispatchGroup.notify(queue: DispatchQueue.main) {
@@ -384,52 +432,104 @@ class MailHandler {
             print("Error while fetching mail: \(String(describing: error))")
             return
         }
+    
+        var rec: [MCOAddress] = []
+        var cc: [MCOAddress] = []
+        
+        let header = message.header
+        
+        var autocrypt: AutocryptContact? = nil
+        if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
+            autocrypt = AutocryptContact(header: header!)
+        if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0) {
+                let pgp = ObjectivePGP.init()
+                pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
+                let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+                do {
+                    let pgpKey = try pgp.keys[0].export()
+                    _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
+                }
+                catch {
+                    print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
+                }
+            }
+            
+        }
+        
+        if let to = header?.to {
+            for r in to {
+                rec.append(r as! MCOAddress)
+            }
+        }
+        if let c = header?.cc {
+            for r in c {
+                cc.append(r as! MCOAddress)
+            }
+        }
+
+
 
         if let data = parser?.data() {
-            let msgParser = MCOMessageParser(data: data)
-
-            let html: String = msgParser!.plainTextRendering()
-            var lineArray = html.components(separatedBy: "\n")
-
-            lineArray.removeFirst(4)
-            var body = lineArray.joined(separator: "\n")
-            body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            body.append("\n")
-            var rec: [MCOAddress] = []
-            var cc: [MCOAddress] = []
-
-            let header = message.header
-            var autocrypt: AutocryptContact? = nil
-            if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
-                autocrypt = AutocryptContact(header: header!)
-                if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0) {
-                    let pgp = ObjectivePGP.init()
-                    pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
-                    let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-                    do {
-                        let pgpKey = try pgp.keys[0].export()
-                        _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
-                    }
-                    catch {
-                        print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
-                    }
+            var msgParser = MCOMessageParser(data: data)
+            var isEnc = false
+            let html: String
+            var body: String
+            var lineArray: [String]
+            var dec: DecryptedData? = nil
+            
+            
+            for a in (msgParser?.attachments())!{
+                let at = a as! MCOAttachment
+                if at.mimeType == "application/pgp-encrypted"{
+                    isEnc = true
                 }
-
-            }
-            if let to = header?.to {
-                for r in to {
-                    rec.append(r as! MCOAddress)
+                if isEnc && at.mimeType == "application/octet-stream"{
+                    msgParser = MCOMessageParser(data: at.data)
                 }
             }
-            if let c = header?.cc {
-                for r in c {
-                    cc.append(r as! MCOAddress)
+            if isEnc{
+                html = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
+                
+                lineArray = html.components(separatedBy: "\n")
+                
+                body = lineArray.joined(separator: "\n")
+                body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                body.append("\n")
+                dec = decryptText(body: body, from: message.header.from.mailbox)
+                if (dec?.decryptedBody != nil){
+                    msgParser = MCOMessageParser(data: dec?.decryptedBody)
+                    body =  msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
                 }
+                
+            } else{
+                html = msgParser!.plainTextRendering()
+                
+                lineArray = html.components(separatedBy: "\n")
+                lineArray.removeFirst(4)
+                body = lineArray.joined(separator: "\n")
+                body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                body.append("\n")
             }
-
-            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from)!, receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
+            
+            if header?.from == nil{
+                // Drops mails with no from field. Otherwise it becomes ugly with no ezcontact,fromadress etc.
+                return
+            }
+            
+            
+            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from), receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
             newMailCallback()
         }
+    }
+    
+    private func decryptText(body: String, from: String) -> DecryptedData?{
+        //let encType = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
+        if let encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) {
+            if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data?{
+                return encryption.decryptedMime(data,from: from)
+            }
+        }
+        return nil
     }
 
 

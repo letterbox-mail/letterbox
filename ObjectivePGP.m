@@ -334,7 +334,7 @@
         return nil;
     }
     
-    NSAssert(eskPacket, @"Valid PublicKeyEncryptedSessionKeyPacket not found");
+    //NSAssert(eskPacket, @"Valid PublicKeyEncryptedSessionKeyPacket not found");
     if (!eskPacket) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Valid PublicKeyEncryptedSessionKeyPacket not found"}];
@@ -431,6 +431,7 @@
     NSArray *binaryMessages = [self convertArmoredMessage2BinaryBlocksWhenNecessary:messageDataToDecrypt];
     NSData *binaryMessageToDecrypt = binaryMessages.count > 0 ? binaryMessages.firstObject : nil;
     //printf("jakob auskommentierte Assertion line 218 ObjectivePGP.m");
+   
     //NSAssert(binaryMessageToDecrypt != nil, @"Invalid input data");
     if (!binaryMessageToDecrypt) {
         if (error) {
@@ -1090,6 +1091,7 @@
         NSUInteger nextPacketOffset;
         PGPPacket *packet = [PGPPacketFactory packetWithData:messageData offset:offset nextPacketOffset:&nextPacketOffset];
         if (packet) {
+            //NSLog(@"Packet tag: @%hhu", packet.tag);
             if ((accumulatedPackets.count > 1) && ((packet.tag == PGPPublicKeyPacketTag) || (packet.tag == PGPSecretKeyPacketTag))) {
                 PGPKey *key = [[PGPKey alloc] initWithPackets:accumulatedPackets];
                 [keys addObject:key];

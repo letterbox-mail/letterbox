@@ -10,6 +10,7 @@ class PGPEncryption : Encryption {
     
     internal let encryptionHandler: EncryptionHandler
     internal let keyManager: PGPKeyManagement
+    var password = "525062478368502727504972217063013649"
     //internal let keyIDs : []
     
     var encryptionType: EncryptionType {
@@ -22,6 +23,66 @@ class PGPEncryption : Encryption {
         self.encryptionHandler = encHandler
         self.keyManager = PGPKeyManagement(encryptionHandler: self.encryptionHandler)
     }
+    
+    func newPassword() -> String{
+        // Autocrypt: 36 nums (0...9) see: https://autocrypt.readthedocs.io/en/latest/level1.html#setup-code
+        var pw = ""
+        for _ in 0..<36{
+            let rand = arc4random_uniform(10)
+            print (rand)
+            pw.append("\(rand)")
+        }
+        //TODO safe key in Keychain!
+        return "525062478368502727504972217063013649"
+        //return pw
+    }
+    
+    private func importKeys(dir: String?, adr: String) -> KeyWrapper?{
+        let objectivePGP  = self.getPGPKeyManagement().pgp
+        var keyID: String?
+        
+        if let keydir = dir{
+            if let keys = objectivePGP.importKeys(fromFile: keydir , allowDuplicates: false){
+                for k in keys {
+                    let newKey = k as! PGPKey
+                    do{
+                        let ak = try newKey.export()
+                        keyID = self.addKey(ak, forMailAddresses: [adr])
+                    } catch _ {}
+                }
+            }
+            
+            // remove keyring after creation!
+            let fileManager = FileManager.default
+            let url = URL.init(fileURLWithPath: keydir)
+            do{
+                try fileManager.removeItem(at: url)
+            }
+            catch _ {}
+            if keyID != nil{
+                return self.getKey(keyID!)
+            }
+        }
+        return nil
+    }
+    
+    func generateKey(adr: String) -> KeyWrapper?{
+       
+        let unnetpgp = UNNetPGP.init(userId: adr)
+
+        unnetpgp?.password = password
+        unnetpgp?.armored = true
+        unnetpgp?.generateKey(2048)
+        
+        // import private key
+        let key =  importKeys(dir: unnetpgp?.secretKeyRingPath, adr: adr)
+        
+        // import public key
+        _ = importKeys(dir: unnetpgp?.publicKeyRingPath, adr: adr)
+        return key
+    }
+
+    
     
     func getPGPKeyManagement() -> PGPKeyManagement {
         return keyManager
@@ -77,6 +138,82 @@ class PGPEncryption : Encryption {
         }
         return nil
     }
+
+    func decryptedMime(_ data: Data, from: String) -> DecryptedData?{
+        var sigState: SignatureState = SignatureState.NoSignature
+        var encState: EncryptionState = EncryptionState.NoEncryption
+        var handeledData: Data?
+        var signkey: String?
+        
+        if true {
+            //has to be var because it is given as pointer to obj-c-code
+            var error: NSErrorPointer = NSErrorPointer.none
+            var temp = keyManager.pgp.decryptDataFirstPart(data, passphrase: password, integrityProtected: nil, error: error)
+            var maybeUsedKeys: [String] = []
+            //has to be var because it is given as pointer to obj-c-code
+            var signed = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
+            signed[0] = false
+            //has to be var because it is given as pointer to obj-c-code
+            var valid = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
+            valid[0] = false
+            handeledData = temp.plaintextData
+            if handeledData != nil{
+                encState = EncryptionState.ValidedEncryptedWithCurrentKey
+            }
+            else {
+                self.keyManager.useAllPrivateKeys()
+                temp = keyManager.pgp.decryptDataFirstPart(data, passphrase: password, integrityProtected: nil, error: error)
+                handeledData = temp.plaintextData //TODO Does this works?
+                self.keyManager.useOnlyActualPrivateKey()
+                if handeledData != nil {
+                    encState = EncryptionState.ValidEncryptedWithOldKey
+                }
+            }
+            if error.debugDescription == "MDC validation failed" {
+                encState = EncryptionState.UnableToDecrypt
+            }
+            if let unwrappedData = handeledData {
+                handeledData = unwrappedData
+                if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(from), let theirKeyID = temp.incompleteKeyID{
+                    maybeUsedKeys = self.getLibaryKeyIDOverlap(theirKeyID, ourKeyIDs: allKeyIDs)
+                }
+                for maybeUsedKey in maybeUsedKeys {
+                    if let key = self.keyManager.getKey(maybeUsedKey) {
+                        //FIXME
+                        
+                        let done : ObjCBool
+                        done = (self.keyManager.pgp.decryptDataSecondPart(temp, verifyWithPublicKey: key.key, signed: signed, valid: valid, error: error)[0])
+                        if let errorHappening = (error?.debugDescription.contains("Missing")), errorHappening {
+                            sigState = SignatureState.InvalidSignature
+                            break
+                        }
+                        
+                        if !done.boolValue {
+                            sigState = SignatureState.NoSignature
+                            break
+                        }
+                        if valid.pointee.boolValue{
+                            sigState = SignatureState.ValidSignature
+                            signkey = key.keyID
+                            break
+                        }
+                        else{
+                            sigState = SignatureState.InvalidSignature
+                            break
+                        }
+                    }
+                }
+                return  DecryptedData.init(decryptedBody: handeledData, sigState: sigState, encState: encState, key: signkey, encType: EncryptionType.PGP)
+            }
+        }
+        encState = EncryptionState.UnableToDecrypt
+        
+        return DecryptedData.init(decryptedBody: handeledData, sigState: sigState, encState: encState, key: signkey, encType: EncryptionType.PGP)
+    
+    }
+    
+    
+    
     
     //TODO
     //decrypt the mails body. the decryted body will be saved in the mail object.
@@ -84,11 +221,11 @@ class PGPEncryption : Encryption {
         if self.isUsed(mail) {
             //let bodyData = mail.body!.data(using: String.Encoding.utf8)!
             let bodyData = getCipher(text: mail.body!).data(using: String.Encoding.utf8)!
-            var data = try? keyManager.pgp.decryptData(bodyData, passphrase: nil)
+            var data = try? keyManager.pgp.decryptData(bodyData, passphrase: password)
             if data == nil {
                 self.keyManager.useAllPrivateKeys()
                 //TODO add oldKeyUsed attribute in Mail object
-                data = try? keyManager.pgp.decryptData(mail.body!.data(using: String.Encoding.utf8)!, passphrase: nil)
+                data = try? keyManager.pgp.decryptData(mail.body!.data(using: String.Encoding.utf8)!, passphrase: password)
                 self.keyManager.useOnlyActualPrivateKey()
                 if data != nil {
                     mail.decryptedWithOldPrivateKey = true
@@ -129,7 +266,7 @@ class PGPEncryption : Encryption {
             var data: Data?
             //has to be var because it is given as pointer to obj-c-code
             var error: NSErrorPointer = NSErrorPointer.none
-            var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
+            var temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: password, integrityProtected: nil, error: error)
             var maybeUsedKeys: [String] = []
             //has to be var because it is given as pointer to obj-c-code
             var signed = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
@@ -137,11 +274,10 @@ class PGPEncryption : Encryption {
             //has to be var because it is given as pointer to obj-c-code
             var valid = UnsafeMutablePointer<ObjCBool>.allocate(capacity: 1)
             valid[0] = false
-            //print(temp.incompleteKeyID,"  ",temp.onePassSignaturePacket)
                 data = temp.plaintextData
                 if data == nil {
                     self.keyManager.useAllPrivateKeys()
-                    temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: nil, integrityProtected: nil, error: error)
+                    temp = keyManager.pgp.decryptDataFirstPart(bodyData, passphrase: password, integrityProtected: nil, error: error)
                     data = temp.plaintextData
                     self.keyManager.useOnlyActualPrivateKey()
                     if data != nil {
@@ -199,7 +335,7 @@ class PGPEncryption : Encryption {
         if let key = keyManager.getKey(keyID) {
             let pgp = ObjectivePGP.init()
             pgp.keys.append(key.key)
-            if let decr = try? pgp.decryptData(text.data(using: String.Encoding.utf8)!, passphrase: nil) {
+            if let decr = try? pgp.decryptData(text.data(using: String.Encoding.utf8)!, passphrase: password) {
                 return String(data: decr, encoding: String.Encoding.utf8)
             }
         }
@@ -288,7 +424,7 @@ class PGPEncryption : Encryption {
     func signAndEncrypt(_ text: String, keyIDs: [String]) -> Data? {
         var encData : Data? = nil
         var keys : [PGPKey] = []
-        for id in keyIDs {
+        for id in keyIDs {            
             if let key = keyManager.getKey(id) {
                 keys.append(key.key)
             }
@@ -300,7 +436,7 @@ class PGPEncryption : Encryption {
         if let data = text.data(using: String.Encoding.utf8) {
             if let myKeyID = keyManager.getPrivateKeyID() {
                 if let myKey = keyManager.getKey(myKeyID) {
-                    encData = try? keyManager.pgp.encryptData(data, usingPublicKeys: keys, signWithSecretKey: myKey.key, passphrase: "", armored: true)
+                    encData = try? keyManager.pgp.encryptData(data, usingPublicKeys: keys, signWithSecretKey: myKey.key, passphrase: password, armored: true)
                 }
                 else {
                     return nil
@@ -432,7 +568,12 @@ class PGPEncryption : Encryption {
     }
     
     func getActualKeyID(_ mailaddress: String) -> String? {
-        return self.keyManager.getActualKeyIDForMailaddress(mailaddress)
+        if let key = self.keyManager.getActualKeyIDForMailaddress(mailaddress){
+            let pk = self.getKey(key)
+            return key
+        }
+        return nil
+       
     }
     
     
@@ -505,7 +646,13 @@ class PGPEncryption : Encryption {
         if let keyId = self.getActualKeyID(adr){
             let key = self.getKey(keyId) as! PGPKeyWrapper
             let pgpManger = self.keyManager
-            var string = "to=" + adr + "; type=p;prefer-encrypted=" + (UserManager.loadUserValue(Attribute.prefEncryption) as! String) + ";key="
+            var string = "adr = " + adr + "; type = 1;"
+            let enc = UserManager.loadUserValue(Attribute.prefEncryption) as! String
+            print ("Enc: \(enc)")
+            if enc == "yes"{
+                string = string + "prefer-encrypted = mutal"
+            }
+            string = string + ";key = "
             if let keyBase64 = pgpManger.pgp.exportKeyWithoutArmor(key.key){
                 string = string + keyBase64
             }

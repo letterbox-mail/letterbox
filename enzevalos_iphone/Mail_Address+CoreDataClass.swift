@@ -29,7 +29,7 @@ open class Mail_Address: NSManagedObject, MailAddress {
         return CNLabeledValue.init(label: CNLabelOther, value: address as NSString)
     }
 
-    open var prefEnc: Bool {
+    open var prefEnc: EncState {
         get{
             return prefer_encryption
         }

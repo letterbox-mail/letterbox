@@ -157,9 +157,6 @@ class AddressHandler {
             do {
                 let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContacts(matching: CNContact.predicateForContacts(matchingName: name), keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor])
                 for con in conList {
-                    print(con.givenName)
-                    print(con.familyName)
-
                     if (con.givenName + con.familyName).replacingOccurrences(of: " ", with: "") == name.replacingOccurrences(of: " ", with: "") {
                         return true
                     }
@@ -186,7 +183,6 @@ class AddressHandler {
             catch {
                 print("exception")
             }
-            print("contacts done")
         } else {
             print("no Access!")
         }
@@ -206,7 +202,6 @@ class AddressHandler {
             catch {
                 print("exception")
             }
-            print("contacts done")
         } else {
             print("no Access!")
         }

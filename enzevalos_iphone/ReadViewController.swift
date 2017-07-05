@@ -101,7 +101,7 @@ class ReadViewController: UITableViewController {
         let records = DataHandler.handler.getContactByAddress(email).records
         for r in records {
             for address in r.addresses {
-                if address.mailAddress == email && address.prefEnc == r.hasKey {
+                if address.mailAddress == email && address.prefEnc.canEnc() == r.hasKey {
                     performSegue(withIdentifier: "showContact", sender: ["record": r, "email": email])
                     return
                 }
@@ -356,8 +356,7 @@ class ReadViewController: UITableViewController {
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
             }
 
-            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey)
-            EnzevalosEncryptionHandler.getEncryption(.PGP)?.decryptAndSignatureCheck(mail)
+            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure)" )
         }
     }
 
