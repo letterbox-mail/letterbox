@@ -12,6 +12,14 @@ import CoreData
 @objc(Folder)
 public class Folder: NSManagedObject {
 
+    var name: String{
+        get{
+            if let n = path.components(separatedBy: delimiter).last {
+                return n
+            }
+            return path
+        }
+    }
     
     var uids: MCOIndexSet{
     

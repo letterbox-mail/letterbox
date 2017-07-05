@@ -59,6 +59,26 @@ class DataHandler {
     
     }
 
+    
+    func callForFolders(){ // Maybe call back? Look for new Folder?
+        AppDelegate.getAppDelegate().mailHandler.allFolders{ (err, array) -> Void in
+            guard err == nil else {
+                print("Error while fetching all folders: \(String(describing: err))")
+                return
+            }
+            
+            if let newFolders = array{
+                for new in newFolders{
+                    if case let folder as MCOIMAPFolder = new{
+                        let f = self.findFolder(name: folder.path)
+                        f.delimiter = folder.delimiter.description
+                        f.flags = folder.flags
+                    }
+                }
+            }
+        }
+    }
+
 
     init() {
         // This resource is the same name as your xcdatamodeld contained in your project.
@@ -85,6 +105,8 @@ class DataHandler {
             fatalError("Error migrating store: \(error)")
         }
         managedObjectContext.mergePolicy = NSMergePolicy(merge: NSMergePolicyType.mergeByPropertyObjectTrumpMergePolicyType);
+        
+        callForFolders()
 
     }
 
@@ -201,13 +223,13 @@ class DataHandler {
 
 
     func findFolder(name: String) -> Folder{
-        if let search = find("Folder", type: "name", search:name){
+        if let search = find("Folder", type: "path", search:name){
             if search.count > 0{
                 return search[0] as! Folder
             }
         }
         let folder  = NSEntityDescription.insertNewObject(forEntityName: "Folder", into: managedObjectContext) as! Folder
-        folder.name = name
+        folder.path = name
         return folder
     }
 

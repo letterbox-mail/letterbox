@@ -14,7 +14,9 @@
         <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
     <entity name="Folder" representedClassName="Folder" syncable="YES" codeGenerationType="class">
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="delimiter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="flags" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="lastID" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" syncable="YES"/>
         <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="folder" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="maxID" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" syncable="YES"/>
@@ -66,7 +68,7 @@
     <elements>
         <element name="Account" positionX="-288" positionY="-9" width="128" height="135"/>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>
-        <element name="Folder" positionX="-297" positionY="-18" width="128" height="135"/>
+        <element name="Folder" positionX="-297" positionY="-18" width="128" height="165"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="195"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="315"/>
         <element name="Server" positionX="-279" positionY="0" width="128" height="105"/>

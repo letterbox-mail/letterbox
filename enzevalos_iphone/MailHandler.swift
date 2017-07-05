@@ -161,7 +161,6 @@ class MailHandler {
             if IMAPSes == nil {
                 setupIMAPSession()
             }
-
             return IMAPSes!
         }
     }
@@ -586,23 +585,11 @@ class MailHandler {
 
     func checkIMAP(_ completion: @escaping (Error?) -> Void) {
         self.setupIMAPSession()
-
         self.IMAPSes?.checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
-        //self.IMAPSession.connectOperation().start(completion/* as! (Error?) -> Void*/)
     }
 
     func moveMails(mails: [PersistentMail], from: String, to: String) {
         let uids = MCOIndexSet()
-        let except = MCOIndexSet()
-        //TODO: Remove later
-        except.add(9)
-        except.add(6)
-        except.add(15)
-        for m in mails {
-            if !except.contains(m.uid) {
-                uids.add(m.uid)
-            }
-        }
         self.setupIMAPSession()
         let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
         op?.start{
@@ -612,5 +599,11 @@ class MailHandler {
                 return
             }
         }
+    }
+    
+    func allFolders(_ completion: @escaping (Error?, [Any]?) -> Void){
+    
+        let op = IMAPSession.fetchAllFoldersOperation()
+        op?.start(completion)
     }
 }

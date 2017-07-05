@@ -16,26 +16,32 @@ extension Folder {
         return NSFetchRequest<Folder>(entityName: "Folder")
     }
 
-    @NSManaged public var name: String
     @NSManaged public var parent: Folder?
     @NSManaged public var subfolder: NSSet?
     @NSManaged public var mails: NSSet?
-    
-   /*
-    public var mails: [PersistentMail]{
+    @NSManaged public var path: String
+    @NSManaged public var delimiter: String
+    public var flags: MCOIMAPFolderFlag{
         get {
-            var mails = [PersistentMail]()
-            self.willAccessValue(forKey: "mails")
-            let ms = self.mutableSetValue(forKey: "mails")
-            self.didAccessValue(forKey: "mails")
-            for case let m as PersistentMail in ms {
-                mails.append(m)
+            self.willAccessValue(forKey: "flags")
+            let ms = self.primitiveValue(forKey: "flags")
+            
+            self.didAccessValue(forKey: "flags")
+            if let num = ms{
+                if case let i as Int = num{
+                    return MCOIMAPFolderFlag.init(rawValue: i)
+                }
             }
-            return mails
+            return MCOIMAPFolderFlag.unmarked
+        }
+        set {
+            self.willChangeValue(forKey: "flags")
+            self.setPrimitiveValue(Int16(newValue.rawValue), forKey: "flags")
+            self.didChangeValue(forKey: "flags")
         }
     }
+    
 
- */
     
     public var lastID: UInt64{
         
