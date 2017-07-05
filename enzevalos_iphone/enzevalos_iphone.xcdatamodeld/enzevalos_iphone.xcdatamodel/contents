@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
+        <attribute name="attribute" optional="YES" syncable="YES"/>
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
+    </entity>
+    <entity name="Folder" representedClassName="Folder" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="lastID" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" syncable="YES"/>
+        <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="folder" inverseEntity="PersistentMail" syncable="YES"/>
+        <relationship name="maxID" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="subfolder" inverseEntity="Folder" syncable="YES"/>
+        <relationship name="subfolder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder" syncable="YES"/>
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
@@ -33,18 +42,19 @@
         <attribute name="visibleBody" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="bcc" inverseEntity="Mail_Address" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="cc" inverseEntity="Mail_Address" syncable="YES"/>
+        <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="mails" inverseEntity="Folder" syncable="YES"/>
         <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="from" inverseEntity="Mail_Address" syncable="YES"/>
         <relationship name="to" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="to" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
     <entity name="State" representedClassName="State" syncable="YES">
         <attribute name="currentContacts" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="currentMails" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="maxUID" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
     </entity>
     <elements>
-        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>
+        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="105"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="195"/>
-        <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="300"/>
-        <element name="State" positionX="-306" positionY="-27" width="128" height="90"/>
+        <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="315"/>
+        <element name="State" positionX="-306" positionY="-27" width="128" height="75"/>
+        <element name="Folder" positionX="-297" positionY="-18" width="128" height="135"/>
     </elements>
 </model>
