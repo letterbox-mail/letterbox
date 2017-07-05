@@ -26,21 +26,23 @@ enum Attribute: Int{
         case .smtpHostname:
             return Attribute.attributeValues[Attribute.smtpHostname]! //return "smtp.web.de"
         case .smtpPort:
-            return 465 as AnyObject?
+            return Attribute.attributeValues[Attribute.smtpPort]!
         case .imapHostname:
-            return "mail.enzevalos.de" as AnyObject?
+            return Attribute.attributeValues[Attribute.imapHostname]!
         case .imapPort:
-            return 993 as AnyObject?
+            return Attribute.attributeValues[Attribute.imapPort]!
         case .prefEncryption:
-            return "yes" as AnyObject? // yes or no
+            return "mutal" as AnyObject? // yes or no
         case .autocryptType:
-            return "p" as AnyObject? // only openpgp 
+            return "1" as AnyObject? // only openpgp
         case .imapConnectionType:
             return MCOConnectionType.TLS.rawValue as AnyObject?
         case .imapAuthType:
             return MCOAuthType.saslPlain.rawValue as AnyObject?
         case .smtpConnectionType:
-            return MCOConnectionType.TLS.rawValue as AnyObject?
+           // return MCOConnectionType.TLS.rawValue as AnyObject?//startTLS.rawValue
+            return MCOConnectionType.startTLS.rawValue as AnyObject?//startTLS.rawValue
+
         case .smtpAuthType:
             return MCOAuthType.saslPlain.rawValue as AnyObject?
             
@@ -50,9 +52,18 @@ enum Attribute: Int{
     }
     
     static let allAttributes = [accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType]
-    static let name = "Charlie"
-    static let pw = "tydpawdAwIdPyuc"
-    static var attributeValues: [Attribute : AnyObject?] = [.accountname : name as AnyObject?, .userName : name as Optional<AnyObject>, .userAddr : name+"@enzevalos.de" as Optional<AnyObject>, .userPW : pw as Optional<AnyObject>, .smtpHostname : "mail.enzevalos.de" as Optional<AnyObject>, .smtpPort : 465 as Optional<AnyObject>, .imapHostname : "mail.enzevalos.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .prefEncryption : "yes" as AnyObject?, .autocryptType : "p" as AnyObject?, .publicKey : "" as AnyObject?]
+    static var name = "Alice2005@web.de"//"Ullimuelle@web.de"
+    static var pw = "WJ$CE:EtUo3E$"//"dun3bate"
+    
+    //static let name = "Ullimuelle@web.de"
+    //static let pw =  "dun3bate"
+   // static let name = "bob"
+   // static let pw = "VagotOshaicceov"
+    //static let name = "alice"
+   // static let pw = "egOavOpeecOntew"
+    static var attributeValues:
+    [Attribute : AnyObject?] = [.accountname : name as AnyObject?, .userName : name as Optional<AnyObject>, .userAddr : name as Optional<AnyObject>, .userPW : pw as Optional<AnyObject>, .smtpHostname : "smtp.web.de" as Optional<AnyObject>, .smtpPort : 587 as Optional<AnyObject>, .imapHostname : "imap.web.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .prefEncryption : "yes" as AnyObject?, .autocryptType : "p" as AnyObject?, .publicKey : "" as AnyObject?]
+        //[Attribute : AnyObject?] = [.accountname : name as AnyObject?, .userName : name as Optional<AnyObject>, .userAddr : name+"@enzevalos.de" as Optional<AnyObject>, .userPW : pw as Optional<AnyObject>, .smtpHostname : "mail.enzevalos.de" as Optional<AnyObject>, .smtpPort : 465 as Optional<AnyObject>, .imapHostname : "mail.enzevalos.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .prefEncryption : "yes" as AnyObject?, .autocryptType : "p" as AnyObject?, .publicKey : "" as AnyObject?]
     
 
 }

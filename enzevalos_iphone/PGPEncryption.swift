@@ -177,7 +177,7 @@ class PGPEncryption : Encryption {
             }
             if let unwrappedData = handeledData {
                 handeledData = unwrappedData
-                if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(from), let theirKeyID = temp.incompleteKeyID {
+                if let allKeyIDs = self.keyManager.getKeyIDsForMailAddress(from), let theirKeyID = temp.incompleteKeyID{
                     maybeUsedKeys = self.getLibaryKeyIDOverlap(theirKeyID, ourKeyIDs: allKeyIDs)
                 }
                 for maybeUsedKey in maybeUsedKeys {

@@ -441,9 +441,7 @@ class MailHandler {
         var autocrypt: AutocryptContact? = nil
         if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
             autocrypt = AutocryptContact(header: header!)
-            print("Header: \n\(autocrypt?.toString())")
-            print("Header of \(String(describing: header?.from.mailbox)))")
-            if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0) {
+        if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0) {
                 let pgp = ObjectivePGP.init()
                 pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
                 let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
@@ -490,7 +488,6 @@ class MailHandler {
                     msgParser = MCOMessageParser(data: at.data)
                 }
             }
-            
             if isEnc{
                 html = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
                 
@@ -500,7 +497,7 @@ class MailHandler {
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                 body.append("\n")
                 dec = decryptText(body: body, from: message.header.from.mailbox)
-                if (dec != nil){
+                if (dec?.decryptedBody != nil){
                     msgParser = MCOMessageParser(data: dec?.decryptedBody)
                     body =  msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
                 }

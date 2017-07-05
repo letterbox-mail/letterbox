@@ -681,8 +681,8 @@ class Onboarding: NSObject {
 
         var path: String?
         print(UserManager.loadUserValue(Attribute.userAddr)! as! String)
-        
-        switch UserManager.loadUserValue(Attribute.userAddr)! as! String {
+        let name = (UserManager.loadUserValue(Attribute.userAddr)! as! String).lowercased()
+        switch name{
         case "idsolutions@enzevalos.de":
             importprivateKey(path: Bundle.main.path(forResource: "idsolutions-private", ofType: "gpg")!)
             break
@@ -792,7 +792,7 @@ class Onboarding: NSObject {
         }
         catch _ { }
 
-        switch UserManager.loadUserValue(Attribute.userAddr)! as! String {
+        switch  name {
         case "bob2005@web.de":
             path = Bundle.main.path(forResource: "bob-public", ofType: "gpg")
             pgp = ObjectivePGP.init()
