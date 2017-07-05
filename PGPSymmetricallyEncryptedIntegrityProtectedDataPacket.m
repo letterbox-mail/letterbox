@@ -156,12 +156,15 @@
     position = position + blockSize + 2;
     
     // check if suffix match
+    // Here null. WHY????
+    
     if (![[prefixRandomFullData subdataWithRange:(NSRange){blockSize + 2 - 4, 2}] isEqualToData:[prefixRandomFullData subdataWithRange:(NSRange){blockSize + 2 - 2, 2}]]) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Random suffix mismatch"}];
         }
         return nil;
     }
+    
 
     NSUInteger mdcLength;
     NSArray *packets = [self readPacketsFromData:decryptedData offset:position mdcLength:&mdcLength];

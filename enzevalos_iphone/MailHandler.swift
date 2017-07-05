@@ -448,7 +448,6 @@ class MailHandler {
                 do {
                     let pgpKey = try pgp.keys[0].export()
                     _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
-                    print("Key added!!!")
                 }
                 catch {
                     print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")

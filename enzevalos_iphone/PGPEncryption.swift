@@ -72,10 +72,7 @@ class PGPEncryption : Encryption {
 
         unnetpgp?.password = password
         unnetpgp?.armored = true
-        
         unnetpgp?.generateKey(2048)
-        
-        
         
         // import private key
         let key =  importKeys(dir: unnetpgp?.secretKeyRingPath, adr: adr)

@@ -300,9 +300,9 @@
     [self primaryUserAndSelfCertificate:&primaryUserSelfCertificate];
     if (primaryUserSelfCertificate)
     {
-        //if (primaryUserSelfCertificate.canBeUsedToEncrypt) {
+        if (primaryUserSelfCertificate.canBeUsedToEncrypt) {
             return self.primaryKeyPacket;
-        //}
+        }
     }
 
     if (error) {
