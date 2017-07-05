@@ -63,6 +63,8 @@
         <attribute name="currentContacts" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="currentMails" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
+    <fetchRequest name="getFolder" entity="Folder" predicateString="name == &quot;$folder&quot;"/>
+    <fetchRequest name="getMailAddress" entity="Mail_Address" predicateString="address == &quot;$adr&quot;"/>
     <elements>
         <element name="Account" positionX="-288" positionY="-9" width="128" height="135"/>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>

@@ -510,7 +510,7 @@ class DataHandler {
                 return mails
             }
 
-            private func getAddresses() -> [MailAddress] {
+        private func getAddresses() -> [MailAddress] {
                 var adrs = [MailAddress]()
                 let result = findAll("Mail_Address")
                 if result != nil {
@@ -523,7 +523,7 @@ class DataHandler {
 
             }
 
-            private func getContacts() -> [EnzevalosContact] {
+        private func getContacts() -> [EnzevalosContact] {
                 var contacts = [EnzevalosContact]()
                 let result = findAll("EnzevalosContact")
                 if result != nil {
@@ -572,7 +572,7 @@ class DataHandler {
             }
 
 
-            private func mergeRecords(newRecord: KeyRecord, records: inout[KeyRecord]) {
+        private func mergeRecords(newRecord: KeyRecord, records: inout[KeyRecord]) {
                 var j = 0
                 if !newRecord.hasKey {
                     return
@@ -605,9 +605,27 @@ class DataHandler {
                 }
             }
 
-            private func addToReceiverRecords(_ m: PersistentMail) {
+        private func addToReceiverRecords(_ m: PersistentMail) {
                 addToRecords(m, records: &receiverRecords)
+        }
+    
+    
+    func folderRecords(folder: String = "INBOX") -> [KeyRecord]{
+        let folder = findFolder(name: folder) as Folder
+        var records = [KeyRecord]()
+        if let mails = folder.mails{
+            for m in mails {
+                addToRecords(m as! PersistentMail, records: &records)
             }
+            for r in records {
+                r.mails.sort()
+            }
+            records.sort()
+            print("Folder: \(folder) with #KeyRecords: \(records.count) and \(mails.count) mails")
+            return records
+        }
+        return []
+    }
 
 
             func getCurrentState() -> State {
