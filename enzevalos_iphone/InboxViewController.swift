@@ -123,7 +123,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         let cell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as! InboxTableViewCell
 
         cell.delegate = self
-        cell.enzContact = DataHandler.handler.receiverRecords[indexPath.section]
+        cell.enzContact = DataHandler.handler.folderRecords()[indexPath.section]
         
         
 
@@ -131,7 +131,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return DataHandler.handler.receiverRecords.count
+        return DataHandler.handler.folderRecords().count
     }
 
     // set top and bottom seperator height

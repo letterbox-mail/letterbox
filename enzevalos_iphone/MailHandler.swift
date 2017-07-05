@@ -325,7 +325,7 @@ class MailHandler {
             }
             uids = MCOIndexSet(range: MCORangeMake(min, max)) // DataHandler.handler.maxUID
             print("call for #\(uids.count()) uids \(uids.rangesCount())")
-            uids.remove(DataHandler.handler.uids)
+            uids.remove(DataHandler.handler.findFolder(name: folder).uids)
             self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
         
         }
@@ -335,25 +335,15 @@ class MailHandler {
     
     func olderMailsFolder(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         var uids: MCOIndexSet
-        var max = DataHandler.handler.maxUID
+        let myfolder = DataHandler.handler.findFolder(name: folder)
         
-        if max <= 1{
+        if myfolder.maxID <= 1{
             return firstLookUp(newMailCallback: newMailCallback, completionCallback: completionCallback)
         }
-        for uid in DataHandler.handler.uids.nsIndexSet(){
-            if max.distance(to: UInt64(uid)) < 0{
-                max = UInt64(uid)
-            }
-        }
+        print("look for more mails: \(myfolder.lastID) to \(myfolder.maxID)")
         
-        var min = max - 200
-        if min < 1{
-            min = 1
-        }
-        print("look for more mails: \(min) to \(max)")
-        
-        uids = MCOIndexSet(range: MCORangeMake(min, max))
-        uids.remove(DataHandler.handler.uids)
+        uids = MCOIndexSet(range: MCORangeMake(myfolder.lastID, myfolder.maxID))
+        uids.remove(myfolder.uids)
         
         self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
