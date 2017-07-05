@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="Account" syncable="YES" codeGenerationType="class">
-        <attribute name="accountname" attributeType="String" syncable="YES"/>
-        <attribute name="dispalyname" attributeType="String" syncable="YES"/>
-        <attribute name="pw" attributeType="String" syncable="YES"/>
+        <attribute name="accountname" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dispalyname" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pw" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="address" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
         <relationship name="imap" maxCount="1" deletionRule="Nullify" destinationEntity="Server" syncable="YES"/>
         <relationship name="smtp" maxCount="1" deletionRule="Nullify" destinationEntity="Server" syncable="YES"/>
@@ -13,11 +13,11 @@
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
-    <entity name="Folder" representedClassName="Folder" syncable="YES">
-        <attribute name="lastID" optional="YES" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
-        <attribute name="maxID" optional="YES" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
+    <entity name="Folder" representedClassName="Folder" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="lastID" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" syncable="YES"/>
         <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="folder" inverseEntity="PersistentMail" syncable="YES"/>
+        <relationship name="maxID" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" syncable="YES"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="subfolder" inverseEntity="Folder" syncable="YES"/>
         <relationship name="subfolder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder" syncable="YES"/>
     </entity>

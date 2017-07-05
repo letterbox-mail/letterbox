@@ -50,12 +50,6 @@ class DataHandler {
     private let MaxMailsPerRecord = 100
 
     var receiverRecords: [KeyRecord]
-
-    var maxUID: UInt64 {
-        get {
-            return currentstate.maxUID
-        }
-    }
     
     var uids: MCOIndexSet{
         get{
@@ -93,9 +87,10 @@ class DataHandler {
         for c in contacts {
             managedObjectContext.delete(c)
         }
+        //TODO: REMOVE FOLDER
+        
         mails.removeAll()
         contacts.removeAll()
-        currentstate.maxUID = 1
         save()
     }
 
@@ -162,10 +157,10 @@ class DataHandler {
         removeAll(entity: "PersistentMail")
         removeAll(entity: "Mail_Address")
         removeAll(entity: "State")
+        removeAll(entity: "Folder")
         mails.removeAll()
         contacts.removeAll()
         receiverRecords.removeAll()
-        currentstate.maxUID = 1
     }
 
     private func cleanContacts() {
@@ -243,6 +238,16 @@ class DataHandler {
         }
 
 
+    func findFolder(name: String) -> Folder{
+        if let search = find("Folder", type: "name", search:name){
+            if search.count > 0{
+                return search[0] as! Folder
+            }
+        }
+        let folder  = NSEntityDescription.insertNewObject(forEntityName: "Folder", into: managedObjectContext) as! Folder
+        folder.name = name
+        return folder
+    }
 
         // -------- Handle mail addresses ---------
         func getMailAddress(_ address: String, temporary: Bool) -> MailAddress {
@@ -397,7 +402,7 @@ class DataHandler {
 
         // -------- End handle to, cc, from addresses --------
 
-    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: DecryptedData?) {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: DecryptedData?, folder: String = "INBOX") {
 
             let finding = findNum("PersistentMail", type: "uid", search: uid)
             let mail: PersistentMail
@@ -462,17 +467,23 @@ class DataHandler {
                     }
                     mail.decryptedBody = body
                     print("Mail from \(mail.from.mailAddress) about \(String(describing: mail.subject)) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) unable to decrypt? \(mail.unableToDecrypt)")
-                    save()
                 }
             }
             else {
                 return 
             }
+        
+            let myfolder = findFolder(name: folder) as Folder
+            myfolder.addToMails(mail)
+            if mail.uid > myfolder.maxID{
+                myfolder.maxID = mail.uid
+            }
+            if mail.uid < myfolder.lastID || myfolder.lastID == 1{
+                myfolder.lastID = mail.uid
+            }
+
 
             save()
-            if getCurrentState().maxUID < mail.uid {
-                getCurrentState().maxUID = mail.uid
-            }
             mails.append(mail)
 
             var added = false
@@ -494,9 +505,6 @@ class DataHandler {
                 for r in result! {
                     let m = r as! PersistentMail
                     mails.append(m)
-                    if getCurrentState().maxUID < m.uid {
-                        getCurrentState().maxUID = m.uid
-                    }
                     }
                 }
                 return mails
@@ -611,7 +619,6 @@ class DataHandler {
                         currentstate = (NSEntityDescription.insertNewObject(forEntityName: "State", into: managedObjectContext) as? State)!
                         currentstate.currentContacts = contacts.count
                         currentstate.currentMails = mails.count
-                        currentstate.maxUID = 1
                         save()
                 }
                 return currentstate
