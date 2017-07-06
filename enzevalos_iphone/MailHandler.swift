@@ -205,7 +205,7 @@ class MailHandler {
         builder.header.from = MCOAddress(displayName: username, mailbox: useraddr)
 
         builder.header.subject = subject
-
+        
         add_autocrypt_header(builder)
 
     }
@@ -250,10 +250,13 @@ class MailHandler {
                // builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
                // sendData = builder.data()
                 //sendOperation = session.sendOperation(with: sendData, from: userID, recipients: encPGP)
+                builder.textBody = "Dies ist verschlüsselt!"
+                //builder.addAttachment(MCOAttachment.init(text: "Dies ist verschlüsselt!"))
+                //builder.addAttachment(MCOAttachment.init(rfc822Message: encData))
+                //builder.addAttachment(MCOAttachment.init(rfc822Message: MCOMessageBuilder().openPGPEncryptedMessageData(withEncryptedData: sendData)))
                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
-                builder.textBody = message
             } else {
                 //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
@@ -263,7 +266,6 @@ class MailHandler {
         
         if let unenc = ordered[EncryptionType.unknown] {
             builder.textBody = message
-            builder.data
             sendData = builder.data()
             sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
             //TODO handle different callbacks

@@ -30,7 +30,8 @@
 
 + (NSData *) armoredData:(NSData *)dataToArmor as:(PGPArmorType)armorType part:(NSUInteger)part of:(NSUInteger)ofParts
 {
-    NSMutableDictionary *headers = [@{@"Comment": @"Created with ObjectivePGP",
+    NSMutableDictionary *headers = [@{@"Comment": @"This is a encrypted message.\nComment: Have a look at https://enzevalos.de for more information.",
+                                      @"Version": @"Created with ObjectivePGP",
                                       @"Charset": @"UTF-8"} mutableCopy];
 
     NSMutableString *headerString = [NSMutableString stringWithString:@"-----"];
