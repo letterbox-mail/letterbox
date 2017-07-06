@@ -37,7 +37,7 @@ class PGPEncryption : Encryption {
         //return pw
     }
     
-    private func importKeys(dir: String?, adr: String) -> KeyWrapper?{
+    private func importKeys(dir: String?, adr: String?) -> KeyWrapper?{
         let objectivePGP  = self.getPGPKeyManagement().pgp
         var keyID: String?
         
@@ -47,7 +47,7 @@ class PGPEncryption : Encryption {
                     let newKey = k as! PGPKey
                     do{
                         let ak = try newKey.export()
-                        keyID = self.addKey(ak, forMailAddresses: [adr])
+                        keyID = self.addKey(ak, forMailAddress: adr)
                     } catch _ {}
                 }
             }
@@ -75,7 +75,7 @@ class PGPEncryption : Encryption {
         unnetpgp?.generateKey(2048)
         
         // import private key
-        let key =  importKeys(dir: unnetpgp?.secretKeyRingPath, adr: adr)
+        let key =  importKeys(dir: unnetpgp?.secretKeyRingPath, adr: nil)
         
         // import public key
         _ = importKeys(dir: unnetpgp?.publicKeyRingPath, adr: adr)
