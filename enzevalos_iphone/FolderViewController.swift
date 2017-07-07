@@ -42,7 +42,12 @@ class FolderViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showInboxSegue", sender: nil)
+        if indexPath.section == 0 {
+            performSegue(withIdentifier: "showInboxSegue", sender: nil)
+        }
+        else {
+            performSegue(withIdentifier: "showFolderListSegue", sender: nil)
+        }
     }
     
     func refresh() {

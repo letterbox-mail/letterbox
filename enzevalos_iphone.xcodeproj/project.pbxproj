@@ -97,6 +97,8 @@
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
+		A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */; };
+		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
 		A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
@@ -302,6 +304,8 @@
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-private.gpg"; path = "keys/alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
+		A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListViewController.swift; sourceTree = "<group>"; };
+		A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListCell.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		A1EB057B1D956838008659C1 /* MailHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandler.swift; sourceTree = "<group>"; };
@@ -456,6 +460,8 @@
 			children = (
 				A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */,
 				A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */,
+				A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */,
+				A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */,
 			);
 			name = folders;
 			sourceTree = "<group>";
@@ -1055,6 +1061,7 @@
 				A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */,
 				A1F2A5691E85586300320275 /* Providers.swift in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
+				A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A15B7BE61E2931AD0024E499 /* KeyWrapper.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
@@ -1113,6 +1120,7 @@
 				A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */,
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
 				472F39731E1D09C4009260FB /* State+CoreDataClass.swift in Sources */,
+				A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */,
 				A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */,
 				A1416C1B1E268F1A001809F3 /* Encryption.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,

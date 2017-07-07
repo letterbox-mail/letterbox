@@ -522,11 +522,115 @@
                     </refreshControl>
                     <connections>
                         <segue destination="X5Y-Rf-Qzd" kind="show" identifier="showInboxSegue" id="Qjs-MH-bHU"/>
+                        <segue destination="ybw-P8-hJp" kind="show" identifier="showFolderListSegue" id="ShI-ar-nOg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cjd-cY-a5S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="646" y="-949"/>
+        </scene>
+        <!--Folder List View Controller-->
+        <scene sceneID="ZuS-nF-avs">
+            <objects>
+                <tableViewController id="ybw-P8-hJp" customClass="FolderListViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="71" sectionHeaderHeight="28" sectionFooterHeight="28" id="sfe-eK-7A4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="folderListCell" id="x1l-Uh-v9O" customClass="FolderListCell" customModule="enzevalos_iphone" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="71"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x1l-Uh-v9O" id="Ttu-Dx-blv">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IuL-l2-XtX">
+                                            <rect key="frame" x="36" y="11" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P0S-fb-1e4">
+                                            <rect key="frame" x="36" y="38.5" width="59" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="753" verticalCompressionResistancePriority="753" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNX-2L-tfA">
+                                            <rect key="frame" x="334" y="12.5" width="33" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Body" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lXn-0L-774">
+                                            <rect key="frame" x="103" y="42.5" width="223" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fc3-FL-WdH">
+                                            <rect key="frame" x="8" y="14" width="23" height="15"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="15" id="e4u-Kx-Psy"/>
+                                                <constraint firstAttribute="width" constant="23" id="x92-Qw-6xb"/>
+                                            </constraints>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C7X-Yt-kz2">
+                                            <rect key="frame" x="11" y="49" width="15" height="15"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="15" id="Sjh-9U-pfX"/>
+                                                <constraint firstAttribute="height" constant="15" id="YQv-sZ-ljc"/>
+                                            </constraints>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="imI-nB-es5">
+                                            <rect key="frame" x="11" y="33" width="15" height="15"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="15" id="auJ-Nm-E8J"/>
+                                                <constraint firstAttribute="height" constant="15" id="ev1-5u-rra"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="imI-nB-es5" firstAttribute="top" secondItem="fc3-FL-WdH" secondAttribute="bottom" constant="4" id="2qn-J9-KtW"/>
+                                        <constraint firstItem="fc3-FL-WdH" firstAttribute="trailing" secondItem="IuL-l2-XtX" secondAttribute="leading" constant="-5" id="4SU-bt-zZc"/>
+                                        <constraint firstItem="cNX-2L-tfA" firstAttribute="baseline" secondItem="IuL-l2-XtX" secondAttribute="baseline" id="DRK-bt-gfd"/>
+                                        <constraint firstItem="imI-nB-es5" firstAttribute="leading" secondItem="fc3-FL-WdH" secondAttribute="leading" constant="3" id="FAv-8T-uYm"/>
+                                        <constraint firstAttribute="topMargin" secondItem="IuL-l2-XtX" secondAttribute="top" constant="-3" id="IDO-1F-IKm"/>
+                                        <constraint firstItem="P0S-fb-1e4" firstAttribute="top" secondItem="IuL-l2-XtX" secondAttribute="bottom" constant="7" id="Ps4-52-r4o"/>
+                                        <constraint firstItem="C7X-Yt-kz2" firstAttribute="leading" secondItem="imI-nB-es5" secondAttribute="leading" id="SYx-HB-9TE"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="cNX-2L-tfA" secondAttribute="trailing" id="Wvb-pI-SLX"/>
+                                        <constraint firstItem="lXn-0L-774" firstAttribute="leading" secondItem="P0S-fb-1e4" secondAttribute="trailing" constant="8" id="XzU-V0-2r4"/>
+                                        <constraint firstItem="fc3-FL-WdH" firstAttribute="centerY" secondItem="IuL-l2-XtX" secondAttribute="centerY" id="YDb-3T-nLV"/>
+                                        <constraint firstItem="C7X-Yt-kz2" firstAttribute="top" secondItem="imI-nB-es5" secondAttribute="bottom" constant="1" id="Zsv-qf-vol"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="lXn-0L-774" secondAttribute="trailing" constant="41" id="aCb-RN-sG9"/>
+                                        <constraint firstItem="fc3-FL-WdH" firstAttribute="leading" secondItem="Ttu-Dx-blv" secondAttribute="leadingMargin" id="bYI-nh-gFm"/>
+                                        <constraint firstItem="lXn-0L-774" firstAttribute="baseline" secondItem="P0S-fb-1e4" secondAttribute="baseline" id="oPs-77-01B"/>
+                                        <constraint firstItem="IuL-l2-XtX" firstAttribute="leading" secondItem="P0S-fb-1e4" secondAttribute="leading" id="rYm-CX-hzE"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <inset key="separatorInset" minX="38" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <connections>
+                                    <outlet property="body" destination="lXn-0L-774" id="85F-ru-1Jj"/>
+                                    <outlet property="date" destination="cNX-2L-tfA" id="Cpj-XQ-xAb"/>
+                                    <outlet property="from" destination="IuL-l2-XtX" id="Q3A-yw-A0h"/>
+                                    <outlet property="markImageView" destination="imI-nB-es5" id="JDN-Fw-DkI"/>
+                                    <outlet property="replyImageView" destination="C7X-Yt-kz2" id="Ul2-j7-lFl"/>
+                                    <outlet property="secureImageView" destination="fc3-FL-WdH" id="Tco-z7-3r2"/>
+                                    <outlet property="subject" destination="P0S-fb-1e4" id="bkn-zf-oXo"/>
+                                    <segue destination="Ouw-WD-EV6" kind="show" identifier="readFolderMailSegue" id="OVN-HL-cJo"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="ybw-P8-hJp" id="BfM-Kz-9vl"/>
+                            <outlet property="delegate" destination="ybw-P8-hJp" id="WMh-3d-ue1"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="27z-dw-zxq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1469.5999999999999" y="-949.47526236881572"/>
         </scene>
         <!--Inbox-->
         <scene sceneID="ue1-yd-fJq">
@@ -655,7 +759,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eGM-5k-oNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="210" y="432"/>
+            <point key="canvasLocation" x="210" y="430"/>
         </scene>
         <!--Contact View Controller-->
         <scene sceneID="6er-JI-0Op">
@@ -1370,8 +1474,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="TgN-rB-esa"/>
         <segue reference="kND-73-kqr"/>
-        <segue reference="bUY-Me-dje"/>
-        <segue reference="GWh-iO-bPb"/>
         <segue reference="j4Q-k1-ud3"/>
+        <segue reference="D6m-L0-5AB"/>
+        <segue reference="OVN-HL-cJo"/>
     </inferredMetricsTieBreakers>
 </document>
