@@ -14,6 +14,9 @@ class FolderViewController: UITableViewController {
     
     var folders: [String] = ["Inbox", "Drafts", "Send", "Trash"]//[]
     
+    var isFirstFolderViewController = true
+    
+    
     override func viewDidLoad() {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
         //self.folders = FolderViewController.foldersStatic
