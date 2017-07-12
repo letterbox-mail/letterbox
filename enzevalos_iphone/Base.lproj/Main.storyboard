@@ -1577,10 +1577,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="bUY-Me-dje"/>
         <segue reference="TgN-rB-esa"/>
-        <segue reference="1Uz-Iv-Fbe"/>
-        <segue reference="j4Q-k1-ud3"/>
         <segue reference="kND-73-kqr"/>
+        <segue reference="bUY-Me-dje"/>
+        <segue reference="j4Q-k1-ud3"/>
+        <segue reference="1Uz-Iv-Fbe"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -10,6 +10,11 @@ import UIKit
 
 class FolderListViewController: UITableViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationItem.title = "Hallo"
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

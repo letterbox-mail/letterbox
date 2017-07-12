@@ -15,10 +15,11 @@ class FolderViewController: UITableViewController {
     var folders: [String] = ["Inbox", "Drafts", "Send", "Trash"]//[]
     
     var isFirstFolderViewController = true
-    
+    //var presentedFolder:  = nil
     
     override func viewDidLoad() {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
+        self.navigationItem.title = "Folder"
         //self.folders = FolderViewController.foldersStatic
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -109,7 +110,7 @@ class FolderViewController: UITableViewController {
             if indexPath.row == 0 {
                 let vc = storyboard?.instantiateViewController(withIdentifier: "folderViewController") as! FolderViewController
                 vc.folders = ["abc", "test", "glsdkjd"]
-                self.navigationController?.pushViewController(vc, animated: false)
+                self.navigationController?.pushViewController(vc, animated: true)
             }
             else {
                 performSegue(withIdentifier: "showFolderListSegue", sender: nil)
