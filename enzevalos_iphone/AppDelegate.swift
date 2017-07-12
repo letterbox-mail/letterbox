@@ -22,7 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
-
+        
+       
         resetApp()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             self.window = UIWindow(frame: UIScreen.main.bounds)
@@ -84,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UserDefaults.standard.bool(forKey: "reset") {
             if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
                 let mailhandler = MailHandler.init()
-                mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "Archive")
+                mailhandler.moveMails(mails: DataHandler.handler.findFolder(name: "INBOX").mailsOfFolder, from: "INBOX", to: "Archive")
             }
             DataHandler.handler.reset()
             Onboarding.credentials = nil

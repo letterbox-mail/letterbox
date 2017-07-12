@@ -66,9 +66,9 @@ class ReadViewController: UITableViewController {
         // not possible to set in IB
         SeperatorConstraint.constant = 1 / UIScreen.main.scale
         infoCell.layoutMargins = UIEdgeInsets.zero
-        
+
         reactButton.setTitle(NSLocalizedString("reactButton", comment: "Title of the reaction Button"), for: .normal)
-        
+
         setUItoMail()
     }
 
@@ -101,7 +101,7 @@ class ReadViewController: UITableViewController {
         let records = DataHandler.handler.getContactByAddress(email).records
         for r in records {
             for address in r.addresses {
-                if address.mailAddress == email && address.prefEnc == r.hasKey {
+                if address.mailAddress == email && address.prefEnc.canEnc() == r.hasKey {
                     performSegue(withIdentifier: "showContact", sender: ["record": r, "email": email])
                     return
                 }
@@ -251,9 +251,9 @@ class ReadViewController: UITableViewController {
     func setUItoMail() {
         if let mail = mail {
 
-            
+
             print("============== Mail UID: \(mail.uid) ================")
-            
+
             // mark mail as read if viewcontroller is open for more than 1.5 sec
             let delay = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
             DispatchQueue.main.asyncAfter(deadline: delay) {
@@ -356,8 +356,7 @@ class ReadViewController: UITableViewController {
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
             }
 
-            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey)
-            EnzevalosEncryptionHandler.getEncryption(.PGP)?.decryptAndSignatureCheck(mail)
+            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure)" )
         }
     }
 
@@ -365,6 +364,8 @@ class ReadViewController: UITableViewController {
         if segue.identifier == "answerTo" {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController, mail != nil {
+                let reaction = (sender as? String ?? "noReaction") == "reactButton"
+
                 var answerTo = [mail!.from]
                 var answerCC = [Mail_Address]()
                 var body = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
@@ -379,7 +380,7 @@ class ReadViewController: UITableViewController {
                 if mail!.to.count > 0 {
                     for case let mail as Mail_Address in mail!.to {
                         body.append("\(mail.address), ")
-                        if mail.address != myAddress {
+                        if mail.address != myAddress && !reaction {
                             answerTo.append(mail)
                         }
                     }
@@ -388,7 +389,7 @@ class ReadViewController: UITableViewController {
                     body.append("\n\(NSLocalizedString("Cc", comment: "")): ")
                     for case let mail as Mail_Address in mail!.cc! {
                         body.append("\(mail.address), ")
-                        if mail.address != myAddress {
+                        if mail.address != myAddress && !reaction {
                             answerCC.append(mail)
                         }
                     }
@@ -397,7 +398,7 @@ class ReadViewController: UITableViewController {
                 body.append("\n------------------------\n\n" + (mail!.decryptedBody ?? mail!.body ?? ""))
                 body = TextFormatter.insertBeforeEveryLine("> ", text: body)
 
-                if let s = sender as? String, s == "reactButton" {
+                if reaction {
                     body = NSLocalizedString("didYouSendThis", comment: "") + body
                 } else {
                     body = "\n\n" + body

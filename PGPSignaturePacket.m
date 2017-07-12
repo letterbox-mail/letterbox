@@ -337,6 +337,7 @@
     NSAssert(secretKey.type == PGPKeySecret,@"Need secret key");
     NSAssert([secretKey.primaryKeyPacket isKindOfClass:[PGPSecretKeyPacket class]], @"Signing key packet not found");
 
+    
     PGPSecretKeyPacket *signingKeyPacket = (PGPSecretKeyPacket *)secretKey.signingKeyPacket;
     NSAssert(signingKeyPacket, @"No signing signature found");
     if (!signingKeyPacket) {
@@ -355,7 +356,13 @@
         signingKeyPacket = [signingKeyPacket decryptedKeyPacket:passphrase error:&decryptError];
         NSAssert(signingKeyPacket && !decryptError, @"decrypt error %@", decryptError);
     }
-
+    else if(signingKeyPacket.isEncryptedWithPassword) {
+        NSError *decryptError;
+        passphrase = @"";
+        //Copy secret key instance, then decrypt on copy, not on the original (do not leave unencrypted instance around)
+        signingKeyPacket = [signingKeyPacket decryptedKeyPacket:passphrase error:&decryptError];
+        NSAssert(signingKeyPacket && !decryptError, @"decrypt error %@", decryptError);
+    }
     // signed part data
     // timestamp subpacket is required
     PGPSignatureSubpacket *creationTimeSubpacket = [PGPSignatureSubpacket subpacketWithType:PGPSignatureSubpacketTypeSignatureCreationTime andValue:[NSDate date]];

@@ -42,45 +42,43 @@ class DataHandler {
     static let handler: DataHandler = DataHandler()
 
     private var managedObjectContext: NSManagedObjectContext
-    lazy var mails: [PersistentMail] = self.readMails()
-    lazy var contacts: [EnzevalosContact] = self.getContacts()
-    lazy var currentstate: State = self.getCurrentState()
 
     private let MaxRecords = 50
     private let MaxMailsPerRecord = 100
+    
+    var allFolders: [Folder]{
+        get{
+            var folders = [Folder]()
+            if let objects = findAll("Folder"){
+                for case let folder as Folder in objects{
+                    folders.append(folder)
+                }
+            }
+            return folders
+        }
+    
+    }
 
-    var receiverRecords: [KeyRecord]
-
-    var maxUID: UInt64 {
-        get {
-            return currentstate.maxUID
+    
+    func callForFolders(){ // Maybe call back? Look for new Folder?
+        AppDelegate.getAppDelegate().mailHandler.allFolders{ (err, array) -> Void in
+            guard err == nil else {
+                print("Error while fetching all folders: \(String(describing: err))")
+                return
+            }
+            
+            if let newFolders = array{
+                for new in newFolders{
+                    if case let folder as MCOIMAPFolder = new{
+                        let f = self.findFolder(name: folder.path)
+                        f.delimiter = folder.delimiter.description
+                        f.flags = folder.flags
+                    }
+                }
+            }
         }
     }
 
-    var countMails: Int {
-        get {
-            return readMails().count
-        }
-    }
-
-    var countContacts: Int {
-        get {
-            return getContacts().count
-        }
-    }
-
-    func cleanCache() {
-        for m in mails {
-            managedObjectContext.delete(m)
-        }
-        for c in contacts {
-            managedObjectContext.delete(c)
-        }
-        mails.removeAll()
-        contacts.removeAll()
-        currentstate.maxUID = 1
-        save()
-    }
 
     init() {
         // This resource is the same name as your xcdatamodeld contained in your project.
@@ -106,15 +104,13 @@ class DataHandler {
         } catch {
             fatalError("Error migrating store: \(error)")
         }
-        receiverRecords = [KeyRecord] ()
-        receiverRecords = self.getRecords()
         managedObjectContext.mergePolicy = NSMergePolicy(merge: NSMergePolicyType.mergeByPropertyObjectTrumpMergePolicyType);
+        
+        callForFolders()
 
     }
 
     func terminate() {
-        cleanContacts()
-        cleanMails()
         save()
     }
 
@@ -145,12 +141,11 @@ class DataHandler {
         removeAll(entity: "PersistentMail")
         removeAll(entity: "Mail_Address")
         removeAll(entity: "State")
-        mails.removeAll()
-        contacts.removeAll()
-        receiverRecords.removeAll()
-        currentstate.maxUID = 1
+        removeAll(entity: "Folder")
+       
     }
 
+    /*
     private func cleanContacts() {
         if countContacts > MaxRecords {
             for _ in 0...(countContacts - MaxRecords) {
@@ -170,11 +165,11 @@ class DataHandler {
             }
         }
 
+ 
         private func cleanMails() {
             for c in contacts {
                 while c.from.count > MaxMailsPerRecord {
                     let last = c.from.last!
-                    print("delete \(last.uid) of \(last.from.mailAddress)")
                     managedObjectContext.delete(last)
                     save()
                     if let index = mails.index(of: last) {
@@ -184,7 +179,7 @@ class DataHandler {
             }
         }
 
-
+*/
         // Save, load, search
 
         private func find(_ entityName: String, type: String, search: String) -> [AnyObject]? {
@@ -227,6 +222,16 @@ class DataHandler {
         }
 
 
+    func findFolder(name: String) -> Folder{
+        if let search = find("Folder", type: "path", search:name){
+            if search.count > 0{
+                return search[0] as! Folder
+            }
+        }
+        let folder  = NSEntityDescription.insertNewObject(forEntityName: "Folder", into: managedObjectContext) as! Folder
+        folder.path = name
+        return folder
+    }
 
         // -------- Handle mail addresses ---------
         func getMailAddress(_ address: String, temporary: Bool) -> MailAddress {
@@ -238,7 +243,7 @@ class DataHandler {
                     else {
                         let mail_address = NSEntityDescription.insertNewObject(forEntityName: "Mail_Address", into: managedObjectContext) as! Mail_Address
                         mail_address.address = address
-                        mail_address.prefer_encryption = false
+                        mail_address.prefer_encryption = EncState.NOAUTOCRYPT
                         return mail_address
                 }
             }
@@ -276,42 +281,36 @@ class DataHandler {
         func getContactByAddress(_ address: String) -> EnzevalosContact {
             // Core function
             let lowerAdr = address.lowercased()
-            for c in contacts {
-                if c.addresses != nil {
-                    for adr in c.addresses! {
-                        let a = adr as! MailAddress
-                        if a.mailAddress == lowerAdr {
-                            return c
-                        }
+            if let contacts = find("EnzevalosContact", type: "addresses", search: lowerAdr){
+                for c in contacts{
+                    if case let contact as EnzevalosContact = c{
+                        return contact
                     }
                 }
-                if let cnContact = c.cnContact {
-                    for adr in cnContact.emailAddresses {
-                        let name = adr.value as String
-                        if name == lowerAdr {
-                            let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
-                            c.addToAddresses(adr)
-                            adr.contact = c
-                            return c
+            }
+            if let contacts = findAll("EnzevalosContact"){
+                for c  in contacts{
+                    if case let contact as EnzevalosContact = c{
+                        if let cnContact = contact.cnContact{
+                            for adr in cnContact.emailAddresses {
+                                let name = adr.value as String
+                                if name == lowerAdr {
+                                    let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
+                                    c.addToAddresses(adr)
+                                    adr.contact = contact
+                                    return contact
+                                }
+                            }
                         }
                     }
                 }
             }
-
-            let search = find("EnzevalosContact", type: "addresses", search: lowerAdr)
             var contact: EnzevalosContact
-            if search == nil || search!.count == 0 {
-                contact = NSEntityDescription.insertNewObject(forEntityName: "EnzevalosContact", into: managedObjectContext) as! EnzevalosContact
-                contact.displayname = lowerAdr
-                let adr = getMailAddress(lowerAdr, temporary: false)as! Mail_Address
-                contact.addToAddresses(adr)
-                adr.contact = contact
-                contacts.append(contact)
-            }
-                else {
-                    contact = search! [0] as! EnzevalosContact
-                    contacts.append(contact)
-            }
+            contact = NSEntityDescription.insertNewObject(forEntityName: "EnzevalosContact", into: managedObjectContext) as! EnzevalosContact
+            contact.displayname = lowerAdr
+            let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
+            contact.addToAddresses(adr)
+            adr.contact = contact
             return contact
         }
 
@@ -349,9 +348,22 @@ class DataHandler {
             let adr: Mail_Address
             let contact = getContactByMCOAddress(sender)
             adr = contact.getAddressByMCOAddress(sender)!
+            if adr.lastSeen > fromMail.date{
+                adr.lastSeen = fromMail.date
+            }
             if let ac = autocrypt {
                 adr.prefEnc = ac.prefer_encryption
                 adr.encryptionType = ac.type
+                if adr.lastSeenAutocrypt != nil && adr.lastSeenAutocrypt > fromMail.date{
+                    adr.lastSeenAutocrypt = fromMail.date
+                }
+                else if adr.lastSeenAutocrypt == nil{
+                    adr.lastSeenAutocrypt = fromMail.date
+                }
+                
+            }
+            else if adr.lastSeen < adr.lastSeenAutocrypt && adr.prefer_encryption != EncState.NOAUTOCRYPT{
+                adr.prefer_encryption = EncState.RESET
             }
             fromMail.from = adr
         }
@@ -368,7 +380,7 @@ class DataHandler {
 
         // -------- End handle to, cc, from addresses --------
 
-        func createMail(_ uid: UInt64, sender: MCOAddress, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?) /*-> Mail*/ {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: DecryptedData?, folder: String = "INBOX") {
 
             let finding = findNum("PersistentMail", type: "uid", search: uid)
             let mail: PersistentMail
@@ -389,33 +401,71 @@ class DataHandler {
                 mail.isEncrypted = false
                 mail.trouble = false
 
-                handleFromAddress(sender, fromMail: mail, autocrypt: autocrypt)
+                if sender != nil{
+                    handleFromAddress(sender!, fromMail: mail, autocrypt: autocrypt)
+                }
                 handleToAddresses(receivers, mail: mail)
                 handleCCAddresses(cc, mail: mail)
 
                 mail.unableToDecrypt = false
-                mail.decryptIfPossible()
+                if decryptedData == nil{
+                    // Maybe PGPInline?
+                    // TODO: Refactoring!
+                    mail.decryptIfPossible()
+                }
+                else{
+                    let encState: EncryptionState = (decryptedData?.encryptionState)!
+                    let signState: SignatureState = (decryptedData?.signatureState)!
+                    
+                    switch encState {
+                    case EncryptionState.NoEncryption:
+                        mail.isEncrypted = false
+                        mail.trouble = false
+                        mail.unableToDecrypt = false
+                    case EncryptionState.UnableToDecrypt:
+                        mail.unableToDecrypt = true
+                        mail.isEncrypted = true
+                        mail.trouble = true
+                    default:
+                        mail.isEncrypted = true
+                        mail.trouble = false
+                        mail.unableToDecrypt = false
+                    }
+                    
+                    switch signState {
+                    case SignatureState.NoSignature:
+                        mail.isSigned = false
+                    case SignatureState.InvalidSignature:
+                        mail.isSigned = true
+                        mail.isCorrectlySigned = true
+                        mail.trouble = true
+                    case SignatureState.ValidSignature:
+                        mail.isCorrectlySigned = true
+                        mail.isSigned = true
+                    }
+                    mail.decryptedBody = body
+                    print("Mail from \(mail.from.mailAddress) about \(String(describing: mail.subject)) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) unable to decrypt? \(mail.unableToDecrypt)")
+                }
             }
-                else {
-                    return //finding![0] as! Mail
+            else {
+                return 
             }
+        
+            let myfolder = findFolder(name: folder) as Folder
+            myfolder.addToMails(mail)
+            if mail.uid > myfolder.maxID{
+                myfolder.maxID = mail.uid
+            }
+            if mail.uid < myfolder.lastID || myfolder.lastID == 1{
+                myfolder.lastID = mail.uid
+            }
+
 
             save()
-            if getCurrentState().maxUID < mail.uid {
-                getCurrentState().maxUID = mail.uid
-            }
-            mails.append(mail)
-
-            var added = false
             if let r = record {
-                added = r.addNewMail(mail)
-            }
-            if !added {
-                addToReceiverRecords(mail)
+                _ = r.addNewMail(mail)
             }
 
-
-            //return mail
         }
 
         private func readMails() -> [PersistentMail] {
@@ -425,15 +475,12 @@ class DataHandler {
                 for r in result! {
                     let m = r as! PersistentMail
                     mails.append(m)
-                    if getCurrentState().maxUID < m.uid {
-                        getCurrentState().maxUID = m.uid
-                    }
                     }
                 }
                 return mails
             }
 
-            private func getAddresses() -> [MailAddress] {
+        private func getAddresses() -> [MailAddress] {
                 var adrs = [MailAddress]()
                 let result = findAll("Mail_Address")
                 if result != nil {
@@ -446,7 +493,7 @@ class DataHandler {
 
             }
 
-            private func getContacts() -> [EnzevalosContact] {
+        private func getContacts() -> [EnzevalosContact] {
                 var contacts = [EnzevalosContact]()
                 let result = findAll("EnzevalosContact")
                 if result != nil {
@@ -461,90 +508,39 @@ class DataHandler {
                 return contacts
             }
 
-            private func getRecords() -> [KeyRecord] {
-                var records = [KeyRecord]()
-                let mails = readMails()
-                for m in mails {
-                    addToRecords(m, records: &records)
-                }
-                for r in records {
-                    r.mails.sort()
-                }
-                records.sort()
-                print("#KeyRecords: \(records.count) ")
-                print("#Mails: \(mails.count)")
-                return records
-            }
+      
 
-            private func addToRecords(_ m: PersistentMail, records: inout [KeyRecord]) {
+    
 
-                var found = false
-                for r in records {
-                    if r.addNewMail(m) {
-                        found = true
-                        records.sort()
-                        break
-                    }
-                }
-                if !found {
-                    let r = KeyRecord(mail: m)
-                    mergeRecords(newRecord: r, records: &records)
-                    records.append(r)
-                    records.sort()
-                }
-            }
+    
+    func folderRecords(folder: String = "INBOX") -> [KeyRecord]{
+        let folder = findFolder(name: folder) as Folder
+        return folder.records
+    }
 
 
-            private func mergeRecords(newRecord: KeyRecord, records: inout[KeyRecord]) {
-                var j = 0
-                if !newRecord.hasKey {
-                    return
-                }
-                while j < records.count {
-                    let r = records[j]
-                    if !r.hasKey && r.ezContact == newRecord.ezContact {
-                        var i = 0
-                        while i < r.mails.count {
-                            let mail = r.mails[i]
-                            var remove = false
-                            if mail.from.keyID == newRecord.key {
-                                remove = newRecord.addNewMail(mail)
-                                if remove {
-                                    r.mails.remove(at: i)
-                                }
-                            }
-                            if !remove {
-                                i = i + 1
-                            }
-                        }
-                        if r.mails.count == 0 {
-                            records.remove(at: j)
-                        } else {
-                            j = j + 1
-                        }
-                    } else {
-                        j = j + 1
-                    }
-                }
-            }
-
-            private func addToReceiverRecords(_ m: PersistentMail) {
-                addToRecords(m, records: &receiverRecords)
-            }
-
-
-            func getCurrentState() -> State {
+    // Can we remove current state???
+        func getCurrentState() -> State {
                 let result = findAll("State")
                 if result != nil && result?.count > 0 {
-                    currentstate = (result?.first as? State)!
+                    return (result?.first as? State)!
                 }
-                    else {
-                        currentstate = (NSEntityDescription.insertNewObject(forEntityName: "State", into: managedObjectContext) as? State)!
-                        currentstate.currentContacts = contacts.count
-                        currentstate.currentMails = mails.count
-                        currentstate.maxUID = 1
-                        save()
+                else {
+                    let currentstate = (NSEntityDescription.insertNewObject(forEntityName: "State", into: managedObjectContext) as? State)!
+                    if let set = findAll("EnzevalosContact"){
+                     currentstate.currentContacts = set.count
+                    }
+                    else{
+                        currentstate.currentContacts = 0
+                    }
+                    if let set = findAll("Mails"){
+                        currentstate.currentMails = set.count
+                    }
+                    else{
+                        currentstate.currentMails = 0
+                    }
+                    save()
+                    return currentstate
                 }
-                return currentstate
             }
         }

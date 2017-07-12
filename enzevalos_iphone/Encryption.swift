@@ -17,6 +17,9 @@ public protocol Encryption {
     
     init(encHandler: EncryptionHandler)
     
+    
+    func generateKey(adr: String) -> KeyWrapper?
+    
     //check whether this encryption is used in this mail. This means is it used for encryption OR signing.
     func isUsed(_ mail: PersistentMail) -> Bool
     
@@ -37,6 +40,11 @@ public protocol Encryption {
     
     //decrypt the mails body. the decryted body will be saved in the mail object.
     func decrypt(_ mail: PersistentMail) -> String?
+    
+    // decrypt the mime data. OLIVER TODO
+   // func decryptMime(_ data: Data)-> Data?
+    
+    func decryptedMime(_ data: Data, from: String) -> DecryptedData?
     
     //decrypt the mails body. the decryted body will be saved in the mail object.
     //Signaturechecking included. will be set in mail object too.

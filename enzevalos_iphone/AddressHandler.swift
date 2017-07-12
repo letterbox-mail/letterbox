@@ -76,8 +76,7 @@ class AddressHandler {
     static var freqAlgorithm2: ([String]) -> [(UIImage, String, String, UIImage?, UIColor)] = {
         (inserted: [String]) -> [(UIImage, String, String, UIImage?, UIColor)] in
 
-//        var cons = DataHandler.handler.contacts
-        var cons = DataHandler.handler.receiverRecords
+        var cons = DataHandler.handler.folderRecords()
         var list: [(UIImage, String, String, UIImage?, UIColor)] = []
         var localInserted = inserted
 
@@ -157,9 +156,6 @@ class AddressHandler {
             do {
                 let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContacts(matching: CNContact.predicateForContacts(matchingName: name), keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor])
                 for con in conList {
-                    print(con.givenName)
-                    print(con.familyName)
-
                     if (con.givenName + con.familyName).replacingOccurrences(of: " ", with: "") == name.replacingOccurrences(of: " ", with: "") {
                         return true
                     }
@@ -186,7 +182,6 @@ class AddressHandler {
             catch {
                 print("exception")
             }
-            print("contacts done")
         } else {
             print("no Access!")
         }
@@ -206,7 +201,6 @@ class AddressHandler {
             catch {
                 print("exception")
             }
-            print("contacts done")
         } else {
             print("no Access!")
         }

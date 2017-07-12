@@ -15,3 +15,5 @@
 #import "PGPSignaturePacket.h"
 #import "PGPKeyID.h"
 #import "PGPPublicKeyPacket.h"
+#import "UNNetPGP.h"
+#import "PGPSecretKeyPacket.h"
