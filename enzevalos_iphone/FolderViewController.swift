@@ -128,6 +128,9 @@ class FolderViewController: UITableViewController {
         if indexPath.section == 0 {
             performSegue(withIdentifier: "showInboxSegue", sender: nil)
         }
+        else if indexPath.section == 2 {
+            performSegue(withIdentifier: "readFolderMailSegue", sender: DataHandler.handler.contacts[0].records[0].mails[0])
+        }
         else {
             if indexPath.row == 0 {
                 let vc = storyboard?.instantiateViewController(withIdentifier: "folderViewController") as! FolderViewController
@@ -136,6 +139,14 @@ class FolderViewController: UITableViewController {
             }
             else {
                 performSegue(withIdentifier: "showFolderListSegue", sender: nil)
+            }
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "readFolderMailSegue" {
+            let destinationVC = segue.destination as! ReadViewController
+            if let mail = sender as? PersistentMail {
+                destinationVC.mail = mail
             }
         }
     }
