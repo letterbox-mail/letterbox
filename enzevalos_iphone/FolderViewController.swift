@@ -12,18 +12,40 @@ class FolderViewController: UITableViewController {
     
     static var foldersStatic: [String] = ["Inbox", "Drafts", "Send", "Trash"]
     
-    var folders: [String] = ["Inbox", "Drafts", "Send", "Trash"]//[]
+    var folders: [Folder] = []
     
     var isFirstFolderViewController = true
-    //var presentedFolder:  = nil
+    var presentedFolder: Folder? = nil
     
     override func viewDidLoad() {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
-        self.navigationItem.title = "Folder"
-        //self.folders = FolderViewController.foldersStatic
+        
+        if isFirstFolderViewController {
+            folders = DataHandler.handler.allFolders
+        }
+        if let thisFolder = presentedFolder {
+            navigationItem.title = thisFolder.name
+            if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
+                folders = subFolders
+            }
+        }
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        var count = 0
+        
+        if isFirstFolderViewController {
+            count += 1
+        }
+        if folders.count > 0 {
+            count += 1
+        }
+        if let thisFolder = presentedFolder {
+            if let mails = thisFolder.mails?, mails.count > 0 {
+                count += 1
+            }
+        }
+        
+        return count
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
@@ -128,4 +150,8 @@ class FolderViewController: UITableViewController {
         }
         return #imageLiteral(resourceName: "Inbox")
     }
+}
+
+enum FolderViewSectionType: Int {
+    case inbox = 0, folders, mails
 }
