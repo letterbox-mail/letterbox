@@ -25,7 +25,9 @@ class FolderViewController: UITableViewController {
         if let thisFolder = presentedFolder {
             navigationItem.title = thisFolder.name
             refreshControl?.beginRefreshing()
-            AppDelegate.getAppDelegate().mailHandler.firstLookUp(thisFolder.name, newMailCallback: newMails, completionCallback: endRefreshing)
+            print(thisFolder.path)
+            print(thisFolder.name)
+            AppDelegate.getAppDelegate().mailHandler.firstLookUp(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing)
             if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
                 folders = subFolders
             }
@@ -168,7 +170,7 @@ class FolderViewController: UITableViewController {
     func refresh() {
         if let thisFolder = presentedFolder {
             refreshControl?.beginRefreshing()
-            AppDelegate.getAppDelegate().mailHandler.olderMailsFolder(thisFolder.name, newMailCallback: newMails, completionCallback: endRefreshing(_:))
+            AppDelegate.getAppDelegate().mailHandler.olderMailsFolder(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing(_:))
         }
     }
     func endRefreshing(_ error: Bool) {
