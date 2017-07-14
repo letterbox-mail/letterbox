@@ -10,9 +10,11 @@ import UIKit
 
 class FolderListViewController: UITableViewController {
     
+    var folder: Folder = Folder()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Hallo"
+        self.navigationItem.title = folder.name
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -20,12 +22,40 @@ class FolderListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return folder.mailsOfFolder.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "folderListCell") as! FolderListCell
-        if indexPath.row == 0 {
+        
+        let mail = folder.mailsOfFolder[indexPath.row]
+        
+        cell.body.text = mail.body
+        if let contact = mail.from.contact {
+            cell.from.text = contact.name
+        }
+        else {
+            cell.from.text = mail.from.mailAddress
+        }
+        cell.subject.text = mail.subject
+        cell.date.text = mail.date.description
+        
+        if mail.isSecure {
+            cell.secureImageView.image = IconsStyleKit.imageOfLetter
+        }
+        else {
+            cell.secureImageView.image = IconsStyleKit.imageOfPostcard
+        }
+        if !mail.flag.contains(MCOMessageFlag.seen) {
+            cell.markImageView.image = "🔵".image()
+            cell.body.font = UIFont.boldSystemFont(ofSize: cell.body.font.pointSize)
+            cell.subject.font = UIFont.boldSystemFont(ofSize: cell.subject.font.pointSize)
+        }
+        if mail.flag.contains(MCOMessageFlag.answered) {
+            cell.replyImageView.image = "↩️".image()
+        }
+        
+        /*if indexPath.row == 0 {
             cell.body.text = "Hallo, das ist ein Fülltext"
             cell.from.text = "Jakob Bode"
             cell.from.font = UIFont.boldSystemFont(ofSize: 17)
@@ -56,23 +86,34 @@ class FolderListViewController: UITableViewController {
             cell.date.text = "13:47"
             cell.replyImageView.image = "↩️".image()
             cell.markImageView.image = "🔵".image()
+        }*/
+        
+        if let markImageView = cell.markImageView {
+            if markImageView.image == nil {
+                cell.stackView.removeArrangedSubview(cell.markImageView)
+            }
+            else {
+                cell.stackView.addArrangedSubview(cell.markImageView)
+            }
+            //cell.markImageView.removeFromSuperview()
         }
         
-        if cell.markImageView.image == nil {
-            cell.stackView.removeArrangedSubview(cell.markImageView)
-            cell.markImageView.removeFromSuperview()
-        }
         
-        if cell.replyImageView.image == nil {
-            cell.stackView.removeArrangedSubview(cell.replyImageView)
-            cell.replyImageView.removeFromSuperview()
+        if let replyImageView = cell.replyImageView {
+            if replyImageView.image == nil {
+                cell.stackView.removeArrangedSubview(cell.replyImageView)
+            }
+            else {
+                cell.stackView.addArrangedSubview(cell.replyImageView)
+            }
+            //cell.replyImageView.removeFromSuperview()
         }
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "readFolderMailSegue", sender: DataHandler.handler.contacts[0].records[0].mails[0])
+        performSegue(withIdentifier: "readFolderMailSegue", sender: folder.mailsOfFolder[indexPath.row])
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
