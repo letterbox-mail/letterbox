@@ -325,7 +325,7 @@ class MailHandler {
             uids = MCOIndexSet(range: MCORangeMake(min, max)) // DataHandler.handler.maxUID
             print("call for #\(uids.count()) uids \(uids.rangesCount())")
             uids.remove(DataHandler.handler.findFolder(name: folder).uids)
-            self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+            self.loadMessagesFromServer(uids, folder: folder, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
         
         }
         
@@ -400,7 +400,7 @@ class MailHandler {
                     dispatchGroup.enter()
 
                     let op = self.IMAPSession.fetchParsedMessageOperation(withFolder: folder, uid: message.uid)
-                    op?.start { err, data in self.parseMail(err, parser: data, message: message, record: record, newMailCallback: newMailCallback)
+                    op?.start { err, data in self.parseMail(err, parser: data, message: message, record: record, folder:  folder, newMailCallback: newMailCallback)
                         dispatchGroup.leave()
                     }
                     calledMails += 1
@@ -416,7 +416,7 @@ class MailHandler {
         }
     }
 
-    func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: (() -> ())) {
+    func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folder: String = "INBOX", newMailCallback: (() -> ())) {
         guard error == nil else {
             print("Error while fetching mail: \(String(describing: error))")
             return
@@ -506,7 +506,7 @@ class MailHandler {
             }
             
             
-            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from), receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
+            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from), receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folder: folder) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
             newMailCallback()
         }
     }
