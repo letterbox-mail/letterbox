@@ -33,6 +33,10 @@ class FolderViewController: UITableViewController {
             }
         }
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.reloadData()
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         var count = 0
         
@@ -51,16 +55,16 @@ class FolderViewController: UITableViewController {
         return count
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        if sectionType(IndexPath.init(row: 0, section: section)) == .inbox {
            return 1
         }
-        if section == 2 {
-            return 7
+        if sectionType(IndexPath.init(row: 0, section: section)) == .folders {
+            return folders.count
         }
-        return folders.count <= 0 ? 0 : folders.count - 1
+        return getMails().count
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 2 {
+        if sectionType(indexPath) == .mails {
             return 71
         }
         return 44
@@ -83,7 +87,7 @@ class FolderViewController: UITableViewController {
                     cell.from.text = mail.from.mailAddress
                 }
                 cell.subject.text = mail.subject
-                cell.date.text = mail.date.description
+                cell.date.text = mail.timeString
                 
                 if mail.isSecure {
                     cell.secureImageView.image = IconsStyleKit.imageOfLetter
@@ -91,12 +95,12 @@ class FolderViewController: UITableViewController {
                 else {
                     cell.secureImageView.image = IconsStyleKit.imageOfPostcard
                 }
-                if !mail.flag.contains(MCOMessageFlag.seen) {
+                if !mail.isRead {
                     cell.markImageView.image = "🔵".image()
                     cell.body.font = UIFont.boldSystemFont(ofSize: cell.body.font.pointSize)
                     cell.subject.font = UIFont.boldSystemFont(ofSize: cell.subject.font.pointSize)
                 }
-                if mail.flag.contains(MCOMessageFlag.answered) {
+                if mail.isAnwered {
                     cell.replyImageView.image = "↩️".image()
                 }
                 
@@ -195,7 +199,7 @@ class FolderViewController: UITableViewController {
     }
     func getMails() -> [PersistentMail] {
         if let folder = self.presentedFolder {
-            return folder.mailsOfFolder
+            return folder.mailsOfFolder.sorted()
         }
         return []
     }

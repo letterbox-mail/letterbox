@@ -15,6 +15,7 @@ class FolderListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = folder.name
+        print("Hallo")
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -28,7 +29,7 @@ class FolderListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "folderListCell") as! FolderListCell
         
-        let mail = folder.mailsOfFolder[indexPath.row]
+        let mail = folder.mailsOfFolder.sorted()[indexPath.row]
         
         cell.body.text = mail.body
         if let contact = mail.from.contact {
@@ -38,7 +39,7 @@ class FolderListViewController: UITableViewController {
             cell.from.text = mail.from.mailAddress
         }
         cell.subject.text = mail.subject
-        cell.date.text = mail.date.description
+        cell.date.text = mail.timeString
         
         if mail.isSecure {
             cell.secureImageView.image = IconsStyleKit.imageOfLetter
@@ -113,7 +114,7 @@ class FolderListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "readFolderMailSegue", sender: folder.mailsOfFolder[indexPath.row])
+        performSegue(withIdentifier: "readFolderMailSegue", sender: folder.mailsOfFolder.sorted()[indexPath.row])
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
