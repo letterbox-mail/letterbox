@@ -141,7 +141,7 @@ class FolderViewController: UITableViewController {
             performSegue(withIdentifier: "showInboxSegue", sender: nil)
         }
         else if sectionType(indexPath) == .mails {
-            performSegue(withIdentifier: "readFolderMailSegue", sender: getMails()[0])
+            performSegue(withIdentifier: "readFolderMailSegue", sender: getMails()[indexPath.row])
         }
         else {
             if true {
@@ -186,7 +186,6 @@ class FolderViewController: UITableViewController {
             if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
                 folders = subFolders
             }
-            //print(thisFolder.mailsOfFolder.count)
         }
         tableView.reloadData()
         refreshControl?.endRefreshing()
