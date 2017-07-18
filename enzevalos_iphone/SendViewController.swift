@@ -13,7 +13,6 @@ import KeychainAccess
 
 class SendViewController: UIViewController {
 
-    var imageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 5, width: 200, height: 45))
     @IBOutlet weak var button: UIBarButtonItem!
     @IBOutlet weak var iconButton: UIButton!
     @IBOutlet weak var textView: UITextView!
@@ -51,13 +50,15 @@ class SendViewController: UIViewController {
 
     var prefilledMail: EphemeralMail? = nil
     var toField: String? = nil
+    var sendEncryptedIfPossible = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, beginFunc: self.beginEditing, endFunc: self.endEditing, deleteFunc: { () -> Void in return })
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
-        setAnimation()
+        startIconAnimation()
 
         textView.delegate = self
         textView.font = UIFont.systemFont(ofSize: 17)
@@ -142,7 +143,6 @@ class SendViewController: UIViewController {
         toText.tag = UIViewResolver.toText.rawValue
         ccText.tag = UIViewResolver.ccText.rawValue
         textView.tag = UIViewResolver.textView.rawValue
-        imageView.tag = UIViewResolver.imageView.rawValue
         tableview.tag = UIViewResolver.tableview.rawValue
         toCollectionview.tag = UIViewResolver.toCollectionview.rawValue
         ccCollectionview.tag = UIViewResolver.ccCollectionview.rawValue
@@ -151,6 +151,7 @@ class SendViewController: UIViewController {
 
         updateNavigationBar()
 
+        sendEncryptedIfPossible = currentSecurityState
 
         //LogHandler.printLogs()
         //LogHandler.deleteLogs()
@@ -243,7 +244,7 @@ class SendViewController: UIViewController {
                     }
                 }
 
-                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: NSLocalizedString("inviteText", comment: "Body for the invitation mail"), uid: 0,predecessor: nil)
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: NSLocalizedString("inviteText", comment: "Body for the invitation mail"), uid: 0, predecessor: nil)
 
 
                 controller.prefilledMail = mail
@@ -263,8 +264,7 @@ class SendViewController: UIViewController {
                     scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
                     tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
                     tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
-                }
-                else {
+                } else {
                     scrollview.isScrollEnabled = true
                     tableviewHeight.constant = 0
                 }
@@ -389,45 +389,18 @@ class SendViewController: UIViewController {
     func sendCompleted() {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
-}
-
-//subject field
-extension SendViewController: VENTokenFieldDelegate {
-    func tokenField(_ tokenField: VENTokenField, didChangeText text: String?) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve(subjectText.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: subjectText.inputText()!)
-        }
-        if text == "log" {
-            LogHandler.stopLogging()
-            textView.text = LogHandler.getLogs()
-            LogHandler.deleteLogs()
-            LogHandler.newLog()
-        }
-    }
-
-    func tokenFieldDidEndEditing(_ tokenField: VENTokenField) { }
-}
-
-//messagefield
-extension SendViewController: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve(textView.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: textView.text)
-        }
-    }
-}
 
 
-//Navigationbar
-extension SendViewController {
-    func getContemporarySecurityState() -> Bool {
+    //Navigationbar
+
+    var currentSecurityState: Bool {
         toSecure = toText.dataSource!.isSecure!(toText) //TODO: Add pref enc field.
         ccSecure = ccText.dataSource!.isSecure!(ccText)
         return toSecure && ccSecure
     }
 
     func updateNavigationBar() {
-        if(getContemporarySecurityState()) {
+        if currentSecurityState {
             self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
         } else {
             self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
@@ -435,11 +408,11 @@ extension SendViewController {
     }
 
     func animateIfNeeded() {
-        let contemporarySecureState = getContemporarySecurityState()
-        if (contemporarySecureState) != self.secureState {
+        let currentState = currentSecurityState && sendEncryptedIfPossible
+        if currentState != self.secureState {
             if(ThemeManager.animation()) {
-                setAnimation()
-                if contemporarySecureState {
+                startIconAnimation()
+                if currentState {
                     UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
                         self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
                     }, completion: nil)
@@ -448,25 +421,23 @@ extension SendViewController {
                         self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
                     }, completion: { (_: Bool) in
                         UIView.animate(withDuration: 0.5, delay: 1.5, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
-                            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+                            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor() // was soll das?
                         }, completion: nil)
                     })
                 }
-                imageView.startAnimating()
             }
         }
         updateNavigationBar()
-        self.secureState = getContemporarySecurityState()
+        self.secureState = currentState
     }
 
-    func setAnimation() {
+    func startIconAnimation() {
         if let view = iconButton.subviews.first as? AnimatedSendIcon {
             view.switchIcons()
         }
     }
 
     func iconButton(_ sender: AnyObject) {
-        let secureState = self.secureState
         let alert: UIAlertController
         let url: String
         if !secureState {
@@ -481,6 +452,19 @@ extension SendViewController {
         } else {
             alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
             url = "https://enzevalos.org/infos/letter"
+        }
+        if currentSecurityState {
+            if sendEncryptedIfPossible {
+                alert.addAction(UIAlertAction(title: NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                    self.sendEncryptedIfPossible = false
+                    DispatchQueue.main.async { self.animateIfNeeded() }
+                }))
+            } else {
+                alert.addAction(UIAlertAction(title: NSLocalizedString("sendSecureIfPossible", comment: "This mail should be send securely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                    self.sendEncryptedIfPossible = true
+                    DispatchQueue.main.async { self.animateIfNeeded() }
+                }))
+            }
         }
         alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in UIApplication.shared.openURL(URL(string: url)!) }))
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
@@ -525,6 +509,32 @@ extension SendViewController {
         let message = textView.text!
 
         mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: self.mailSend)
+    }
+}
+
+//subject field
+extension SendViewController: VENTokenFieldDelegate {
+    func tokenField(_ tokenField: VENTokenField, didChangeText text: String?) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve(subjectText.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: subjectText.inputText()!)
+        }
+        if text == "log" {
+            LogHandler.stopLogging()
+            textView.text = LogHandler.getLogs()
+            LogHandler.deleteLogs()
+            LogHandler.newLog()
+        }
+    }
+
+    func tokenFieldDidEndEditing(_ tokenField: VENTokenField) { }
+}
+
+//messagefield
+extension SendViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        if LogHandler.logging {
+            LogHandler.doLog(UIViewResolver.resolve(textView.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: textView.text)
+        }
     }
 }
 

@@ -140,3 +140,5 @@
 "thisIsYou" = "Hier werden E-Mails die du dir selber schickst gesammelt";
 "didYouSendThis" = "Hallo, haben Sie mir diese E-Mail geschickt?\nIch frage nur, weil die E-Mail unsicher versendet wurde.\n\n";
 "reactButton" = "Bestätigung erfragen";
+"sendSecureIfPossible" = "Sicher versenden";
+"sendInsecure" = "Unsicher versenden";

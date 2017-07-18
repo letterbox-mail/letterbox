@@ -139,3 +139,5 @@
 "thisIsYou" = "Emails you sent yourself are collected here";
 "didYouSendThis" = "Hey, did you send me this email?\nI'm just asking because it was sent insecurely.\n\n";
 "reactButton" = "Request Confirmation";
+"sendSecureIfPossible" = "Send secure";
+"sendInsecure" = "Send insecure";
