@@ -26,8 +26,6 @@ class FolderViewController: UITableViewController {
         if let thisFolder = presentedFolder {
             navigationItem.title = thisFolder.name
             refreshControl?.beginRefreshing()
-            print(thisFolder.path)
-            print(thisFolder.name)
             AppDelegate.getAppDelegate().mailHandler.firstLookUp(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing)
             if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
                 folders = subFolders
@@ -87,6 +85,7 @@ class FolderViewController: UITableViewController {
                 else {
                     cell.from.text = mail.from.mailAddress
                 }
+                cell.from.font = UIFont.boldSystemFont(ofSize: cell.from.font.pointSize)
                 cell.subject.text = mail.subject
                 cell.date.text = mail.timeString
                 
