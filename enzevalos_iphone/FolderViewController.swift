@@ -20,6 +20,7 @@ class FolderViewController: UITableViewController {
         
         if isFirstFolderViewController {
             DataHandler.handler.callForFolders()
+            navigationItem.title = NSLocalizedString("Folders", comment: "")
             folders = DataHandler.handler.allFolders
         }
         if let thisFolder = presentedFolder {
