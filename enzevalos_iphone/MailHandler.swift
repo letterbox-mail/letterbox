@@ -412,6 +412,7 @@ class MailHandler {
                     self.IMAPSession.disconnectOperation().start({ _ in })
                     completionCallback(false)
                 }
+                print("loadMessagesFromServer; MailHandler around line 415: ", calledMails)
             }
         }
     }

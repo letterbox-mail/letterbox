@@ -177,13 +177,17 @@ class FolderViewController: UITableViewController {
             refreshControl?.beginRefreshing()
             AppDelegate.getAppDelegate().mailHandler.olderMailsFolder(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing(_:))
         }
+        else {
+            DataHandler.handler.callForFolders()
+            endRefreshing(false)
+        }
     }
     func endRefreshing(_ error: Bool) {
         if let thisFolder = presentedFolder {
             if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
                 folders = subFolders
             }
-            print(thisFolder.mailsOfFolder.count)
+            //print(thisFolder.mailsOfFolder.count)
         }
         tableView.reloadData()
         refreshControl?.endRefreshing()
