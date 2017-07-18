@@ -20,13 +20,12 @@ class FolderViewController: UITableViewController {
         
         if isFirstFolderViewController {
             DataHandler.handler.callForFolders()
+            navigationItem.title = NSLocalizedString("Folders", comment: "")
             folders = DataHandler.handler.allFolders
         }
         if let thisFolder = presentedFolder {
             navigationItem.title = thisFolder.name
             refreshControl?.beginRefreshing()
-            print(thisFolder.path)
-            print(thisFolder.name)
             AppDelegate.getAppDelegate().mailHandler.firstLookUp(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing)
             if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
                 folders = subFolders
@@ -86,6 +85,7 @@ class FolderViewController: UITableViewController {
                 else {
                     cell.from.text = mail.from.mailAddress
                 }
+                cell.from.font = UIFont.boldSystemFont(ofSize: cell.from.font.pointSize)
                 cell.subject.text = mail.subject
                 cell.date.text = mail.timeString
                 
@@ -176,13 +176,17 @@ class FolderViewController: UITableViewController {
             refreshControl?.beginRefreshing()
             AppDelegate.getAppDelegate().mailHandler.olderMailsFolder(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing(_:))
         }
+        else {
+            DataHandler.handler.callForFolders()
+            endRefreshing(false)
+        }
     }
     func endRefreshing(_ error: Bool) {
         if let thisFolder = presentedFolder {
             if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
                 folders = subFolders
             }
-            print(thisFolder.mailsOfFolder.count)
+            //print(thisFolder.mailsOfFolder.count)
         }
         tableView.reloadData()
         refreshControl?.endRefreshing()

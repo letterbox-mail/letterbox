@@ -315,7 +315,7 @@ class MailHandler {
 
     func firstLookUp(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         
-        findMaxUID(){max in
+        findMaxUID(folder){max in
             var uids: MCOIndexSet
             print("Max uid: \(max)")
             var (min, overflow) = UInt64.subtractWithOverflow(max, UInt64(MailHandler.MAXMAILS))
@@ -412,6 +412,7 @@ class MailHandler {
                     self.IMAPSession.disconnectOperation().start({ _ in })
                     completionCallback(false)
                 }
+                print("loadMessagesFromServer; MailHandler around line 415: ", calledMails)
             }
         }
     }
@@ -537,7 +538,7 @@ class MailHandler {
     }
 
 
-    func findMaxUID(_ folder: String = "INBOX", callback: @escaping ((_ maxUID: UInt64) -> ())) {
+    func findMaxUID(_ folder: String, callback: @escaping ((_ maxUID: UInt64) -> ())) {
         //TODO: NSP!!!
         var maxUID: UInt64 = 0
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)

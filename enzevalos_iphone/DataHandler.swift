@@ -452,6 +452,7 @@ class DataHandler {
             }
         
             let myfolder = findFolder(name: folder) as Folder
+            print("DataHAndler around line 455: ", folder)
             myfolder.addToMails(mail)
             if mail.uid > myfolder.maxID{
                 myfolder.maxID = mail.uid

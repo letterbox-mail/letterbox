@@ -18,6 +18,13 @@
                     }
                     ]
         },
+        "mailboxes": {
+            "drafts": "Entwürfe",
+            "allmail": "Archive",
+            "spam": "Spam",
+            "sentmail": "Gesendet",
+            "trash": "Papierkorb"
+        },
         "domain-match":[
             "web.de",
             "web"
