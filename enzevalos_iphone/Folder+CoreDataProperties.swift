@@ -79,8 +79,6 @@ extension Folder {
             return text!
         }
     }
-
-
 }
 
 // MARK: Generated accessors for mails
@@ -115,4 +113,14 @@ extension Folder {
     @objc(removeSubfolder:)
     @NSManaged public func removeFromSubfolder(_ values: NSSet)
 
+}
+
+extension Folder: Comparable {
+    public static func <(lhs: Folder, rhs: Folder) -> Bool {
+        return lhs.name < rhs.name
+    }
+    
+    public static func ==(lhs: Folder, rhs: Folder) -> Bool {
+        return lhs.name == rhs.name && lhs.path == rhs.path
+    }
 }

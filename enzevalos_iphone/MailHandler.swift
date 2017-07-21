@@ -243,15 +243,24 @@ class MailHandler {
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
             let keyID = encryption.getActualKeyID(allRec[0])
+            var encFor = orderedString[EncryptionType.PGP]!
+            encFor.append(useraddr)
             print("Keyid : \(String(describing: keyID)) of \(allRec[0])")
-            if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+            if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: encFor) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
                 sendData = encData
+                //added own public key here, so we can decrypt our own message to read it in sent-folder
+                
+                
                // builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
                // sendData = builder.data()
                 //sendOperation = session.sendOperation(with: sendData, from: userID, recipients: encPGP)
                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
+                
+                if ordered[EncryptionType.unknown] == nil {
+                    createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
+                }
                 builder.textBody = message
             } else {
                 //TODO do it better
@@ -267,9 +276,15 @@ class MailHandler {
             sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
             //TODO handle different callbacks
             sendOperation.start(callback)
+            createSendCopy(sendData: sendData)
         }
     }
 
+    fileprivate func createSendCopy(sendData: Data) {
+        let op = IMAPSession.appendMessageOperation(withFolder: "Gesendet", messageData: sendData, flags: MCOMessageFlag.mdnSent)
+        op?.start({_,_ in print("done")})
+    }
+    
     func setupIMAPSession() {
         let imapsession = MCOIMAPSession()
         imapsession.hostname = UserManager.loadUserValue(Attribute.imapHostname) as! String
