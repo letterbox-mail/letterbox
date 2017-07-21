@@ -344,7 +344,7 @@ class MailHandler {
         uids = MCOIndexSet(range: MCORangeMake(myfolder.lastID, myfolder.maxID))
         uids.remove(myfolder.uids)
         
-        self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+        self.loadMessagesFromServer(uids, folder: folder, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
     
     

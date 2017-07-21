@@ -60,10 +60,11 @@ class DataHandler {
     }
 
     
-    func callForFolders(){ // Maybe call back? Look for new Folder?
+    func callForFolders(done: @escaping ((_ error: Bool) -> ())){ // Maybe call back? Look for new Folder?
         AppDelegate.getAppDelegate().mailHandler.allFolders{ (err, array) -> Void in
             guard err == nil else {
                 print("Error while fetching all folders: \(String(describing: err))")
+                done(true)
                 return
             }
             
@@ -76,6 +77,7 @@ class DataHandler {
                     }
                 }
             }
+            done(false)
         }
     }
 
@@ -106,7 +108,7 @@ class DataHandler {
         }
         managedObjectContext.mergePolicy = NSMergePolicy(merge: NSMergePolicyType.mergeByPropertyObjectTrumpMergePolicyType);
         
-        callForFolders()
+        callForFolders(done: {_ in return})
 
     }
 

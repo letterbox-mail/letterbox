@@ -19,9 +19,9 @@ class FolderViewController: UITableViewController {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
         
         if isFirstFolderViewController {
-            DataHandler.handler.callForFolders()
-            navigationItem.title = NSLocalizedString("Folders", comment: "")
             folders = DataHandler.handler.allFolders
+            DataHandler.handler.callForFolders(done: endRefreshing)
+            navigationItem.title = NSLocalizedString("Folders", comment: "")
         }
         else {
             navigationItem.setLeftBarButton(navigationItem.backBarButtonItem, animated: false)
@@ -177,7 +177,7 @@ class FolderViewController: UITableViewController {
             AppDelegate.getAppDelegate().mailHandler.olderMailsFolder(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing(_:))
         }
         else {
-            DataHandler.handler.callForFolders()
+            DataHandler.handler.callForFolders(done: endRefreshing)
             endRefreshing(false)
         }
     }
@@ -186,6 +186,9 @@ class FolderViewController: UITableViewController {
             if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
                 folders = subFolders
             }
+        }
+        if isFirstFolderViewController {
+            folders = DataHandler.handler.allFolders
         }
         tableView.reloadData()
         refreshControl?.endRefreshing()
