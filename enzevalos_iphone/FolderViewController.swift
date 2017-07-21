@@ -23,6 +23,9 @@ class FolderViewController: UITableViewController {
             navigationItem.title = NSLocalizedString("Folders", comment: "")
             folders = DataHandler.handler.allFolders
         }
+        else {
+            navigationItem.setLeftBarButton(navigationItem.backBarButtonItem, animated: false)
+        }
         if let thisFolder = presentedFolder {
             navigationItem.title = thisFolder.name
             refreshControl?.beginRefreshing()
@@ -111,7 +114,6 @@ class FolderViewController: UITableViewController {
                     else {
                         cell.stackView.addArrangedSubview(cell.markImageView)
                     }
-                    //cell.markImageView.removeFromSuperview()
                 }
                 
                 
@@ -122,7 +124,6 @@ class FolderViewController: UITableViewController {
                     else {
                         cell.stackView.addArrangedSubview(cell.replyImageView)
                     }
-                    //cell.replyImageView.removeFromSuperview()
                 }
                 
                 return cell
@@ -167,7 +168,6 @@ class FolderViewController: UITableViewController {
             if let folder = sender as? Folder {
                 destinationVC.folder = folder
             }
-            /*set Mails*/
         }
     }
     
