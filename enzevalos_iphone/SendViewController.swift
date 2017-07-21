@@ -39,7 +39,7 @@ class SendViewController: UIViewController {
 
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
-    var secureState = true
+    var UISecurityState = true
     var toSecure = true
     var ccSecure = true
     var dataDelegate = VENDataDelegate()
@@ -398,6 +398,17 @@ class SendViewController: UIViewController {
         ccSecure = ccText.dataSource!.isSecure!(ccText)
         return toSecure && ccSecure
     }
+    
+    var someoneWithKeyPresent: Bool {
+        guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
+            return true
+        }
+        
+        let toKey = toSource.someSecure(toText)
+        let ccKey = ccSource.someSecure(ccText)
+        
+        return toKey || ccKey
+    }
 
     func updateNavigationBar() {
         if currentSecurityState {
@@ -409,26 +420,21 @@ class SendViewController: UIViewController {
 
     func animateIfNeeded() {
         let currentState = currentSecurityState && sendEncryptedIfPossible
-        if currentState != self.secureState {
-            if(ThemeManager.animation()) {
-                startIconAnimation()
-                if currentState {
-                    UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
-                        self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
-                    }, completion: nil)
-                } else {
-                    UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
-                        self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
-                    }, completion: { (_: Bool) in
-                        UIView.animate(withDuration: 0.5, delay: 1.5, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
-                            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor() // was soll das?
-                        }, completion: nil)
-                    })
-                }
+        if (currentState != self.UISecurityState) && ThemeManager.animation() {
+            startIconAnimation()
+            if currentState {
+                UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
+                    self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
+                    self.navigationController?.navigationBar.layoutIfNeeded() //https://stackoverflow.com/questions/39515313/animate-navigation-bar-bartintcolor-change-in-ios10-not-working
+                }, completion: nil)
+            } else {
+                UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
+                    self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+                    self.navigationController?.navigationBar.layoutIfNeeded()
+                }, completion: nil)
             }
         }
-        updateNavigationBar()
-        self.secureState = currentState
+        self.UISecurityState = currentState
     }
 
     func startIconAnimation() {
@@ -440,7 +446,7 @@ class SendViewController: UIViewController {
     func iconButton(_ sender: AnyObject) {
         let alert: UIAlertController
         let url: String
-        if !secureState {
+        if !UISecurityState {
             alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
             url = "https://enzevalos.org/infos/postcard"
             if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") {
@@ -453,7 +459,7 @@ class SendViewController: UIViewController {
             alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
             url = "https://enzevalos.org/infos/letter"
         }
-        if currentSecurityState {
+        if someoneWithKeyPresent {
             if sendEncryptedIfPossible {
                 alert.addAction(UIAlertAction(title: NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
                     self.sendEncryptedIfPossible = false
@@ -508,7 +514,7 @@ class SendViewController: UIViewController {
         let subject = subjectText.inputText()!
         let message = textView.text!
 
-        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: self.mailSend)
+        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend)
     }
 }
 
@@ -573,5 +579,17 @@ extension SendViewController: UIGestureRecognizerDelegate {
         if LogHandler.logging {
             LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "rotate", point: CGPoint(x: 0, y: 0), comment: String(describing: sender.rotation))
         }
+    }
+}
+
+extension VENTokenFieldDataSource {
+    func someSecure(_ tokenField: VENTokenField) -> Bool {
+        var secure = false
+        for entry in tokenField.mailTokens {
+            secure = secure || EnzevalosEncryptionHandler.hasKey(entry as! String)
+        }
+        
+        print(secure)
+        return secure
     }
 }
