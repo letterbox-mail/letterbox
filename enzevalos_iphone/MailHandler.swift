@@ -262,7 +262,6 @@ class MailHandler {
             }
         }
 
-
         if let unenc = ordered[EncryptionType.unknown] {
             builder.textBody = message
             sendData = builder.data()
@@ -328,9 +327,7 @@ class MailHandler {
             print("call for #\(uids.count()) uids \(uids.rangesCount())")
             uids.remove(DataHandler.handler.uids)
             self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
-
         }
-
     }
 
 
@@ -454,7 +451,6 @@ class MailHandler {
                     print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
                 }
             }
-
         }
 
         if let to = header?.to {
@@ -468,8 +464,6 @@ class MailHandler {
             }
         }
 
-
-
         if let data = parser?.data() {
             var msgParser = MCOMessageParser(data: data)
             var isEnc = false
@@ -477,7 +471,6 @@ class MailHandler {
             var body: String
             var lineArray: [String]
             var dec: DecryptedData? = nil
-
 
             for a in (msgParser?.attachments())! {
                 let at = a as! MCOAttachment
@@ -501,7 +494,6 @@ class MailHandler {
                     msgParser = MCOMessageParser(data: dec?.decryptedBody)
                     body = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
                 }
-
             } else {
                 html = msgParser!.plainTextRendering()
 
