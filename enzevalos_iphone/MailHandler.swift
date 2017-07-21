@@ -157,15 +157,14 @@ class MailHandler {
     var IMAPSes: MCOIMAPSession?
 
     var IMAPSession: MCOIMAPSession {
-        get {
-            if IMAPSes == nil {
-                setupIMAPSession()
-            }
-
-            return IMAPSes!
+        if IMAPSes == nil {
+            IMAPSes = setupIMAPSession()
         }
+        return IMAPSes!
     }
 
+    var IMAPIdleSession: MCOIMAPSession?
+    var IMAPIdleSupported: Bool?
 
     //TODO: signatur hinzufügen
 
@@ -206,7 +205,7 @@ class MailHandler {
 
         builder.header.subject = subject
 
-        add_autocrypt_header(builder)
+        addAutocryptHeader(builder)
 
     }
 
@@ -271,7 +270,7 @@ class MailHandler {
         }
     }
 
-    func setupIMAPSession() {
+    func setupIMAPSession() -> MCOIMAPSession {
         let imapsession = MCOIMAPSession()
         imapsession.hostname = UserManager.loadUserValue(Attribute.imapHostname) as! String
         imapsession.port = UInt32(UserManager.loadUserValue(Attribute.imapPort) as! Int)
@@ -279,7 +278,44 @@ class MailHandler {
         imapsession.password = UserManager.loadUserValue(Attribute.userPW) as! String
         imapsession.authType = UserManager.loadImapAuthType()//MCOAuthType(rawValue: UserManager.loadUserValue(Attribute.imapAuthType) as! Int) //MCOAuthType.SASLPlain
         imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)//MCOConnectionType.TLS
-        self.IMAPSes = imapsession
+        return imapsession
+    }
+
+    func startIMAPIdleIfSupported(addNewMail: @escaping (() -> ())) {
+        if let supported = IMAPIdleSupported {
+            if supported && IMAPIdleSession == nil {
+                IMAPIdleSession = setupIMAPSession()
+                let op = IMAPIdleSession!.idleOperation(withFolder: "INBOX", lastKnownUID: UInt32(DataHandler.handler.maxUID))
+                op?.start({ error in
+                    guard error == nil else {
+                        print("An error occured with the idle operation: \(String(describing: error))")
+                        return
+                    }
+
+                    print("Something happened while idleing!")
+                    self.IMAPIdleSession = nil
+                    self.receiveAll(newMailCallback: addNewMail, completionCallback: { _ in self.startIMAPIdleIfSupported(addNewMail: addNewMail) })
+                })
+            }
+        } else {
+            checkIdleSupport(addNewMail: addNewMail)
+        }
+    }
+
+    func checkIdleSupport(addNewMail: @escaping (() -> ())) {
+        let op = setupIMAPSession().capabilityOperation()
+        op?.start({ (error, capabilities) in
+            guard error == nil else {
+                print("Error checking IMAP Idle capabilities: \(String(describing: error))")
+                return
+            }
+
+            if let c = capabilities {
+                self.IMAPIdleSupported = c.contains(UInt64(MCOIMAPCapability.idle.rawValue))
+                print("IMAP Idle is \(self.IMAPIdleSupported! ? "" : "not ")supported!")
+                self.startIMAPIdleIfSupported(addNewMail: addNewMail)
+            }
+        })
     }
 
     fileprivate func createSMTPSession() -> MCOSMTPSession {
@@ -309,7 +345,7 @@ class MailHandler {
             if let err = error {
                 print("Error while updating flags: \(err)")
             } else {
-                print("Succsessfully updated flags!")
+                print("Succsessfully removed flags!")
             }
         }
     }
@@ -425,7 +461,7 @@ class MailHandler {
         }
     }
 
-    func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: (() -> ())) {
+    func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: @escaping (() -> ())) {
         guard error == nil else {
             print("Error while fetching mail: \(String(describing: error))")
             return
@@ -596,17 +632,22 @@ class MailHandler {
 
     func moveMails(mails: [PersistentMail], from: String, to: String) {
         let uids = MCOIndexSet()
+        
+        //TODO: Remove after lab study
         let except = MCOIndexSet()
-        //TODO: Remove later
-        except.add(9)
         except.add(6)
+        except.add(9)
         except.add(15)
+        except.add(35)
+        except.add(36)
+        except.add(78)
+        except.add(79)
+        
         for m in mails {
             if !except.contains(m.uid) {
                 uids.add(m.uid)
             }
         }
-        self.setupIMAPSession()
         let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
         op?.start {
             (err, vanished) -> Void in

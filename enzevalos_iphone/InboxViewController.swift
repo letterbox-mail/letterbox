@@ -39,29 +39,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
     var lastUpdate: Date?
 
-
-    func addNewMail() {
-        /*// Records durchgehen. Einsortieren.
-        for c in contacts {
-            if c.addNewMail(mail) {
-                return
-            }
-        }
-        let r: KeyRecord
-        r = KeyRecord(mail: mail)
-        contacts.append(r)
-        contacts.sortInPlace()
-        
-        if mail.isEncrypted{
-            print("----------------")
-            print("Encrypted mail! Is Secure?: \(mail.isSecure)")
-            print("Record: \(r.ezContact.name) key: \(r.key)")
-        }
- */
-       // contacts =  DataHandler.handler.receiverRecords
-    }
-
- 
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -87,6 +64,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         dateFormatter.timeStyle = .medium
 
         tableView.register(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
+
+        AppDelegate.getAppDelegate().mailHandler.startIMAPIdleIfSupported(addNewMail: addNewMail)
     }
 
     func refresh(_ refreshControl: UIRefreshControl) {
@@ -95,6 +74,10 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
       
 
     }
+    
+    func addNewMail() {
+        tableView.reloadData()
+    }
 
     func getMailCompleted(_ error: Bool) {
         if let rc = self.refreshControl {
@@ -102,7 +85,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             rc.endRefreshing()
             lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))"
             // self.contacts.sortInPlace({ $0 < $1 })
-            
+
             self.tableView.reloadData()
         }
     }
@@ -124,8 +107,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
         cell.delegate = self
         cell.enzContact = DataHandler.handler.receiverRecords[indexPath.section]
-        
-        
 
         return cell
     }
