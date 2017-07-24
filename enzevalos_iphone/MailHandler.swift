@@ -281,8 +281,50 @@ class MailHandler {
     }
 
     fileprivate func createSendCopy(sendData: Data) {
-        let op = IMAPSession.appendMessageOperation(withFolder: "Gesendet", messageData: sendData, flags: MCOMessageFlag.mdnSent)
+        let op = IMAPSession.appendMessageOperation(withFolder: (UserManager.loadUserValue(Attribute.sentFolderName) as? String ?? NSLocalizedString("Sent", comment: "")), messageData: sendData, flags: MCOMessageFlag.mdnSent)
         op?.start({_,_ in print("done")})
+    }
+
+    func createDraft(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
+        let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
+        let builder = MCOMessageBuilder()
+        
+        createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
+        
+        // MailAddresses statt strings??
+        
+        var allRec: [String] = []
+        allRec.append(contentsOf: toEntrys)
+        allRec.append(contentsOf: ccEntrys)
+        // What about BCC??
+        
+        //TODO add support for different Encryptions here
+        
+        var encryption: Encryption
+        var sendData: Data
+        
+        //TODO: Consider pref enc = false
+        
+        encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
+        if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: [useraddr]) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+            sendData = builder.openPGPEncryptedMessageData(withEncryptedData: encData)
+            
+            if !DataHandler.handler.existsFolder(with: (UserManager.loadUserValue(Attribute.draftFolderName) as? String ?? NSLocalizedString("Drafts", comment: ""))) {
+                let op = IMAPSession.createFolderOperation((UserManager.loadUserValue(Attribute.draftFolderName) as? String ?? NSLocalizedString("Drafts", comment: "")))
+                op?.start({ _ in self.saveDraft(data: sendData, callback: callback)})
+            }
+            else {
+                saveDraft(data: sendData, callback: callback)
+            }
+        } else {
+                //TODO do it better
+            callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
+        }
+    }
+    
+    fileprivate func saveDraft(data: Data, callback: @escaping (Error?) -> Void) {
+        let op = IMAPSession.appendMessageOperation(withFolder: (UserManager.loadUserValue(Attribute.draftFolderName) as? String ?? NSLocalizedString("Drafts", comment: "")), messageData: data, flags: MCOMessageFlag.draft)
+        op?.start({_,_ in callback(nil)})
     }
     
     func setupIMAPSession() {

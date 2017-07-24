@@ -130,7 +130,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey || mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && (mail.from.mailAddress.lowercased() != (UserManager.loadUserValue(Attribute.userAddr) as! String)) || mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
             return 3
         }
 
@@ -163,7 +163,7 @@ class ReadViewController: UITableViewController {
             }
         }
         if indexPath.section == 1 && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
-            if let mail = mail {
+            if let mail = mail, (mail.from.mailAddress.lowercased() != (UserManager.loadUserValue(Attribute.userAddr) as! String)) {
                 if mail.trouble {
                     if indexPath.row == 0 {
                         return infoCell

@@ -234,6 +234,13 @@ class DataHandler {
         folder.path = name
         return folder
     }
+    
+    func existsFolder(with name: String) -> Bool {
+        if let search = find("Folder", type: "path", search:name), search.count > 0{
+            return true
+        }
+        return false
+    }
 
         // -------- Handle mail addresses ---------
         func getMailAddress(_ address: String, temporary: Bool) -> MailAddress {
