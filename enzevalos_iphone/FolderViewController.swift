@@ -19,7 +19,7 @@ class FolderViewController: UITableViewController {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
         
         if isFirstFolderViewController {
-            folders = DataHandler.handler.allFolders.sorted()
+            folders = DataHandler.handler.allFolders.sorted().filter { $0.name != NSLocalizedString("INBOX", comment: "") }
             DataHandler.handler.callForFolders(done: endRefreshing)
             navigationItem.title = NSLocalizedString("Folders", comment: "")
         }
@@ -48,7 +48,7 @@ class FolderViewController: UITableViewController {
         if folders.count > 0 {
             count += 1
         }
-        if let thisFolder = presentedFolder {
+        if presentedFolder != nil {
             if getMails().count > 0 {
                 count += 1
             }
@@ -188,7 +188,7 @@ class FolderViewController: UITableViewController {
             }
         }
         if isFirstFolderViewController {
-            folders = DataHandler.handler.allFolders.sorted()
+            folders = DataHandler.handler.allFolders.sorted().filter { $0.name != NSLocalizedString("INBOX", comment: "") }
         }
         tableView.reloadData()
         refreshControl?.endRefreshing()
