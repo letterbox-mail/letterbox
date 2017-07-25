@@ -82,7 +82,7 @@ class AutocryptContact {
         var pref = ""
         var key = ""
 
-        if(autocrypt != nil) {
+        if autocrypt != nil {
             autocrypt = autocrypt?.trimmingCharacters(in: .whitespacesAndNewlines)
             let autocrypt_fields = autocrypt?.components(separatedBy: ";")
             for f in autocrypt_fields! {
@@ -151,10 +151,9 @@ class MailHandler {
 
     fileprivate static let MAXMAILS: Int = 50
 
-    fileprivate let concurrentMailServer = DispatchQueue(
-        label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent)
+    fileprivate let concurrentMailServer = DispatchQueue(label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent)
 
-    var IMAPSes: MCOIMAPSession?
+    private var IMAPSes: MCOIMAPSession?
 
     var IMAPSession: MCOIMAPSession {
         if IMAPSes == nil {
@@ -167,9 +166,7 @@ class MailHandler {
     var IMAPIdleSupported: Bool?
 
     //TODO: signatur hinzufügen
-
-
-    func add_autocrypt_header(_ builder: MCOMessageBuilder) {
+    func addAutocryptHeader(_ builder: MCOMessageBuilder) {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
         let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
         if let header = pgpenc.autocryptHeader(adr) {
@@ -366,7 +363,6 @@ class MailHandler {
         }
     }
 
-
     func olderMailsFolder(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         var uids: MCOIndexSet
         var max = DataHandler.handler.maxUID
@@ -392,7 +388,11 @@ class MailHandler {
         self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
 
-
+    func receiveAll(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        let uids: MCOIndexSet
+        uids = MCOIndexSet(range: MCORangeMake(DataHandler.handler.maxUID, UINT64_MAX)) // TODO @Jakob: beim mergen anpassen
+        loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+    }
 
     func loadMoreMails(_ record: KeyRecord, folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let addresses: [MailAddress]
@@ -475,7 +475,7 @@ class MailHandler {
         var autocrypt: AutocryptContact? = nil
         if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
             autocrypt = AutocryptContact(header: header!)
-            if(autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0) {
+            if autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0 {
                 let pgp = ObjectivePGP.init()
                 pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
                 let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
@@ -569,7 +569,7 @@ class MailHandler {
         }
         let result = MCOIndexSet()
         for x in inputSet.nsIndexSet().reversed() {
-            if(result.count() < max) {
+            if result.count() < max {
                 result.add(UInt64(x))
             }
         }
@@ -632,22 +632,11 @@ class MailHandler {
 
     func moveMails(mails: [PersistentMail], from: String, to: String) {
         let uids = MCOIndexSet()
-        
-        //TODO: Remove after lab study
-        let except = MCOIndexSet()
-        except.add(6)
-        except.add(9)
-        except.add(15)
-        except.add(35)
-        except.add(36)
-        except.add(78)
-        except.add(79)
-        
+
         for m in mails {
-            if !except.contains(m.uid) {
-                uids.add(m.uid)
-            }
+            uids.add(m.uid)
         }
+
         let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
         op?.start {
             (err, vanished) -> Void in
