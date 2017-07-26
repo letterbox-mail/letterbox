@@ -131,6 +131,7 @@ class DataHandler {
             for object in result {
                 self.managedObjectContext.delete(object)
             }
+            save()
         }
     }
     
@@ -141,6 +142,7 @@ class DataHandler {
             for object in result {
                 self.managedObjectContext.delete(object)
             }
+            save()
         }
     }
     
