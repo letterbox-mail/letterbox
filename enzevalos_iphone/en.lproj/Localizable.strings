@@ -8,6 +8,7 @@
 "AccessContacts" = "Access contacts";
 "AccessContactsDescription" = "This App requires access to your contacts to work properly. We do not share your data with others or transfer it over the internet.";
 "AccessNotGranted" = "Please allow access to contacts in Settings, to get to know the true promise of this App";
+"Archive" = "Archive";
 "Address" = "Address";
 "Addressbook" = "Addressbook";
 "Attach" = "Attach";

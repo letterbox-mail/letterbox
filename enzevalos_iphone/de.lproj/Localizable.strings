@@ -8,6 +8,7 @@
 "AccessContacts" = "Zugriff auf Kontakte";
 "AccessContactsDescription" = "Damit diese App richtig funktioniert, brauchen wir Zugriff auf deine Kontakte. Wir teilen diese Daten mit niemandem und senden sie auch nicht über das Internet.";
 "AccessNotGranted" = "Bitte schalte unter Einstellungen den Zugriff auf die Kontakte frei, wenn du möchtest, dass die App richtig funktioniert";
+"Archive" = "Archiv";
 "Address" = "Adresse";
 "Addressbook" = "Adressbuch";
 "Attach" = "Anhängen";

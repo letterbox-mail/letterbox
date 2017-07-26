@@ -11,7 +11,7 @@ import Foundation
 
 
 enum Attribute: Int{
-    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderName, draftFolderName, trashFolderName, inboxFolderName
+    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderName, draftFolderName, trashFolderName, inboxFolderName, archiveFolderName
     
     var defaultValue:AnyObject? {
         switch self {
@@ -50,6 +50,8 @@ enum Attribute: Int{
             return NSLocalizedString("Trash", comment: "Default name for the trashFolder") as AnyObject?
         case .inboxFolderName:
             return NSLocalizedString("INBOX", comment: "Default name for the inboxFolder") as AnyObject?
+        case .archiveFolderName:
+            return NSLocalizedString("Archive", comment: "Default name for the archiveFolder") as AnyObject?
             
         case .smtpAuthType:
             return MCOAuthType.saslPlain.rawValue as AnyObject?

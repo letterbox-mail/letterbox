@@ -232,6 +232,13 @@ class ReadViewController: UITableViewController {
         _ = navigationController?.popViewController(animated: true)
     }
 
+    @IBAction func archiveButton(_ sender: AnyObject) {
+        if let mail = mail {
+            let archiveFolder = UserManager.loadUserValue(Attribute.archiveFolderName) as? String ?? NSLocalizedString("Archive", comment: "")
+            AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
+        }
+        _ = navigationController?.popViewController(animated: true)
+    }
     @IBAction func iconButton(_ sender: AnyObject) {
         if let m = mail {
             let alert: UIAlertController
