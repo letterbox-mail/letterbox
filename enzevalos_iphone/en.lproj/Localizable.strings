@@ -27,6 +27,7 @@
 "Checkmarks" = "You received Mails from Mailadresses with checkmarks";
 "DiscoveryTime" = "Discoverytime";
 "Drafts" = "Drafts";
+"edit" = "Edit";
 "Emailaddress" = "Emailaddress";
 "EncryptionType" = "Encryption Type";
 "EverythingCorrect" = "Everything correct?";

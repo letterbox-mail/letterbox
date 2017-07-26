@@ -162,6 +162,9 @@ class FolderViewController: UITableViewController {
             let destinationVC = segue.destination as! ReadViewController
             if let mail = sender as? PersistentMail {
                 destinationVC.mail = mail
+                if presentedFolder?.name == ((UserManager.loadUserValue(Attribute.draftFolderName) as? String) ?? NSLocalizedString("Drafts", comment: "")) {
+                    destinationVC.isDraft = true
+                }
             }
         } else if segue.identifier == "showFolderListSegue" {
             let destinationVC = segue.destination as! FolderListViewController
