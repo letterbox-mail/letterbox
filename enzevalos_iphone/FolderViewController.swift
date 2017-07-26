@@ -37,6 +37,7 @@ class FolderViewController: UITableViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         tableView.reloadData()
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -181,7 +182,6 @@ class FolderViewController: UITableViewController {
         }
         else {
             DataHandler.handler.callForFolders(done: endRefreshing)
-            endRefreshing(false)
         }
     }
     func endRefreshing(_ error: Bool) {
