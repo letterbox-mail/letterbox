@@ -124,6 +124,29 @@ class DataHandler {
         }
     }
 
+    private func delete(_ entityName: String, type: String, search: String) {
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
+        fReq.predicate = NSPredicate(format: "\(type) CONTAINS '\(search)' ") //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können...
+        if let result = (try? self.managedObjectContext.fetch(fReq)) as? [NSManagedObject]{
+            for object in result {
+                self.managedObjectContext.delete(object)
+            }
+        }
+    }
+    
+    private func deleteNum(_ entityName: String, type: String, search: UInt64) {
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
+        fReq.predicate = NSPredicate(format: "\(type) = %D ", search)
+        if let result = (try? self.managedObjectContext.fetch(fReq)) as? [NSManagedObject]{
+            for object in result {
+                self.managedObjectContext.delete(object)
+            }
+        }
+    }
+    
+    func deleteMail(with uid: UInt64) {
+        self.deleteNum("PersistentMail", type: "uid", search: uid)
+    }
 
     private func removeAll(entity: String) {
         let DelAllReqVar = NSBatchDeleteRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>(entityName: entity))
@@ -186,7 +209,7 @@ class DataHandler {
 
         private func find(_ entityName: String, type: String, search: String) -> [AnyObject]? {
             let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
-            fReq.predicate = NSPredicate(format: "\(type) CONTAINS '\(search)' ")
+            fReq.predicate = NSPredicate(format: "\(type) CONTAINS '\(search)' ") //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können...
             let result: [AnyObject]?
             do {
                 result = try self.managedObjectContext.fetch(fReq)

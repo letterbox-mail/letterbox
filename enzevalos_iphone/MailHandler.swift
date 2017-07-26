@@ -354,6 +354,14 @@ class MailHandler {
         op?.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
+            } else {
+                if flags.contains(MCOMessageFlag.deleted) {
+                    let operation = self.IMAPSession.expungeOperation(folder)
+                    operation?.start({err in
+                        if err == nil {
+                            DataHandler.handler.deleteMail(with: uid)
+                        }})
+                }
             }
         }
     }
@@ -647,18 +655,34 @@ class MailHandler {
         self.IMAPSes?.checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
     }
 
-    func moveMails(mails: [PersistentMail], from: String, to: String) {
+    func move(mails: [PersistentMail], from: String, to: String, folderCreated: Bool = false) {
         let uids = MCOIndexSet()
-        self.setupIMAPSession()
-        let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
-        op?.start{
-            (err, vanished) -> Void in
-            guard err == nil else {
-                print("Error while moving mails: \(String(describing: err))")
-                return
+        if !DataHandler.handler.existsFolder(with: to) && !folderCreated {
+            let op = IMAPSession.createFolderOperation(to)
+            op?.start({ _ in self.move(mails: mails, from: from, to: to, folderCreated: true)})
+        }
+        else {
+            for mail in mails {
+                uids.add(mail.uid)
+                mail.folder.removeFromMails(mail)
+                DataHandler.handler.deleteMail(with: mail.uid)
+            }
+            let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
+            op?.start{
+                (err, vanished) -> Void in
+                guard err == nil else {
+                    print("Error while moving mails: \(String(describing: err))")
+                    return
+                }
             }
         }
     }
+    
+    /*func delete(mails: [PersistentMail]) {
+        for mail in mails {
+            DataHandler.handler.deleteMail(with: mail.uid)
+        }
+    }*/
     
     func allFolders(_ completion: @escaping (Error?, [Any]?) -> Void){
     

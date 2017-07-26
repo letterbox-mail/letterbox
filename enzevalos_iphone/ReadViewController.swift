@@ -214,6 +214,14 @@ class ReadViewController: UITableViewController {
     }
 
     @IBAction func deleteButton(_ sender: AnyObject) {
+        if let mail = mail {
+            let trashFolder = UserManager.loadUserValue(Attribute.trashFolderName) as? String ?? NSLocalizedString("Trash", comment: "")
+            if mail.folder.name == trashFolder {
+                AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
+            } else {
+                AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: trashFolder)
+            }
+        }
         _ = navigationController?.popViewController(animated: true)
     }
 
