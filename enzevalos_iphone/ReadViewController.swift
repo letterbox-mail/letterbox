@@ -40,6 +40,8 @@ class ReadViewController: UITableViewController {
 
     var mail: PersistentMail? = nil
 
+    var keyDiscoveryDate: Date? = nil
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,6 +72,13 @@ class ReadViewController: UITableViewController {
         reactButton.setTitle(NSLocalizedString("reactButton", comment: "Title of the reaction Button"), for: .normal)
 
         setUItoMail()
+
+        _ = mail?.from.contact?.records.flatMap { x in
+            if x.hasKey && x.key != nil {
+                let keyWrapper = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(x.key!)
+                keyDiscoveryDate = keyWrapper?.discoveryTime
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -130,7 +139,8 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate! || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+
             return 3
         }
 
@@ -143,7 +153,7 @@ class ReadViewController: UITableViewController {
         }
 
         if let mail = mail {
-            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate! && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
                 return 2
             }
         }
@@ -172,7 +182,7 @@ class ReadViewController: UITableViewController {
                     }
                 } else if mail.isEncrypted && mail.unableToDecrypt {
                     return infoCell
-                } else if mail.from.hasKey && !mail.isSecure {
+                } else if mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate! {
                     if indexPath.row == 0 {
                         return infoCell
                     } else if indexPath.row == 1 {
@@ -356,7 +366,7 @@ class ReadViewController: UITableViewController {
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
             }
 
-            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure)" )
+            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure)")
         }
     }
 
