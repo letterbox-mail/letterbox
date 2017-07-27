@@ -743,7 +743,7 @@
         <!--Inbox-->
         <scene sceneID="ue1-yd-fJq">
             <objects>
-                <tableViewController id="X5Y-Rf-Qzd" customClass="InboxViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController restorationIdentifier="inboxViewController" storyboardIdentifier="inboxViewController" id="X5Y-Rf-Qzd" customClass="InboxViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="130" sectionHeaderHeight="18" sectionFooterHeight="18" id="hiB-1s-b08">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1604,10 +1604,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="6Ug-AV-lba"/>
+        <segue reference="j4Q-k1-ud3"/>
         <segue reference="TgN-rB-esa"/>
-        <segue reference="rhW-cI-4c4"/>
-        <segue reference="btx-4o-o0r"/>
-        <segue reference="D6m-L0-5AB"/>
+        <segue reference="kND-73-kqr"/>
+        <segue reference="bUY-Me-dje"/>
+        <segue reference="GWh-iO-bPb"/>
     </inferredMetricsTieBreakers>
 </document>

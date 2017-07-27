@@ -33,9 +33,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         else {
             let rootViewController = (self.window?.rootViewController! as! UINavigationController)
+            
             for vc in rootViewController.viewControllers {
                 if let id = vc.restorationIdentifier, id == "folderViewController" {
-                    vc.performSegue(withIdentifier: "showInboxSegue", sender: rootViewController)
+                    let inboxViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "inboxViewController")
+                    vc.title = NSLocalizedString("Folders", comment: "")
+                    rootViewController.pushViewController(inboxViewController, animated: false)
                     break
                 }
             }
