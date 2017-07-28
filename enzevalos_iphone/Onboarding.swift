@@ -56,7 +56,7 @@ class Onboarding: NSObject {
     static func onboarding(_ callback: @escaping () -> ()) -> UIViewController {
 
         doWhenDone = callback
-        
+
         //Background
 
         var myBounds = CGRect()
@@ -248,7 +248,7 @@ class Onboarding: NSObject {
         password.text = UserManager.loadUserValue(.userPW) as? String
         mailaddress.text = UserManager.loadUserValue(.userAddr) as? String
         doWhenDone = { Void in }
-        
+
         let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: nil, actionBlock: callback)
         username = UITextField.init()
         username.borderStyle = UITextBorderStyle.none
@@ -479,7 +479,7 @@ class Onboarding: NSObject {
 
     static func imapCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
         imapCheckDone = true
-        imapCheck = error == nil
+        imapCheck = error == nil // TODO: @Jakob das verstehe ich nicht
         print(error)
         if imapCheck {
             AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)
@@ -506,37 +506,22 @@ class Onboarding: NSObject {
             if mailAddress.contains("@gmail") || mailAddress.contains("@googlemail") {
                 UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
-            else if mailAddress.contains("@gmx") {
-                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+                else if mailAddress.contains("@gmx") {
+                    UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
-            else if mailAddress.contains("@posteo") {
-                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+                else if mailAddress.contains("@posteo") {
+                    UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
-            else if mailAddress.contains("@aol.com") || mailAddress.contains("@games.com") || mailAddress.contains("@love.com") {
-                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+                else if mailAddress.contains("@aol.com") || mailAddress.contains("@games.com") || mailAddress.contains("@love.com") {
+                    UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
             setServerValues(mailaddress: mailAddress)
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
-            
-            // set a displayname for the lab study
-            switch mailAddress {
-            case "ullimuelle@web.de":
-                UserManager.storeUserValue("Ulli Müller" as AnyObject, attribute: Attribute.accountname)
-            case "bob2005@web.de":
-                UserManager.storeUserValue("Bob" as AnyObject, attribute: Attribute.accountname)
-            case "nchr@enzevalos.de":
-                UserManager.storeUserValue("NC Human Resources" as AnyObject, attribute: Attribute.accountname)
-            case "ncpayroll@enzevalos.de":
-                UserManager.storeUserValue("NC Payroll" as AnyObject, attribute: Attribute.accountname)
-            case "idsolutions@enzevalos.de":
-                UserManager.storeUserValue("Identity Solutions" as AnyObject, attribute: Attribute.accountname)
-            default: break
-            }
         }
         if let pw = password.text, pw != "" {
             UserManager.storeUserValue(pw as AnyObject?, attribute: Attribute.userPW)
         }
-        if manualSet {
+        if manualSet { // TODO: @Jakob was ist manualSet und kann das weg?
             if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) {
                 switch mailAddress {
                 case "ullimuelle@web.de":
@@ -656,8 +641,8 @@ class Onboarding: NSObject {
             }
         }
     }
-    
-    static func importprivateKey(path: String){
+
+    static func importprivateKey(path: String) {
         let pgp = ObjectivePGP.init()
         pgp.importKeys(fromFile: path, allowDuplicates: false)
         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
@@ -682,7 +667,7 @@ class Onboarding: NSObject {
         var path: String?
         print(UserManager.loadUserValue(Attribute.userAddr)! as! String)
         let name = (UserManager.loadUserValue(Attribute.userAddr)! as! String).lowercased()
-        switch name{
+        switch name { // TODO: @Jakob hast du das aus dem Study branch hier her geholt?
         case "idsolutions@enzevalos.de":
             importprivateKey(path: Bundle.main.path(forResource: "idsolutions-private", ofType: "gpg")!)
             break
@@ -693,27 +678,27 @@ class Onboarding: NSObject {
             importprivateKey(path: Bundle.main.path(forResource: "ncpayroll-private", ofType: "gpg")!)
             break
         case "ullimuelle@web.de":
-             importprivateKey(path: Bundle.main.path(forResource: "ullimuelle-private", ofType: "gpg")!)
+            importprivateKey(path: Bundle.main.path(forResource: "ullimuelle-private", ofType: "gpg")!)
             break
         case "bob2005@web.de":
-             importprivateKey(path: Bundle.main.path(forResource: "bob-private", ofType: "gpg")!)
+            importprivateKey(path: Bundle.main.path(forResource: "bob-private", ofType: "gpg")!)
             break
         case "alice2005@web.de":
-             importprivateKey(path: Bundle.main.path(forResource: "alice2005-private", ofType: "gpg")!)
+            importprivateKey(path: Bundle.main.path(forResource: "alice2005-private", ofType: "gpg")!)
             break
         default:
             let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-            if let user = UserManager.loadUserValue(Attribute.userAddr){
-                if let key = enc?.generateKey(adr:user as! String){
+            if let user = UserManager.loadUserValue(Attribute.userAddr) {
+                if let key = enc?.generateKey(adr: user as! String) {
                     print("My Key: \(key.keyID) for \(user) date: \(key.creationDate)")
                 }
             }
-           
+
         }
 
-      
 
- 
+
+
         //Import private key END
         //---------------------------------------
         //---------------------------------------
@@ -732,7 +717,7 @@ class Onboarding: NSObject {
         //Import public key END
         //---------------------------------------//---------------------------------------
         //Import public Key BEGIN
-        
+
         path = Bundle.main.path(forResource: "JakobBode", ofType: "asc") //<---- Schlüsseldatei
         pgp = ObjectivePGP.init()
         pgp.importKeys(fromFile: path!, allowDuplicates: false)
@@ -741,7 +726,7 @@ class Onboarding: NSObject {
             _ = enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"]) //<---- Emailadresse
         }
         catch _ { }
-        
+
         //Import public key END
         //---------------------------------------
         //---------------------------------------
@@ -777,7 +762,7 @@ class Onboarding: NSObject {
         //---------------------------------------
         //---------------------------------------
         //Import public Key BEGIN
-        
+
         path = Bundle.main.path(forResource: "bob_enzevalos_public", ofType: "asc") //<---- Schlüsseldatei
         pgp = ObjectivePGP.init()
         pgp.importKeys(fromFile: path!, allowDuplicates: false)
@@ -786,7 +771,7 @@ class Onboarding: NSObject {
             _ = enc?.addKey(data, forMailAddresses: ["bob@enzevalos.de"]) //<---- Emailadresse
         }
         catch _ { }
-        
+
         //Import public key END
         //---------------------------------------
         //---------------------------------------
@@ -819,7 +804,7 @@ class Onboarding: NSObject {
         }
         catch _ { }
 
-        switch  name {
+        switch name {
         case "bob2005@web.de":
             path = Bundle.main.path(forResource: "bob-public", ofType: "gpg")
             pgp = ObjectivePGP.init()
@@ -882,8 +867,8 @@ class TextFieldDelegate: NSObject, UITextFieldDelegate {
             Onboarding.doWhenDone()
             return true
         }
-        else {
-            textField.resignFirstResponder()
+            else {
+                textField.resignFirstResponder()
         }
         return true
     }
