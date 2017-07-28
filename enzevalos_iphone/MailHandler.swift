@@ -624,9 +624,8 @@ class MailHandler {
     }
 
     func checkIMAP(_ completion: @escaping (Error?) -> Void) {
-        self.setupIMAPSession()
 
-        self.IMAPSes?.checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
+        self.IMAPSession.checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
         //self.IMAPSession.connectOperation().start(completion/* as! (Error?) -> Void*/)
     }
 
