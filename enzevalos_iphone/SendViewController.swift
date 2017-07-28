@@ -102,6 +102,9 @@ class SendViewController: UIViewController {
                     toText.delegate?.tokenField!(toText, didEnterText: mail.mailAddress)
                 }
             }
+            for case let mail as String in prefilledMail.to { //TODO: remove once adresses can be created
+                toText.delegate?.tokenField!(toText, didEnterText: mail)
+            }
             for case let mail as MailAddress in prefilledMail.cc ?? [] {
                 if mail.mailAddress != UserManager.loadUserValue(Attribute.userAddr) as! String {
                     ccText.delegate?.tokenField!(ccText, didEnterText: mail.mailAddress)
@@ -398,15 +401,15 @@ class SendViewController: UIViewController {
         ccSecure = ccText.dataSource!.isSecure!(ccText)
         return toSecure && ccSecure
     }
-    
+
     var someoneWithKeyPresent: Bool {
         guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
             return true
         }
-        
+
         let toKey = toSource.someSecure(toText)
         let ccKey = ccSource.someSecure(ccText)
-        
+
         return toKey || ccKey
     }
 
@@ -588,8 +591,7 @@ extension VENTokenFieldDataSource {
         for entry in tokenField.mailTokens {
             secure = secure || EnzevalosEncryptionHandler.hasKey(entry as! String)
         }
-        
-        print(secure)
+
         return secure
     }
 }

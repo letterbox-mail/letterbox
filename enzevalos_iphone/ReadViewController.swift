@@ -38,6 +38,8 @@ class ReadViewController: UITableViewController {
 
     var VENDelegate: ReadVENDelegate?
 
+    var textDelegate: ReadTextDelegate?
+
     var mail: PersistentMail? = nil
 
     var keyDiscoveryDate: Date? = nil
@@ -72,6 +74,11 @@ class ReadViewController: UITableViewController {
         reactButton.setTitle(NSLocalizedString("reactButton", comment: "Title of the reaction Button"), for: .normal)
 
         setUItoMail()
+
+        textDelegate = ReadTextDelegate()
+        textDelegate?.callback = newMailCallback
+
+        messageBody.delegate = textDelegate
 
         _ = mail?.from.contact?.records.flatMap { x in
             if x.hasKey && x.key != nil {
@@ -371,7 +378,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "answerTo" {
+        if segue.identifier == "answerTo" && (sender is UIBarButtonItem || (sender as? String ?? "noReaction") == "reactButton") {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController, mail != nil {
                 let reaction = (sender as? String ?? "noReaction") == "reactButton"
@@ -427,6 +434,16 @@ class ReadViewController: UITableViewController {
 
                 controller.prefilledMail = answerMail
             }
+        } else if segue.identifier == "answerTo" { // New Mail from data detector action
+            let navigationController = segue.destination as? UINavigationController
+            if let controller = navigationController?.topViewController as? SendViewController {
+
+                let answerTo = sender as? String ?? "" // TODO: Convert String into MailAddress(?)
+
+                let answerMail = EphemeralMail(to: NSSet.init(array: [answerTo]), cc: NSSet.init(array: []), bcc: [], date: Date(), subject: "", body: "", uid: 0, predecessor: nil) // TODO: are these the best values?
+
+                controller.prefilledMail = answerMail
+            }
         } else if segue.identifier == "showContact" {
             let destinationVC = segue.destination as! ContactViewController
             if let sender = sender as? [String: AnyObject?] {
@@ -434,5 +451,21 @@ class ReadViewController: UITableViewController {
                 destinationVC.highlightEmail = (sender["email"] as! String)
             }
         }
+    }
+
+    func newMailCallback(Address: String) {
+        performSegue(withIdentifier: "answerTo", sender: Address)
+    }
+}
+
+class ReadTextDelegate: NSObject, UITextViewDelegate {
+    var callback: ((String) -> ())? = nil
+
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        if URL.scheme == "mailto" {
+            callback?(URL.absoluteString.replacingOccurrences(of: "mailto:", with: ""))
+            return false
+        }
+        return true
     }
 }
