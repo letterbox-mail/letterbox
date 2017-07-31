@@ -54,6 +54,13 @@
                     }
                     ]
         },
+        "mailboxes": {
+            "drafts": "Drafts",
+            "allmail": "Archive",
+            "spam": "Spam",
+            "sentmail": "Sent objects",
+            "trash": "Trash"
+        },
         "domain-match":[
                         "enzevalos.de",
                         "enzevalos"
