@@ -27,7 +27,7 @@ class FolderViewController: UITableViewController {
             navigationItem.setLeftBarButton(navigationItem.backBarButtonItem, animated: false)
         }
         if let thisFolder = presentedFolder {
-            navigationItem.title = thisFolder.name
+            navigationItem.title = (AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.components(fromPath: thisFolder.name) as! [String])[0]
             refreshControl?.beginRefreshing()
             AppDelegate.getAppDelegate().mailHandler.firstLookUp(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing)
             if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
@@ -131,8 +131,8 @@ class FolderViewController: UITableViewController {
             }
         }
         else if indexPath.row < folders.count {
-            cell.folderName.text = folders[indexPath.row].name
-            cell.folderImage.image = getImage(for: folders[indexPath.row].name)
+            cell.folderName.text = folders[indexPath.row].frontendName
+            cell.folderImage.image = getImage(for: folders[indexPath.row].frontendName)
         }
             
         return cell
@@ -163,7 +163,7 @@ class FolderViewController: UITableViewController {
             let destinationVC = segue.destination as! ReadViewController
             if let mail = sender as? PersistentMail {
                 destinationVC.mail = mail
-                if presentedFolder?.name == ((UserManager.loadUserValue(Attribute.draftFolderName) as? String) ?? NSLocalizedString("Drafts", comment: "")) {
+                if presentedFolder?.name == UserManager.backendDraftFolderName {
                     destinationVC.isDraft = true
                 }
             }
@@ -178,7 +178,7 @@ class FolderViewController: UITableViewController {
     func refresh() {
         if let thisFolder = presentedFolder {
             refreshControl?.beginRefreshing()
-            AppDelegate.getAppDelegate().mailHandler.olderMailsFolder(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing(_:))
+            AppDelegate.getAppDelegate().mailHandler.firstLookUp(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing(_:))//olderMailsFolder(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing(_:))
         }
         else {
             DataHandler.handler.callForFolders(done: endRefreshing)
@@ -188,6 +188,7 @@ class FolderViewController: UITableViewController {
         if let thisFolder = presentedFolder {
             if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
                 folders = subFolders.sorted()
+                presentedFolder = thisFolder
             }
         }
         if isFirstFolderViewController {
@@ -201,9 +202,10 @@ class FolderViewController: UITableViewController {
     }
     
     func getImage(for name: String) -> UIImage {
-        if false /*folders*/ {
+        if name == UserManager.frontendInboxFolderName {
             return #imageLiteral(resourceName: "Inbox")
         }
+        /* TODO: Add more in here*/
         return #imageLiteral(resourceName: "Inbox")
     }
     func getMails() -> [PersistentMail] {

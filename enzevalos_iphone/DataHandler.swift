@@ -71,7 +71,7 @@ class DataHandler {
             if let newFolders = array{
                 for new in newFolders{
                     if case let folder as MCOIMAPFolder = new{
-                        let f = self.findFolder(name: folder.path)
+                        let f = self.findFolder(name: folder.path) //FIXME: this should take the full path instead of the name
                         f.delimiter = folder.delimiter.description
                         f.flags = folder.flags
                     }
@@ -482,7 +482,7 @@ class DataHandler {
                 }
             }
             else {
-                return 
+                return
             }
         
             let myfolder = findFolder(name: folder) as Folder
@@ -500,7 +500,6 @@ class DataHandler {
             if let r = record {
                 _ = r.addNewMail(mail)
             }
-
         }
 
         private func readMails() -> [PersistentMail] {

@@ -21,6 +21,12 @@ public class Folder: NSManagedObject {
         }
     }
     
+    var frontendName: String {
+        get {
+            return UserManager.convertToFrontendFoldername(from: name)
+        }
+    }
+    
     var uids: MCOIndexSet{
     
         get{
@@ -113,5 +119,4 @@ public class Folder: NSManagedObject {
         }
     }
     
-
 }
