@@ -153,6 +153,10 @@ struct UserManager{
     
     //Usable for paths too
     static func convertToBackendFolderPath(from frontendFolderPath: String) -> String {
+        let session = AppDelegate.getAppDelegate().mailHandler.IMAPSession
+        if session.defaultNamespace == nil && frontendFolderPath == frontendInboxFolderPath { //FIXME: Dirty Fix for Issue #105
+            return "INBOX"
+        }
         return AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.path(forComponents: [frontendFolderPath])
     }
     
