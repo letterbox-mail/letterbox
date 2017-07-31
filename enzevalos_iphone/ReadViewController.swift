@@ -222,8 +222,8 @@ class ReadViewController: UITableViewController {
 
     @IBAction func deleteButton(_ sender: AnyObject) {
         if let mail = mail {
-            let trashFolder = UserManager.loadUserValue(Attribute.trashFolderName) as? String ?? NSLocalizedString("Trash", comment: "")
-            if mail.folder.name == trashFolder {
+            let trashFolder = UserManager.backendTrashFolderPath
+            if mail.folder.path == trashFolder {
                 AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
             } else {
                 AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: trashFolder)
@@ -234,7 +234,7 @@ class ReadViewController: UITableViewController {
 
     @IBAction func archiveButton(_ sender: AnyObject) {
         if let mail = mail {
-            let archiveFolder = UserManager.loadUserValue(Attribute.archiveFolderName) as? String ?? NSLocalizedString("Archive", comment: "")
+            let archiveFolder = UserManager.backendArchiveFolderPath
             AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
         }
         _ = navigationController?.popViewController(animated: true)

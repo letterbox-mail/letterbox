@@ -11,7 +11,7 @@ import Foundation
 
 
 enum Attribute: Int{
-    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderName, draftFolderName, trashFolderName, inboxFolderName, archiveFolderName
+    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath
     
     var defaultValue:AnyObject? {
         switch self {
@@ -42,15 +42,15 @@ enum Attribute: Int{
         case .smtpConnectionType:
              return MCOConnectionType.TLS.rawValue as AnyObject?//startTLS.rawValue
             //return MCOConnectionType.startTLS.rawValue as AnyObject?//startTLS.rawValue
-        case .sentFolderName:
+        case .sentFolderPath:
             return NSLocalizedString("Sent", comment: "Default name for the sentFolder") as AnyObject?
-        case .draftFolderName:
+        case .draftFolderPath:
             return NSLocalizedString("Drafts", comment: "Default name for the draftFolder") as AnyObject?
-        case .trashFolderName:
+        case .trashFolderPath:
             return NSLocalizedString("Trash", comment: "Default name for the trashFolder") as AnyObject?
-        case .inboxFolderName:
+        case .inboxFolderPath:
             return NSLocalizedString("INBOX", comment: "Default name for the inboxFolder") as AnyObject?
-        case .archiveFolderName:
+        case .archiveFolderPath:
             return NSLocalizedString("Archive", comment: "Default name for the archiveFolder") as AnyObject?
             
         case .smtpAuthType:
@@ -85,72 +85,75 @@ struct UserManager{
     
     //Frontend (GUI and providers.json) uses UTF-8 String-Encoding
     //The backend uses because of the definition of IMAP UTF-7 String-Encoding
-    static var frontendDraftFolderName: String {
+    static var frontendDraftFolderPath: String {
         get {
-            return loadUserValue(Attribute.draftFolderName) as? String ?? NSLocalizedString("Drafts", comment: "")
+            return loadUserValue(Attribute.draftFolderPath) as? String ?? NSLocalizedString("Drafts", comment: "")
         }
     }
     
-    static var frontendInboxFolderName: String {
+    static var frontendInboxFolderPath: String {
         get {
-            return loadUserValue(Attribute.inboxFolderName) as? String ?? NSLocalizedString("INBOX", comment: "")
+            return loadUserValue(Attribute.inboxFolderPath) as? String ?? NSLocalizedString("INBOX", comment: "")
         }
     }
     
-    static var frontendSentFolderName: String {
+    static var frontendSentFolderPath: String {
         get {
-            return loadUserValue(Attribute.sentFolderName) as? String ?? NSLocalizedString("Sent", comment: "")
+            return loadUserValue(Attribute.sentFolderPath) as? String ?? NSLocalizedString("Sent", comment: "")
         }
     }
     
-    static var frontendArchiveFolderName: String {
+    static var frontendArchiveFolderPath
+        : String {
         get {
-            return loadUserValue(Attribute.archiveFolderName) as? String ?? NSLocalizedString("Archive", comment: "")
+            return loadUserValue(Attribute.archiveFolderPath) as? String ?? NSLocalizedString("Archive", comment: "")
         }
     }
     
-    static var frontendTrashFolderName: String {
+    static var frontendTrashFolderPath: String {
         get {
-            return loadUserValue(Attribute.trashFolderName) as? String ?? NSLocalizedString("Trash", comment: "")
+            return loadUserValue(Attribute.trashFolderPath) as? String ?? NSLocalizedString("Trash", comment: "")
         }
     }
     
-    static var backendDraftFolderName: String {
+    static var backendDraftFolderPath: String {
         get {
-            return convertToBackendFoldername(from: frontendDraftFolderName)
+            return convertToBackendFolderPath(from: frontendDraftFolderPath)
         }
     }
     
-    static var backendSentFolderName: String {
+    static var backendSentFolderPath: String {
         get {
-            return convertToBackendFoldername(from: frontendSentFolderName)
+            return convertToBackendFolderPath(from: frontendSentFolderPath)
         }
     }
     
-    static var backendArchiveFolderName: String {
+    static var backendArchiveFolderPath: String {
         get {
-            return convertToBackendFoldername(from: frontendArchiveFolderName)
+            return convertToBackendFolderPath(from: frontendArchiveFolderPath)
         }
     }
     
-    static var backendTrashFolderName: String {
+    static var backendTrashFolderPath: String {
         get {
-            return convertToBackendFoldername(from: frontendTrashFolderName)
+            return convertToBackendFolderPath(from: frontendTrashFolderPath)
         }
     }
     
-    static var backendInboxFolderName: String {
+    static var backendInboxFolderPath: String {
         get {
-            return convertToBackendFoldername(from: frontendInboxFolderName)
+            return convertToBackendFolderPath(from: frontendInboxFolderPath)
         }
     }
     
-    static func convertToFrontendFoldername(from backendFolderName: String) -> String{
-        return (AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.components(fromPath: backendFolderName) as! [String])[0]
+    //Usable for paths too
+    static func convertToFrontendFolderPath(from backendFolderPath: String, with delimiter: String = ".") -> String{
+        return (AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.components(fromPath: backendFolderPath) as! [String]).joined(separator: delimiter)
     }
     
-    static func convertToBackendFoldername(from frontendFolderName: String) -> String {
-        return AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.path(forComponents: [frontendFolderName])
+    //Usable for paths too
+    static func convertToBackendFolderPath(from frontendFolderPath: String) -> String {
+        return AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.path(forComponents: [frontendFolderPath])
     }
     
     static func storeUserValue(_ value: AnyObject?, attribute: Attribute) {

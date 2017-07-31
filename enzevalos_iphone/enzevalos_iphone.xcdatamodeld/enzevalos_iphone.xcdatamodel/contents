@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="Account" syncable="YES" codeGenerationType="class">
         <attribute name="accountname" attributeType="String" syncable="YES"/>
         <attribute name="dispalyname" attributeType="String" syncable="YES"/>
@@ -20,8 +20,7 @@
         <attribute name="maxID" optional="YES" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
         <attribute name="path" attributeType="String" syncable="YES"/>
         <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="folder" inverseEntity="PersistentMail" syncable="YES"/>
-        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="subfolder" inverseEntity="Folder" syncable="YES"/>
-        <relationship name="subfolder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" syncable="YES"/>
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
@@ -70,7 +69,7 @@
     <elements>
         <element name="Account" positionX="-288" positionY="-9" width="128" height="135"/>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>
-        <element name="Folder" positionX="-297" positionY="-18" width="128" height="165"/>
+        <element name="Folder" positionX="-297" positionY="-18" width="128" height="150"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="195"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="315"/>
         <element name="Server" positionX="-279" positionY="0" width="128" height="105"/>

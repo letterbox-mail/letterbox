@@ -88,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UserDefaults.standard.bool(forKey: "reset") {
             if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
                 let mailhandler = MailHandler.init()
-                mailhandler.move(mails: DataHandler.handler.findFolder(name: "INBOX").mailsOfFolder, from: "INBOX", to: "Archive")
+                //mailhandler.move(mails: DataHandler.handler.findFolder(name: "INBOX").mailsOfFolder, from: "INBOX", to: "Archive")
             }
             DataHandler.handler.reset()
             Onboarding.credentials = nil

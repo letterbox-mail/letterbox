@@ -52,7 +52,7 @@ class ListViewController: UITableViewController {
             self.title = contact!.name
             if contact!.mails.count < 20 {
                 loading = true
-                AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, newMailCallback: addNewMail, completionCallback: doneLoading)
+                AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, folderPath: UserManager.backendInboxFolderPath, newMailCallback: addNewMail, completionCallback: doneLoading)
             }
         }
     }
@@ -211,7 +211,7 @@ class ListViewController: UITableViewController {
         if y > h + reload_distance && !loading {
             print("loading new mail because we scrolled to the bottom")
             loading = true
-            AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, newMailCallback: addNewMail, completionCallback: doneLoading)
+            AppDelegate.getAppDelegate().mailHandler.loadMoreMails(contact!, folderPath: UserManager.backendInboxFolderPath, newMailCallback: addNewMail, completionCallback: doneLoading)
             tableView.reloadData()
         }
     }

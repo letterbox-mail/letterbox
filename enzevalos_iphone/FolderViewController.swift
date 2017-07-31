@@ -19,7 +19,7 @@ class FolderViewController: UITableViewController {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
         
         if isFirstFolderViewController {
-            folders = DataHandler.handler.allFolders.sorted().filter { $0.name != NSLocalizedString("INBOX", comment: "") }
+            folders = DataHandler.handler.allRootFolders.sorted().filter { $0.path != UserManager.backendInboxFolderPath }
             DataHandler.handler.callForFolders(done: endRefreshing)
             navigationItem.title = NSLocalizedString("Folders", comment: "")
         }
@@ -27,12 +27,10 @@ class FolderViewController: UITableViewController {
             navigationItem.setLeftBarButton(navigationItem.backBarButtonItem, animated: false)
         }
         if let thisFolder = presentedFolder {
-            navigationItem.title = (AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.components(fromPath: thisFolder.name) as! [String])[0]
+            navigationItem.title = UserManager.convertToFrontendFolderPath(from: thisFolder.name)
             refreshControl?.beginRefreshing()
             AppDelegate.getAppDelegate().mailHandler.firstLookUp(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing)
-            if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
-                folders = subFolders.sorted()
-            }
+            folders = thisFolder.subfolders.sorted()
         }
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -132,7 +130,7 @@ class FolderViewController: UITableViewController {
         }
         else if indexPath.row < folders.count {
             cell.folderName.text = folders[indexPath.row].frontendName
-            cell.folderImage.image = getImage(for: folders[indexPath.row].frontendName)
+            cell.folderImage.image = getImage(for: UserManager.convertToFrontendFolderPath(from: folders[indexPath.row].path, with: folders[indexPath.row].delimiter))
         }
             
         return cell
@@ -163,7 +161,7 @@ class FolderViewController: UITableViewController {
             let destinationVC = segue.destination as! ReadViewController
             if let mail = sender as? PersistentMail {
                 destinationVC.mail = mail
-                if presentedFolder?.name == UserManager.backendDraftFolderName {
+                if let presFolder = presentedFolder, presFolder.path.hasPrefix(UserManager.backendDraftFolderPath) {
                     destinationVC.isDraft = true
                 }
             }
@@ -186,13 +184,11 @@ class FolderViewController: UITableViewController {
     }
     func endRefreshing(_ error: Bool) {
         if let thisFolder = presentedFolder {
-            if let set = thisFolder.subfolder, let subFolders = set.allObjects as? [Folder] {
-                folders = subFolders.sorted()
-                presentedFolder = thisFolder
-            }
+            folders = thisFolder.subfolders.sorted()
+            presentedFolder = thisFolder
         }
         if isFirstFolderViewController {
-            folders = DataHandler.handler.allFolders.sorted().filter { $0.name != NSLocalizedString("INBOX", comment: "") }
+            folders = DataHandler.handler.allRootFolders.sorted().filter { $0.path != UserManager.backendInboxFolderPath }
         }
         tableView.reloadData()
         refreshControl?.endRefreshing()
@@ -201,8 +197,8 @@ class FolderViewController: UITableViewController {
         print("newMails")
     }
     
-    func getImage(for name: String) -> UIImage {
-        if name == UserManager.frontendInboxFolderName {
+    func getImage(for path: String) -> UIImage {
+        if path == UserManager.frontendInboxFolderPath {
             return #imageLiteral(resourceName: "Inbox")
         }
         /* TODO: Add more in here*/

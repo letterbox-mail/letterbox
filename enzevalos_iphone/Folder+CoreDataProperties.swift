@@ -17,7 +17,6 @@ extension Folder {
     }
 
     @NSManaged public var parent: Folder?
-    @NSManaged public var subfolder: NSSet?
     @NSManaged public var mails: NSSet?
     @NSManaged public var path: String
     @NSManaged public var delimiter: String
@@ -95,23 +94,6 @@ extension Folder {
 
     @objc(removeMails:)
     @NSManaged public func removeFromMails(_ values: NSSet)
-
-}
-
-// MARK: Generated accessors for subfolder
-extension Folder {
-
-    @objc(addSubfolderObject:)
-    @NSManaged public func addToSubfolder(_ value: Folder)
-
-    @objc(removeSubfolderObject:)
-    @NSManaged public func removeFromSubfolder(_ value: Folder)
-
-    @objc(addSubfolder:)
-    @NSManaged public func addToSubfolder(_ values: NSSet)
-
-    @objc(removeSubfolder:)
-    @NSManaged public func removeFromSubfolder(_ values: NSSet)
 
 }
 

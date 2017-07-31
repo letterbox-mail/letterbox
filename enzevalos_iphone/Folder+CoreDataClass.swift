@@ -23,7 +23,7 @@ public class Folder: NSManagedObject {
     
     var frontendName: String {
         get {
-            return UserManager.convertToFrontendFoldername(from: name)
+            return UserManager.convertToFrontendFolderPath(from: name)
         }
     }
     
@@ -64,6 +64,18 @@ public class Folder: NSManagedObject {
                 }
             }
             return ms
+        }
+    }
+    
+    var subfolders: [Folder] {
+        get {
+            var folders: [Folder] = []
+            for f in DataHandler.handler.allFolders {
+                if f.path.hasPrefix(path+delimiter) && f.path != path {
+                    folders.append(f)
+                }
+            }
+            return folders
         }
     }
     

@@ -56,7 +56,17 @@ class DataHandler {
             }
             return folders
         }
+    }
     
+    //All Folders, which are not a subfolder
+    var allRootFolders: [Folder] {
+        var root: [Folder] = []
+        for f in allFolders {
+            if !f.path.contains(f.delimiter) {
+                root.append(f)
+            }
+        }
+        return root
     }
 
     
@@ -71,8 +81,8 @@ class DataHandler {
             if let newFolders = array{
                 for new in newFolders{
                     if case let folder as MCOIMAPFolder = new{
-                        let f = self.findFolder(name: folder.path) //FIXME: this should take the full path instead of the name
-                        f.delimiter = folder.delimiter.description
+                        let f = self.findFolder(with: folder.path) //FIXME: this should take the full path instead of the name
+                        f.delimiter = String(Character(UnicodeScalar(UInt8(folder.delimiter))))
                         f.flags = folder.flags
                     }
                 }
@@ -249,19 +259,19 @@ class DataHandler {
         }
 
 
-    func findFolder(name: String) -> Folder{
-        if let search = find("Folder", type: "path", search:name){
+    func findFolder(with path: String) -> Folder{
+        if let search = find("Folder", type: "path", search:path){
             if search.count > 0{
                 return search[0] as! Folder
             }
         }
         let folder  = NSEntityDescription.insertNewObject(forEntityName: "Folder", into: managedObjectContext) as! Folder
-        folder.path = name
+        folder.path = path
         return folder
     }
     
-    func existsFolder(with name: String) -> Bool {
-        if let search = find("Folder", type: "path", search:name), search.count > 0{
+    func existsFolder(with path: String) -> Bool {
+        if let search = find("Folder", type: "path", search:path), search.count > 0{
             return true
         }
         return false
@@ -414,7 +424,7 @@ class DataHandler {
 
         // -------- End handle to, cc, from addresses --------
 
-    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: DecryptedData?, folder: String = "INBOX") {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: DecryptedData?, folderPath: String) {
 
             let finding = findNum("PersistentMail", type: "uid", search: uid)
             let mail: PersistentMail
@@ -485,8 +495,8 @@ class DataHandler {
                 return
             }
         
-            let myfolder = findFolder(name: folder) as Folder
-            print("DataHAndler around line 455: ", folder)
+            let myfolder = findFolder(with: folderPath) as Folder
+            print("DataHAndler around line 455: ", folderPath)
             myfolder.addToMails(mail)
             if mail.uid > myfolder.maxID{
                 myfolder.maxID = mail.uid
@@ -547,8 +557,8 @@ class DataHandler {
     
 
     
-    func folderRecords(folder: String = "INBOX") -> [KeyRecord]{
-        let folder = findFolder(name: folder) as Folder
+    func folderRecords(folderPath: String) -> [KeyRecord]{
+        let folder = findFolder(with: folderPath) as Folder
         return folder.records
     }
 

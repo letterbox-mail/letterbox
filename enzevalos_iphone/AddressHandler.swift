@@ -76,7 +76,7 @@ class AddressHandler {
     static var freqAlgorithm2: ([String]) -> [(UIImage, String, String, UIImage?, UIColor)] = {
         (inserted: [String]) -> [(UIImage, String, String, UIImage?, UIColor)] in
 
-        var cons = DataHandler.handler.folderRecords()
+        var cons = DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath)
         var list: [(UIImage, String, String, UIImage?, UIColor)] = []
         var localInserted = inserted
 

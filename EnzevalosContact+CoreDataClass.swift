@@ -134,7 +134,7 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         get {
             var myrecords = [KeyRecord]()
             for folder in DataHandler.handler.allFolders{
-                for r in DataHandler.handler.folderRecords(folder: folder.name) {
+                for r in DataHandler.handler.folderRecords(folderPath: folder.path) {
                     if r.ezContact == self {
                         myrecords.append(r)
                     }

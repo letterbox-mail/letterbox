@@ -91,7 +91,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
     func refresh(_ refreshControl: UIRefreshControl) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
-        AppDelegate.getAppDelegate().mailHandler.firstLookUp(newMailCallback: addNewMail, completionCallback: getMailCompleted)
+        AppDelegate.getAppDelegate().mailHandler.firstLookUp(UserManager.backendInboxFolderPath, newMailCallback: addNewMail, completionCallback: getMailCompleted)
       
 
     }
@@ -123,7 +123,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         let cell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as! InboxTableViewCell
 
         cell.delegate = self
-        cell.enzContact = DataHandler.handler.folderRecords()[indexPath.section]
+        cell.enzContact = DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath)[indexPath.section]
         
         
 
@@ -131,7 +131,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return DataHandler.handler.folderRecords().count
+        return DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).count
     }
 
     // set top and bottom seperator height
