@@ -391,7 +391,7 @@ class MailHandler {
     }
 
     func firstLookUp(_ folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        findMaxUID(folderPath){max in
+        /*findMaxUID(folderPath){max in
             var uids: MCOIndexSet
             print("Max uid: \(max)")
             var (min, overflow) = UInt64.subtractWithOverflow(max, UInt64(MailHandler.MAXMAILS))
@@ -403,8 +403,20 @@ class MailHandler {
             uids.remove(DataHandler.handler.findFolder(with: folderPath).uids)
             self.loadMessagesFromServer(uids, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
         
+        }*/
+        getUIDs(for: folderPath) {allUIDs in
+            let loadUIDs = allUIDs.suffix(MailHandler.MAXMAILS)
+            if let last = loadUIDs.last, let first = loadUIDs.first {
+                let indexSet = MCOIndexSet(range: MCORange.init(location: first, length: last-first))
+                if indexSet != nil {
+                    indexSet!.remove(DataHandler.handler.findFolder(with: folderPath).uids)
+                    self.loadMessagesFromServer(indexSet!, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    return
+                }
+            }
+            completionCallback(true)
+            return
         }
-        
     }
     
     
@@ -619,7 +631,7 @@ class MailHandler {
         //TODO: NSP!!!
         var maxUID: UInt64 = 0
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)
-        let uids = MCOIndexSet(range: MCORangeMake(0, UINT64_MAX))
+        let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
 
@@ -642,6 +654,34 @@ class MailHandler {
         }
         dispatchGroup.notify(queue: DispatchQueue.main) {
             callback(maxUID)
+        }
+    }
+    
+    func getUIDs(for folderPath: String, callback: @escaping ((_ uids: [UInt64]) -> ())) {
+        //TODO: NSP!!!
+        let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)
+        let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
+        var ids: [UInt64] = []
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        
+        let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
+        fetchOperation.start { (err, msg, vanished) -> Void in
+            guard err == nil else {
+                print("Error while fetching inbox: \(String(describing: err))")
+                return
+            }
+            if let msgs = msg {
+                for m in msgs {
+                    if let message: MCOIMAPMessage = m as? MCOIMAPMessage {
+                        ids.append(UInt64(message.uid))
+                    }
+                }
+            }
+            dispatchGroup.leave()
+        }
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            callback(ids.sorted())
         }
     }
 
@@ -676,7 +716,7 @@ class MailHandler {
             for mail in mails {
                 uids.add(mail.uid)
                 mail.folder.removeFromMails(mail)
-                DataHandler.handler.deleteMail(with: mail.uid)
+                DataHandler.handler.delete(mail: mail)
             }
             let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
             op?.start{

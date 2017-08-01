@@ -156,6 +156,11 @@ class DataHandler {
         }
     }
     
+    func delete(mail: PersistentMail) {
+        self.managedObjectContext.delete(mail as NSManagedObject)
+        save()
+    }
+    
     func deleteMail(with uid: UInt64) {
         self.deleteNum("PersistentMail", type: "uid", search: uid)
     }
@@ -179,7 +184,6 @@ class DataHandler {
         removeAll(entity: "Mail_Address")
         removeAll(entity: "State")
         removeAll(entity: "Folder")
-       
     }
 
     /*
@@ -426,10 +430,22 @@ class DataHandler {
 
     func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: DecryptedData?, folderPath: String) {
 
-            let finding = findNum("PersistentMail", type: "uid", search: uid)
-            let mail: PersistentMail
-
-            if finding == nil || finding!.count == 0 {
+        let finding = findNum("PersistentMail", type: "uid", search: uid)
+        let mail: PersistentMail
+        var mails: [PersistentMail] = []
+        
+        if let tmpMails = finding as? [PersistentMail] {
+            mails = tmpMails
+            print(mails)
+        }
+        if uid == 2 {
+            print(sender)
+            print(time)
+            print(subject)
+            print(body)
+        }
+        
+        if finding == nil || finding!.count == 0 || mails.filter( { $0.folder.path == folderPath }).count == 0 {
                 // create new mail object
                 mail = NSEntityDescription.insertNewObject(forEntityName: "PersistentMail", into: managedObjectContext) as! PersistentMail
 

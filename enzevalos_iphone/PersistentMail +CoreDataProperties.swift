@@ -58,9 +58,9 @@ extension PersistentMail {
         }
         get {
             self.willAccessValue(forKey: "trouble")
-            let text = self.primitiveValue(forKey: "trouble") as? Bool
+            let text = self.primitiveValue(forKey: "trouble") as? Bool ?? true
             self.didAccessValue(forKey: "trouble")
-            return text!
+            return text
         }
     
     }
