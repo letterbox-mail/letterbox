@@ -146,7 +146,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate! || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
 
             return 3
         }
@@ -160,7 +160,7 @@ class ReadViewController: UITableViewController {
         }
 
         if let mail = mail {
-            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate! && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate ?? Date() && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
                 return 2
             }
         }
