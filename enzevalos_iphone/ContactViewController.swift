@@ -36,7 +36,7 @@ class ContactViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
         if let con = keyRecord {
             hasKey = EnzevalosEncryptionHandler.hasKey(con.ezContact)
-            
+
             let myAddress = UserManager.loadUserValue(Attribute.userAddr) as! String
             if con.addresses.contains(where: { $0.mailAddress.lowercased() == myAddress
             }) {
@@ -142,13 +142,19 @@ class ContactViewController: UIViewController {
     }
 
     @IBAction func actionButton(_ sender: AnyObject) {
-        if (sender as? UIButton)?.titleLabel?.text == NSLocalizedString("toEncrypted", comment: "switch to encrypted") {
+        guard let sender = sender as? UIButton else {
+            return
+        }
+
+        if sender.titleLabel?.text == NSLocalizedString("toEncrypted", comment: "switch to encrypted") {
             let myPath = IndexPath(row: 1, section: 0)
             tableView.selectRow(at: myPath, animated: false, scrollPosition: .none)
             performSegue(withIdentifier: "otherRecord", sender: nil)
-        } else if (sender as? UIButton)?.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
-            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0,predecessor: nil)
+        } else if sender.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
+            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0, predecessor: nil)
             performSegue(withIdentifier: "newMail", sender: mail)
+        } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") && keyRecord!.key != nil {
+            performSegue(withIdentifier: "verifyQRCode", sender: EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(keyRecord!.key!)?.fingerprint)
         }
     }
 
@@ -182,7 +188,17 @@ class ContactViewController: UIViewController {
         } else if segue.identifier == "keyView" {
             let destinationViewController: KeyViewController = segue.destination as! KeyViewController
             destinationViewController.record = keyRecord
+        } else if segue.identifier == "verifyQRCode" {
+            if let DestinationViewController = segue.destination as? QRScannerView {
+                DestinationViewController.fingerprint = EnzevalosEncryptionHandler.getEncryption(.PGP)!.getKey(keyRecord!.key!)!.fingerprint
+                DestinationViewController.callback = verifySuccessfull
+            }
         }
+    }
+
+    func verifySuccessfull() {
+//        EnzevalosEncryptionHandler.getEncryption(.PGP)!.getKey(keyRecord!.key!)!.verified = true // TODO @Jakob: key is not writable
+        tableView.reloadData()
     }
 }
 
@@ -216,17 +232,30 @@ extension ContactViewController: UITableViewDataSource {
                     }
                     return cell
                 } else if indexPath.row == 1 {
-                    let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
-                    if keyRecord!.hasKey {
-                        actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
-                    } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
-                        actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
-                    } else if hasKey {
-                        actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
+                    if isUser && keyRecord!.hasKey {
+                        let qrCodeCell = tableView.dequeueReusableCell(withIdentifier: "QRCodeCell", for: indexPath) as! QRCodeCell
+                        let qrCode = QRCode.generate(input: "OPENPGP4FPR:\(EnzevalosEncryptionHandler.getEncryption(.PGP)!.getKey(keyRecord!.key!)!.fingerprint)")
+
+                        let scaleX = qrCodeCell.qrCode.frame.size.width / qrCode.extent.size.width
+                        let scaleY = qrCodeCell.qrCode.frame.size.height / qrCode.extent.size.height
+
+                        qrCodeCell.label.text = NSLocalizedString("yourFingerprint", comment: "")
+                        qrCodeCell.qrCode.image = UIImage(ciImage: qrCode.applying(CGAffineTransform(scaleX: scaleX, y: scaleY)))
+
+                        return qrCodeCell
                     } else {
-                        actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
+                        let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
+                        if keyRecord!.hasKey {
+                            actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
+                        } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
+                            actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
+                        } else if hasKey {
+                            actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
+                        } else {
+                            actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
+                        }
+                        return actionCell
                     }
-                    return actionCell
                 }
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MailCell") as! MailCell
@@ -310,7 +339,7 @@ extension ContactViewController: UITableViewDataSource {
         if let record = keyRecord {
             switch section {
             case 0:
-                if !record.isVerified && !isUser {
+                if !record.isVerified {
                     return 2
                 }
             case 1:

@@ -29,3 +29,8 @@ class RecordCell: UITableViewCell {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
 }
+
+class QRCodeCell: UITableViewCell {
+    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var qrCode: UIImageView!
+}

@@ -141,3 +141,9 @@
 "reactButton" = "Request Confirmation";
 "sendSecureIfPossible" = "Send secure";
 "sendInsecure" = "Send insecure";
+"verifyContact" = "Verify Contact";
+"scanQRCode" = "Scan the QR Code of the Contact";
+"wrongQRCode" = "Incompatible QR Code found";
+"fingerprintMissmatch" = "The found Fingerprint does not match!";
+"verifySuccess" = "Successfully verified!";
+"yourFingerprint" = "Your Fingerprint:";

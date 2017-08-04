@@ -147,11 +147,14 @@
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
 		A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */; };
+		F113C3851F30D06800E7F1D6 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C3841F30D06800E7F1D6 /* QRScannerView.swift */; };
+		F113C38B1F3344C200E7F1D6 /* ViewControllerPannable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C38A1F3344C200E7F1D6 /* ViewControllerPannable.swift */; };
 		F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */; };
 		F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
+		F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
 		F14D189C1ED880680080515D /* nchr-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18981ED880680080515D /* nchr-private.gpg */; };
 		F14D189D1ED880680080515D /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
 		F14D189E1ED880680080515D /* ncpayroll-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189A1ED880680080515D /* ncpayroll-private.gpg */; };
@@ -414,11 +417,14 @@
 		AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F113C3841F30D06800E7F1D6 /* QRScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
+		F113C38A1F3344C200E7F1D6 /* ViewControllerPannable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerPannable.swift; sourceTree = "<group>"; };
 		F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedSendIcon.swift; sourceTree = "<group>"; };
 		F12041FA1DA3FBF7002E4940 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
+		F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		F14D18981ED880680080515D /* nchr-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "nchr-private.gpg"; path = "keys/nchr-private.gpg"; sourceTree = "<group>"; };
 		F14D18991ED880680080515D /* nchr-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "nchr-public.gpg"; path = "keys/nchr-public.gpg"; sourceTree = "<group>"; };
 		F14D189A1ED880680080515D /* ncpayroll-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ncpayroll-private.gpg"; path = "keys/ncpayroll-private.gpg"; sourceTree = "<group>"; };
@@ -667,6 +673,7 @@
 				F1ACF21D1E0C290500C1B843 /* contactView */,
 				A1D5076D1E80254D00B68B38 /* keyView */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
+				F113C3831F30D01A00E7F1D6 /* QRCode */,
 				476142071E07E52B00FD5E4F /* Theme.swift */,
 				A1230BD81E2F881E006642C7 /* Encryption */,
 				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
@@ -870,6 +877,16 @@
 			name = read;
 			sourceTree = "<group>";
 		};
+		F113C3831F30D01A00E7F1D6 /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				F113C3841F30D06800E7F1D6 /* QRScannerView.swift */,
+				F113C38A1F3344C200E7F1D6 /* ViewControllerPannable.swift */,
+				F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */,
+			);
+			name = QRCode;
+			sourceTree = "<group>";
+		};
 		F1ACF21D1E0C290500C1B843 /* contactView */ = {
 			isa = PBXGroup;
 			children = (
@@ -961,7 +978,7 @@
 				TargetAttributes = {
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = VJ9C93G68Y;
+						DevelopmentTeam = 4377G946WP;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1232,6 +1249,7 @@
 				A135CF221DD4BDD1007E3C29 /* PGPUser.m in Sources */,
 				A135CF031DD4BDD1007E3C29 /* NSData+PGPUtils.m in Sources */,
 				472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */,
+				F113C3851F30D06800E7F1D6 /* QRScannerView.swift in Sources */,
 				A135CF171DD4BDD1007E3C29 /* PGPPublicKeyRSA.m in Sources */,
 				F18B44601E704C550080C041 /* ReplaceSegue.swift in Sources */,
 				A135CF181DD4BDD1007E3C29 /* PGPPublicSubKeyPacket.m in Sources */,
@@ -1248,6 +1266,7 @@
 				4781753D1F06E57E00300D20 /* compress.c in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
 				A135CF0F1DD4BDD1007E3C29 /* PGPMPI.m in Sources */,
+				F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */,
 				472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */,
 				F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */,
 				A135CF191DD4BDD1007E3C29 /* PGPS2K.m in Sources */,
@@ -1287,6 +1306,7 @@
 				478175451F06E57E00300D20 /* netpgp.c in Sources */,
 				A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */,
 				A1416C1B1E268F1A001809F3 /* Encryption.swift in Sources */,
+				F113C38B1F3344C200E7F1D6 /* ViewControllerPannable.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
 				4781753E1F06E57E00300D20 /* create.c in Sources */,
 				A15B7BE41E29306D0024E499 /* EnzevalosEncryptionHandler.swift in Sources */,
@@ -1520,7 +1540,7 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: bushman@gmx.net (UQMSUAQE2Q)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1547,7 +1567,7 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1569,7 +1589,7 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: bushman@gmx.net (UQMSUAQE2Q)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1596,7 +1616,7 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
