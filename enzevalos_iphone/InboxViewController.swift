@@ -112,6 +112,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
+        DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).updateRecords()
         return DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).count
     }
 

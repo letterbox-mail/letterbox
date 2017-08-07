@@ -38,7 +38,7 @@ public class Folder: NSManagedObject {
         }
     }
     
-    var records: [KeyRecord]{
+    var liveRecords: [KeyRecord]{
         get{
             var records = [KeyRecord]()
             let mails = self.mailsOfFolder
@@ -54,6 +54,7 @@ public class Folder: NSManagedObject {
         }
     }
     
+    var records: [KeyRecord]? = nil
     
     var mailsOfFolder: [PersistentMail]{
         get{
@@ -131,4 +132,8 @@ public class Folder: NSManagedObject {
         }
     }
     
+    //write value of liveRecords to records
+    func updateRecords() {
+        records = liveRecords
+    }
 }

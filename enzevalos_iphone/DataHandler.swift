@@ -575,7 +575,10 @@ class DataHandler {
     
     func folderRecords(folderPath: String) -> [KeyRecord]{
         let folder = findFolder(with: folderPath) as Folder
-        return folder.records
+        if folder.records != nil {
+            return folder.records!
+        }
+        return []
     }
 
 
