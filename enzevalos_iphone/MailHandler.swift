@@ -352,7 +352,7 @@ class MailHandler {
         if let supported = IMAPIdleSupported {
             if supported && IMAPIdleSession == nil {
                 IMAPIdleSession = setupIMAPSession()
-                let op = IMAPIdleSession!.idleOperation(withFolder: "INBOX", lastKnownUID: UInt32(DataHandler.handler.maxUID))
+                let op = IMAPIdleSession!.idleOperation(withFolder: "INBOX", lastKnownUID: UInt32(DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).maxID))
                 op?.start({ error in
                     guard error == nil else {
                         print("An error occured with the idle operation: \(String(describing: error))")
@@ -454,12 +454,12 @@ class MailHandler {
         }
     }
  
-    func olderMailsFolder(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    /*func olderMailsFolder(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         var uids: MCOIndexSet
         var max = DataHandler.handler.maxUID
 
         if max <= 1 {
-            return firstLookUp(newMailCallback: newMailCallback, completionCallback: completionCallback)
+            return firstLookUp(folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
         }
         for uid in DataHandler.handler.uids.nsIndexSet() {
             if max.distance(to: UInt64(uid)) < 0 {
@@ -477,9 +477,9 @@ class MailHandler {
         uids.remove(DataHandler.handler.uids)
 
         self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
-    }
+    }*/
     //olderMails from mergeFolders branch
-    /*func olderMails(with folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func olderMails(with folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         var uids: MCOIndexSet
         let myfolder = DataHandler.handler.findFolder(with: folderPath)
         
@@ -492,12 +492,17 @@ class MailHandler {
         uids.remove(myfolder.uids)
         
         self.loadMessagesFromServer(uids, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
-    }*/
+    }
 
-    func receiveAll(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        let uids: MCOIndexSet
-        uids = MCOIndexSet(range: MCORangeMake(DataHandler.handler.maxUID, UINT64_MAX)) // TODO @Jakob: beim mergen anpassen
-        loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+    func receiveAll(_ folderPath: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        getUIDs(for: folderPath) {uids in
+            let loadUIDs = uids.filter{$0 > DataHandler.handler.findFolder(with: folderPath).maxID}
+            if let last = loadUIDs.last, let first = loadUIDs.first {
+                if let indexSet = MCOIndexSet(range: MCORange.init(location: first, length: last-first)) {
+                    self.loadMessagesFromServer(indexSet, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                }
+            }
+        }
     }
 
     func loadMoreMails(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
