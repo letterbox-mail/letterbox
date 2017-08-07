@@ -154,6 +154,7 @@ class ContactViewController: UIViewController {
             let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0, predecessor: nil)
             performSegue(withIdentifier: "newMail", sender: mail)
         } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") && keyRecord!.key != nil {
+            AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
             performSegue(withIdentifier: "verifyQRCode", sender: EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(keyRecord!.key!)?.fingerprint)
         }
     }

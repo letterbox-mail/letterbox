@@ -98,6 +98,12 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
         }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        AppUtility.lockOrientation(.allButUpsideDown)
+    }
+
     @IBAction func close(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
