@@ -120,9 +120,9 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
             }
 
             if let string = metadataObj.stringValue {
-                if let fingerprint = fingerprint, string.hasPrefix("OPENPGP4FPR:") || string.hasPrefix("openpgp4fpr:") {
-                    let seperated = string.components(separatedBy: ":")
-                    if seperated[1] == fingerprint {
+                let seperated = string.components(separatedBy: ":")
+                if let fingerprint = fingerprint, seperated[0].caseInsensitiveCompare("OPENPGP4FPR") == ComparisonResult.orderedSame {
+                    if seperated[1].caseInsensitiveCompare(fingerprint) == ComparisonResult.orderedSame {
                         qrCodeFrameColor = UIColor.green
                         captureSession?.stopRunning()
                         bottomLabel.text = NSLocalizedString("verifySuccess", comment: "Fingerprint was successfully verified")
