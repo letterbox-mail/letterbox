@@ -8,6 +8,7 @@
 "AccessContacts" = "Zugriff auf Kontakte";
 "AccessContactsDescription" = "Damit diese App richtig funktioniert, brauchen wir Zugriff auf deine Kontakte. Wir teilen diese Daten mit niemandem und senden sie auch nicht über das Internet.";
 "AccessNotGranted" = "Bitte schalte unter Einstellungen den Zugriff auf die Kontakte frei, wenn du möchtest, dass die App richtig funktioniert";
+"Archive" = "Archiv";
 "Address" = "Adresse";
 "Addressbook" = "Adressbuch";
 "Attach" = "Anhängen";
@@ -27,15 +28,18 @@
 "DiscoveryTime" = "Bekannt seit";
 "Checkmarks" = "Du hast Nachrichten von den Adressen mit Haken bekommen";
 "Drafts" = "Entwürfe";
+"edit" = "Bearbeiten";
 "Emailaddress" = "E-Mail-Adresse";
 "EncryptionType" = "Verschlüsselungsart";
 "EverythingCorrect" = "Alles richtig?";
 "Fingerprint" = "Fingerabdruck";
+"Folders" = "Ordner";
 "Forward" = "Weiterleiten";
 "From" = "Von";
 "GetHelp" = "Um Hilfe zu erhalten, tippe auf den Brief oder die Postkarte in der App.";
 "GotIt" = "Verstanden!";
 "Hello" = "Hallo";
+"INBOX" = "INBOX";
 "Inbox" = "Postfach";//Briefkasten?
 "Insecure" = "Unsicher";
 "InsertMailAddress" = "Bitte gib deine E-Mail-Adresse ein";

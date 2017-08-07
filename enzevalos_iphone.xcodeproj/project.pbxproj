@@ -26,6 +26,8 @@
 		472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398B1E2519C8009260FB /* CNContactExtension.swift */; };
 		472F398E1E251B8D009260FB /* MailAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398D1E251B8D009260FB /* MailAddress.swift */; };
 		472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398F1E252470009260FB /* CNMailAddressesExtension.swift */; };
+		475DF4791F0D54C9009D807F /* Folder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475DF4771F0D54C9009D807F /* Folder+CoreDataClass.swift */; };
+		475DF47A1F0D54C9009D807F /* Folder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475DF4781F0D54C9009D807F /* Folder+CoreDataProperties.swift */; };
 		476142081E07E52B00FD5E4F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476142071E07E52B00FD5E4F /* Theme.swift */; };
 		4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 476142091E082F9C00FD5E4F /* Settings.bundle */; };
 		476373C21E09BA88004D5EFE /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
@@ -63,6 +65,7 @@
 		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
 		A102AA8A1EDDB4F40024B457 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
 		A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1083A531E8BFEA6003666B7 /* Onboarding.swift */; };
+		A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */; };
 		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
 		A1182C571E30F45C0024D389 /* PGPKeyManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1182C561E30F45C0024D389 /* PGPKeyManagement.swift */; };
 		A1230BD71E2F8818006642C7 /* PGPEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1230BD61E2F8818006642C7 /* PGPEncryption.swift */; };
@@ -125,6 +128,8 @@
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
+		A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */; };
+		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
 		A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
@@ -143,6 +148,7 @@
 		A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
+		A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */; };
 		A1F2A5691E85586300320275 /* Providers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2A5681E85586300320275 /* Providers.swift */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
@@ -211,6 +217,8 @@
 		472F398B1E2519C8009260FB /* CNContactExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CNContactExtension.swift; sourceTree = "<group>"; };
 		472F398D1E251B8D009260FB /* MailAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailAddress.swift; sourceTree = "<group>"; };
 		472F398F1E252470009260FB /* CNMailAddressesExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CNMailAddressesExtension.swift; sourceTree = "<group>"; };
+		475DF4771F0D54C9009D807F /* Folder+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataClass.swift"; sourceTree = "<group>"; };
+		475DF4781F0D54C9009D807F /* Folder+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Folder+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		476142071E07E52B00FD5E4F /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		476142091E082F9C00FD5E4F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		476373C11E09BA88004D5EFE /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
@@ -270,6 +278,7 @@
 		479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dave_enezvalos_public.asc; path = keys/dave_enezvalos_public.asc; sourceTree = "<group>"; };
 		479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bob_enzvalos_private.asc; path = keys/bob_enzvalos_private.asc; sourceTree = "<group>"; };
 		479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = alice_enzvalos_private.asc; path = keys/alice_enzvalos_private.asc; sourceTree = "<group>"; };
+		47B2318A1F0D458100961B28 /* enzevalos_iphone 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "enzevalos_iphone 2.xcdatamodel"; sourceTree = "<group>"; };
 		48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -277,6 +286,7 @@
 		9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoOnboarding2.m4v; sourceTree = "<group>"; };
 		A1083A531E8BFEA6003666B7 /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
 		A1123E6B1DA682850069551C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A1182C561E30F45C0024D389 /* PGPKeyManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPKeyManagement.swift; sourceTree = "<group>"; };
@@ -386,6 +396,8 @@
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-private.gpg"; path = "keys/alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
+		A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListViewController.swift; sourceTree = "<group>"; };
+		A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListCell.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		A1EB057B1D956838008659C1 /* MailHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandler.swift; sourceTree = "<group>"; };
@@ -404,6 +416,7 @@
 		A1EB059B1D956957008659C1 /* NSDateCompare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateCompare.swift; sourceTree = "<group>"; };
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
 		A1F2A5681E85586300320275 /* Providers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Providers.swift; sourceTree = "<group>"; };
 		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992321DA7D2360073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -572,6 +585,8 @@
 			isa = PBXGroup;
 			children = (
 				472F39781E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift */,
+				475DF4771F0D54C9009D807F /* Folder+CoreDataClass.swift */,
+				475DF4781F0D54C9009D807F /* Folder+CoreDataProperties.swift */,
 				472F39711E1D09C4009260FB /* State+CoreDataClass.swift */,
 				472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */,
 				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
@@ -607,6 +622,17 @@
 				48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A10DE41E1EFAA140005E8189 /* folders */ = {
+			isa = PBXGroup;
+			children = (
+				A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */,
+				A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */,
+				A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */,
+				A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */,
+			);
+			name = folders;
 			sourceTree = "<group>";
 		};
 		A11E733A1E019AB5006574DD /* init */ = {
@@ -667,6 +693,7 @@
 				A135CEB61DD4BDA2007E3C29 /* ObjectivePGP */,
 				A1C7FF8B1E895316000D1E92 /* keys */,
 				A11E733A1E019AB5006574DD /* init */,
+				A10DE41E1EFAA140005E8189 /* folders */,
 				A18C76851E8185ED00B21414 /* onboarding */,
 				A1EB05761D9567F2008659C1 /* read */,
 				A1EB05751D956748008659C1 /* send */,
@@ -1105,7 +1132,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		6C4CB727DDC2AC31CCE50B26 /* [CP] Embed Pods Frameworks */ = {
@@ -1150,7 +1177,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		D6F0EB205D61EA8C8A045390 /* [CP] Check Pods Manifest.lock */ = {
@@ -1165,7 +1192,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E98D3D9213C0A8CF7EDD28B1 /* [CP] Copy Pods Resources */ = {
@@ -1228,6 +1255,7 @@
 				A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */,
 				A1F2A5691E85586300320275 /* Providers.swift in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
+				A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A15B7BE61E2931AD0024E499 /* KeyWrapper.swift in Sources */,
 				478175471F06E57E00300D20 /* packet-parse.c in Sources */,
@@ -1271,6 +1299,7 @@
 				F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */,
 				A135CF191DD4BDD1007E3C29 /* PGPS2K.m in Sources */,
 				A135CF061DD4BDD1007E3C29 /* PGPArmor.m in Sources */,
+				A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */,
 				A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */,
 				4781753B1F06E57E00300D20 /* README.md in Sources */,
 				4781754D1F06E57E00300D20 /* symmetric.c in Sources */,
@@ -1280,6 +1309,7 @@
 				A135CF021DD4BDD1007E3C29 /* NSData+compression.m in Sources */,
 				476142081E07E52B00FD5E4F /* Theme.swift in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
+				475DF47A1F0D54C9009D807F /* Folder+CoreDataProperties.swift in Sources */,
 				A135CF1E1DD4BDD1007E3C29 /* PGPSubKey.m in Sources */,
 				472F392C1E1277D2009260FB /* PersistentMail +CoreDataClass.swift in Sources */,
 				A135CF0D1DD4BDD1007E3C29 /* PGPLiteralPacket.m in Sources */,
@@ -1304,6 +1334,7 @@
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
 				472F39731E1D09C4009260FB /* State+CoreDataClass.swift in Sources */,
 				478175451F06E57E00300D20 /* netpgp.c in Sources */,
+				A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */,
 				A135CF081DD4BDD1007E3C29 /* PGPCryptoCFB.m in Sources */,
 				A1416C1B1E268F1A001809F3 /* Encryption.swift in Sources */,
 				F113C38B1F3344C200E7F1D6 /* ViewControllerPannable.swift in Sources */,
@@ -1319,7 +1350,9 @@
 				A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */,
 				472F39741E1D09C4009260FB /* State+CoreDataProperties.swift in Sources */,
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
+				A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */,
 				A135CF0E1DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.m in Sources */,
+				475DF4791F0D54C9009D807F /* Folder+CoreDataClass.swift in Sources */,
 				A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */,
 				A135CF161DD4BDD1007E3C29 /* PGPPublicKeyPacket.m in Sources */,
 				A135CF0B1DD4BDD1007E3C29 /* PGPKey.m in Sources */,
@@ -1533,12 +1566,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: bushman@gmx.net (UQMSUAQE2Q)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
@@ -1546,7 +1578,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"${PODS_ROOT}/OpenSSL-Universal/lib-ios\"",
 					"$(inherited)",
+					"\"${PODS_ROOT}/mailcore2-ios/lib\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1582,12 +1616,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: bushman@gmx.net (UQMSUAQE2Q)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4377G946WP;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
@@ -1595,7 +1628,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"${PODS_ROOT}/OpenSSL-Universal/lib-ios\"",
 					"$(inherited)",
+					"\"${PODS_ROOT}/mailcore2-ios/lib\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1722,6 +1757,7 @@
 		A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				47B2318A1F0D458100961B28 /* enzevalos_iphone 2.xcdatamodel */,
 				A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */,
 			);
 			currentVersion = A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="Account" syncable="YES" codeGenerationType="class">
-        <attribute name="accountname" attributeType="String" syncable="YES"/>
-        <attribute name="dispalyname" attributeType="String" syncable="YES"/>
-        <attribute name="pw" attributeType="String" syncable="YES"/>
+        <attribute name="accountname" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dispalyname" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pw" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="address" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
         <relationship name="imap" maxCount="1" deletionRule="Nullify" destinationEntity="Server" syncable="YES"/>
         <relationship name="smtp" maxCount="1" deletionRule="Nullify" destinationEntity="Server" syncable="YES"/>
@@ -13,14 +13,15 @@
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
-    <entity name="Folder" representedClassName="Folder" syncable="YES">
+    <entity name="Folder" representedClassName="Folder" syncable="YES" codeGenerationType="class">
         <attribute name="delimiter" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="lastID" optional="YES" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
-        <attribute name="maxID" optional="YES" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
-        <attribute name="path" attributeType="String" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="lastID" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" syncable="YES"/>
         <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="folder" inverseEntity="PersistentMail" syncable="YES"/>
-        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" syncable="YES"/>
+        <relationship name="maxID" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="subfolder" inverseEntity="Folder" syncable="YES"/>
+        <relationship name="subfolder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder" syncable="YES"/>
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
@@ -64,12 +65,10 @@
         <attribute name="currentContacts" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="currentMails" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <fetchRequest name="getFolder" entity="Folder" predicateString="name == &quot;$folder&quot;"/>
-    <fetchRequest name="getMailAddress" entity="Mail_Address" predicateString="address == &quot;$adr&quot;"/>
     <elements>
         <element name="Account" positionX="-288" positionY="-9" width="128" height="135"/>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>
-        <element name="Folder" positionX="-297" positionY="-18" width="128" height="150"/>
+        <element name="Folder" positionX="-297" positionY="-18" width="128" height="165"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="195"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="315"/>
         <element name="Server" positionX="-279" positionY="0" width="128" height="105"/>

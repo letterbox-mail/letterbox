@@ -41,6 +41,8 @@ class ReadViewController: UITableViewController {
     var textDelegate: ReadTextDelegate?
 
     var mail: PersistentMail? = nil
+    
+    var isDraft = false
 
     var keyDiscoveryDate: Date? = nil
 
@@ -50,7 +52,12 @@ class ReadViewController: UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
 
-        answerButton.title = NSLocalizedString("answer", comment: "")
+        if isDraft {
+            answerButton.title = NSLocalizedString("edit", comment: "")
+        }
+        else {
+            answerButton.title = NSLocalizedString("answer", comment: "")
+        }
 
         VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: self.showContact, tableView: tableView)
 
@@ -146,7 +153,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //(mail.from.mailAddress.lowercased() != (UserManager.loadUserValue(Attribute.userAddr) as! String))
 
             return 3
         }
@@ -180,7 +187,7 @@ class ReadViewController: UITableViewController {
             }
         }
         if indexPath.section == 1 && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
-            if let mail = mail {
+            if let mail = mail, (mail.from.mailAddress.lowercased() != (UserManager.loadUserValue(Attribute.userAddr) as! String)) {
                 if mail.trouble {
                     if indexPath.row == 0 {
                         return infoCell
@@ -231,9 +238,24 @@ class ReadViewController: UITableViewController {
     }
 
     @IBAction func deleteButton(_ sender: AnyObject) {
+        if let mail = mail {
+            let trashFolder = UserManager.backendTrashFolderPath
+            if mail.folder.path == trashFolder {
+                AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
+            } else {
+                AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: trashFolder)
+            }
+        }
         _ = navigationController?.popViewController(animated: true)
     }
 
+    @IBAction func archiveButton(_ sender: AnyObject) {
+        if let mail = mail {
+            let archiveFolder = UserManager.backendArchiveFolderPath
+            AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
+        }
+        _ = navigationController?.popViewController(animated: true)
+    }
     @IBAction func iconButton(_ sender: AnyObject) {
         if let m = mail {
             let alert: UIAlertController
@@ -380,39 +402,44 @@ class ReadViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "answerTo" && (sender is UIBarButtonItem || (sender as? String ?? "noReaction") == "reactButton") {
             let navigationController = segue.destination as? UINavigationController
-            if let controller = navigationController?.topViewController as? SendViewController, mail != nil {
+            if let controller = navigationController?.topViewController as? SendViewController, let mail = mail {
+                if isDraft {
+                    let prefillMail = EphemeralMail.init(to: mail.to, cc: mail.cc ?? NSSet.init(), bcc: mail.bcc ?? NSSet.init(), date: Date.init(), subject: mail.subject, body: mail.body, uid: mail.uid, predecessor: mail.predecessor)
+                    controller.prefilledMail = prefillMail
+                    return
+                }
                 let reaction = (sender as? String ?? "noReaction") == "reactButton"
 
-                var answerTo = [mail!.from]
+                var answerTo = [mail.from]
                 var answerCC = [Mail_Address]()
                 var body = NSLocalizedString("mail from", comment: "describing who send the mail") + " "
-                body.append(mail!.from.mailAddress)
+                body.append(mail.from.mailAddress)
                 let time = DateFormatter.init()
                 time.dateStyle = .short
                 time.timeStyle = .short
                 time.locale = Locale.current
-                body.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + time.string(from: mail!.date))
+                body.append(" " + NSLocalizedString("sent at", comment: "describing when the mail was send") + " " + time.string(from: mail.date))
                 body.append("\n" + NSLocalizedString("To", comment: "describing adressee") + ": ")
                 let myAddress = UserManager.loadUserValue(Attribute.userAddr) as! String
-                if mail!.to.count > 0 {
-                    for case let mail as Mail_Address in mail!.to {
+                if mail.to.count > 0 {
+                    for case let mail as Mail_Address in mail.to {
                         body.append("\(mail.address), ")
                         if mail.address != myAddress && !reaction {
                             answerTo.append(mail)
                         }
                     }
                 }
-                if mail!.cc?.count ?? 0 > 0 {
+                if mail.cc?.count ?? 0 > 0 {
                     body.append("\n\(NSLocalizedString("Cc", comment: "")): ")
-                    for case let mail as Mail_Address in mail!.cc! {
+                    for case let mail as Mail_Address in mail.cc! {
                         body.append("\(mail.address), ")
                         if mail.address != myAddress && !reaction {
                             answerCC.append(mail)
                         }
                     }
                 }
-                body.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (mail!.subject ?? ""))
-                body.append("\n------------------------\n\n" + (mail!.decryptedBody ?? mail!.body ?? ""))
+                body.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (mail.subject ?? ""))
+                body.append("\n------------------------\n\n" + (mail.decryptedBody ?? mail.body ?? ""))
                 body = TextFormatter.insertBeforeEveryLine("> ", text: body)
 
                 if reaction {
@@ -422,7 +449,7 @@ class ReadViewController: UITableViewController {
                 }
 
                 var subject = NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + NSLocalizedString("SubjectNo", comment: "there is no subject")
-                if let subj = mail!.subject {
+                if let subj = mail.subject {
                     if subj.hasPrefix("Re:") || subj.hasPrefix("RE:") || subj.hasPrefix("Aw:") || subj.hasPrefix("AW:") {
                         subject = subj
                     } else {
@@ -430,7 +457,7 @@ class ReadViewController: UITableViewController {
                     }
                 }
 
-                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail!.date, subject: subject, body: body, uid: mail!.uid, predecessor: mail)
+                let answerMail = EphemeralMail(to: NSSet.init(array: answerTo), cc: NSSet.init(array: answerCC), bcc: [], date: mail.date, subject: subject, body: body, uid: mail.uid, predecessor: mail)
 
                 controller.prefilledMail = answerMail
             }

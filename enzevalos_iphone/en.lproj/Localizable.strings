@@ -8,6 +8,7 @@
 "AccessContacts" = "Access contacts";
 "AccessContactsDescription" = "This App requires access to your contacts to work properly. We do not share your data with others or transfer it over the internet.";
 "AccessNotGranted" = "Please allow access to contacts in Settings, to get to know the true promise of this App";
+"Archive" = "Archive";
 "Address" = "Address";
 "Addressbook" = "Addressbook";
 "Attach" = "Attach";
@@ -27,14 +28,17 @@
 "Checkmarks" = "You received Mails from Mailadresses with checkmarks";
 "DiscoveryTime" = "Discoverytime";
 "Drafts" = "Drafts";
+"edit" = "Edit";
 "Emailaddress" = "Emailaddress";
 "EncryptionType" = "Encryption Type";
 "EverythingCorrect" = "Everything correct?";
 "Fingerprint" = "Fingerprint";
+"Folders" = "Folders";
 "Forward" = "Forward";
 "From" = "From";
 "GetHelp" = "To get help, tap on the letter or postcard in the app.";
 "GotIt" = "Got it!";
+"INBOX" = "INBOX";
 "Inbox" = "Inbox";
 "Insecure" = "Insecure";
 "InsertMailAddress" = "Please enter your email address";

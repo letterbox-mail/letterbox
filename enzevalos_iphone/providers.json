@@ -18,6 +18,13 @@
                     }
                     ]
         },
+        "mailboxes": {
+            "drafts": "Entwürfe",
+            "allmail": "Archive",
+            "spam": "Spam",
+            "sentmail": "Gesendet",
+            "trash": "Papierkorb"
+        },
         "domain-match":[
             "web.de",
             "web"
@@ -46,6 +53,13 @@
                     "auth":"saslPlain"
                     }
                     ]
+        },
+        "mailboxes": {
+            "drafts": "Drafts",
+            "allmail": "Archive",
+            "spam": "Spam",
+            "sentmail": "Sent objects",
+            "trash": "Trash"
         },
         "domain-match":[
                         "enzevalos.de",

@@ -639,6 +639,20 @@ class Onboarding: NSObject {
             } else {
                 UserManager.storeUserValue(0 as AnyObject?, attribute: Attribute.smtpAuthType)
             }
+            
+            if let drafts = provider.draftsFolderPath() {
+                UserManager.storeUserValue(drafts as AnyObject?, attribute: Attribute.draftFolderPath)
+            }
+            if let sent = provider.sentMailFolderPath() {
+                UserManager.storeUserValue(sent as AnyObject?, attribute: Attribute.sentFolderPath)
+            }
+            if let trash = provider.trashFolderPath() {
+                UserManager.storeUserValue(trash as AnyObject?, attribute: Attribute.trashFolderPath)
+            }
+            if let archive = provider.allMailFolderPath() {
+                UserManager.storeUserValue(archive as AnyObject?, attribute: Attribute.archiveFolderPath)
+            }
+            
         }
     }
 

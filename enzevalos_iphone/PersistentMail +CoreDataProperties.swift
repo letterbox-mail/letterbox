@@ -49,6 +49,7 @@ extension PersistentMail {
     @NSManaged public var keyID: String
     @NSManaged public var unableToDecrypt: Bool
     @NSManaged public var subject: String?
+    @NSManaged public var folder: Folder
     public var trouble: Bool{
         set {
             self.willChangeValue(forKey: "trouble")
@@ -57,9 +58,9 @@ extension PersistentMail {
         }
         get {
             self.willAccessValue(forKey: "trouble")
-            let text = self.primitiveValue(forKey: "trouble") as? Bool
+            let text = self.primitiveValue(forKey: "trouble") as? Bool ?? true
             self.didAccessValue(forKey: "trouble")
-            return text!
+            return text
         }
     
     }

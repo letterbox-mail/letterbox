@@ -47,22 +47,4 @@ extension State {
             return result
         }
     }
-    
-    public var maxUID: UInt64{
-        set {
-            let name = "maxUID"
-            self.willChangeValue(forKey: name)
-            self.setPrimitiveValue(NSDecimalNumber(value: newValue as UInt64), forKey: name)
-            self.didChangeValue(forKey: name)
-        }
-        get {
-            let name = "maxUID"
-            self.willAccessValue(forKey: name)
-            let result = (self.primitiveValue(forKey: name) as! NSDecimalNumber).uint64Value
-            self.didAccessValue(forKey: name)
-            return result
-        }
-
-    }
-
 }

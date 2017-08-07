@@ -31,6 +31,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
             self.window?.makeKeyAndVisible()
         }
+        else {
+            let rootViewController = (self.window?.rootViewController! as! UINavigationController)
+            
+            for vc in rootViewController.viewControllers {
+                if let id = vc.restorationIdentifier, id == "folderViewController" {
+                    let inboxViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "inboxViewController")
+                    vc.title = NSLocalizedString("Folders", comment: "")
+                    rootViewController.pushViewController(inboxViewController, animated: false)
+                    break
+                }
+            }
+        }
         return true
     }
 
@@ -76,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if UserDefaults.standard.bool(forKey: "reset") {
             if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
                 let mailhandler = MailHandler.init()
-                mailhandler.moveMails(mails: DataHandler.handler.mails, from: "INBOX", to: "ARCHIVE")
+                //mailhandler.move(mails: DataHandler.handler.findFolder(name: "INBOX").mailsOfFolder, from: "INBOX", to: "Archive")
             }
             DataHandler.handler.reset()
             Onboarding.credentials = nil
