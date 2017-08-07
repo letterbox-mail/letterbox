@@ -197,7 +197,8 @@ class ContactViewController: UIViewController {
     }
 
     func verifySuccessfull() {
-//        EnzevalosEncryptionHandler.getEncryption(.PGP)!.getKey(keyRecord!.key!)!.verified = true // TODO @Jakob: key is not writable
+        var keyWrapper = EnzevalosEncryptionHandler.getEncryption(.PGP)!.getKey(keyRecord!.key!)!
+        keyWrapper.verified = true
         tableView.reloadData()
     }
 }

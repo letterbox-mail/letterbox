@@ -239,11 +239,16 @@ class MailHandler {
         if let encPGP = ordered[EncryptionType.PGP] {
             encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
             let keyID = encryption.getActualKeyID(allRec[0])
+            var encFor = orderedString[EncryptionType.PGP]!
+            encFor.append(useraddr)
             print("Keyid : \(String(describing: keyID)) of \(allRec[0])")
-            if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: orderedString[EncryptionType.PGP]!) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+            if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: encFor) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
                 sendData = encData
-                // builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
-                // sendData = builder.data()
+                //added own public key here, so we can decrypt our own message to read it in sent-folder
+                
+                
+               // builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
+               // sendData = builder.data()
                 //sendOperation = session.sendOperation(with: sendData, from: userID, recipients: encPGP)
                 builder.textBody = "Dies ist verschlüsselt!"
                 //builder.addAttachment(MCOAttachment.init(text: "Dies ist verschlüsselt!"))
@@ -252,6 +257,11 @@ class MailHandler {
                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
+                
+                if ordered[EncryptionType.unknown] == nil {
+                    createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
+                }
+                builder.textBody = message
             } else {
                 //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
@@ -264,9 +274,69 @@ class MailHandler {
             sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
             //TODO handle different callbacks
             sendOperation.start(callback)
+            createSendCopy(sendData: sendData)
         }
     }
 
+    fileprivate func createSendCopy(sendData: Data) {
+        let sentFolder = UserManager.backendSentFolderPath
+        if !DataHandler.handler.existsFolder(with: sentFolder) {
+            let op = IMAPSession.createFolderOperation(sentFolder)
+            op?.start({ error in
+                let op = self.IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
+                op?.start({_,_ in print("done")})
+            })
+        }
+        else {
+            let op = IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
+            op?.start({_,_ in print("done")})
+        }
+    }
+
+    func createDraft(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
+        let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
+        let builder = MCOMessageBuilder()
+        
+        createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
+        
+        // MailAddresses statt strings??
+        
+        var allRec: [String] = []
+        allRec.append(contentsOf: toEntrys)
+        allRec.append(contentsOf: ccEntrys)
+        // What about BCC??
+        
+        //TODO add support for different Encryptions here
+        
+        var encryption: Encryption
+        var sendData: Data
+        
+        //TODO: Consider pref enc = false
+        
+        encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
+        if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: [useraddr]) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+            sendData = builder.openPGPEncryptedMessageData(withEncryptedData: encData)
+            
+            let drafts = UserManager.backendDraftFolderPath
+            
+            if !DataHandler.handler.existsFolder(with: drafts) {
+                let op = IMAPSession.createFolderOperation(drafts)
+                op?.start({ _ in self.saveDraft(data: sendData, callback: callback)})
+            }
+            else {
+                saveDraft(data: sendData, callback: callback)
+            }
+        } else {
+                //TODO do it better
+            callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
+        }
+    }
+    
+    fileprivate func saveDraft(data: Data, callback: @escaping (Error?) -> Void) {
+        let op = IMAPSession.appendMessageOperation(withFolder: UserManager.backendDraftFolderPath, messageData: data, flags: MCOMessageFlag.draft)
+        op?.start({_,_ in callback(nil)})
+    }
+    
     func setupIMAPSession() -> MCOIMAPSession {
         let imapsession = MCOIMAPSession()
         imapsession.hostname = UserManager.loadUserValue(Attribute.imapHostname) as! String
@@ -282,7 +352,7 @@ class MailHandler {
         if let supported = IMAPIdleSupported {
             if supported && IMAPIdleSession == nil {
                 IMAPIdleSession = setupIMAPSession()
-                let op = IMAPIdleSession!.idleOperation(withFolder: "INBOX", lastKnownUID: UInt32(DataHandler.handler.maxUID))
+                let op = IMAPIdleSession!.idleOperation(withFolder: "INBOX", lastKnownUID: UInt32(DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).maxID))
                 op?.start({ error in
                     guard error == nil else {
                         print("An error occured with the idle operation: \(String(describing: error))")
@@ -331,6 +401,14 @@ class MailHandler {
         op?.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
+            } else {
+                if flags.contains(MCOMessageFlag.deleted) {
+                    let operation = self.IMAPSession.expungeOperation(folder)
+                    operation?.start({err in
+                        if err == nil {
+                            DataHandler.handler.deleteMail(with: uid)
+                        }})
+                }
             }
         }
     }
@@ -347,28 +425,41 @@ class MailHandler {
         }
     }
 
-    func firstLookUp(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-
-        findMaxUID() { max in
+    func firstLookUp(_ folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        /*findMaxUID(folderPath){max in
             var uids: MCOIndexSet
             print("Max uid: \(max)")
             var (min, overflow) = UInt64.subtractWithOverflow(max, UInt64(MailHandler.MAXMAILS))
             if min <= 0 || overflow {
                 min = 1
             }
-            uids = MCOIndexSet(range: MCORangeMake(min, max)) // DataHandler.handler.maxUID
-            print("call for #\(uids.count()) uids \(uids.rangesCount())")
-            uids.remove(DataHandler.handler.uids)
-            self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+            uids = MCOIndexSet(range: MCORangeMake(min, UInt64(MailHandler.MAXMAILS))) // DataHandler.handler.maxUID
+            print("call for #\(uids.count()) uids \(uids.rangesCount()); min \(min); max \(max)")
+            uids.remove(DataHandler.handler.findFolder(with: folderPath).uids)
+            self.loadMessagesFromServer(uids, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+        
+        }*/
+        getUIDs(for: folderPath) {allUIDs in
+            let loadUIDs = allUIDs.suffix(MailHandler.MAXMAILS)
+            if let last = loadUIDs.last, let first = loadUIDs.first {
+                let indexSet = MCOIndexSet(range: MCORange.init(location: first, length: last-first))
+                if indexSet != nil {
+                    indexSet!.remove(DataHandler.handler.findFolder(with: folderPath).uids)
+                    self.loadMessagesFromServer(indexSet!, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    return
+                }
+            }
+            completionCallback(true)
+            return
         }
     }
-
-    func olderMailsFolder(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+ 
+    /*func olderMailsFolder(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         var uids: MCOIndexSet
         var max = DataHandler.handler.maxUID
 
         if max <= 1 {
-            return firstLookUp(newMailCallback: newMailCallback, completionCallback: completionCallback)
+            return firstLookUp(folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
         }
         for uid in DataHandler.handler.uids.nsIndexSet() {
             if max.distance(to: UInt64(uid)) < 0 {
@@ -386,21 +477,41 @@ class MailHandler {
         uids.remove(DataHandler.handler.uids)
 
         self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+    }*/
+    //olderMails from mergeFolders branch
+    func olderMails(with folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        var uids: MCOIndexSet
+        let myfolder = DataHandler.handler.findFolder(with: folderPath)
+        
+        if myfolder.maxID <= 1{
+            return firstLookUp(folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)
+        }
+        print("look for more mails: \(myfolder.lastID) to \(myfolder.maxID)")
+        
+        uids = MCOIndexSet(range: MCORangeMake(myfolder.lastID, myfolder.maxID))
+        uids.remove(myfolder.uids)
+        
+        self.loadMessagesFromServer(uids, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
 
-    func receiveAll(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        let uids: MCOIndexSet
-        uids = MCOIndexSet(range: MCORangeMake(DataHandler.handler.maxUID, UINT64_MAX)) // TODO @Jakob: beim mergen anpassen
-        loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+    func receiveAll(_ folderPath: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        getUIDs(for: folderPath) {uids in
+            let loadUIDs = uids.filter{$0 > DataHandler.handler.findFolder(with: folderPath).maxID}
+            if let last = loadUIDs.last, let first = loadUIDs.first {
+                if let indexSet = MCOIndexSet(range: MCORange.init(location: first, length: last-first)) {
+                    self.loadMessagesFromServer(indexSet, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                }
+            }
+        }
     }
 
-    func loadMoreMails(_ record: KeyRecord, folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMoreMails(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let addresses: [MailAddress]
         addresses = record.addresses
 
         for adr in addresses {
             let searchExpr: MCOIMAPSearchExpression = MCOIMAPSearchExpression.search(from: adr.mailAddress)
-            let searchOperation: MCOIMAPSearchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folder, expression: searchExpr)
+            let searchOperation: MCOIMAPSearchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExpr)
 
             searchOperation.start { (err, indices) -> Void in
                 guard err == nil else {
@@ -419,15 +530,15 @@ class MailHandler {
                     }
                     setOfIndices = self.cutIndexSet(setOfIndices)
 
-                    self.loadMessagesFromServer(setOfIndices, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    self.loadMessagesFromServer(setOfIndices, folderPath: folderPath, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
                 }
             }
         }
     }
 
-    func loadMessagesFromServer(_ uids: MCOIndexSet, folder: String = "INBOX", maxLoad: Int = MailHandler.MAXMAILS, record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
-        let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folder, requestKind: requestKind, uids: uids)
+        let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER]
 
         fetchOperation.start { (err, msg, vanished) -> Void in
@@ -444,8 +555,8 @@ class MailHandler {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
                     dispatchGroup.enter()
 
-                    let op = self.IMAPSession.fetchParsedMessageOperation(withFolder: folder, uid: message.uid)
-                    op?.start { err, data in self.parseMail(err, parser: data, message: message, record: record, newMailCallback: newMailCallback)
+                    let op = self.IMAPSession.fetchParsedMessageOperation(withFolder: folderPath, uid: message.uid)
+                    op?.start { err, data in self.parseMail(err, parser: data, message: message, record: record, folderPath: folderPath, newMailCallback: newMailCallback)
                         dispatchGroup.leave()
                     }
                     calledMails += 1
@@ -457,11 +568,12 @@ class MailHandler {
                     self.IMAPSession.disconnectOperation().start({ _ in })
                     completionCallback(false)
                 }
+                print("loadMessagesFromServer; MailHandler around line 415: ", calledMails)
             }
         }
     }
 
-    func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, newMailCallback: @escaping (() -> ())) {
+    func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folderPath: String, newMailCallback: (() -> ())) {
         guard error == nil else {
             print("Error while fetching mail: \(String(describing: error))")
             return
@@ -544,10 +656,11 @@ class MailHandler {
                 // Drops mails with no from field. Otherwise it becomes ugly with no ezcontact,fromadress etc.
                 return
             }
-
-
-            _ = DataHandler.handler.createMail(UInt64(message.uid), sender: (header?.from), receivers: rec, cc: cc, time: (header?.date)!, received: true, subject: header?.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec) //@Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
-            newMailCallback()
+            
+            if let header = header, let from = header.from, let date = header.date {
+                _ = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath) //TODO @Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
+                newMailCallback()
+            }
         }
     }
 
@@ -577,11 +690,11 @@ class MailHandler {
     }
 
 
-    func findMaxUID(_ folder: String = "INBOX", callback: @escaping ((_ maxUID: UInt64) -> ())) {
+    func findMaxUID(_ folder: String, callback: @escaping ((_ maxUID: UInt64) -> ())) {
         //TODO: NSP!!!
         var maxUID: UInt64 = 0
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)
-        let uids = MCOIndexSet(range: MCORangeMake(0, UINT64_MAX))
+        let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
 
@@ -606,6 +719,34 @@ class MailHandler {
             callback(maxUID)
         }
     }
+    
+    func getUIDs(for folderPath: String, callback: @escaping ((_ uids: [UInt64]) -> ())) {
+        //TODO: NSP!!!
+        let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)
+        let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
+        var ids: [UInt64] = []
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        
+        let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
+        fetchOperation.start { (err, msg, vanished) -> Void in
+            guard err == nil else {
+                print("Error while fetching inbox: \(String(describing: err))")
+                return
+            }
+            if let msgs = msg {
+                for m in msgs {
+                    if let message: MCOIMAPMessage = m as? MCOIMAPMessage {
+                        ids.append(UInt64(message.uid))
+                    }
+                }
+            }
+            dispatchGroup.leave()
+        }
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            callback(ids.sorted())
+        }
+    }
 
     func checkSMTP(_ completion: @escaping (Error?) -> Void) {
         let useraddr = UserManager.loadUserValue(Attribute.userAddr) as! String
@@ -624,25 +765,41 @@ class MailHandler {
     }
 
     func checkIMAP(_ completion: @escaping (Error?) -> Void) {
-
-        self.IMAPSession.checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
-        //self.IMAPSession.connectOperation().start(completion/* as! (Error?) -> Void*/)
+        self.setupIMAPSession().checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
     }
 
-    func moveMails(mails: [PersistentMail], from: String, to: String) {
+    func move(mails: [PersistentMail], from: String, to: String, folderCreated: Bool = false) {
         let uids = MCOIndexSet()
-
-        for m in mails {
-            uids.add(m.uid)
+        if !DataHandler.handler.existsFolder(with: to) && !folderCreated {
+            let op = IMAPSession.createFolderOperation(to)
+            op?.start({ _ in self.move(mails: mails, from: from, to: to, folderCreated: true)})
         }
-
-        let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
-        op?.start {
-            (err, vanished) -> Void in
-            guard err == nil else {
-                print("Error while moving mails: \(String(describing: err))")
-                return
+        else {
+            for mail in mails {
+                uids.add(mail.uid)
+                mail.folder.removeFromMails(mail)
+                DataHandler.handler.delete(mail: mail)
+            }
+            let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
+            op?.start{
+                (err, vanished) -> Void in
+                guard err == nil else {
+                    print("Error while moving mails: \(String(describing: err))")
+                    return
+                }
             }
         }
+    }
+    
+    /*func delete(mails: [PersistentMail]) {
+        for mail in mails {
+            DataHandler.handler.deleteMail(with: mail.uid)
+        }
+    }*/
+    
+    func allFolders(_ completion: @escaping (Error?, [Any]?) -> Void){
+    
+        let op = IMAPSession.fetchAllFoldersOperation()
+        op?.start(completion)
     }
 }
