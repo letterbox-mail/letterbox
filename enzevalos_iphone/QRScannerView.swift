@@ -138,7 +138,28 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
                     } else {
                         qrCodeFrameColor = UIColor.red
                         bottomLabel.text = NSLocalizedString("fingerprintMissmatch", comment: "Found fingerprint does not match")
-                        // TODO: Add a more explicit warning?
+                        captureSession?.stopRunning()
+                        if #available(iOS 10.0, *) {
+                            let feedbackGenerator = UINotificationFeedbackGenerator()
+                            feedbackGenerator.notificationOccurred(.error)
+                        } else {
+                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+                            let alert = UIAlertController(title: NSLocalizedString("fingerprintMissmatchShort", comment: "Found fingerprint does not match"), message: NSLocalizedString("fingerprintMissmatchText", comment: "Found fingerprint does not match"), preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information"), style: .default, handler: {
+                                (action: UIAlertAction!) -> Void in
+                                UIApplication.shared.openURL(URL(string: "https://enzevalos.de/infos/fingerprintMissmatch")!)
+                                self.dismiss(animated: false, completion: nil)
+                            }))
+                            alert.addAction(UIAlertAction(title: NSLocalizedString("scanDifferentCode", comment: ""), style: .default, handler: {
+                                (action: UIAlertAction!) -> Void in
+                                self.qrCodeFrameView?.path = nil
+                                self.captureSession?.startRunning()
+                            }))
+                            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in self.dismiss(animated: true, completion: nil) }))
+                            self.present(alert, animated: true, completion: nil)
+                        }
                     }
                 } else {
                     qrCodeFrameColor = UIColor.orange
