@@ -484,17 +484,17 @@ class PGPEncryption : Encryption {
     
     //chooses first key in data. others will be ignored
     func addKey(_ keyData: Data, forMailAddresses: [String]?) -> String?{
-        return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: nil)
+        return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: nil, discoveryMailFolderPath: nil)
     }
     
     //chooses first key in data. others will be ignored
-    func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?) -> String? {
+    func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?, discoveryMailFolderPath: String?) -> String? {
         if let tmpKey = self.keyManager.pgp.keys(from: keyData) {
             var addrs : [String] = []
             if let addr = forMailAddresses {
                 addrs = addr
             }
-            let key = PGPKeyWrapper.init(key: tmpKey[0], mailAddresses: addrs, discoveryMailUID: discoveryMailUID, keyManager: self.keyManager)
+            let key = PGPKeyWrapper.init(key: tmpKey[0], mailAddresses: addrs, discoveryMailUID: discoveryMailUID, discoveryMailFolderPath: discoveryMailFolderPath, keyManager: self.keyManager)
             return key.keyID
         }
         return nil
@@ -503,12 +503,14 @@ class PGPEncryption : Encryption {
     //chooses first key in data. others will be ignored
     func addKey(_ keyData: Data, discoveryMail: PersistentMail?) -> String? {
         var discoveryMailUID: UInt64? = nil
+        var discoveryMailFolderPath: String? = nil
         var forMailAddresses: [String]? = nil
         if let mail = discoveryMail {
             discoveryMailUID = mail.uid
+            discoveryMailFolderPath = mail.folder.path
             forMailAddresses = [mail.from.mailAddress]
         }
-        return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: discoveryMailUID)
+        return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: discoveryMailUID, discoveryMailFolderPath: discoveryMailFolderPath)
     }
     
     //TODO maybe remove here. used in keyWrapper
