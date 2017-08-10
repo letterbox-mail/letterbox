@@ -593,7 +593,7 @@ class MailHandler {
                 let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                 do {
                     let pgpKey = try pgp.keys[0].export()
-                    _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
+                    _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!], discoveryMailUID: UInt64(message.uid), discoveryMailFolderPath: folderPath)
                 }
                 catch {
                     print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
