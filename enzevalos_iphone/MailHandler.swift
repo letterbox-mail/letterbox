@@ -628,6 +628,11 @@ class MailHandler {
                 if isEnc && at.mimeType == "application/octet-stream" {
                     msgParser = MCOMessageParser(data: at.data)
                 }
+                if at.mimeType == "application/pgp-keys" {
+                    if let header = header {
+                        _ = EnzevalosEncryptionHandler.getEncryption(.PGP)?.addKey(at.data, forMailAddresses: [header.from.mailbox], discoveryMailUID: UInt64(message.uid), discoveryMailFolderPath: folderPath)
+                    }
+                }
             }
             if isEnc {
                 html = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
