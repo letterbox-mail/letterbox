@@ -628,6 +628,11 @@ class MailHandler {
                 if isEnc && at.mimeType == "application/octet-stream" {
                     msgParser = MCOMessageParser(data: at.data)
                 }
+                if at.mimeType == "application/octet-stream", let content = String(data: at.data, encoding: String.Encoding.utf8), content.hasPrefix("-----BEGIN PGP PUBLIC KEY BLOCK-----") && (content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----") || content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----\n")) {
+                    if let header = header {
+                        _ = EnzevalosEncryptionHandler.getEncryption(.PGP)?.addKey(at.data, forMailAddresses: [header.from.mailbox], discoveryMailUID: UInt64(message.uid), discoveryMailFolderPath: folderPath)
+                    }
+                }
                 if at.mimeType == "application/pgp-keys" {
                     if let header = header {
                         _ = EnzevalosEncryptionHandler.getEncryption(.PGP)?.addKey(at.data, forMailAddresses: [header.from.mailbox], discoveryMailUID: UInt64(message.uid), discoveryMailFolderPath: folderPath)
