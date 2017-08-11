@@ -662,7 +662,7 @@ class Onboarding: NSObject {
         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
         do {
             let data = try pgp.keys[0].export()
-            _ = enc?.addKey(data, forMailAddresses: [])
+            _ = enc?.addSecretKey(data)
         }
         catch _ { }
     }
