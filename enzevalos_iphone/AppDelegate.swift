@@ -32,16 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.makeKeyAndVisible()
         }
         else {
-            let rootViewController = (self.window?.rootViewController! as! UINavigationController)
-            
-            for vc in rootViewController.viewControllers {
-                if let id = vc.restorationIdentifier, id == "folderViewController" {
-                    let inboxViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "inboxViewController")
-                    vc.title = NSLocalizedString("Folders", comment: "")
-                    rootViewController.pushViewController(inboxViewController, animated: false)
-                    break
-                }
-            }
+            presentInboxViewController()
         }
         return true
     }
@@ -121,6 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Onboarding.keyHandling()*/
         UserDefaults.standard.set(true, forKey: "launchedBefore")
         self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+        presentInboxViewController()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -201,6 +193,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func requestForAccess() {
         self.requestForAccess(self.contactCheck)
+    }
+    
+    func presentInboxViewController() {
+        let rootViewController = (self.window?.rootViewController! as! UINavigationController)
+        
+        for vc in rootViewController.viewControllers {
+            if let id = vc.restorationIdentifier, id == "folderViewController" {
+                let inboxViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "inboxViewController")
+                vc.title = NSLocalizedString("Folders", comment: "")
+                rootViewController.pushViewController(inboxViewController, animated: false)
+                break
+            }
+        }
     }
 }
 
