@@ -56,8 +56,7 @@ public class Folder: NSManagedObject {
                 }
 
             }
-            
-            return records
+            return records.sorted()
         }
     }
     

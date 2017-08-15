@@ -98,8 +98,8 @@ class DataHandler {
     func allAddressesInFolder(folder: Folder, withoutSecure: Bool) -> [MailAddress]{
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         fReq.predicate = NSPredicate(format: "folder = %@", folder)
-       // fReq.resultType = NSFetchRequestResultType.dictionaryResultType
-        fReq.propertiesToFetch = ["from"]
+        // fReq.resultType = NSFetchRequestResultType.dictionaryResultType
+        //fReq.propertiesToFetch = ["from"]
         //fReq.returnsDistinctResults = true
         var addresses = Set<Mail_Address>()
         //TODO: improve https://stackoverflow.com/questions/24432895/swift-core-data-request-with-distinct-results#24433996
@@ -125,24 +125,20 @@ class DataHandler {
         
         fReq.predicate = andPredicates
         // fReq.resultType = NSFetchRequestResultType.dictionaryResultType
-        fReq.propertiesToFetch = ["keyID"]
-        // Add KEYID CONTAINS -!
+        //fReq.propertiesToFetch = ["keyID"]
         //fReq.returnsDistinctResults = true
         var keys = Set<String>()
         //TODO: improve https://stackoverflow.com/questions/24432895/swift-core-data-request-with-distinct-results#24433996
         
         if let result = (try? self.managedObjectContext.fetch(fReq)) as? [PersistentMail]{
-            print("Key not empty! \(result.count)")
             for object in result {
                 if let key = object.keyID{
                     if object.isSecure && key != ""{
                         keys.insert(key)
-                        print("My key: \(key)")
                     }
                 }
             }
         }
-        print("#keys: \(keys.count)")
         return Array(keys)
     }
     
@@ -223,8 +219,8 @@ class DataHandler {
     }
 
     private func delete(_ entityName: String, type: String, search: String) {
-        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
-        fReq.predicate = NSPredicate(format: "\(type) CONTAINS '\(search)' ") //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können...
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        fReq.predicate = NSPredicate(format: "\(type) CONTAINS '\(search)' ") //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können... https://stackoverflow.com/questions/3076894/how-to-prevent-sql-injection-in-core-data#3078076
         if let result = (try? self.managedObjectContext.fetch(fReq)) as? [NSManagedObject]{
             for object in result {
                 self.managedObjectContext.delete(object)
@@ -234,7 +230,7 @@ class DataHandler {
     }
     
     private func deleteNum(_ entityName: String, type: String, search: UInt64) {
-        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fReq.predicate = NSPredicate(format: "\(type) = %D ", search)
         if let result = (try? self.managedObjectContext.fetch(fReq)) as? [NSManagedObject]{
             for object in result {
@@ -274,81 +270,46 @@ class DataHandler {
         removeAll(entity: "Folder")
     }
 
-    /*
-    private func cleanContacts() {
-        if countContacts > MaxRecords {
-            for _ in 0...(countContacts - MaxRecords) {
-                let c = contacts.last! as EnzevalosContact
-                if !c.hasKey {
-                    for m in c.from {
-                        managedObjectContext.delete(m as NSManagedObject)
-                        if let index = mails.index(of: m) {
-                            mails.remove(at: index)
-                        }
-                    }
-                    contacts.removeLast()
-                    managedObjectContext.delete(c)
-                }
-                }
-                receiverRecords = getRecords()
-            }
+    // Save, load, search
+
+    private func find(_ entityName: String, type: String, search: String) -> [AnyObject]? {
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        fReq.predicate = NSPredicate(format: "\(type) CONTAINS '\(search)' ") //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können...
+        let result: [AnyObject]?
+        do {
+            result = try self.managedObjectContext.fetch(fReq)
+        } catch _ as NSError {
+            result = nil
+            return nil
         }
+        return result
+    }
 
- 
-        private func cleanMails() {
-            for c in contacts {
-                while c.from.count > MaxMailsPerRecord {
-                    let last = c.from.last!
-                    managedObjectContext.delete(last)
-                    save()
-                    if let index = mails.index(of: last) {
-                        mails.remove(at: index)
-                    }
-                }
-            }
+    private func findNum (_ entityName: String, type: String, search: UInt64) -> [AnyObject]? {
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        fReq.predicate = NSPredicate(format: "\(type) = %D ", search)
+        let result: [AnyObject]?
+        do {
+            result = try self.managedObjectContext.fetch(fReq)
+        } catch _ as NSError {
+            result = nil
+            return nil
         }
+        return result
+    }
 
-*/
-        // Save, load, search
 
-        private func find(_ entityName: String, type: String, search: String) -> [AnyObject]? {
-            let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
-            fReq.predicate = NSPredicate(format: "\(type) CONTAINS '\(search)' ") //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können...
-            let result: [AnyObject]?
-            do {
-                result = try self.managedObjectContext.fetch(fReq)
-            } catch _ as NSError {
-                result = nil
-                return nil
-            }
-            return result
+    private func findAll(_ entityName: String) -> [AnyObject]? {
+        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        let result: [AnyObject]?
+        do {
+            result = try self.managedObjectContext.fetch(fReq)
+        } catch _ as NSError {
+            result = nil
+            return nil
         }
-
-        private func findNum (_ entityName: String, type: String, search: UInt64) -> [AnyObject]? {
-            let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
-            fReq.predicate = NSPredicate(format: "\(type) = %D ", search)
-            let result: [AnyObject]?
-            do {
-                result = try self.managedObjectContext.fetch(fReq)
-            } catch _ as NSError {
-                result = nil
-                return nil
-            }
-            return result
-        }
-
-
-        private func findAll(_ entityName: String) -> [AnyObject]? {
-            let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName) //FIXME: NSFetchRequestResult richtig hier?
-            let result: [AnyObject]?
-            do {
-                result = try self.managedObjectContext.fetch(fReq)
-            } catch _ as NSError {
-                result = nil
-                return nil
-            }
-            return result
-        }
+        return result
+    }
 
 
     func findFolder(with path: String) -> Folder{
@@ -565,10 +526,12 @@ class DataHandler {
                         mail.unableToDecrypt = true
                         mail.isEncrypted = true
                         mail.trouble = true
-                    default:
+                    case EncryptionState.ValidEncryptedWithOldKey, EncryptionState.ValidedEncryptedWithCurrentKey:
                         mail.isEncrypted = true
                         mail.trouble = false
                         mail.unableToDecrypt = false
+                        mail.decryptedBody = body
+
                     }
                     
                     switch signState {
@@ -582,9 +545,6 @@ class DataHandler {
                         mail.isCorrectlySigned = true
                         mail.isSigned = true
                     }
-                    mail.decryptedBody = body
-                    print("Mail from \(mail.from.mailAddress) about \(String(describing: mail.subject)) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) unable to decrypt? \(mail.unableToDecrypt)")
-            
                 }
                 else{
                     // Maybe PGPInline?
@@ -597,7 +557,6 @@ class DataHandler {
             }
         
             let myfolder = findFolder(with: folderPath) as Folder
-            print("DataHAndler around line 455: ", folderPath)
             myfolder.addToMails(mail)
             if mail.uid > myfolder.maxID{
                 myfolder.maxID = mail.uid
@@ -605,8 +564,6 @@ class DataHandler {
             if mail.uid < myfolder.lastID || myfolder.lastID == 1{
                 myfolder.lastID = mail.uid
             }
-
-
             save()
         }
 
