@@ -37,6 +37,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 //TODO: TO Felder mit Strings
 // KeyRecord mergen?? IMAP Snyc?
 
+typealias requestTuple = (request: String, value: Any)
 
 class DataHandler {
     static let handler: DataHandler = DataHandler()
@@ -45,6 +46,8 @@ class DataHandler {
 
     private let MaxRecords = 50
     private let MaxMailsPerRecord = 100
+    
+    
     
     var allFolders: [Folder]{
         get{
@@ -90,8 +93,93 @@ class DataHandler {
             done(false)
         }
     }
+    
+    
+    func allAddressesInFolder(folder: Folder, withoutSecure: Bool) -> [MailAddress]{
+        let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
+        fReq.predicate = NSPredicate(format: "folder = %@", folder)
+       // fReq.resultType = NSFetchRequestResultType.dictionaryResultType
+        fReq.propertiesToFetch = ["from"]
+        //fReq.returnsDistinctResults = true
+        var addresses = Set<Mail_Address>()
+        //TODO: improve https://stackoverflow.com/questions/24432895/swift-core-data-request-with-distinct-results#24433996
+        
+        if let result = (try? self.managedObjectContext.fetch(fReq)) as? [PersistentMail]{
+            for object in result {
+                if let adr = object.from as? Mail_Address{
+                    if !(withoutSecure && object.isSecure){
+                        addresses.insert(adr)
+                    }
+                }
+           }
+        }
+        return Array(addresses)
+    }
+    
+    func allKeysInFolder(folder: Folder) -> [String]{
+        let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
+        var predicates = [NSPredicate]()
+        predicates.append(NSPredicate(format: "folder = %@", folder))
+        predicates.append(NSPredicate(format: "keyID != nil"))
+        let andPredicates = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        
+        fReq.predicate = andPredicates
+        // fReq.resultType = NSFetchRequestResultType.dictionaryResultType
+        fReq.propertiesToFetch = ["keyID"]
+        // Add KEYID CONTAINS -!
+        //fReq.returnsDistinctResults = true
+        var keys = Set<String>()
+        //TODO: improve https://stackoverflow.com/questions/24432895/swift-core-data-request-with-distinct-results#24433996
+        
+        if let result = (try? self.managedObjectContext.fetch(fReq)) as? [PersistentMail]{
+            print("Key not empty! \(result.count)")
+            for object in result {
+                if let key = object.keyID{
+                    if object.isSecure && key != ""{
+                        keys.insert(key)
+                        print("My key: \(key)")
+                    }
+                }
+            }
+        }
+        print("#keys: \(keys.count)")
+        return Array(keys)
+    }
+    
+    
+    func allMailsInFolder(key :String?, contact :EnzevalosContact?, folder: Folder?, isSecure: Bool) -> [PersistentMail]{
+        let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
+        var predicates = [NSPredicate]()
+        if let k = key{
+            predicates.append(NSPredicate(format:"keyID MATCHES %@", k))
+        }
+        if let c = contact{
+            let adr: Mail_Address =   c.getMailAddresses()[0] as! Mail_Address
+            predicates.append(NSPredicate(format:"from == %@", adr))
+            
+        }
+        if let f = folder{
+            predicates.append(NSPredicate(format:"folder == %@", f))
+        }
+        let andPredicates = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
-
+        fReq.predicate = andPredicates
+        fReq.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        if let result = (try? self.managedObjectContext.fetch(fReq)) as? [PersistentMail]{
+            
+            if isSecure{
+                let secureMails = result.filter({
+                    return $0.isSecure
+                })
+                return secureMails
+            }
+            
+            return result
+        }
+        return []
+    }
+        
+  
     init() {
         // This resource is the same name as your xcdatamodeld contained in your project.
         guard let modelURL = Bundle.main.url(forResource: "enzevalos_iphone", withExtension: "momd") else {
@@ -362,6 +450,7 @@ class DataHandler {
             return contact
         }
 
+        
 
         func getContact(_ name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
             let contact = getContactByAddress(address)
@@ -436,13 +525,6 @@ class DataHandler {
         
         if let tmpMails = finding as? [PersistentMail] {
             mails = tmpMails
-            print(mails)
-        }
-        if uid == 2 {
-            print(sender)
-            print(time)
-            print(subject)
-            print(body)
         }
         
         if finding == nil || finding!.count == 0 || mails.filter( { $0.folder.path == folderPath }).count == 0 {
@@ -468,14 +550,11 @@ class DataHandler {
                 handleCCAddresses(cc, mail: mail)
 
                 mail.unableToDecrypt = false
-                if decryptedData == nil{
-                    // Maybe PGPInline?
-                    // TODO: Refactoring!
-                    mail.decryptIfPossible()
-                }
-                else{
-                    let encState: EncryptionState = (decryptedData?.encryptionState)!
-                    let signState: SignatureState = (decryptedData?.signatureState)!
+            
+                if let decData = decryptedData{
+                    let encState: EncryptionState = decData.encryptionState
+                    let signState: SignatureState = decData.signatureState
+                    mail.keyID = decData.keyID
                     
                     switch encState {
                     case EncryptionState.NoEncryption:
@@ -505,6 +584,12 @@ class DataHandler {
                     }
                     mail.decryptedBody = body
                     print("Mail from \(mail.from.mailAddress) about \(String(describing: mail.subject)) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) unable to decrypt? \(mail.unableToDecrypt)")
+            
+                }
+                else{
+                    // Maybe PGPInline?
+                    // TODO: Refactoring!
+                    mail.decryptIfPossible()
                 }
             }
             else {
@@ -523,9 +608,6 @@ class DataHandler {
 
 
             save()
-            if let r = record {
-                _ = r.addNewMail(mail)
-            }
         }
 
         private func readMails() -> [PersistentMail] {

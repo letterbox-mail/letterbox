@@ -64,7 +64,7 @@ public enum EncState {
 
 }
 
-public protocol MailAddress { 
+public protocol MailAddress {
     var mailAddress:String{get}
     var label: CNLabeledValue<NSString>{get} //FIXME: ist der NSString hier wirklich richtig? (http://stackoverflow.com/questions/39648830/how-to-add-new-email-to-cnmutablecontact-in-swift-3)
     var prefEnc: EncState{get set}
@@ -73,3 +73,4 @@ public protocol MailAddress {
     var keyID: String?{get}
     var contact: EnzevalosContact?{get}
 }
+
