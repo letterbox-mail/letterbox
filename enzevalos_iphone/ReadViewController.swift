@@ -196,7 +196,7 @@ class ReadViewController: UITableViewController {
                     }
                 } else if mail.isEncrypted && mail.unableToDecrypt {
                     return infoCell
-                } else if mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate! {
+                } else if mail.from.hasKey && !mail.isSecure && mail.date > (keyDiscoveryDate ?? Date()) {
                     if indexPath.row == 0 {
                         return infoCell
                     } else if indexPath.row == 1 {
@@ -395,7 +395,7 @@ class ReadViewController: UITableViewController {
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
             }
 
-            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure)")
+            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure), trouble: \(mail.trouble)")
         }
     }
 
