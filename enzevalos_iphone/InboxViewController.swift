@@ -12,21 +12,8 @@ import Contacts
 
 class InboxViewController: UITableViewController, InboxCellDelegator {
     let dateFormatter = DateFormatter()
-
-    /*
-    var contacts: [KeyRecord] = [] {
-        didSet {
-            self.contacts.sortInPlace({ $0 < $1 })
-            if oldValue.count < contacts.count {
-                self.tableView.insertSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
-            } else if oldValue.count > contacts.count {
-                self.tableView.reloadData()
-            } else {
-                self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, contacts.count)), withRowAnimation: UITableViewRowAnimation.Automatic)
-            }
-        }
-    }
- */
+    let searchController = UISearchController(searchResultsController: nil)
+    var filteredRecords = [KeyRecord]()
 
     @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
     var lastUpdateLabel = UILabel(frame: CGRect.zero)
@@ -57,6 +44,13 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         lastUpdateLabel.textColor = UIColor.black
         lastUpdateButton.customView = lastUpdateLabel
 
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.scopeButtonTitles = [NSLocalizedString("Sender", comment: ""), NSLocalizedString("Subject", comment: ""), NSLocalizedString("Body", comment: ""), NSLocalizedString("All", comment: "")]
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+//        tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.height)
 
         //AppDelegate.getAppDelegate().mailHandler.delegate = self
 
@@ -71,10 +65,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     func refresh(_ refreshControl: UIRefreshControl) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         AppDelegate.getAppDelegate().mailHandler.firstLookUp(UserManager.backendInboxFolderPath, newMailCallback: addNewMail, completionCallback: getMailCompleted)
-      
-
     }
-    
+
     func addNewMail() {
         tableView.reloadData()
     }
@@ -84,7 +76,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             lastUpdate = Date()
             rc.endRefreshing()
             lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))"
-            // self.contacts.sortInPlace({ $0 < $1 })
 
             self.tableView.reloadData()
         }
@@ -106,12 +97,21 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         let cell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as! InboxTableViewCell
 
         cell.delegate = self
-        cell.enzContact = DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath)[indexPath.section]
+        if isFiltering() {
+            cell.enzContact = filteredRecords[indexPath.section]
+        } else {
+            DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).updateRecords()
+            cell.enzContact = DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath)[indexPath.section]
+        }
 
         return cell
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
+        if isFiltering() {
+            return filteredRecords.count
+        }
+
         DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).updateRecords()
         return DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).count
     }
@@ -159,5 +159,72 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
                 DestinationViewController.keyRecord = contact
             }
         }
+    }
+
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+
+    func filterContentForSearchText(_ searchText: String, scope: Int = 0) {
+        DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).updateRecords()
+        var records = [KeyRecord]()
+        if scope == 0 || scope == 3 {
+            records += DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).filter({ ( record: KeyRecord) -> Bool in
+                return record.name.lowercased().contains(searchText.lowercased())
+            })
+        }
+        if scope == 1 || scope == 3 {
+            records += DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).filter({ ( record: KeyRecord) -> Bool in
+                return record.mails.filter({ (mail: PersistentMail) -> Bool in
+                    mail.subject?.lowercased().contains(searchText.lowercased()) ?? false
+                }).count > 0
+            })
+        }
+        if scope == 2 || scope == 3 {
+            records += DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).filter({ ( record: KeyRecord) -> Bool in
+                return record.mails.filter({ (mail: PersistentMail) -> Bool in
+                    if let decryptedBody = mail.decryptedBody {
+                        return decryptedBody.lowercased().contains(searchText.lowercased())
+                    } else if !mail.isEncrypted {
+                        return mail.body?.lowercased().contains(searchText.lowercased()) ?? false
+                    }
+                    return false
+                }).count > 0
+            })
+        }
+
+        filteredRecords = records.unique.sorted()
+        tableView.reloadData()
+    }
+}
+
+extension InboxViewController: UISearchResultsUpdating {
+    // https://www.raywenderlich.com/157864/uisearchcontroller-tutorial-getting-started
+
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!, scope: searchController.searchBar.selectedScopeButtonIndex)
+    }
+}
+
+extension InboxViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchBar.text!, scope: selectedScope)
+    }
+}
+
+extension Array where Element: Equatable {
+    var unique: [Element] {
+        var uniqueValues: [Element] = []
+        forEach { item in
+            if !uniqueValues.contains(item) {
+                uniqueValues += [item]
+            }
+        }
+        return uniqueValues
     }
 }
