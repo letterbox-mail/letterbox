@@ -486,10 +486,11 @@ class DataHandler {
                         mail.unableToDecrypt = true
                         mail.isEncrypted = true
                         mail.trouble = true
-                    default:
+                    case EncryptionState.ValidedEncryptedWithCurrentKey, EncryptionState.ValidEncryptedWithOldKey:
                         mail.isEncrypted = true
                         mail.trouble = false
                         mail.unableToDecrypt = false
+                        mail.decryptedBody = body
                     }
                     
                     switch signState {
@@ -503,8 +504,7 @@ class DataHandler {
                         mail.isCorrectlySigned = true
                         mail.isSigned = true
                     }
-                    mail.decryptedBody = body
-                    print("Mail from \(mail.from.mailAddress) about \(String(describing: mail.subject)) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) unable to decrypt? \(mail.unableToDecrypt)")
+//                    print("Mail from \(mail.from.mailAddress) about \(String(describing: mail.subject)) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) unable to decrypt? \(mail.unableToDecrypt)")
                 }
             }
             else {
@@ -520,7 +520,6 @@ class DataHandler {
             if mail.uid < myfolder.lastID || myfolder.lastID == 1{
                 myfolder.lastID = mail.uid
             }
-
 
             save()
             if let r = record {
