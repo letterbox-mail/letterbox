@@ -31,16 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
             self.window?.makeKeyAndVisible()
         } else {
-            let rootViewController = (self.window?.rootViewController! as! UINavigationController)
-
-            for vc in rootViewController.viewControllers {
-                if let id = vc.restorationIdentifier, id == "folderViewController" {
-                    let inboxViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "inboxViewController")
-                    vc.title = NSLocalizedString("Folders", comment: "")
-                    rootViewController.pushViewController(inboxViewController, animated: false)
-                    break
-                }
-            }
+            presentInboxViewController()
         }
         return true
     }
