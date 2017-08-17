@@ -151,3 +151,6 @@
 "fingerprintMissmatch" = "The found Fingerprint does not match!";
 "verifySuccess" = "Successfully verified!";
 "yourFingerprint" = "Your Fingerprint:";
+"fingerprintMissmatchShort" = "Fingerprint does not match!";
+"fingerprintMissmatchText" = "Make sure you scanned the correct contact. If you did, you might be victim of a man-in-the-middle-attack.";
+"scanDifferentCode" = "Scan different QR Code";

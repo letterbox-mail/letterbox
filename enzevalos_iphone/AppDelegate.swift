@@ -18,32 +18,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var contactStore = CNContactStore()
     var mailHandler = MailHandler()
+    var orientationLock = UIInterfaceOrientationMask.allButUpsideDown
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
-        
-       
+
         resetApp()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
             self.window?.makeKeyAndVisible()
-        }
-        else {
-            let rootViewController = (self.window?.rootViewController! as! UINavigationController)
-            
-            for vc in rootViewController.viewControllers {
-                if let id = vc.restorationIdentifier, id == "folderViewController" {
-                    let inboxViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "inboxViewController")
-                    vc.title = NSLocalizedString("Folders", comment: "")
-                    rootViewController.pushViewController(inboxViewController, animated: false)
-                    break
-                }
-            }
+        } else {
+            presentInboxViewController()
         }
         return true
+    }
+
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return self.orientationLock
     }
 
     func credentialCheck() {
@@ -121,6 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Onboarding.keyHandling()*/
         UserDefaults.standard.set(true, forKey: "launchedBefore")
         self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+        presentInboxViewController()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -202,5 +197,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func requestForAccess() {
         self.requestForAccess(self.contactCheck)
     }
+
+    func presentInboxViewController() {
+        let rootViewController = (self.window?.rootViewController! as! UINavigationController)
+
+        for vc in rootViewController.viewControllers {
+            if let id = vc.restorationIdentifier, id == "folderViewController" {
+                let inboxViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "inboxViewController")
+                vc.title = NSLocalizedString("Folders", comment: "")
+                rootViewController.pushViewController(inboxViewController, animated: false)
+                break
+            }
+        }
+    }
 }
 
+struct AppUtility {
+    // https://stackoverflow.com/a/41811798
+
+    static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
+
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            delegate.orientationLock = orientation
+        }
+    }
+
+    static func lockOrientation(_ orientation: UIInterfaceOrientationMask, andRotateTo rotateOrientation: UIInterfaceOrientation) {
+
+        self.lockOrientation(orientation)
+
+        UIDevice.current.setValue(rotateOrientation.rawValue, forKey: "orientation")
+    }
+}

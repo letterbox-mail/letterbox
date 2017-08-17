@@ -503,7 +503,10 @@ class SendViewController: UIViewController {
             let message = textView.text!
 
             alert = UIAlertController(title: NSLocalizedString("discard", comment: "discard"), message: NSLocalizedString("discardText", comment: ""), preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveToDrafts", comment: "save the written E-Mail as draft"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { (action: UIAlertAction!) -> Void in
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveToDrafts", comment: "save the written E-Mail as draft"), style: .default, handler: { (action: UIAlertAction!) -> Void in
                 self.mailHandler.createDraft(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: { (error: Error?) -> Void in
                     if let error = error {
                         print(error)
@@ -512,10 +515,9 @@ class SendViewController: UIViewController {
                     }
                 })
                 self.navigationController?.dismiss(animated: true, completion: nil)
-                //firstResponder?.becomeFirstResponder()
             }))
-            alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { (action: UIAlertAction!) -> Void in
-                self.navigationController?.dismiss(animated: true, completion: nil)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "cancel"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in
+                firstResponder?.becomeFirstResponder()
             }))
             DispatchQueue.main.async(execute: {
                 self.view.endEditing(true)

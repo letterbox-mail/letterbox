@@ -123,7 +123,7 @@ class ListViewController: UITableViewController {
                 }
                 if !returnValue && mail.decryptedBody != nil {
                     returnValue = mail.decryptedBody!.lowercased().contains(searchText.lowercased())
-                } else if !returnValue && mail.body != nil {
+                } else if !returnValue && mail.body != nil && !mail.isEncrypted {
                     returnValue = mail.body!.lowercased().contains(searchText.lowercased())
                 }
                 if !returnValue && mail.cc?.count > 0 {

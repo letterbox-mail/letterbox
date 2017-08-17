@@ -152,3 +152,6 @@
 "fingerprintMissmatch" = "Der Fingerabdruck stimmt nicht überein!";
 "verifySuccess" = "Erfolgreich verifiziert!";
 "yourFingerprint" = "Dein Fingerabdruck:";
+"fingerprintMissmatchShort" = "Fingerabdruck stimmt nicht!";
+"fingerprintMissmatchText" = "Stelle sicher, dass der richtige Kontakt verifiziert wurde. Fall es der richtige war, könntest du Opfer eines Mittelmann-Angriffs sein.";
+"scanDifferentCode" = "Anderen QR Code scannen";

@@ -18,12 +18,12 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
 
     var captureSession: AVCaptureSession?
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
-    var qrCodeFrameView: UIView?
+    var qrCodeFrameView: CAShapeLayer?
     var qrCodeFrameColor: UIColor? {
         set {
             if let frame = qrCodeFrameView {
-                frame.layer.borderColor = newValue?.cgColor
-                frame.layer.backgroundColor = newValue?.withAlphaComponent(0.4).cgColor
+                frame.strokeColor = newValue?.cgColor
+                frame.fillColor = newValue?.withAlphaComponent(0.4).cgColor
             }
         }
         get { return nil }
@@ -77,13 +77,13 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
             view.layer.addSublayer(videoPreviewLayer!)
 
             // Initialize QR Code Frame to highlight the QR code
-            qrCodeFrameView = UIView()
+            qrCodeFrameView = CAShapeLayer()
 
             if let qrCodeFrameView = qrCodeFrameView {
                 qrCodeFrameColor = UIColor.orange
-                qrCodeFrameView.layer.borderWidth = 2
-                view.addSubview(qrCodeFrameView)
-                view.bringSubview(toFront: qrCodeFrameView)
+                qrCodeFrameView.lineWidth = 2
+                qrCodeFrameView.lineJoin = kCALineJoinMiter
+                view.layer.addSublayer(qrCodeFrameView)
             }
 
             view.bringSubview(toFront: topBar)
@@ -98,6 +98,12 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
         }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        AppUtility.lockOrientation(.allButUpsideDown)
+    }
+
     @IBAction func close(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -106,24 +112,23 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
 
         // Check if the metadataObjects array is not nil and it contains at least one object.
         if metadataObjects == nil || metadataObjects.count == 0 {
-            qrCodeFrameView?.frame = CGRect.zero
+            qrCodeFrameView?.path = nil
             bottomLabel.text = NSLocalizedString("scanQRCode", comment: "")
             return
         }
 
-        // Get the metadata object.
-        let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+        if let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject, metadataObj.type == AVMetadataObjectTypeQRCode {
 
-        if metadataObj.type == AVMetadataObjectTypeQRCode {
-            // If the found metadata is equal to the QR code metadata then update the status label's text and set the bounds
             let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
-            qrCodeFrameView?.frame = barCodeObject!.bounds
+            if let barCodeObject = barCodeObject as? AVMetadataMachineReadableCodeObject {
+                let barcodeOverlayPath = barcodeOverlayPathWithCorners(barCodeObject.corners as! [CFDictionary])
+                qrCodeFrameView?.path = barcodeOverlayPath
+            }
 
             if let string = metadataObj.stringValue {
-                if let fingerprint = fingerprint, string.hasPrefix("OPENPGP4FPR:") || string.hasPrefix("openpgp4fpr:") {
-                    let seperated = string.components(separatedBy: ":")
-                    if seperated[1] == fingerprint {
-//                        let alert = UIAlertController()
+                let seperated = string.components(separatedBy: ":")
+                if let fingerprint = fingerprint, seperated[0].caseInsensitiveCompare("OPENPGP4FPR") == ComparisonResult.orderedSame {
+                    if seperated[1].caseInsensitiveCompare(fingerprint) == ComparisonResult.orderedSame {
                         qrCodeFrameColor = UIColor.green
                         captureSession?.stopRunning()
                         bottomLabel.text = NSLocalizedString("verifySuccess", comment: "Fingerprint was successfully verified")
@@ -139,14 +144,53 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
                     } else {
                         qrCodeFrameColor = UIColor.red
                         bottomLabel.text = NSLocalizedString("fingerprintMissmatch", comment: "Found fingerprint does not match")
-                        // TODO: Add a more explicit warning?
+                        captureSession?.stopRunning()
+                        if #available(iOS 10.0, *) {
+                            let feedbackGenerator = UINotificationFeedbackGenerator()
+                            feedbackGenerator.notificationOccurred(.error)
+                        } else {
+                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+                            let alert = UIAlertController(title: NSLocalizedString("fingerprintMissmatchShort", comment: "Found fingerprint does not match"), message: NSLocalizedString("fingerprintMissmatchText", comment: "Found fingerprint does not match"), preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information"), style: .default, handler: {
+                                (action: UIAlertAction!) -> Void in
+                                UIApplication.shared.openURL(URL(string: "https://enzevalos.de/infos/fingerprintMissmatch")!)
+                                self.dismiss(animated: false, completion: nil)
+                            }))
+                            alert.addAction(UIAlertAction(title: NSLocalizedString("scanDifferentCode", comment: ""), style: .default, handler: {
+                                (action: UIAlertAction!) -> Void in
+                                self.qrCodeFrameView?.path = nil
+                                self.captureSession?.startRunning()
+                            }))
+                            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in self.dismiss(animated: true, completion: nil) }))
+                            self.present(alert, animated: true, completion: nil)
+                        }
                     }
                 } else {
-                    //UIAlertView
                     qrCodeFrameColor = UIColor.orange
                     bottomLabel.text = NSLocalizedString("wrongQRCode", comment: "The found QR Code is not compatible")
                 }
             }
         }
+    }
+
+    // from: https://developer.apple.com/library/content/samplecode/AVCamBarcode/Listings/AVCamBarcode_CameraViewController_swift.html#//apple_ref/doc/uid/TP40017312-AVCamBarcode_CameraViewController_swift-DontLinkElementID_4
+    private func barcodeOverlayPathWithCorners(_ corners: [CFDictionary]) -> CGMutablePath {
+        let path = CGMutablePath()
+
+        if !corners.isEmpty {
+            guard let corner = CGPoint(dictionaryRepresentation: corners[0]) else { return path }
+            path.move(to: corner, transform: .identity)
+
+            for cornerDictionary in corners {
+                guard let corner = CGPoint(dictionaryRepresentation: cornerDictionary) else { return path }
+                path.addLine(to: corner)
+            }
+
+            path.closeSubpath()
+        }
+
+        return path
     }
 }
