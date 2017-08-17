@@ -47,8 +47,6 @@ class DataHandler {
     private let MaxRecords = 50
     private let MaxMailsPerRecord = 100
     
-    
-    
     var allFolders: [Folder]{
         get{
             var folders = [Folder]()
@@ -147,7 +145,7 @@ class DataHandler {
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         var predicates = [NSPredicate]()
         if let k = key{
-            predicates.append(NSPredicate(format:"keyID MATCHES %@", k))
+            predicates.append(NSPredicate(format:"keyID = %@", k))
         }
         if let c = contact{
             let adr: Mail_Address =   c.getMailAddresses()[0] as! Mail_Address
@@ -162,7 +160,6 @@ class DataHandler {
         fReq.predicate = andPredicates
         fReq.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         if let result = (try? self.managedObjectContext.fetch(fReq)) as? [PersistentMail]{
-            
             if isSecure{
                 let secureMails = result.filter({
                     return $0.isSecure
@@ -217,10 +214,10 @@ class DataHandler {
             fatalError("Failure to save context\(error)")
         }
     }
-
+    
     private func delete(_ entityName: String, type: String, search: String) {
         let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fReq.predicate = NSPredicate(format: "\(type) CONTAINS '\(search)' ") //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können... https://stackoverflow.com/questions/3076894/how-to-prevent-sql-injection-in-core-data#3078076
+        fReq.predicate = NSPredicate(format: "\(type) LIKE [cd] ", search) //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können... https://stackoverflow.com/questions/3076894/how-to-prevent-sql-injection-in-core-data#3078076
         if let result = (try? self.managedObjectContext.fetch(fReq)) as? [NSManagedObject]{
             for object in result {
                 self.managedObjectContext.delete(object)
@@ -228,7 +225,7 @@ class DataHandler {
             save()
         }
     }
-    
+ 
     private func deleteNum(_ entityName: String, type: String, search: UInt64) {
         let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fReq.predicate = NSPredicate(format: "\(type) = %D ", search)
@@ -274,7 +271,7 @@ class DataHandler {
 
     private func find(_ entityName: String, type: String, search: String) -> [AnyObject]? {
         let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fReq.predicate = NSPredicate(format: "\(type) CONTAINS '\(search)' ") //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können...
+        fReq.predicate = NSPredicate(format: "\(type) CONTAINS %@ ", search) //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können...
         let result: [AnyObject]?
         do {
             result = try self.managedObjectContext.fetch(fReq)
@@ -411,8 +408,6 @@ class DataHandler {
             return contact
         }
 
-        
-
         func getContact(_ name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
             let contact = getContactByAddress(address)
             contact.displayname = name
@@ -531,7 +526,6 @@ class DataHandler {
                         mail.trouble = false
                         mail.unableToDecrypt = false
                         mail.decryptedBody = body
-
                     }
                     
                     switch signState {
@@ -545,6 +539,7 @@ class DataHandler {
                         mail.isCorrectlySigned = true
                         mail.isSigned = true
                     }
+//                    print("Mail from \(mail.from.mailAddress) about \(String(describing: mail.subject)) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) unable to decrypt? \(mail.unableToDecrypt)")
                 }
                 else{
                     // Maybe PGPInline?
@@ -563,9 +558,10 @@ class DataHandler {
             }
             if mail.uid < myfolder.lastID || myfolder.lastID == 1{
                 myfolder.lastID = mail.uid
-            }
             save()
+            }
         }
+
 
         private func readMails() -> [PersistentMail] {
             var mails = [PersistentMail]()
