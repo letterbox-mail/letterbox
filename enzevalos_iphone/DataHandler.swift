@@ -114,6 +114,21 @@ class DataHandler {
         return Array(addresses)
     }
     
+    /*
+     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"MyEntity"];
+     NSEntityDescription *entity = [NSEntityDescription entityForName:@"MyEntity" inManagedObjectContext:self.managedObjectContext];
+     
+     // Required! Unless you set the resultType to NSDictionaryResultType, distinct can't work.
+     // All objects in the backing store are implicitly distinct, but two dictionaries can be duplicates.
+     // Since you only want distinct names, only ask for the 'name' property.
+     fetchRequest.resultType = NSDictionaryResultType;
+     fetchRequest.propertiesToFetch = [NSArray arrayWithObject:[[entity propertiesByName] objectForKey:@"name"]];
+     fetchRequest.returnsDistinctResults = YES;
+     
+     // Now it should yield an NSArray of distinct values in dictionaries.
+     NSArray *dictionaries = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
+     NSLog (@"names: %@",dictionaries);
+ */
     func allKeysInFolder(folder: Folder) -> [String]{
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         var predicates = [NSPredicate]()
@@ -122,8 +137,8 @@ class DataHandler {
         let andPredicates = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         
         fReq.predicate = andPredicates
-        // fReq.resultType = NSFetchRequestResultType.dictionaryResultType
-        //fReq.propertiesToFetch = ["keyID"]
+      //  fReq.resultType = NSFetchRequestResultType.dictionaryResultType
+       // fReq.propertiesToFetch = ["keyID"]
         //fReq.returnsDistinctResults = true
         var keys = Set<String>()
         //TODO: improve https://stackoverflow.com/questions/24432895/swift-core-data-request-with-distinct-results#24433996

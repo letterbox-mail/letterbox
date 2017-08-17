@@ -7,22 +7,6 @@
 //
 
 
-/*
- TODO:
- get  MaxUID from server
- Load new Messages
- (Paramete: none, person, threadID, Mailbox, #Mails)
- Load older messages
- (Paramete: none, person, threadID, Mailbox, #Mails)
-
- 
- load for spefic thread -> thread ID, see: https://github.com/MailCore/mailcore2/issues/555
- 
- Detect encrypted messages
- Autocryptmessages
- 
- 
- */
 
 
 import Foundation
@@ -149,7 +133,7 @@ class MailHandler {
 
     var delegate: MailHandlerDelegator?
 
-    fileprivate static let MAXMAILS: Int = 50
+    fileprivate static let MAXMAILS: UInt32 = 50
 
     fileprivate let concurrentMailServer = DispatchQueue(label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent)
 
@@ -440,7 +424,7 @@ class MailHandler {
         
         }*/
         getUIDs(for: folderPath) {allUIDs in
-            let loadUIDs = allUIDs.suffix(MailHandler.MAXMAILS)
+            let loadUIDs = allUIDs.suffix(Int(MailHandler.MAXMAILS))
             if let last = loadUIDs.last, let first = loadUIDs.first {
                 let indexSet = MCOIndexSet(range: MCORange.init(location: first, length: last-first))
                 if indexSet != nil {
@@ -478,6 +462,7 @@ class MailHandler {
 
         self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }*/
+    
     //olderMails from mergeFolders branch
     func olderMails(with folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         var uids: MCOIndexSet
@@ -495,10 +480,13 @@ class MailHandler {
     }
 
     func receiveAll(_ folderPath: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        print("Call all mails!")
         getUIDs(for: folderPath) {uids in
+            print("We have all uids! let make progress!")
             let loadUIDs = uids.filter{$0 > DataHandler.handler.findFolder(with: folderPath).maxID}
             if let last = loadUIDs.last, let first = loadUIDs.first {
                 if let indexSet = MCOIndexSet(range: MCORange.init(location: first, length: last-first)) {
+                    print("Load messages!")
                     self.loadMessagesFromServer(indexSet, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
                 }
             }
@@ -528,16 +516,15 @@ class MailHandler {
                         completionCallback(false)
                         return
                     }
-                    setOfIndices = self.cutIndexSet(setOfIndices)
-
                     self.loadMessagesFromServer(setOfIndices, folderPath: folderPath, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
                 }
             }
         }
     }
 
-    func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: UInt32 = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
+
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER]
 
@@ -547,7 +534,7 @@ class MailHandler {
                 completionCallback(true)
                 return
             }
-            var calledMails = 0
+            var calledMails: UInt32 = 0
             if let msgs = msg {
                 print("#mails on server: \(msgs.count)")
                 let dispatchGroup = DispatchGroup()
@@ -568,7 +555,6 @@ class MailHandler {
                     self.IMAPSession.disconnectOperation().start({ _ in })
                     completionCallback(false)
                 }
-                print("loadMessagesFromServer; MailHandler around line 415: ", calledMails)
             }
         }
     }
@@ -658,14 +644,13 @@ class MailHandler {
             }
             
             if let header = header, let from = header.from, let date = header.date {
-                _ = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath) //TODO @Olli: fatal error: unexpectedly found nil while unwrapping an Optional value //crash wenn kein header vorhanden ist
+                _ = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath)
                 newMailCallback()
             }
         }
     }
 
     private func decryptText(body: String, from: String) -> DecryptedData? {
-        //let encType = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
         if let encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) {
             if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data? {
                 return encryption.decryptedMime(data, from: from)
@@ -675,8 +660,8 @@ class MailHandler {
     }
 
 
-    fileprivate func cutIndexSet(_ inputSet: MCOIndexSet, maxMails: Int = MAXMAILS) -> MCOIndexSet {
-        let max = UInt32(maxMails)
+    fileprivate func cutIndexSet(_ inputSet: MCOIndexSet, maxMails: UInt32 = MAXMAILS) -> MCOIndexSet {
+        let max = maxMails
         if inputSet.count() <= max {
             return inputSet
         }
@@ -684,6 +669,9 @@ class MailHandler {
         for x in inputSet.nsIndexSet().reversed() {
             if result.count() < max {
                 result.add(UInt64(x))
+            }
+            else{
+                break
             }
         }
         return result
@@ -738,6 +726,10 @@ class MailHandler {
                 for m in msgs {
                     if let message: MCOIMAPMessage = m as? MCOIMAPMessage {
                         ids.append(UInt64(message.uid))
+                    }
+                    if ids.count > Int(MailHandler.MAXMAILS){
+                        print("Toooo man ids!")
+                        break
                     }
                 }
             }
