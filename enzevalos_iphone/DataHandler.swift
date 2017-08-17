@@ -96,39 +96,25 @@ class DataHandler {
     func allAddressesInFolder(folder: Folder, withoutSecure: Bool) -> [MailAddress]{
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         fReq.predicate = NSPredicate(format: "folder = %@", folder)
-        // fReq.resultType = NSFetchRequestResultType.dictionaryResultType
-        //fReq.propertiesToFetch = ["from"]
-        //fReq.returnsDistinctResults = true
-        var addresses = Set<Mail_Address>()
-        //TODO: improve https://stackoverflow.com/questions/24432895/swift-core-data-request-with-distinct-results#24433996
+        fReq.resultType = NSFetchRequestResultType.dictionaryResultType
+        fReq.propertiesToFetch = ["from"]
+        fReq.returnsDistinctResults = true
+        var addresses = [MailAddress]()
+        let result = (try? self.managedObjectContext.fetch(fReq))
         
-        if let result = (try? self.managedObjectContext.fetch(fReq)) as? [PersistentMail]{
-            for object in result {
-                if let adr = object.from as? Mail_Address{
-                    if !(withoutSecure && object.isSecure){
-                        addresses.insert(adr)
+        if let res = result as? Array<NSDictionary>{
+            for nsdict in res  {
+                let value =  nsdict.value(forKey: "from")
+                if let fromID = value as? NSManagedObjectID{
+                    if let adr = managedObjectContext.object(with: fromID) as? Mail_Address{
+                        addresses.append(adr)
                     }
                 }
-           }
+            }
         }
-        return Array(addresses)
+        return addresses
     }
     
-    /*
-     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"MyEntity"];
-     NSEntityDescription *entity = [NSEntityDescription entityForName:@"MyEntity" inManagedObjectContext:self.managedObjectContext];
-     
-     // Required! Unless you set the resultType to NSDictionaryResultType, distinct can't work.
-     // All objects in the backing store are implicitly distinct, but two dictionaries can be duplicates.
-     // Since you only want distinct names, only ask for the 'name' property.
-     fetchRequest.resultType = NSDictionaryResultType;
-     fetchRequest.propertiesToFetch = [NSArray arrayWithObject:[[entity propertiesByName] objectForKey:@"name"]];
-     fetchRequest.returnsDistinctResults = YES;
-     
-     // Now it should yield an NSArray of distinct values in dictionaries.
-     NSArray *dictionaries = [self.managedObjectContext executeFetchRequest:fetchRequest error:nil];
-     NSLog (@"names: %@",dictionaries);
- */
     func allKeysInFolder(folder: Folder) -> [String]{
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         var predicates = [NSPredicate]()
@@ -137,22 +123,22 @@ class DataHandler {
         let andPredicates = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         
         fReq.predicate = andPredicates
-      //  fReq.resultType = NSFetchRequestResultType.dictionaryResultType
-       // fReq.propertiesToFetch = ["keyID"]
-        //fReq.returnsDistinctResults = true
-        var keys = Set<String>()
-        //TODO: improve https://stackoverflow.com/questions/24432895/swift-core-data-request-with-distinct-results#24433996
+        fReq.propertiesToFetch = ["keyID"]
+        fReq.resultType = NSFetchRequestResultType.dictionaryResultType
+        fReq.returnsDistinctResults = true
+        var keys: [String] = [String]()
         
-        if let result = (try? self.managedObjectContext.fetch(fReq)) as? [PersistentMail]{
-            for object in result {
-                if let key = object.keyID{
-                    if object.isSecure && key != ""{
-                        keys.insert(key)
-                    }
+        let result = (try? self.managedObjectContext.fetch(fReq))
+            
+        if let res = result as? Array<NSDictionary>{
+            for nsdict in res  {
+                if let keyID = nsdict.value(forKey: "keyID") as? String{
+                    keys.append(keyID)
                 }
             }
+
         }
-        return Array(keys)
+        return keys
     }
     
     
