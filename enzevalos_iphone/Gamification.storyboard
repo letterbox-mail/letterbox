@@ -206,7 +206,7 @@
                                         <color key="trackTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </progressView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="xx %" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GoG-8X-ar5">
-                                        <rect key="frame" x="333.5" y="70.5" width="25.5" height="16"/>
+                                        <rect key="frame" x="333.5" y="72" width="25.5" height="14.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -542,6 +542,7 @@
                                         </constraints>
                                         <state key="normal" title="Invite Friend"/>
                                         <connections>
+                                            <action selector="invitePressed:" destination="Wkg-91-waa" eventType="touchUpInside" id="lR2-IE-UOy"/>
                                             <segue destination="13h-dZ-sew" kind="show" identifier="send" id="RKN-iB-gAm"/>
                                         </connections>
                                     </button>

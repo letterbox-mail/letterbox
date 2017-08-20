@@ -196,6 +196,22 @@ class InviteFriendViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
 
+    
+    @IBAction func invitePressed(_ sender: Any) {
+        
+        if self.selectedContact != nil {
+            self.performSegue(withIdentifier: "send", sender: self)
+        } else {
+            let alert = UIAlertController(title: NSLocalizedString("Information", comment: "Information title in Alert view") , message: NSLocalizedString("Please select contact", comment: "information message in alert view"), preferredStyle: .alert)
+            let ok = UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok button"), style: .default , handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+    }
+    
+    
+    
      // MARK: - Navigation
 
      // In a storyboard-based application, you will often want to do a little preparation before navigation

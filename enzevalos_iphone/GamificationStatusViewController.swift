@@ -166,6 +166,15 @@ class GamificationStatusViewController: UIViewController, UITableViewDelegate, U
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
+        if indexPath.row > 0 {
+            // hier die weiterleitung zu den accounteinstellungen einfügen
+            let alert = UIAlertController(title: NSLocalizedString("Information", comment: "Information title in Alert view") , message: NSLocalizedString("Function currently not implemented", comment: "information message in alert view gamification status view"), preferredStyle: .alert)
+            let ok = UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok button"), style: .default , handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+
+        
+        }
 
     }
 
