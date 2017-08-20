@@ -10,15 +10,6 @@ import UIKit
 import CoreData
 import Contacts
 
-// mails anzahl
-// kontakt anzahl
-// secure percentage
-// keys collected
-// Backups / Timeframe
-
-
-
-
 
 
 
@@ -42,22 +33,6 @@ class GamificationData: NSObject {
         Badges.init(type: .inviteAFriend, pictureOff: "invitefriendOff", pictureOn: "invitefriendOn", segue: .inviteFriend, displayName: NSLocalizedString("Invite a friend", comment: "Invite a friend" )),
         Badges.init(type: .Ambassador, pictureOff: "ambassadorOff", pictureOn: "ambassadorOn", segue: .inviteFriend, displayName: NSLocalizedString("Ambassador", comment:"Ambassador" ))
         ]
-    /*
-     old badges from pdf
-     
-     let badges : [Badges] = [
-     Badges.init(type: .keyMaster, pictureOff: "keymasterOff", pictureOn: "keymasterOn", segue: .LinearBadge, displayName: NSLocalizedString("Keymaster", comment: "Keymaster")),
-     Badges.init(type: .trustmaster, pictureOff: "trustmasterOff", pictureOn: "trustmasterOn", segue: .LinearBadge, displayName: NSLocalizedString("Trustmaster", comment: "Trustmaster")),
-     Badges.init(type: .verschlüsselMaster, pictureOff: "verschluesselmasterOff", pictureOn: "verschluesselmasterOn", segue: .None, displayName: NSLocalizedString("Crypto Champion", comment: "Crypto Champion")),
-     Badges.init(type: .firstMail, pictureOff: "verschluesseltOff", pictureOn: "verschluesseltOn", segue: .LinearBadge, displayName: NSLocalizedString("First Encrypted Mail", comment:"First Encrypted Mail" )),
-     Badges.init(type: .quizmaster, pictureOff: "quizmasterOff", pictureOn: "quizmasterOn", segue: .LinearBadge, displayName: NSLocalizedString("Quizmaster", comment: "Quizmaster")),
-     Badges.init(type: .onBoarding, pictureOff: "onboardingOff", pictureOn: "onboardingOn", segue: .LinearBadge, displayName: NSLocalizedString("Onboarded", comment:"Onboarded" )),
-     Badges.init(type: .inviteAFriend, pictureOff: "invitefriendOff", pictureOn: "invitefriendOn", segue: .inviteFriend, displayName: NSLocalizedString("Invite a friend", comment: "Invite a friend" )),
-     Badges.init(type: .Ambassador, pictureOff: "ambassadorOff", pictureOn: "ambassadorOn", segue: .inviteFriend, displayName: NSLocalizedString("Ambassador", comment:"Ambassador" )),
-     ]
-
-     */
-
 
 
     // MARK:- Functions
@@ -78,12 +53,7 @@ class GamificationData: NSObject {
             ]
         case .inviteAFriend :
             return [Badges(pictureOff: "invitefriendOff", pictureOn: "invitefriendOn", displayName: NSLocalizedString("One friend successful invited", comment:"One friend invited" ), achievmentsNeeded: [.OneFriendInvited ])]
-        case .keyMaster :
-            return [
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Installed", comment: "Installed")),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Connect to KeyChain", comment:"Connect to KeyChain" )),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Create your Keys", comment: "Create your Keys")),
-            ]
+
         case .onBoarding :
             return [
                 Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Installed", comment:"Installed" )),
@@ -108,38 +78,63 @@ class GamificationData: NSObject {
                 Badges.init(type: .SecureMailMaster100 , pictureOff: "verschluesseltOff", pictureOn: "verschluesseltOn", displayName: NSLocalizedString("100 secure Mails Send/Received", comment:"SecureMailMaster Subbadge" ), achievmentsNeeded: [.SecureMails100]),
                 Badges.init(type: .SecureMailMaster1000 , pictureOff: "verschluesseltOff", pictureOn: "verschluesseltOn", displayName: NSLocalizedString("1000 secure Mails Send/Received", comment:"SecureMailMaster Subbadge" ), achievmentsNeeded: [.SecureMails1000])
             ]
-        case .quizmaster :
-            return [
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Quiz 1", comment:"Quiz 1" )),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Quiz 2", comment: "Quiz 2")),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Quiz 3", comment:"Quiz 3" )),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Quiz 4", comment: "Quiz 4")),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Quiz a friend", comment:"Quiz a friend" )),
-            ]
-        case .trustmaster :
-            return [
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Trust one contacts Key", comment: "Trust one contacts Key")),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Send one encrypted Mail", comment:"Send one encrypted Mail" )),
-            ]
-        case .verschlüsselMaster :
-            return [Badges]()
-        case .firstMail :
-            return [
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Installed", comment:"Installed" )),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Connect to Keychain", comment: "Connect to Keychain")),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Create your Keys", comment:"Create your Keys" )),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Add your friends publc Key", comment: "Add your friends publc Key")),
-                Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Sent first encrypted mail", comment: "Sent first encrypted mail")),
-            ]
-
-
-
+    
         default:
             return [Badges]()
 
         }
 
     }
+
+
+
+
+  /**
+    
+
+     **Returns** the 3 last Achieved Badges
+     */
+    func get3LastAchieved() -> [Badges] {
+
+
+        let key = UserManager.loadUserValue( Attribute.userAddr ) as! String
+
+        let defaults = UserDefaults.standard
+
+        let array = defaults.array(forKey: key)  as? [Int] ?? [Int]()
+
+        var result = [Badges]()
+
+        if array.count > 0 {
+            for element in self.badges {
+                if element.type.rawValue == array[0] {
+                    result.append(element)
+                }
+            }
+        }
+
+        if array.count > 1 {
+            for element in self.badges {
+                if element.type.rawValue == array[1] {
+                    result.append(element)
+                }
+            }
+        }
+
+        if array.count > 2 {
+            for element in self.badges {
+                if element.type.rawValue == array[2] {
+                    result.append(element)
+                }
+            }
+        }
+
+        return result //[
+            Badges.init(type: .inviteAFriend, pictureOff: "invitefriendOff", pictureOn: "invitefriendOn", segue: .inviteFriend, displayName: NSLocalizedString("Invite a friend", comment: "Invite a friend" ))
+        ] 
+
+    }
+
 
     /**
      - Parameter badge: BadgeType identifying the Badge for which a Query is placed
@@ -164,6 +159,34 @@ class GamificationData: NSObject {
             }
         }
 
+
+
+        // check if part of badges array
+        for element in self.badges {
+            if badge.type == element.type {
+
+                let key = UserManager.loadUserValue( Attribute.userAddr ) as! String
+
+                let defaults = UserDefaults.standard
+                var array = defaults.array(forKey: key)  as? [Int] ?? [Int]()
+
+                for zahl in array {
+                    if zahl == badge.type.rawValue {
+                        // bereits zuvor erreicht, exit
+                        return true
+                    }
+                }
+
+
+                array.insert(badge.type.rawValue , atIndex: 0)
+                NSLog("New Badge %@ achieved", badge.type)
+                defaults.set(array, forKey: key)
+
+            }
+
+        }
+
+       
         return true
 
 

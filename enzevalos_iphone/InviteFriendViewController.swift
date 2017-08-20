@@ -42,19 +42,6 @@ class InviteFriendViewController: UIViewController, UITableViewDataSource, UITab
         }
 
 
-
-
-        //print("count: \(subBadges.count)")
-//        self.contactTableView.layer.borderColor = UIColor.black.cgColor
-//        self.contactTableView.layer.borderWidth = 1.0
-//        self.contactTableView.layer.shadowOffset = CGSize(width: 5.0, height: 5.0)
-//        self.contactTableView.layer.shadowOpacity = 0.8
-//
-//        self.inviteFriendButton.layer.borderColor = UIColor.black.cgColor
-//        self.inviteFriendButton.layer.borderWidth = 1.0
-//        self.inviteFriendButton.layer.shadowOffset = CGSize(width: 5.0, height: 5.0)
-//        self.inviteFriendButton.layer.shadowOpacity = 0.8
-//
         guard let badge = superBadge else {
             subBadges = [Badges]()
 

@@ -38,9 +38,7 @@ class GamificationStatusViewController: UIViewController, UITableViewDelegate, U
     
     var selected : Badges?
 
-    let lastAchieved : [Badges] = [
-        Badges.init(type: .inviteAFriend, pictureOff: "invitefriendOff", pictureOn: "invitefriendOn", segue: .inviteFriend, displayName: NSLocalizedString("Invite a friend", comment: "Invite a friend" ))
-    ] // TODO: testData to be replaced with aktual data
+    let lastAchieved : [Badges] = GamificationData.sharedInstance.get3LastAchieved()
 
 
     override func viewDidLoad() {
