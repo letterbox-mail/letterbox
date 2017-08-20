@@ -14,7 +14,7 @@ import UIKit
 /**
  Enum Type for easier Recogition.
  */
-enum BadgeType{
+enum BadgeType : Int {
     case keyMaster
     case trustmaster
     case verschlüsselMaster

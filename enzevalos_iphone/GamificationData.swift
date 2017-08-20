@@ -95,6 +95,10 @@ class GamificationData: NSObject {
      **Returns** the 3 last Achieved Badges
      */
     func get3LastAchieved() -> [Badges] {
+        // check if new achieved
+        for element in self.badges {
+            self.badgeAchieved(badge: element)
+        }
 
 
         let key = UserManager.loadUserValue( Attribute.userAddr ) as! String
@@ -130,8 +134,8 @@ class GamificationData: NSObject {
         }
 
         return result //[
-            Badges.init(type: .inviteAFriend, pictureOff: "invitefriendOff", pictureOn: "invitefriendOn", segue: .inviteFriend, displayName: NSLocalizedString("Invite a friend", comment: "Invite a friend" ))
-        ] 
+         //   Badges.init(type: .inviteAFriend, pictureOff: "invitefriendOff", pictureOn: "invitefriendOn", segue: .inviteFriend, displayName: NSLocalizedString("Invite a friend", comment: "Invite a friend" ))
+      //  ]
 
     }
 
@@ -178,8 +182,8 @@ class GamificationData: NSObject {
                 }
 
 
-                array.insert(badge.type.rawValue , atIndex: 0)
-                NSLog("New Badge %@ achieved", badge.type)
+                array.insert(badge.type.rawValue , at: 0)
+            //    NSLog("New Badge %@ achieved", badge.type)
                 defaults.set(array, forKey: key)
 
             }
