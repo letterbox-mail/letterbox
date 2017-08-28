@@ -426,19 +426,6 @@ class MailHandler {
     }
 
     func firstLookUp(_ folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        /*findMaxUID(folderPath){max in
-            var uids: MCOIndexSet
-            print("Max uid: \(max)")
-            var (min, overflow) = UInt64.subtractWithOverflow(max, UInt64(MailHandler.MAXMAILS))
-            if min <= 0 || overflow {
-                min = 1
-            }
-            uids = MCOIndexSet(range: MCORangeMake(min, UInt64(MailHandler.MAXMAILS))) // DataHandler.handler.maxUID
-            print("call for #\(uids.count()) uids \(uids.rangesCount()); min \(min); max \(max)")
-            uids.remove(DataHandler.handler.findFolder(with: folderPath).uids)
-            self.loadMessagesFromServer(uids, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
-        
-        }*/
         getUIDs(for: folderPath) {allUIDs in
             let loadUIDs = allUIDs.suffix(MailHandler.MAXMAILS)
             if let last = loadUIDs.last, let first = loadUIDs.first {
@@ -454,31 +441,6 @@ class MailHandler {
         }
     }
  
-    /*func olderMailsFolder(_ folder: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        var uids: MCOIndexSet
-        var max = DataHandler.handler.maxUID
-
-        if max <= 1 {
-            return firstLookUp(folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
-        }
-        for uid in DataHandler.handler.uids.nsIndexSet() {
-            if max.distance(to: UInt64(uid)) < 0 {
-                max = UInt64(uid)
-            }
-        }
-
-        var min = max - 200
-        if min < 1 {
-            min = 1
-        }
-        print("look for more mails: \(min) to \(max)")
-
-        uids = MCOIndexSet(range: MCORangeMake(min, max))
-        uids.remove(DataHandler.handler.uids)
-
-        self.loadMessagesFromServer(uids, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
-    }*/
-    //olderMails from mergeFolders branch
     func olderMails(with folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         var uids: MCOIndexSet
         let myfolder = DataHandler.handler.findFolder(with: folderPath)
@@ -767,15 +729,15 @@ class MailHandler {
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
         session.username = username
         session.password = UserManager.loadUserValue(Attribute.userPW) as! String
-        session.authType = UserManager.loadSmtpAuthType()//MCOAuthType.init(rawValue: UserManager.loadUserValue(Attribute.smtpAuthType) as! Int)//MCOAuthType.SASLPlain
-        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)//MCOConnectionType.StartTLS
+        session.authType = UserManager.loadSmtpAuthType()
+        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
 
         session.checkAccountOperationWith(from: MCOAddress.init(mailbox: useraddr)).start(completion)
 
     }
 
     func checkIMAP(_ completion: @escaping (Error?) -> Void) {
-        self.setupIMAPSession().checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
+        self.setupIMAPSession().checkAccountOperation().start(completion)
     }
 
     func move(mails: [PersistentMail], from: String, to: String, folderCreated: Bool = false) {
@@ -800,12 +762,6 @@ class MailHandler {
             }
         }
     }
-    
-    /*func delete(mails: [PersistentMail]) {
-        for mail in mails {
-            DataHandler.handler.deleteMail(with: mail.uid)
-        }
-    }*/
     
     func allFolders(_ completion: @escaping (Error?, [Any]?) -> Void){
     
