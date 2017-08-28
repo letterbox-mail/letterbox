@@ -343,8 +343,8 @@ class MailHandler {
         imapsession.port = UInt32(UserManager.loadUserValue(Attribute.imapPort) as! Int)
         imapsession.username = UserManager.loadUserValue(Attribute.userAddr) as! String
         imapsession.password = UserManager.loadUserValue(Attribute.userPW) as! String
-        imapsession.authType = UserManager.loadImapAuthType()//MCOAuthType(rawValue: UserManager.loadUserValue(Attribute.imapAuthType) as! Int) //MCOAuthType.SASLPlain
-        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)//MCOConnectionType.TLS
+        imapsession.authType = UserManager.loadImapAuthType()
+        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)
         return imapsession
     }
 
@@ -637,7 +637,6 @@ class MailHandler {
     }
 
     private func decryptText(body: String, from: String) -> DecryptedData? {
-        //let encType = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
         if let encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) {
             if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data? {
                 return encryption.decryptedMime(data, from: from)
