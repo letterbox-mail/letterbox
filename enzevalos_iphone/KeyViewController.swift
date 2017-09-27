@@ -13,8 +13,6 @@ class KeyViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
 
     var record: KeyRecord?
-    var keyWrapper: KeyWrapper?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         if let rec = record, rec.key != nil {
