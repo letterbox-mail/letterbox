@@ -89,8 +89,8 @@ class ReadViewController: UITableViewController {
 
         _ = mail?.from.contact?.records.flatMap { x in
             if x.hasKey && x.key != nil {
-                let keyWrapper = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(x.key!)
-                keyDiscoveryDate = keyWrapper?.discoveryTime
+                let keyWrapper = DataHandler.handler.findKey(keyID: x.key!)
+                keyDiscoveryDate = keyWrapper?.discoveryDate as! Date
             }
         }
     }
@@ -124,7 +124,7 @@ class ReadViewController: UITableViewController {
         let records = DataHandler.handler.getContactByAddress(email).records
         for r in records {
             for address in r.addresses {
-                if address.mailAddress == email && address.prefEnc.canEnc() == r.hasKey {
+                if address.mailAddress == email && address.hasKey == r.hasKey {
                     performSegue(withIdentifier: "showContact", sender: ["record": r, "email": email])
                     return
                 }

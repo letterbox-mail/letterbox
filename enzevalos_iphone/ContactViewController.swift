@@ -35,7 +35,13 @@ class ContactViewController: UIViewController {
 
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
         if let con = keyRecord {
-            hasKey = EnzevalosEncryptionHandler.hasKey(con.ezContact)
+            hasKey = false
+            if let adrs = con.ezContact.addresses{
+                for adr in adrs{
+                    let a = adr as! MailAddress
+                    hasKey = hasKey || a.hasKey
+                }
+            }
 
             let myAddress = UserManager.loadUserValue(Attribute.userAddr) as! String
             if con.addresses.contains(where: { $0.mailAddress.lowercased() == myAddress
@@ -155,7 +161,7 @@ class ContactViewController: UIViewController {
             performSegue(withIdentifier: "newMail", sender: mail)
         } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") && keyRecord!.key != nil {
             AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-            performSegue(withIdentifier: "verifyQRCode", sender: EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(keyRecord!.key!)?.fingerprint)
+            performSegue(withIdentifier: "verifyQRCode", sender: keyRecord?.fingerprint)
         }
     }
 
@@ -191,15 +197,14 @@ class ContactViewController: UIViewController {
             destinationViewController.record = keyRecord
         } else if segue.identifier == "verifyQRCode" {
             if let DestinationViewController = segue.destination as? QRScannerView {
-                DestinationViewController.fingerprint = EnzevalosEncryptionHandler.getEncryption(.PGP)!.getKey(keyRecord!.key!)!.fingerprint
+                DestinationViewController.fingerprint = keyRecord?.fingerprint
                 DestinationViewController.callback = verifySuccessfull
             }
         }
     }
 
     func verifySuccessfull() {
-        var keyWrapper = EnzevalosEncryptionHandler.getEncryption(.PGP)!.getKey(keyRecord!.key!)!
-        keyWrapper.verified = true
+        keyRecord?.verify()
         tableView.reloadData()
     }
 }
@@ -236,7 +241,7 @@ extension ContactViewController: UITableViewDataSource {
                 } else if indexPath.row == 1 {
                     if isUser && keyRecord!.hasKey {
                         let qrCodeCell = tableView.dequeueReusableCell(withIdentifier: "QRCodeCell", for: indexPath) as! QRCodeCell
-                        let qrCode = QRCode.generate(input: "OPENPGP4FPR:\(EnzevalosEncryptionHandler.getEncryption(.PGP)!.getKey(keyRecord!.key!)!.fingerprint)")
+                        let qrCode = QRCode.generate(input: "OPENPGP4FPR:\(keyRecord?.fingerprint)")
 
                         let scaleX = qrCodeCell.qrCode.frame.size.width / qrCode.extent.size.width
                         let scaleY = qrCodeCell.qrCode.frame.size.height / qrCode.extent.size.height
@@ -286,11 +291,11 @@ extension ContactViewController: UITableViewDataSource {
             case 3 where !((keyRecord?.hasKey) ?? false):
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! RecordCell
                 if let r = otherRecords {
-                    if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
+                    if let key = r[indexPath.row].key, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
                         let dateFormatter = DateFormatter()
                         dateFormatter.locale = Locale.current
                         dateFormatter.dateStyle = .medium
-                        cell.dateLabel.text = dateFormatter.string(from: time)
+                        cell.dateLabel.text = dateFormatter.string(from: time as Date)
                         cell.iconImage.image = IconsStyleKit.imageOfLetter
                     } else {
                         cell.dateLabel.text = ""
@@ -306,11 +311,11 @@ extension ContactViewController: UITableViewDataSource {
             case 4 where (keyRecord?.hasKey) ?? false:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! RecordCell
                 if let r = otherRecords {
-                    if let key = r[indexPath.row].key, let time = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(key)?.discoveryTime {
+                    if let key = r[indexPath.row].key, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
                         let dateFormatter = DateFormatter()
                         dateFormatter.locale = Locale.current
                         dateFormatter.dateStyle = .medium
-                        cell.dateLabel.text = dateFormatter.string(from: time)
+                        cell.dateLabel.text = dateFormatter.string(from: time as Date)
                         cell.iconImage.image = IconsStyleKit.imageOfLetter
                     } else {
                         cell.dateLabel.text = ""

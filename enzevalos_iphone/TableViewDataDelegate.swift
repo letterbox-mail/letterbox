@@ -34,7 +34,7 @@ class TableViewDataDelegate : NSObject, UITableViewDelegate, UITableViewDataSour
             cell.img.image = img
         }
         
-        if !EnzevalosEncryptionHandler.hasKey(cell.address.text!) {
+        if !DataHandler.handler.hasKey(adr: cell.address.text!) {
             cell.name.textColor! = UIColor.orange
             cell.address.textColor! = UIColor.orange
         }

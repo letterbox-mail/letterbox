@@ -4,8 +4,9 @@
         <attribute name="accountname" attributeType="String" syncable="YES"/>
         <attribute name="dispalyname" attributeType="String" syncable="YES"/>
         <attribute name="pw" attributeType="String" syncable="YES"/>
-        <relationship name="address" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
+        <relationship name="address" maxCount="1" deletionRule="Nullify" destinationEntity="Mail_Address" syncable="YES"/>
         <relationship name="imap" maxCount="1" deletionRule="Nullify" destinationEntity="Server" syncable="YES"/>
+        <relationship name="secretkeys" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SecretKey" syncable="YES"/>
         <relationship name="smtp" maxCount="1" deletionRule="Nullify" destinationEntity="Server" syncable="YES"/>
     </entity>
     <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
@@ -24,15 +25,23 @@
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
-        <attribute name="encryptionType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="lastSeen" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="lastSeenAutocrypt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="prefer_encryption" attributeType="Integer 16" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="bcc" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="cc" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" inverseName="addresses" inverseEntity="EnzevalosContact" syncable="YES"/>
         <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="from" inverseEntity="PersistentMail" syncable="YES"/>
+        <relationship name="key" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="mailaddress" inverseEntity="PersistentKey" syncable="YES"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="to" inverseEntity="PersistentMail" syncable="YES"/>
+    </entity>
+    <entity name="PersistentKey" representedClassName="PersistentKey" syncable="YES">
+        <attribute name="discoveryDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="encryptionType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="keyID" attributeType="String" syncable="YES"/>
+        <attribute name="lastSeen" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="lastSeenAutocrypt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="preferEncryption" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="verifiedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="firstMail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" syncable="YES"/>
+        <relationship name="mailaddress" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="key" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
     <entity name="PersistentMail" representedClassName="PersistentMail" syncable="YES">
         <attribute name="body" attributeType="String" syncable="YES"/>
@@ -54,6 +63,10 @@
         <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="from" inverseEntity="Mail_Address" syncable="YES"/>
         <relationship name="to" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="to" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
+    <entity name="SecretKey" representedClassName="SecretKey" syncable="YES" codeGenerationType="class">
+        <attribute name="keyID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="obsolete" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
     <entity name="Server" representedClassName="Server" syncable="YES" codeGenerationType="class">
         <attribute name="authType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="connectionType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -67,11 +80,13 @@
     <fetchRequest name="getFolder" entity="Folder" predicateString="name == &quot;$folder&quot;"/>
     <fetchRequest name="getMailAddress" entity="Mail_Address" predicateString="address == &quot;$adr&quot;"/>
     <elements>
-        <element name="Account" positionX="-288" positionY="-9" width="128" height="135"/>
+        <element name="Account" positionX="-288" positionY="-9" width="128" height="150"/>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>
         <element name="Folder" positionX="-297" positionY="-18" width="128" height="150"/>
-        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="195"/>
+        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="150"/>
+        <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="180"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="315"/>
+        <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="75"/>
         <element name="Server" positionX="-279" positionY="0" width="128" height="105"/>
         <element name="State" positionX="-306" positionY="-27" width="128" height="75"/>
     </elements>

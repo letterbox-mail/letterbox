@@ -32,7 +32,7 @@ open class CNMailAddressExtension: MailAddress{
     }
     
     
-    open var keyID: String?{
+    open var Key: PersistentKey?{
         get{
             return nil
         }

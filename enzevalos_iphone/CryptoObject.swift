@@ -28,15 +28,17 @@ enum CryptoScheme {
 public class CryptoObject{
     let chiphertext: Data?
     let plaintext: String?
+    let decryptedData: Data?
     let signatureState: SignatureState
     let encryptionState: EncryptionState
     let signKey: String?
     let encType: CryptoScheme
     
     
-    init(chiphertext: Data?, plaintext: String?, sigState: SignatureState, encState: EncryptionState, signKey: String?, encType: CryptoScheme){
+    init(chiphertext: Data?, plaintext: String?, decryptedData: Data?, sigState: SignatureState, encState: EncryptionState, signKey: String?, encType: CryptoScheme){
         self.chiphertext = chiphertext
         self.plaintext = plaintext
+        self.decryptedData = decryptedData
         self.signatureState = sigState
         self.encryptionState = encState
         self.signKey = signKey

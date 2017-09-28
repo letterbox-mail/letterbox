@@ -127,6 +127,8 @@ open class PersistentMail: NSManagedObject, Mail {
         return receivers
     }
 
+    /*
+     TODO: REMOVE
     //decrypt and/or check signature
     func decryptIfPossible() {
         let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
@@ -169,6 +171,7 @@ open class PersistentMail: NSManagedObject, Mail {
         }
         return nil
     }
+ */
 
     func getSubjectWithFlagsString() -> String {
         let subj: String

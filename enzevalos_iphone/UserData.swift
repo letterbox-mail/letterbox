@@ -16,15 +16,15 @@ enum Attribute: Int{
     var defaultValue:AnyObject? {
         switch self {
         case .accountname:
-            return Attribute.attributeValues[Attribute.accountname]! //return "Alice"
+            return Attribute.attributeValues[Attribute.accountname]!
         case .userName:
-            return Attribute.attributeValues[Attribute.userName]! //return "Alice2005"
+            return Attribute.attributeValues[Attribute.userName]!
         case .userAddr:
-            return Attribute.attributeValues[Attribute.userAddr]! //return "alice2005@web.de"
+            return Attribute.attributeValues[Attribute.userAddr]!
         case .userPW:
-            return Attribute.attributeValues[Attribute.userPW]! //return "WJ$CE:EtUo3E$"
+            return Attribute.attributeValues[Attribute.userPW]!
         case .smtpHostname:
-            return Attribute.attributeValues[Attribute.smtpHostname]! //return "smtp.web.de"
+            return Attribute.attributeValues[Attribute.smtpHostname]! 
         case .smtpPort:
             return Attribute.attributeValues[Attribute.smtpPort]!
         case .imapHostname:

@@ -20,7 +20,70 @@ open class KeyRecord: Record {
 
     let key: String?
     
+    let cryptoscheme = CryptoScheme.PGP
+    
     let folder: Folder
+    
+    var pgpKey: PGPKey?{
+        get{
+            if let k = key{
+                let pgp = SwiftPGP()
+                 return pgp.loadKey(id: k)
+            }
+            return nil
+        }
+    }
+    
+    var storedKey: PersistentKey?{
+        get{
+            if let k = keyId{
+                return DataHandler.handler.findKey(keyID: k)
+            }
+            return nil
+        }
+    
+    }
+    
+    
+    
+    public var isVerified: Bool{
+        get{
+            if let k = key{
+                if let pk = DataHandler.handler.findKey(keyID: k){
+                    return pk.isVerified()
+                }
+            }
+            return false
+            
+        }
+    }
+    
+    func verify(){
+        if let k = key{
+            if let pk = DataHandler.handler.findKey(keyID: k){
+                pk.verify()
+            }
+        }
+    }
+    
+    var fingerprint: String?{
+        get{
+            if let k = pgpKey{
+                return k.keyID.longKeyString
+            }
+            return nil
+        }
+    }
+    
+    var keyId: String?{
+        get{
+            if let k = pgpKey{
+                return k.keyID.shortKeyString
+            }
+            return nil
+        }
+    
+    }
     
     open var mails: [PersistentMail] {
         get{
@@ -34,6 +97,17 @@ open class KeyRecord: Record {
         }
         return []
     }
+    
+    var addressNames:[String]{
+        get{
+            let adrs = addresses
+            var names = [String]()
+            for adr in adrs{
+                names.append(adr.mailAddress)
+            }
+            return names
+        }
+    }
 
     open var name: String {
         return ezContact.name
@@ -45,15 +119,6 @@ open class KeyRecord: Record {
     
     open var isSecure: Bool = false
 
-    open var isVerified: Bool {
-        if let key = self.key {
-            if let keywrapper = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)?.getKey(key) {
-                return keywrapper.verified
-            }
-
-        }
-        return false
-    }
 
     open var ezContact: EnzevalosContact
 

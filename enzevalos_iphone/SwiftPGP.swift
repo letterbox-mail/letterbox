@@ -31,7 +31,7 @@ class SwiftPGP: Encryption{
         return id
     }    
     
-    private func loadKey(id: String) -> PGPKey?{
+    func loadKey(id: String) -> PGPKey?{
         do{
             if let data = try keychain.getData(id){
                 let pgp = ObjectivePGP()
@@ -66,6 +66,17 @@ class SwiftPGP: Encryption{
         }
         return ids
     }
+    
+    func importKeysFromFile(file: String) -> [String]{
+        let pgp = ObjectivePGP()
+        let keys = pgp.importKeys(fromFile: file)
+        var ids = [String]()
+        for k in keys{
+            ids.append(storeKey(key: k))
+        }
+        return ids
+    }
+    
     func exportKey(id: String, isSecretkey isSecretKey: Bool, autocrypt: Bool) -> String?{
         let pgp = ObjectivePGP()
         if var key = loadKey(id: id){
@@ -92,7 +103,6 @@ class SwiftPGP: Encryption{
         }
         return nil
     }
-
     
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject{
         let pgp = ObjectivePGP()
@@ -106,15 +116,15 @@ class SwiftPGP: Encryption{
         if let data = plaintext.data(using: String.Encoding.utf8){
             do{
                 let chipher = try pgp.encryptData(data, using: keys, signWith: signKey, passphrase: nil, armored: true)
-                return CryptoObject(chiphertext: chipher, plaintext: plaintext, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP)
+                return CryptoObject(chiphertext: chipher, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP)
             } catch {
                 print("Encryption error!") //TODO: Error handling!
             }
         }
-        return CryptoObject(chiphertext: nil, plaintext: nil, sigState: SignatureState.InvalidSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: cryptoScheme)
+        return CryptoObject(chiphertext: nil, plaintext: nil,decryptedData: nil, sigState: SignatureState.InvalidSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: cryptoScheme)
         
     }
-    func decrypt(data: Data,decryptionId: String, verifyIds: [String]) -> CryptoObject{
+    func decrypt(data: Data,decryptionId: String?, verifyIds: [String]) -> CryptoObject{
         let pgp = ObjectivePGP()
         
         //has to be var because it is given as pointer to obj-c-code
@@ -129,12 +139,16 @@ class SwiftPGP: Encryption{
         var encState = EncryptionState.UnableToDecrypt //TODO: More decryption keys?
         var sigKey: String? = nil
         
-        if let decKey = loadKey(id: decryptionId){
-            pgp.importKeys(Set([decKey]))
+        if let decId = decryptionId{
+            if let decKey = loadKey(id: decId){
+                pgp.importKeys(Set([decKey]))
+            }
+            //else{
+             //   return CryptoObject(chiphertext: data, plaintext: nil, sigState: SignatureState.NoSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: CryptoScheme.PGP)
+           // }
         }
-        else{
-            return CryptoObject(chiphertext: data, plaintext: nil, sigState: SignatureState.NoSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: CryptoScheme.PGP)
-        }
+        
+        
         
         
         for id in verifyIds{
@@ -174,6 +188,6 @@ class SwiftPGP: Encryption{
         if plaindata != nil{
             plaintext = plaindata?.base64EncodedString()
         }
-        return CryptoObject(chiphertext: data, plaintext: plaintext , sigState: sigState, encState: encState, signKey: sigKey, encType: CryptoScheme.PGP)
+        return CryptoObject(chiphertext: data, plaintext: plaintext, decryptedData: plaindata, sigState: sigState, encState: encState, signKey: sigKey, encType: CryptoScheme.PGP)
     }
 }

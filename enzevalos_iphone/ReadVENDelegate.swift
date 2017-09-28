@@ -70,8 +70,10 @@ extension ReadVENDelegate: VENTokenFieldDelegate {
     }
 
     func tokenField(_ tokenField: VENTokenField, colorSchemeForTokenAt index: UInt) -> UIColor {
-        if EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress(tokenField.mailTokens[Int(index)] as! String)) { //unfassbar langsam!
-            return UIColor.init(red: 0, green: 122.0 / 255.0, blue: 1, alpha: 1)
+        if let adr = DataHandler.handler.findMailAddress(adr: tokenField.mailTokens[Int(index)] as! String){
+            if adr.hasKey{
+                return UIColor.init(red: 0, green: 122.0 / 255.0, blue: 1, alpha: 1)
+            }
         }
         return UIColor.orange
     }

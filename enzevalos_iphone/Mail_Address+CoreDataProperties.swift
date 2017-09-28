@@ -17,52 +17,13 @@ extension Mail_Address {
     }
 
     @NSManaged public var address: String
-    @NSManaged public var contact: EnzevalosContact?
-    @NSManaged public var lastSeen: Date?
-    @NSManaged public var lastSeenAutocrypt: Date?
-    
-    public var prefer_encryption: EncState{
-        set {
-            let name = "prefer_encryption"
-            self.willChangeValue(forKey: name)
-            self.setPrimitiveValue(newValue.asInt(), forKey: name)
-            self.didChangeValue(forKey: name)
-        }
-        get {
-            
-            let name = "prefer_encryption"
-            self.willAccessValue(forKey: name)
-            let i = self.primitiveValue(forKey: name) as! Int
-            self.didAccessValue(forKey: name)
-            return EncState.find(i: i)
-        }
-
-        
-    }
-
-    
-    public var encryptionType: EncryptionType{
-        set {
-            let name = "encryptionType"
-            self.willChangeValue(forKey: name)
-            self.setPrimitiveValue(newValue.rawValue, forKey: name)
-            self.didChangeValue(forKey: name)
-        }
-        get {
-            
-            let name = "encryptionType"
-            self.willAccessValue(forKey: name)
-            let string = self.primitiveValue(forKey: name) as! String?
-            self.didAccessValue(forKey: name)
-            return EncryptionType.fromString(string)
-         }
-    }
-    
-    
+    @NSManaged public var contact: EnzevalosContact?    
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var from: NSSet?
     @NSManaged public var to: NSSet?
+    @NSManaged public var key: NSSet?
+
 
 }
 
@@ -115,5 +76,22 @@ extension Mail_Address {
     
     @objc(removeTo:)
     @NSManaged public func removeFromTo(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for key
+extension Mail_Address {
+    
+    @objc(addKeyObject:)
+    @NSManaged public func addToKey(_ value: PersistentKey)
+    
+    @objc(removeKeyObject:)
+    @NSManaged public func removeFromKey(_ value: PersistentKey)
+    
+    @objc(addKey:)
+    @NSManaged public func addToKey(_ values: NSSet)
+    
+    @objc(removeKey:)
+    @NSManaged public func removeFromKey(_ values: NSSet)
     
 }

@@ -71,6 +71,8 @@ class DataHandler {
     }
 
     
+    
+    
     func callForFolders(done: @escaping ((_ error: Bool) -> ())){ // Maybe call back? Look for new Folder?
         AppDelegate.getAppDelegate().mailHandler.allFolders{ (err, array) -> Void in
             guard err == nil else {
@@ -266,9 +268,78 @@ class DataHandler {
         removeAll(entity: "Mail_Address")
         removeAll(entity: "State")
         removeAll(entity: "Folder")
+        removeAll(entity: "SecretKey")
+        removeAll(entity: "PersistentKey")
+
     }
 
     // Save, load, search
+    
+    func newSecretKey(keyID: String) -> SecretKey{
+        let sk: SecretKey
+        if let key = findSecretKey(keyID: keyID){
+            sk = key
+        }
+        else {
+            sk = NSEntityDescription.insertNewObject(forEntityName: "SecretKey", into: managedObjectContext) as! SecretKey
+            sk.keyID = keyID
+            sk.obsolete = false
+        }
+        return sk
+    }
+    
+    func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil) -> PersistentKey{
+        let date = Date.init() as NSDate
+        let adr = getMailAddress(adr, temporary: false) as! Mail_Address
+        var pk: PersistentKey
+        if let search = findKey(keyID: keyID){
+            search.lastSeen = date
+            if autocrypt{
+                search.lastSeenAutocrypt = date
+            }
+            search.addToMailaddress(adr)
+            pk = search
+        }
+        else{
+            pk = NSEntityDescription.insertNewObject(forEntityName: "PersistentKey", into: managedObjectContext) as! PersistentKey
+            pk.addToMailaddress(adr)
+            pk.keyID = keyID
+            pk.encryptionType = Int16(cryptoType.hashValue)
+            pk.lastSeen = date
+            pk.discoveryDate = date
+            pk.firstMail = firstMail
+            if autocrypt{
+                pk.lastSeenAutocrypt = date
+            }
+        }
+        save()
+        return pk
+    }
+    
+    func findSecretKeys() ->[SecretKey]{
+        if let result = findAll("SecretKey"){
+            return result as! [SecretKey]
+        }
+        return [SecretKey]()
+    }
+    
+    func findSecretKey(keyID: String)-> SecretKey?{
+        if let result = find("SecretKey", type: "keyID", search: keyID){
+            for r in result{
+                return r as? SecretKey
+            }
+        }
+        return nil
+    }
+    
+    func findKey(keyID: String) -> PersistentKey?{
+        if let result = find("PersistentKey", type: "keyID", search: keyID){
+            for r in result{
+                return r as? PersistentKey
+            }
+        }
+        return nil        
+    }
 
     private func find(_ entityName: String, type: String, search: String) -> [AnyObject]? {
         let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
@@ -338,7 +409,6 @@ class DataHandler {
                     else {
                         let mail_address = NSEntityDescription.insertNewObject(forEntityName: "Mail_Address", into: managedObjectContext) as! Mail_Address
                         mail_address.address = address
-                        mail_address.prefer_encryption = EncState.NOAUTOCRYPT
                         return mail_address
                 }
             }
@@ -346,6 +416,15 @@ class DataHandler {
                     return search![0] as! Mail_Address
             }
         }
+    
+    func findMailAddress(adr: String)-> Mail_Address?{
+        if let search = find("Mail_Address", type: "address", search: adr){
+            if search.count > 0{
+                return search[0] as! Mail_Address
+            }
+        }
+        return nil
+    }
 
         func getMailAddressesByString(_ addresses: [String], temporary: Bool) -> [MailAddress] {
             var mailaddresses = [MailAddress]()
@@ -412,8 +491,8 @@ class DataHandler {
         func getContact(_ name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
             let contact = getContactByAddress(address)
             contact.displayname = name
-            contact.getAddress(address)?.keyID = key
-            _ = contact.getAddress(address)?.prefer_encryption //TODO IOptimize: look for Mail_Address and than for contact!
+            contact.getAddress(address)?.key?.adding(key)
+            //TODO IOptimize: look for Mail_Address and than for contact!
             return contact
         }
 
@@ -442,6 +521,7 @@ class DataHandler {
             let adr: Mail_Address
             let contact = getContactByMCOAddress(sender)
             adr = contact.getAddressByMCOAddress(sender)!
+            /* TODO: Handle AUtocrypt again!
             if adr.lastSeen > fromMail.date{
                 adr.lastSeen = fromMail.date
             }
@@ -459,6 +539,7 @@ class DataHandler {
             else if adr.lastSeen < adr.lastSeenAutocrypt && adr.prefer_encryption != EncState.NOAUTOCRYPT{
                 adr.prefer_encryption = EncState.RESET
             }
+             */
             fromMail.from = adr
         }
 
@@ -474,7 +555,7 @@ class DataHandler {
 
         // -------- End handle to, cc, from addresses --------
 
-    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: DecryptedData?, folderPath: String) {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String) {
 
         let finding = findNum("PersistentMail", type: "uid", search: uid)
         let mail: PersistentMail
@@ -511,7 +592,7 @@ class DataHandler {
                 if let decData = decryptedData{
                     let encState: EncryptionState = decData.encryptionState
                     let signState: SignatureState = decData.signatureState
-                    mail.keyID = decData.keyID
+                    mail.keyID = decData.signKey
                     
                     switch encState {
                     case EncryptionState.NoEncryption:
@@ -545,7 +626,7 @@ class DataHandler {
                 else{
                     // Maybe PGPInline?
                     // TODO: Refactoring!
-                    mail.decryptIfPossible()
+                    //mail.decryptIfPossible()
                 }
             }
             else {
@@ -607,7 +688,12 @@ class DataHandler {
       
 
     
-
+    func hasKey(adr: String) -> Bool{
+        if let madr = findMailAddress(adr: adr){
+            return madr.hasKey
+        }
+        return false
+    }
     
     func folderRecords(folderPath: String) -> [KeyRecord]{
         let folder = findFolder(with: folderPath) as Folder

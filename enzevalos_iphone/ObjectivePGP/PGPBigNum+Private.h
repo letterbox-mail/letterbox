@@ -6,8 +6,8 @@
 //  Copyright © 2017 Marcin Krzyżanowski. All rights reserved.
 //
 
-#import <ObjectivePGP/PGPBigNum.h>
-#import <ObjectivePGP/PGPMacros.h>
+#import "PGPBigNum.h"
+#import "PGPMacros.h"
 #import <openssl/bn.h>
 #import <Foundation/Foundation.h>
 

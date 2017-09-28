@@ -213,7 +213,7 @@ class SendViewController: UIViewController {
         let records = DataHandler.handler.getContactByAddress(email).records
         for r in records {
             for address in r.addresses {
-                if address.mailAddress == email && address.prefEnc.canEnc() == r.hasKey {
+                if address.mailAddress == email && address.hasKey == r.hasKey {
                     performSegue(withIdentifier: "showContact", sender: ["record": r, "email": email])
                     self.view.endEditing(true)
                     return
@@ -237,12 +237,12 @@ class SendViewController: UIViewController {
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
-                    if let mail = mail as? String, !EnzevalosEncryptionHandler.hasKey(mail) {
+                    if let mail = mail as? String{ // , !EnzevalosEncryptionHandler.hasKey(mail) 
                         to.append(DataHandler.handler.getMailAddress(mail, temporary: true))
                     }
                 }
                 for mail in ccText.mailTokens {
-                    if let mail = mail as? String, !EnzevalosEncryptionHandler.hasKey(mail) {
+                    if let mail = mail as? String{ // , !EnzevalosEncryptionHandler.hasKey(mail)
                         cc.append(DataHandler.handler.getMailAddress(mail, temporary: true))
                     }
                 }
@@ -604,7 +604,11 @@ extension VENTokenFieldDataSource {
     func someSecure(_ tokenField: VENTokenField) -> Bool {
         var secure = false
         for entry in tokenField.mailTokens {
-            secure = secure || EnzevalosEncryptionHandler.hasKey(entry as! String)
+            var hasKey = false
+            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String){
+                hasKey = madr.hasKey
+            }
+            secure = secure || hasKey
         }
 
         return secure

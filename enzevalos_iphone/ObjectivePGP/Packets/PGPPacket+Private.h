@@ -7,7 +7,7 @@
 //
 
 #import "PGPPacket.h"
-#import <ObjectivePGP/ObjectivePGP.h>
+#import "ObjectivePGP.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

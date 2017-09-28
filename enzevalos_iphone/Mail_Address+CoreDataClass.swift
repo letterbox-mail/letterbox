@@ -29,50 +29,18 @@ open class Mail_Address: NSManagedObject, MailAddress {
         return CNLabeledValue.init(label: CNLabelOther, value: address as NSString)
     }
 
-    open var prefEnc: EncState {
-        get{
-            return prefer_encryption
+    
+    open var Key: PersistentKey?{
+        if hasKey{
+            return self.key?.anyObject() as? PersistentKey
         }
-        set{
-            prefer_encryption = newValue
-        }
+        return nil
     }
 
-    //TODO think about it! Better safe state or update state???
-    open var keyID: String? {
-        get {
-            if self.encryptionType == EncryptionType.unknown{
-                self.encryptionType = EnzevalosEncryptionHandler.getEncryptionType(self.address)
-            }
-            if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
-                return encryption.getActualKeyID(self.address)
-            }
-            return nil
-        }
-        set (newID) {
-            if let id = newID {
-                if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
-                    if encryption.keyIDExists(id) {
-                        if let currentID = self.keyID {
-                            encryption.removeMailAddressForKey(self.mailAddress, keyID: currentID)
-                        }
-                        encryption.addMailAddressForKey(mailAddress, keyID: id)
-                    }
-                }
-            }
-            else {
-                if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
-                    if let currentID = self.keyID {
-                        encryption.removeMailAddressForKey(self.mailAddress, keyID: currentID)
-                    }
-                }
-            }
-        }
-    }
-
+    
     open var hasKey: Bool {
-        if let encryption = EnzevalosEncryptionHandler.getEncryption(self.encryptionType) {
-            return encryption.hasKey(self.mailAddress)
+        if key != nil && (key?.count)! > 0{
+            return true
         }
         return false
     }

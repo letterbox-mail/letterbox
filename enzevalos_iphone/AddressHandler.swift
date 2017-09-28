@@ -142,12 +142,15 @@ class AddressHandler {
         return list
     }
     
+    /*
+ REMOVE???
     static func proveAddress(_ s: NSString) -> Bool {
         if addresses.contains((s as String).lowercased()) {
             return true
         }
         return EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress((s as String).lowercased()))
     }
+ */
 
     static func inContacts(_ name: String) -> Bool {
         AppDelegate.getAppDelegate().requestForAccess({ access in })

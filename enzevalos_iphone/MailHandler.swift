@@ -46,13 +46,13 @@ let KEY = "key"
 
 class AutocryptContact {
     var addr: String = ""
-    var type: EncryptionType = .PGP
+    var type: CryptoScheme = .PGP
     var prefer_encryption: EncState = EncState.NOAUTOCRYPT
     var key: String = ""
 
     init(addr: String, type: String, prefer_encryption: String, key: String) {
         self.addr = addr
-        self.type = EncryptionType.typeFromAutocrypt(type)
+        // TODO: Other crypto schemes?
         _ = setPrefer_encryption(prefer_encryption)
         self.key = key
     }
@@ -105,14 +105,14 @@ class AutocryptContact {
     }
 
     func validateContact() -> Bool {
-        if addr != "" && type != .unknown && key != "" {
+        if addr != "" && type != .UNKNOWN && key != "" {
             return true
         }
         return false
     }
 
     func setPrefer_encryption(_ input: String) -> Bool {
-        var pref = input.lowercased()
+        let pref = input.lowercased()
         if pref == "yes" || pref == "mutal" {
             self.prefer_encryption = EncState.MUTAL
             return true
@@ -149,13 +149,13 @@ class MailHandler {
     var IMAPIdleSession: MCOIMAPSession?
     var IMAPIdleSupported: Bool?
 
-    //TODO: signatur hinzufügen
     func addAutocryptHeader(_ builder: MCOMessageBuilder) {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
-        let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
-        if let header = pgpenc.autocryptHeader(adr) {
-            builder.header.setExtraHeaderValue(header, forName: AUTOCRYPTHEADER)
-        }
+        // TODO: Autocryptheader!
+       // let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
+       // if let header = pgpenc.autocryptHeader(adr) {
+        //    builder.header.setExtraHeaderValue(header, forName: AUTOCRYPTHEADER)
+       // }
     }
 
     fileprivate func createHeader(_ builder: MCOMessageBuilder, toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String) {
@@ -189,6 +189,37 @@ class MailHandler {
         addAutocryptHeader(builder)
 
     }
+    
+    private func orderReceiver(receiver: [String]) -> [CryptoScheme: [MCOAddress]]{
+        var orderedReceiver = [CryptoScheme: [MCOAddress]]()
+        orderedReceiver[CryptoScheme.PGP] = [MCOAddress]()
+        orderedReceiver[CryptoScheme.UNKNOWN] = [MCOAddress]()
+
+        for r in receiver{
+            let mco = MCOAddress(displayName: r, mailbox: r)
+            if let adr = DataHandler.handler.findMailAddress(adr: r){
+                if adr.hasKey{ //TODO: CONSIDER AUTOCRYPT!
+                    orderedReceiver[CryptoScheme.PGP]?.append(mco!)
+                }
+                else{
+                    orderedReceiver[CryptoScheme.UNKNOWN]?.append(mco!)
+                }
+            }
+        }
+        return orderedReceiver
+    }
+    
+    private func addKeys(adrs: [MCOAddress]) -> [String]{
+        var ids = [String]()
+        for a in adrs{
+            if let adr = DataHandler.handler.findMailAddress(adr: a.mailbox), let key = adr.Key?.keyID {
+                ids.append(key)
+            }
+        }
+       
+        return ids
+    }
+    
 
     //return if send successfully
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void) {
@@ -207,42 +238,35 @@ class MailHandler {
         allRec.append(contentsOf: ccEntrys)
         // What about BCC??
 
-        //TODO add support for different Encryptions here
-        //edit sortMailaddressesByEncryptionMCOAddress and sortMailaddressesByEncryption because a mailaddress can be found in multiple Encryptions
-        let ordered = EnzevalosEncryptionHandler.sortMailaddressesByEncryptionMCOAddress(allRec, sendEncryptedIfPossible: sendEncryptedIfPossible)
+        
+        let ordered = orderReceiver(receiver: allRec)
 
         let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
 
         var encryption: Encryption
         var sendData: Data
-        let orderedString = EnzevalosEncryptionHandler.sortMailaddressesByEncryption(allRec)
+        //let orderedString = EnzevalosEncryptionHandler.sortMailaddressesByEncryption(allRec)
         var sendOperation: MCOSMTPSendOperation
 
-        //TODO: Consider pref enc = false
-
-        if let encPGP = ordered[EncryptionType.PGP] {
-            encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
-            let keyID = encryption.getActualKeyID(allRec[0])
-            var encFor = orderedString[EncryptionType.PGP]!
-            encFor.append(useraddr)
-            print("Keyid : \(String(describing: keyID)) of \(allRec[0])")
-            if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: encFor) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
+        if let encPGP = ordered[CryptoScheme.PGP] {
+            var keyIDs = addKeys(adrs: encPGP)
+            //added own public key here, so we can decrypt our own message to read it in sent-folder
+            let sks = DataHandler.handler.findSecretKeys()
+            if sks.count > 0 {
+                keyIDs.append(sks[0].keyID!)
+            }
+            
+            let pgp = SwiftPGP()
+            print("Keyid : \(String(describing: keyIDs)) of \(allRec[0])")
+            let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: keyIDs, myId:sks[0].keyID!)
+            if let encData = cryptoObject.chiphertext{
                 sendData = encData
-                //added own public key here, so we can decrypt our own message to read it in sent-folder
-                
-                
-               // builder.textBody = String(data: encData, encoding: String.Encoding.utf8)
-               // sendData = builder.data()
-                //sendOperation = session.sendOperation(with: sendData, from: userID, recipients: encPGP)
                 builder.textBody = "Dies ist verschlüsselt!"
-                //builder.addAttachment(MCOAttachment.init(text: "Dies ist verschlüsselt!"))
-                //builder.addAttachment(MCOAttachment.init(rfc822Message: encData))
-                //builder.addAttachment(MCOAttachment.init(rfc822Message: MCOMessageBuilder().openPGPEncryptedMessageData(withEncryptedData: sendData)))
                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
                 
-                if ordered[EncryptionType.unknown] == nil {
+                if ordered[CryptoScheme.UNKNOWN] == nil {
                     createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                 }
                 builder.textBody = message
@@ -252,7 +276,7 @@ class MailHandler {
             }
         }
 
-        if let unenc = ordered[EncryptionType.unknown] {
+        if let unenc = ordered[CryptoScheme.UNKNOWN] {
             builder.textBody = message
             sendData = builder.data()
             sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
@@ -296,23 +320,28 @@ class MailHandler {
         var sendData: Data
         
         //TODO: Consider pref enc = false
-        
-        encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)!
-        if let encData = encryption.signAndEncrypt("\n" + message, mailaddresses: [useraddr]) { //ohne "\n" wird der erste Teil der Nachricht, bis sich ein einzelnen \n in einer Zeile befindet nicht in die Nachricht getan
-            sendData = builder.openPGPEncryptedMessageData(withEncryptedData: encData)
-            
-            let drafts = UserManager.backendDraftFolderPath
-            
-            if !DataHandler.handler.existsFolder(with: drafts) {
-                let op = IMAPSession.createFolderOperation(drafts)
-                op?.start({ _ in self.saveDraft(data: sendData, callback: callback)})
-            }
-            else {
-                saveDraft(data: sendData, callback: callback)
-            }
-        } else {
+        let pgp = SwiftPGP()
+        let keys = DataHandler.handler.findSecretKeys()
+        if keys.count > 0{
+            let mykey = keys[0] //TODO: multiple privatekeys
+            let receiverIds = [mykey.keyID] as! [String]
+            let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: receiverIds, myId: mykey.keyID!)
+            if let encData = cryptoObject.chiphertext {
+                sendData = builder.openPGPEncryptedMessageData(withEncryptedData: encData)
+                
+                let drafts = UserManager.backendDraftFolderPath
+                
+                if !DataHandler.handler.existsFolder(with: drafts) {
+                    let op = IMAPSession.createFolderOperation(drafts)
+                    op?.start({ _ in self.saveDraft(data: sendData, callback: callback)})
+                }
+                else {
+                    saveDraft(data: sendData, callback: callback)
+                }
+            } else {
                 //TODO do it better
-            callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
+                callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
+            }
         }
     }
     
@@ -572,19 +601,7 @@ class MailHandler {
 
         var autocrypt: AutocryptContact? = nil
         if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
-            autocrypt = AutocryptContact(header: header!)
-            if autocrypt?.type == EncryptionType.PGP && autocrypt?.key.characters.count > 0 {
-                let pgp = ObjectivePGP.init()
-                pgp.importPublicKey(fromHeader: (autocrypt?.key)!, allowDuplicates: false)
-                let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
-                do {
-                    let pgpKey = try pgp.keys[0].export()
-                    _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
-                }
-                catch {
-                    print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
-                }
-            }
+             autocrypt = AutocryptContact(header: header!)
         }
 
         if let to = header?.to {
@@ -604,7 +621,7 @@ class MailHandler {
             let html: String
             var body: String
             var lineArray: [String]
-            var dec: DecryptedData? = nil
+            var dec: CryptoObject? = nil
 
             for a in (msgParser?.attachments())! {
                 let at = a as! MCOAttachment
@@ -623,9 +640,9 @@ class MailHandler {
                 body = lineArray.joined(separator: "\n")
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                 body.append("\n")
-                dec = decryptText(body: body, from: message.header.from.mailbox)
-                if (dec?.decryptedBody != nil) {
-                    msgParser = MCOMessageParser(data: dec?.decryptedBody)
+                dec = decryptText(body: body, from: message.header.from.mailbox, autocrypt: autocrypt)
+                if (dec?.plaintext != nil) {
+                    msgParser = MCOMessageParser(data: dec?.decryptedData)
                     body = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
                 }
             } else {
@@ -650,12 +667,37 @@ class MailHandler {
         }
     }
 
-    private func decryptText(body: String, from: String) -> DecryptedData? {
-        if let encryption = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) {
-            if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data? {
-                return encryption.decryptedMime(data, from: from)
+    private func decryptText(body: String, from: String, autocrypt: AutocryptContact?) -> CryptoObject? {
+        
+        
+        if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data? {
+            let pgp = SwiftPGP()
+            let adr = DataHandler.handler.findMailAddress(adr: from)
+            var keyIds = [String]()
+
+            if let keys = adr?.key{
+                for k in keys{
+                    let key = k as! PersistentKey
+                    keyIds.append(key.keyID)
+                }
             }
+            if let a = autocrypt{
+                let key = pgp.importKeys(key: a.key, isSecretKey: false, autocrypt: true)
+                keyIds.append(contentsOf: key)
+            }
+            let secretkeys = DataHandler.handler.findSecretKeys()
+            var decId: String? = nil
+            for s in secretkeys{
+                if !s.obsolete{
+                    decId = s.keyID
+                    break
+                }
+            }
+            
+            return pgp.decrypt(data: data, decryptionId: decId, verifyIds: keyIds)
+            
         }
+       
         return nil
     }
 
