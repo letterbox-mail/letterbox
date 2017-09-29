@@ -24,6 +24,12 @@ open class KeyRecord: Record {
     
     let folder: Folder
     
+    open var isSecure: Bool = false
+    
+    
+    open var ezContact: EnzevalosContact
+
+    
     var pgpKey: PGPKey?{
         get{
             if let k = key{
@@ -117,10 +123,6 @@ open class KeyRecord: Record {
         return key != nil
     }
     
-    open var isSecure: Bool = false
-
-
-    open var ezContact: EnzevalosContact
 
     open var cnContact: CNContact? {
         return ezContact.cnContact

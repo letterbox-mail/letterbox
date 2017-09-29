@@ -249,7 +249,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Opposite to sign, with readed data (not produced)
 - (BOOL)verifyData:(NSData *)inputData withKey:(PGPKey *)publicKey signingKeyPacket:(PGPPublicKeyPacket *)signingKeyPacket userID:(nullable NSString *)userID error:(NSError *__autoreleasing *)error {
     // no signing packet was found, this we have no valid signature
-    PGPAssertClass(signingKeyPacket, PGPPublicKeyPacket);
+    //PGPAssertClass(signingKeyPacket, PGPPublicKeyPacket);
 
     // FIXME: publicKey is actually secret key sometimes?
 
@@ -293,6 +293,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
 
+    NSLog(@"Signing algo: %hhu",signingKeyPacket.publicKeyAlgorithm);
     switch (signingKeyPacket.publicKeyAlgorithm) {
         case PGPPublicKeyAlgorithmRSA:
         case PGPPublicKeyAlgorithmRSASignOnly:
@@ -319,8 +320,9 @@ NS_ASSUME_NONNULL_BEGIN
             return [PGPDSA verify:toHashData signature:self withPublicKeyPacket:signingKeyPacket];
         } break;
         default:
-            [NSException raise:@"PGPNotSupported" format:@"Algorith not supported"];
-            break;
+            return NO;
+            //[NSException raise:@"PGPNotSupported" format:@"Algorith not supported"];
+           // break;
     }
 
     return YES;

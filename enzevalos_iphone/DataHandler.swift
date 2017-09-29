@@ -285,6 +285,7 @@ class DataHandler {
             sk.keyID = keyID
             sk.obsolete = false
         }
+        save()
         return sk
     }
     
@@ -420,7 +421,7 @@ class DataHandler {
     func findMailAddress(adr: String)-> Mail_Address?{
         if let search = find("Mail_Address", type: "address", search: adr){
             if search.count > 0{
-                return search[0] as! Mail_Address
+                return search[0] as? Mail_Address
             }
         }
         return nil

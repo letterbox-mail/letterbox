@@ -668,22 +668,23 @@ class MailHandler {
     }
 
     private func decryptText(body: String, from: String, autocrypt: AutocryptContact?) -> CryptoObject? {
-        
-        
         if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data? {
             let pgp = SwiftPGP()
-            let adr = DataHandler.handler.findMailAddress(adr: from)
             var keyIds = [String]()
-
-            if let keys = adr?.key{
-                for k in keys{
-                    let key = k as! PersistentKey
-                    keyIds.append(key.keyID)
+            if let adr = DataHandler.handler.findMailAddress(adr: from){
+                if let keys = adr.key{
+                    print("Keys of \(adr.address): \(keys.count)")
+                    for k in keys{
+                        let key = k as! PersistentKey
+                        keyIds.append(key.keyID)
+                    }
                 }
             }
+
+            
             if let a = autocrypt{
-                let key = pgp.importKeys(key: a.key, isSecretKey: false, autocrypt: true)
-                keyIds.append(contentsOf: key)
+                //let key = pgp.importKeys(key: a.key, isSecretKey: false, autocrypt: true)
+                //keyIds.append(contentsOf: key)
             }
             let secretkeys = DataHandler.handler.findSecretKeys()
             var decId: String? = nil
@@ -693,6 +694,7 @@ class MailHandler {
                     break
                 }
             }
+            print("Decrypt message from \(from) with #senderkey:  \(keyIds.count) \n \(keyIds)")
             
             return pgp.decrypt(data: data, decryptionId: decId, verifyIds: keyIds)
             

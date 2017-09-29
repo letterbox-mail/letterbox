@@ -24,8 +24,16 @@ class SwiftPGP: Encryption{
     private func storeKey(key: PGPKey) -> String{
         let id = key.keyID.longKeyString
         let data = try! key.export()
-        let testData = try? keychain.getData(id)
-        if let tmp = testData, tmp == nil {
+        if let testData = try? keychain.getData(id), testData != nil{
+            // merge keys. i.e. secret key stored and key is public key.
+            let pgp = ObjectivePGP()
+            pgp.importKeys(from: testData!)
+            pgp.importKeys(Set([key]))
+            let key = pgp.findKey(for: key.keyID)
+            let newData = try! key?.export()
+            keychain[data: id] = newData
+        }
+        else{
             keychain[data: id] = data
         }
         return id
@@ -147,10 +155,6 @@ class SwiftPGP: Encryption{
              //   return CryptoObject(chiphertext: data, plaintext: nil, sigState: SignatureState.NoSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: CryptoScheme.PGP)
            // }
         }
-        
-        
-        
-        
         for id in verifyIds{
             let key = loadKey(id: id)
             do{
@@ -187,6 +191,10 @@ class SwiftPGP: Encryption{
         var plaintext: String? = nil
         if plaindata != nil{
             plaintext = plaindata?.base64EncodedString()
+            print("Plaintext: plaintext")
+        }
+        else{
+            print("No plaintext!")
         }
         return CryptoObject(chiphertext: data, plaintext: plaintext, decryptedData: plaindata, sigState: sigState, encState: encState, signKey: sigKey, encType: CryptoScheme.PGP)
     }

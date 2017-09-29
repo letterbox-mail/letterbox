@@ -29,7 +29,7 @@
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="cc" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" inverseName="addresses" inverseEntity="EnzevalosContact" syncable="YES"/>
         <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="from" inverseEntity="PersistentMail" syncable="YES"/>
-        <relationship name="key" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="mailaddress" inverseEntity="PersistentKey" syncable="YES"/>
+        <relationship name="key" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="mailaddress" inverseEntity="PersistentKey" syncable="YES"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="to" inverseEntity="PersistentMail" syncable="YES"/>
     </entity>
     <entity name="PersistentKey" representedClassName="PersistentKey" syncable="YES">

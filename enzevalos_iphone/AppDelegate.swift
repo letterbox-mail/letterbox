@@ -89,10 +89,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Onboarding.credentialFails = 0
             Onboarding.manualSet = false
             UserManager.resetUserValues()
-            UserManager.storeUserValue(Attribute.accountname.defaultValue, attribute: Attribute.accountname)
-            UserManager.storeUserValue(Attribute.userName.defaultValue, attribute: Attribute.userName)
-            UserManager.storeUserValue(Attribute.userAddr.defaultValue, attribute: Attribute.userAddr)
-            UserManager.storeUserValue(Attribute.userPW.defaultValue, attribute: Attribute.userPW)
+           
+            
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
@@ -105,7 +103,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setupKeys() {
         self.window?.rootViewController = Onboarding.keyHandlingView()
         DispatchQueue.main.async(execute: {
-            Onboarding.keyHandling()
+            loadUlli()
+            
             self.onboardingDone()
         });
     }

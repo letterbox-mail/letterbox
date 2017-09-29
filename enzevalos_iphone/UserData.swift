@@ -15,33 +15,10 @@ enum Attribute: Int{
     
     var defaultValue:AnyObject? {
         switch self {
-        case .accountname:
-            return Attribute.attributeValues[Attribute.accountname]!
-        case .userName:
-            return Attribute.attributeValues[Attribute.userName]!
-        case .userAddr:
-            return Attribute.attributeValues[Attribute.userAddr]!
-        case .userPW:
-            return Attribute.attributeValues[Attribute.userPW]!
-        case .smtpHostname:
-            return Attribute.attributeValues[Attribute.smtpHostname]! 
-        case .smtpPort:
-            return Attribute.attributeValues[Attribute.smtpPort]!
-        case .imapHostname:
-            return Attribute.attributeValues[Attribute.imapHostname]!
-        case .imapPort:
-            return Attribute.attributeValues[Attribute.imapPort]!
-        case .prefEncryption:
-            return "mutal" as AnyObject? // yes or no
-        case .autocryptType:
-            return "1" as AnyObject? // only openpgp
-        case .imapConnectionType:
-            return MCOConnectionType.TLS.rawValue as AnyObject?
-        case .imapAuthType:
-            return MCOAuthType.saslPlain.rawValue as AnyObject?
-        case .smtpConnectionType:
-             //return MCOConnectionType.TLS.rawValue as AnyObject?//startTLS.rawValue
-            return MCOConnectionType.startTLS.rawValue as AnyObject?//startTLS.rawValue
+            case .prefEncryption:
+                return "mutal" as AnyObject? // yes or no
+            case .autocryptType:
+                return "1" as AnyObject? // only openpgp
         case .sentFolderPath:
             return NSLocalizedString("Sent", comment: "Default name for the sentFolder") as AnyObject?
         case .draftFolderPath:
@@ -52,32 +29,12 @@ enum Attribute: Int{
             return NSLocalizedString("INBOX", comment: "Default name for the inboxFolder") as AnyObject?
         case .archiveFolderPath:
             return NSLocalizedString("Archive", comment: "Default name for the archiveFolder") as AnyObject?
-            
-        case .smtpAuthType:
-            return MCOAuthType.saslPlain.rawValue as AnyObject?
-            
-        case .publicKey:
-            return "" as AnyObject?
+        default:
+            return nil
         }
     }
     
     static let allAttributes = [accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType]
-    static var name = "Alice2005@web.de"//"Ullimuelle@web.de"
-    static var pw = "WJ$CE:EtUo3E$"//"dun3bate"
-    
-    //static let name = "Ullimuelle@web.de"
-    //static let pw =  "dun3bate"
-   // static let name = "bob"
-   // static let pw = "VagotOshaicceov"
-   // static let name = "alice"
-    //static let pw = "egOavOpeecOntew"
-    //static let name = "charlie"
-    //static let pw = "tydpawdAwIdPyuc"
-    static var attributeValues:
-    [Attribute : AnyObject?] = [.accountname : name as AnyObject?, .userName : name as Optional<AnyObject>, .userAddr : name as Optional<AnyObject>, .userPW : pw as Optional<AnyObject>, .smtpHostname : "smtp.web.de" as Optional<AnyObject>, .smtpPort : 587 as Optional<AnyObject>, .imapHostname : "imap.web.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .prefEncryption : "yes" as AnyObject?, .autocryptType : "p" as AnyObject?, .publicKey : "" as AnyObject?]
-        //[Attribute : AnyObject?] = [.accountname : name as AnyObject?, .userName : name as Optional<AnyObject>, .userAddr : name+"@enzevalos.de" as Optional<AnyObject>, .userPW : pw as Optional<AnyObject>, .smtpHostname : "mail.enzevalos.de" as Optional<AnyObject>, .smtpPort : 465 as Optional<AnyObject>, .imapHostname : "mail.enzevalos.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .prefEncryption : "yes" as AnyObject?, .autocryptType : "p" as AnyObject?, .publicKey : "" as AnyObject?]
-    
-
 }
 
 
@@ -195,6 +152,18 @@ struct UserManager{
         for a in Attribute.allAttributes {
             storeUserValue(a.defaultValue, attribute: a)
             //UserDefaults.standard.removeObject(forKey: "\(a.hashValue)")
+        }
+    }
+    
+    static func createKey(){
+        let keys =  DataHandler.handler.findSecretKeys()
+        if keys.count > 0{
+            return
+        }
+        let pgp = SwiftPGP()
+        if let adr = loadUserValue(Attribute.userAddr){
+            let key = pgp.generateKey(adr: adr as! String)
+            _ = DataHandler.handler.newSecretKey(keyID: key)
         }
     }
 }
