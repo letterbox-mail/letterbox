@@ -69,7 +69,22 @@ class DataHandler {
         }
         return root
     }
+    
+    
 
+    func hasMail(folderName: String, uid:UInt64) -> Bool{
+        let folder = findFolder(with: folderName)
+        // TODO: As  Sql rquest with NSPredicate?
+        if let mails = folder.mails{
+            for m in mails{
+                let mail = m as! PersistentMail
+                if mail.uid == uid{
+                    return true
+                }
+            }
+        }
+        return false
+    }
     
     
     

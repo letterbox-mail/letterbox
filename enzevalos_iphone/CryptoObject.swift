@@ -34,6 +34,13 @@ public class CryptoObject{
     let signKey: String?
     let encType: CryptoScheme
     
+    var decryptedText: String?{
+        if let data = decryptedData{
+            return String.init(data: data, encoding: .utf8)
+        }
+        return nil
+    }
+    
     
     init(chiphertext: Data?, plaintext: String?, decryptedData: Data?, sigState: SignatureState, encState: EncryptionState, signKey: String?, encType: CryptoScheme){
         self.chiphertext = chiphertext
