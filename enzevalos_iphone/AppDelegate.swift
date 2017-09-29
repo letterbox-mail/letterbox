@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
+        loadTestAcc()
 
         resetApp()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
@@ -30,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
             self.window?.makeKeyAndVisible()
+
+            
         } else {
             presentInboxViewController()
         }
@@ -103,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setupKeys() {
         self.window?.rootViewController = Onboarding.keyHandlingView()
         DispatchQueue.main.async(execute: {
-            loadUlli()
+            //loadUlli()
             
             self.onboardingDone()
         });

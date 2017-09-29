@@ -169,8 +169,13 @@ class DataHandler {
                 })
                 return secureMails
             }
+            else{
+                let inSecureMails = result.filter({
+                    return !$0.isSecure
+                })
+                return inSecureMails
             
-            return result
+            }
         }
         return []
     }

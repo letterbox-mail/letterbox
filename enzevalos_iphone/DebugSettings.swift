@@ -11,11 +11,19 @@ import Foundation
 let pgp = SwiftPGP()
 let datahandler = DataHandler.handler
 
+func loadTestAcc(){
+    loadAlice2005()
+}
 
 func loadUlli(){
+    print("#################")
+    print("Init Ulli!")
+    print("#################")
+    let user =  web(name: "ullimuelle", pw: "dun3bate")
+    userdefaults(defaults: user)
     importPublicKeys()
     importSecretKey(file: "ullimuelle-private", type: "gpg")
-    let user =  web(name: "ullimuelle", pw: "dun3bate")
+  
 }
 
 func loadBob2005(){
@@ -25,9 +33,11 @@ func loadBob2005(){
 }
 
 func loadAlice2005(){
+    let user = web(name: "alice2005", pw: "WJ$CE:EtUo3E$")
+    userdefaults(defaults: user)
     importPublicKeys()
     importSecretKey(file: "alice2005-private", type: "gpg")
-    let user = web(name: "alice2005", pw: "WJ$CE:EtUo3E$")
+  
 }
 
 // Enzevalos!
@@ -38,7 +48,13 @@ func loadAlice2005(){
 //static let name = "charlie"
 //static let pw = "tydpawdAwIdPyuc"
 
+private func userdefaults(defaults: [Attribute: AnyObject?]){
+    for (att, value) in defaults{
+        UserManager.storeUserValue(value, attribute: att)
+        print("Store: \(value) as \(att)")
+    }
 
+}
 
 private func web(name: String, pw: String) -> [Attribute: AnyObject?]{
     return  [.accountname : name as AnyObject?, .userName : name as Optional<AnyObject>, .userAddr : name+"@web.de" as Optional<AnyObject>, .userPW : pw as Optional<AnyObject>, .smtpHostname : "smtp.web.de" as Optional<AnyObject>, .smtpPort : 587 as Optional<AnyObject>,  .smtpConnectionType:MCOConnectionType.startTLS.rawValue as AnyObject?, .smtpAuthType:MCOAuthType.saslPlain.rawValue as AnyObject?, .imapHostname : "imap.web.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?,.imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?]
