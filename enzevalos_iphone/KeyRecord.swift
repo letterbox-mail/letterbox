@@ -19,8 +19,21 @@ open class KeyRecord: Record {
      */
 
     let key: String?
+    
+    let folder: Folder
+    
+    open var mails: [PersistentMail] {
+        get{
+            return mailsInFolder(folder: folder)
+        }
+    }
 
-    open var addresses: [MailAddress] = [MailAddress]()
+    open var addresses: [MailAddress] {
+        if let adr = ezContact.addresses{
+            return Array(adr) as! [MailAddress]
+        }
+        return []
+    }
 
     open var name: String {
         return ezContact.name
@@ -42,10 +55,6 @@ open class KeyRecord: Record {
         return false
     }
 
-
-    open var mails: [PersistentMail] = [PersistentMail]()
-
-
     open var ezContact: EnzevalosContact
 
     open var cnContact: CNContact? {
@@ -60,57 +69,47 @@ open class KeyRecord: Record {
     }
 
 
-    public init(mail: PersistentMail) {
-        self.isSecure = mail.isSecure
-        if(mail.isSecure && mail.from.hasKey) {
-            self.key = mail.from.keyID
+    public init(keyID: String?, contact: EnzevalosContact, folder: Folder) {
+        key = keyID
+        ezContact = contact
+        self.folder = folder
+        if key != nil{
+            isSecure = true
         }
-        else {
-            self.key = nil
-        }
-        mails.append(mail)
-        mails.sort()
-        self.ezContact = mail.from.contact!
-        _ = addNewAddress(mail.from)
     }
-
-    open static func deleteRecordFromRecordArray(_ records: [KeyRecord], delRecord: KeyRecord) -> [KeyRecord] {
-        var myrecords = [KeyRecord](records)
-        let index = indexInRecords(myrecords, record: delRecord)
-        if index >= 0 {
-            myrecords.remove(at: index)
-        }
-        return myrecords
+    
+    public init(contact: EnzevalosContact, folder: Folder){
+        key = nil
+        ezContact = contact
+        self.folder = folder
+        isSecure = false
     }
-
-    open static func indexInRecords(_ records: [KeyRecord], record: KeyRecord) -> Int {
-        for (index, r) in records.enumerated() {
-            if (matchAddresses(r, record2: record) && r.hasKey == record.hasKey && r.key == record.key) {
-                return index
+    
+    public init (keyID: String, folder: Folder){
+        key = keyID
+        self.folder = folder
+        isSecure = true
+        let mails = DataHandler.handler.allMailsInFolder(key: keyID, contact: nil, folder: folder, isSecure: isSecure)
+        if mails.count > 0{
+            if let c = mails[0].from.contact{
+                ezContact = c
+            }
+            else{
+                ezContact = DataHandler.handler.getContact("", address: "", key: "", prefer_enc: false)
             }
         }
-        return -1
-    }
-
-    private func isInRecords(_ records: [KeyRecord]) -> Bool {
-        if KeyRecord.indexInRecords(records, record: self) >= 0 {
-            return true
+        else{
+            ezContact = DataHandler.handler.getContact("", address: "", key: "", prefer_enc: false)
         }
-        return false
+    }
+    
+
+    
+    func mailsInFolder(folder: Folder?) -> [PersistentMail]{
+        return DataHandler.handler.allMailsInFolder(key: key, contact: ezContact, folder: folder, isSecure: isSecure)
     }
 
-
-    private static func matchAddresses(_ record1: KeyRecord, record2: KeyRecord) -> Bool {
-        for adr1 in record1.addresses {
-            for adr2 in record2.addresses {
-                if adr1.mailAddress == adr2.mailAddress {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
+   
 
 
 
@@ -119,49 +118,6 @@ open class KeyRecord: Record {
         print("Name: \(String(describing: ezContact.displayname)) | State: \(hasKey) | #Mails: \(mails.count)")
         print("First mail: \(String(describing: mails.first?.uid)) | Adr: \(String(describing: mails.first?.from.mailAddress)) | date: \(String(describing: mails.first?.date.description)) ")
         print("subj: \(String(describing: mails.first?.subject?.capitalized))")
-    }
-
-    open func addNewAddress(_ adr: MailAddress) -> Bool {
-        for a in addresses {
-            if a.mailAddress == adr.mailAddress {
-                return false
-            }
-        }
-        addresses.append(adr)
-        return true
-    }
-
-    open func addNewMail(_ mail: PersistentMail) -> Bool {
-        // TODO: signed only mails are dropped ??
-        if mail.isSecure && self.isSecure {
-            if mail.from.keyID == self.key {
-                mails.append(mail)
-                mails.sort()
-                _ = addNewAddress(mail.from)
-                return true
-            }
-            return false
-
-        }
-        else if mail.isSecure != self.isSecure {
-            return false
-        }
-
-        if ezContact.getAddress(mail.from.mailAddress) != nil {
-            for m in mails {
-                if m.uid == mail.uid {
-                    return true
-                }
-                    else if m.uid < mail.uid {
-                    break
-                }
-            }
-            mails.append(mail)
-            mails.sort()
-            _ = addNewAddress(mail.from)
-            return true
-        }
-        return false
     }
 
     open func getImageOrDefault() -> UIImage {

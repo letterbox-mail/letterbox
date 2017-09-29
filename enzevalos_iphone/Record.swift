@@ -22,8 +22,4 @@ public protocol Record: Comparable {
     var color: UIColor { get }
     var image: UIImage { get }
     var addresses: [MailAddress] { get }
-
-
-    func addNewAddress(_ adr: MailAddress) -> Bool
-    func addNewMail(_ mail:PersistentMail) -> Bool
 }

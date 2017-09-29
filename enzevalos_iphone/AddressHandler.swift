@@ -162,7 +162,7 @@ class AddressHandler {
                 }
             }
             catch {
-                print("exception")
+                print("exception in contact IN")
             }
         } else {
             print("no Access!")
@@ -172,6 +172,9 @@ class AddressHandler {
 
 
     static func getContact(_ name: String) -> [CNContact] {
+        if name == ""{
+            return []
+        }
         AppDelegate.getAppDelegate().requestForAccess({ access in })
         let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
         if authorizationStatus == CNAuthorizationStatus.authorized {
@@ -180,7 +183,7 @@ class AddressHandler {
                 return conList
             }
             catch {
-                print("exception")
+                print("exception in contacts get for name: \(name)")
             }
         } else {
             print("no Access!")
@@ -199,7 +202,7 @@ class AddressHandler {
                 return conList
             }
             catch {
-                print("exception")
+                print("exception in contacts")
             }
         } else {
             print("no Access!")

@@ -351,7 +351,7 @@ class SendViewController: UIViewController {
                 tableview.reloadData()
             }
             catch {
-                print("exception")
+                print("exception in contacts search")
             }
         } else {
             print("no Access!")
