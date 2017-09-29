@@ -63,13 +63,23 @@ class SwiftPGP: Encryption{
     func importKeys(key: String, isSecretKey: Bool, autocrypt: Bool) -> [String]{
         let pgp = ObjectivePGP()
         var ids = [String]()
-       // TODO: Autocrypt!
-        if let data = key.data(using: .utf8){
-            let keys = pgp.importKeys(from: data) //.base64EncodedData()
-            for k in keys{
-                if k.isSecret && isSecretKey || !k.isSecret && !isSecretKey{
-                    ids.append(storeKey(key: k))
-                }
+        let keys: Set<PGPKey>
+        if autocrypt{
+            keys = pgp.importKeys(from: key)
+            print(keys.debugDescription)
+        }
+        else{
+            if let data = key.data(using: .utf8){
+                keys = pgp.importKeys(from: data) //.base64EncodedData()
+                
+            }
+            else{
+                keys = Set<PGPKey>()
+            }
+        }
+        for k in keys{
+            if k.isSecret && isSecretKey || !k.isSecret && !isSecretKey{
+                ids.append(storeKey(key: k))
             }
         }
         return ids

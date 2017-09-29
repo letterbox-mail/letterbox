@@ -42,6 +42,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSSet<PGPKey *> *)importKeysFromData:(NSData *)data;
 
 /**
+ Import keys from the string. `keys` property is updated after successfull import.
+ 
+ @param string Keys data as string.
+ @return Set of loaded keys.
+ */
+- (NSSet<PGPKey *> *) importKeysFromString: (NSString *) string;
+/**
  Delete keys
 
  @param keys Keys to delete from keys object

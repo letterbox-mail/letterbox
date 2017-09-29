@@ -576,7 +576,7 @@ class DataHandler {
 
         // -------- End handle to, cc, from addresses --------
 
-    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String) {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String)  -> PersistentMail?{
 
         let finding = findNum("PersistentMail", type: "uid", search: uid)
         let mail: PersistentMail
@@ -651,7 +651,7 @@ class DataHandler {
                 }
             }
             else {
-                return
+                return nil
             }
         
             let myfolder = findFolder(with: folderPath) as Folder
@@ -661,8 +661,9 @@ class DataHandler {
             }
             if mail.uid < myfolder.lastID || myfolder.lastID == 1{
                 myfolder.lastID = mail.uid
-            save()
+                save()
             }
+            return mail
         }
 
 

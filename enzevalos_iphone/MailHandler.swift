@@ -151,11 +151,21 @@ class MailHandler {
 
     func addAutocryptHeader(_ builder: MCOMessageBuilder) {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
-        // TODO: Autocryptheader!
-       // let pgpenc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP) as! PGPEncryption
-       // if let header = pgpenc.autocryptHeader(adr) {
-        //    builder.header.setExtraHeaderValue(header, forName: AUTOCRYPTHEADER)
-       // }
+        let keyIDs = DataHandler.handler.findSecretKeys()
+        if keyIDs.count > 0{
+            let pgp = SwiftPGP()
+            if let id = keyIDs[0].keyID{
+                let enc = "yes"
+                if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true){
+                    var string = "adr = " + adr + "; type = 1;"
+                    if enc == "yes"{
+                        string = string + "prefer-encrypted = mutal"
+                    }
+                    string = string + ";key = "+key
+                    builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
+                }
+            }
+        }
     }
 
     fileprivate func createHeader(_ builder: MCOMessageBuilder, toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String) {
@@ -229,13 +239,11 @@ class MailHandler {
 
         createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
 
-        // MailAddresses statt strings??
 
         var allRec: [String] = []
         allRec.append(contentsOf: toEntrys)
         allRec.append(contentsOf: ccEntrys)
         // What about BCC??
-
         
         let ordered = orderReceiver(receiver: allRec)
 
@@ -243,13 +251,11 @@ class MailHandler {
         let secretkeys = DataHandler.handler.findSecretKeys()
 
         var sendData: Data
-        //let orderedString = EnzevalosEncryptionHandler.sortMailaddressesByEncryption(allRec)
         var sendOperation: MCOSMTPSendOperation
 
         if let encPGP = ordered[CryptoScheme.PGP], ordered[CryptoScheme.PGP]?.count > 0, secretkeys.count > 0 {
             var keyIDs = addKeys(adrs: encPGP)
             let sk = secretkeys[0]
-
             //added own public key here, so we can decrypt our own message to read it in sent-folder
             keyIDs.append(sk.keyID!)
             
@@ -265,7 +271,6 @@ class MailHandler {
                 createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                 
                 builder.textBody = message
-                callback(nil)
             } else {
                 //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
@@ -584,7 +589,7 @@ class MailHandler {
 
         var autocrypt: AutocryptContact? = nil
         if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
-             autocrypt = AutocryptContact(header: header!)
+            autocrypt = AutocryptContact(header: header!)
         }
 
         if let to = header?.to {
@@ -665,7 +670,18 @@ class MailHandler {
             print("UID: \(message.uid) with sub: \(String(describing: header?.subject))")
             
             if let header = header, let from = header.from, let date = header.date {
-                _ = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath)
+                let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath)
+                
+                let pgp = SwiftPGP()
+                if let autoc = autocrypt{
+                    let publickeys = pgp.importKeys(key: autoc.key, isSecretKey: false, autocrypt: true)
+                    for pk in publickeys{
+                        print("NEW PK! \(pk)")
+                        _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
+                        
+                    }
+                }
+
                 newMailCallback()
             }
         }
