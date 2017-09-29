@@ -60,7 +60,6 @@ class GamificationData: NSObject {
                 Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("My own Set of Keys", comment:"My own Set of Keys" )),
                 Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Sent first Encrypted Mail", comment: "Sent first Encrypted Mail"), achievmentsNeeded: [.SecureSend]),
                 Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOn", displayName: NSLocalizedString("Received first Encrypted Mail", comment: "Received first Encrypted Mail" ), achievmentsNeeded: [.SecureReceived] ),
-              //  Badges(pictureOff: "keymasterOff", pictureOn: "keymasterOff", displayName: NSLocalizedString("Onboarding Complete", comment: "Onboarding Complete" )),
             ]
         case .MailMaster:
             return [
@@ -97,7 +96,7 @@ class GamificationData: NSObject {
     func get3LastAchieved() -> [Badges] {
         // check if new achieved
         for element in self.badges {
-            self.badgeAchieved(badge: element)
+            _ = self.badgeAchieved(badge: element)
         }
 
 
@@ -133,9 +132,7 @@ class GamificationData: NSObject {
             }
         }
 
-        return result //[
-         //   Badges.init(type: .inviteAFriend, pictureOff: "invitefriendOff", pictureOn: "invitefriendOn", segue: .inviteFriend, displayName: NSLocalizedString("Invite a friend", comment: "Invite a friend" ))
-      //  ]
+        return result 
 
     }
 
@@ -327,7 +324,10 @@ class GamificationData: NSObject {
         let mailsCount : Int = mailsSend + secureMailsSend + mailsReceived + secureMailsReceived
         let secureMailsCount : Int = secureMailsReceived + secureMailsSend
         let totalMails : Int = mailsCount + secureMailsCount
-        return ( Float(secureContactsCount) / Float(contacts.count) , Float(secureMailsCount) / Float(totalMails) )
+
+        let a = contacts.count == 0 ? 0 : Float(secureContactsCount) / Float(contacts.count)
+        let b = totalMails == 0 ? 0 : Float(secureMailsCount) / Float(totalMails)
+        return ( a, b )
     }
 
 }

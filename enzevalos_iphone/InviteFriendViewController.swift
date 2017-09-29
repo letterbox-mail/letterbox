@@ -227,7 +227,6 @@ class InviteFriendViewController: UIViewController, UITableViewDataSource, UITab
                 time.timeStyle = .short
                 time.locale = Locale.current
 
-                let myAddress = UserManager.loadUserValue(Attribute.userAddr)// as! String
 
             
                 let subject = NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail")
