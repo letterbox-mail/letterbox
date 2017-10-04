@@ -188,10 +188,12 @@ class SwiftPGP: Encryption{
         }
         
         if encState == EncryptionState.UnableToDecrypt{
+            //TODO: What about old signature keys?
+            //TODO: Test
             do{
                 plaindata = try pgp.decryptData(data, passphrase: nil)
                 encState = EncryptionState.ValidedEncryptedWithCurrentKey
-                sigState = SignatureState.InvalidSignature
+                sigState = SignatureState.InvalidSignature //TODO: No signature???
             }catch{
                 encState = EncryptionState.UnableToDecrypt
             }

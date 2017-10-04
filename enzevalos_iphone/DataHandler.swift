@@ -86,6 +86,51 @@ class DataHandler {
         return false
     }
     
+    func checkRecords(records: [KeyRecord]){
+        for record in records{
+            if record.addresses.count == 0{
+                print("Record has no addresses: \(record)")
+            }
+            if record.mails.count < record.mailsInFolder(folder: record.folder).count{
+                print("Wrong matching of mails: \(record)")
+            }
+            for mail in record.mails{
+                checkMail(mail: mail)
+            }
+            for mail in record.mailsInFolder(folder: record.folder){
+                checkMail(mail: mail)
+            }
+        }
+    }
+    
+    func checkMail(mail: PersistentMail){
+        if mail.to.count == 0 && mail.cc == nil{
+            print("Mail has no receiver: \(mail)")
+        }
+        if mail.from == nil{
+            print("Mail has no sender: \(mail)")
+        }
+        if mail.folder == nil{
+            print("Mail has no folder: \(mail)")
+        }
+    }
+    
+    func checkFolder(folderName: String){
+        print("#################")
+        let folder = findFolder(with: folderName)
+        if let mails = folder.mails{
+            for m in mails{
+                let mail = m as! PersistentMail
+                checkMail(mail: mail)
+            }
+        }
+        if let records = folder.records{
+            checkRecords(records: records)
+        }
+        checkRecords(records: folder.liveRecords)
+    print("Finish checking!")
+    }
+    
     
     
     func callForFolders(done: @escaping ((_ error: Bool) -> ())){ // Maybe call back? Look for new Folder?
@@ -112,7 +157,20 @@ class DataHandler {
     
     func allAddressesInFolder(folder: Folder, withoutSecure: Bool) -> [MailAddress]{
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
-        fReq.predicate = NSPredicate(format: "folder = %@", folder)
+        let folderPredicate = NSPredicate(format: "folder = %@", folder)
+        if withoutSecure {
+            var secure = [NSPredicate()]
+            secure.append(NSPredicate(format: "isEncrypted = false"))
+            secure.append(NSPredicate(format: "isSigned = false"))
+            secure.append(NSPredicate(format: "unableTODecrypt = true"))
+            secure.append(NSPredicate(format: "trouble = true"))
+            let secPredicates = NSCompoundPredicate(orPredicateWithSubpredicates: secure)
+            let predicates = NSCompoundPredicate(andPredicateWithSubpredicates: [secPredicates,folderPredicate])
+            fReq.predicate = NSPredicate(format: "folder = %@ AND (isEncrypted = false OR isSigned = false OR unableToDecrypt = true OR trouble = true)", folder)
+        }
+        else{
+            fReq.predicate = folderPredicate
+        }
         fReq.resultType = NSFetchRequestResultType.dictionaryResultType
         fReq.propertiesToFetch = ["from"]
         fReq.returnsDistinctResults = true
@@ -124,6 +182,7 @@ class DataHandler {
                 let value =  nsdict.value(forKey: "from")
                 if let fromID = value as? NSManagedObjectID{
                     if let adr = managedObjectContext.object(with: fromID) as? Mail_Address{
+                        // Exclude empty folders!
                         addresses.append(adr)
                     }
                 }
@@ -162,7 +221,7 @@ class DataHandler {
     func allMailsInFolder(key :String?, contact :EnzevalosContact?, folder: Folder?, isSecure: Bool) -> [PersistentMail]{
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         var predicates = [NSPredicate]()
-        if let k = key{
+        if let k = key, k != ""{
             predicates.append(NSPredicate(format:"keyID = %@", k))
         }
         if let c = contact{

@@ -58,6 +58,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         dateFormatter.timeStyle = .medium
 
         tableView.register(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
+        
 
         AppDelegate.getAppDelegate().mailHandler.startIMAPIdleIfSupported(addNewMail: addNewMail)
     }

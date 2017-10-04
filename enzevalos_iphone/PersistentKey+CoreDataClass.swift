@@ -11,13 +11,6 @@ import CoreData
 
 @objc(PersistentKey)
 public class PersistentKey: NSManagedObject {
-    
-    /*
- discoveryDate = Date.init() as NSDate
- firstMail = mail
- addToMailaddress(adr)
- self.keyID = keyID
- */
  
     open var prefEnc: EncState {
         get{

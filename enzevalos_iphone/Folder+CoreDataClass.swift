@@ -41,7 +41,7 @@ public class Folder: NSManagedObject {
     var liveRecords: [KeyRecord]{
         get{
             var records = [KeyRecord]()
-            // Get all Keys, get all 
+            // Get all Keys, get all adrs
             let keys = DataHandler.handler.allKeysInFolder(folder: self)
             let adrs = DataHandler.handler.allAddressesInFolder(folder: self, withoutSecure: true)
             
@@ -54,7 +54,6 @@ public class Folder: NSManagedObject {
                     let record = KeyRecord(contact: ec, folder: self)
                     records.append(record)
                 }
-
             }
             return records.sorted()
         }
