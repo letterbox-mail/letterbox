@@ -327,8 +327,8 @@ class MailHandler {
         imapsession.port = UInt32(UserManager.loadUserValue(Attribute.imapPort) as! Int)
         imapsession.username = UserManager.loadUserValue(Attribute.userAddr) as! String
         imapsession.password = UserManager.loadUserValue(Attribute.userPW) as! String
-        imapsession.authType = UserManager.loadImapAuthType()//MCOAuthType(rawValue: UserManager.loadUserValue(Attribute.imapAuthType) as! Int) //MCOAuthType.SASLPlain
-        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)//MCOConnectionType.TLS
+        imapsession.authType = UserManager.loadImapAuthType()
+        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)
         return imapsession
     }
 
@@ -410,19 +410,6 @@ class MailHandler {
     }
 
     func firstLookUp(_ folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        /*findMaxUID(folderPath){max in
-            var uids: MCOIndexSet
-            print("Max uid: \(max)")
-            var (min, overflow) = UInt64.subtractWithOverflow(max, UInt64(MailHandler.MAXMAILS))
-            if min <= 0 || overflow {
-                min = 1
-            }
-            uids = MCOIndexSet(range: MCORangeMake(min, UInt64(MailHandler.MAXMAILS))) // DataHandler.handler.maxUID
-            print("call for #\(uids.count()) uids \(uids.rangesCount()); min \(min); max \(max)")
-            uids.remove(DataHandler.handler.findFolder(with: folderPath).uids)
-            self.loadMessagesFromServer(uids, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
-        
-        }*/
         getUIDs(for: folderPath) {allUIDs in
             let loadUIDs = allUIDs.suffix(Int(MailHandler.MAXMAILS))
             if let last = loadUIDs.last, let first = loadUIDs.first {
@@ -579,7 +566,7 @@ class MailHandler {
                 let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
                 do {
                     let pgpKey = try pgp.keys[0].export()
-                    _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!])
+                    _ = enc?.addKey(pgpKey, forMailAddresses: [(header?.from.mailbox)!], discoveryMailUID: UInt64(message.uid), discoveryMailFolderPath: folderPath)
                 }
                 catch {
                     print("Could not conntect key! \(autocrypt?.toString() ?? "empty autocrypt")")
@@ -613,6 +600,16 @@ class MailHandler {
                 }
                 if isEnc && at.mimeType == "application/octet-stream" {
                     msgParser = MCOMessageParser(data: at.data)
+                }
+                if at.mimeType == "application/octet-stream", let content = String(data: at.data, encoding: String.Encoding.utf8), content.hasPrefix("-----BEGIN PGP PUBLIC KEY BLOCK-----") && (content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----") || content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----\n")) {
+                    if let header = header {
+                        _ = EnzevalosEncryptionHandler.getEncryption(.PGP)?.addKey(at.data, forMailAddresses: [header.from.mailbox], discoveryMailUID: UInt64(message.uid), discoveryMailFolderPath: folderPath)
+                    }
+                }
+                if at.mimeType == "application/pgp-keys" {
+                    if let header = header {
+                        _ = EnzevalosEncryptionHandler.getEncryption(.PGP)?.addKey(at.data, forMailAddresses: [header.from.mailbox], discoveryMailUID: UInt64(message.uid), discoveryMailFolderPath: folderPath)
+                    }
                 }
             }
             if isEnc {
@@ -749,15 +746,15 @@ class MailHandler {
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
         session.username = username
         session.password = UserManager.loadUserValue(Attribute.userPW) as! String
-        session.authType = UserManager.loadSmtpAuthType()//MCOAuthType.init(rawValue: UserManager.loadUserValue(Attribute.smtpAuthType) as! Int)//MCOAuthType.SASLPlain
-        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)//MCOConnectionType.StartTLS
+        session.authType = UserManager.loadSmtpAuthType()
+        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
 
         session.checkAccountOperationWith(from: MCOAddress.init(mailbox: useraddr)).start(completion)
 
     }
 
     func checkIMAP(_ completion: @escaping (Error?) -> Void) {
-        self.setupIMAPSession().checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
+        self.setupIMAPSession().checkAccountOperation().start(completion)
     }
 
     func move(mails: [PersistentMail], from: String, to: String, folderCreated: Bool = false) {
@@ -782,12 +779,6 @@ class MailHandler {
             }
         }
     }
-    
-    /*func delete(mails: [PersistentMail]) {
-        for mail in mails {
-            DataHandler.handler.deleteMail(with: mail.uid)
-        }
-    }*/
     
     func allFolders(_ completion: @escaping (Error?, [Any]?) -> Void){
     

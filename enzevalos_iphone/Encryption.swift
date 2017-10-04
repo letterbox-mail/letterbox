@@ -80,10 +80,12 @@ public protocol Encryption {
     
     @discardableResult func addKey(_ keyData: Data, forMailAddresses: [String]?) -> String?
     
-    @discardableResult func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?) -> String?
+    @discardableResult func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?, discoveryMailFolderPath: String?) -> String?
     
     //key is connected to the senders address, if discoveryMail is set
     @discardableResult func addKey(_ keyData: Data, discoveryMail: PersistentMail?) -> String?
+    
+    @discardableResult func addSecretKey(_ keyData: Data) -> String?
     
     //will be maybe deleted... because keyWrapper will be added when constructed
     //func addKey(key: KeyWrapper, forMailAddress: [String]?, callBack: ((success: Bool) -> Void)?)

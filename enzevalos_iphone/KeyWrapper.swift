@@ -17,6 +17,7 @@ public protocol KeyWrapper {
     var verifyTime: Date? {get}
     var discoveryTime: Date {get}
     var discoveryMailUID: UInt64? {get}
+    var discoveryMailFolderPath: String? {get}
     var type: EncryptionType {get}
     var keyID: String {get}
     var fingerprint: String {get}
