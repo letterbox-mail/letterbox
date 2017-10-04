@@ -40,6 +40,7 @@ public class Folder: NSManagedObject {
     
     var liveRecords: [KeyRecord]{
         get{
+            print("Calculate KeyRecords!")
             var records = [KeyRecord]()
             // Get all Keys, get all adrs
             let keys = DataHandler.handler.allKeysInFolder(folder: self)
@@ -59,7 +60,18 @@ public class Folder: NSManagedObject {
         }
     }
     
-    var records: [KeyRecord]? = nil
+    private var storedRecords: [KeyRecord]? = nil
+    
+    var records: [KeyRecord]{
+        get{
+            if storedRecords == nil{
+                updateRecords()
+            }
+            return storedRecords!
+        }
+    
+    }
+    
     
     var mailsOfFolder: [PersistentMail]{
         get{
@@ -88,6 +100,6 @@ public class Folder: NSManagedObject {
     
     //write value of liveRecords to records
     func updateRecords() {
-        records = liveRecords
+        storedRecords = liveRecords
     }
 }

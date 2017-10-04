@@ -14,6 +14,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     let dateFormatter = DateFormatter()
     let searchController = UISearchController(searchResultsController: nil)
     var filteredRecords = [KeyRecord]()
+    let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
 
     @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
     var lastUpdateLabel = UILabel(frame: CGRect.zero)
@@ -69,6 +70,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func addNewMail() {
+        folder.updateRecords()
         tableView.reloadData()
     }
 
@@ -101,8 +103,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         if isFiltering() {
             cell.enzContact = filteredRecords[indexPath.section]
         } else {
-            DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).updateRecords()
-            cell.enzContact = DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath)[indexPath.section]
+            
+            cell.enzContact = folder.records[indexPath.section]
         }
 
         return cell
@@ -112,9 +114,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         if isFiltering() {
             return filteredRecords.count
         }
-
-        DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).updateRecords()
-        return DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).count
+        return folder.records.count
     }
 
     // set top and bottom seperator height
@@ -172,22 +172,22 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func filterContentForSearchText(_ searchText: String, scope: Int = 0) {
-        DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).updateRecords()
+        folder.updateRecords()
         var records = [KeyRecord]()
         if scope == 0 || scope == 3 {
-            records += DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).filter({ ( record: KeyRecord) -> Bool in
+            records += folder.records.filter({ ( record: KeyRecord) -> Bool in
                 return record.name.lowercased().contains(searchText.lowercased())
             })
         }
         if scope == 1 || scope == 3 {
-            records += DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).filter({ ( record: KeyRecord) -> Bool in
+            records += folder.records.filter({ ( record: KeyRecord) -> Bool in
                 return record.mails.filter({ (mail: PersistentMail) -> Bool in
                     mail.subject?.lowercased().contains(searchText.lowercased()) ?? false
                 }).count > 0
             })
         }
         if scope == 2 || scope == 3 {
-            records += DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath).filter({ ( record: KeyRecord) -> Bool in
+            records += folder.records.filter({ ( record: KeyRecord) -> Bool in
                 return record.mails.filter({ (mail: PersistentMail) -> Bool in
                     if let decryptedBody = mail.decryptedBody {
                         return decryptedBody.lowercased().contains(searchText.lowercased())

@@ -124,9 +124,8 @@ class DataHandler {
                 checkMail(mail: mail)
             }
         }
-        if let records = folder.records{
-            checkRecords(records: records)
-        }
+        let records = folder.records
+        checkRecords(records: records)
         checkRecords(records: folder.liveRecords)
     print("Finish checking!")
     }
@@ -778,10 +777,7 @@ class DataHandler {
     
     func folderRecords(folderPath: String) -> [KeyRecord]{
         let folder = findFolder(with: folderPath) as Folder
-        if folder.records != nil {
-            return folder.records!
-        }
-        return []
+        return folder.records
     }
 
 
