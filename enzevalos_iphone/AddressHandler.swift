@@ -272,10 +272,11 @@ class AddressHandler {
             }
             return exists
         }
+        
         do {
-            try contacts = AppDelegate.getAppDelegate().contactStore.unifiedContacts(matching: predicate, keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName), CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor])
+//            try contacts = AppDelegate.getAppDelegate().contactStore.unifiedContacts(matching: predicate, keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName), CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor])
         }
-        catch { }
+        catch { print("Contact exception")  }
         return contacts
     }
 }

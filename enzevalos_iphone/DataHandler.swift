@@ -149,9 +149,12 @@ class DataHandler {
             predicates.append(NSPredicate(format:"keyID = %@", k))
         }
         if let c = contact{
+            if c.getMailAddresses().count == 0 {
+                print("Contact with no Mail Adress: \(String(describing: c.displayname))")
+            } else {
             let adr: Mail_Address =   c.getMailAddresses()[0] as! Mail_Address
             predicates.append(NSPredicate(format:"from == %@", adr))
-            
+            }
         }
         if let f = folder{
             predicates.append(NSPredicate(format:"folder == %@", f))

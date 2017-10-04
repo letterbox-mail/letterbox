@@ -92,6 +92,7 @@ class ReadViewController: UITableViewController {
                 let keyWrapper = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(x.key!)
                 keyDiscoveryDate = keyWrapper?.discoveryTime
             }
+            return nil
         }
     }
 
