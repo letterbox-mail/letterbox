@@ -66,7 +66,6 @@ class SwiftPGP: Encryption{
         let keys: Set<PGPKey>
         if autocrypt{
             keys = pgp.importKeys(from: key)
-            print(keys.debugDescription)
         }
         else{
             if let data = key.data(using: .utf8){

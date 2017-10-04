@@ -442,8 +442,6 @@ class MailHandler {
         op?.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
-            } else {
-                print("Succsessfully removed flags!")
             }
         }
     }
@@ -553,7 +551,6 @@ class MailHandler {
             }
             var calledMails: UInt32 = 0
             if let msgs = msg {
-                print("#mails on server: \(msgs.count)")
                 let dispatchGroup = DispatchGroup()
                 for m in msgs.reversed() {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
@@ -642,14 +639,6 @@ class MailHandler {
                 body.append("\n")
                 
                 if let chipher = findInlinePGP(text: body){
-                    print(body)
-                    if let sender = message.header.from{
-                        print("Sender: \(sender.displayName)")
-                        
-                    }
-                    else{
-                        print("No sender!")
-                    }
                     dec = decryptText(body: chipher, from: message.header.from, autocrypt: autocrypt)
                     if dec != nil{
                         if let text = dec?.decryptedText {
@@ -667,8 +656,6 @@ class MailHandler {
                 return
             }
             
-            print("UID: \(message.uid) with sub: \(String(describing: header?.subject))")
-            
             if let header = header, let from = header.from, let date = header.date {
                 let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath)
                 
@@ -676,7 +663,6 @@ class MailHandler {
                 if let autoc = autocrypt{
                     let publickeys = pgp.importKeys(key: autoc.key, isSecretKey: false, autocrypt: true)
                     for pk in publickeys{
-                        print("NEW PK! \(pk)")
                         _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
                         
                     }
@@ -705,7 +691,6 @@ class MailHandler {
             var keyIds = [String]()
             if let adr = DataHandler.handler.findMailAddress(adr: sender){
                 if let keys = adr.key{
-                    print("Keys of \(adr.address): \(keys.count)")
                     for k in keys{
                         let key = k as! PersistentKey
                         keyIds.append(key.keyID)
@@ -713,8 +698,8 @@ class MailHandler {
                 }
             }
             if let a = autocrypt{
-                //let key = pgp.importKeys(key: a.key, isSecretKey: false, autocrypt: true)
-                //keyIds.append(contentsOf: key)
+                let key = pgp.importKeys(key: a.key, isSecretKey: false, autocrypt: true)
+                keyIds.append(contentsOf: key)
             }
             let secretkeys = DataHandler.handler.findSecretKeys()
             var decId: String? = nil
@@ -724,8 +709,6 @@ class MailHandler {
                     break
                 }
             }
-            print("Msg: \(body)")
-            print("Decrypt message from \(from) with #senderkey:  \(keyIds.count) \n \(keyIds)")
             
             return pgp.decrypt(data: data, decryptionId: decId, verifyIds: keyIds)
             

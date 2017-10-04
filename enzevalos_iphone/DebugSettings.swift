@@ -16,9 +16,6 @@ func loadTestAcc(){
 }
 
 func loadUlli(){
-    print("#################")
-    print("Init Ulli!")
-    print("#################")
     let user =  web(name: "ullimuelle", pw: "dun3bate")
     userdefaults(defaults: user)
     importPublicKeys()
