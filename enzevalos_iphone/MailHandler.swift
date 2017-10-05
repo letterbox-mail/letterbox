@@ -372,6 +372,7 @@ class MailHandler {
     }
 
     func startIMAPIdleIfSupported(addNewMail: @escaping (() -> ())) {
+        return
         if let supported = IMAPIdleSupported {
             if supported && IMAPIdleSession == nil {
                 IMAPIdleSession = setupIMAPSession()
@@ -460,6 +461,8 @@ class MailHandler {
             self.loadMessagesFromServer(uids, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
         
         }*/
+        completionCallback(true)
+        return
         getUIDs(for: folderPath) {allUIDs in
             let loadUIDs = allUIDs.suffix(Int(MailHandler.MAXMAILS))
             if let last = loadUIDs.last, let first = loadUIDs.first {
@@ -475,24 +478,11 @@ class MailHandler {
         }
     }
     
-    //olderMails from mergeFolders branch
-    func olderMails(with folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        var uids: MCOIndexSet
-        let myfolder = DataHandler.handler.findFolder(with: folderPath)
-        
-        if myfolder.maxID <= 1{
-            return firstLookUp(folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)
-        }
-        print("look for more mails: \(myfolder.lastID) to \(myfolder.maxID)")
-        
-        uids = MCOIndexSet(range: MCORangeMake(myfolder.lastID, myfolder.maxID))
-        uids.remove(myfolder.uids)
-        
-        self.loadMessagesFromServer(uids, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
-    }
-
     func receiveAll(_ folderPath: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         print("Call all mails!")
+        //
+        completionCallback(true)
+        return
         getUIDs(for: folderPath) {uids in
             print("We have all uids! let make progress!")
             let loadUIDs = uids.filter{$0 > DataHandler.handler.findFolder(with: folderPath).maxID}
@@ -505,13 +495,10 @@ class MailHandler {
         }
     }
 
-    func loadMoreMails(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMailsForRecord(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let addresses: [MailAddress]
         addresses = record.addresses
 
-        
-
-        
         for adr in addresses {
             let searchExpr: MCOIMAPSearchExpression = MCOIMAPSearchExpression.search(from: adr.mailAddress)
             let searchOperation: MCOIMAPSearchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExpr)
@@ -537,7 +524,7 @@ class MailHandler {
         }
     }
 
-    func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: UInt32 = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: UInt32 = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
 
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
@@ -573,7 +560,7 @@ class MailHandler {
         }
     }
 
-    func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folderPath: String, newMailCallback: (() -> ())) {
+    private func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folderPath: String, newMailCallback: (() -> ())?) {
         guard error == nil else {
             print("Error while fetching mail: \(String(describing: error))")
             return
@@ -646,9 +633,6 @@ class MailHandler {
                         }
                     }
                 }
-                
-                
-                
             }
 
             if header?.from == nil {
@@ -668,7 +652,9 @@ class MailHandler {
                     }
                 }
 
-                newMailCallback()
+                if newMailCallback != nil{
+                    newMailCallback!()
+                }
             }
         }
     }
@@ -853,5 +839,32 @@ class MailHandler {
     
         let op = IMAPSession.fetchAllFoldersOperation()
         op?.start(completion)
+    }
+    
+    
+    func initInbox(inbox: String, newMailCallback: @escaping (() -> ()),completionCallback: @escaping ((Bool) -> ()) ){
+        let searchExp = MCOIMAPSearchExpression.search(since: Calendar.current.date(byAdding: .month, value: -1, to: Date()))
+        let searchOperation = self.IMAPSession.searchExpressionOperation(withFolder: inbox, expression: searchExp)
+        
+        searchOperation?.start{(err, uids)-> Void in
+            guard err == nil else{
+                print("Error while searching inbox: \(String(describing: err))")
+                return
+            }
+            if let ids = uids{
+                self.loadMessagesFromServer(ids, folderPath: inbox, maxLoad: 500, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
+            }
+        }
+    }
+    
+    
+    
+    private func finish(){
+            print("All contacts loaded!")
+    }
+    
+    private func com(b: Bool){
+        print("All contacts loaded!")
+        
     }
 }
