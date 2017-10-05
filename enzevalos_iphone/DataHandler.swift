@@ -532,7 +532,6 @@ class DataHandler {
         // If no enzevalos contact exists. One is created.
 
         func getContactByAddress(_ address: String) -> EnzevalosContact {
-            // Core function
             let lowerAdr = address.lowercased()
             if let contacts = find("EnzevalosContact", type: "addresses", search: lowerAdr){
                 for c in contacts{
@@ -598,8 +597,20 @@ class DataHandler {
         // -------- Start handle to, cc, from addresses --------
         private func handleFromAddress(_ sender: MCOAddress, fromMail: PersistentMail, autocrypt: AutocryptContact?) {
             let adr: Mail_Address
-            let contact = getContactByMCOAddress(sender)
-            adr = contact.getAddressByMCOAddress(sender)!
+            adr = getMailAddressByMCOAddress(sender, temporary: false) as! Mail_Address
+            if adr.contact == nil{
+                adr.contact = getContactByMCOAddress(sender)
+            }
+            else{
+                let c = adr.contact
+                print("\(sender.mailbox) has contact \(c?.displayname)")
+            }
+            //let contact = getContactByMCOAddress(sender)
+           // adr = contact.getAddressByMCOAddress(sender)!
+            if adr.address != sender.mailbox{
+                print("False Matching!")
+            }
+            
             /* TODO: Handle AUtocrypt again!
             if adr.lastSeen > fromMail.date{
                 adr.lastSeen = fromMail.date
@@ -700,7 +711,6 @@ class DataHandler {
                         mail.isCorrectlySigned = true
                         mail.isSigned = true
                     }
-//                    print("Mail from \(mail.from.mailAddress) about \(String(describing: mail.subject)) has states: enc: \(mail.isEncrypted) and sign: \(mail.isSigned), correct signed: \(mail.isCorrectlySigned) has troubles:\(mail.trouble) and is secure? \(mail.isSecure) unable to decrypt? \(mail.unableToDecrypt)")
                 }
                 else{
                     // Maybe PGPInline?
