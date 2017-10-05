@@ -68,6 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func credentialsWork() {
         self.window?.rootViewController = Onboarding.contactView(self.requestForAccess)
         //self.onboardingDone()
+        
     }
 
     func contactCheck(_ accessGranted: Bool) {
@@ -106,8 +107,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setupKeys() {
         self.window?.rootViewController = Onboarding.keyHandlingView()
         DispatchQueue.main.async(execute: {
-            //loadUlli()
-            
             self.onboardingDone()
         });
     }

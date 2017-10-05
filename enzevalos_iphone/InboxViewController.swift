@@ -66,7 +66,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
     func refresh(_ refreshControl: UIRefreshControl) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
-        AppDelegate.getAppDelegate().mailHandler.firstLookUp(UserManager.backendInboxFolderPath, newMailCallback: addNewMail, completionCallback: getMailCompleted)
+        let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
+        AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: getMailCompleted)
     }
 
     func addNewMail() {

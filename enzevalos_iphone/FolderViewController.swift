@@ -29,7 +29,7 @@ class FolderViewController: UITableViewController {
         if let thisFolder = presentedFolder {
             navigationItem.title = UserManager.convertToFrontendFolderPath(from: thisFolder.name)
             refreshControl?.beginRefreshing()
-            AppDelegate.getAppDelegate().mailHandler.firstLookUp(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing)
+            AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, newMailCallback: newMails, completionCallback: endRefreshing)
             folders = thisFolder.subfolders.sorted()
         }
     }
@@ -176,7 +176,7 @@ class FolderViewController: UITableViewController {
     func refresh() {
         if let thisFolder = presentedFolder {
             refreshControl?.beginRefreshing()
-            AppDelegate.getAppDelegate().mailHandler.firstLookUp(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing(_:))//olderMailsFolder(thisFolder.path, newMailCallback: newMails, completionCallback: endRefreshing(_:))
+            AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, newMailCallback: newMails, completionCallback: endRefreshing(_:))
         }
         else {
             DataHandler.handler.callForFolders(done: endRefreshing)
