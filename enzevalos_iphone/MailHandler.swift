@@ -446,24 +446,7 @@ class MailHandler {
         }
     }
 
-    private func receiveAll(_ folderPath: String = "INBOX", newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        print("Call all mails!")
-        //
-        completionCallback(true)
-        return
-        getUIDs(for: folderPath) {uids in
-            print("We have all uids! let make progress!")
-            let loadUIDs = uids.filter{$0 > DataHandler.handler.findFolder(with: folderPath).maxID}
-            if let last = loadUIDs.last, let first = loadUIDs.first {
-                if let indexSet = MCOIndexSet(range: MCORange.init(location: first, length: last-first)) {
-                    print("Load messages!")
-                    //indexSet!.remove(DataHandler.handler.findFolder(with: folderPath).uids)
-
-                    self.loadMessagesFromServer(indexSet, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
-                }
-            }
-        }
-    }
+    
 
     func loadMailsForRecord(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         //TODO: Init update/old
@@ -673,60 +656,7 @@ class MailHandler {
        
         return nil
     }
-
-
-    fileprivate func cutIndexSet(_ inputSet: MCOIndexSet, maxMails: Int = MAXMAILS) -> MCOIndexSet {
-        let max = UInt32(maxMails)
-        if inputSet.count() <= max {
-            return inputSet
-        }
-        let result = MCOIndexSet()
-        for x in inputSet.nsIndexSet().reversed() {
-            if result.count() < max {
-                result.add(UInt64(x))
-            }
-            else{
-                break
-            }
-        }
-        return result
-    }
-
-
-    
-    private func getUIDs(for folderPath: String, callback: @escaping ((_ uids: [UInt64]) -> ())) {
-        //TODO: NSP!!!
-        let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)
-        let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
-        var ids: [UInt64] = []
-        let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        
-        let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
-        fetchOperation.start { (err, msg, vanished) -> Void in
-            guard err == nil else {
-                print("Error while fetching inbox: \(String(describing: err))")
-                return
-            }
-            if let msgs = msg {
-                for m in msgs {
-                    if let message: MCOIMAPMessage = m as? MCOIMAPMessage {
-                        if !DataHandler.handler.hasMail(folderName: folderPath, uid: UInt64(message.uid)){
-                            ids.append(UInt64(message.uid))
-                        }
-                    }
-                    if ids.count > Int(MailHandler.MAXMAILS){
-                        print("Toooo man ids! #ids: \(ids.count) \n \(ids)")
-                        break
-                    }
-                }
-            }
-            dispatchGroup.leave()
-        }
-        dispatchGroup.notify(queue: DispatchQueue.main) {
-            callback(ids.sorted())
-        }
-    }
+   
 
     func checkSMTP(_ completion: @escaping (Error?) -> Void) {
         let useraddr = UserManager.loadUserValue(Attribute.userAddr) as! String
@@ -808,13 +738,9 @@ class MailHandler {
         }
     }
     
-    /*
-     
-     We call mails of the last month (at most 500)
-     */
     func initInbox(inbox: Folder, newMailCallback: @escaping (() -> ()),completionCallback: @escaping ((Bool) -> ()) ){
         if let date = Calendar.current.date(byAdding: .month, value: -1, to: Date()){
-            loadMailsSinceDate(folder: inbox, since: date, newMailCallback: newMailCallback, completionCallback: completionCallback)
+            loadMailsSinceDate(folder: inbox, since: date, maxLoad: 200, newMailCallback: newMailCallback, completionCallback: completionCallback)
         }
         else{
             print("No date for init inbox!")
