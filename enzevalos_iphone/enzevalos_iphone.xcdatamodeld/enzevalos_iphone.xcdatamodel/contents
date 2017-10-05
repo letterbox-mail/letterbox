@@ -18,6 +18,7 @@
         <attribute name="delimiter" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastID" optional="YES" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
+        <attribute name="lastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="maxID" optional="YES" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
         <attribute name="path" attributeType="String" syncable="YES"/>
         <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="folder" inverseEntity="PersistentMail" syncable="YES"/>
@@ -82,7 +83,7 @@
     <elements>
         <element name="Account" positionX="-288" positionY="-9" width="128" height="150"/>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>
-        <element name="Folder" positionX="-297" positionY="-18" width="128" height="150"/>
+        <element name="Folder" positionX="-297" positionY="-18" width="128" height="165"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="150"/>
         <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="180"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="315"/>

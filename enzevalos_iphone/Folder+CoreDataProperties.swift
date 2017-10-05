@@ -19,6 +19,8 @@ extension Folder {
     @NSManaged public var parent: Folder?
     @NSManaged public var mails: NSSet?
     @NSManaged public var path: String
+    @NSManaged public var lastUpdate: Date?
+
     @NSManaged public var delimiter: String
     public var flags: MCOIMAPFolderFlag{
         get {

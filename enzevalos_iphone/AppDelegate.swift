@@ -202,7 +202,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func presentInboxViewController() {
         let rootViewController = (self.window?.rootViewController! as! UINavigationController)
-        mailHandler.allContacts(inbox: "INBOX")
 
         for vc in rootViewController.viewControllers {
             if let id = vc.restorationIdentifier, id == "folderViewController" {
