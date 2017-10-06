@@ -121,7 +121,10 @@
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
 		A17BEB391E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
+		A19028E21F852DA70030EA98 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E11F852DA70030EA98 /* ExportViewController.swift */; };
+		A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
+		A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
@@ -388,8 +391,11 @@
 		A17BEB371E55E21700403EBE /* PGPTemporaryDecryptionObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PGPTemporaryDecryptionObject.h; sourceTree = "<group>"; };
 		A17BEB381E55E3DD00403EBE /* PGPTemporaryDecryptionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPTemporaryDecryptionObject.m; sourceTree = "<group>"; };
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
+		A19028E11F852DA70030EA98 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
+		A19028E31F853E700030EA98 /* ExportInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportInfoViewController.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jabo.asc; path = keys/jabo.asc; sourceTree = "<group>"; };
+		A1A9DE721F864B0500B808AA /* ExportCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportCells.swift; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-2.gpg"; path = "keys/alice2005-2.gpg"; sourceTree = "<group>"; };
 		A1BE3FF71E9664660040114B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A1BE3FF91E96646A0040114B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -698,6 +704,7 @@
 				A1EB05761D9567F2008659C1 /* read */,
 				A1EB05751D956748008659C1 /* send */,
 				F1ACF21D1E0C290500C1B843 /* contactView */,
+				A19028E01F852D730030EA98 /* exportKey */,
 				A1D5076D1E80254D00B68B38 /* keyView */,
 				A13526781D955BDF00D3BFE1 /* AppDelegate.swift */,
 				F113C3831F30D01A00E7F1D6 /* QRCode */,
@@ -830,6 +837,16 @@
 				A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */,
 			);
 			name = onboarding;
+			sourceTree = "<group>";
+		};
+		A19028E01F852D730030EA98 /* exportKey */ = {
+			isa = PBXGroup;
+			children = (
+				A19028E11F852DA70030EA98 /* ExportViewController.swift */,
+				A19028E31F853E700030EA98 /* ExportInfoViewController.swift */,
+				A1A9DE721F864B0500B808AA /* ExportCells.swift */,
+			);
+			name = exportKey;
 			sourceTree = "<group>";
 		};
 		A1C7FF8B1E895316000D1E92 /* keys */ = {
@@ -1295,6 +1312,7 @@
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
 				A135CF0F1DD4BDD1007E3C29 /* PGPMPI.m in Sources */,
 				F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */,
+				A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */,
 				472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */,
 				F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */,
 				A135CF191DD4BDD1007E3C29 /* PGPS2K.m in Sources */,
@@ -1331,6 +1349,7 @@
 				F18B44621E73286C0080C041 /* ReadVENDelegate.swift in Sources */,
 				A17A18F71DDCBE530058D934 /* PGPKeyWrapper.swift in Sources */,
 				A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */,
+				A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */,
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
 				472F39731E1D09C4009260FB /* State+CoreDataClass.swift in Sources */,
 				478175451F06E57E00300D20 /* netpgp.c in Sources */,
@@ -1370,6 +1389,7 @@
 				A15B7BE81E2934CB0024E499 /* EncryptionType.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
 				4781753A1F06E57E00300D20 /* fmemopen.c in Sources */,
+				A19028E21F852DA70030EA98 /* ExportViewController.swift in Sources */,
 				A135CF091DD4BDD1007E3C29 /* PGPCryptoUtils.m in Sources */,
 				A135CF1A1DD4BDD1007E3C29 /* PGPSecretKeyPacket.m in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
