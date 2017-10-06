@@ -90,7 +90,7 @@ class ReadViewController: UITableViewController {
         _ = mail?.from.contact?.records.flatMap { x in
             if x.hasKey && x.key != nil {
                 let keyWrapper = DataHandler.handler.findKey(keyID: x.key!)
-                keyDiscoveryDate = keyWrapper?.discoveryDate as! Date
+                keyDiscoveryDate = keyWrapper?.discoveryDate as Date?
             }
         }
     }

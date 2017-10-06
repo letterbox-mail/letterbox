@@ -811,7 +811,6 @@ class MailHandler {
         
         searchOperation?.start{(err, uids)-> Void in
             guard err == nil else{
-                print("Error while searching inbox: \(String(describing: err))")
                 completionCallback(true)
                 return
             }

@@ -154,17 +154,5 @@ struct UserManager{
             //UserDefaults.standard.removeObject(forKey: "\(a.hashValue)")
         }
     }
-    
-    static func createKey(){
-        let keys =  DataHandler.handler.findSecretKeys()
-        if keys.count > 0{
-            return
-        }
-        let pgp = SwiftPGP()
-        if let adr = loadUserValue(Attribute.userAddr){
-            let key = pgp.generateKey(adr: adr as! String)
-            _ = DataHandler.handler.newSecretKey(keyID: key)
-        }
-    }
 }
 

@@ -40,12 +40,11 @@ public class Folder: NSManagedObject {
     
     var liveRecords: [KeyRecord]{
         get{
-            print("Calculate KeyRecords!")
             var records = [KeyRecord]()
             // Get all Keys, get all adrs
             let keys = DataHandler.handler.allKeysInFolder(folder: self)
             let adrs = DataHandler.handler.allAddressesInFolder(folder: self, withoutSecure: true)
-            
+           
             for key in keys{
                 let record = KeyRecord(keyID: key, folder: self)
                 records.append(record)

@@ -241,7 +241,7 @@ extension ContactViewController: UITableViewDataSource {
                 } else if indexPath.row == 1 {
                     if isUser && keyRecord!.hasKey {
                         let qrCodeCell = tableView.dequeueReusableCell(withIdentifier: "QRCodeCell", for: indexPath) as! QRCodeCell
-                        let qrCode = QRCode.generate(input: "OPENPGP4FPR:\(keyRecord?.fingerprint)")
+                        let qrCode = QRCode.generate(input: "OPENPGP4FPR:\(String(describing: keyRecord?.fingerprint))")
 
                         let scaleX = qrCodeCell.qrCode.frame.size.width / qrCode.extent.size.width
                         let scaleY = qrCodeCell.qrCode.frame.size.height / qrCode.extent.size.height

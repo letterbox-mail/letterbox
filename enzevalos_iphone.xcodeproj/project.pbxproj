@@ -13,8 +13,6 @@
 		472F392C1E1277D2009260FB /* PersistentMail +CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */; };
 		472F396E1E14F384009260FB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472F396D1E14F384009260FB /* CoreData.framework */; };
 		472F39701E14F75C009260FB /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F396F1E14F75C009260FB /* DataHandler.swift */; };
-		472F39731E1D09C4009260FB /* State+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39711E1D09C4009260FB /* State+CoreDataClass.swift */; };
-		472F39741E1D09C4009260FB /* State+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */; };
 		472F397C1E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39781E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift */; };
 		472F397E1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */; };
 		472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */; };
@@ -187,8 +185,6 @@
 		472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PersistentMail +CoreDataClass.swift"; path = "../PersistentMail +CoreDataClass.swift"; sourceTree = "<group>"; };
 		472F396D1E14F384009260FB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		472F396F1E14F75C009260FB /* DataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
-		472F39711E1D09C4009260FB /* State+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "State+CoreDataClass.swift"; sourceTree = "<group>"; };
-		472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "State+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		472F39781E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersistentMail +CoreDataProperties.swift"; sourceTree = "<group>"; };
 		472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnzevalosContact+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mail_Address+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -618,8 +614,6 @@
 				472F39781E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift */,
 				475DF4771F0D54C9009D807F /* Folder+CoreDataClass.swift */,
 				475DF4781F0D54C9009D807F /* Folder+CoreDataProperties.swift */,
-				472F39711E1D09C4009260FB /* State+CoreDataClass.swift */,
-				472F39721E1D09C4009260FB /* State+CoreDataProperties.swift */,
 				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
 				472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */,
 				472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */,
@@ -1286,7 +1280,6 @@
 				475B00051F7B953B006CDD41 /* PGPRSA.m in Sources */,
 				A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */,
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
-				472F39731E1D09C4009260FB /* State+CoreDataClass.swift in Sources */,
 				475B00261F7B953B006CDD41 /* PGPPartialKey.m in Sources */,
 				475B00251F7B953B006CDD41 /* PGPPacketFactory.m in Sources */,
 				475B002A1F7B953B006CDD41 /* PGPS2K.m in Sources */,
@@ -1301,7 +1294,6 @@
 				475B002D1F7B953B006CDD41 /* NSData+PGPUtils.m in Sources */,
 				475B000D1F7B953B006CDD41 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
 				A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */,
-				472F39741E1D09C4009260FB /* State+CoreDataProperties.swift in Sources */,
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
 				A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */,
 				475DF4791F0D54C9009D807F /* Folder+CoreDataClass.swift in Sources */,

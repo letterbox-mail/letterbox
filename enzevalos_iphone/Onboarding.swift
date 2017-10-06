@@ -76,11 +76,9 @@ class Onboarding: NSObject {
         context = UIGraphicsGetCurrentContext()
         context!.setFillColor(ThemeManager.uncryptedMessageColor().cgColor)
         context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
-        let snapshot2 = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
 
         background = snapshot!
-        let postcardBg = snapshot2!
 
         //Introduction
         let intro0 = OnboardingContentViewController.content(withTitle: NSLocalizedString("Welcome", comment: "Welcome"), body: NSLocalizedString("ReadFollowingPages", comment: ""), image: nil, buttonText: nil, action: nil)

@@ -63,7 +63,7 @@ extension KeyViewController: UITableViewDataSource {
             }
             else if toRowType(indexPath) == .encryptionType {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "EncryptionTypeCell")!
-                cell.detailTextLabel?.text = "\(record?.cryptoscheme)"
+                cell.detailTextLabel?.text = "\(String(describing: record?.cryptoscheme))"
                 cell.textLabel?.text = NSLocalizedString("EncryptionType", comment: "Type of Encryption")
                 return cell
             }

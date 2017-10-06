@@ -48,7 +48,6 @@ func loadAlice2005(){
 private func userdefaults(defaults: [Attribute: AnyObject?]){
     for (att, value) in defaults{
         UserManager.storeUserValue(value, attribute: att)
-        print("Store: \(value) as \(att)")
     }
 
 }

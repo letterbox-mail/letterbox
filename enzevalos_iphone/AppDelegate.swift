@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func resetApp() {
         if UserDefaults.standard.bool(forKey: "reset") {
             if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
-                let mailhandler = MailHandler.init()
+                _ = MailHandler.init()
                 //mailhandler.move(mails: DataHandler.handler.findFolder(name: "INBOX").mailsOfFolder, from: "INBOX", to: "Archive")
             }
             DataHandler.handler.reset()
@@ -109,6 +109,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DispatchQueue.main.async(execute: {
             self.onboardingDone()
         });
+        let handler = DataHandler.init()
+        handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
     }
 
     func onboardingDone() {

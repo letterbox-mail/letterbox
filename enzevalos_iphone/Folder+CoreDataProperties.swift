@@ -42,26 +42,6 @@ extension Folder {
         }
     }
     
-
-    
-    public var lastID: UInt64{
-        
-        set {
-            self.willChangeValue(forKey: "lastID")
-            self.setPrimitiveValue(NSDecimalNumber.init(value: newValue as UInt64), forKey: "lastID")
-            self.didChangeValue(forKey: "lastID")
-        }
-        get {
-            self.willAccessValue(forKey: "lastID")
-            let text = (self.primitiveValue(forKey: "lastID") as? NSDecimalNumber)?.uint64Value
-            self.didAccessValue(forKey: "lastID")
-            if text == nil{
-                return 1
-            }
-            return text!
-        }
-    }
-    
     public var maxID: UInt64{
         
         set {

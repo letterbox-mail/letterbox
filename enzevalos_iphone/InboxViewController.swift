@@ -68,11 +68,12 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
         AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: getMailCompleted)
+       
     }
 
     func addNewMail() {
-        folder.updateRecords()
-        tableView.reloadData()
+        //folder.updateRecords()
+        //tableView.reloadData()
     }
 
     func getMailCompleted(_ error: Bool) {
@@ -80,7 +81,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             lastUpdate = Date()
             rc.endRefreshing()
             lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))"
-
+            
+            folder.updateRecords()
             self.tableView.reloadData()
         }
     }

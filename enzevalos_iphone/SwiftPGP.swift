@@ -202,10 +202,6 @@ class SwiftPGP: Encryption{
         var plaintext: String? = nil
         if plaindata != nil{
             plaintext = plaindata?.base64EncodedString()
-            print("Plaintext: plaintext")
-        }
-        else{
-            print("No plaintext!")
         }
         return CryptoObject(chiphertext: data, plaintext: plaintext, decryptedData: plaindata, sigState: sigState, encState: encState, signKey: sigKey, encType: CryptoScheme.PGP)
     }

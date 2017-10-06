@@ -144,16 +144,11 @@ class FolderViewController: UITableViewController {
             performSegue(withIdentifier: "readFolderMailSegue", sender: getMails()[indexPath.row])
         }
         else {
-            if true {
-                let vc = storyboard?.instantiateViewController(withIdentifier: "folderViewController") as! FolderViewController
-                vc.folders = []
-                vc.isFirstFolderViewController = false
-                vc.presentedFolder = folders[indexPath.row]
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-            else {
-                performSegue(withIdentifier: "showFolderListSegue", sender: folders[indexPath.row])
-            }
+            let vc = storyboard?.instantiateViewController(withIdentifier: "folderViewController") as! FolderViewController
+            vc.folders = []
+            vc.isFirstFolderViewController = false
+            vc.presentedFolder = folders[indexPath.row]
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -107,16 +107,9 @@ class DataHandler {
         if mail.to.count == 0 && mail.cc == nil{
             print("Mail has no receiver: \(mail)")
         }
-        if mail.from == nil{
-            print("Mail has no sender: \(mail)")
-        }
-        if mail.folder == nil{
-            print("Mail has no folder: \(mail)")
-        }
     }
     
     func checkFolder(folderName: String){
-        print("#################")
         let folder = findFolder(with: folderName)
         if let mails = folder.mails{
             for m in mails{
@@ -127,7 +120,6 @@ class DataHandler {
         let records = folder.records
         checkRecords(records: records)
         checkRecords(records: folder.liveRecords)
-    print("Finish checking!")
     }
     
     
@@ -365,6 +357,16 @@ class DataHandler {
         }
         save()
         return sk
+    }
+    
+    func createNewSecretKey(adr: String){
+        let keys = findSecretKeys()
+        if keys.count > 0{
+            return
+        }
+        let pgp = SwiftPGP()
+        let key = pgp.generateKey(adr: adr)
+        _ = DataHandler.handler.newSecretKey(keyID: key)
     }
     
     func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil) -> PersistentKey{
@@ -742,9 +744,6 @@ class DataHandler {
             if mail.uid > myfolder.maxID{
                 myfolder.maxID = mail.uid
             }
-            if mail.uid < myfolder.lastID || myfolder.lastID == 1{
-                myfolder.lastID = mail.uid
-            }
             save()
             return mail
         }
@@ -804,30 +803,4 @@ class DataHandler {
         let folder = findFolder(with: folderPath) as Folder
         return folder.records
     }
-
-
-    // Can we remove current state???
-        func getCurrentState() -> State {
-                let result = findAll("State")
-                if result != nil && result?.count > 0 {
-                    return (result?.first as? State)!
-                }
-                else {
-                    let currentstate = (NSEntityDescription.insertNewObject(forEntityName: "State", into: managedObjectContext) as? State)!
-                    if let set = findAll("EnzevalosContact"){
-                     currentstate.currentContacts = set.count
-                    }
-                    else{
-                        currentstate.currentContacts = 0
-                    }
-                    if let set = findAll("Mails"){
-                        currentstate.currentMails = set.count
-                    }
-                    else{
-                        currentstate.currentMails = 0
-                    }
-                    save()
-                    return currentstate
-                }
-            }
-        }
+}
