@@ -84,6 +84,19 @@ class SwiftPGP: Encryption{
         return ids
     }
     
+    func importKeys(data: Data, secret: Bool) -> [String]{
+        let pgp = ObjectivePGP()
+        var ids = [String]()
+        let keys = pgp.importKeys(from: data)
+        for k in keys{
+            if k.isSecret && secret || !k.isSecret && !secret{
+                ids.append(storeKey(key: k))
+            }
+        }
+        return ids
+    }
+
+    
     func importKeysFromFile(file: String) -> [String]{
         let pgp = ObjectivePGP()
         let keys = pgp.importKeys(fromFile: file)

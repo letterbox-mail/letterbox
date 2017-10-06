@@ -524,8 +524,14 @@ class MailHandler {
         var cc: [MCOAddress] = []
 
         let header = message.header
+        
+        if header?.from == nil {
+            // Drops mails with no from field. Otherwise it becomes ugly with no ezcontact,fromadress etc.
+            return
+        }
 
         var autocrypt: AutocryptContact? = nil
+        var newKeyIds = [String]()
         if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
             autocrypt = AutocryptContact(header: header!)
         }
@@ -556,6 +562,16 @@ class MailHandler {
                 }
                 if isEnc && at.mimeType == "application/octet-stream" {
                     msgParser = MCOMessageParser(data: at.data)
+                }
+                if at.mimeType == "application/octet-stream", let content = String(data: at.data, encoding: String.Encoding.utf8), content.hasPrefix("-----BEGIN PGP PUBLIC KEY BLOCK-----") && (content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----") || content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----\n")) {
+                    let pgp = SwiftPGP()
+                    let keyId = pgp.importKeys(key: content, isSecretKey: false, autocrypt: false)
+                    newKeyIds.append(contentsOf: keyId)
+                }
+                if at.mimeType == "application/pgp-keys" {
+                    let pgp = SwiftPGP()
+                    let keyIds = pgp.importKeys(data: at.data, secret: false)
+                    newKeyIds.append(contentsOf: keyIds)
                 }
             }
             if isEnc {
@@ -588,11 +604,7 @@ class MailHandler {
                     }
                 }
             }
-
-            if header?.from == nil {
-                // Drops mails with no from field. Otherwise it becomes ugly with no ezcontact,fromadress etc.
-                return
-            }
+            
             
             if let header = header, let from = header.from, let date = header.date {
                 let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath)
@@ -605,7 +617,9 @@ class MailHandler {
                         
                     }
                 }
-
+                for keyId in newKeyIds{
+                    _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
+                }
                 if newMailCallback != nil{
                     newMailCallback!()
                 }
@@ -667,15 +681,15 @@ class MailHandler {
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
         session.username = username
         session.password = UserManager.loadUserValue(Attribute.userPW) as! String
-        session.authType = UserManager.loadSmtpAuthType()//MCOAuthType.init(rawValue: UserManager.loadUserValue(Attribute.smtpAuthType) as! Int)//MCOAuthType.SASLPlain
-        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)//MCOConnectionType.StartTLS
+        session.authType = UserManager.loadSmtpAuthType()
+        session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
 
         session.checkAccountOperationWith(from: MCOAddress.init(mailbox: useraddr)).start(completion)
 
     }
 
     func checkIMAP(_ completion: @escaping (Error?) -> Void) {
-        self.setupIMAPSession().checkAccountOperation().start(completion/* as! (Error?) -> Void*/)
+        self.setupIMAPSession().checkAccountOperation().start(completion)
     }
 
     func move(mails: [PersistentMail], from: String, to: String, folderCreated: Bool = false) {
