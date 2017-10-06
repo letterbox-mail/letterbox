@@ -126,7 +126,7 @@ extension KeyViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         if let key = record?.storedKey {
             var sections = 1
-            if let addrs = key.mailaddress, addrs != nil{
+            if key.mailaddress != nil{
                 sections += 1
             }
             return sections

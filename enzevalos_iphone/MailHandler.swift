@@ -464,7 +464,7 @@ class MailHandler {
                 }
 
                 let ids = indices as MCOIndexSet?
-                if var setOfIndices = ids {
+                if let setOfIndices = ids {
                     for mail in record.mails {
                         setOfIndices.remove(mail.uid)
                     }

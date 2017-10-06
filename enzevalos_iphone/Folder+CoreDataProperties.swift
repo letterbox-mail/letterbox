@@ -17,6 +17,7 @@ extension Folder {
     }
 
     @NSManaged public var parent: Folder?
+    @NSManaged public var subfolder: NSSet?
     @NSManaged public var mails: NSSet?
     @NSManaged public var path: String
     @NSManaged public var lastUpdate: Date?
@@ -70,12 +71,24 @@ extension Folder {
 
     @objc(removeMailsObject:)
     @NSManaged public func removeFromMails(_ value: PersistentMail)
+    
+    @objc(addSubfolderObject:)
+    @NSManaged public func addToSubfolder(_ value: Folder)
+    
+    @objc(removeSubfolderObject:)
+    @NSManaged public func removeFromSubfolder(_ value: Folder)
 
     @objc(addMails:)
     @NSManaged public func addToMails(_ values: NSSet)
 
     @objc(removeMails:)
     @NSManaged public func removeFromMails(_ values: NSSet)
+    
+    @objc(addSubfolder:)
+    @NSManaged public func addToSubfolder(_ values: NSSet)
+    
+    @objc(removeSubfolder:)
+    @NSManaged public func removeFromSubfolder(_ values: NSSet)
 
 }
 

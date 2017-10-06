@@ -150,13 +150,6 @@ class DataHandler {
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         let folderPredicate = NSPredicate(format: "folder = %@", folder)
         if withoutSecure {
-            var secure = [NSPredicate()]
-            secure.append(NSPredicate(format: "isEncrypted = false"))
-            secure.append(NSPredicate(format: "isSigned = false"))
-            secure.append(NSPredicate(format: "unableTODecrypt = true"))
-            secure.append(NSPredicate(format: "trouble = true"))
-            let secPredicates = NSCompoundPredicate(orPredicateWithSubpredicates: secure)
-            let predicates = NSCompoundPredicate(andPredicateWithSubpredicates: [secPredicates,folderPredicate])
             fReq.predicate = NSPredicate(format: "folder = %@ AND (isEncrypted = false OR isSigned = false OR unableToDecrypt = true OR trouble = true)", folder)
         }
         else{

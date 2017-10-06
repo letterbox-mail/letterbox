@@ -50,6 +50,8 @@ extension PersistentMail {
     @NSManaged public var unableToDecrypt: Bool
     @NSManaged public var subject: String?
     @NSManaged public var folder: Folder
+    @NSManaged public var firstKey: PersistentKey?
+
     public var trouble: Bool{
         set {
             self.willChangeValue(forKey: "trouble")

@@ -35,10 +35,6 @@ class Onboarding: NSObject {
     static var smtpTransportEncryption = UIPickerView.init()
     static var smtpTransDataDelegate = PickerDataDelegate.init(rows: ["a", "b", "c"])
     static var background = UIImage.init()
-    static var smtpCheck = false
-    static var smtpCheckDone = false
-    static var imapCheck = false
-    static var imapCheckDone = false
     static var manualSet = false
 
     static let font = UIFont.init(name: "Helvetica-Light", size: 28)
@@ -467,8 +463,6 @@ class Onboarding: NSObject {
     }
 
     static func checkConfig(_ fail: @escaping () -> (), work: @escaping () -> ()) -> Bool {
-        smtpCheckDone = false
-        imapCheckDone = false
         self.work = work
         self.fail = fail
         AppDelegate.getAppDelegate().mailHandler.checkIMAP(imapCompletion)
@@ -476,10 +470,7 @@ class Onboarding: NSObject {
     }
 
     static func imapCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
-        imapCheckDone = true
-        imapCheck = error == nil // TODO: @Jakob das verstehe ich nicht
-        print(error)
-        if imapCheck {
+        if error == nil {
             AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)
             return
         }
@@ -487,9 +478,7 @@ class Onboarding: NSObject {
     }
 
     static func smtpCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
-        smtpCheckDone = true
-        smtpCheck = error == nil
-        if smtpCheck {
+        if error == nil {
             work()
             return
         }
