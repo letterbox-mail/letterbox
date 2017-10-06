@@ -19,6 +19,7 @@
 "Cancel" = "Cancel";
 "Cc" = "CC";//"Kopie";
 "Checkmarks" = "You received Mails from Mailadresses with checkmarks";
+"codeExplanation" = "In order to use the secret on an other device, you need the following code. You can find the code again in this view, if you want to transfer it later.";
 "CouldNotConnect" = "Couldn't connect to server. Please check your data and modify it maybe.";
 "ConnectingToMailServer" = "Connecting to mailserver";
 "Contacts" = "Contacts";

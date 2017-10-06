@@ -19,6 +19,7 @@
 "Cancel" = "Abbrechen";
 "Cc" = "Kopie";
 "Checkmarks" = "Du hast Nachrichten von den Adressen mit Haken bekommen";
+"codeExplanation" = "Um dein Geheimnis auf dem anderen Gerät benutzen zu können, benötigst du den folgenden Code. Dieser wird in dieser Ansicht wieder zu finden sein, damit du ihn leicht abtippen kannst.";
 "CouldNotConnect" = "Die Verbindung zum Server konnte nicht hergestellt werden. Bitte überprüfe die folgenden Angaben und passe sie ggf. an.";
 "ConnectingToMailServer" = "Verbinde zum Mailserver";
 "Contacts" = "Kontakte";

@@ -86,6 +86,7 @@ class ExportViewController: UITableViewController {
             
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExportSecretCell") as! ExportSecretCell
+        cell.infoTextLabel.text = NSLocalizedString("codeExplanation", comment: "")
         cell.setSecretToLabels(secret: passcode)
         return cell
     }
