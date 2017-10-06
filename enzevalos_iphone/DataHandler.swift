@@ -480,15 +480,16 @@ class DataHandler {
 
         // -------- Handle mail addresses ---------
         func getMailAddress(_ address: String, temporary: Bool) -> MailAddress {
-            let search = find("Mail_Address", type: "address", search: address)
+            let adr = address.lowercased()
+            let search = find("Mail_Address", type: "address", search: adr)
             if search == nil || search!.count == 0 {
                 if temporary {
-                    return CNMailAddressExtension(addr: address as NSString)
+                    return CNMailAddressExtension(addr: adr as NSString)
                 }
-                    else {
-                        let mail_address = NSEntityDescription.insertNewObject(forEntityName: "Mail_Address", into: managedObjectContext) as! Mail_Address
-                        mail_address.address = address
-                        return mail_address
+                else {
+                    let mail_address = NSEntityDescription.insertNewObject(forEntityName: "Mail_Address", into: managedObjectContext) as! Mail_Address
+                    mail_address.address = adr
+                    return mail_address
                 }
             }
                 else {
@@ -533,16 +534,23 @@ class DataHandler {
 
         func getContactByAddress(_ address: String) -> EnzevalosContact {
             let lowerAdr = address.lowercased()
-            if let contacts = find("EnzevalosContact", type: "addresses", search: lowerAdr){
-                for c in contacts{
-                    if case let contact as EnzevalosContact = c{
-                        return contact
-                    }
+            if let mailAdr = findMailAddress(adr: address){
+                if let contact = mailAdr.contact{
+                    return contact
                 }
             }
             if let contacts = findAll("EnzevalosContact"){
                 for c  in contacts{
                     if case let contact as EnzevalosContact = c{
+                        if let adrs = contact.addresses{
+                            for adr in adrs{
+                                if case let mailAdr as Mail_Address = adr{
+                                    if mailAdr.address == address{
+                                        return contact
+                                    }
+                                }
+                            }
+                        }
                         if let cnContact = contact.cnContact{
                             for adr in cnContact.emailAddresses {
                                 let name = adr.value as String
@@ -561,12 +569,11 @@ class DataHandler {
             contact = NSEntityDescription.insertNewObject(forEntityName: "EnzevalosContact", into: managedObjectContext) as! EnzevalosContact
             contact.displayname = lowerAdr
             let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
-            contact.addToAddresses(adr)
             adr.contact = contact
             return contact
         }
 
-        func getContact(_ name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
+        func getContact(name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
             let contact = getContactByAddress(address)
             contact.displayname = name
             contact.getAddress(address)?.key?.adding(key)
@@ -574,17 +581,17 @@ class DataHandler {
             return contact
         }
 
-        func getContacts(_ receivers: [MCOAddress]) -> [EnzevalosContact] {
+        func getContacts(receivers: [MCOAddress]) -> [EnzevalosContact] {
             var contacts = [EnzevalosContact]()
             var contact: EnzevalosContact
             for r in receivers {
-                contact = getContactByMCOAddress(r)
+                contact = getContactByMCOAddress(address: r)
                 contacts.append(contact)
             }
             return contacts
         }
 
-        func getContactByMCOAddress(_ address: MCOAddress) -> EnzevalosContact {
+        func getContactByMCOAddress(address: MCOAddress) -> EnzevalosContact {
             let contact = getContactByAddress(address.mailbox!)
             if address.displayName != nil {
                 contact.displayname = address.displayName
@@ -599,17 +606,25 @@ class DataHandler {
             let adr: Mail_Address
             adr = getMailAddressByMCOAddress(sender, temporary: false) as! Mail_Address
             if adr.contact == nil{
-                adr.contact = getContactByMCOAddress(sender)
+                adr.contact = getContactByMCOAddress(address: sender)
+            }
+            if let contact = adr.contact{
+                if contact.addresses == nil{
+                    contact.addToAddresses(adr)
+                }
+                else if !(contact.addresses?.contains(adr))!{
+                    contact.addToAddresses(adr)
+                }
+                if contact.addresses == nil || contact.addresses?.count == 0{
+                    print("ERROR Contact has no addresses!")
+                }
             }
             else{
-                let c = adr.contact
-                print("\(sender.mailbox) has contact \(c?.displayname)")
+                print("ERROR! No ENzContact!")
             }
+            
             //let contact = getContactByMCOAddress(sender)
            // adr = contact.getAddressByMCOAddress(sender)!
-            if adr.address != sender.mailbox{
-                print("False Matching!")
-            }
             
             /* TODO: Handle AUtocrypt again!
             if adr.lastSeen > fromMail.date{
@@ -729,8 +744,8 @@ class DataHandler {
             }
             if mail.uid < myfolder.lastID || myfolder.lastID == 1{
                 myfolder.lastID = mail.uid
-                save()
             }
+            save()
             return mail
         }
 

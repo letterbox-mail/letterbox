@@ -162,11 +162,11 @@ open class KeyRecord: Record {
                 ezContact = c
             }
             else{
-                ezContact = DataHandler.handler.getContact("", address: "", key: "", prefer_enc: false)
+                ezContact = DataHandler.handler.getContact(name: "", address: "", key: "", prefer_enc: false)
             }
         }
         else{
-            ezContact = DataHandler.handler.getContact("", address: "", key: "", prefer_enc: false)
+            ezContact = DataHandler.handler.getContact(name: "", address: "", key: "", prefer_enc: false)
         }
     }
     
