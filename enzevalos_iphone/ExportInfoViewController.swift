@@ -30,7 +30,7 @@ class ExportInfoViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExportInfoCell") as! ExportInfoCell
-        cell.infoTextLabel.text = NSLocalizedString("ExportInfoViewText", comment: <#T##String#>)
+        cell.infoTextLabel.text = NSLocalizedString("ExportInfoViewText", comment: "")
         let qrCodeImage = QRCode.generate(input: "https://"+url)
         
         let scaleX = cell.qrCode.frame.size.width / qrCodeImage.extent.size.width
