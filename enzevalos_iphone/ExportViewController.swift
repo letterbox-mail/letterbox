@@ -13,9 +13,29 @@ class ExportViewController: UITableViewController {
     var sentToAddress = (UserManager.loadUserValue(Attribute.userAddr) as! String)
     var passcode = "1234-1234-1234-5678-5678-5678-9012-9012-9012"
     
+    
     @IBAction func buttonTouched(_ sender: Any) {
         if !alreadySent {
             //TODO: create passcode for AES, export key, send mail
+            /*
+            let handler = DataHandler.handler
+            let ids = handler.findSecretKeys()
+            if ids.count > 0{
+                let id = ids[0]
+                let pgp = SwiftPGP()
+                passcode = loadPassword(id)
+                if let sk = handler.findSecretKey(id){
+                    sk.exported = true
+                }
+                AppDelegate.mailhandler.sendSecretKey(id)
+                
+                
+            }
+            else{
+                // TODO: Error NO SECRET KEY!
+            }
+ */
+            
         }
         
         alreadySent = !alreadySent

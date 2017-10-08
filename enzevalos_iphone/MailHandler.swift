@@ -230,6 +230,10 @@ class MailHandler {
         return ids
     }
     
+    func sendSecretKey(keyID: String){
+    
+    }
+    
 
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void) {
 
