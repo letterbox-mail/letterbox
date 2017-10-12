@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
 		4725C4F61EDDADA10068235E /* bob-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F41EDDADA10068235E /* bob-private.gpg */; };
 		4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F51EDDADA10068235E /* bob-public.gpg */; };
 		472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
@@ -102,7 +103,6 @@
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
-		A19028E21F852DA70030EA98 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E11F852DA70030EA98 /* ExportViewController.swift */; };
 		A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
@@ -182,6 +182,7 @@
 
 /* Begin PBXFileReference section */
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		4725C4F41EDDADA10068235E /* bob-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-private.gpg"; path = "keys/bob-private.gpg"; sourceTree = "<group>"; };
 		4725C4F51EDDADA10068235E /* bob-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-public.gpg"; path = "keys/bob-public.gpg"; sourceTree = "<group>"; };
 		472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "EnzevalosContact+CoreDataClass.swift"; path = "../EnzevalosContact+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -349,7 +350,6 @@
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
-		A19028E11F852DA70030EA98 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		A19028E31F853E700030EA98 /* ExportInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportInfoViewController.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jabo.asc; path = keys/jabo.asc; sourceTree = "<group>"; };
@@ -776,8 +776,8 @@
 		A19028E01F852D730030EA98 /* exportKey */ = {
 			isa = PBXGroup;
 			children = (
-				A19028E11F852DA70030EA98 /* ExportViewController.swift */,
 				A19028E31F853E700030EA98 /* ExportInfoViewController.swift */,
+				4707096C1F8F9F4900657F41 /* ExportViewController.swift */,
 				A1A9DE721F864B0500B808AA /* ExportCells.swift */,
 			);
 			name = exportKey;
@@ -1280,6 +1280,7 @@
 				475B00431F7BB6D6006CDD41 /* PersistentKey+CoreDataProperties.swift in Sources */,
 				F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */,
 				475B00231F7B953B006CDD41 /* PGPKeyID.m in Sources */,
+				4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */,
 				475B00181F7B953B006CDD41 /* PGPTrustPacket.m in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
 				475B001F1F7B953B006CDD41 /* PGPFingerprint.m in Sources */,

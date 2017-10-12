@@ -13,7 +13,6 @@ class ExportViewController: UITableViewController {
     var sentToAddress = (UserManager.loadUserValue(Attribute.userAddr) as! String)
     var passcode = "1234-1234-1234-5678-5678-5678-9012-9012-9012"
     
-    
     @IBAction func buttonTouched(_ sender: Any) {
         if !alreadySent {
             //TODO: create passcode for AES, export key, send mail
