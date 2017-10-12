@@ -1979,7 +1979,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
         <!--Navigation Controller-->
         <scene sceneID="Yhz-iC-twy">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="olx-gF-WdV" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="sendNavigation" automaticallyAdjustsScrollViewInsets="NO" id="olx-gF-WdV" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="wwS-7W-6ti">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
