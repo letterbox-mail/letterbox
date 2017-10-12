@@ -568,8 +568,8 @@
                                                         <constraint firstAttribute="width" constant="15" id="ons-Pp-k3n"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
-                                                    <rect key="frame" x="0.0" y="15" width="15" height="17.5"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
+                                                    <rect key="frame" x="0.0" y="17.5" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="SmT-9e-ovi"/>
                                                         <constraint firstAttribute="width" constant="15" id="uKU-PK-flD"/>
