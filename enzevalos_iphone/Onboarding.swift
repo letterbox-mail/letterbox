@@ -662,7 +662,7 @@ class Onboarding: NSObject {
         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
         do {
             let data = try pgp.keys[0].export()
-            _ = enc?.addKey(data, forMailAddresses: [])
+            _ = enc?.addSecretKey(data)
         }
         catch _ { }
     }
@@ -720,20 +720,8 @@ class Onboarding: NSObject {
 
         let enc = EnzevalosEncryptionHandler.getEncryption(EncryptionType.PGP)
         var pgp = ObjectivePGP.init()
+        
         path = Bundle.main.path(forResource: "JakobBode", ofType: "asc") //<---- Schlüsseldatei
-        pgp.importKeys(fromFile: path!, allowDuplicates: false)
-        do {
-            let data = try pgp.keys[0].export()
-            _ = enc?.addKey(data, forMailAddresses: ["jakob.bode@fu-berlin.de"]) //<---- Emailadresse
-        }
-        catch _ { }
-
-        //Import public key END
-        //---------------------------------------//---------------------------------------
-        //Import public Key BEGIN
-
-        path = Bundle.main.path(forResource: "JakobBode", ofType: "asc") //<---- Schlüsseldatei
-        pgp = ObjectivePGP.init()
         pgp.importKeys(fromFile: path!, allowDuplicates: false)
         do {
             let data = try pgp.keys[0].export()

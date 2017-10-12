@@ -37,7 +37,7 @@ class PGPEncryption : Encryption {
         //return pw
     }
     
-    private func importKeys(dir: String?, adr: String?) -> KeyWrapper?{
+    private func importKeys(dir: String?, adr: String?, publicKey: Bool = true) -> KeyWrapper?{
         let objectivePGP  = self.getPGPKeyManagement().pgp
         var keyID: String?
         
@@ -47,7 +47,7 @@ class PGPEncryption : Encryption {
                     let newKey = k as! PGPKey
                     do{
                         let ak = try newKey.export()
-                        keyID = self.addKey(ak, forMailAddress: adr)
+                        keyID = self.addKey(ak, forMailAddress: adr, publicKey: publicKey)
                     } catch _ {}
                 }
             }
@@ -75,7 +75,7 @@ class PGPEncryption : Encryption {
         unnetpgp?.generateKey(2048)
         
         // import private key
-        let key =  importKeys(dir: unnetpgp?.secretKeyRingPath, adr: nil)
+        let key =  importKeys(dir: unnetpgp?.secretKeyRingPath, adr: nil, publicKey: false)
         
         // import public key
         _ = importKeys(dir: unnetpgp?.publicKeyRingPath, adr: adr)
@@ -474,27 +474,40 @@ class PGPEncryption : Encryption {
     }
     
     //chooses first key in data. others will be ignored
-    func addKey(_ keyData: Data, forMailAddress: String?) -> String? {
+    func addKey(_ keyData: Data, forMailAddress: String?, publicKey: Bool = true) -> String? {
         var addrs : [String] = []
         if let addr = forMailAddress {
             addrs = [addr]
         }
-        return self.addKey(keyData, forMailAddresses: addrs)
+        return addKey(keyData, forMailAddresses: addrs, publicKey: publicKey)
     }
     
     //chooses first key in data. others will be ignored
-    func addKey(_ keyData: Data, forMailAddresses: [String]?) -> String?{
-        return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: nil)
+    func addKey(_ keyData: Data, forMailAddresses: [String]?) -> String? {
+        return addKey(keyData, forMailAddresses: forMailAddresses, publicKey: true)
     }
     
     //chooses first key in data. others will be ignored
-    func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?) -> String? {
-        if let tmpKey = self.keyManager.pgp.keys(from: keyData) {
+    func addKey(_ keyData: Data, forMailAddresses: [String]?, publicKey: Bool = true) -> String? {
+        return addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: nil, discoveryMailFolderPath: nil, publicKey: publicKey)
+    }
+    
+    //chooses first key in data. others will be ignored
+    func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?, discoveryMailFolderPath: String?) -> String? {
+        return addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: discoveryMailUID, discoveryMailFolderPath: discoveryMailFolderPath, publicKey: true)
+    }
+    
+    //chooses first key in data. others will be ignored
+    func addKey(_ keyData: Data, forMailAddresses: [String]?, discoveryMailUID: UInt64?, discoveryMailFolderPath: String?, publicKey: Bool = true) -> String? {
+        if let tmpKey = keyManager.pgp.keys(from: keyData) {
+            if publicKey && tmpKey[0].type != PGPKeyType.public || !publicKey && tmpKey[0].type != PGPKeyType.secret {
+                return nil
+            }
             var addrs : [String] = []
             if let addr = forMailAddresses {
                 addrs = addr
             }
-            let key = PGPKeyWrapper.init(key: tmpKey[0], mailAddresses: addrs, discoveryMailUID: discoveryMailUID, keyManager: self.keyManager)
+            let key = PGPKeyWrapper.init(key: tmpKey[0], mailAddresses: addrs, discoveryMailUID: discoveryMailUID, discoveryMailFolderPath: discoveryMailFolderPath, keyManager: self.keyManager)
             return key.keyID
         }
         return nil
@@ -503,12 +516,18 @@ class PGPEncryption : Encryption {
     //chooses first key in data. others will be ignored
     func addKey(_ keyData: Data, discoveryMail: PersistentMail?) -> String? {
         var discoveryMailUID: UInt64? = nil
+        var discoveryMailFolderPath: String? = nil
         var forMailAddresses: [String]? = nil
         if let mail = discoveryMail {
             discoveryMailUID = mail.uid
+            discoveryMailFolderPath = mail.folder.path
             forMailAddresses = [mail.from.mailAddress]
         }
-        return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: discoveryMailUID)
+        return self.addKey(keyData, forMailAddresses: forMailAddresses, discoveryMailUID: discoveryMailUID, discoveryMailFolderPath: discoveryMailFolderPath)
+    }
+    
+    func addSecretKey(_ keyData: Data) -> String? {
+        return addKey(keyData, forMailAddresses: nil, publicKey: false)
     }
     
     //TODO maybe remove here. used in keyWrapper

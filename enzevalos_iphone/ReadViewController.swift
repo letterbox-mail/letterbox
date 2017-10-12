@@ -267,6 +267,7 @@ class ReadViewController: UITableViewController {
             } else if m.isSecure {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/letter"
+                alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)}))
             } else if m.isCorrectlySigned {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard_verified"

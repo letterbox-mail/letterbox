@@ -102,6 +102,8 @@ open class PGPKeyWrapper : NSObject, KeyWrapper {
     //TODO
     open let discoveryMailUID: UInt64?
     
+    open let discoveryMailFolderPath: String?
+    
     open let type: EncryptionType = EncryptionType.PGP
 
     open fileprivate(set) var keyID: String //will look like key.longKeyString+"-1" for the key with this longKeyString at index 1
@@ -157,11 +159,18 @@ open class PGPKeyWrapper : NSObject, KeyWrapper {
         }
     }
     
-    init(key: PGPKey, mailAddresses: [String], discoveryMailUID: UInt64?, keyManager: PGPKeyManagement){
+    init(key: PGPKey, mailAddresses: [String], discoveryMailUID: UInt64?, discoveryMailFolderPath: String?, keyManager: PGPKeyManagement){
         self.key = key
         self.keyManager = keyManager
-        self.discoveryTime = Date.init()
-        self.discoveryMailUID = discoveryMailUID
+        discoveryTime = Date.init()
+        if discoveryMailFolderPath != nil && discoveryMailUID != nil {
+            self.discoveryMailUID = discoveryMailUID
+            self.discoveryMailFolderPath = discoveryMailFolderPath
+        }
+        else {
+            self.discoveryMailUID = nil
+            self.discoveryMailFolderPath = nil
+        }
         self.keyID = ""
         
         if let keyPacket = (key.primaryKeyPacket as? PGPPublicKeyPacket), let fp = keyPacket.fingerprint {
@@ -195,6 +204,12 @@ open class PGPKeyWrapper : NSObject, KeyWrapper {
         else {
             self.discoveryMailUID = nil
         }
+        if let dmailPath = coder.decodeObject(forKey: "discoveryMailFolderPath"){
+            self.discoveryMailFolderPath = dmailPath as? String
+        }
+        else {
+            self.discoveryMailFolderPath = nil
+        }
         discoveryTime = coder.decodeObject(forKey: "discoveryTime") as! Date
     }
     
@@ -213,6 +228,9 @@ open class PGPKeyWrapper : NSObject, KeyWrapper {
         coder.encode(verifyTime, forKey: "verifyTime")
         if let dmailUID = discoveryMailUID {
             coder.encode(NSNumber.init(value: dmailUID as UInt64), forKey: "discoveryMailUID")
+        }
+        if let dmailPath = discoveryMailFolderPath {
+            coder.encode(dmailPath, forKey: "discoveryMailFolderPath")
         }
         coder.encode(keyID, forKey: "keyID")
         coder.encode(fingerprint, forKey: "fingerprint")
