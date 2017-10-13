@@ -61,6 +61,37 @@
 		479BBDDD1EFEA3CB00A2107C /* dave_enezvalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */; };
 		479BBDE01EFEA4D800A2107C /* bob_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */; };
 		479BBDE11EFEA4D800A2107C /* alice_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */; };
+		8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
+		8428A8551F4369CF007649A5 /* GamificationElements.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8541F4369CF007649A5 /* GamificationElements.xcassets */; };
+		8428A85C1F436A05007649A5 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8581F436A05007649A5 /* ArrowView.swift */; };
+		8428A85D1F436A05007649A5 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8591F436A05007649A5 /* Badges.swift */; };
+		8428A85E1F436A05007649A5 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85A1F436A05007649A5 /* CircleView.swift */; };
+		8428A85F1F436A05007649A5 /* GamificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85B1F436A05007649A5 /* GamificationData.swift */; };
+		8428A8651F436A11007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8601F436A11007649A5 /* BadgeCaseCollectionViewCell.swift */; };
+		8428A8661F436A11007649A5 /* ArrowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */; };
+		8428A8671F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8621F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift */; };
+		8428A8681F436A11007649A5 /* SubBadgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8631F436A11007649A5 /* SubBadgeTableViewCell.swift */; };
+		8428A8691F436A11007649A5 /* UserNameGamificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8641F436A11007649A5 /* UserNameGamificationTableViewCell.swift */; };
+		8428A86E1F436A1E007649A5 /* BadgeCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86A1F436A1E007649A5 /* BadgeCase.swift */; };
+		8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */; };
+		8428A8701F436A1E007649A5 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
+		8428A8711F436A1E007649A5 /* GamificationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */; };
+		8428A8761F436A9A007649A5 /* GamificationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */; };
+		8428A8771F436A9D007649A5 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
+		8428A8781F436AA1007649A5 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */; };
+		8428A8791F436AA4007649A5 /* BadgeCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86A1F436A1E007649A5 /* BadgeCase.swift */; };
+		8428A87A1F436AA9007649A5 /* ArrowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */; };
+		8428A87B1F436AAC007649A5 /* UserNameGamificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8641F436A11007649A5 /* UserNameGamificationTableViewCell.swift */; };
+		8428A87C1F436AAF007649A5 /* SubBadgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8631F436A11007649A5 /* SubBadgeTableViewCell.swift */; };
+		8428A87D1F436AB2007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8621F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift */; };
+		8428A87E1F436AB5007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8601F436A11007649A5 /* BadgeCaseCollectionViewCell.swift */; };
+		8428A87F1F436AB8007649A5 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85A1F436A05007649A5 /* CircleView.swift */; };
+		8428A8801F436ABB007649A5 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8581F436A05007649A5 /* ArrowView.swift */; };
+		8428A8811F436AC0007649A5 /* GamificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85B1F436A05007649A5 /* GamificationData.swift */; };
+		8428A8821F436AC3007649A5 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8591F436A05007649A5 /* Badges.swift */; };
+		8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8561F4369EA007649A5 /* GamificationDataUnitTest.swift */; };
+		8428A8841F436ACC007649A5 /* GamificationElements.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8541F4369CF007649A5 /* GamificationElements.xcassets */; };
+		8428A8851F436AD5007649A5 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
 		9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */; };
 		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
 		A102AA8A1EDDB4F40024B457 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
@@ -200,6 +231,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1DA766FE04E7D6FF1A3CEC1F /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4715B0F41EF3D58100520DE5 /* DecryptedData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptedData.swift; sourceTree = "<group>"; };
 		4725C4F41EDDADA10068235E /* bob-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-private.gpg"; path = "keys/bob-private.gpg"; sourceTree = "<group>"; };
@@ -284,7 +316,26 @@
 		47B2318A1F0D458100961B28 /* enzevalos_iphone 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "enzevalos_iphone 2.xcdatamodel"; sourceTree = "<group>"; };
 		48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		66E758F271CD65AB3E5FE7A7 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		6EBCCD02AD3B95D8317810E2 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.release.xcconfig"; sourceTree = "<group>"; };
+		8428A8521F4369C0007649A5 /* Gamification.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Gamification.storyboard; sourceTree = "<group>"; };
+		8428A8541F4369CF007649A5 /* GamificationElements.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = GamificationElements.xcassets; sourceTree = "<group>"; };
+		8428A8561F4369EA007649A5 /* GamificationDataUnitTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamificationDataUnitTest.swift; sourceTree = "<group>"; };
+		8428A8581F436A05007649A5 /* ArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
+		8428A8591F436A05007649A5 /* Badges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Badges.swift; sourceTree = "<group>"; };
+		8428A85A1F436A05007649A5 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
+		8428A85B1F436A05007649A5 /* GamificationData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamificationData.swift; sourceTree = "<group>"; };
+		8428A8601F436A11007649A5 /* BadgeCaseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowTableViewCell.swift; sourceTree = "<group>"; };
+		8428A8621F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubBadgeHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		8428A8631F436A11007649A5 /* SubBadgeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubBadgeTableViewCell.swift; sourceTree = "<group>"; };
+		8428A8641F436A11007649A5 /* UserNameGamificationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNameGamificationTableViewCell.swift; sourceTree = "<group>"; };
+		8428A86A1F436A1E007649A5 /* BadgeCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCase.swift; sourceTree = "<group>"; };
+		8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteFriendViewController.swift; sourceTree = "<group>"; };
+		8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearBadgeViewController.swift; sourceTree = "<group>"; };
+		8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamificationStatusViewController.swift; sourceTree = "<group>"; };
+		8B87EFB6CEAA31452F744015 /* Pods-enzevalos_iphoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 		9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoOnboarding2.m4v; sourceTree = "<group>"; };
@@ -434,6 +485,7 @@
 		A1F9923F1DA7DD370073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
 		A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-public.gpg"; path = "keys/alice2005-public.gpg"; sourceTree = "<group>"; };
 		AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
+		BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F113C3841F30D06800E7F1D6 /* QRScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
@@ -460,6 +512,7 @@
 		F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
 		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		F1AF938E1E2D04BA00755128 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
+		F7FFF15F83AF4B88F0324F10 /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -500,6 +553,12 @@
 				C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */,
 				9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */,
 				796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */,
+				1DA766FE04E7D6FF1A3CEC1F /* Pods-enzevalos_iphone.debug.xcconfig */,
+				F7FFF15F83AF4B88F0324F10 /* Pods-enzevalos_iphone.release.xcconfig */,
+				6EBCCD02AD3B95D8317810E2 /* Pods-enzevalos_iphoneTests.debug.xcconfig */,
+				BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */,
+				66E758F271CD65AB3E5FE7A7 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */,
+				8B87EFB6CEAA31452F744015 /* Pods-enzevalos_iphoneUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -630,6 +689,61 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8428A8511F436952007649A5 /* Gamification */ = {
+			isa = PBXGroup;
+			children = (
+				8428A8521F4369C0007649A5 /* Gamification.storyboard */,
+				8428A8541F4369CF007649A5 /* GamificationElements.xcassets */,
+				8428A8721F436A35007649A5 /* Unit Tests */,
+				8428A8751F436A81007649A5 /* Data */,
+				8428A8731F436A45007649A5 /* Views und Cells */,
+				8428A8741F436A71007649A5 /* ViewControllers */,
+			);
+			name = Gamification;
+			sourceTree = "<group>";
+		};
+		8428A8721F436A35007649A5 /* Unit Tests */ = {
+			isa = PBXGroup;
+			children = (
+				8428A8561F4369EA007649A5 /* GamificationDataUnitTest.swift */,
+			);
+			name = "Unit Tests";
+			sourceTree = "<group>";
+		};
+		8428A8731F436A45007649A5 /* Views und Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8428A8581F436A05007649A5 /* ArrowView.swift */,
+				8428A85A1F436A05007649A5 /* CircleView.swift */,
+				8428A8601F436A11007649A5 /* BadgeCaseCollectionViewCell.swift */,
+				8428A8621F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift */,
+				8428A8631F436A11007649A5 /* SubBadgeTableViewCell.swift */,
+				8428A8641F436A11007649A5 /* UserNameGamificationTableViewCell.swift */,
+				8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */,
+			);
+			name = "Views und Cells";
+			sourceTree = "<group>";
+		};
+		8428A8741F436A71007649A5 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8428A86A1F436A1E007649A5 /* BadgeCase.swift */,
+				8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */,
+				8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */,
+				8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		8428A8751F436A81007649A5 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				8428A8591F436A05007649A5 /* Badges.swift */,
+				8428A85B1F436A05007649A5 /* GamificationData.swift */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
 		A10DE41E1EFAA140005E8189 /* folders */ = {
 			isa = PBXGroup;
 			children = (
@@ -693,6 +807,7 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
+				8428A8511F436952007649A5 /* Gamification */,
 				478175061F06E57E00300D20 /* netpgp */,
 				47B91AC11EC0C1FB000AE3EE /* data */,
 				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
@@ -1091,7 +1206,9 @@
 				F14D18A21ED8811F0080515D /* ullimuelle-private.gpg in Resources */,
 				F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */,
 				A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */,
+				8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */,
 				A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */,
+				8428A8551F4369CF007649A5 /* GamificationElements.xcassets in Resources */,
 				F14D189F1ED880680080515D /* ncpayroll-public.gpg in Resources */,
 				A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */,
 				479BBDE01EFEA4D800A2107C /* bob_enzvalos_private.asc in Resources */,
@@ -1109,6 +1226,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8428A8841F436ACC007649A5 /* GamificationElements.xcassets in Resources */,
+				8428A8851F436AD5007649A5 /* Gamification.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1128,13 +1247,24 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BZipCompression/BZipCompression.framework",
+				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/Onboard/Onboard.framework",
+				"${BUILT_PRODUCTS_DIR}/VENTokenField/VENTokenField.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BZipCompression.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FrameAccessor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Onboard.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VENTokenField.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		60E197910FD6B0523F9273AE /* [CP] Check Pods Manifest.lock */ = {
@@ -1143,13 +1273,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-enzevalos_iphone-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6C4CB727DDC2AC31CCE50B26 /* [CP] Embed Pods Frameworks */ = {
@@ -1164,7 +1297,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9C00DB37D91C40FACD06D614 /* [CP] Copy Pods Resources */ = {
@@ -1179,7 +1312,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CB3E7E0953A94645ED8E830A /* [CP] Check Pods Manifest.lock */ = {
@@ -1188,13 +1321,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-enzevalos_iphoneUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D6F0EB205D61EA8C8A045390 /* [CP] Check Pods Manifest.lock */ = {
@@ -1203,13 +1339,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-enzevalos_iphoneTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E98D3D9213C0A8CF7EDD28B1 /* [CP] Copy Pods Resources */ = {
@@ -1224,7 +1363,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EE4FF4A968A2B2871F67C256 /* [CP] Embed Pods Frameworks */ = {
@@ -1239,7 +1378,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F855B7C77E9E7734BC50BC72 /* [CP] Copy Pods Resources */ = {
@@ -1254,7 +1393,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1279,6 +1418,8 @@
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				A135CF121DD4BDD1007E3C29 /* PGPPacketFactory.m in Sources */,
 				A135CF111DD4BDD1007E3C29 /* PGPPacket.m in Sources */,
+				8428A85D1F436A05007649A5 /* Badges.swift in Sources */,
+				8428A8651F436A11007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
 				4715B0F51EF3D58100520DE5 /* DecryptedData.swift in Sources */,
 				472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */,
 				4781753C1F06E57E00300D20 /* bufgap.c in Sources */,
@@ -1289,8 +1430,10 @@
 				47691A8C1ECC3EC7004BCFC5 /* EphemeralMail.swift in Sources */,
 				A135CF231DD4BDD1007E3C29 /* PGPUserAttributePacket.m in Sources */,
 				A1230BD71E2F8818006642C7 /* PGPEncryption.swift in Sources */,
+				8428A8671F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
 				F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */,
+				8428A8691F436A11007649A5 /* UserNameGamificationTableViewCell.swift in Sources */,
 				A135CF221DD4BDD1007E3C29 /* PGPUser.m in Sources */,
 				A135CF031DD4BDD1007E3C29 /* NSData+PGPUtils.m in Sources */,
 				472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */,
@@ -1302,12 +1445,14 @@
 				A135CF141DD4BDD1007E3C29 /* PGPPKCSEmsa.m in Sources */,
 				4781754E1F06E57E00300D20 /* validate.c in Sources */,
 				A135CF051DD4BDD1007E3C29 /* ObjectivePGP.m in Sources */,
+				8428A8661F436A11007649A5 /* ArrowTableViewCell.swift in Sources */,
 				4781754C1F06E57E00300D20 /* ssh2pgp.c in Sources */,
 				F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */,
 				4781754F1F06E57E00300D20 /* writer.c in Sources */,
 				478175441F06E57E00300D20 /* mj.c in Sources */,
 				478175491F06E57E00300D20 /* packet-show.c in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
+				8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */,
 				4781753D1F06E57E00300D20 /* compress.c in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
 				A135CF0F1DD4BDD1007E3C29 /* PGPMPI.m in Sources */,
@@ -1317,6 +1462,7 @@
 				F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */,
 				A135CF191DD4BDD1007E3C29 /* PGPS2K.m in Sources */,
 				A135CF061DD4BDD1007E3C29 /* PGPArmor.m in Sources */,
+				8428A8711F436A1E007649A5 /* GamificationStatusViewController.swift in Sources */,
 				A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */,
 				A135CF251DD4BDD1007E3C29 /* PGPUserIDPacket.m in Sources */,
 				4781753B1F06E57E00300D20 /* README.md in Sources */,
@@ -1326,6 +1472,7 @@
 				478175501F06E57E00300D20 /* UNNetPGP.m in Sources */,
 				A135CF021DD4BDD1007E3C29 /* NSData+compression.m in Sources */,
 				476142081E07E52B00FD5E4F /* Theme.swift in Sources */,
+				8428A8701F436A1E007649A5 /* LinearBadgeViewController.swift in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
 				475DF47A1F0D54C9009D807F /* Folder+CoreDataProperties.swift in Sources */,
 				A135CF1E1DD4BDD1007E3C29 /* PGPSubKey.m in Sources */,
@@ -1360,7 +1507,9 @@
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
 				4781753E1F06E57E00300D20 /* create.c in Sources */,
 				A15B7BE41E29306D0024E499 /* EnzevalosEncryptionHandler.swift in Sources */,
+				8428A85E1F436A05007649A5 /* CircleView.swift in Sources */,
 				472F397C1E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift in Sources */,
+				8428A85C1F436A05007649A5 /* ArrowView.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				478175401F06E57E00300D20 /* fastctype.c in Sources */,
 				A135CF131DD4BDD1007E3C29 /* PGPPKCSEme.m in Sources */,
@@ -1371,6 +1520,7 @@
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
 				A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */,
 				A135CF0E1DD4BDD1007E3C29 /* PGPModificationDetectionCodePacket.m in Sources */,
+				8428A85F1F436A05007649A5 /* GamificationData.swift in Sources */,
 				475DF4791F0D54C9009D807F /* Folder+CoreDataClass.swift in Sources */,
 				A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */,
 				A135CF161DD4BDD1007E3C29 /* PGPPublicKeyPacket.m in Sources */,
@@ -1386,6 +1536,7 @@
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
 				4781754A1F06E57E00300D20 /* reader.c in Sources */,
 				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
+				8428A8681F436A11007649A5 /* SubBadgeTableViewCell.swift in Sources */,
 				A15B7BE81E2934CB0024E499 /* EncryptionType.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
 				4781753A1F06E57E00300D20 /* fmemopen.c in Sources */,
@@ -1397,6 +1548,7 @@
 				A135CF201DD4BDD1007E3C29 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
 				472F397E1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */,
 				A135CF1B1DD4BDD1007E3C29 /* PGPSecretSubKeyPacket.m in Sources */,
+				8428A86E1F436A1E007649A5 /* BadgeCase.swift in Sources */,
 				A172F90D1E4CD37D00F2A136 /* PGPTemporaryDecryptionObject.swift in Sources */,
 				A135CF071DD4BDD1007E3C29 /* PGPCompressedPacket.m in Sources */,
 			);
@@ -1406,7 +1558,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8428A8771F436A9D007649A5 /* LinearBadgeViewController.swift in Sources */,
+				8428A87A1F436AA9007649A5 /* ArrowTableViewCell.swift in Sources */,
 				A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */,
+				8428A87B1F436AAC007649A5 /* UserNameGamificationTableViewCell.swift in Sources */,
+				8428A8781F436AA1007649A5 /* InviteFriendViewController.swift in Sources */,
+				8428A8761F436A9A007649A5 /* GamificationStatusViewController.swift in Sources */,
+				8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */,
+				8428A8811F436AC0007649A5 /* GamificationData.swift in Sources */,
+				8428A87F1F436AB8007649A5 /* CircleView.swift in Sources */,
+				8428A87E1F436AB5007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
+				8428A8821F436AC3007649A5 /* Badges.swift in Sources */,
+				8428A8801F436ABB007649A5 /* ArrowView.swift in Sources */,
+				8428A87D1F436AB2007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */,
+				8428A87C1F436AAF007649A5 /* SubBadgeTableViewCell.swift in Sources */,
+				8428A8791F436AA4007649A5 /* BadgeCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1584,7 +1750,7 @@
 		};
 		A13526A11D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */;
+			baseConfigurationReference = 1DA766FE04E7D6FF1A3CEC1F /* Pods-enzevalos_iphone.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1634,7 +1800,7 @@
 		};
 		A13526A21D955BE000D3BFE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */;
+			baseConfigurationReference = F7FFF15F83AF4B88F0324F10 /* Pods-enzevalos_iphone.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1684,7 +1850,7 @@
 		};
 		A13526A41D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */;
+			baseConfigurationReference = 6EBCCD02AD3B95D8317810E2 /* Pods-enzevalos_iphoneTests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1696,7 +1862,7 @@
 		};
 		A13526A51D955BE000D3BFE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */;
+			baseConfigurationReference = BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1708,7 +1874,7 @@
 		};
 		A13526A71D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */;
+			baseConfigurationReference = 66E758F271CD65AB3E5FE7A7 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1721,7 +1887,7 @@
 		};
 		A13526A81D955BE000D3BFE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */;
+			baseConfigurationReference = 8B87EFB6CEAA31452F744015 /* Pods-enzevalos_iphoneUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
