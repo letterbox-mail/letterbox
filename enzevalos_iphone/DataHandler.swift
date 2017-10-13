@@ -767,7 +767,7 @@ class DataHandler {
 
             }
 
-        private func getContacts() -> [EnzevalosContact] {
+        func getContacts() -> [EnzevalosContact] {
                 var contacts = [EnzevalosContact]()
                 let result = findAll("EnzevalosContact")
                 if result != nil {
