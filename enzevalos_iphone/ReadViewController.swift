@@ -87,7 +87,7 @@ class ReadViewController: UITableViewController {
 
         messageBody.delegate = textDelegate
 
-        _ = mail?.from.contact?.records.flatMap { x in
+        _ = mail?.from.contact?.records.flatMap { x -> String in
             if x.hasKey && x.key != nil {
                 let keyWrapper = EnzevalosEncryptionHandler.getEncryption(.PGP)?.getKey(x.key!)
                 keyDiscoveryDate = keyWrapper?.discoveryTime

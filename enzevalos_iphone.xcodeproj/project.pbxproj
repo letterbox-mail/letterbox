@@ -1247,7 +1247,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh",
+				"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BZipCompression/BZipCompression.framework",
 				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
@@ -1264,7 +1264,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		60E197910FD6B0523F9273AE /* [CP] Check Pods Manifest.lock */ = {
@@ -1297,7 +1297,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9C00DB37D91C40FACD06D614 /* [CP] Copy Pods Resources */ = {
@@ -1312,7 +1312,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CB3E7E0953A94645ED8E830A /* [CP] Check Pods Manifest.lock */ = {
@@ -1363,7 +1363,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EE4FF4A968A2B2871F67C256 /* [CP] Embed Pods Frameworks */ = {
@@ -1378,7 +1378,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F855B7C77E9E7734BC50BC72 /* [CP] Copy Pods Resources */ = {
@@ -1393,7 +1393,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1652,6 +1652,7 @@
 /* Begin XCBuildConfiguration section */
 		A135269E1D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1750,9 +1751,9 @@
 		};
 		A13526A11D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1DA766FE04E7D6FF1A3CEC1F /* Pods-enzevalos_iphone.debug.xcconfig */;
+			baseConfigurationReference = AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
@@ -1800,9 +1801,9 @@
 		};
 		A13526A21D955BE000D3BFE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7FFF15F83AF4B88F0324F10 /* Pods-enzevalos_iphone.release.xcconfig */;
+			baseConfigurationReference = 9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
@@ -1850,7 +1851,7 @@
 		};
 		A13526A41D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6EBCCD02AD3B95D8317810E2 /* Pods-enzevalos_iphoneTests.debug.xcconfig */;
+			baseConfigurationReference = 411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1862,7 +1863,7 @@
 		};
 		A13526A51D955BE000D3BFE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */;
+			baseConfigurationReference = C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1874,7 +1875,7 @@
 		};
 		A13526A71D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 66E758F271CD65AB3E5FE7A7 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */;
+			baseConfigurationReference = 9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1887,7 +1888,7 @@
 		};
 		A13526A81D955BE000D3BFE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B87EFB6CEAA31452F744015 /* Pods-enzevalos_iphoneUITests.release.xcconfig */;
+			baseConfigurationReference = 796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
