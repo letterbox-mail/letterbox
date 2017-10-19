@@ -86,12 +86,12 @@ class ReadViewController: UITableViewController {
 
         messageBody.delegate = textDelegate
 
-        _ = mail?.from.contact?.records.flatMap { x -> String in
+        _ = mail?.from.contact?.records.flatMap { x in
             if x.hasKey && x.key != nil {
                 let keyWrapper = DataHandler.handler.findKey(keyID: x.key!)
                 keyDiscoveryDate = keyWrapper?.discoveryDate as Date?
             }
-            return ""//nil //M
+            return nil
         }
     }
 

@@ -70,8 +70,8 @@ extension ReadVENDelegate: VENTokenFieldDelegate {
     }
 
     func tokenField(_ tokenField: VENTokenField, colorSchemeForTokenAt index: UInt) -> UIColor {
-        if let adr = DataHandler.handler.findMailAddress(adr: tokenField.mailTokens[Int(index)] as! String){
-            if adr.hasKey{
+        if let adr = DataHandler.handler.findMailAddress(adr: tokenField.mailTokens[Int(index)] as! String) {
+            if adr.hasKey {
                 return UIColor.init(red: 0, green: 122.0 / 255.0, blue: 1, alpha: 1)
             }
         }
@@ -84,3 +84,4 @@ extension ReadVENDelegate: VENTokenFieldDelegate {
         }
     }
 }
+
