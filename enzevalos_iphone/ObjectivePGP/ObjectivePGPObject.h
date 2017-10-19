@@ -42,13 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSSet<PGPKey *> *)importKeysFromData:(NSData *)data;
 
 /**
- Import keys from the string. `keys` property is updated after successfull import.
- 
- @param string Keys data as string.
- @return Set of loaded keys.
- */
-- (NSSet<PGPKey *> *) importKeysFromString: (NSString *) string;
-/**
  Delete keys
 
  @param keys Keys to delete from keys object
@@ -167,10 +160,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable NSData *)encryptData:(NSData *)dataToEncrypt usingKeys:(NSArray<PGPKey *> *)keys armored:(BOOL)armored error:(NSError *__autoreleasing _Nullable *)error;
 - (nullable NSData *)encryptData:(NSData *)dataToEncrypt usingKeys:(NSArray<PGPKey *> *)keys signWithKey:(nullable PGPKey *)signKey passphrase:(nullable NSString *)passphrase armored:(BOOL)armored error:(NSError *__autoreleasing _Nullable *)error;
+- (nullable NSData *)symmetricEncrypt:(NSData *)dataToEncrypt signWithKey:(nullable PGPKey *)signKey encryptionKey: (nullable NSString *) key passphrase:(nullable NSString *)passphrase armored:(BOOL)armored error:(NSError *__autoreleasing _Nullable *)error;
 
 - (nullable NSData *)decryptData:(NSData *)messageDataToDecrypt passphrase:(nullable NSString *)passphrase error:(NSError *__autoreleasing _Nullable *)error;
 - (nullable NSData *)decryptData:(NSData *)messageDataToDecrypt passphrase:(nullable NSString *)passphrase verifyWithKey:(nullable PGPKey *)key signed:(nullable BOOL *)isSigned valid:(nullable BOOL *)isValid integrityProtected:(nullable BOOL *)isIntegrityProtected error:(NSError *__autoreleasing _Nullable *)error;
-
+- (nullable NSData *)symmetricDecrypt:(NSData *)messageDataToDecrypt key:(nullable NSString *)encKey verifyWithKey:(nullable PGPKey *)key signed:(nullable BOOL *)isSigned valid:(nullable BOOL *)isValid integrityProtected:(nullable BOOL *)isIntegrityProtected error:(NSError *__autoreleasing _Nullable *)error;
 @end
 
 NS_ASSUME_NONNULL_END

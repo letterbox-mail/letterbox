@@ -22,6 +22,7 @@
 #import "PGPTrustPacket.h"
 #import "PGPUserAttributePacket.h"
 #import "PGPUserIDPacket.h"
+#import "PGPSymmetricKeyEncryptedSessionKeyPacket.h"
 
 #import "PGPLogging.h"
 #import "PGPMacros+Private.h"
@@ -95,6 +96,9 @@ NS_ASSUME_NONNULL_BEGIN
                 break;
             case PGPPublicKeyEncryptedSessionKeyPacketTag:
                 packet = [[PGPPublicKeyEncryptedSessionKeyPacket alloc] initWithHeader:packetHeaderData body:packetBodyData];
+                break;
+            case PGPSymetricKeyEncryptedSessionKeyPacketTag:
+                packet = [[PGPSymmetricKeyEncryptedSessionKeyPacket alloc] initWithHeader: packetHeaderData body: packetBodyData];
                 break;
             default:
                 PGPLogWarning(@"Packet tag %@ is not supported", @(packetTag));

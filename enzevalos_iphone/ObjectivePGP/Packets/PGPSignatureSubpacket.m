@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param packetBody A single subpacket body data.
  */
 - (void)parseSubpacketBody:(NSData *)packetBodyData {
-    //PGPLogDebug(@"parseSubpacketBody %@, body %@",@(self.type), packetBodyData);
+   // PGPLogDebug(@"parseSubpacketBody %@, body %@",@(self.type), packetBodyData);
 
     switch (self.type & 0x7F) {
         case PGPSignatureSubpacketTypeSignatureCreationTime: // NSDate
@@ -213,7 +213,7 @@ NS_ASSUME_NONNULL_BEGIN
             if (self.type & 0x80) {
                 PGPLogError(@"Unsupported critical subpacket type %d", self.type);
             } else {
-               // PGPLogDebug(@"Unsupported subpacket type %d", self.type);
+                PGPLogDebug(@"Unsupported subpacket type %d", self.type);
             }
             break;
     }
@@ -345,7 +345,7 @@ NS_ASSUME_NONNULL_BEGIN
             if (self.type & 0x80) {
                 PGPLogError(@"Unsupported critical subpacket type %d", self.type);
             } else {
-               // PGPLogDebug(@"Unsupported subpacket type %d", self.type);
+                PGPLogDebug(@"Unsupported subpacket type %d", self.type);
             }
             break;
     }

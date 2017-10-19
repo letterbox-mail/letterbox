@@ -16,24 +16,32 @@ class ExportViewController: UITableViewController {
     @IBAction func buttonTouched(_ sender: Any) {
         if !alreadySent {
             //TODO: create passcode for AES, export key, send mail
-            /*
+            
             let handler = DataHandler.handler
             let ids = handler.findSecretKeys()
             if ids.count > 0{
-                let id = ids[0]
-                let pgp = SwiftPGP()
-                passcode = loadPassword(id)
-                if let sk = handler.findSecretKey(id){
-                    sk.exported = true
+               // let id = ids[0]
+               // let pgp = SwiftPGP()
+                //passcode = loadPassword(id)
+                //AppDelegate.mailhandler.sendSecretKey(id)
+                let objPGP = ObjectivePGP()
+                if let data = "hello Bob".data(using: .utf8){
+                    print("Create Key message")
+                    passcode = "1234"
+                    let m = try! objPGP.symmetricEncrypt(data, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: true)
+                    let mString = String.init(data: m, encoding: .utf8)
+                    print(mString ?? "no encrypted message")
+                    let p = try! objPGP.symmetricDecrypt(m, key: passcode, verifyWith: nil, signed: nil, valid: nil, integrityProtected: nil)
+                    let pString = String.init(data: p, encoding: .utf8)
+                    print(pString ?? "no decrypted message")
                 }
-                AppDelegate.mailhandler.sendSecretKey(id)
                 
                 
             }
             else{
                 // TODO: Error NO SECRET KEY!
             }
- */
+
             
         }
         

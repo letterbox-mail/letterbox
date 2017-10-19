@@ -293,7 +293,6 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
 
-    NSLog(@"Signing algo: %hhu",signingKeyPacket.publicKeyAlgorithm);
     switch (signingKeyPacket.publicKeyAlgorithm) {
         case PGPPublicKeyAlgorithmRSA:
         case PGPPublicKeyAlgorithmRSASignOnly:
@@ -320,9 +319,8 @@ NS_ASSUME_NONNULL_BEGIN
             return [PGPDSA verify:toHashData signature:self withPublicKeyPacket:signingKeyPacket];
         } break;
         default:
-            return NO;
-            //[NSException raise:@"PGPNotSupported" format:@"Algorith not supported"];
-           // break;
+            [NSException raise:@"PGPNotSupported" format:@"Algorith not supported"];
+            break;
     }
 
     return YES;
