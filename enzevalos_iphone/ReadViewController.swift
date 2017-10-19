@@ -38,10 +38,10 @@ class ReadViewController: UITableViewController {
 
     var VENDelegate: ReadVENDelegate?
 
-    var textDelegate: ReadTextDelegate?
+    weak var textDelegate: ReadTextDelegate?
 
     var mail: PersistentMail? = nil
-    
+
     var isDraft = false
 
     var keyDiscoveryDate: Date? = nil
@@ -54,12 +54,11 @@ class ReadViewController: UITableViewController {
 
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
-        }
-        else {
+        } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
         }
 
-        VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: self.showContact, tableView: tableView)
+        VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: { [weak self] in self?.showContact($0) }, tableView: tableView)
 
         senderTokenField.delegate = VENDelegate
         senderTokenField.dataSource = VENDelegate
@@ -96,6 +95,10 @@ class ReadViewController: UITableViewController {
         }
     }
 
+    deinit {
+        print("===============|| ReadViewController deinitialized ||===============")
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         // NavigationBar color
         if let mail = mail {
@@ -104,7 +107,6 @@ class ReadViewController: UITableViewController {
                 if !mail.showMessage {
                     answerButton.isEnabled = false
                 }
-                _ = navigationController?.navigationBar
             } else if mail.isSecure {
                 self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
             } else {
@@ -131,8 +133,6 @@ class ReadViewController: UITableViewController {
                 }
             }
         }
-
-//        performSegueWithIdentifier("showContact", sender: Record(email: email))
     }
 
     // set top seperator height
@@ -204,8 +204,6 @@ class ReadViewController: UITableViewController {
                         return infoReactButtonCell
                     }
                 }
-            } else {
-                return messageCell
             }
         }
 
@@ -488,7 +486,7 @@ class ReadViewController: UITableViewController {
 }
 
 class ReadTextDelegate: NSObject, UITextViewDelegate {
-    var callback: ((String) -> ())? = nil
+    var callback: ((String) -> ())?
 
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         if URL.scheme == "mailto" {

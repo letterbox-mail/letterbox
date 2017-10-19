@@ -176,6 +176,7 @@
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
+		F120A7D31F7937BB006D5BF1 /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F1C9C2DC1F792737009BB0DE /* libc++abi.tbd */; };
 		F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
 		F14D189C1ED880680080515D /* nchr-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18981ED880680080515D /* nchr-private.gpg */; };
 		F14D189D1ED880680080515D /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
@@ -481,6 +482,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F120A7D31F7937BB006D5BF1 /* libc++abi.tbd in Frameworks */,
 				472F396E1E14F384009260FB /* CoreData.framework in Frameworks */,
 				9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */,
 			);
@@ -711,6 +713,7 @@
 		78280F99990BFF65543B7F0B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F1C9C2DC1F792737009BB0DE /* libc++abi.tbd */,
 				472F396D1E14F384009260FB /* CoreData.framework */,
 				4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */,
 				C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */,
