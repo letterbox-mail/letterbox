@@ -184,6 +184,8 @@
 		F14D189F1ED880680080515D /* ncpayroll-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189B1ED880680080515D /* ncpayroll-public.gpg */; };
 		F14D18A21ED8811F0080515D /* ullimuelle-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */; };
 		F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */; };
+		F17654E31F9E494300D659B0 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17654E21F9E494200D659B0 /* ColorManager.swift */; };
+		F17654E61F9E498F00D659B0 /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17654E41F9E498F00D659B0 /* Inbox.storyboard */; };
 		F189C17F1ED59FEF00BAE9B3 /* idsolutions-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */; };
 		F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */; };
 		F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445D1E7044B70080C041 /* FlipTransition.swift */; };
@@ -464,6 +466,8 @@
 		F14D189B1ED880680080515D /* ncpayroll-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ncpayroll-public.gpg"; path = "keys/ncpayroll-public.gpg"; sourceTree = "<group>"; };
 		F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-private.gpg"; path = "keys/ullimuelle-private.gpg"; sourceTree = "<group>"; };
 		F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-public.gpg"; path = "keys/ullimuelle-public.gpg"; sourceTree = "<group>"; };
+		F17654E21F9E494200D659B0 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ColorManager.swift; path = /Users/joscha/Projekte/enzevalos/enzevalos_iphone/enzevalos_iphone/ColorManager.swift; sourceTree = "<absolute>"; };
+		F17654E51F9E498F00D659B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
 		F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-private.gpg"; path = "keys/idsolutions-private.gpg"; sourceTree = "<group>"; };
 		F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-public.gpg"; path = "keys/idsolutions-public.gpg"; sourceTree = "<group>"; };
 		F18B445D1E7044B70080C041 /* FlipTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipTransition.swift; sourceTree = "<group>"; };
@@ -698,6 +702,7 @@
 		47B91AC11EC0C1FB000AE3EE /* data */ = {
 			isa = PBXGroup;
 			children = (
+				F17654E21F9E494200D659B0 /* ColorManager.swift */,
 				472F39921E279792009260FB /* protocols */,
 				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */,
@@ -840,6 +845,7 @@
 				A10DE41E1EFAA140005E8189 /* folders */,
 				A18C76851E8185ED00B21414 /* onboarding */,
 				A1EB05761D9567F2008659C1 /* read */,
+				F17654DF1F9E48F600D659B0 /* inbox */,
 				A1EB05751D956748008659C1 /* send */,
 				F1ACF21D1E0C290500C1B843 /* contactView */,
 				A19028E01F852D730030EA98 /* exportKey */,
@@ -964,15 +970,7 @@
 			children = (
 				A1EB058F1D956923008659C1 /* ReadViewController.swift */,
 				F18B44611E73286C0080C041 /* ReadVENDelegate.swift */,
-				F12041FA1DA3FBF7002E4940 /* ListViewController.swift */,
-				F12041FC1DA409A5002E4940 /* ListViewCell.swift */,
-				F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */,
-				A1EB05931D956931008659C1 /* InboxCellDelegator.swift */,
-				A1EB05951D956939008659C1 /* InboxTableViewCell.swift */,
-				A1EB05971D956947008659C1 /* InboxViewController.swift */,
-				F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */,
 				A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */,
-				A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */,
 			);
 			name = read;
 			sourceTree = "<group>";
@@ -985,6 +983,22 @@
 				F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */,
 			);
 			name = QRCode;
+			sourceTree = "<group>";
+		};
+		F17654DF1F9E48F600D659B0 /* inbox */ = {
+			isa = PBXGroup;
+			children = (
+				F17654E41F9E498F00D659B0 /* Inbox.storyboard */,
+				F12041FA1DA3FBF7002E4940 /* ListViewController.swift */,
+				F12041FC1DA409A5002E4940 /* ListViewCell.swift */,
+				F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */,
+				A1EB05931D956931008659C1 /* InboxCellDelegator.swift */,
+				A1EB05951D956939008659C1 /* InboxTableViewCell.swift */,
+				A1EB05971D956947008659C1 /* InboxViewController.swift */,
+				F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */,
+				A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */,
+			);
+			name = inbox;
 			sourceTree = "<group>";
 		};
 		F1ACF21D1E0C290500C1B843 /* contactView */ = {
@@ -1130,6 +1144,7 @@
 				A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */,
 				479BBDE11EFEA4D800A2107C /* alice_enzvalos_private.asc in Resources */,
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
+				F17654E61F9E498F00D659B0 /* Inbox.storyboard in Resources */,
 				479BBDDD1EFEA3CB00A2107C /* dave_enezvalos_public.asc in Resources */,
 				4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */,
 				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
@@ -1351,6 +1366,7 @@
 				471BC9101F960B7C00D64416 /* PGPPacket.m in Sources */,
 				471BC9281F960B7C00D64416 /* PGPKeyID.m in Sources */,
 				471BC9311F960B7C00D64416 /* NSData+compression.m in Sources */,
+				F17654E31F9E494300D659B0 /* ColorManager.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				A1F2A5691E85586300320275 /* Providers.swift in Sources */,
 				471BC91A1F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
@@ -1568,6 +1584,14 @@
 				A1F9923F1DA7DD370073BF1B /* de */,
 			);
 			name = InboxTableViewCell.xib;
+			sourceTree = "<group>";
+		};
+		F17654E41F9E498F00D659B0 /* Inbox.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F17654E51F9E498F00D659B0 /* Base */,
+			);
+			name = Inbox.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
