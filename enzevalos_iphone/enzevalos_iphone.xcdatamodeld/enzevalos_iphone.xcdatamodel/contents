@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13241" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="color" optional="YES" attributeType="Transformable" customClassName="UIColor" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
@@ -37,7 +38,7 @@
     </entity>
     <entity name="PersistentMail" representedClassName="PersistentMail" syncable="YES">
         <attribute name="body" attributeType="String" syncable="YES"/>
-        <attribute name="date" attributeType="Date" defaultDateTimeInterval="-31582140" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
+        <attribute name="date" attributeType="Date" defaultDateTimeInterval="-31582140" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="decryptedBody" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flag" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isCorrectlySigned" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -55,6 +56,9 @@
         <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="mails" inverseEntity="Folder" syncable="YES"/>
         <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="from" inverseEntity="Mail_Address" syncable="YES"/>
         <relationship name="to" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="to" inverseEntity="Mail_Address" syncable="YES"/>
+        <fetchIndex name="byDateIndex">
+            <fetchIndexElement property="date" type="Binary" order="ascending"/>
+        </fetchIndex>
     </entity>
     <entity name="SecretKey" representedClassName="SecretKey" syncable="YES" codeGenerationType="class">
         <attribute name="exported" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -64,7 +68,7 @@
     <fetchRequest name="getFolder" entity="Folder" predicateString="name == &quot;$folder&quot;"/>
     <fetchRequest name="getMailAddress" entity="Mail_Address" predicateString="address == &quot;$adr&quot;"/>
     <elements>
-        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="90"/>
+        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="103"/>
         <element name="Folder" positionX="-297" positionY="-18" width="128" height="165"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="150"/>
         <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="180"/>

@@ -440,7 +440,13 @@ class ReadViewController: UITableViewController {
                 }
                 body.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (mail.subject ?? ""))
                 body.append("\n------------------------\n\n" + (mail.decryptedBody ?? mail.body ?? ""))
-                body = TextFormatter.insertBeforeEveryLine("> ", text: body)
+                body = body.components(separatedBy: "\n").map{ line in
+                    if line.hasPrefix(">") {
+                        return ">"+line
+                    }
+                    return "> "+line
+                    }.reduce("", {$0 + "\n" + $1})
+                //body = TextFormatter.insertBeforeEveryLine("> ", text: body)
 
                 if reaction {
                     body = NSLocalizedString("didYouSendThis", comment: "") + body
