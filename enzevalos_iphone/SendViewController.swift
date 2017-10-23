@@ -161,6 +161,10 @@ class SendViewController: UIViewController {
         LogHandler.newLog()
     }
 
+    deinit {
+        print("===============|| SendViewController deinitialized ||===============")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         updateNavigationBar()
     }

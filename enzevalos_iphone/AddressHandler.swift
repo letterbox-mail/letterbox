@@ -96,7 +96,7 @@ class AddressHandler {
             }
             if !insertedEntry {
                 var addrType: UIImage? = nil
-                
+
                 if address.label.label == "_$!<Work>!$_" {
                     addrType = UIImage(named: "work2_white")!
                 }
@@ -104,7 +104,7 @@ class AddressHandler {
                     addrType = UIImage(named: "home2_white")!
                 }
                 if let cn = con.cnContact {
-                    
+
 
                     var color = cn.getColor()
                     if cn.thumbnailImageData != nil {
@@ -116,8 +116,7 @@ class AddressHandler {
 
                     list.append(entry)
                     localInserted.append(address.mailAddress)
-                }
-                else {
+                } else {
                     var entry = (con.ezContact.getImageOrDefault(), con.ezContact.displayname ?? address.mailAddress, address.mailAddress, addrType, con.ezContact.getColor())
                     list.append(entry)
                     localInserted.append(address.mailAddress)
@@ -175,7 +174,7 @@ class AddressHandler {
 
 
     static func getContact(_ name: String) -> [CNContact] {
-        if name == ""{
+        if name == "" {
             return []
         }
         AppDelegate.getAppDelegate().requestForAccess({ access in })
@@ -244,41 +243,35 @@ class AddressHandler {
     }
 
     static func proveMatching(_ result: CNContact, addresses: [MailAddress]) -> Bool {
-        var match: Bool = false
         for email in result.emailAddresses {
             for adr in addresses {
                 let adrRest = email.value as String
                 if adrRest.lowercased() == adr.mailAddress.lowercased() {
-                    match = true
-                    break
+                    return true
                 }
             }
-            if match {
-                break
-            }
         }
-        return match
+        return false
     }
 
     static func contactByEmail(_ mailaddreses: [MailAddress]) -> [CNContact] {
         var contacts: [CNContact] = []
-        let predicate = NSPredicate { (evaluatedObject, bindings) -> Bool in
-            guard let evaluatedContact = evaluatedObject as? CNContact else {
-                return false
-            }
-            var exists: Bool
-            exists = false
-            for adr in mailaddreses {
-                let contains = Set(evaluatedContact.emailAddresses.map { $0.identifier }).contains(adr.mailAddress)
-                exists = (exists || contains)
 
-            }
-            return exists
-        }
+        let fetchRequest = CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName), CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor])
+
         do {
-            try contacts = AppDelegate.getAppDelegate().contactStore.unifiedContacts(matching: predicate, keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName), CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor])
+            try AppDelegate.getAppDelegate().contactStore.enumerateContacts(with: fetchRequest, usingBlock: { (contact, _) in
+                for addr in mailaddreses {
+                    let contains = Set(contact.emailAddresses.map({ $0.value as String })).contains(addr.mailAddress)
+                    if contains {
+                        contacts.append(contact)
+                    }
+                }
+            })
+        } catch {
+            print("Problem while accessing contacts by email")
         }
-        catch { }
+
         return contacts
     }
 }

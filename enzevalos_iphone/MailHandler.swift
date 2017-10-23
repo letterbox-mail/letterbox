@@ -302,7 +302,9 @@ class MailHandler {
                 //TODO handle different callbacks
 
                 sendOperation.start(callback)
-                createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
+                if ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0{
+                    createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
+                }
                 
                 builder.textBody = message
             } else {
@@ -318,9 +320,7 @@ class MailHandler {
                 sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
                 //TODO handle different callbacks
                 sendOperation.start(callback)
-                if secretkeys.count == 0{
-                    createSendCopy(sendData: sendData)
-                }
+                createSendCopy(sendData: sendData)
             }
         }
     }

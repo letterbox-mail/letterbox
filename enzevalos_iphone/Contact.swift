@@ -73,6 +73,22 @@ extension Contact {
     }
 
     func getColor() -> UIColor {
+        
+        if let enzCon = self as? EnzevalosContact {
+            if let color = enzCon.color {
+                return color
+            }
+            
+            //let red = CGFloat(arc4random_uniform(8))
+            //let green = CGFloat(arc4random_uniform(8))
+            //let blue = CGFloat(arc4random_uniform(8))
+            let random = Int(arc4random_uniform(UInt32(ColorManager.colors.count)))
+            
+            
+            let color = ColorManager.colors[random] //UIColor.init(red: red/10.0+0.2, green: green/10.0+0.2, blue: blue/10.0+0.2, alpha: 1)
+            enzCon.color = color
+            return color
+        }
         // Overflow?!
         let prim: Int
         prim = 653

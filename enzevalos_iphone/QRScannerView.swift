@@ -49,6 +49,13 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
         bottomBar.addSubview(bottomBlurView)
         bottomBar.sendSubview(toBack: bottomBlurView)
 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.topBar.translatesAutoresizingMaskIntoConstraints = true
+            self.bottomBar.translatesAutoresizingMaskIntoConstraints = true
+            self.bottomLabel.translatesAutoresizingMaskIntoConstraints = true
+            self.topLabel.translatesAutoresizingMaskIntoConstraints = true
+        }
+
         // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video as the media type parameter.
         let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
 

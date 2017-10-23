@@ -18,6 +18,7 @@ extension EnzevalosContact {
 
     @NSManaged public var displayname: String?
     @NSManaged public var cnidentifier: String?
+    @NSManaged public var color: UIColor?
     @NSManaged public var addresses: NSSet?
 
 }

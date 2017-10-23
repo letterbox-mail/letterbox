@@ -217,6 +217,7 @@ extension ContactViewController: CNContactViewControllerDelegate {
 }
 
 extension ContactViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if keyRecord != nil {
             switch indexPath.section {
