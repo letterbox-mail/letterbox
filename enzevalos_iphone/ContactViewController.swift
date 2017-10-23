@@ -269,6 +269,20 @@ extension ContactViewController: UITableViewDataSource {
                     }
                 } else if indexPath.row == 2 {
                     if isUser && keyRecord!.hasKey {
+                        let progressCell = tableView.dequeueReusableCell(withIdentifier: "ProgressCell", for: indexPath) as! ProgressCell
+                        let (contact,mail) = GamificationData.sharedInstance.getSecureProgress()
+
+                        progressCell.firstLabel.text = NSLocalizedString("secureContacts", comment: "")
+                        progressCell.firstProgress.progress = contact
+                        progressCell.firstPercent.text = "\(Int(contact * 100)) %"
+                        progressCell.secondLabel.text = NSLocalizedString("secureCommunication", comment: "")
+                        progressCell.secondProgress.progress = mail
+                        progressCell.secondPercent.text = "\(Int(mail * 100)) %"
+                        
+                        return progressCell
+                    }
+                } else if indexPath.row == 3 {
+                    if isUser && keyRecord!.hasKey {
                         let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
                         actionCell.Button.setTitle(NSLocalizedString("ReadOnOtherDevices", comment: "read secure mails on other devices (export secret key)"), for: UIControlState())
                         
@@ -377,7 +391,7 @@ extension ContactViewController: UITableViewDataSource {
                     counter += 1
                 }
                 if isUser && record.hasKey {
-                    counter += 1
+                    counter += 2
                 }
                 return counter
             case 1:

@@ -34,3 +34,12 @@ class QRCodeCell: UITableViewCell {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var qrCode: UIImageView!
 }
+
+class ProgressCell: UITableViewCell {
+    @IBOutlet weak var firstLabel: UILabel!
+    @IBOutlet weak var firstProgress: UIProgressView!
+    @IBOutlet weak var firstPercent: UILabel!
+    @IBOutlet weak var secondLabel: UILabel!
+    @IBOutlet weak var secondProgress: UIProgressView!
+    @IBOutlet weak var secondPercent: UILabel!
+}

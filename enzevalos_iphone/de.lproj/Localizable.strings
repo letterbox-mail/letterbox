@@ -166,3 +166,5 @@
 "fingerprintMissmatchShort" = "Fingerabdruck stimmt nicht!";
 "fingerprintMissmatchText" = "Stelle sicher, dass der richtige Kontakt verifiziert wurde. Fall es der richtige war, könntest du Opfer eines Mittelmann-Angriffs sein.";
 "scanDifferentCode" = "Anderen QR Code scannen";
+"secureContacts" = "Sichere Kontakte";
+"secureCommunication" = "Sichere Kommunikation";
