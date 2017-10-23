@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F7D62421F9A4F5C0057E911 /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2F7D62401F9A4F5B0057E911 /* Inbox.storyboard */; };
 		4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
 		471BC9051F960B7C00D64416 /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8961F960B7C00D64416 /* PGPCryptoHash.m */; };
 		471BC9061F960B7C00D64416 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */; };
@@ -216,6 +217,7 @@
 
 /* Begin PBXFileReference section */
 		1DA766FE04E7D6FF1A3CEC1F /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
+		2F7D62411F9A4F5C0057E911 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = enzevalos_iphone/Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		471BC8951F960B7C00D64416 /* PGPCryptoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoHash.h; sourceTree = "<group>"; };
@@ -812,6 +814,7 @@
 		A135266C1D955BDF00D3BFE1 = {
 			isa = PBXGroup;
 			children = (
+				2F7D62401F9A4F5B0057E911 /* Inbox.storyboard */,
 				A13526771D955BDF00D3BFE1 /* enzevalos_iphone */,
 				A135268F1D955BE000D3BFE1 /* enzevalos_iphoneTests */,
 				A135269A1D955BE000D3BFE1 /* enzevalos_iphoneUITests */,
@@ -1133,6 +1136,7 @@
 				A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */,
 				479BBDE11EFEA4D800A2107C /* alice_enzvalos_private.asc in Resources */,
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
+				2F7D62421F9A4F5C0057E911 /* Inbox.storyboard in Resources */,
 				479BBDDD1EFEA3CB00A2107C /* dave_enezvalos_public.asc in Resources */,
 				4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */,
 				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
@@ -1527,6 +1531,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		2F7D62401F9A4F5B0057E911 /* Inbox.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2F7D62411F9A4F5C0057E911 /* Base */,
+			);
+			name = Inbox.storyboard;
+			sourceTree = "<group>";
+		};
 		A1123E6C1DA682850069551C /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

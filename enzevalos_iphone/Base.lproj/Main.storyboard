@@ -15,7 +15,7 @@
         <!--Read View Controller-->
         <scene sceneID="JLe-qS-U0P">
             <objects>
-                <tableViewController id="Ouw-WD-EV6" customClass="ReadViewController" customModule="enzevalos_iphone" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="UITableViewController-Ouw-WD-EV6" id="Ouw-WD-EV6" customClass="ReadViewController" customModule="enzevalos_iphone" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="8" sectionFooterHeight="1" id="oZT-OA-Re5">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -569,8 +569,8 @@
                                                         <constraint firstAttribute="width" constant="15" id="ons-Pp-k3n"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
-                                                    <rect key="frame" x="0.0" y="17.5" width="15" height="15"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
+                                                    <rect key="frame" x="0.0" y="15" width="15" height="17.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="SmT-9e-ovi"/>
                                                         <constraint firstAttribute="width" constant="15" id="uKU-PK-flD"/>
@@ -633,7 +633,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
                     <connections>
-                        <segue destination="X5Y-Rf-Qzd" kind="show" identifier="showInboxSegue" id="Qjs-MH-bHU"/>
+                        <segue destination="TFs-eK-jti" kind="show" identifier="showInboxSegue" id="Qjs-MH-bHU"/>
                         <segue destination="ybw-P8-hJp" kind="show" identifier="showFolderListSegue" id="ShI-ar-nOg"/>
                         <segue destination="Ouw-WD-EV6" kind="show" identifier="readFolderMailSegue" id="6Ug-AV-lba"/>
                     </connections>
@@ -756,53 +756,10 @@
             </objects>
             <point key="canvasLocation" x="1454" y="-949"/>
         </scene>
-        <!--Inbox-->
-        <scene sceneID="ue1-yd-fJq">
-            <objects>
-                <tableViewController restorationIdentifier="inboxViewController" storyboardIdentifier="inboxViewController" id="X5Y-Rf-Qzd" customClass="InboxViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="130" sectionHeaderHeight="18" sectionFooterHeight="18" id="hiB-1s-b08">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <connections>
-                            <outlet property="dataSource" destination="X5Y-Rf-Qzd" id="Gu0-7Z-YNa"/>
-                            <outlet property="delegate" destination="X5Y-Rf-Qzd" id="6Tr-6R-YW0"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="1te-jl-dHf"/>
-                        <barButtonItem enabled="NO" title="last Update" id="mki-ya-mz8">
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Ucv-8n-UVn"/>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="Inbox" id="5GZ-GC-SZf">
-                        <barButtonItem key="rightBarButtonItem" title="New Mail" id="j5W-eH-o1q">
-                            <connections>
-                                <segue destination="olx-gF-WdV" kind="presentation" id="j4Q-k1-ud3"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="ynL-Jf-k4T">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <attributedString key="attributedTitle"/>
-                    </refreshControl>
-                    <connections>
-                        <outlet property="lastUpdateButton" destination="mki-ya-mz8" id="LmW-B3-JGX"/>
-                        <segue destination="Ouw-WD-EV6" kind="show" identifier="readMailSegue" id="GWh-iO-bPb"/>
-                        <segue destination="ooe-0X-glz" kind="show" identifier="mailListSegue" id="bUY-Me-dje"/>
-                        <segue destination="8Di-x2-cWQ" kind="show" identifier="contactSegue" id="kND-73-kqr"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="EUm-6R-021" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="132" y="-298"/>
-        </scene>
         <!--List View Controller-->
         <scene sceneID="nHr-nr-mUZ">
             <objects>
-                <tableViewController id="ooe-0X-glz" customClass="ListViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="UITableViewController-ooe-0X-glz" id="ooe-0X-glz" customClass="ListViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ipK-4X-lVA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -888,9 +845,9 @@
         <!--Contact View Controller-->
         <scene sceneID="6er-JI-0Op">
             <objects>
-                <tableViewController id="8Di-x2-cWQ" customClass="ContactViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="UITableViewController-8Di-x2-cWQ" id="8Di-x2-cWQ" customClass="ContactViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="lK7-ug-OyQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -1139,7 +1096,7 @@
             <objects>
                 <viewController id="jYD-fk-aIP" customClass="KeyViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ZAH-bZ-S6n">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
@@ -1851,7 +1808,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                             </connections>
                         </barButtonItem>
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="iUk-lk-1LN">
-                            <rect key="frame" x="115" y="6" width="91" height="32"/>
+                            <rect key="frame" x="114" y="6" width="91" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <connections>
                                 <action selector="iconButtonPressed:" destination="4Ey-v4-VeB" eventType="touchUpInside" id="Opj-Y1-Vtg"/>
@@ -1990,13 +1947,20 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
             </objects>
             <point key="canvasLocation" x="1710" y="-297"/>
         </scene>
+        <!--inboxViewController-->
+        <scene sceneID="Rtf-Cr-shn">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="inboxViewController" storyboardName="Inbox" referencedIdentifier="inboxViewController" id="TFs-eK-jti" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bub-xE-esL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="132" y="-298"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="QXm-7K-984"/>
         <segue reference="hSn-Um-hji"/>
         <segue reference="DcR-GX-scc"/>
-        <segue reference="bUY-Me-dje"/>
         <segue reference="TgN-rB-esa"/>
-        <segue reference="GWh-iO-bPb"/>
+        <segue reference="ecN-Wn-7S0"/>
     </inferredMetricsTieBreakers>
 </document>
