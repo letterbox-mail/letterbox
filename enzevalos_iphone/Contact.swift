@@ -78,14 +78,9 @@ extension Contact {
             if let color = enzCon.color {
                 return color
             }
-            
-            //let red = CGFloat(arc4random_uniform(8))
-            //let green = CGFloat(arc4random_uniform(8))
-            //let blue = CGFloat(arc4random_uniform(8))
-            let random = Int(arc4random_uniform(UInt32(ColorManager.colors.count)))
-            
-            
-            let color = ColorManager.colors[random] //UIColor.init(red: red/10.0+0.2, green: green/10.0+0.2, blue: blue/10.0+0.2, alpha: 1)
+            let maxValue: UInt32 = 1000
+            let colorValue = CGFloat(arc4random_uniform(maxValue))/CGFloat(maxValue)
+            let color = UIColor(hue: colorValue, saturation: 1, brightness: 0.75, alpha: 1)
             enzCon.color = color
             return color
         }
