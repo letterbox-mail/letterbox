@@ -184,8 +184,6 @@
 		F14D189F1ED880680080515D /* ncpayroll-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189B1ED880680080515D /* ncpayroll-public.gpg */; };
 		F14D18A21ED8811F0080515D /* ullimuelle-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */; };
 		F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */; };
-		F17654E31F9E494300D659B0 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17654E21F9E494200D659B0 /* ColorManager.swift */; };
-		F17654E61F9E498F00D659B0 /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F17654E41F9E498F00D659B0 /* Inbox.storyboard */; };
 		F189C17F1ED59FEF00BAE9B3 /* idsolutions-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */; };
 		F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */; };
 		F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445D1E7044B70080C041 /* FlipTransition.swift */; };
@@ -195,6 +193,8 @@
 		F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
 		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
 		F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AF938E1E2D04BA00755128 /* CustomCells.swift */; };
+		F1F070251FA0DF2A004A860A /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F070241FA0DF2A004A860A /* ColorManager.swift */; };
+		F1F070281FA0DF3F004A860A /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1F070261FA0DF3F004A860A /* Inbox.storyboard */; };
 		F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -466,8 +466,6 @@
 		F14D189B1ED880680080515D /* ncpayroll-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ncpayroll-public.gpg"; path = "keys/ncpayroll-public.gpg"; sourceTree = "<group>"; };
 		F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-private.gpg"; path = "keys/ullimuelle-private.gpg"; sourceTree = "<group>"; };
 		F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-public.gpg"; path = "keys/ullimuelle-public.gpg"; sourceTree = "<group>"; };
-		F17654E21F9E494200D659B0 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ColorManager.swift; path = /Users/joscha/Projekte/enzevalos/enzevalos_iphone/enzevalos_iphone/ColorManager.swift; sourceTree = "<absolute>"; };
-		F17654E51F9E498F00D659B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
 		F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-private.gpg"; path = "keys/idsolutions-private.gpg"; sourceTree = "<group>"; };
 		F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-public.gpg"; path = "keys/idsolutions-public.gpg"; sourceTree = "<group>"; };
 		F18B445D1E7044B70080C041 /* FlipTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipTransition.swift; sourceTree = "<group>"; };
@@ -478,6 +476,8 @@
 		F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
 		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		F1AF938E1E2D04BA00755128 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
+		F1F070241FA0DF2A004A860A /* ColorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
+		F1F070271FA0DF3F004A860A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
 		F7FFF15F83AF4B88F0324F10 /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -702,7 +702,7 @@
 		47B91AC11EC0C1FB000AE3EE /* data */ = {
 			isa = PBXGroup;
 			children = (
-				F17654E21F9E494200D659B0 /* ColorManager.swift */,
+				F1F070241FA0DF2A004A860A /* ColorManager.swift */,
 				472F39921E279792009260FB /* protocols */,
 				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */,
@@ -988,7 +988,7 @@
 		F17654DF1F9E48F600D659B0 /* inbox */ = {
 			isa = PBXGroup;
 			children = (
-				F17654E41F9E498F00D659B0 /* Inbox.storyboard */,
+				F1F070261FA0DF3F004A860A /* Inbox.storyboard */,
 				F12041FA1DA3FBF7002E4940 /* ListViewController.swift */,
 				F12041FC1DA409A5002E4940 /* ListViewCell.swift */,
 				F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */,
@@ -1144,7 +1144,7 @@
 				A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */,
 				479BBDE11EFEA4D800A2107C /* alice_enzvalos_private.asc in Resources */,
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
-				F17654E61F9E498F00D659B0 /* Inbox.storyboard in Resources */,
+				F1F070281FA0DF3F004A860A /* Inbox.storyboard in Resources */,
 				479BBDDD1EFEA3CB00A2107C /* dave_enezvalos_public.asc in Resources */,
 				4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */,
 				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
@@ -1366,7 +1366,6 @@
 				471BC9101F960B7C00D64416 /* PGPPacket.m in Sources */,
 				471BC9281F960B7C00D64416 /* PGPKeyID.m in Sources */,
 				471BC9311F960B7C00D64416 /* NSData+compression.m in Sources */,
-				F17654E31F9E494300D659B0 /* ColorManager.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				A1F2A5691E85586300320275 /* Providers.swift in Sources */,
 				471BC91A1F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
@@ -1404,6 +1403,7 @@
 				472F39881E1FA377009260FB /* KeyRecord.swift in Sources */,
 				8428A8661F436A11007649A5 /* ArrowTableViewCell.swift in Sources */,
 				F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */,
+				F1F070251FA0DF2A004A860A /* ColorManager.swift in Sources */,
 				475B00351F7B9565006CDD41 /* CryptoObject.swift in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */,
@@ -1586,10 +1586,10 @@
 			name = InboxTableViewCell.xib;
 			sourceTree = "<group>";
 		};
-		F17654E41F9E498F00D659B0 /* Inbox.storyboard */ = {
+		F1F070261FA0DF3F004A860A /* Inbox.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				F17654E51F9E498F00D659B0 /* Base */,
+				F1F070271FA0DF3F004A860A /* Base */,
 			);
 			name = Inbox.storyboard;
 			sourceTree = "<group>";
