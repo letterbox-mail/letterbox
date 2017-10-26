@@ -14,12 +14,17 @@ class SwiftPGP: Encryption{
 
     let cryptoScheme = CryptoScheme.PGP
     
+    let PasscodeSize = 36
+    
     
     private func generatePW(size: Int)-> String{
         var pw = ""
-        for _ in 0..<size{
+        for i in 0..<size{
             let p = Int(arc4random_uniform(10))
             pw.append(String(p))
+            if i % 4 == 3 && i < size - 4{
+                pw.append("-")
+            }
         }
         return pw
     }
@@ -34,6 +39,12 @@ class SwiftPGP: Encryption{
     private var pwKeyChain: Keychain{
         get{
             return Keychain(service: "Enzevalos/PGP/Password")
+        }
+    }
+    
+    private var exportPwKeyChain: Keychain{
+        get{
+            return Keychain(service: "Enzevalos/PGP/ExportPassword")
         }
     }
     
@@ -70,7 +81,18 @@ class SwiftPGP: Encryption{
         return nil
     }
     
-    func loadPassword(id: String) -> String?{
+    func loadExportPasscode(id: String) -> String?{
+        do{
+            if let pw = try exportPwKeyChain.getString(id){
+                return pw
+            }
+        } catch{
+            return nil
+        }
+        return nil
+    }
+    
+    private func loadPassword(id: String) -> String?{
         do{
             if let pw = try pwKeyChain.getString(id){
                 return pw
@@ -83,7 +105,7 @@ class SwiftPGP: Encryption{
     
     func generateKey(adr: String) -> String{
         let gen = PGPKeyGenerator()
-        let pw = generatePW(size: 36)
+        let pw = generatePW(size: PasscodeSize)
         let key = gen.generate(for: adr, passphrase: pw)
         pwKeyChain[key.keyID.longKeyString] = pw
         return storeKey(key: key)
@@ -99,7 +121,7 @@ class SwiftPGP: Encryption{
         }
         else{
             if let data = key.data(using: .utf8){
-                keys = pgp.importKeys(from: data) //.base64EncodedData()
+                keys = pgp.importKeys(from: data) 
                 
             }
             else{
@@ -138,9 +160,40 @@ class SwiftPGP: Encryption{
     }
     
     func exportKey(id: String, isSecretkey isSecretKey: Bool, autocrypt: Bool) -> String?{
+        if let key = exportKeyData(id: id, isSecretkey: isSecretKey, autocrypt: autocrypt){
+            if !isSecretKey && autocrypt{
+                return key.base64EncodedString()
+            }
+            else{
+                return String.init(data: key, encoding: .utf8)
+            }
+        }
+        return nil
+    }
+    
+    func exportKeyData(id: String, isSecretkey: Bool, autocrypt: Bool) -> Data?{
         let pgp = ObjectivePGP()
         if var key = loadKey(id: id){
-            if key.isSecret && !isSecretKey{
+            if isSecretkey && key.isSecret{
+                if let keyData = pgp.export(key, armored: true){
+                    if autocrypt{
+                        // Create Autocrypt Setup-message
+                        // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
+                        var passcode = loadPassword(id: id)
+                        if passcode == nil{
+                            passcode = generatePW(size: PasscodeSize)
+                        }
+                        exportPwKeyChain[key.keyID.longKeyString] = passcode
+                        let cipher = try! pgp.symmetricEncrypt(keyData, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: true)
+                        print(String.init(data: cipher, encoding: .utf8) ?? "NO KEY")
+                        
+                        return cipher
+                    }
+                    return keyData
+                }
+            }
+            
+            if key.isSecret && !isSecretkey{
                 let pk = try! key.export(PGPPartialKeyType.public, error: ())
                 let keys = pgp.keys(from: pk)
                 if (keys.count > 0){
@@ -152,17 +205,18 @@ class SwiftPGP: Encryption{
             }
             if autocrypt{
                 if let data = pgp.export(key, armored: false){
-                    return data.base64EncodedString()
+                    return data
                 }
             }
             else{
                 if let data = pgp.export(key, armored: true){
-                    return data.base64EncodedString()
+                    return data
                 }
             }
         }
         return nil
     }
+
     
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject{
         let pgp = ObjectivePGP()

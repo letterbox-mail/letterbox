@@ -16,27 +16,22 @@ class ExportViewController: UITableViewController {
     @IBAction func buttonTouched(_ sender: Any) {
         if !alreadySent {
             //TODO: create passcode for AES, export key, send mail
+
             
             let handler = DataHandler.handler
             let ids = handler.findSecretKeys()
             if ids.count > 0{
-               // let id = ids[0]
-               // let pgp = SwiftPGP()
-                //passcode = loadPassword(id)
+                let id = ids[0]
+                let pgp = SwiftPGP()
                 //AppDelegate.mailhandler.sendSecretKey(id)
-                let objPGP = ObjectivePGP()
-                if let data = "hello Bob".data(using: .utf8){
-                    print("Create Key message")
-                    passcode = "1234"
-                    let m = try! objPGP.symmetricEncrypt(data, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: true)
-                    let mString = String.init(data: m, encoding: .utf8)
-                    print(mString ?? "no encrypted message")
-                    let p = try! objPGP.symmetricDecrypt(m, key: passcode, verifyWith: nil, signed: nil, valid: nil, integrityProtected: nil)
-                    let pString = String.init(data: p, encoding: .utf8)
-                    print(pString ?? "no decrypted message")
+                if let keyId = id.keyID{
+                    if let message = pgp.exportKeyData(id: keyId, isSecretkey: true, autocrypt: true){
+                        passcode = pgp.loadExportPasscode(id: keyId)!
+                        print("My passcode: \(passcode)")
+                        let mailHandler = AppDelegate.getAppDelegate().mailHandler
+                        mailHandler.sendSecretKey(keyData: message, passcode: passcode, callback: mailSend)
+                    }
                 }
-                
-                
             }
             else{
                 // TODO: Error NO SECRET KEY!
@@ -112,4 +107,14 @@ class ExportViewController: UITableViewController {
         tableView.estimatedRowHeight = 140
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Done", comment: "")
     }
+    
+    func mailSend(_ error: Error?) {
+        if (error != nil) {
+            NSLog("Error sending email: \(String(describing: error))")
+            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
+        } else {
+            NSLog("Send successful!")
+        }
+    }
+
 }

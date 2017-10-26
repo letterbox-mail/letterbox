@@ -230,8 +230,39 @@ class MailHandler {
         return ids
     }
     
-    func sendSecretKey(keyID: String){
-    
+    func sendSecretKey(keyData: Data, passcode: String, callback: @escaping (Error?) -> Void){
+        let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
+        let session = createSMTPSession()
+        let builder = MCOMessageBuilder()
+        let userID :MCOAddress = MCOAddress(displayName: useraddr, mailbox: useraddr)
+      
+        createHeader(builder, toEntrys: [useraddr], ccEntrys: [], bccEntrys: [], subject: "Autocrypt Setup Message 2")
+        builder.header.setExtraHeaderValue("v0", forName: "Autocrypt-Setup-Message")
+        
+        
+        /*
+        if let key = MCOAttachment.init(rfc822Message: keyData){
+            print("ID: \(key.contentID)")
+            print("Type: \(key.mimeType)")
+            // Use and test later:
+            // see https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
+            // key.mimeType = "application/autocrypt-key-backup"
+            key.mimeType = "application/pgp-encrypted"
+            builder.addAttachment(key)
+        }
+        let plain = MCOAttachment.init(text: "Klartext!")
+        builder.addAttachment(plain)
+        
+ */
+        builder.addAttachment(MCOAttachment.init(text: NSLocalizedString("This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret into your pgp program on the device.  \n\n For more information visit: www.enzevalos.de/other", comment: "Message when sending the secret key")))
+
+        let key = MCOAttachment.init(rfc822Message: keyData)
+        builder.addAttachment(key)
+        
+     
+        let sendOperation = session.sendOperation(with: builder.data() , from: userID, recipients: [userID])
+        sendOperation?.start(callback)
+        createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
     }
     
 
@@ -267,8 +298,7 @@ class MailHandler {
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: keyIDs, myId:sk.keyID!)
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
-                builder.textBody = "Dies ist verschlüsselt!"
-                sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
+                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
 
                 sendOperation.start(callback)
@@ -360,8 +390,8 @@ class MailHandler {
         imapsession.port = UInt32(UserManager.loadUserValue(Attribute.imapPort) as! Int)
         imapsession.username = UserManager.loadUserValue(Attribute.userAddr) as! String
         imapsession.password = UserManager.loadUserValue(Attribute.userPW) as! String
-        imapsession.authType = UserManager.loadImapAuthType()//MCOAuthType(rawValue: UserManager.loadUserValue(Attribute.imapAuthType) as! Int) //MCOAuthType.SASLPlain
-        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)//MCOConnectionType.TLS
+        imapsession.authType = UserManager.loadImapAuthType()
+        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)
         
         let y = imapsession.folderStatusOperation("INBOX")
         y?.start{(error, status) -> Void in
@@ -418,7 +448,7 @@ class MailHandler {
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
         session.username = UserManager.loadUserValue(Attribute.userAddr) as! String
         session.password = UserManager.loadUserValue(Attribute.userPW) as! String
-        session.authType = UserManager.loadSmtpAuthType()//MCOAuthType(rawValue: UserManager.loadUserValue(Attribute.smtpAuthType) as! Int)
+        session.authType = UserManager.loadSmtpAuthType()
         session.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
         return session
     }
@@ -539,6 +569,16 @@ class MailHandler {
         if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
             autocrypt = AutocryptContact(header: header!)
         }
+        
+        if let _ = header?.extraHeaderValue(forName: "Autocrypt-Setup-Message"){
+            // own key export message -> Drop message?.
+            // TODO: Distinguish between other keys (future work)
+            if newMailCallback != nil{
+                newMailCallback!()
+            }
+            return
+        }
+
 
         if let to = header?.to {
             for r in to {

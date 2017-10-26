@@ -1092,7 +1092,7 @@
 				TargetAttributes = {
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 4377G946WP;
+						DevelopmentTeam = VJ9C93G68Y;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1706,7 +1706,7 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4377G946WP;
+				DEVELOPMENT_TEAM = VJ9C93G68Y;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1735,7 +1735,7 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1756,7 +1756,7 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 4377G946WP;
+				DEVELOPMENT_TEAM = VJ9C93G68Y;
 				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1785,7 +1785,7 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
