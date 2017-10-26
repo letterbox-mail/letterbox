@@ -38,6 +38,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 let AUTOCRYPTHEADER = "Autocrypt"
+let SETUPMESSAGE = "Autocrypt-Setup-Message"
 let ADDR = "adr"
 let TYPE = "type"
 let ENCRYPTION = "prefer-encrypted"
@@ -236,8 +237,8 @@ class MailHandler {
         let builder = MCOMessageBuilder()
         let userID :MCOAddress = MCOAddress(displayName: useraddr, mailbox: useraddr)
       
-        createHeader(builder, toEntrys: [useraddr], ccEntrys: [], bccEntrys: [], subject: "Autocrypt Setup Message 2")
-        builder.header.setExtraHeaderValue("v0", forName: "Autocrypt-Setup-Message")
+        createHeader(builder, toEntrys: [useraddr], ccEntrys: [], bccEntrys: [], subject: "Autocrypt Setup Message")
+        builder.header.setExtraHeaderValue("v0", forName: SETUPMESSAGE)
         
         
         /*
@@ -516,8 +517,12 @@ class MailHandler {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
 
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
-        fetchOperation.extraHeaders = [AUTOCRYPTHEADER]
-        
+        fetchOperation.extraHeaders = [AUTOCRYPTHEADER, SETUPMESSAGE]
+        if uids.count() == 0{
+            print("NO UIDS to call!")
+            completionCallback(false)
+            return
+        }
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
                 print("Error while fetching inbox: \(String(describing: err))")
@@ -570,7 +575,7 @@ class MailHandler {
             autocrypt = AutocryptContact(header: header!)
         }
         
-        if let _ = header?.extraHeaderValue(forName: "Autocrypt-Setup-Message"){
+        if let _ = header?.extraHeaderValue(forName: SETUPMESSAGE){
             // own key export message -> Drop message?.
             // TODO: Distinguish between other keys (future work)
             if newMailCallback != nil{
