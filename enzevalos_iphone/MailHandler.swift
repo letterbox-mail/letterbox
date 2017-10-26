@@ -237,7 +237,7 @@ class MailHandler {
         let userID :MCOAddress = MCOAddress(displayName: useraddr, mailbox: useraddr)
       
         createHeader(builder, toEntrys: [useraddr], ccEntrys: [], bccEntrys: [], subject: "Autocrypt Setup Message 2")
-        builder.header.setExtraHeaderValue("v1", forName: "Autocrypt-Setup-Message")
+        builder.header.setExtraHeaderValue("v0", forName: "Autocrypt-Setup-Message")
         
         
         /*
@@ -569,6 +569,16 @@ class MailHandler {
         if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
             autocrypt = AutocryptContact(header: header!)
         }
+        
+        if let _ = header?.extraHeaderValue(forName: "Autocrypt-Setup-Message"){
+            // own key export message -> Drop message?.
+            // TODO: Distinguish between other keys (future work)
+            if newMailCallback != nil{
+                newMailCallback!()
+            }
+            return
+        }
+
 
         if let to = header?.to {
             for r in to {
