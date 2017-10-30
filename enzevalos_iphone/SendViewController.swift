@@ -66,7 +66,9 @@ class SendViewController: UIViewController {
 
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
 
-        iconButton.addSubview(AnimatedSendIcon())
+        let iconView = AnimatedSendIcon()
+        iconView.frame = iconView.frame.offsetBy(dx: -16, dy: -10)
+        iconButton.addSubview(iconView)
         toText.delegate = dataDelegate
         toText.dataSource = dataDelegate
         toText.inputTextFieldKeyboardType = UIKeyboardType.emailAddress
