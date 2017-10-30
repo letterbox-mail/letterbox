@@ -154,7 +154,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //(mail.from.mailAddress.lowercased() != (UserManager.loadUserValue(Attribute.userAddr) as! String))
+        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
 
             return 3
         }
@@ -188,7 +188,7 @@ class ReadViewController: UITableViewController {
             }
         }
         if indexPath.section == 1 && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
-            if let mail = mail, (mail.from.mailAddress.lowercased() != (UserManager.loadUserValue(Attribute.userAddr) as! String)) {
+            if let mail = mail {
                 if mail.trouble {
                     if indexPath.row == 0 {
                         return infoCell
@@ -265,7 +265,7 @@ class ReadViewController: UITableViewController {
             } else if m.isSecure {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/letter"
-                alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)}))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil) }))
             } else if m.isCorrectlySigned {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard_verified"
@@ -395,7 +395,7 @@ class ReadViewController: UITableViewController {
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
             }
 
-            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure), trouble: \(mail.trouble)")
+            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure), trouble: \(mail.trouble), showMessage: \(mail.showMessage)")
         }
     }
 
@@ -440,12 +440,12 @@ class ReadViewController: UITableViewController {
                 }
                 body.append("\n" + NSLocalizedString("subject", comment: "describing what subject was choosen") + ": " + (mail.subject ?? ""))
                 body.append("\n------------------------\n\n" + (mail.decryptedBody ?? mail.body ?? ""))
-                body = body.components(separatedBy: "\n").map{ line in
+                body = body.components(separatedBy: "\n").map { line in
                     if line.hasPrefix(">") {
-                        return ">"+line
+                        return ">" + line
                     }
-                    return "> "+line
-                    }.reduce("", {$0 + "\n" + $1})
+                    return "> " + line
+                }.reduce("", { $0 + "\n" + $1 })
                 //body = TextFormatter.insertBeforeEveryLine("> ", text: body)
 
                 if reaction {
