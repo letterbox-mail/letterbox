@@ -96,7 +96,7 @@
 "Secure" = "Secure";
 "Send" = "Send";
 "SendError" = "An error occured"; //mehr spezifizieren?
-"SendInsecureInfo" = "This Mail would be send unsecurely to all orange contacts. So everybody could read and manipulate it. You could invite them to use Enzevalos to communicate securely.";
+"SendInsecureInfo" = "This Mail would be send insecurely to all orange contacts. So everybody could read and manipulate it. You could invite them to use Enzevalos to communicate securely.";
 "SendSecureInfo" = "Congratulations! This Mail would be send securely. It is impossible for anybody to read or manipulate it.";
 "SendSuccess" = "Sent successfully";
 "Sent" = "Sent";
@@ -146,7 +146,7 @@
 "answer" = "Answer";
 "couldNotDecryptHeadline" = "Could not decrypt Message";
 "couldNotDecryptText" = "It was not possible to decrypt this message. This might be because the sender used the wrong key. If you expect a message from this contact, you could try reaching out on another channel.\n";
-"inviteContacts" = "Invite unsecure Contacts";
+"inviteContacts" = "Invite insecure Contacts";
 "inviteSubject" = "Lets use secure email!";
 "inviteText" = "Hey there!\n\nThere is this new App called Enzevalos which makes it really easy to communicate encrypted over email.\n\nI would love for you to try it!\n\nBest regards!";
 "noName" = "NO NAME";
