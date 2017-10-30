@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -294,7 +294,7 @@
                     <navigationItem key="navigationItem" id="dlb-Hd-wfT">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="qf8-Dz-aUF">
                             <connections>
-                                <segue destination="OKx-fF-mvp" kind="show" id="SB4-ah-7SZ"/>
+                                <action selector="donePressed:" destination="qbb-3a-yOV" id="yx8-fC-hUc"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
