@@ -9,21 +9,20 @@
 import UIKit
 
 class FolderViewController: UITableViewController {
-    
+
     var folders: [Folder] = []
-    
+
     var isFirstFolderViewController = true
     var presentedFolder: Folder? = nil
-    
+
     override func viewDidLoad() {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
-        
+
         if isFirstFolderViewController {
             folders = DataHandler.handler.allRootFolders.sorted().filter { $0.path != UserManager.backendInboxFolderPath }
             DataHandler.handler.callForFolders(done: endRefreshing)
             navigationItem.title = NSLocalizedString("Folders", comment: "")
-        }
-        else {
+        } else {
             navigationItem.setLeftBarButton(navigationItem.backBarButtonItem, animated: false)
         }
         if let thisFolder = presentedFolder {
@@ -35,12 +34,12 @@ class FolderViewController: UITableViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         tableView.reloadData()
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         var count = 0
-        
+
         if isFirstFolderViewController {
             count += 1
         }
@@ -52,12 +51,12 @@ class FolderViewController: UITableViewController {
                 count += 1
             }
         }
-        
+
         return count
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if sectionType(IndexPath.init(row: 0, section: section)) == .inbox {
-           return 1
+            return 1
         }
         if sectionType(IndexPath.init(row: 0, section: section)) == .folders {
             return folders.count
@@ -75,26 +74,25 @@ class FolderViewController: UITableViewController {
         if sectionType(indexPath) == .inbox {
             cell.folderName.text = "Inbox"
             cell.folderImage.image = #imageLiteral(resourceName: "Inbox")
-        }
-        else if sectionType(indexPath) == .mails {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "folderListCell") as? FolderListCell{
+        } else if sectionType(indexPath) == .mails {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "folderListCell") as? FolderListCell {
                 let mail = getMails()[indexPath.row]
-                
+
                 cell.body.text = mail.body
                 if let contact = mail.from.contact {
                     cell.from.text = contact.name
-                }
-                else {
+                } else {
                     cell.from.text = mail.from.mailAddress
                 }
                 cell.from.font = UIFont.boldSystemFont(ofSize: cell.from.font.pointSize)
                 cell.subject.text = mail.subject
                 cell.date.text = mail.timeString
-                
+
                 if mail.isSecure {
                     cell.secureImageView.image = IconsStyleKit.imageOfLetter
-                }
-                else {
+                } else if mail.trouble {
+                    cell.secureImageView.image = IconsStyleKit.imageOfLetterCorrupted
+                } else {
                     cell.secureImageView.image = IconsStyleKit.imageOfPostcard
                 }
                 if !mail.isRead {
@@ -105,45 +103,40 @@ class FolderViewController: UITableViewController {
                 if mail.isAnwered {
                     cell.replyImageView.image = "↩️".image()
                 }
-                
+
                 if let markImageView = cell.markImageView {
                     if markImageView.image == nil {
                         cell.stackView.removeArrangedSubview(cell.markImageView)
-                    }
-                    else {
+                    } else {
                         cell.stackView.addArrangedSubview(cell.markImageView)
                     }
                 }
-                
-                
+
+
                 if let replyImageView = cell.replyImageView {
                     if replyImageView.image == nil {
                         cell.stackView.removeArrangedSubview(cell.replyImageView)
-                    }
-                    else {
+                    } else {
                         cell.stackView.addArrangedSubview(cell.replyImageView)
                     }
                 }
-                
+
                 return cell
             }
-        }
-        else if indexPath.row < folders.count {
+        } else if indexPath.row < folders.count {
             cell.folderName.text = folders[indexPath.row].frontendName
             cell.folderImage.image = getImage(for: UserManager.convertToFrontendFolderPath(from: folders[indexPath.row].path, with: folders[indexPath.row].delimiter))
         }
-            
+
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if sectionType(indexPath) == .inbox {
             performSegue(withIdentifier: "showInboxSegue", sender: nil)
-        }
-        else if sectionType(indexPath) == .mails {
+        } else if sectionType(indexPath) == .mails {
             performSegue(withIdentifier: "readFolderMailSegue", sender: getMails()[indexPath.row])
-        }
-        else {
+        } else {
             let vc = storyboard?.instantiateViewController(withIdentifier: "folderViewController") as! FolderViewController
             vc.folders = []
             vc.isFirstFolderViewController = false
@@ -167,13 +160,12 @@ class FolderViewController: UITableViewController {
             }
         }
     }
-    
+
     func refresh() {
         if let thisFolder = presentedFolder {
             refreshControl?.beginRefreshing()
             AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, newMailCallback: newMails, completionCallback: endRefreshing(_:))
-        }
-        else {
+        } else {
             DataHandler.handler.callForFolders(done: endRefreshing)
         }
     }
@@ -191,7 +183,7 @@ class FolderViewController: UITableViewController {
     func newMails() {
         print("newMails")
     }
-    
+
     func getImage(for path: String) -> UIImage {
         if path == UserManager.frontendInboxFolderPath {
             return #imageLiteral(resourceName: "Inbox")
@@ -209,11 +201,11 @@ class FolderViewController: UITableViewController {
         if indexPath.section >= 2
             || indexPath.section == 1 && (!isFirstFolderViewController || folders.count <= 0)
             || indexPath.section == 0 && !isFirstFolderViewController && folders.count <= 0 {
-            
+
             return FolderViewSectionType.mails
         } else if indexPath.section == 1 && isFirstFolderViewController
             || indexPath.section == 0 && !isFirstFolderViewController {
-            
+
             return FolderViewSectionType.folders
         }
         return FolderViewSectionType.inbox

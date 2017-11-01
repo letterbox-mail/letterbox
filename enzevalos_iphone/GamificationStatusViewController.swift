@@ -90,8 +90,11 @@ class GamificationStatusViewController: UIViewController, UITableViewDelegate, U
         // Dispose of any resources that can be recreated.
     }
 
-
-
+    
+    @IBAction func donePressed(_ sender: Any) {
+        self.navigationController?.dismiss(animated: true)
+    }
+    
     @IBAction func lastAchievedPressed(_ sender: UIButton) {
 
         self.selected = lastAchieved[sender.tag]
