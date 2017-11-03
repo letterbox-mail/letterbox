@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
+		3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
 		3E9708B31FAC95F5005825C9 /* PGPPartialKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F01F960B7C00D64416 /* PGPPartialKey.m */; };
 		3E9708B41FAC95F5005825C9 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		3E9708B51FAC95F5005825C9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39891E251787009260FB /* Contact.swift */; };
@@ -383,6 +385,7 @@
 
 /* Begin PBXFileReference section */
 		1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.release.xcconfig"; sourceTree = "<group>"; };
+		3E048C041FAC9ABD00948524 /* HockeySDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HockeySDK.swift; sourceTree = "<group>"; };
 		3E9708AD1FAC925D005825C9 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
 		3E9708AE1FAC925D005825C9 /* enzevalos-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "enzevalos-Info.plist"; sourceTree = "<group>"; };
 		3E9709621FAC95F5005825C9 /* enzevalos_iphone-AdHoc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "enzevalos_iphone-AdHoc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -708,6 +711,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		3E048C031FAC9AA300948524 /* HockeyApp */ = {
+			isa = PBXGroup;
+			children = (
+				3E048C041FAC9ABD00948524 /* HockeySDK.swift */,
+			);
+			name = HockeyApp;
+			sourceTree = "<group>";
+		};
 		3E9708AC1FAC925D005825C9 /* PLists */ = {
 			isa = PBXGroup;
 			children = (
@@ -1026,7 +1037,6 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
-				3E9708AC1FAC925D005825C9 /* PLists */,
 				471BC8931F960B7C00D64416 /* ObjectivePGP */,
 				8428A8511F436952007649A5 /* Gamification */,
 				47B91AC11EC0C1FB000AE3EE /* data */,
@@ -1058,6 +1068,8 @@
 				476142091E082F9C00FD5E4F /* Settings.bundle */,
 				A1BE3FF81E9664660040114B /* InfoPlist.strings */,
 				A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */,
+				3E048C031FAC9AA300948524 /* HockeyApp */,
+				3E9708AC1FAC925D005825C9 /* PLists */,
 			);
 			path = enzevalos_iphone;
 			sourceTree = "<group>";
@@ -1540,9 +1552,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1591,9 +1606,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc-resources.sh",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1798,6 +1816,7 @@
 				3E9709281FAC95F5005825C9 /* PGPKeyGenerator.m in Sources */,
 				3E9709291FAC95F5005825C9 /* PGPDSA.m in Sources */,
 				3E97092A1FAC95F5005825C9 /* LabelStyleKit.swift in Sources */,
+				3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */,
 				3E97092B1FAC95F5005825C9 /* PGPPartialSubKey.m in Sources */,
 				3E97092C1FAC95F5005825C9 /* SubBadgeTableViewCell.swift in Sources */,
 				3E97092D1FAC95F5005825C9 /* FrequentCell.swift in Sources */,
@@ -1935,6 +1954,7 @@
 				471BC9271F960B7C00D64416 /* PGPKeyGenerator.m in Sources */,
 				471BC9071F960B7C00D64416 /* PGPDSA.m in Sources */,
 				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
+				3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */,
 				471BC92C1F960B7C00D64416 /* PGPPartialSubKey.m in Sources */,
 				8428A8681F436A11007649A5 /* SubBadgeTableViewCell.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
@@ -2091,6 +2111,7 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2141,6 +2162,7 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2289,6 +2311,7 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2339,6 +2362,7 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

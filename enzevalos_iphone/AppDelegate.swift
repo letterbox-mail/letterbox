@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         loadTestAcc()
 
         resetApp()
+		HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
