@@ -267,6 +267,10 @@ class MailHandler {
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: keyIDs, myId:sk.keyID!)
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
+                if AppDelegate.getAppDelegate().logging {
+                    Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, isSigned: true, keyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, otherKeyIDs: keyIDs)
+                }
+                
                 builder.textBody = "Dies ist verschlüsselt!"
                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
@@ -623,6 +627,13 @@ class MailHandler {
                 }
                 for keyId in newKeyIds{
                     _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
+                }
+                if AppDelegate.getAppDelegate().logging {
+                    if let mail = mail {
+                        Logger.log(received: mail)
+                    } else {
+                        //TODO: log a bug (?)
+                    }
                 }
                 if newMailCallback != nil{
                     newMailCallback!()

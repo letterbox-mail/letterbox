@@ -56,6 +56,9 @@ class ReadViewController: UITableViewController {
             answerButton.title = NSLocalizedString("edit", comment: "")
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
+            if let mail = mail, AppDelegate.getAppDelegate().logging {
+                Logger.log(read: mail)
+            }
         }
 
         VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: { [weak self] in self?.showContact($0) }, tableView: tableView)
