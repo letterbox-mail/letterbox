@@ -332,7 +332,7 @@ class MailHandler {
             let op = IMAPSession.createFolderOperation(sentFolder)
             op?.start({ error in
                 let op = self.IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
-                op?.start({_,_ in print("done")})
+                op?.start({_,_ in print("done")}) // TODO: @jakob: is this necessary?
             })
         }
         else {

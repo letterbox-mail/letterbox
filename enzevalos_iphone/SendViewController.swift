@@ -384,7 +384,10 @@ class SendViewController: UIViewController {
     func mailSend(_ error: Error?) {
         if (error != nil) {
             NSLog("Error sending email: \(String(describing: error))")
-            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil)
+            //            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil) @jakob: wofür ist dieses showMessage aus AppDelegate gut?
+            let alert = UIAlertController(title: NSLocalizedString("ReceiveError", comment: "There was an error"), message: NSLocalizedString("ErrorText", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         } else {
             NSLog("Send successful!")
             if (self.prefilledMail != nil) {

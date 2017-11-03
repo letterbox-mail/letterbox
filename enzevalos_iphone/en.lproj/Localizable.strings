@@ -165,3 +165,4 @@
 "scanDifferentCode" = "Scan different QR Code";
 "secureContacts" = "Secure Contacts";
 "secureCommunication" = "Secure Communication";
+"ErrorText" = "An error occured. Are you connected to the internet?";
