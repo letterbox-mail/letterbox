@@ -128,6 +128,8 @@
 		A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */; };
 		A111F6AD1FA77B170060AFDE /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
 		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
+		A114E4301FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E42F1FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift */; };
+		A114E4321FACB23000E40243 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E4311FACB23000E40243 /* StringExtension.swift */; };
 		A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
 		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
 		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
@@ -139,6 +141,7 @@
 		A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
+		A1B3C6F01FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3C6EF1FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
@@ -394,6 +397,8 @@
 		A111F6AC1FA77B170060AFDE /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		A1123E6B1DA682850069551C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A114E42F1FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymMailAddress+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A114E4311FACB23000E40243 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		A11E733B1E019AE3006574DD /* InitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitViewController.swift; sourceTree = "<group>"; };
 		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -412,6 +417,7 @@
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jabo.asc; path = keys/jabo.asc; sourceTree = "<group>"; };
 		A1A9DE721F864B0500B808AA /* ExportCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportCells.swift; sourceTree = "<group>"; };
+		A1B3C6EF1FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymMailAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-2.gpg"; path = "keys/alice2005-2.gpg"; sourceTree = "<group>"; };
 		A1BE3FF71E9664660040114B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A1BE3FF91E96646A0040114B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -695,6 +701,8 @@
 				472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */,
 				472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */,
 				472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */,
+				A1B3C6EF1FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift */,
+				A114E42F1FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift */,
 			);
 			name = coredata;
 			sourceTree = "<group>";
@@ -704,6 +712,7 @@
 			children = (
 				472F39921E279792009260FB /* protocols */,
 				472F396F1E14F75C009260FB /* DataHandler.swift */,
+				A114E4311FACB23000E40243 /* StringExtension.swift */,
 				47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */,
 				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
 				472F39871E1FA377009260FB /* KeyRecord.swift */,
@@ -1387,6 +1396,7 @@
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				8428A85D1F436A05007649A5 /* Badges.swift in Sources */,
 				8428A8651F436A11007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
+				A1B3C6F01FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift in Sources */,
 				472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
 				47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */,
@@ -1398,11 +1408,13 @@
 				47691A8C1ECC3EC7004BCFC5 /* EphemeralMail.swift in Sources */,
 				471BC92D1F960B7C00D64416 /* PGPPKCSEme.m in Sources */,
 				8428A8671F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */,
+				A114E4301FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
 				471BC9131F960B7C00D64416 /* PGPPublicSubKeyPacket.m in Sources */,
 				F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */,
 				471BC9261F960B7C00D64416 /* PGPKey.m in Sources */,
 				8428A8691F436A11007649A5 /* UserNameGamificationTableViewCell.swift in Sources */,
+				A114E4321FACB23000E40243 /* StringExtension.swift in Sources */,
 				472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */,
 				471BC92E1F960B7C00D64416 /* PGPPKCSEmsa.m in Sources */,
 				F113C3851F30D06800E7F1D6 /* QRScannerView.swift in Sources */,
