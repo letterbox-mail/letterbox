@@ -512,6 +512,12 @@ class MailHandler {
             }
         }
     }
+    
+    func loadMailsForInbox(newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+        
+        // TODO: @Olli: fill this with code, please
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {completionCallback(false)})
+    }
 
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)

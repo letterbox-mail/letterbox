@@ -15,6 +15,18 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     let searchController = UISearchController(searchResultsController: nil)
     var filteredRecords = [KeyRecord]()
     let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
+    var loading = false {
+        didSet {
+            if loading {
+                let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                activityIndicator.frame = CGRect(x: 0, y: 0, width: 200, height: 44)
+                activityIndicator.startAnimating()
+                tableView.tableFooterView = activityIndicator
+            } else {
+                tableView.tableFooterView = nil
+            }
+        }
+    }
 
     @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
     var lastUpdateLabel = UILabel(frame: CGRect.zero)
@@ -60,7 +72,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
         tableView.register(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
         
-
         AppDelegate.getAppDelegate().mailHandler.startIMAPIdleIfSupported(addNewMail: addNewMail)
     }
 
@@ -72,8 +83,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func addNewMail() {
-        //folder.updateRecords()
-        //tableView.reloadData()
+        folder.updateRecords()
+        tableView.reloadData()
     }
 
     func getMailCompleted(_ error: Bool) {
@@ -221,6 +232,33 @@ extension InboxViewController: UISearchBarDelegate {
     }
 }
 
+extension InboxViewController {
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let offset = scrollView.contentOffset
+        let bounds = scrollView.bounds
+        let size = scrollView.contentSize
+        let inset = scrollView.contentInset
+        let y = offset.y + bounds.size.height - inset.bottom
+        let h = size.height
+        
+        let reload_distance: CGFloat = 200
+        if y > h + reload_distance && !loading {
+            print("loading new mail because we scrolled to the bottom")
+            loading = true
+            
+            AppDelegate.getAppDelegate().mailHandler.loadMailsForInbox(newMailCallback: addNewMail, completionCallback: doneLoading)
+        }
+    }
+    
+    func doneLoading(_ error: Bool) {
+        if error {
+            // TODO: maybe we should do something about this? maybe not?
+        }
+        
+        loading = false
+    }
+}
+
 extension Array where Element: Equatable {
     var unique: [Element] {
         var uniqueValues: [Element] = []
@@ -232,3 +270,4 @@ extension Array where Element: Equatable {
         return uniqueValues
     }
 }
+
