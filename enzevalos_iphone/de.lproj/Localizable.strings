@@ -129,8 +129,6 @@
 "verifyNow" = "Jetzt verifizieren";
 "toEncrypted" = "Zur sicheren Ablage";
 "invite" = "Kontakt einladen Verschlüsselung zu nutzen";
-"discard" = "Nachricht verwerfen?";
-"discardText" = "Die eingegebenen Informationen werden nicht gespeichert.";
 "discardButton" = "Verwerfen";
 "allMessages" = "Alle Nachrichten dieser Ablage";
 "otherRecords" = "Andere Ablagen dieses Kontakts";

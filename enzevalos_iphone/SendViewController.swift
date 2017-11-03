@@ -69,6 +69,7 @@ class SendViewController: UIViewController {
         let iconView = AnimatedSendIcon()
         iconView.frame = iconView.frame.offsetBy(dx: -16, dy: -10)
         iconButton.addSubview(iconView)
+
         toText.delegate = dataDelegate
         toText.dataSource = dataDelegate
         toText.inputTextFieldKeyboardType = UIKeyboardType.emailAddress
@@ -166,7 +167,7 @@ class SendViewController: UIViewController {
     deinit {
         print("===============|| SendViewController deinitialized ||===============")
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         updateNavigationBar()
     }
@@ -243,12 +244,12 @@ class SendViewController: UIViewController {
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
-                    if let mail = mail as? String{ // , !EnzevalosEncryptionHandler.hasKey(mail) 
+                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
                         to.append(DataHandler.handler.getMailAddress(mail, temporary: true))
                     }
                 }
                 for mail in ccText.mailTokens {
-                    if let mail = mail as? String{ // , !EnzevalosEncryptionHandler.hasKey(mail)
+                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
                         cc.append(DataHandler.handler.getMailAddress(mail, temporary: true))
                     }
                 }
@@ -494,6 +495,7 @@ class SendViewController: UIViewController {
 
     @IBAction func pressCancel(_ sender: AnyObject) {
         var alert: UIAlertController
+
         var firstResponder: UIView?
         for view in [toText, ccText, subjectText, textView] as [UIView] {
             if view.isFirstResponder {
@@ -508,7 +510,7 @@ class SendViewController: UIViewController {
             let subject = subjectText.inputText()!
             let message = textView.text!
 
-            alert = UIAlertController(title: NSLocalizedString("discard", comment: "discard"), message: NSLocalizedString("discardText", comment: ""), preferredStyle: .alert)
+            alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { (action: UIAlertAction!) -> Void in
                 self.navigationController?.dismiss(animated: true, completion: nil)
             }))
@@ -611,7 +613,7 @@ extension VENTokenFieldDataSource {
         var secure = false
         for entry in tokenField.mailTokens {
             var hasKey = false
-            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String){
+            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String) {
                 hasKey = madr.hasKey
             }
             secure = secure || hasKey
