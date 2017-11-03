@@ -30,7 +30,6 @@ class Logger {
     /**
      * Attention: assumes message to be right escaped (espacially ',')
      */
-<<<<<<< HEAD
     static func logMail(with from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, /*decryptedWithOldPrivateKey = false,*/ isSigned: Bool, /*isCorrectlySigned = true,*/ keyID: String, message: String) {
         
         /*
