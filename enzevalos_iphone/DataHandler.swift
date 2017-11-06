@@ -362,7 +362,9 @@ class DataHandler {
         }
         let pgp = SwiftPGP()
         let key = pgp.generateKey(adr: adr)
+        let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         _ = DataHandler.handler.newSecretKey(keyID: key)
+        _ = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: useraddr, autocrypt: false)
     }
     
     func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil) -> PersistentKey{

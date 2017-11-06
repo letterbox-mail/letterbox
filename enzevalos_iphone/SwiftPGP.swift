@@ -106,7 +106,7 @@ class SwiftPGP: Encryption{
     func generateKey(adr: String) -> String{
         let gen = PGPKeyGenerator()
         let pw = generatePW(size: PasscodeSize)
-        let key = gen.generate(for: adr, passphrase: pw)
+        let key = gen.generate(for: "\(adr)<\(adr)>", passphrase: pw)
         pwKeyChain[key.keyID.longKeyString] = pw
         return storeKey(key: key)
     }
