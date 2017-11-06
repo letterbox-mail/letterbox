@@ -133,6 +133,11 @@ class AutocryptContact {
 class MailHandler {
 
     var delegate: MailHandlerDelegator?
+    
+    var INBOX: String {
+            //return UserManager.backendInboxFolderPath
+            return "INBOX"
+    }
 
     fileprivate static let MAXMAILS = 25
 
@@ -279,7 +284,6 @@ class MailHandler {
         var allRec: [String] = []
         allRec.append(contentsOf: toEntrys)
         allRec.append(contentsOf: ccEntrys)
-        // What about BCC??
         
         let ordered = orderReceiver(receiver: allRec)
 
@@ -394,11 +398,11 @@ class MailHandler {
         imapsession.authType = UserManager.loadImapAuthType()
         imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)
         
-        let y = imapsession.folderStatusOperation("INBOX")
+        let y = imapsession.folderStatusOperation(INBOX)
         y?.start{(error, status) -> Void in
             print("Folder status: \(status.debugDescription)")
         }
-        let x = imapsession.folderStatusOperation("INBOX")
+        let x = imapsession.folderStatusOperation(INBOX)
         x?.start{(e,info) -> Void in
             print("Folder infos: \(info.debugDescription)")
         }
@@ -410,7 +414,7 @@ class MailHandler {
         if let supported = IMAPIdleSupported {
             if supported && IMAPIdleSession == nil {
                 IMAPIdleSession = setupIMAPSession()
-                let op = IMAPIdleSession!.idleOperation(withFolder: UserManager.backendInboxFolderPath, lastKnownUID: UInt32(DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath).maxID))
+                let op = IMAPIdleSession!.idleOperation(withFolder: INBOX, lastKnownUID: UInt32(DataHandler.handler.findFolder(with: INBOX).maxID))
                 op?.start({ error in
                     guard error == nil else {
                         print("An error occured with the idle operation: \(String(describing: error))")
@@ -418,7 +422,7 @@ class MailHandler {
                     }
                     print("Something happened while idleing!")
                     self.IMAPIdleSession = nil
-                    let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
+                    let folder = DataHandler.handler.findFolder(with: self.INBOX)
                     self.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: { _ in self.startIMAPIdleIfSupported(addNewMail: addNewMail) })
                 })
             }
@@ -454,14 +458,18 @@ class MailHandler {
         return session
     }
 
-    func addFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String = "INBOX") {
-        let op = self.IMAPSession.storeFlagsOperation(withFolder: folder, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.set, flags: flags)
+    func addFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String?) {
+        var folderName = INBOX
+        if folder != nil{
+            folderName = folder!
+        }
+        let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.set, flags: flags)
         op?.start { error -> Void in
             if let err = error {
                 print("Error while updating flags: \(err)")
             } else {
                 if flags.contains(MCOMessageFlag.deleted) {
-                    let operation = self.IMAPSession.expungeOperation(folder)
+                    let operation = self.IMAPSession.expungeOperation(folderName)
                     operation?.start({err in
                         if err == nil {
                             DataHandler.handler.deleteMail(with: uid)
@@ -471,8 +479,12 @@ class MailHandler {
         }
     }
 
-    func removeFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String = "INBOX") {
-        let op = self.IMAPSession.storeFlagsOperation(withFolder: folder, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.remove, flags: flags)
+    func removeFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String?) {
+        var folderName = INBOX
+        if folder != nil{
+            folderName = folder!
+        }
+        let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.remove, flags: flags)
 
         op?.start { error -> Void in
             if let err = error {
@@ -514,9 +526,8 @@ class MailHandler {
     }
     
     func loadMailsForInbox(newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        
-        // TODO: @Olli: fill this with code, please
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {completionCallback(false)})
+        let folder = datahandler.findFolder(with: INBOX)
+        olderMails(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
 
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
@@ -779,7 +790,7 @@ class MailHandler {
     
     
     func initFolder(folder: Folder, newMailCallback: @escaping (() -> ()),completionCallback: @escaping ((Bool) -> ())){
-        let folderPath = folder.path//UserManager.convertToBackendFolderPath(from: folder.path)
+        let folderPath = folder.path
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)
         let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
         let toFetchIDs  = MCOIndexSet()
