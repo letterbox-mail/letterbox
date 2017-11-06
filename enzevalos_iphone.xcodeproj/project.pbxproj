@@ -7,174 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
-		3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
-		3E9708B31FAC95F5005825C9 /* PGPPartialKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F01F960B7C00D64416 /* PGPPartialKey.m */; };
-		3E9708B41FAC95F5005825C9 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
-		3E9708B51FAC95F5005825C9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39891E251787009260FB /* Contact.swift */; };
-		3E9708B61FAC95F5005825C9 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39851E1FA34E009260FB /* Record.swift */; };
-		3E9708B71FAC95F5005825C9 /* PGPPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AF1F960B7C00D64416 /* PGPPacket.m */; };
-		3E9708B81FAC95F5005825C9 /* PGPKeyID.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E71F960B7C00D64416 /* PGPKeyID.m */; };
-		3E9708B91FAC95F5005825C9 /* NSData+compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8FE1F960B7C00D64416 /* NSData+compression.m */; };
-		3E9708BA1FAC95F5005825C9 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
-		3E9708BB1FAC95F5005825C9 /* Providers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2A5681E85586300320275 /* Providers.swift */; };
-		3E9708BC1FAC95F5005825C9 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C81F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m */; };
-		3E9708BD1FAC95F5005825C9 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
-		3E9708BE1FAC95F5005825C9 /* PGPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8FB1F960B7C00D64416 /* PGPUser.m */; };
-		3E9708BF1FAC95F5005825C9 /* PGPSecretKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8BA1F960B7C00D64416 /* PGPSecretKeyPacket.m */; };
-		3E9708C01FAC95F5005825C9 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
-		3E9708C11FAC95F5005825C9 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
-		3E9708C21FAC95F5005825C9 /* PGPCompressedPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8A61F960B7C00D64416 /* PGPCompressedPacket.m */; };
-		3E9708C31FAC95F5005825C9 /* PGPRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89E1F960B7C00D64416 /* PGPRSA.m */; };
-		3E9708C41FAC95F5005825C9 /* InboxCellDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05931D956931008659C1 /* InboxCellDelegator.swift */; };
-		3E9708C51FAC95F5005825C9 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8591F436A05007649A5 /* Badges.swift */; };
-		3E9708C61FAC95F5005825C9 /* BadgeCaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8601F436A11007649A5 /* BadgeCaseCollectionViewCell.swift */; };
-		3E9708C71FAC95F5005825C9 /* Mail_Address+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */; };
-		3E9708C81FAC95F5005825C9 /* CollectionDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */; };
-		3E9708C91FAC95F5005825C9 /* DebugSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */; };
-		3E9708CA1FAC95F5005825C9 /* PGPS2K.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F81F960B7C00D64416 /* PGPS2K.m */; };
-		3E9708CB1FAC95F5005825C9 /* PGPPacketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8EE1F960B7C00D64416 /* PGPPacketFactory.m */; };
-		3E9708CC1FAC95F5005825C9 /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
-		3E9708CD1FAC95F5005825C9 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057F1D956851008659C1 /* SendViewController.swift */; };
-		3E9708CE1FAC95F5005825C9 /* PGPModificationDetectionCodePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AA1F960B7C00D64416 /* PGPModificationDetectionCodePacket.m */; };
-		3E9708CF1FAC95F5005825C9 /* EphemeralMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */; };
-		3E9708D01FAC95F5005825C9 /* PGPPKCSEme.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F41F960B7C00D64416 /* PGPPKCSEme.m */; };
-		3E9708D11FAC95F5005825C9 /* SubBadgeHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8621F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift */; };
-		3E9708D21FAC95F5005825C9 /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05971D956947008659C1 /* InboxViewController.swift */; };
-		3E9708D31FAC95F5005825C9 /* PGPPublicSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8B71F960B7C00D64416 /* PGPPublicSubKeyPacket.m */; };
-		3E9708D41FAC95F5005825C9 /* IconsStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D711E1D327200804E1E /* IconsStyleKit.swift */; };
-		3E9708D51FAC95F5005825C9 /* PGPKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E31F960B7C00D64416 /* PGPKey.m */; };
-		3E9708D61FAC95F5005825C9 /* UserNameGamificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8641F436A11007649A5 /* UserNameGamificationTableViewCell.swift */; };
-		3E9708D71FAC95F5005825C9 /* CNContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398B1E2519C8009260FB /* CNContactExtension.swift */; };
-		3E9708D81FAC95F5005825C9 /* PGPPKCSEmsa.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F61F960B7C00D64416 /* PGPPKCSEmsa.m */; };
-		3E9708D91FAC95F5005825C9 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C3841F30D06800E7F1D6 /* QRScannerView.swift */; };
-		3E9708DA1FAC95F5005825C9 /* PGPCryptoCFB.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8DB1F960B7C00D64416 /* PGPCryptoCFB.m */; };
-		3E9708DB1FAC95F5005825C9 /* ReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445F1E704C550080C041 /* ReplaceSegue.swift */; };
-		3E9708DC1FAC95F5005825C9 /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39871E1FA377009260FB /* KeyRecord.swift */; };
-		3E9708DD1FAC95F5005825C9 /* ArrowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */; };
-		3E9708DE1FAC95F5005825C9 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
-		3E9708DF1FAC95F5005825C9 /* CryptoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00321F7B9565006CDD41 /* CryptoObject.swift */; };
-		3E9708E01FAC95F5005825C9 /* VENDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057D1D956848008659C1 /* VENDataDelegate.swift */; };
-		3E9708E11FAC95F5005825C9 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */; };
-		3E9708E21FAC95F5005825C9 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
-		3E9708E31FAC95F5005825C9 /* PGPArmor.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D61F960B7C00D64416 /* PGPArmor.m */; };
-		3E9708E41FAC95F5005825C9 /* SwiftPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00301F7B9565006CDD41 /* SwiftPGP.swift */; };
-		3E9708E51FAC95F5005825C9 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */; };
-		3E9708E61FAC95F5005825C9 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
-		3E9708E71FAC95F5005825C9 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
-		3E9708E81FAC95F5005825C9 /* NSMutableData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC9041F960B7C00D64416 /* NSMutableData+PGPUtils.m */; };
-		3E9708E91FAC95F5005825C9 /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
-		3E9708EA1FAC95F5005825C9 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AF938E1E2D04BA00755128 /* CustomCells.swift */; };
-		3E9708EB1FAC95F5005825C9 /* GamificationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */; };
-		3E9708EC1FAC95F5005825C9 /* ObjectivePGPObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8A31F960B7C00D64416 /* ObjectivePGPObject.m */; };
-		3E9708ED1FAC95F5005825C9 /* PGPFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8DE1F960B7C00D64416 /* PGPFingerprint.m */; };
-		3E9708EE1FAC95F5005825C9 /* PGPBigNum.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D91F960B7C00D64416 /* PGPBigNum.m */; };
-		3E9708EF1FAC95F5005825C9 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */; };
-		3E9708F01FAC95F5005825C9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476142071E07E52B00FD5E4F /* Theme.swift */; };
-		3E9708F11FAC95F5005825C9 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
-		3E9708F21FAC95F5005825C9 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
-		3E9708F31FAC95F5005825C9 /* NSMutableArray+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC9021F960B7C00D64416 /* NSMutableArray+PGPUtils.m */; };
-		3E9708F41FAC95F5005825C9 /* PGPSecretSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8BC1F960B7C00D64416 /* PGPSecretSubKeyPacket.m */; };
-		3E9708F51FAC95F5005825C9 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D41F960B7C00D64416 /* PGPUserIDPacket.m */; };
-		3E9708F61FAC95F5005825C9 /* Folder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475DF4781F0D54C9009D807F /* Folder+CoreDataProperties.swift */; };
-		3E9708F71FAC95F5005825C9 /* PersistentMail +CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */; };
-		3E9708F81FAC95F5005825C9 /* PGPTrustPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8CE1F960B7C00D64416 /* PGPTrustPacket.m */; };
-		3E9708F91FAC95F5005825C9 /* PersistentKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00411F7BB6D6006CDD41 /* PersistentKey+CoreDataProperties.swift */; };
-		3E9708FA1FAC95F5005825C9 /* AnimatedSendIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */; };
-		3E9708FB1FAC95F5005825C9 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
-		3E9708FC1FAC95F5005825C9 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
-		3E9708FD1FAC95F5005825C9 /* PGPMPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8EC1F960B7C00D64416 /* PGPMPI.m */; };
-		3E9708FE1FAC95F5005825C9 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
-		3E9708FF1FAC95F5005825C9 /* Mail_Address+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */; };
-		3E9709001FAC95F5005825C9 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
-		3E9709011FAC95F5005825C9 /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8961F960B7C00D64416 /* PGPCryptoHash.m */; };
-		3E9709021FAC95F5005825C9 /* PGPKeyMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89C1F960B7C00D64416 /* PGPKeyMaterial.m */; };
-		3E9709031FAC95F5005825C9 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
-		3E9709041FAC95F5005825C9 /* ReadVENDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B44611E73286C0080C041 /* ReadVENDelegate.swift */; };
-		3E9709051FAC95F5005825C9 /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D01F960B7C00D64416 /* PGPUserAttributePacket.m */; };
-		3E9709061FAC95F5005825C9 /* PersistentKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00401F7BB6D6006CDD41 /* PersistentKey+CoreDataClass.swift */; };
-		3E9709071FAC95F5005825C9 /* PGPSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8BF1F960B7C00D64416 /* PGPSignaturePacket.m */; };
-		3E9709081FAC95F5005825C9 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
-		3E9709091FAC95F5005825C9 /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
-		3E97090A1FAC95F5005825C9 /* PGPSignatureSubpacketCreationTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C41F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.m */; };
-		3E97090B1FAC95F5005825C9 /* CNMailAddressesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398F1E252470009260FB /* CNMailAddressesExtension.swift */; };
-		3E97090C1FAC95F5005825C9 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */; };
-		3E97090D1FAC95F5005825C9 /* ViewControllerPannable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C38A1F3344C200E7F1D6 /* ViewControllerPannable.swift */; };
-		3E97090E1FAC95F5005825C9 /* TableViewDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */; };
-		3E97090F1FAC95F5005825C9 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85A1F436A05007649A5 /* CircleView.swift */; };
-		3E9709101FAC95F5005825C9 /* PersistentMail +CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39781E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift */; };
-		3E9709111FAC95F5005825C9 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8581F436A05007649A5 /* ArrowView.swift */; };
-		3E9709121FAC95F5005825C9 /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05951D956939008659C1 /* InboxTableViewCell.swift */; };
-		3E9709131FAC95F5005825C9 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1083A531E8BFEA6003666B7 /* Onboarding.swift */; };
-		3E9709141FAC95F5005825C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
-		3E9709151FAC95F5005825C9 /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */; };
-		3E9709161FAC95F5005825C9 /* GamificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85B1F436A05007649A5 /* GamificationData.swift */; };
-		3E9709171FAC95F5005825C9 /* Folder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475DF4771F0D54C9009D807F /* Folder+CoreDataClass.swift */; };
-		3E9709181FAC95F5005825C9 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8B21F960B7C00D64416 /* PGPPublicKeyEncryptedSessionKeyPacket.m */; };
-		3E9709191FAC95F5005825C9 /* PGPSymmetricKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8CC1F960B7C00D64416 /* PGPSymmetricKeyEncryptedSessionKeyPacket.m */; };
-		3E97091A1FAC95F5005825C9 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00311F7B9565006CDD41 /* Cryptography.swift */; };
-		3E97091B1FAC95F5005825C9 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
-		3E97091C1FAC95F5005825C9 /* AddressHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05871D956879008659C1 /* AddressHandler.swift */; };
-		3E97091D1FAC95F5005825C9 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F396F1E14F75C009260FB /* DataHandler.swift */; };
-		3E97091E1FAC95F5005825C9 /* PGPSignatureSubpacketHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C61F960B7C00D64416 /* PGPSignatureSubpacketHeader.m */; };
-		3E97091F1FAC95F5005825C9 /* NSData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC9001F960B7C00D64416 /* NSData+PGPUtils.m */; };
-		3E9709201FAC95F5005825C9 /* ReadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB058F1D956923008659C1 /* ReadViewController.swift */; };
-		3E9709211FAC95F5005825C9 /* PGPSignatureSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C21F960B7C00D64416 /* PGPSignatureSubpacket.m */; };
-		3E9709221FAC95F5005825C9 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
-		3E9709231FAC95F5005825C9 /* MailAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398D1E251B8D009260FB /* MailAddress.swift */; };
-		3E9709241FAC95F5005825C9 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
-		3E9709251FAC95F5005825C9 /* PGPFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E01F960B7C00D64416 /* PGPFoundation.m */; };
-		3E9709261FAC95F5005825C9 /* PGPLiteralPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8A81F960B7C00D64416 /* PGPLiteralPacket.m */; };
-		3E9709271FAC95F5005825C9 /* PGPPublicKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8B51F960B7C00D64416 /* PGPPublicKeyPacket.m */; };
-		3E9709281FAC95F5005825C9 /* PGPKeyGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E51F960B7C00D64416 /* PGPKeyGenerator.m */; };
-		3E9709291FAC95F5005825C9 /* PGPDSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89A1F960B7C00D64416 /* PGPDSA.m */; };
-		3E97092A1FAC95F5005825C9 /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
-		3E97092B1FAC95F5005825C9 /* PGPPartialSubKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F21F960B7C00D64416 /* PGPPartialSubKey.m */; };
-		3E97092C1FAC95F5005825C9 /* SubBadgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8631F436A11007649A5 /* SubBadgeTableViewCell.swift */; };
-		3E97092D1FAC95F5005825C9 /* FrequentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05851D956872008659C1 /* FrequentCell.swift */; };
-		3E97092E1FAC95F5005825C9 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
-		3E97092F1FAC95F5005825C9 /* FlipTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445D1E7044B70080C041 /* FlipTransition.swift */; };
-		3E9709301FAC95F5005825C9 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8CA1F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */; };
-		3E9709311FAC95F5005825C9 /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D21F960B7C00D64416 /* PGPUserAttributeSubpacket.m */; };
-		3E9709321FAC95F5005825C9 /* PGPOnePassSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AC1F960B7C00D64416 /* PGPOnePassSignaturePacket.m */; };
-		3E9709331FAC95F5005825C9 /* EnzevalosContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */; };
-		3E9709341FAC95F5005825C9 /* BadgeCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86A1F436A1E007649A5 /* BadgeCase.swift */; };
-		3E9709371FAC95F5005825C9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472F396D1E14F384009260FB /* CoreData.framework */; };
-		3E97093A1FAC95F5005825C9 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
-		3E97093B1FAC95F5005825C9 /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
-		3E97093C1FAC95F5005825C9 /* alice_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */; };
-		3E97093D1FAC95F5005825C9 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05891D956890008659C1 /* ContactCell.xib */; };
-		3E97093E1FAC95F5005825C9 /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1F070261FA0DF3F004A860A /* Inbox.storyboard */; };
-		3E97093F1FAC95F5005825C9 /* dave_enezvalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */; };
-		3E9709401FAC95F5005825C9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 476142091E082F9C00FD5E4F /* Settings.bundle */; };
-		3E9709411FAC95F5005825C9 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
-		3E9709421FAC95F5005825C9 /* alice_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD91EFEA17900A2107C /* alice_enzevalos_public.asc */; };
-		3E9709431FAC95F5005825C9 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
-		3E9709441FAC95F5005825C9 /* idsolutions-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */; };
-		3E9709451FAC95F5005825C9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 471BC89F1F960B7C00D64416 /* Info.plist */; };
-		3E9709461FAC95F5005825C9 /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
-		3E9709471FAC95F5005825C9 /* nchr-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18981ED880680080515D /* nchr-private.gpg */; };
-		3E9709481FAC95F5005825C9 /* idsolutions-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */; };
-		3E9709491FAC95F5005825C9 /* ncpayroll-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189A1ED880680080515D /* ncpayroll-private.gpg */; };
-		3E97094A1FAC95F5005825C9 /* bob-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F51EDDADA10068235E /* bob-public.gpg */; };
-		3E97094B1FAC95F5005825C9 /* bob_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD81EFEA17900A2107C /* bob_enzevalos_public.asc */; };
-		3E97094C1FAC95F5005825C9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
-		3E97094D1FAC95F5005825C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
-		3E97094E1FAC95F5005825C9 /* ullimuelle-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */; };
-		3E97094F1FAC95F5005825C9 /* ullimuelle-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */; };
-		3E9709501FAC95F5005825C9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
-		3E9709511FAC95F5005825C9 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
-		3E9709521FAC95F5005825C9 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
-		3E9709531FAC95F5005825C9 /* GamificationElements.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8541F4369CF007649A5 /* GamificationElements.xcassets */; };
-		3E9709541FAC95F5005825C9 /* ncpayroll-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189B1ED880680080515D /* ncpayroll-public.gpg */; };
-		3E9709551FAC95F5005825C9 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
-		3E9709561FAC95F5005825C9 /* bob_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */; };
-		3E9709571FAC95F5005825C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
-		3E9709581FAC95F5005825C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
-		3E9709591FAC95F5005825C9 /* alice2005-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */; };
-		3E97095A1FAC95F5005825C9 /* FrequentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB058B1D9568AB008659C1 /* FrequentCell.xib */; };
-		3E97095B1FAC95F5005825C9 /* bob-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F41EDDADA10068235E /* bob-private.gpg */; };
-		3E97095C1FAC95F5005825C9 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
 		471BC9051F960B7C00D64416 /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8961F960B7C00D64416 /* PGPCryptoHash.m */; };
 		471BC9061F960B7C00D64416 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */; };
@@ -258,7 +90,6 @@
 		479BBDE01EFEA4D800A2107C /* bob_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */; };
 		479BBDE11EFEA4D800A2107C /* alice_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */; };
 		47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */; };
-		5DC190F2042BE7D956F796BE /* Pods_enzevalos_iphone_AdHoc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F4458FC892EBE555836F55 /* Pods_enzevalos_iphone_AdHoc.framework */; };
 		8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
 		8428A8551F4369CF007649A5 /* GamificationElements.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8541F4369CF007649A5 /* GamificationElements.xcassets */; };
 		8428A85C1F436A05007649A5 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8581F436A05007649A5 /* ArrowView.swift */; };
@@ -384,13 +215,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.release.xcconfig"; sourceTree = "<group>"; };
-		3E048C041FAC9ABD00948524 /* HockeySDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HockeySDK.swift; sourceTree = "<group>"; };
-		3E9708AD1FAC925D005825C9 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
-		3E9708AE1FAC925D005825C9 /* enzevalos-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "enzevalos-Info.plist"; sourceTree = "<group>"; };
-		3E9709621FAC95F5005825C9 /* enzevalos_iphone-AdHoc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "enzevalos_iphone-AdHoc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E9709651FAC9694005825C9 /* enzevalos_iphone-AdHoc.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "enzevalos_iphone-AdHoc.entitlements"; sourceTree = "<group>"; };
-		3E9709661FAC9694005825C9 /* enzevalos-AdHoc-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "enzevalos-AdHoc-Info.plist"; sourceTree = "<group>"; };
+		1DA766FE04E7D6FF1A3CEC1F /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		471BC8951F960B7C00D64416 /* PGPCryptoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoHash.h; sourceTree = "<group>"; };
@@ -560,7 +385,7 @@
 		8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearBadgeViewController.swift; sourceTree = "<group>"; };
 		8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamificationStatusViewController.swift; sourceTree = "<group>"; };
 		8B87EFB6CEAA31452F744015 /* Pods-enzevalos_iphoneUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.release.xcconfig"; sourceTree = "<group>"; };
-		91B6C9020C660BEA78FAEF28 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
+		9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 		9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoOnboarding2.m4v; sourceTree = "<group>"; };
 		A1083A531E8BFEA6003666B7 /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
@@ -571,6 +396,7 @@
 		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = enzevalos_iphone.xcdatamodel; sourceTree = "<group>"; };
+		A13526871D955BDF00D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A135268C1D955BE000D3BFE1 /* enzevalos_iphoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = enzevalos_iphoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enzevalos_iphoneTests.swift; sourceTree = "<group>"; };
 		A13526921D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -621,9 +447,8 @@
 		A1F9923D1DA7DD350073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
 		A1F9923F1DA7DD370073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
 		A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-public.gpg"; path = "keys/alice2005-public.gpg"; sourceTree = "<group>"; };
-		AA686D4FC9B86445A0C87F0F /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
+		AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.debug.xcconfig"; sourceTree = "<group>"; };
 		BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
-		C1F4458FC892EBE555836F55 /* Pods_enzevalos_iphone_AdHoc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone_AdHoc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F113C3841F30D06800E7F1D6 /* QRScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerView.swift; sourceTree = "<group>"; };
@@ -647,22 +472,14 @@
 		F18B44611E73286C0080C041 /* ReadVENDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadVENDelegate.swift; sourceTree = "<group>"; };
 		F1984D711E1D327200804E1E /* IconsStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconsStyleKit.swift; sourceTree = "<group>"; };
 		F1984D731E1E92B300804E1E /* LabelStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelStyleKit.swift; sourceTree = "<group>"; };
+		F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
 		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		F1AF938E1E2D04BA00755128 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
-		F1C91456D4E3F1421E66FC28 /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.debug.xcconfig"; sourceTree = "<group>"; };
 		F1F070271FA0DF3F004A860A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
+		F7FFF15F83AF4B88F0324F10 /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		3E9709351FAC95F5005825C9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3E9709371FAC95F5005825C9 /* CoreData.framework in Frameworks */,
-				5DC190F2042BE7D956F796BE /* Pods_enzevalos_iphone_AdHoc.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A13526721D955BDF00D3BFE1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -695,39 +512,20 @@
 		24472862977D71D3F0AD0D58 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */,
+				9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */,
 				411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */,
 				C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */,
 				9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */,
 				796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */,
+				1DA766FE04E7D6FF1A3CEC1F /* Pods-enzevalos_iphone.debug.xcconfig */,
+				F7FFF15F83AF4B88F0324F10 /* Pods-enzevalos_iphone.release.xcconfig */,
 				6EBCCD02AD3B95D8317810E2 /* Pods-enzevalos_iphoneTests.debug.xcconfig */,
 				BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */,
 				66E758F271CD65AB3E5FE7A7 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */,
 				8B87EFB6CEAA31452F744015 /* Pods-enzevalos_iphoneUITests.release.xcconfig */,
-				91B6C9020C660BEA78FAEF28 /* Pods-enzevalos_iphone.debug.xcconfig */,
-				AA686D4FC9B86445A0C87F0F /* Pods-enzevalos_iphone.release.xcconfig */,
-				F1C91456D4E3F1421E66FC28 /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */,
-				1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		3E048C031FAC9AA300948524 /* HockeyApp */ = {
-			isa = PBXGroup;
-			children = (
-				3E048C041FAC9ABD00948524 /* HockeySDK.swift */,
-			);
-			name = HockeyApp;
-			sourceTree = "<group>";
-		};
-		3E9708AC1FAC925D005825C9 /* PLists */ = {
-			isa = PBXGroup;
-			children = (
-				3E9708AD1FAC925D005825C9 /* enzevalos_iphone.entitlements */,
-				3E9709651FAC9694005825C9 /* enzevalos_iphone-AdHoc.entitlements */,
-				3E9708AE1FAC925D005825C9 /* enzevalos-Info.plist */,
-				3E9709661FAC9694005825C9 /* enzevalos-AdHoc-Info.plist */,
-			);
-			path = PLists;
 			sourceTree = "<group>";
 		};
 		471BC8931F960B7C00D64416 /* ObjectivePGP */ = {
@@ -921,7 +719,6 @@
 				4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */,
 				C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */,
 				48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */,
-				C1F4458FC892EBE555836F55 /* Pods_enzevalos_iphone_AdHoc.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1029,7 +826,6 @@
 				A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */,
 				A135268C1D955BE000D3BFE1 /* enzevalos_iphoneTests.xctest */,
 				A13526971D955BE000D3BFE1 /* enzevalos_iphoneUITests.xctest */,
-				3E9709621FAC95F5005825C9 /* enzevalos_iphone-AdHoc.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1040,6 +836,7 @@
 				471BC8931F960B7C00D64416 /* ObjectivePGP */,
 				8428A8511F436952007649A5 /* Gamification */,
 				47B91AC11EC0C1FB000AE3EE /* data */,
+				F19B29011E02DCAC00B29DD1 /* enzevalos_iphone.entitlements */,
 				A1C7FF8B1E895316000D1E92 /* keys */,
 				A11E733A1E019AB5006574DD /* init */,
 				A10DE41E1EFAA140005E8189 /* folders */,
@@ -1066,10 +863,9 @@
 				A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */,
 				A1EB05A31D956E32008659C1 /* Assets.xcassets */,
 				476142091E082F9C00FD5E4F /* Settings.bundle */,
+				A13526871D955BDF00D3BFE1 /* Info.plist */,
 				A1BE3FF81E9664660040114B /* InfoPlist.strings */,
 				A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */,
-				3E048C031FAC9AA300948524 /* HockeyApp */,
-				3E9708AC1FAC925D005825C9 /* PLists */,
 			);
 			path = enzevalos_iphone;
 			sourceTree = "<group>";
@@ -1216,26 +1012,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3E9708B01FAC95F5005825C9 /* enzevalos_iphone-AdHoc */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3E97095F1FAC95F5005825C9 /* Build configuration list for PBXNativeTarget "enzevalos_iphone-AdHoc" */;
-			buildPhases = (
-				68B66C258A95542F0A7F6A2E /* [CP] Check Pods Manifest.lock */,
-				3E9708B21FAC95F5005825C9 /* Sources */,
-				3E9709351FAC95F5005825C9 /* Frameworks */,
-				3E9709391FAC95F5005825C9 /* Resources */,
-				FB3C7D2ADF04072A4E301DF7 /* [CP] Embed Pods Frameworks */,
-				DED9F32968663F222C7F4957 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "enzevalos_iphone-AdHoc";
-			productName = enzevalos_iphone;
-			productReference = 3E9709621FAC95F5005825C9 /* enzevalos_iphone-AdHoc.app */;
-			productType = "com.apple.product-type.application";
-		};
 		A13526741D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A13526A01D955BE000D3BFE1 /* Build configuration list for PBXNativeTarget "enzevalos_iphone" */;
@@ -1311,14 +1087,6 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "fu-berlin";
 				TargetAttributes = {
-					3E9708B01FAC95F5005825C9 = {
-						DevelopmentTeam = VJ9C93G68Y;
-						SystemCapabilities = {
-							com.apple.Keychain = {
-								enabled = 1;
-							};
-						};
-					};
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = VJ9C93G68Y;
@@ -1358,7 +1126,6 @@
 			projectRoot = "";
 			targets = (
 				A13526741D955BDF00D3BFE1 /* enzevalos_iphone */,
-				3E9708B01FAC95F5005825C9 /* enzevalos_iphone-AdHoc */,
 				A135268B1D955BE000D3BFE1 /* enzevalos_iphoneTests */,
 				A13526961D955BE000D3BFE1 /* enzevalos_iphoneUITests */,
 			);
@@ -1366,48 +1133,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		3E9709391FAC95F5005825C9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3E97093A1FAC95F5005825C9 /* videoOnboarding2.m4v in Resources */,
-				3E97093B1FAC95F5005825C9 /* InboxTableViewCell.xib in Resources */,
-				3E97093C1FAC95F5005825C9 /* alice_enzvalos_private.asc in Resources */,
-				3E97093D1FAC95F5005825C9 /* ContactCell.xib in Resources */,
-				3E97093E1FAC95F5005825C9 /* Inbox.storyboard in Resources */,
-				3E97093F1FAC95F5005825C9 /* dave_enezvalos_public.asc in Resources */,
-				3E9709401FAC95F5005825C9 /* Settings.bundle in Resources */,
-				3E9709411FAC95F5005825C9 /* jabo.asc in Resources */,
-				3E9709421FAC95F5005825C9 /* alice_enzevalos_public.asc in Resources */,
-				3E9709431FAC95F5005825C9 /* providers.json in Resources */,
-				3E9709441FAC95F5005825C9 /* idsolutions-private.gpg in Resources */,
-				3E9709451FAC95F5005825C9 /* Info.plist in Resources */,
-				3E9709461FAC95F5005825C9 /* nchr-public.gpg in Resources */,
-				3E9709471FAC95F5005825C9 /* nchr-private.gpg in Resources */,
-				3E9709481FAC95F5005825C9 /* idsolutions-public.gpg in Resources */,
-				3E9709491FAC95F5005825C9 /* ncpayroll-private.gpg in Resources */,
-				3E97094A1FAC95F5005825C9 /* bob-public.gpg in Resources */,
-				3E97094B1FAC95F5005825C9 /* bob_enzevalos_public.asc in Resources */,
-				3E97094C1FAC95F5005825C9 /* Localizable.strings in Resources */,
-				3E97094D1FAC95F5005825C9 /* Main.storyboard in Resources */,
-				3E97094E1FAC95F5005825C9 /* ullimuelle-private.gpg in Resources */,
-				3E97094F1FAC95F5005825C9 /* ullimuelle-public.gpg in Resources */,
-				3E9709501FAC95F5005825C9 /* InfoPlist.strings in Resources */,
-				3E9709511FAC95F5005825C9 /* Gamification.storyboard in Resources */,
-				3E9709521FAC95F5005825C9 /* JakobBode.asc in Resources */,
-				3E9709531FAC95F5005825C9 /* GamificationElements.xcassets in Resources */,
-				3E9709541FAC95F5005825C9 /* ncpayroll-public.gpg in Resources */,
-				3E9709551FAC95F5005825C9 /* alice2005-private.gpg in Resources */,
-				3E9709561FAC95F5005825C9 /* bob_enzvalos_private.asc in Resources */,
-				3E9709571FAC95F5005825C9 /* LaunchScreen.storyboard in Resources */,
-				3E9709581FAC95F5005825C9 /* Assets.xcassets in Resources */,
-				3E9709591FAC95F5005825C9 /* alice2005-public.gpg in Resources */,
-				3E97095A1FAC95F5005825C9 /* FrequentCell.xib in Resources */,
-				3E97095B1FAC95F5005825C9 /* bob-private.gpg in Resources */,
-				3E97095C1FAC95F5005825C9 /* alice2005-2.gpg in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A13526731D955BDF00D3BFE1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1475,7 +1200,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh",
+				"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BZipCompression/BZipCompression.framework",
 				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
@@ -1492,7 +1217,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		60E197910FD6B0523F9273AE /* [CP] Check Pods Manifest.lock */ = {
@@ -1513,24 +1238,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		68B66C258A95542F0A7F6A2E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-enzevalos_iphone-AdHoc-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6C4CB727DDC2AC31CCE50B26 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1543,7 +1250,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9C00DB37D91C40FACD06D614 /* [CP] Copy Pods Resources */ = {
@@ -1552,16 +1259,13 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh",
-				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CB3E7E0953A94645ED8E830A /* [CP] Check Pods Manifest.lock */ = {
@@ -1600,24 +1304,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DED9F32968663F222C7F4957 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc-resources.sh",
-				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		E98D3D9213C0A8CF7EDD28B1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1630,7 +1316,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EE4FF4A968A2B2871F67C256 /* [CP] Embed Pods Frameworks */ = {
@@ -1645,7 +1331,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F855B7C77E9E7734BC50BC72 /* [CP] Copy Pods Resources */ = {
@@ -1660,176 +1346,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FB3C7D2ADF04072A4E301DF7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BZipCompression/BZipCompression.framework",
-				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
-				"${BUILT_PRODUCTS_DIR}/Onboard/Onboard.framework",
-				"${BUILT_PRODUCTS_DIR}/VENTokenField/VENTokenField.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BZipCompression.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FrameAccessor.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Onboard.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VENTokenField.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3E9708B21FAC95F5005825C9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3E9708B31FAC95F5005825C9 /* PGPPartialKey.m in Sources */,
-				3E9708B41FAC95F5005825C9 /* Mail.swift in Sources */,
-				3E9708B51FAC95F5005825C9 /* Contact.swift in Sources */,
-				3E9708B61FAC95F5005825C9 /* Record.swift in Sources */,
-				3E9708B71FAC95F5005825C9 /* PGPPacket.m in Sources */,
-				3E9708B81FAC95F5005825C9 /* PGPKeyID.m in Sources */,
-				3E9708B91FAC95F5005825C9 /* NSData+compression.m in Sources */,
-				3E9708BA1FAC95F5005825C9 /* TextFormatter.swift in Sources */,
-				3E9708BB1FAC95F5005825C9 /* Providers.swift in Sources */,
-				3E9708BC1FAC95F5005825C9 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
-				3E9708BD1FAC95F5005825C9 /* ListViewCell.swift in Sources */,
-				3E9708BE1FAC95F5005825C9 /* PGPUser.m in Sources */,
-				3E9708BF1FAC95F5005825C9 /* PGPSecretKeyPacket.m in Sources */,
-				3E9708C01FAC95F5005825C9 /* FolderListCell.swift in Sources */,
-				3E9708C11FAC95F5005825C9 /* NSDateCompare.swift in Sources */,
-				3E9708C21FAC95F5005825C9 /* PGPCompressedPacket.m in Sources */,
-				3E9708C31FAC95F5005825C9 /* PGPRSA.m in Sources */,
-				3E9708C41FAC95F5005825C9 /* InboxCellDelegator.swift in Sources */,
-				3E9708C51FAC95F5005825C9 /* Badges.swift in Sources */,
-				3E9708C61FAC95F5005825C9 /* BadgeCaseCollectionViewCell.swift in Sources */,
-				3E9708C71FAC95F5005825C9 /* Mail_Address+CoreDataClass.swift in Sources */,
-				3E9708C81FAC95F5005825C9 /* CollectionDataDelegate.swift in Sources */,
-				3E9708C91FAC95F5005825C9 /* DebugSettings.swift in Sources */,
-				3E9708CA1FAC95F5005825C9 /* PGPS2K.m in Sources */,
-				3E9708CB1FAC95F5005825C9 /* PGPPacketFactory.m in Sources */,
-				3E9708CC1FAC95F5005825C9 /* LogHandler.swift in Sources */,
-				3E9708CD1FAC95F5005825C9 /* SendViewController.swift in Sources */,
-				3E9708CE1FAC95F5005825C9 /* PGPModificationDetectionCodePacket.m in Sources */,
-				3E9708CF1FAC95F5005825C9 /* EphemeralMail.swift in Sources */,
-				3E9708D01FAC95F5005825C9 /* PGPPKCSEme.m in Sources */,
-				3E9708D11FAC95F5005825C9 /* SubBadgeHeaderTableViewCell.swift in Sources */,
-				3E9708D21FAC95F5005825C9 /* InboxViewController.swift in Sources */,
-				3E9708D31FAC95F5005825C9 /* PGPPublicSubKeyPacket.m in Sources */,
-				3E9708D41FAC95F5005825C9 /* IconsStyleKit.swift in Sources */,
-				3E9708D51FAC95F5005825C9 /* PGPKey.m in Sources */,
-				3E9708D61FAC95F5005825C9 /* UserNameGamificationTableViewCell.swift in Sources */,
-				3E9708D71FAC95F5005825C9 /* CNContactExtension.swift in Sources */,
-				3E9708D81FAC95F5005825C9 /* PGPPKCSEmsa.m in Sources */,
-				3E9708D91FAC95F5005825C9 /* QRScannerView.swift in Sources */,
-				3E9708DA1FAC95F5005825C9 /* PGPCryptoCFB.m in Sources */,
-				3E9708DB1FAC95F5005825C9 /* ReplaceSegue.swift in Sources */,
-				3E9708DC1FAC95F5005825C9 /* KeyRecord.swift in Sources */,
-				3E9708DD1FAC95F5005825C9 /* ArrowTableViewCell.swift in Sources */,
-				3E9708DE1FAC95F5005825C9 /* ContactViewController.swift in Sources */,
-				3E9708DF1FAC95F5005825C9 /* CryptoObject.swift in Sources */,
-				3E9708E01FAC95F5005825C9 /* VENDataDelegate.swift in Sources */,
-				3E9708E11FAC95F5005825C9 /* InviteFriendViewController.swift in Sources */,
-				3E9708E21FAC95F5005825C9 /* UIViewResolver.swift in Sources */,
-				3E9708E31FAC95F5005825C9 /* PGPArmor.m in Sources */,
-				3E9708E41FAC95F5005825C9 /* SwiftPGP.swift in Sources */,
-				3E9708E51FAC95F5005825C9 /* PGPCryptoUtils.m in Sources */,
-				3E9708E61FAC95F5005825C9 /* QRCodeGenerator.swift in Sources */,
-				3E9708E71FAC95F5005825C9 /* ExportInfoViewController.swift in Sources */,
-				3E9708E81FAC95F5005825C9 /* NSMutableData+PGPUtils.m in Sources */,
-				3E9708E91FAC95F5005825C9 /* EnzevalosContact+CoreDataClass.swift in Sources */,
-				3E9708EA1FAC95F5005825C9 /* CustomCells.swift in Sources */,
-				3E9708EB1FAC95F5005825C9 /* GamificationStatusViewController.swift in Sources */,
-				3E9708EC1FAC95F5005825C9 /* ObjectivePGPObject.m in Sources */,
-				3E9708ED1FAC95F5005825C9 /* PGPFingerprint.m in Sources */,
-				3E9708EE1FAC95F5005825C9 /* PGPBigNum.m in Sources */,
-				3E9708EF1FAC95F5005825C9 /* FolderViewController.swift in Sources */,
-				3E9708F01FAC95F5005825C9 /* Theme.swift in Sources */,
-				3E9708F11FAC95F5005825C9 /* LinearBadgeViewController.swift in Sources */,
-				3E9708F21FAC95F5005825C9 /* ContactCell.swift in Sources */,
-				3E9708F31FAC95F5005825C9 /* NSMutableArray+PGPUtils.m in Sources */,
-				3E9708F41FAC95F5005825C9 /* PGPSecretSubKeyPacket.m in Sources */,
-				3E9708F51FAC95F5005825C9 /* PGPUserIDPacket.m in Sources */,
-				3E9708F61FAC95F5005825C9 /* Folder+CoreDataProperties.swift in Sources */,
-				3E9708F71FAC95F5005825C9 /* PersistentMail +CoreDataClass.swift in Sources */,
-				3E9708F81FAC95F5005825C9 /* PGPTrustPacket.m in Sources */,
-				3E9708F91FAC95F5005825C9 /* PersistentKey+CoreDataProperties.swift in Sources */,
-				3E9708FA1FAC95F5005825C9 /* AnimatedSendIcon.swift in Sources */,
-				3E9708FB1FAC95F5005825C9 /* ExportViewController.swift in Sources */,
-				3E9708FC1FAC95F5005825C9 /* RefreshControlExtension.swift in Sources */,
-				3E9708FD1FAC95F5005825C9 /* PGPMPI.m in Sources */,
-				3E9708FE1FAC95F5005825C9 /* enzevalos_iphone.xcdatamodeld in Sources */,
-				3E9708FF1FAC95F5005825C9 /* Mail_Address+CoreDataProperties.swift in Sources */,
-				3E9709001FAC95F5005825C9 /* UserData.swift in Sources */,
-				3E9709011FAC95F5005825C9 /* PGPCryptoHash.m in Sources */,
-				3E9709021FAC95F5005825C9 /* PGPKeyMaterial.m in Sources */,
-				3E9709031FAC95F5005825C9 /* MessageBodyTableViewCell.swift in Sources */,
-				3E9709041FAC95F5005825C9 /* ReadVENDelegate.swift in Sources */,
-				3E9709051FAC95F5005825C9 /* PGPUserAttributePacket.m in Sources */,
-				3E9709061FAC95F5005825C9 /* PersistentKey+CoreDataClass.swift in Sources */,
-				3E9709071FAC95F5005825C9 /* PGPSignaturePacket.m in Sources */,
-				3E9709081FAC95F5005825C9 /* KeyViewController.swift in Sources */,
-				3E9709091FAC95F5005825C9 /* ExportCells.swift in Sources */,
-				3E97090A1FAC95F5005825C9 /* PGPSignatureSubpacketCreationTime.m in Sources */,
-				3E97090B1FAC95F5005825C9 /* CNMailAddressesExtension.swift in Sources */,
-				3E97090C1FAC95F5005825C9 /* FolderListViewController.swift in Sources */,
-				3E97090D1FAC95F5005825C9 /* ViewControllerPannable.swift in Sources */,
-				3E97090E1FAC95F5005825C9 /* TableViewDataDelegate.swift in Sources */,
-				3E97090F1FAC95F5005825C9 /* CircleView.swift in Sources */,
-				3E9709101FAC95F5005825C9 /* PersistentMail +CoreDataProperties.swift in Sources */,
-				3E9709111FAC95F5005825C9 /* ArrowView.swift in Sources */,
-				3E9709121FAC95F5005825C9 /* InboxTableViewCell.swift in Sources */,
-				3E9709131FAC95F5005825C9 /* Onboarding.swift in Sources */,
-				3E9709141FAC95F5005825C9 /* AppDelegate.swift in Sources */,
-				3E9709151FAC95F5005825C9 /* FolderCell.swift in Sources */,
-				3E9709161FAC95F5005825C9 /* GamificationData.swift in Sources */,
-				3E9709171FAC95F5005825C9 /* Folder+CoreDataClass.swift in Sources */,
-				3E9709181FAC95F5005825C9 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
-				3E9709191FAC95F5005825C9 /* PGPSymmetricKeyEncryptedSessionKeyPacket.m in Sources */,
-				3E97091A1FAC95F5005825C9 /* Cryptography.swift in Sources */,
-				3E97091B1FAC95F5005825C9 /* MailHandler.swift in Sources */,
-				3E97091C1FAC95F5005825C9 /* AddressHandler.swift in Sources */,
-				3E97091D1FAC95F5005825C9 /* DataHandler.swift in Sources */,
-				3E97091E1FAC95F5005825C9 /* PGPSignatureSubpacketHeader.m in Sources */,
-				3E97091F1FAC95F5005825C9 /* NSData+PGPUtils.m in Sources */,
-				3E9709201FAC95F5005825C9 /* ReadViewController.swift in Sources */,
-				3E9709211FAC95F5005825C9 /* PGPSignatureSubpacket.m in Sources */,
-				3E9709221FAC95F5005825C9 /* InitViewController.swift in Sources */,
-				3E9709231FAC95F5005825C9 /* MailAddress.swift in Sources */,
-				3E9709241FAC95F5005825C9 /* MailHandlerDelegator.swift in Sources */,
-				3E9709251FAC95F5005825C9 /* PGPFoundation.m in Sources */,
-				3E9709261FAC95F5005825C9 /* PGPLiteralPacket.m in Sources */,
-				3E9709271FAC95F5005825C9 /* PGPPublicKeyPacket.m in Sources */,
-				3E9709281FAC95F5005825C9 /* PGPKeyGenerator.m in Sources */,
-				3E9709291FAC95F5005825C9 /* PGPDSA.m in Sources */,
-				3E97092A1FAC95F5005825C9 /* LabelStyleKit.swift in Sources */,
-				3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */,
-				3E97092B1FAC95F5005825C9 /* PGPPartialSubKey.m in Sources */,
-				3E97092C1FAC95F5005825C9 /* SubBadgeTableViewCell.swift in Sources */,
-				3E97092D1FAC95F5005825C9 /* FrequentCell.swift in Sources */,
-				3E97092E1FAC95F5005825C9 /* ListViewController.swift in Sources */,
-				3E97092F1FAC95F5005825C9 /* FlipTransition.swift in Sources */,
-				3E9709301FAC95F5005825C9 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
-				3E9709311FAC95F5005825C9 /* PGPUserAttributeSubpacket.m in Sources */,
-				3E9709321FAC95F5005825C9 /* PGPOnePassSignaturePacket.m in Sources */,
-				3E9709331FAC95F5005825C9 /* EnzevalosContact+CoreDataProperties.swift in Sources */,
-				3E9709341FAC95F5005825C9 /* BadgeCase.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		A13526711D955BDF00D3BFE1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1954,7 +1476,6 @@
 				471BC9271F960B7C00D64416 /* PGPKeyGenerator.m in Sources */,
 				471BC9071F960B7C00D64416 /* PGPDSA.m in Sources */,
 				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
-				3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */,
 				471BC92C1F960B7C00D64416 /* PGPPartialSubKey.m in Sources */,
 				8428A8681F436A11007649A5 /* SubBadgeTableViewCell.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
@@ -2072,110 +1593,9 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		3E9709601FAC95F5005825C9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1C91456D4E3F1421E66FC28 /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "enzevalos_iphone/PLists/enzevalos_iphone-AdHoc.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
-				INFOPLIST_FILE = "$(SRCROOT)/enzevalos_iphone/PLists/enzevalos-AdHoc-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_ROOT}/OpenSSL-Universal/lib-ios\"",
-					"$(inherited)",
-					"\"${PODS_ROOT}/mailcore2-ios/lib\"",
-				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"MailCore-ios\"",
-					"-l\"c++\"",
-					"-l\"crypto\"",
-					"-l\"iconv\"",
-					"-l\"resolv\"",
-					"-l\"ssl\"",
-					"-l\"xml2\"",
-					"-l\"z\"",
-					"-lbz2",
-					"-framework",
-					"\"BZipCompression\"",
-					"-framework",
-					"\"FrameAccessor\"",
-					"-framework",
-					"\"VENTokenField\"",
-				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
-				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		3E9709611FAC95F5005825C9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "enzevalos_iphone/PLists/enzevalos_iphone-AdHoc.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
-				INFOPLIST_FILE = "$(SRCROOT)/enzevalos_iphone/PLists/enzevalos-AdHoc-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_ROOT}/OpenSSL-Universal/lib-ios\"",
-					"$(inherited)",
-					"\"${PODS_ROOT}/mailcore2-ios/lib\"",
-				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"MailCore-ios\"",
-					"-l\"c++\"",
-					"-l\"crypto\"",
-					"-l\"iconv\"",
-					"-l\"resolv\"",
-					"-l\"ssl\"",
-					"-l\"xml2\"",
-					"-l\"z\"",
-					"-lbz2",
-					"-framework",
-					"\"BZipCompression\"",
-					"-framework",
-					"\"FrameAccessor\"",
-					"-framework",
-					"\"VENTokenField\"",
-				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
-				"SWIFT_OBJC_BRIDGING_HEADER[sdk=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
-				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
-			};
-			name = Release;
-		};
 		A135269E1D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -2274,16 +1694,16 @@
 		};
 		A13526A11D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 91B6C9020C660BEA78FAEF28 /* Pods-enzevalos_iphone.debug.xcconfig */;
+			baseConfigurationReference = AE7C40F081DAC9A0A130BE21 /* Pods-enzevalos_iphone.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
+				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = VJ9C93G68Y;
-				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
+				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2311,7 +1731,6 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2325,16 +1744,16 @@
 		};
 		A13526A21D955BE000D3BFE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA686D4FC9B86445A0C87F0F /* Pods-enzevalos_iphone.release.xcconfig */;
+			baseConfigurationReference = 9857108F0823A3919046C491 /* Pods-enzevalos_iphone.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
+				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = VJ9C93G68Y;
-				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
+				INFOPLIST_FILE = enzevalos_iphone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2362,7 +1781,6 @@
 					"-framework",
 					"\"VENTokenField\"",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2376,7 +1794,7 @@
 		};
 		A13526A41D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6EBCCD02AD3B95D8317810E2 /* Pods-enzevalos_iphoneTests.debug.xcconfig */;
+			baseConfigurationReference = 411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2388,7 +1806,7 @@
 		};
 		A13526A51D955BE000D3BFE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */;
+			baseConfigurationReference = C7733DFEFB7E7CFF38EC1665 /* Pods-enzevalos_iphoneTests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2400,7 +1818,7 @@
 		};
 		A13526A71D955BE000D3BFE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 66E758F271CD65AB3E5FE7A7 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */;
+			baseConfigurationReference = 9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2413,7 +1831,7 @@
 		};
 		A13526A81D955BE000D3BFE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B87EFB6CEAA31452F744015 /* Pods-enzevalos_iphoneUITests.release.xcconfig */;
+			baseConfigurationReference = 796D16D79BED5D60B580E602 /* Pods-enzevalos_iphoneUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = enzevalos_iphoneUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2427,15 +1845,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3E97095F1FAC95F5005825C9 /* Build configuration list for PBXNativeTarget "enzevalos_iphone-AdHoc" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3E9709601FAC95F5005825C9 /* Debug */,
-				3E9709611FAC95F5005825C9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		A13526701D955BDF00D3BFE1 /* Build configuration list for PBXProject "enzevalos_iphone" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
