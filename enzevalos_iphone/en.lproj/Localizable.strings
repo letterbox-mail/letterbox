@@ -128,8 +128,6 @@
 "verifyNow" = "Verify now";
 "toEncrypted" = "Switch to secure tray";
 "invite" = "Invide contact to use encryption";
-"discard" = "Discard message?";
-"discardText" = "The information you have entered will be lost.";
 "discardButton" = "Discard";
 "allMessages" = "All messages from this tray";
 "otherRecords" = "Other trays of this contact";
@@ -167,3 +165,4 @@
 "scanDifferentCode" = "Scan different QR Code";
 "secureContacts" = "Secure Contacts";
 "secureCommunication" = "Secure Communication";
+"ErrorText" = "An error occured. Are you connected to the internet?";
