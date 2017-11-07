@@ -116,9 +116,7 @@ class SwiftPGP: Encryption{
         var ids = [String]()
         let keys: Set<PGPKey>
         if autocrypt{
-            // TODO: AUTOCRYPT FIX keys = pgp.importKeys(from: key)
-            let objAutoCrypt = ObjectiveAutocrypt.init()
-            let keyData = objAutoCrypt.transformKey(key)
+            let keyData = pgp.transformKey(key)
             keys = pgp.importKeys(from: keyData)
         }
         else{

@@ -257,7 +257,6 @@
 		479BBDDD1EFEA3CB00A2107C /* dave_enezvalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */; };
 		479BBDE01EFEA4D800A2107C /* bob_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */; };
 		479BBDE11EFEA4D800A2107C /* alice_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */; };
-		47BAE6C41FB1A7A0009978F8 /* ObjectiveAutocrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BAE6C31FB1A7A0009978F8 /* ObjectiveAutocrypt.m */; };
 		47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */; };
 		5DC190F2042BE7D956F796BE /* Pods_enzevalos_iphone_AdHoc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F4458FC892EBE555836F55 /* Pods_enzevalos_iphone_AdHoc.framework */; };
 		8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
@@ -538,8 +537,6 @@
 		479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bob_enzvalos_private.asc; path = keys/bob_enzvalos_private.asc; sourceTree = "<group>"; };
 		479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = alice_enzvalos_private.asc; path = keys/alice_enzvalos_private.asc; sourceTree = "<group>"; };
 		47B2318A1F0D458100961B28 /* enzevalos_iphone 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "enzevalos_iphone 2.xcdatamodel"; sourceTree = "<group>"; };
-		47BAE6C21FB1A716009978F8 /* ObjectiveAutocrypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveAutocrypt.h; sourceTree = "<group>"; };
-		47BAE6C31FB1A7A0009978F8 /* ObjectiveAutocrypt.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjectiveAutocrypt.m; sourceTree = "<group>"; };
 		47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugSettings.swift; sourceTree = "<group>"; };
 		48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -783,8 +780,6 @@
 				471BC8FA1F960B7C00D64416 /* PGPUser.h */,
 				471BC8FB1F960B7C00D64416 /* PGPUser.m */,
 				471BC8FC1F960B7C00D64416 /* Utils */,
-				47BAE6C21FB1A716009978F8 /* ObjectiveAutocrypt.h */,
-				47BAE6C31FB1A7A0009978F8 /* ObjectiveAutocrypt.m */,
 			);
 			path = ObjectivePGP;
 			sourceTree = "<group>";
@@ -1892,7 +1887,6 @@
 				471BC9061F960B7C00D64416 /* PGPCryptoUtils.m in Sources */,
 				F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */,
 				A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */,
-				47BAE6C41FB1A7A0009978F8 /* ObjectiveAutocrypt.m in Sources */,
 				471BC9341F960B7C00D64416 /* NSMutableData+PGPUtils.m in Sources */,
 				472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */,
 				F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */,
