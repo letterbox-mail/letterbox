@@ -39,10 +39,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 let AUTOCRYPTHEADER = "Autocrypt"
 let SETUPMESSAGE = "Autocrypt-Setup-Message"
-let ADDR = "adr"
+let ADDR = "addr"
 let TYPE = "type"
-let ENCRYPTION = "prefer-encrypted"
-let KEY = "key"
+let ENCRYPTION = "prefer-encrypt"
+let KEY = "keydata"
 
 
 class AutocryptContact {
@@ -64,7 +64,7 @@ class AutocryptContact {
         var field: [String]
         var addr = ""
         var type = "1" // Default value since no one else uses autocrypt...
-        var pref = ""
+        var pref = "mutal"
         var key = ""
 
         if autocrypt != nil {
@@ -84,6 +84,7 @@ class AutocryptContact {
                     switch flag {
                     case ADDR:
                         addr = value.trimmingCharacters(in: .whitespacesAndNewlines)
+                        addr = addr.lowercased()
                         break
                     case TYPE:
                         type = value.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -163,11 +164,11 @@ class MailHandler {
             if let id = keyIDs[0].keyID{
                 let enc = "yes"
                 if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true){
-                    var string = "adr = " + adr + "; type = 1;"
+                    var string = "\(ADDR)=" + adr //+ "; type=1"
                     if enc == "yes"{
-                        string = string + "prefer-encrypted = mutal"
+                        //string = string + "; \(ENC)=mutal"
                     }
-                    string = string + ";key = "+key
+                    string = string + "; \(KEY)="+key
                     builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
                 }
             }
@@ -220,6 +221,9 @@ class MailHandler {
                 else{
                     orderedReceiver[CryptoScheme.UNKNOWN]?.append(mco!)
                 }
+            }
+            else{
+                orderedReceiver[CryptoScheme.UNKNOWN]?.append(mco!)
             }
         }
         return orderedReceiver
@@ -680,7 +684,6 @@ class MailHandler {
                     let publickeys = pgp.importKeys(key: autoc.key, isSecretKey: false, autocrypt: true)
                     for pk in publickeys{
                         _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
-                        
                     }
                 }
                 for keyId in newKeyIds{
