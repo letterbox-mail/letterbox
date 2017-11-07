@@ -329,14 +329,12 @@ class DataHandler {
 
 
     func reset() {
-        removeAll(entity: "EnzevalosContact")
-        removeAll(entity: "PersistentMail")
-        removeAll(entity: "Mail_Address")
-        removeAll(entity: "State")
         removeAll(entity: "Folder")
         removeAll(entity: "SecretKey")
         removeAll(entity: "PersistentKey")
-
+        removeAll(entity: "EnzevalosContact")
+        removeAll(entity: "Mail_Address")
+        removeAll(entity: "PersistentMail")
     }
 
     // Save, load, search
