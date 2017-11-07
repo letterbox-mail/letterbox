@@ -13,7 +13,8 @@ let datahandler = DataHandler.handler
 
 func loadTestAcc(){
     //loadBobEnzevalos()
-    loadAlice2005()
+    //loadAlice2005()
+    loadCharlieEnzevalos()
     
 }
 
@@ -41,6 +42,12 @@ func loadAlice2005(){
 
 func loadBobEnzevalos(){
     let user = enzevalos(name: "bob", pw: "VagotOshaicceov")
+    userdefaults(defaults: user)
+}
+
+
+func loadCharlieEnzevalos(){
+    let user = enzevalos(name: "charlie", pw: "tydpawdAwIdPyuc")
     userdefaults(defaults: user)
 }
 
