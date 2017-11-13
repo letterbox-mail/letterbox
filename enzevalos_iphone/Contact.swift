@@ -85,8 +85,7 @@ extension Contact {
             return color
         }
         // Overflow?!
-        let prim: Int
-        prim = 653
+        let prim = 653
 
         let hash = (abs(self.name.hash)) % prim
         return UIColor(hue: CGFloat(hash) / CGFloat(prim), saturation: 1, brightness: 0.75, alpha: 1)

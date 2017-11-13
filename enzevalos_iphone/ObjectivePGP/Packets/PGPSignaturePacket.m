@@ -293,6 +293,9 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
 
+    if (signingKeyPacket == NULL){
+        return NO;
+    }
     switch (signingKeyPacket.publicKeyAlgorithm) {
         case PGPPublicKeyAlgorithmRSA:
         case PGPPublicKeyAlgorithmRSASignOnly:

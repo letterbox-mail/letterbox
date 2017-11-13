@@ -24,9 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
-        loadTestAcc()
 
         resetApp()
+		HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
@@ -85,10 +85,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func resetApp() {
         if UserDefaults.standard.bool(forKey: "reset") {
-            if UserManager.loadUserValue(Attribute.userAddr) as! String == "ullimuelle@web.de" {
-                _ = MailHandler.init()
-                //mailhandler.move(mails: DataHandler.handler.findFolder(name: "INBOX").mailsOfFolder, from: "INBOX", to: "Archive")
-            }
             DataHandler.handler.reset()
             Onboarding.credentials = nil
             Onboarding.credentialFails = 0
@@ -167,7 +163,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //let pushedViewControllers = (self.window?.rootViewController as! UINavigationController).viewControllers
         let presentedViewController = self.window!.rootViewController!//pushedViewControllers[pushedViewControllers.count - 1]
 
-        presentedViewController.present(alertController, animated: false, completion: nil)
+        presentedViewController.present(alertController, animated: true, completion: nil)
     }
 
 

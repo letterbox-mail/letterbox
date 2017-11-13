@@ -12,19 +12,22 @@ let pgp = SwiftPGP()
 let datahandler = DataHandler.handler
 
 func loadTestAcc(){
-    loadAlice2005()
+    loadBobEnzevalos()
+    //loadAlice2005()
+    //loadCharlieEnzevalos()
+    importPublicKeys()
+
+    
 }
 
 func loadUlli(){
     let user =  web(name: "ullimuelle", pw: "dun3bate")
     userdefaults(defaults: user)
-    importPublicKeys()
     importSecretKey(file: "ullimuelle-private", type: "gpg")
   
 }
 
 func loadBob2005(){
-    importPublicKeys()
     importSecretKey(file: "bob2005-private", type: "gpg")
 
 }
@@ -32,9 +35,20 @@ func loadBob2005(){
 func loadAlice2005(){
     let user = web(name: "alice2005", pw: "WJ$CE:EtUo3E$")
     userdefaults(defaults: user)
-    importPublicKeys()
     importSecretKey(file: "alice2005-private", type: "gpg")
   
+}
+
+func loadBobEnzevalos(){
+    let user = enzevalos(name: "bob", pw: "VagotOshaicceov")
+    userdefaults(defaults: user)
+    importSecretKey(file: "bob_enzvalos_private", type: "asc")
+}
+
+
+func loadCharlieEnzevalos(){
+    let user = enzevalos(name: "charlie", pw: "tydpawdAwIdPyuc")
+    userdefaults(defaults: user)
 }
 
 // Enzevalos!

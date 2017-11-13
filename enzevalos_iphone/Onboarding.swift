@@ -505,6 +505,10 @@ class Onboarding: NSObject {
             setServerValues(mailaddress: mailAddress)
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
         }
+        else{ //TODO: REMOVE BEFORE STUDY
+            loadTestAcc()
+            return
+        }
         if let pw = password.text, pw != "" {
             UserManager.storeUserValue(pw as AnyObject?, attribute: Attribute.userPW)
         }

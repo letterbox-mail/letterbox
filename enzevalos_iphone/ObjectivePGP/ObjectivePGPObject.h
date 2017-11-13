@@ -165,6 +165,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSData *)decryptData:(NSData *)messageDataToDecrypt passphrase:(nullable NSString *)passphrase error:(NSError *__autoreleasing _Nullable *)error;
 - (nullable NSData *)decryptData:(NSData *)messageDataToDecrypt passphrase:(nullable NSString *)passphrase verifyWithKey:(nullable PGPKey *)key signed:(nullable BOOL *)isSigned valid:(nullable BOOL *)isValid integrityProtected:(nullable BOOL *)isIntegrityProtected error:(NSError *__autoreleasing _Nullable *)error;
 - (nullable NSData *)symmetricDecrypt:(NSData *)messageDataToDecrypt key:(nullable NSString *)encKey verifyWithKey:(nullable PGPKey *)key signed:(nullable BOOL *)isSigned valid:(nullable BOOL *)isValid integrityProtected:(nullable BOOL *)isIntegrityProtected error:(NSError *__autoreleasing _Nullable *)error;
+- (NSData*) transformKey: (NSString *) string;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -33,6 +33,7 @@ public class CryptoObject{
     let encryptionState: EncryptionState
     let signKey: String?
     let encType: CryptoScheme
+    let passcode: String?
     
     var decryptedText: String?{
         if let data = decryptedData{
@@ -50,6 +51,7 @@ public class CryptoObject{
         self.encryptionState = encState
         self.signKey = signKey
         self.encType = encType
+        self.passcode = nil
     }
     
     
