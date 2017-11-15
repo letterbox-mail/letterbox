@@ -78,11 +78,9 @@ extension Contact {
             if let color = enzCon.color {
                 return color
             }
-            let maxValue: UInt32 = 1000
-            let colorValue = CGFloat(arc4random_uniform(maxValue))/CGFloat(maxValue)
-            let color = UIColor(hue: colorValue, saturation: 1, brightness: 0.75, alpha: 1)
-            enzCon.color = color
-            return color
+
+            enzCon.color = UIColor(hue: CGFloat(arc4random()) / CGFloat(UINT32_MAX), saturation: 1, brightness: 0.75, alpha: 1)
+            return enzCon.color!
         }
         // Overflow?!
         let prim = 653

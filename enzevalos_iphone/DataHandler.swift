@@ -330,6 +330,9 @@ class DataHandler {
         removeAll(entity: "Folder")
         removeAll(entity: "SecretKey")
         removeAll(entity: "PersistentKey")
+        removeAll(entity: "EnzevalosContact")
+        removeAll(entity: "Mail_Address")
+        removeAll(entity: "PersistentMail")
 
         removeAll(entity: "PseudonymKey")
         removeAll(entity: "PseudonymMailAddress")
