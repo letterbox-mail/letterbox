@@ -317,6 +317,8 @@
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
+		A1D5BEA41FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5BEA31FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift */; };
+		A1D5BEA61FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5BEA51FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift */; };
 		A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */; };
 		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
@@ -598,6 +600,8 @@
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-private.gpg"; path = "keys/alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
+		A1D5BEA31FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A1D5BEA51FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymKey+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListViewController.swift; sourceTree = "<group>"; };
 		A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListCell.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
@@ -895,6 +899,7 @@
 				475B00401F7BB6D6006CDD41 /* PersistentKey+CoreDataClass.swift */,
 				475B00411F7BB6D6006CDD41 /* PersistentKey+CoreDataProperties.swift */,
 				472F39781E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift */,
+				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				475DF4771F0D54C9009D807F /* Folder+CoreDataClass.swift */,
 				475DF4781F0D54C9009D807F /* Folder+CoreDataProperties.swift */,
 				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
@@ -904,6 +909,8 @@
 				472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */,
 				A1B3C6EF1FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift */,
 				A114E42F1FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift */,
+				A1D5BEA51FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift */,
+				A1D5BEA31FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift */,
 			);
 			name = coredata;
 			sourceTree = "<group>";
@@ -912,7 +919,6 @@
 			isa = PBXGroup;
 			children = (
 				472F39921E279792009260FB /* protocols */,
-				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				A114E4311FACB23000E40243 /* StringExtension.swift */,
 				47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */,
 				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
@@ -1868,6 +1874,7 @@
 				471BC9141F960B7C00D64416 /* PGPSecretKeyPacket.m in Sources */,
 				A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
+				A1D5BEA41FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift in Sources */,
 				471BC90C1F960B7C00D64416 /* PGPCompressedPacket.m in Sources */,
 				471BC9091F960B7C00D64416 /* PGPRSA.m in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
@@ -1981,6 +1988,7 @@
 				471BC92C1F960B7C00D64416 /* PGPPartialSubKey.m in Sources */,
 				8428A8681F436A11007649A5 /* SubBadgeTableViewCell.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
+				A1D5BEA61FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
 				F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */,
 				471BC91B1F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,

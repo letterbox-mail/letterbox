@@ -62,7 +62,7 @@
             <fetchIndexElement property="date" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="PseudonymKey" representedClassName="PseudonymKey" syncable="YES" codeGenerationType="class">
+    <entity name="PseudonymKey" representedClassName="PseudonymKey" syncable="YES">
         <attribute name="keyID" attributeType="String" syncable="YES"/>
         <attribute name="pseudonym" attributeType="String" syncable="YES"/>
     </entity>
