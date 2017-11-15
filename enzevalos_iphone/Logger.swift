@@ -10,6 +10,8 @@ import Foundation
 
 class Logger {
     
+    static let fileName = "log.json"
+    
     /**
      * Attention: assumes message to be right escaped (espacially ',')
      */
@@ -224,6 +226,79 @@ class Logger {
             mess = "\"" + mess.components(separatedBy: "") .map { $0 == "\"" ? "\"\"": $0 }.joined() + "\""
         }
         return mess
+    }
+    
+    static func saveToDisk() {
+        
+        var json = "some text"
+        
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            
+            let fileURL = dir.appendingPathComponent(fileName)
+
+            // reading
+            do {
+                let currentContent = try String(contentsOf: fileURL, encoding: .utf8)
+                if !currentContent.isEmpty {
+                    json = "\(json)\n\(currentContent)"
+                }
+            }
+            catch {
+                print("Error while reading logfile: \(error.localizedDescription)")
+            }
+            // writing
+            do {
+                try json.write(to: fileURL, atomically: false, encoding: .utf8)
+            }
+            catch {
+                print("Error while writing logfile: \(error.localizedDescription)")
+            }
+            
+        } else {
+            print("No document folder?!")
+        }
+    }
+    
+    static func sendLog() {
+        
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            
+            let fileURL = dir.appendingPathComponent(fileName)
+            
+            // reading
+            do {
+                let currentContent = try String(contentsOf: fileURL, encoding: .utf8)
+                if !currentContent.isEmpty {
+                    AppDelegate.getAppDelegate().mailHandler.send(["logMailAddress"], ccEntrys: [], bccEntrys: [], subject: "Log", message: currentContent, callback: sendCallback)
+                }
+            }
+            catch {
+                print("Error while reading logfile: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    static func sendCallback(error: Error?) {
+        guard error == nil else {
+            print(error!)
+            return
+        }
+        
+        clearLog()
+    }
+    
+    static func clearLog() {
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            
+            let fileURL = dir.appendingPathComponent(fileName)
+            
+            do {
+                try String().write(to: fileURL, atomically: false, encoding: .utf8)
+            }
+            catch {
+                print("Error while clearing logfile: \(error.localizedDescription)")
+            }
+        }
     }
 }
 
