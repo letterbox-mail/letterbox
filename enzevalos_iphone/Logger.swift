@@ -12,183 +12,68 @@ class Logger {
     
     static let fileName = "log.json"
     
-    /**
-     * Attention: assumes message to be right escaped (espacially ',')
-     */
-    static func log(message: String, type: Log) {
-
-        /*
-         Date,type,...
-         */
-
-        var entries: [String] = []
-        let now = Date()
-        entries.append(escape(message: now.description))
-        entries.append(escape(message: type.rawValue))
-        entries.append(message)
-        NSLog("\(entries.joined(separator: ","))")
-    }
-
-    /**
-     * Attention: assumes message to be right escaped (espacially ',')
-     */
-    static func logMail(with from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, /*decryptedWithOldPrivateKey = false,*/ isSigned: Bool, /*isCorrectlySigned = true,*/ keyID: String, message: String) {
+    static func log(mailSent event: Event, from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
         
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,...
-         */
+        event.append(key: "type", value: LoggingEventType.mailSent)
+        event.append(key: "from", value: from)
+        event.append(key: "to", value: Logger.resolve(mailAddresses: to))
+        event.append(key: "cc", value: Logger.resolve(mailAddresses: cc))
+        event.append(key: "bcc", value: Logger.resolve(mailAddresses: bcc))
+        event.append(key: "bodyLength", value: bodyLength)
+        event.append(key: "isEncrypted", value: isEncrypted)
+        event.append(key: "decryptedBodyLength", value: decryptedBodyLength)
+        event.append(key: "decryptedWithOldPrivateKey", value: decryptedWithOldPrivateKey)
+        event.append(key: "isSigned", value: isSigned)
+        event.append(key: "isCorrectlySigned", value: isCorrectlySigned)
+        event.append(key: "signingKeyID", value: Logger.resolve(keyID: signingKeyID))
+        event.append(key: "myKeyID", value: Logger.resolve(keyID: myKeyID))
+        event.append(key: "secureAddresses", value: Logger.resolve(mailAddresses:secureAddresses)) //means the addresses, which received a secure mail
+        event.append(key: "encryptedForKeyIDs", value: Logger.resolve(keyIDs: encryptedForKeyIDs))
         
-        var messages: [String] = []
-        messages.append(escape(message: resolve(mailAddress: from)))
-        
-        //to
-        var array: [String] = []
-        for entry in to {
-            array.append(resolve(mailAddress: entry))
-        }
-        messages.append(escape(message: array.joined(separator: ";")))
-        
-        //cc
-        array = []
-        for entry in cc {
-            array.append(resolve(mailAddress: entry))
-        }
-        messages.append(escape(message: array.joined(separator: ";")))
-        
-        //bcc
-        array = []
-        for entry in bcc {
-            array.append(resolve(mailAddress: entry))
-        }
-        messages.append(escape(message: array.joined(separator: ";")))
-        
-        //bodyLength
-        messages.append(escape(message: String(bodyLength)))
-        
-        //isEncrypted
-        messages.append(escape(message: String(isEncrypted)))
-        
-        //decryptedBodyLength
-        messages.append(escape(message: String(decryptedBodyLength)))
-        
-        //decryptedWithOldPrivateKey
-        messages.append(escape(message: String(false)))
-        
-        //isSigned
-        messages.append(escape(message: String(isSigned)))
-        
-        //isCorrectlySigned
-        messages.append(escape(message: String(true)))
-        
-        //keyID - the keyID the message was signed with
-        messages.append(escape(message: resolve(keyID: keyID)))
-        
-        //message
-        messages.append(message)
-        
-        log(message: messages.joined(separator: ","), type: Log.mail)
     }
     
-    static func log(sent from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, /*decryptedWithOldPrivateKey = false,*/ isSigned: Bool, /*isCorrectlySigned = true,*/ keyID: String, /*, sent*/ secureAddresses: [String], otherKeyIDs: [String]) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,inSentFolder,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey(=false),isSigned,isCorrectlySigned(=true),keyID,sent,secureAddresses,otherKeyIDs
-         */
-        var messages: [String] = []
-        //sent - mailLog-type
-        messages.append(escape(message: MailLog.sent.rawValue))
+    static func log(mailRead event: Event, from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
         
-        //secureAddresses
-        var array: [String] = []
-        for entry in secureAddresses {
-            array.append(resolve(mailAddress: entry))
-        }
-        messages.append(escape(message: array.joined(separator: ";")))
+        event.append(key: "type", value: LoggingEventType.mailRead)
+        event.append(key: "from", value: from)
+        event.append(key: "to", value: Logger.resolve(mailAddresses: to))
+        event.append(key: "cc", value: Logger.resolve(mailAddresses: cc))
+        event.append(key: "bcc", value: Logger.resolve(mailAddresses: bcc))
+        event.append(key: "bodyLength", value: bodyLength)
+        event.append(key: "isEncrypted", value: isEncrypted)
+        event.append(key: "decryptedBodyLength", value: decryptedBodyLength)
+        event.append(key: "decryptedWithOldPrivateKey", value: decryptedWithOldPrivateKey)
+        event.append(key: "isSigned", value: isSigned)
+        event.append(key: "isCorrectlySigned", value: isCorrectlySigned)
+        event.append(key: "signingKeyID", value: Logger.resolve(keyID: signingKeyID))
+        event.append(key: "myKeyID", value: Logger.resolve(keyID: myKeyID))
+        event.append(key: "secureAddresses", value: secureAddresses) //could mean the addresses, in this mail we have a key for
+        event.append(key: "encryptedForKeyIDs", value: Logger.resolve(keyIDs: encryptedForKeyIDs))
         
-        //otherKeyIDs
-        array = []
-        for entry in otherKeyIDs {
-            array.append(resolve(keyID: entry))
-        }
-        messages.append(escape(message: array.joined(separator: ";")))
-        
-        logMail(with: from, to: to, cc: cc, bcc: bcc, bodyLength: bodyLength, isEncrypted: isEncrypted, decryptedBodyLength: decryptedBodyLength, isSigned: isSigned, keyID: keyID, message: messages.joined(separator: ","))
     }
     
-    /**
-     * Attention: assumes message to be right escaped (espacially ',')
-     */
-    static func log(generic mail: PersistentMail, message: String) {
-
-        /*
-         Date,type,from,cc,bcc,bodyLength,inSentFolder,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID...
-         */
-        //maybe add a resolved subject?
+    static func log(mailRead event: Event, mail: PersistentMail) {
         
-        var messages: [String] = []
-        messages.append(escape(message: resolve(mailAddress: mail.from)))
-        var to: [String] = []
-        for addr in mail.to {
-            to.append(resolve(mailAddress: addr as! MailAddress))
-        }
-        messages.append(escape(message: to.joined(separator: ";")))
-
-        var cc: [String] = []
-        if let mailCC = mail.cc {
-            for addr in mailCC {
-                cc.append(resolve(mailAddress: addr as! MailAddress))
-            }
-        }
-        messages.append(escape(message: cc.joined(separator: ";")))
-
-        var bcc: [String] = []
-        if let mailBCC = mail.bcc {
-            for addr in mailBCC {
-                bcc.append(resolve(mailAddress: addr as! MailAddress))
-            }
-        }
-        messages.append(escape(message: bcc.joined(separator: ";")))
-
-        messages.append(escape(message: String((mail.body ?? "").count)))
+        event.append(key: "type", value: LoggingEventType.mailRead)
+        event.append(key: "from", value: mail.from)
+        event.append(key: "to", value: Logger.resolve(mailAddresses: mail.to))
+        event.append(key: "cc", value: Logger.resolve(mailAddresses: mail.cc ?? NSSet()))
+        event.append(key: "bcc", value: Logger.resolve(mailAddresses: mail.bcc ?? NSSet()))
+        event.append(key: "bodyLength", value: (mail.body ?? "").count)
+        event.append(key: "isEncrypted", value: mail.isEncrypted)
+        event.append(key: "decryptedBodyLength", value: (mail.decryptedBody ?? "").count)
+        event.append(key: "decryptedWithOldPrivateKey", value: mail.decryptedWithOldPrivateKey)
+        event.append(key: "isSigned", value: mail.isSigned)
+        event.append(key: "isCorrectlySigned", value: mail.isCorrectlySigned)
+        //TODO:
+        //event.append(key: "signingKeyID", value: Logger.resolve(keyID: signingKeyID))
+        //event.append(key: "myKeyID", value: Logger.resolve(keyID: myKeyID))
         
-        messages.append(escape(message: String(mail.folder.path == UserManager.backendSentFolderPath)))
         
-        messages.append(escape(message: String(mail.isEncrypted)))
-        messages.append(escape(message: String(mail.unableToDecrypt)))
-        messages.append(escape(message: String((mail.decryptedBody ?? "").count)))
-        messages.append(escape(message: String(mail.decryptedWithOldPrivateKey)))
         
-        messages.append(escape(message: String(mail.isSigned)))
-        messages.append(escape(message: String(mail.isCorrectlySigned)))
-        messages.append(escape(message: resolve(keyID: mail.keyID ?? "")))
+        //event.append(key: "secureAddresses", value: secureAddresses) //could mean the addresses, in this mail we have a key for
+        //event.append(key: "encryptedForKeyIDs", value: Logger.resolve(keyIDs: encryptedForKeyIDs))
         
-        messages.append(message)
-        log(message: "\(messages.joined(separator: ","))", type: .mail)
-    }
-
-    static func log(received mail: PersistentMail) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,received,,
-         */
-        log(generic: mail, message: escape(message: MailLog.received.rawValue)+",,")
-    }
-
-    static func log(read mail: PersistentMail) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,read,,
-         */
-        log(generic: mail, message: escape(message: MailLog.read.rawValue)+",,")
-    }
-    
-    /*static func log(sent mail: PersistentMail) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,sent
-         */
-        MailLog.sent.append(mail: mail)
-    }*/
-    
-
-    static func log(sent mail: PersistentMail) {
-
     }
 
     static func logInbox() {
@@ -216,6 +101,7 @@ class Logger {
     
     //get an pseudonym for a keyID
     static func resolve(keyID: String) -> String {
+        //TODO: implement
         return ""
     }
     
@@ -226,6 +112,30 @@ class Logger {
             mess = "\"" + mess.components(separatedBy: "") .map { $0 == "\"" ? "\"\"": $0 }.joined() + "\""
         }
         return mess
+    }
+    
+    static func resolve(mailAddresses: NSSet) -> [String] {
+        var result: [String] = []
+        for addr in mailAddresses {
+            result.append(resolve(mailAddress: addr as! MailAddress))
+        }
+        return result
+    }
+    
+    static func resolve(mailAddresses: [String]) -> [String] {
+        var result: [String] = []
+        for addr in mailAddresses {
+            result.append(resolve(mailAddress: addr))
+        }
+        return result
+    }
+    
+    static func resolve(keyIDs: [String]) -> [String] {
+        var result: [String] = []
+        for id in keyIDs {
+            result.append(resolve(keyID: id))
+        }
+        return result
     }
     
     static func saveToDisk() {
@@ -302,7 +212,7 @@ class Logger {
     }
 }
 
-enum Log: String {
+enum LogType: String {
     case
     unknown = "unknown", //unknown type
     key = "key", //If a new key is discovered/created/verified/etc. this should be logged here
