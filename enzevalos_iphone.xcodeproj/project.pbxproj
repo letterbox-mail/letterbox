@@ -274,9 +274,7 @@
 		8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */; };
 		8428A8701F436A1E007649A5 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
 		8428A8711F436A1E007649A5 /* GamificationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */; };
-		8428A8761F436A9A007649A5 /* GamificationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */; };
 		8428A8771F436A9D007649A5 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
-		8428A8781F436AA1007649A5 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */; };
 		8428A8791F436AA4007649A5 /* BadgeCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86A1F436A1E007649A5 /* BadgeCase.swift */; };
 		8428A87A1F436AA9007649A5 /* ArrowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */; };
 		8428A87B1F436AAC007649A5 /* UserNameGamificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8641F436A11007649A5 /* UserNameGamificationTableViewCell.swift */; };
@@ -367,7 +365,12 @@
 		F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D711E1D327200804E1E /* IconsStyleKit.swift */; };
 		F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
 		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
+		F1ADF0751FBDF7D20017AE31 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
+		F1ADF0761FBDF8120017AE31 /* PersistentMail +CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */; };
+		F1ADF0771FBDF9B40017AE31 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AF938E1E2D04BA00755128 /* CustomCells.swift */; };
+		F1E918D71FBDEECB00D60418 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E918D61FBDEECA00D60418 /* LoggerTests.swift */; };
+		F1E918D81FBDF11200D60418 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
 		F1F070281FA0DF3F004A860A /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1F070261FA0DF3F004A860A /* Inbox.storyboard */; };
 		F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 /* End PBXBuildFile section */
@@ -661,6 +664,7 @@
 		F1984D731E1E92B300804E1E /* LabelStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelStyleKit.swift; sourceTree = "<group>"; };
 		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		F1AF938E1E2D04BA00755128 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
+		F1E918D61FBDEECA00D60418 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		F1F070271FA0DF3F004A860A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -716,7 +720,6 @@
 				8B87EFB6CEAA31452F744015 /* Pods-enzevalos_iphoneUITests.release.xcconfig */,
 				91B6C9020C660BEA78FAEF28 /* Pods-enzevalos_iphone.debug.xcconfig */,
 				AA686D4FC9B86445A0C87F0F /* Pods-enzevalos_iphone.release.xcconfig */,
-				F1C91456D4E3F1421E66FC28 /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */,
 				1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */,
 			);
 			name = Pods;
@@ -1104,6 +1107,7 @@
 			children = (
 				A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */,
 				A13526921D955BE000D3BFE1 /* Info.plist */,
+				F1E918D61FBDEECA00D60418 /* LoggerTests.swift */,
 			);
 			path = enzevalos_iphoneTests;
 			sourceTree = "<group>";
@@ -1788,6 +1792,7 @@
 				3E9708F31FAC95F5005825C9 /* NSMutableArray+PGPUtils.m in Sources */,
 				3E9708F41FAC95F5005825C9 /* PGPSecretSubKeyPacket.m in Sources */,
 				3E9708F51FAC95F5005825C9 /* PGPUserIDPacket.m in Sources */,
+				F1ADF0751FBDF7D20017AE31 /* Logger.swift in Sources */,
 				3E9708F61FAC95F5005825C9 /* Folder+CoreDataProperties.swift in Sources */,
 				3E9708F71FAC95F5005825C9 /* PersistentMail +CoreDataClass.swift in Sources */,
 				3E9708F81FAC95F5005825C9 /* PGPTrustPacket.m in Sources */,
@@ -2003,14 +2008,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1ADF0771FBDF9B40017AE31 /* Mail.swift in Sources */,
 				8428A8771F436A9D007649A5 /* LinearBadgeViewController.swift in Sources */,
 				8428A87A1F436AA9007649A5 /* ArrowTableViewCell.swift in Sources */,
 				A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */,
 				8428A87B1F436AAC007649A5 /* UserNameGamificationTableViewCell.swift in Sources */,
-				8428A8781F436AA1007649A5 /* InviteFriendViewController.swift in Sources */,
-				8428A8761F436A9A007649A5 /* GamificationStatusViewController.swift in Sources */,
 				8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */,
 				8428A8811F436AC0007649A5 /* GamificationData.swift in Sources */,
+				F1ADF0761FBDF8120017AE31 /* PersistentMail +CoreDataClass.swift in Sources */,
+				F1E918D81FBDF11200D60418 /* Logger.swift in Sources */,
 				8428A87F1F436AB8007649A5 /* CircleView.swift in Sources */,
 				8428A87E1F436AB5007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
 				8428A8821F436AC3007649A5 /* Badges.swift in Sources */,
@@ -2018,6 +2024,7 @@
 				8428A87D1F436AB2007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */,
 				8428A87C1F436AAF007649A5 /* SubBadgeTableViewCell.swift in Sources */,
 				8428A8791F436AA4007649A5 /* BadgeCase.swift in Sources */,
+				F1E918D71FBDEECB00D60418 /* LoggerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2105,7 +2112,6 @@
 /* Begin XCBuildConfiguration section */
 		3E9709601FAC95F5005825C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1C91456D4E3F1421E66FC28 /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

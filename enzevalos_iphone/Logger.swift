@@ -10,7 +10,7 @@ import Foundation
 
 class Logger {
     
-    static let fileName = "log.json"
+    static let defaultFileName = "log.json"
     
     /**
      * Attention: assumes message to be right escaped (espacially ',')
@@ -228,30 +228,34 @@ class Logger {
         return mess
     }
     
-    static func saveToDisk() {
-        
-        var json = "some text"
+    static func saveToDisk(json: String, fileName: String = defaultFileName) {
         
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             
             let fileURL = dir.appendingPathComponent(fileName)
 
-            // reading
-            do {
-                let currentContent = try String(contentsOf: fileURL, encoding: .utf8)
-                if !currentContent.isEmpty {
-                    json = "\(json)\n\(currentContent)"
+            if FileManager.default.fileExists(atPath: fileURL.path) {
+                // append
+                do {
+                    let fileHandle = try FileHandle(forUpdating: fileURL)
+                    
+                    fileHandle.seekToEndOfFile()
+                    if let encoded = "\n\(json)".data(using: .utf8) {
+                        fileHandle.write(encoded)
+                    }
+                    fileHandle.closeFile()
                 }
-            }
-            catch {
-                print("Error while reading logfile: \(error.localizedDescription)")
-            }
-            // writing
-            do {
-                try json.write(to: fileURL, atomically: false, encoding: .utf8)
-            }
-            catch {
-                print("Error while writing logfile: \(error.localizedDescription)")
+                catch {
+                    print("Error while appending to logfile: \(error.localizedDescription)")
+                }
+            } else {
+                // write new
+                do {
+                    try json.write(to: fileURL, atomically: false, encoding: .utf8)
+                }
+                catch {
+                    print("Error while writing logfile: \(error.localizedDescription)")
+                }
             }
             
         } else {
@@ -259,7 +263,7 @@ class Logger {
         }
     }
     
-    static func sendLog() {
+    static func sendLog(fileName: String = defaultFileName) {
         
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             
@@ -287,7 +291,7 @@ class Logger {
         clearLog()
     }
     
-    static func clearLog() {
+    static func clearLog(fileName: String = defaultFileName) {
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             
             let fileURL = dir.appendingPathComponent(fileName)

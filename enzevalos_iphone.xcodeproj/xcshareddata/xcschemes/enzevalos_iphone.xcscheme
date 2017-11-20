@@ -38,6 +38,11 @@
                BlueprintName = "enzevalos_iphoneTests"
                ReferencedContainer = "container:enzevalos_iphone.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "GamificationDataUnitTest">
+               </Test>
+            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO">
