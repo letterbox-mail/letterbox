@@ -333,6 +333,7 @@ class MailHandler {
                 sendData = builder.data()
                 sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
                 //TODO handle different callbacks
+                //TODO add logging call here for the case the full email is unencrypted
                 sendOperation.start(callback)
                 createSendCopy(sendData: sendData)
             }
