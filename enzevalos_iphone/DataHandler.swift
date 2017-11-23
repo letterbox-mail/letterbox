@@ -743,7 +743,7 @@ class DataHandler {
     private func createPseudonymMailAddress(mailAddress: String) -> PseudonymMailAddress {
         let pseudonymMailAddress = NSEntityDescription.insertNewObject(forEntityName: "PseudonymMailAddress", into: managedObjectContext) as! PseudonymMailAddress
         var found = false
-        while found {
+        while !found {
             let pseudo = String.random()
             let response = find("PseudonymMailAddress", type: "pseudonym", search: pseudo) as? [PseudonymMailAddress]
             if (response ?? []).count == 0 || response![0].pseudonym == "" {
@@ -757,7 +757,7 @@ class DataHandler {
     }
     
     func getPseudonymMailAddress(mailAddress: String) -> PseudonymMailAddress {
-        let result = find("PseudonymMailAddress", type: "mailAddress", search: mailAddress.lowercased())
+        let result = find("PseudonymMailAddress", type: "address", search: mailAddress.lowercased())
         if let list = result as? [PseudonymMailAddress], list.count > 0 {
             return list[0]
         }
@@ -767,7 +767,7 @@ class DataHandler {
     private func createPseudonymKey(keyID: String) -> PseudonymKey {
         let pseudonymKey = NSEntityDescription.insertNewObject(forEntityName: "PseudonymKey", into: managedObjectContext) as! PseudonymKey
         var found = false
-        while found {
+        while !found {
             let pseudo = String.random()
             let response = find("PseudonymKey", type: "pseudonym", search: pseudo) as? [PseudonymKey]
             if (response ?? []).count == 0 || response![0].pseudonym == "" {

@@ -10,7 +10,7 @@ import Foundation
 
 class Logger {
     
-    static var logging = false
+    static var logging = true//false
     
     static let defaultFileName = "log.json"
     
@@ -42,8 +42,8 @@ class Logger {
         
         var event = plainLogDict()
         
-        event["type"] = LoggingEventType.mailSent
-        event["from"] = from
+        event["type"] = LoggingEventType.mailSent.rawValue
+        event["from"] = Logger.resolve(mailAddress: from)
         event["to"] = Logger.resolve(mailAddresses: to)
         event["cc"] = Logger.resolve(mailAddresses: cc)
         event["bcc"] = Logger.resolve(mailAddresses: bcc)
@@ -69,8 +69,8 @@ class Logger {
         
         var event = plainLogDict()
         
-        event["type"] = LoggingEventType.mailRead
-        event["from"] = from
+        event["type"] = LoggingEventType.mailRead.rawValue
+        event["from"] = Logger.resolve(mailAddress: from)
         event["to"] = Logger.resolve(mailAddresses: to)
         event["cc"] = Logger.resolve(mailAddresses: cc)
         event["bcc"] = Logger.resolve(mailAddresses: bcc)
@@ -82,7 +82,7 @@ class Logger {
         event["isCorrectlySigned"] = isCorrectlySigned
         event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
         event["myKeyID"] = Logger.resolve(keyID: myKeyID)
-        event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
+        event["secureAddresses"] = Logger.resolve(mailAddresses: secureAddresses) //could mean the addresses, in this mail we have a key for
         event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
         
         saveToDisk(json: dictToJSON(fields: event))
@@ -95,8 +95,8 @@ class Logger {
             return
         }
         
-        event["type"] = LoggingEventType.mailRead
-        event["from"] = mail.from
+        event["type"] = LoggingEventType.mailRead.rawValue
+        event["from"] = Logger.resolve(mailAddress: mail.from.mailAddress)
         event["to"] = Logger.resolve(mailAddresses: mail.to)
         event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
         event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
@@ -125,8 +125,8 @@ class Logger {
             return
         }
         
-        event["type"] = LoggingEventType.mailReceived
-        event["from"] = mail.from
+        event["type"] = LoggingEventType.mailReceived.rawValue
+        event["from"] = Logger.resolve(mailAddress: mail.from)
         event["to"] = Logger.resolve(mailAddresses: mail.to)
         event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
         event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
@@ -221,7 +221,7 @@ class Logger {
                     let fileHandle = try FileHandle(forUpdating: fileURL)
                     
                     fileHandle.seekToEndOfFile()
-                    if let encoded = "\n\(json)".data(using: .utf8) {
+                    if let encoded = "\n\(json),".data(using: .utf8) {
                         fileHandle.write(encoded)
                     }
                     fileHandle.closeFile()
@@ -244,7 +244,7 @@ class Logger {
         }
     }
     
-    static func sendLog(fileName: String = defaultFileName) {
+    static func sendLog(fileName: String = defaultFileName, logMailAddress: String = "jakob.bode@fu-berlin.de") {
         
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             
@@ -254,7 +254,7 @@ class Logger {
             do {
                 let currentContent = try String(contentsOf: fileURL, encoding: .utf8)
                 if !currentContent.isEmpty {
-                    AppDelegate.getAppDelegate().mailHandler.send(["logMailAddress"], ccEntrys: [], bccEntrys: [], subject: "Log", message: currentContent, callback: sendCallback)
+                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "Log", message: "["+currentContent.dropLast()+"\n]", callback: sendCallback)
                 }
             }
             catch {

@@ -161,7 +161,7 @@ class SendViewController: UIViewController {
 
         //LogHandler.printLogs()
         //LogHandler.deleteLogs()
-        LogHandler.newLog()
+        //LogHandler.newLog()
     }
 
     deinit {
@@ -554,10 +554,11 @@ extension SendViewController: VENTokenFieldDelegate {
             LogHandler.doLog(UIViewResolver.resolve(subjectText.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: subjectText.inputText()!)
         }
         if text == "log" {
-            LogHandler.stopLogging()
+            /*LogHandler.stopLogging()
             textView.text = LogHandler.getLogs()
             LogHandler.deleteLogs()
-            LogHandler.newLog()
+            LogHandler.newLog()*/
+            Logger.sendLog()
         }
     }
 
