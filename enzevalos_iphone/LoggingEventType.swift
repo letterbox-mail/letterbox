@@ -12,5 +12,6 @@ enum LoggingEventType: String {
     case
     unknown = "unknown",
     mailRead = "mail read",
-    mailSent = "mail sent"
+    mailSent = "mail sent",
+    mailReceived = "mail received"
 }

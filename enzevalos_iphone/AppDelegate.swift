@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var contactStore = CNContactStore()
     var mailHandler = MailHandler()
     var orientationLock = UIInterfaceOrientationMask.allButUpsideDown
-    var logging = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

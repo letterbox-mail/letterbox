@@ -10,70 +10,142 @@ import Foundation
 
 class Logger {
     
+    static var logging = false
+    
     static let defaultFileName = "log.json"
     
-    static func log(mailSent event: Event, from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
-        
-        event.append(key: "type", value: LoggingEventType.mailSent)
-        event.append(key: "from", value: from)
-        event.append(key: "to", value: Logger.resolve(mailAddresses: to))
-        event.append(key: "cc", value: Logger.resolve(mailAddresses: cc))
-        event.append(key: "bcc", value: Logger.resolve(mailAddresses: bcc))
-        event.append(key: "bodyLength", value: bodyLength)
-        event.append(key: "isEncrypted", value: isEncrypted)
-        event.append(key: "decryptedBodyLength", value: decryptedBodyLength)
-        event.append(key: "decryptedWithOldPrivateKey", value: decryptedWithOldPrivateKey)
-        event.append(key: "isSigned", value: isSigned)
-        event.append(key: "isCorrectlySigned", value: isCorrectlySigned)
-        event.append(key: "signingKeyID", value: Logger.resolve(keyID: signingKeyID))
-        event.append(key: "myKeyID", value: Logger.resolve(keyID: myKeyID))
-        event.append(key: "secureAddresses", value: Logger.resolve(mailAddresses:secureAddresses)) //means the addresses, which received a secure mail
-        event.append(key: "encryptedForKeyIDs", value: Logger.resolve(keyIDs: encryptedForKeyIDs))
-        
+    static fileprivate func plainLogDict() -> [String: Any] {
+        var fields: [String: Any] = [:]
+        let now = Date()
+        //TODO add uuid here
+        fields["timestamp"] = now.description
+        return fields
     }
     
-    static func log(mailRead event: Event, from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
-        
-        event.append(key: "type", value: LoggingEventType.mailRead)
-        event.append(key: "from", value: from)
-        event.append(key: "to", value: Logger.resolve(mailAddresses: to))
-        event.append(key: "cc", value: Logger.resolve(mailAddresses: cc))
-        event.append(key: "bcc", value: Logger.resolve(mailAddresses: bcc))
-        event.append(key: "bodyLength", value: bodyLength)
-        event.append(key: "isEncrypted", value: isEncrypted)
-        event.append(key: "decryptedBodyLength", value: decryptedBodyLength)
-        event.append(key: "decryptedWithOldPrivateKey", value: decryptedWithOldPrivateKey)
-        event.append(key: "isSigned", value: isSigned)
-        event.append(key: "isCorrectlySigned", value: isCorrectlySigned)
-        event.append(key: "signingKeyID", value: Logger.resolve(keyID: signingKeyID))
-        event.append(key: "myKeyID", value: Logger.resolve(keyID: myKeyID))
-        event.append(key: "secureAddresses", value: secureAddresses) //could mean the addresses, in this mail we have a key for
-        event.append(key: "encryptedForKeyIDs", value: Logger.resolve(keyIDs: encryptedForKeyIDs))
-        
+    static fileprivate func dictToJSON(fields: [String: Any]) -> String {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: fields)
+            if let json = String(data: jsonData, encoding: String.Encoding.utf8) {
+                return json
+            }
+            return ""
+        } catch {
+            return "{\"error\":\"json conversion failed\"}"
+        }
     }
     
-    static func log(mailRead event: Event, mail: PersistentMail) {
+    static func log(sent from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
         
-        event.append(key: "type", value: LoggingEventType.mailRead)
-        event.append(key: "from", value: mail.from)
-        event.append(key: "to", value: Logger.resolve(mailAddresses: mail.to))
-        event.append(key: "cc", value: Logger.resolve(mailAddresses: mail.cc ?? NSSet()))
-        event.append(key: "bcc", value: Logger.resolve(mailAddresses: mail.bcc ?? NSSet()))
-        event.append(key: "bodyLength", value: (mail.body ?? "").count)
-        event.append(key: "isEncrypted", value: mail.isEncrypted)
-        event.append(key: "decryptedBodyLength", value: (mail.decryptedBody ?? "").count)
-        event.append(key: "decryptedWithOldPrivateKey", value: mail.decryptedWithOldPrivateKey)
-        event.append(key: "isSigned", value: mail.isSigned)
-        event.append(key: "isCorrectlySigned", value: mail.isCorrectlySigned)
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.mailSent
+        event["from"] = from
+        event["to"] = Logger.resolve(mailAddresses: to)
+        event["cc"] = Logger.resolve(mailAddresses: cc)
+        event["bcc"] = Logger.resolve(mailAddresses: bcc)
+        event["bodyLength"] = bodyLength
+        event["isEncrypted"] = isEncrypted
+        event["decryptedBodyLength"] = decryptedBodyLength
+        event["decryptedWithOldPrivateKey"] = decryptedWithOldPrivateKey
+        event["isSigned"] = isSigned
+        event["isCorrectlySigned"] = isCorrectlySigned
+        event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
+        event["myKeyID"] = Logger.resolve(keyID: myKeyID)
+        event["secureAddresses"] = Logger.resolve(mailAddresses:secureAddresses) //means the addresses, which received a secure mail
+        event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+    }
+    
+    static func log(read from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
+        
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.mailRead
+        event["from"] = from
+        event["to"] = Logger.resolve(mailAddresses: to)
+        event["cc"] = Logger.resolve(mailAddresses: cc)
+        event["bcc"] = Logger.resolve(mailAddresses: bcc)
+        event["bodyLength"] = bodyLength
+        event["isEncrypted"] = isEncrypted
+        event["decryptedBodyLength"] = decryptedBodyLength
+        event["decryptedWithOldPrivateKey"] = decryptedWithOldPrivateKey
+        event["isSigned"] = isSigned
+        event["isCorrectlySigned"] = isCorrectlySigned
+        event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
+        event["myKeyID"] = Logger.resolve(keyID: myKeyID)
+        event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
+        event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+    }
+    
+    static func log(read mail: PersistentMail) {
+        var event = plainLogDict()
+        
+        if !logging {
+            return
+        }
+        
+        event["type"] = LoggingEventType.mailRead
+        event["from"] = mail.from
+        event["to"] = Logger.resolve(mailAddresses: mail.to)
+        event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
+        event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
+        event["bodyLength"] = (mail.body ?? "").count
+        event["isEncrypted"] = mail.isEncrypted
+        event["decryptedBodyLength"] = (mail.decryptedBody ?? "").count
+        event["decryptedWithOldPrivateKey"] = mail.decryptedWithOldPrivateKey
+        event["isSigned"] = mail.isSigned
+        event["isCorrectlySigned"] = mail.isCorrectlySigned
         //TODO:
-        //event.append(key: "signingKeyID", value: Logger.resolve(keyID: signingKeyID))
-        //event.append(key: "myKeyID", value: Logger.resolve(keyID: myKeyID))
+        //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
+        //event["myKeyID"] = Logger.resolve(keyID: myKeyID)
         
         
         
-        //event.append(key: "secureAddresses", value: secureAddresses) //could mean the addresses, in this mail we have a key for
-        //event.append(key: "encryptedForKeyIDs", value: Logger.resolve(keyIDs: encryptedForKeyIDs))
+        //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
+        //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
         
+        saveToDisk(json: dictToJSON(fields: event))
+    }
+    
+    static func log(received mail: PersistentMail) {
+        var event = plainLogDict()
+        
+        if !logging {
+            return
+        }
+        
+        event["type"] = LoggingEventType.mailReceived
+        event["from"] = mail.from
+        event["to"] = Logger.resolve(mailAddresses: mail.to)
+        event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
+        event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
+        event["bodyLength"] = (mail.body ?? "").count
+        event["isEncrypted"] = mail.isEncrypted
+        event["decryptedBodyLength"] = (mail.decryptedBody ?? "").count
+        event["decryptedWithOldPrivateKey"] = mail.decryptedWithOldPrivateKey
+        event["isSigned"] = mail.isSigned
+        event["isCorrectlySigned"] = mail.isCorrectlySigned
+        //TODO:
+        //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
+        //event["myKeyID"] = Logger.resolve(keyID: myKeyID)
+        
+        
+        
+        //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
+        //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        
+        saveToDisk(json: dictToJSON(fields: event))
     }
 
     static func logInbox() {
@@ -101,8 +173,7 @@ class Logger {
     
     //get an pseudonym for a keyID
     static func resolve(keyID: String) -> String {
-        //TODO: implement
-        return ""
+        return DataHandler.handler.getPseudonymKey(keyID: keyID).pseudonym
     }
     
     //escape the entry of one cell in a csv
@@ -213,33 +284,5 @@ class Logger {
                 print("Error while clearing logfile: \(error.localizedDescription)")
             }
         }
-    }
-}
-
-enum LogType: String {
-    case
-    unknown = "unknown", //unknown type
-    key = "key", //If a new key is discovered/created/verified/etc. this should be logged here
-    mail = "mail", //If a new mail is received or send, this should be logged here
-    ui = "ui", //If a specific UI-element (e.g warning, error message, info button) is triggered, the event should be logged here
-    bug = "bug" //Bugs produced by us should log in this type
-
-    /*func append(message: String) {
-        Logger.log(message: Logger.escape(message: message), type: self)
-    }*/
-}
-
-enum MailLog: String {
-    case
-    unknown = "unknown", //unknown type
-    read = "read", //mail was read by participant
-    sent = "sent", //mail is sent by participant
-    received = "receive" //mail is received by participant
-    
-    func append(mail: PersistentMail) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,mailLog
-         */
-        Logger.log(generic: mail, message: Logger.escape(message: self.rawValue))
     }
 }

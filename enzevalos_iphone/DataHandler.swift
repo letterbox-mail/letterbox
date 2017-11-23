@@ -763,6 +763,30 @@ class DataHandler {
         }
         return createPseudonymMailAddress(mailAddress: mailAddress)
     }
+    
+    private func createPseudonymKey(keyID: String) -> PseudonymKey {
+        let pseudonymKey = NSEntityDescription.insertNewObject(forEntityName: "PseudonymKey", into: managedObjectContext) as! PseudonymKey
+        var found = false
+        while found {
+            let pseudo = String.random()
+            let response = find("PseudonymKey", type: "pseudonym", search: pseudo) as? [PseudonymKey]
+            if (response ?? []).count == 0 || response![0].pseudonym == "" {
+                pseudonymKey.pseudonym = pseudo
+                found = true
+            }
+        }
+        pseudonymKey.keyID = keyID.lowercased()
+        save()
+        return pseudonymKey
+    }
+    
+    func getPseudonymKey(keyID: String) -> PseudonymKey {
+        let result = find("PseudonymKey", type: "keyID", search: keyID.lowercased())
+        if let list = result as? [PseudonymKey], list.count > 0 {
+            return list[0]
+        }
+        return createPseudonymKey(keyID: keyID)
+    }
 
     private func readMails() -> [PersistentMail] {
         var mails = [PersistentMail]()

@@ -56,7 +56,7 @@ class ReadViewController: UITableViewController {
             answerButton.title = NSLocalizedString("edit", comment: "")
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
-            if let mail = mail, AppDelegate.getAppDelegate().logging {
+            if Logger.logging, let mail = mail {
                 Logger.log(read: mail)
             }
         }

@@ -288,6 +288,7 @@ class MailHandler {
         var allRec: [String] = []
         allRec.append(contentsOf: toEntrys)
         allRec.append(contentsOf: ccEntrys)
+        allRec.append(contentsOf: bccEntrys)
         
         let ordered = orderReceiver(receiver: allRec)
 
@@ -307,8 +308,8 @@ class MailHandler {
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: keyIDs, myId:sk.keyID!)
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
-                if AppDelegate.getAppDelegate().logging {
-                    Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, isSigned: true, keyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, otherKeyIDs: keyIDs)
+                if Logger.logging {
+                    Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, encryptedForKeyIDs: keyIDs)
                 }
                 
                 builder.textBody = "Dies ist verschlüsselt!"
@@ -334,6 +335,9 @@ class MailHandler {
                 sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
                 //TODO handle different callbacks
                 //TODO add logging call here for the case the full email is unencrypted
+                if unenc.count == allRec.count {
+                    Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
+                }
                 sendOperation.start(callback)
                 createSendCopy(sendData: sendData)
             }
@@ -695,11 +699,9 @@ class MailHandler {
                 for keyId in newKeyIds{
                     _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
                 }
-                if AppDelegate.getAppDelegate().logging {
+                if Logger.logging {
                     if let mail = mail {
                         Logger.log(received: mail)
-                    } else {
-                        //TODO: log a bug (?)
                     }
                 }
                 if newMailCallback != nil{
