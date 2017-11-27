@@ -15,7 +15,7 @@ func loadTestAcc(){
     loadBobEnzevalos()
     //loadAlice2005()
     //loadCharlieEnzevalos()
-    importPublicKeys()
+    //importPublicKeys()
 
     
 }
