@@ -107,6 +107,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         });
         let handler = DataHandler.init()
         handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
+        
+        let pgp = SwiftPGP()
+        let keyIds = pgp.importKeysFromFile(file: "researchteam.asc")
+        for keyId in keyIds {
+            _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: "oliver.wiese@fu-berlin.de", autocrypt: true, firstMail: nil)
+            _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: "jakob.bode@fu-berlin.de", autocrypt: true, firstMail: nil)
+            _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: "jo.lausch@fu-berlin.de", autocrypt: true, firstMail: nil)
+        }
     }
 
     func onboardingDone() {
