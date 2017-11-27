@@ -14,6 +14,14 @@ class Logger {
     
     static let defaultFileName = "log.json"
     
+    static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
+    
+    static fileprivate func sendCheck() {
+        if nextDeadline <= Date() {
+            sendLog()
+        }
+    }
+    
     static fileprivate func plainLogDict() -> [String: Any] {
         var fields: [String: Any] = [:]
         let now = Date()
@@ -59,6 +67,7 @@ class Logger {
         event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
         
         saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
     }
     
     static func log(read from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
@@ -86,6 +95,7 @@ class Logger {
         event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
         
         saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
     }
     
     static func log(read mail: PersistentMail) {
@@ -116,6 +126,7 @@ class Logger {
         //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
         
         saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
     }
     
     static func log(received mail: PersistentMail) {
@@ -146,6 +157,7 @@ class Logger {
         //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
         
         saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
     }
 
     static func logInbox() {
@@ -254,7 +266,7 @@ class Logger {
             do {
                 let currentContent = try String(contentsOf: fileURL, encoding: .utf8)
                 if !currentContent.isEmpty {
-                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "Log", message: "["+currentContent.dropLast()+"\n]", callback: sendCallback)
+                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "[Enzevalos] Log", message: "["+currentContent.dropLast()+"\n]", callback: sendCallback, logMail: false)
                 }
             }
             catch {
@@ -270,6 +282,15 @@ class Logger {
         }
         
         clearLog()
+        let tmpNextDeadline = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+        if let tmpNextDeadline = tmpNextDeadline {
+            nextDeadline = tmpNextDeadline
+            UserManager.storeUserValue(nextDeadline as AnyObject?, attribute: Attribute.nextDeadline)
+        } else {
+            saveToDisk(json: dictToJSON(fields: ["error": "cannot increment date; stop logging"]))
+            sendLog()
+            logging = false
+        }
     }
     
     static func clearLog(fileName: String = defaultFileName) {

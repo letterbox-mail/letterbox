@@ -11,7 +11,7 @@ import Foundation
 
 
 enum Attribute: Int{
-    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath
+    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline //used for Logging; determines the earliest next time a log is send to the researchers
     
     var defaultValue:AnyObject? {
         switch self {
@@ -29,6 +29,8 @@ enum Attribute: Int{
             return NSLocalizedString("INBOX", comment: "Default name for the inboxFolder") as AnyObject?
         case .archiveFolderPath:
             return NSLocalizedString("Archive", comment: "Default name for the archiveFolder") as AnyObject?
+        case .nextDeadline:
+            return Calendar.current.date(byAdding: .day, value: 1, to: Date()) as AnyObject?
         default:
             return nil
         }

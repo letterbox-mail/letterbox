@@ -558,7 +558,7 @@ extension SendViewController: VENTokenFieldDelegate {
             textView.text = LogHandler.getLogs()
             LogHandler.deleteLogs()
             LogHandler.newLog()*/
-            Logger.sendLog()
+            //Logger.sendLog()
         }
     }
 
