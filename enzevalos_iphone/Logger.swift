@@ -256,7 +256,7 @@ class Logger {
         }
     }
     
-    static func sendLog(fileName: String = defaultFileName, logMailAddress: String = "jakob.bode@fu-berlin.de") {
+    static func sendLog(fileName: String = defaultFileName, logMailAddress: String = "oliver.wiese@fu-berlin.de") {
         
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             
