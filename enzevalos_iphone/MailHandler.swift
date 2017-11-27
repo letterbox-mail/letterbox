@@ -317,7 +317,7 @@ class MailHandler {
                 //TODO handle different callbacks
 
                 sendOperation.start(callback)
-                if ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0{
+                if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && logMail {
                     createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                 }
                 
@@ -339,7 +339,9 @@ class MailHandler {
                     Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
                 }
                 sendOperation.start(callback)
-                createSendCopy(sendData: sendData)
+                if logMail {
+                    createSendCopy(sendData: sendData)
+                }
             }
         }
     }
