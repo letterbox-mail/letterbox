@@ -33,7 +33,7 @@ open class PersistentMail: NSManagedObject, Mail {
             } else {
                 flag.insert(MCOMessageFlag.seen)
             }
-            _ = DataHandler.handler.save()
+            _ = DataHandler.handler.save(during: "set read flag")
         }
     }
     
@@ -48,7 +48,7 @@ open class PersistentMail: NSManagedObject, Mail {
             } else {
                 flag.insert(MCOMessageFlag.answered)
             }
-            _ = DataHandler.handler.save()
+            _ = DataHandler.handler.save(during: "set answer flag")
         }
     }
 

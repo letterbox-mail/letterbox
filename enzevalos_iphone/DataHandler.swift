@@ -272,14 +272,15 @@ class DataHandler {
     }
 
     func terminate() {
-        save()
+        save(during: "Terminating")
     }
 
-    func save() {
+    func save(during:String) {
         do {
             try managedObjectContext.save()
         } catch {
-            fatalError("Failure to save context\(error)")
+            //fatalError("Failure to save context\(error)")
+            //print("Error during saving while: \(during)")
         }
     }
 
@@ -290,7 +291,7 @@ class DataHandler {
             for object in result {
                 self.managedObjectContext.delete(object)
             }
-            save()
+            save(during: "deleting")
         }
     }
 
@@ -301,13 +302,13 @@ class DataHandler {
             for object in result {
                 self.managedObjectContext.delete(object)
             }
-            save()
+            save(during: "Delte num")
         }
     }
 
     func delete(mail: PersistentMail) {
         self.managedObjectContext.delete(mail as NSManagedObject)
-        save()
+        save(during: "delete ")
     }
 
     func deleteMail(with uid: UInt64) {
@@ -349,7 +350,7 @@ class DataHandler {
             sk.keyID = keyID
             sk.obsolete = false
         }
-        save()
+        save(during: "new sk")
         return sk
     }
 
@@ -388,7 +389,7 @@ class DataHandler {
                 pk.lastSeenAutocrypt = date
             }
         }
-        save()
+        save(during: "new pk")
         return pk
     }
 
@@ -736,7 +737,7 @@ class DataHandler {
         if mail.uid > myfolder.maxID {
             myfolder.maxID = mail.uid
         }
-        save()
+        save(during: "new mail")
         return mail
     }
 
@@ -752,7 +753,7 @@ class DataHandler {
             }
         }
         pseudonymMailAddress.address = mailAddress.lowercased()
-        save()
+        save(during: "pseudomail")
         return pseudonymMailAddress
     }
     
@@ -776,7 +777,7 @@ class DataHandler {
             }
         }
         pseudonymKey.keyID = keyID.lowercased()
-        save()
+        save(during: "pseudoKey")
         return pseudonymKey
     }
     

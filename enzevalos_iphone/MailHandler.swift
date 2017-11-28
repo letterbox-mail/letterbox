@@ -840,7 +840,7 @@ class MailHandler {
     
     func initInbox(inbox: Folder, newMailCallback: @escaping (() -> ()),completionCallback: @escaping ((Bool) -> ()) ){
         if let date = Calendar.current.date(byAdding: .month, value: -1, to: Date()){
-            loadMailsSinceDate(folder: inbox, since: date, maxLoad: 200, newMailCallback: newMailCallback, completionCallback: completionCallback)
+            loadMailsSinceDate(folder: inbox, since: date, maxLoad: 100, newMailCallback: newMailCallback, completionCallback: completionCallback)
         }
         else{
             print("No date for init inbox!")
