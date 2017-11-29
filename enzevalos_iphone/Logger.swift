@@ -13,6 +13,7 @@ class Logger {
     static var logging = true//false
     
     static let defaultFileName = "log.json"
+    static let loggingInterval = 86400 //60*60*24 seconds
     
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
     
@@ -282,15 +283,9 @@ class Logger {
         }
         
         clearLog()
-        let tmpNextDeadline = Calendar.current.date(byAdding: .day, value: 1, to: Date())
-        if let tmpNextDeadline = tmpNextDeadline {
+        let tmpNextDeadline = Date(timeIntervalSinceNow: TimeInterval(loggingInterval))
             nextDeadline = tmpNextDeadline
             UserManager.storeUserValue(nextDeadline as AnyObject?, attribute: Attribute.nextDeadline)
-        } else {
-            saveToDisk(json: dictToJSON(fields: ["error": "cannot increment date; stop logging"]))
-            sendLog()
-            logging = false
-        }
     }
     
     static func clearLog(fileName: String = defaultFileName) {
