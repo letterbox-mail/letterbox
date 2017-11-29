@@ -19,6 +19,8 @@ class Logger {
     
     static fileprivate func sendCheck() {
         if nextDeadline <= Date() {
+            logInbox()
+            logOverview()
             sendLog()
         }
     }
@@ -41,6 +43,68 @@ class Logger {
         } catch {
             return "{\"error\":\"json conversion failed\"}"
         }
+    }
+    
+    static func log(startApp onboarding: Bool) {
+        
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.appStart.rawValue
+        event["onboarding"] = onboarding
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(terminateApp: Void) {
+        if !logging {
+            return
+        }
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.appTerminate.rawValue
+        saveToDisk(json: dictToJSON(fields: event))
+    }
+    
+    static func log(background goto: Bool) {
+        
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.appBackground.rawValue
+        event["going to"] = goto //true -> goto background; false -> comming from background
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(keyViewOpen keyID: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.keyViewOpen.rawValue
+        event["keyID"] = resolve(keyID: keyID)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(keyViewClose keyID: String, secondsOpened: Int) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.keyViewClose.rawValue
+        event["keyID"] = resolve(keyID: keyID)
+        event["opened for seconds"] = secondsOpened
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
     }
     
     static func log(sent from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
@@ -71,7 +135,7 @@ class Logger {
         sendCheck()
     }
     
-    static func log(read from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
+    static func log(read from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = [], trouble: Bool) {
         
         if !logging {
             return
@@ -94,12 +158,13 @@ class Logger {
         event["myKeyID"] = Logger.resolve(keyID: myKeyID)
         event["secureAddresses"] = Logger.resolve(mailAddresses: secureAddresses) //could mean the addresses, in this mail we have a key for
         event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        event["trouble"] = trouble
         
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
     
-    static func log(read mail: PersistentMail) {
+    static func log(read mail: PersistentMail, message: String) {
         var event = plainLogDict()
         
         if !logging {
@@ -125,6 +190,9 @@ class Logger {
         
         //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
         //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        
+        event["trouble"] = mail.trouble
+        event["messagePresented"] = message
         
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
@@ -157,21 +225,93 @@ class Logger {
         //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
         //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
         
+        event["trouble"] = mail.trouble
+        
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
 
     static func logInbox() {
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.overviewInbox.rawValue
+        
         let inbox = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
-        let nrOfMails = inbox.mailsOfFolder.count
-        let nrOfSecureMails = inbox.mailsOfFolder.reduce(0, { $1.isSecure ? $0 + 1: $0 })
-        let nrOfTroubleMails = inbox.mailsOfFolder.reduce(0, { $1.trouble ? $0 + 1: $0 })
+        event["nrOfMails"] = inbox.mailsOfFolder.count
+        event["nrOfSecureMails"] = inbox.mailsOfFolder.reduce(0, { $1.isSecure ? $0 + 1: $0 }) as Int
+        event["nrOfTroubleMails"] = inbox.mailsOfFolder.reduce(0, { $1.trouble ? $0 + 1: $0 }) as Int
         
-        // temporary: move this to appropriate functions later
-        let nrOfFolders = DataHandler.handler.allFolders.count
+        saveToDisk(json: dictToJSON(fields: event))
+    }
+    
+    static fileprivate func calculateOverview() {
+        /*let contacts: [EnzevalosContact] = DataHandler.handler.getContacts()
+        //let contactCount = contacts.count
+    
+        var secureContactsCount: Int = 0
+    
+        var secureMailsReceived: Int = 0
+        var secureMailsSent: Int = 0
+        var signedMailsReceived: Int = 0
+        var signedMailsSent: Int = 0
+        var encryptedMailsReceived: Int = 0
+        var encryptedMailsSent: Int = 0
+    
+        var mailsSent : Int = 0
+        var mailsReceived : Int = 0
+    
+        for contact in contacts {
+            if contact.hasKey { secureContactsCount += 1 }
+    
+            var mailsTo : [PersistentMail] = contact.to
+            mailsTo.append(contentsOf: contact.cc)
+            mailsTo.append(contentsOf: contact.bcc)
+    
+            //WTF Mails von mir an mich zählen doppelt?! Mails, die an mehrere Kontakte gingen ebenfalls?
+            
+            let mailsFrom : [PersistentMail] = contact.from
+    
+            for mail in mailsTo {
+                if mail.isSecure {
+                    secureMailsSent += 1
+                } else {
+                    mailsSent += 1
+                }
+                
+                if mail.isEncrypted {
+                    encryptedMailsSent += 1
+                }
+            }
+    
+            for mail in mailsFrom {
+                if mail.isSecure {
+                    secureMailsReceived += 1
+                } else {
+                    mailsReceived += 1
+                }
+            }
+        }
+    
+        let mailsCount : Int = mailsSend + secureMailsSend + mailsReceived + secureMailsReceived
+        let secureMailsCount : Int = secureMailsReceived + secureMailsSend
+        let totalMails : Int = mailsCount + secureMailsCount
+    
+        let a = contacts.count == 0 ? 0 : Float(secureContactsCount) / Float(contacts.count)
+        let b = totalMails == 0 ? 0 : Float(secureMailsCount) / Float(totalMails)
+        return ( a, b )*/
+    }
+        
+    static func logOverview() {
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.overviewGeneral.rawValue
+        event["nrOfFolders"] = DataHandler.handler.allFolders.count
         let gesendet = DataHandler.handler.findFolder(with: UserManager.backendSentFolderPath)
-        let nrOfGesendetMails = gesendet.mailsOfFolder.count
+        event["nrOfGesendetMails"] = gesendet.mailsOfFolder.count //@Olli: should we fetch the counter before?
+        let (contact,mail) = GamificationData.sharedInstance.getSecureProgress()
         
+        saveToDisk(json: dictToJSON(fields: event))
     }
 
     //get an pseudonym for a mailAddress

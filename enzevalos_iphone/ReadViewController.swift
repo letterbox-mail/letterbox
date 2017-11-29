@@ -57,7 +57,17 @@ class ReadViewController: UITableViewController {
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
             if Logger.logging, let mail = mail {
-                Logger.log(read: mail)
+                var message = "none"
+                if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+                    if mail.trouble {
+                        message = "corrupted"
+                    } else if mail.isEncrypted && mail.unableToDecrypt {
+                        message = "couldNotDecrypt"
+                    } else if mail.from.hasKey && !mail.isSecure {
+                        message = "encryptedBefore"
+                    }
+                }
+                Logger.log(read: mail, message: message)
             }
         }
 
@@ -157,7 +167,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //if changed, change it for logging too. See around line 60 (in viewDidLoad)
 
             return 3
         }
