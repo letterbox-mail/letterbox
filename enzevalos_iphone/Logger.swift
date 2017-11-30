@@ -107,7 +107,7 @@ class Logger {
         sendCheck()
     }
     
-    static func log(sent from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
+    static func log(sent from: String, to: [String], cc: [String], bcc: [String], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
         
         if !logging {
             return
@@ -120,6 +120,7 @@ class Logger {
         event["to"] = Logger.resolve(mailAddresses: to)
         event["cc"] = Logger.resolve(mailAddresses: cc)
         event["bcc"] = Logger.resolve(mailAddresses: bcc)
+        event["subject"] = Logger.resolve(subject: subject)
         event["bodyLength"] = bodyLength
         event["isEncrypted"] = isEncrypted
         event["decryptedBodyLength"] = decryptedBodyLength
@@ -135,7 +136,7 @@ class Logger {
         sendCheck()
     }
     
-    static func log(read from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = [], trouble: Bool) {
+    static func log(read from: String, to: [String], cc: [String], bcc: [String], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = [], trouble: Bool, folder: Folder) {
         
         if !logging {
             return
@@ -148,6 +149,7 @@ class Logger {
         event["to"] = Logger.resolve(mailAddresses: to)
         event["cc"] = Logger.resolve(mailAddresses: cc)
         event["bcc"] = Logger.resolve(mailAddresses: bcc)
+        event["subject"] = Logger.resolve(subject: subject)
         event["bodyLength"] = bodyLength
         event["isEncrypted"] = isEncrypted
         event["decryptedBodyLength"] = decryptedBodyLength
@@ -159,17 +161,18 @@ class Logger {
         event["secureAddresses"] = Logger.resolve(mailAddresses: secureAddresses) //could mean the addresses, in this mail we have a key for
         event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
         event["trouble"] = trouble
+        event["folder"] = Logger.resolve(folder: folder)
         
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
     
     static func log(read mail: PersistentMail, message: String) {
-        var event = plainLogDict()
-        
         if !logging {
             return
         }
+        
+        var event = plainLogDict()
         
         event["type"] = LoggingEventType.mailRead.rawValue
         event = extract(from: mail, event: event)
@@ -180,11 +183,11 @@ class Logger {
     }
     
     static func log(readDraft mail: PersistentMail, message: String) {
-        var event = plainLogDict()
-        
         if !logging {
             return
         }
+        
+        var event = plainLogDict()
         
         event["type"] = LoggingEventType.mailDraftRead.rawValue
         event = extract(from: mail, event: event)
@@ -195,11 +198,11 @@ class Logger {
     }
     
     static func log(received mail: PersistentMail) {
-        var event = plainLogDict()
-        
         if !logging {
             return
         }
+        
+        var event = plainLogDict()
         
         event["type"] = LoggingEventType.mailReceived.rawValue
         event = extract(from: mail, event: event)
@@ -214,6 +217,7 @@ class Logger {
         event["to"] = Logger.resolve(mailAddresses: mail.to)
         event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
         event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
+        event["subject"] = Logger.resolve(subject: mail.subject ?? "")
         event["bodyLength"] = (mail.body ?? "").count
         event["isEncrypted"] = mail.isEncrypted
         event["decryptedBodyLength"] = (mail.decryptedBody ?? "").count
@@ -230,6 +234,7 @@ class Logger {
         //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
         
         event["trouble"] = mail.trouble
+        event["folder"] = Logger.resolve(folder: mail.folder)
         
         return event
     }
@@ -260,6 +265,24 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
     }
 
+    static func resolve(subject: String) -> String {
+        if subject == "" {
+            return ""
+        }
+        //TODO
+        return ""
+    }
+    
+    static func resolve(folder: Folder) -> String {
+        //TODO
+        return ""
+    }
+    
+    static func resolve(folderName: String) -> String {
+        //TODO
+        return ""
+    }
+    
     //get an pseudonym for a mailAddress
     static func resolve(mailAddress: MailAddress) -> String {
         return resolve(mailAddress: mailAddress.mailAddress)
