@@ -205,7 +205,7 @@ class Logger {
             return
         }
         
-        event["type"] = LoggingEventType.mailDraftRead.rawvalue
+        event["type"] = LoggingEventType.mailDraftRead.rawValue
         event["from"] = Logger.resolve(mailAddress: mail.from.mailAddress)
         event["to"] = Logger.resolve(mailAddresses: mail.to)
         event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
