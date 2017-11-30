@@ -243,63 +243,6 @@ class Logger {
         
         saveToDisk(json: dictToJSON(fields: event))
     }
-    
-    static fileprivate func calculateOverview() {
-        /*let contacts: [EnzevalosContact] = DataHandler.handler.getContacts()
-        //let contactCount = contacts.count
-    
-        var secureContactsCount: Int = 0
-    
-        var secureMailsReceived: Int = 0
-        var secureMailsSent: Int = 0
-        var signedMailsReceived: Int = 0
-        var signedMailsSent: Int = 0
-        var encryptedMailsReceived: Int = 0
-        var encryptedMailsSent: Int = 0
-    
-        var mailsSent : Int = 0
-        var mailsReceived : Int = 0
-    
-        for contact in contacts {
-            if contact.hasKey { secureContactsCount += 1 }
-    
-            var mailsTo : [PersistentMail] = contact.to
-            mailsTo.append(contentsOf: contact.cc)
-            mailsTo.append(contentsOf: contact.bcc)
-    
-            //WTF Mails von mir an mich zählen doppelt?! Mails, die an mehrere Kontakte gingen ebenfalls?
-            
-            let mailsFrom : [PersistentMail] = contact.from
-    
-            for mail in mailsTo {
-                if mail.isSecure {
-                    secureMailsSent += 1
-                } else {
-                    mailsSent += 1
-                }
-                
-                if mail.isEncrypted {
-                    encryptedMailsSent += 1
-                }
-            }
-    
-            for mail in mailsFrom {
-                if mail.isSecure {
-                    secureMailsReceived += 1
-                } else {
-                    mailsReceived += 1
-                }
-            }
-        }
-    
-        let mailsCount : Int = mailsSend + secureMailsSend + mailsReceived + secureMailsReceived
-        let secureMailsCount : Int = secureMailsReceived + secureMailsSend
-        let totalMails : Int = mailsCount + secureMailsCount
-    
-        let a = contacts.count == 0 ? 0 : Float(secureContactsCount) / Float(contacts.count)
-        let b = totalMails == 0 ? 0 : Float(secureMailsCount) / Float(totalMails)
-        return ( a, b )*/
-    }
         
     static func logOverview() {
         
@@ -309,7 +252,7 @@ class Logger {
         event["nrOfFolders"] = DataHandler.handler.allFolders.count
         let gesendet = DataHandler.handler.findFolder(with: UserManager.backendSentFolderPath)
         event["nrOfGesendetMails"] = gesendet.mailsOfFolder.count //@Olli: should we fetch the counter before?
-        let (contact,mail) = GamificationData.sharedInstance.getSecureProgress()
+        //maybe add number of all mails that could be fetched? this could be much more, than we actually fetched
         
         saveToDisk(json: dictToJSON(fields: event))
     }
