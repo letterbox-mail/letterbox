@@ -54,6 +54,21 @@ class ReadViewController: UITableViewController {
 
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
+            DispatchQueue.global(qos: .background).async {
+                if Logger.logging, let mail = self.mail {
+                    var message = "none"
+                    if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+                        if mail.trouble {
+                            message = "corrupted"
+                        } else if mail.isEncrypted && mail.unableToDecrypt {
+                            message = "couldNotDecrypt"
+                        } else if mail.from.hasKey && !mail.isSecure {
+                            message = "encryptedBefore"
+                        }
+                    }
+                    Logger.log(readDraft: mail, message: message)
+                }
+            }
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
             DispatchQueue.global(qos: .background).async {

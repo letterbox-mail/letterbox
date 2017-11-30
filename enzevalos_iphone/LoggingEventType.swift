@@ -12,6 +12,7 @@ enum LoggingEventType: String {
     case
     unknown = "unknown",
     mailRead = "mailRead",
+    mailDraftRead = "mailDraftRead",
     mailSent = "mailSent",
     mailReceived = "mailReceived",
     appStart = "appStart",

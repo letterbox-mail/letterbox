@@ -198,6 +198,40 @@ class Logger {
         sendCheck()
     }
     
+    static func log(readDraft mail: PersistentMail, message: String) {
+        var event = plainLogDict()
+        
+        if !logging {
+            return
+        }
+        
+        event["type"] = LoggingEventType.mailDraftRead.rawvalue
+        event["from"] = Logger.resolve(mailAddress: mail.from.mailAddress)
+        event["to"] = Logger.resolve(mailAddresses: mail.to)
+        event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
+        event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
+        event["bodyLength"] = (mail.body ?? "").count
+        event["isEncrypted"] = mail.isEncrypted
+        event["decryptedBodyLength"] = (mail.decryptedBody ?? "").count
+        event["decryptedWithOldPrivateKey"] = mail.decryptedWithOldPrivateKey
+        event["isSigned"] = mail.isSigned
+        event["isCorrectlySigned"] = mail.isCorrectlySigned
+        //TODO:
+        //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
+        //event["myKeyID"] = Logger.resolve(keyID: myKeyID)
+        
+        
+        
+        //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
+        //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        
+        event["trouble"] = mail.trouble
+        event["messagePresented"] = message
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(received mail: PersistentMail) {
         var event = plainLogDict()
         
