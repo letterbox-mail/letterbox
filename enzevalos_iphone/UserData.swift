@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import KeychainAccess
 
 
 
@@ -41,6 +42,12 @@ enum Attribute: Int{
 
 
 struct UserManager{
+    
+    private static var pwKeyChain: Keychain{
+        get{
+            return Keychain(service: "Enzevalos/Password")
+        }
+    }
     
     //Frontend (GUI and providers.json) uses UTF-8 String-Encoding
     //The backend uses because of the definition of IMAP UTF-7 String-Encoding
@@ -120,11 +127,26 @@ struct UserManager{
     }
     
     static func storeUserValue(_ value: AnyObject?, attribute: Attribute) {
-        UserDefaults.standard.set(value, forKey: "\(attribute.rawValue)")
-        UserDefaults.standard.synchronize()
+        if attribute == Attribute.userPW {
+            let pw = value as! String
+            pwKeyChain["userPW"] = pw
+        }
+        else{
+            UserDefaults.standard.set(value, forKey: "\(attribute.rawValue)")
+            UserDefaults.standard.synchronize()
+    
+        }
     }
     
     static func loadUserValue(_ attribute: Attribute) -> AnyObject?{
+        if attribute == Attribute.userPW {
+            do{
+                let value = try pwKeyChain.getString("userPW")
+                return value as AnyObject?
+            }catch{
+                return nil
+            }
+        }
         let value = UserDefaults.standard.value(forKey: "\(attribute.rawValue)")
         if((value) != nil){
             return value as AnyObject?

@@ -566,6 +566,10 @@ class DataHandler {
         contact.displayname = lowerAdr
         let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
         adr.contact = contact
+        let cncontacts = AddressHandler.findContact(contact)
+        if cncontacts.count > 0{
+            contact.cnidentifier = cncontacts.first?.identifier
+        }
         return contact
     }
 
