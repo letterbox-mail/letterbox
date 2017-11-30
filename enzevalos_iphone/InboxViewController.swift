@@ -147,8 +147,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         performSegue(withIdentifier: "readMailSegue", sender: mail)
     }
 
-    //TODO: Whats that? What is the error?
-
     func callSegueFromCell2(_ contact: KeyRecord?) {
         performSegue(withIdentifier: "mailListSegue", sender: contact)
     }
