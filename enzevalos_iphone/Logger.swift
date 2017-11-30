@@ -172,26 +172,7 @@ class Logger {
         }
         
         event["type"] = LoggingEventType.mailRead.rawValue
-        event["from"] = Logger.resolve(mailAddress: mail.from.mailAddress)
-        event["to"] = Logger.resolve(mailAddresses: mail.to)
-        event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
-        event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
-        event["bodyLength"] = (mail.body ?? "").count
-        event["isEncrypted"] = mail.isEncrypted
-        event["decryptedBodyLength"] = (mail.decryptedBody ?? "").count
-        event["decryptedWithOldPrivateKey"] = mail.decryptedWithOldPrivateKey
-        event["isSigned"] = mail.isSigned
-        event["isCorrectlySigned"] = mail.isCorrectlySigned
-        //TODO:
-        //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
-        //event["myKeyID"] = Logger.resolve(keyID: myKeyID)
-        
-        
-        
-        //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
-        //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
-        
-        event["trouble"] = mail.trouble
+        event = extract(from: mail, event: event)
         event["messagePresented"] = message
         
         saveToDisk(json: dictToJSON(fields: event))
@@ -206,26 +187,7 @@ class Logger {
         }
         
         event["type"] = LoggingEventType.mailDraftRead.rawValue
-        event["from"] = Logger.resolve(mailAddress: mail.from.mailAddress)
-        event["to"] = Logger.resolve(mailAddresses: mail.to)
-        event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
-        event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
-        event["bodyLength"] = (mail.body ?? "").count
-        event["isEncrypted"] = mail.isEncrypted
-        event["decryptedBodyLength"] = (mail.decryptedBody ?? "").count
-        event["decryptedWithOldPrivateKey"] = mail.decryptedWithOldPrivateKey
-        event["isSigned"] = mail.isSigned
-        event["isCorrectlySigned"] = mail.isCorrectlySigned
-        //TODO:
-        //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
-        //event["myKeyID"] = Logger.resolve(keyID: myKeyID)
-        
-        
-        
-        //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
-        //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
-        
-        event["trouble"] = mail.trouble
+        event = extract(from: mail, event: event)
         event["messagePresented"] = message
         
         saveToDisk(json: dictToJSON(fields: event))
@@ -240,6 +202,14 @@ class Logger {
         }
         
         event["type"] = LoggingEventType.mailReceived.rawValue
+        event = extract(from: mail, event: event)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static fileprivate func extract(from mail: PersistentMail, event: [String: Any]) -> [String: Any] {
+        var event = event
         event["from"] = Logger.resolve(mailAddress: mail.from)
         event["to"] = Logger.resolve(mailAddresses: mail.to)
         event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
@@ -261,8 +231,7 @@ class Logger {
         
         event["trouble"] = mail.trouble
         
-        saveToDisk(json: dictToJSON(fields: event))
-        sendCheck()
+        return event
     }
 
     static func logInbox() {
