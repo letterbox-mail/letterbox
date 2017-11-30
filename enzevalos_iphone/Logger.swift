@@ -211,6 +211,23 @@ class Logger {
         sendCheck()
     }
     
+    static func log(delete mail: PersistentMail, toTrash: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        if toTrash {
+            event["type"] = LoggingEventType.mailDeletedToTrash.rawValue
+        } else {
+            event["type"] = LoggingEventType.mailDeletedPersistent.rawValue
+        }
+        event = extract(from: mail, event: event)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static fileprivate func extract(from mail: PersistentMail, event: [String: Any]) -> [String: Any] {
         var event = event
         event["from"] = Logger.resolve(mailAddress: mail.from)

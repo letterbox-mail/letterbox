@@ -270,8 +270,14 @@ class ReadViewController: UITableViewController {
         if let mail = mail {
             let trashFolder = UserManager.backendTrashFolderPath
             if mail.folder.path == trashFolder {
+                DispatchQueue.global(qos: .background).async {
+                    Logger.log(delete: mail, toTrash: false)
+                }
                 AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
             } else {
+                DispatchQueue.global(qos: .background).async {
+                    Logger.log(delete: mail, toTrash: true)
+                }
                 AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: trashFolder)
             }
         }
