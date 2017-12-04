@@ -202,6 +202,7 @@ class MailHandler {
         builder.header.from = MCOAddress(displayName: username, mailbox: useraddr)
 
         builder.header.subject = subject
+        builder.header.setExtraHeaderValue("letterbox", forName: "X-Mailer")
 
         addAutocryptHeader(builder)
 
