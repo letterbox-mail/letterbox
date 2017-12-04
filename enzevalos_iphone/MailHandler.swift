@@ -705,7 +705,6 @@ class MailHandler {
                 }
             }
             
-            
             if let header = header, let from = header.from, let date = header.date {
                 let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath)
                 
