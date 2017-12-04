@@ -228,6 +228,74 @@ class Logger {
         sendCheck()
     }
     
+    static func log(archive mail: PersistentMail) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.mailArchived.rawValue
+        event = extract(from: mail, event: event)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(open indicatorButton: String, mail: PersistentMail?) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.indicatorButtonOpen.rawValue
+        event["indicatorButton"] = indicatorButton
+        if let mail = mail {
+            event["view"] = "readView"
+            event = extract(from: mail, event: event)
+        } else {
+            event["view"] = "sendView"
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(close indicatorButton: String, mail: PersistentMail?, action: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.indicatorButtonOpen.rawValue
+        event["indicatorButton"] = indicatorButton
+        if let mail = mail {
+            event["view"] = "readView"
+            event = extract(from: mail, event: event)
+        } else {
+            event["view"] = "sendView"
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    /*static func log(import publicKeyID: String, mailAddress: String, importChannel: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.pubKeyImport.rawValue
+        event["keyID"] = Logger.resolve(keyID: publicKeyID)
+        event["mailAddress"] = Logger.resolve(mailAddress: mailAddress)
+        event["importChannel"] = importChannel
+        event = extract(from: mail, event: event)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }*/
+
+    
     static fileprivate func extract(from mail: PersistentMail, event: [String: Any]) -> [String: Any] {
         var event = event
         event["from"] = Logger.resolve(mailAddress: mail.from)

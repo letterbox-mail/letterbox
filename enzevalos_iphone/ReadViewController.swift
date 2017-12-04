@@ -287,6 +287,9 @@ class ReadViewController: UITableViewController {
     @IBAction func archiveButton(_ sender: AnyObject) {
         if let mail = mail {
             let archiveFolder = UserManager.backendArchiveFolderPath
+            DispatchQueue.global(qos: .background).async {
+                Logger.log(archive: mail)
+            }
             AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
         }
         _ = navigationController?.popViewController(animated: true)
@@ -301,7 +304,12 @@ class ReadViewController: UITableViewController {
             } else if m.isSecure {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/letter"
-                alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil) }))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                    DispatchQueue.global(qos: .background).async {
+                        Logger.log(close: url, mail: m, action: "exportKey")
+                    }
+                    self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)
+                }))
             } else if m.isCorrectlySigned {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard_verified"
@@ -315,8 +323,20 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard"
             }
-            alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in UIApplication.shared.openURL(URL(string: url)!) }))
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            DispatchQueue.global(qos: .background).async {
+                Logger.log(open: url, mail: m)
+            }
+            alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                DispatchQueue.global(qos: .background).async {
+                    Logger.log(close: url, mail: m, action: "openURL")
+                }
+                UIApplication.shared.openURL(URL(string: url)!)
+            }))
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action: UIAlertAction!) -> Void in
+                DispatchQueue.global(qos: .background).async {
+                    Logger.log(close: url, mail: m, action: "OK")
+                }
+            }))
             DispatchQueue.main.async(execute: {
                 self.present(alert, animated: true, completion: nil)
             })

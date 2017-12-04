@@ -16,6 +16,7 @@ enum LoggingEventType: String {
     mailSent = "mailSent",
     mailDeletedPersistent = "mailDeletedPersistent",
     mailDeletedToTrash = "mailDeletedToTrash",
+    mailArchived = "mailArchived",
     mailReceived = "mailReceived",
     appStart = "appStart",
     appTerminate = "appTerminate",
@@ -23,5 +24,7 @@ enum LoggingEventType: String {
     overviewInbox = "overviewInbox",
     overviewGeneral = "overviewGeneral",
     keyViewOpen = "keyViewOpen",
-    keyViewClose = "keyViewClose"
+    keyViewClose = "keyViewClose",
+    pubKeyImport = "pubKeyImport",
+    indicatorButtonOpen = "indicatorButtonOpen"
 }
