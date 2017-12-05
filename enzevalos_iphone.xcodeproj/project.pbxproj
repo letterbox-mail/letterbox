@@ -257,6 +257,8 @@
 		476373C21E09BA88004D5EFE /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
 		47691A8A1ECB56D1004BCFC5 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		47691A8C1ECC3EC7004BCFC5 /* EphemeralMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */; };
+		47953AA91FD7000200D4631A /* bitcoinde.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47953AA81FD7000200D4631A /* bitcoinde.asc */; };
+		47953AAA1FD7000200D4631A /* bitcoinde.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47953AA81FD7000200D4631A /* bitcoinde.asc */; };
 		479BBDDA1EFEA17900A2107C /* bob_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD81EFEA17900A2107C /* bob_enzevalos_public.asc */; };
 		479BBDDB1EFEA17900A2107C /* alice_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD91EFEA17900A2107C /* alice_enzevalos_public.asc */; };
 		479BBDDD1EFEA3CB00A2107C /* dave_enezvalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */; };
@@ -550,6 +552,7 @@
 		476373C11E09BA88004D5EFE /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		47691A891ECB56D1004BCFC5 /* Mail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
 		47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralMail.swift; sourceTree = "<group>"; };
+		47953AA81FD7000200D4631A /* bitcoinde.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bitcoinde.asc; sourceTree = "<group>"; };
 		479BBDD81EFEA17900A2107C /* bob_enzevalos_public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bob_enzevalos_public.asc; path = keys/bob_enzevalos_public.asc; sourceTree = "<group>"; };
 		479BBDD91EFEA17900A2107C /* alice_enzevalos_public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = alice_enzevalos_public.asc; path = keys/alice_enzevalos_public.asc; sourceTree = "<group>"; };
 		479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dave_enezvalos_public.asc; path = keys/dave_enezvalos_public.asc; sourceTree = "<group>"; };
@@ -1162,6 +1165,7 @@
 			isa = PBXGroup;
 			children = (
 				A1E5960D1FCC871E003791E9 /* researchteam.asc */,
+				47953AA81FD7000200D4631A /* bitcoinde.asc */,
 				4725C4F41EDDADA10068235E /* bob-private.gpg */,
 				4725C4F51EDDADA10068235E /* bob-public.gpg */,
 				F14D18981ED880680080515D /* nchr-private.gpg */,
@@ -1436,6 +1440,7 @@
 				3E97094A1FAC95F5005825C9 /* bob-public.gpg in Resources */,
 				3E97094B1FAC95F5005825C9 /* bob_enzevalos_public.asc in Resources */,
 				3E97094C1FAC95F5005825C9 /* Localizable.strings in Resources */,
+				47953AAA1FD7000200D4631A /* bitcoinde.asc in Resources */,
 				3E97094D1FAC95F5005825C9 /* Main.storyboard in Resources */,
 				3E97094E1FAC95F5005825C9 /* ullimuelle-private.gpg in Resources */,
 				3E97094F1FAC95F5005825C9 /* ullimuelle-public.gpg in Resources */,
@@ -1471,6 +1476,7 @@
 				A16BA2121E0439B6005E29E3 /* providers.json in Resources */,
 				F189C17F1ED59FEF00BAE9B3 /* idsolutions-private.gpg in Resources */,
 				471BC90A1F960B7C00D64416 /* Info.plist in Resources */,
+				47953AA91FD7000200D4631A /* bitcoinde.asc in Resources */,
 				F14D189D1ED880680080515D /* nchr-public.gpg in Resources */,
 				F14D189C1ED880680080515D /* nchr-private.gpg in Resources */,
 				F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */,
