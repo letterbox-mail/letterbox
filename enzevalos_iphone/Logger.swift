@@ -355,7 +355,6 @@ class Logger {
         if subject == "" {
             return ""
         }
-        //TODO
         var oldSubject = subject
         var newSubject = ""
         var hasPrefix = true
@@ -375,9 +374,9 @@ class Logger {
             }
         }
         
+        newSubject += DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
         
-        
-        return ""
+        return newSubject
     }
     
     static func resolve(folder: Folder) -> String {
