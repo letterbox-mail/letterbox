@@ -70,7 +70,7 @@
         <attribute name="address" attributeType="String" syncable="YES"/>
         <attribute name="pseudonym" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="PseudonymSubject" representedClassName="PseudonymKey" syncable="YES" codeGenerationType="class">
+    <entity name="PseudonymSubject" representedClassName="PseudonymSubject" syncable="YES">
         <attribute name="pseudonym" attributeType="String" syncable="YES"/>
         <attribute name="subject" attributeType="String" syncable="YES"/>
     </entity>
