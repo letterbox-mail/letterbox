@@ -18,7 +18,7 @@ class Logger {
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
     
     static fileprivate func sendCheck() {
-        if nextDeadline <= Date() {
+        if nextDeadline <= Date() && AppDelegate.getAppDelegate().currentReachabilityStatus != .notReachable {
             logInbox()
             logOverview()
             sendLog()
