@@ -787,6 +787,30 @@ class DataHandler {
         }
         return createPseudonymKey(keyID: keyID)
     }
+    
+    private func createPseudonymSubject(subject: String) -> PseudonymSubject {
+        let pseudonymSubject = NSEntityDescription.insertNewObject(forEntityName: "PseudonymSubject", into: managedObjectContext) as! PseudonymSubject
+        var found = false
+        while !found {
+            let pseudo = String.random()
+            let response = find("PseudonymSubject", type: "pseudonym", search: pseudo) as? [PseudonymSubject]
+            if (response ?? []).count == 0 || response![0].pseudonym == "" {
+                pseudonymSubject.pseudonym = pseudo
+                found = true
+            }
+        }
+        pseudonymSubject.subject = subject
+        save()
+        return pseudonymSubject
+    }
+    
+    func getPseudonymSubject(subject: String) -> PseudonymSubject {
+        let result = find("PseudonymSubject", type: "subject", search: subject)
+        if let list = result as? [PseudonymSubject], list.count > 0 {
+            return list[0]
+        }
+        return createPseudonymSubject(subject: subject)
+    }
 
     private func readMails() -> [PersistentMail] {
         var mails = [PersistentMail]()

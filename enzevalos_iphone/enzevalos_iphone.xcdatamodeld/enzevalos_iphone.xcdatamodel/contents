@@ -70,6 +70,10 @@
         <attribute name="address" attributeType="String" syncable="YES"/>
         <attribute name="pseudonym" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="PseudonymSubject" representedClassName="PseudonymKey" syncable="YES" codeGenerationType="class">
+        <attribute name="pseudonym" attributeType="String" syncable="YES"/>
+        <attribute name="subject" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="SecretKey" representedClassName="SecretKey" syncable="YES" codeGenerationType="class">
         <attribute name="exported" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="keyID" optional="YES" attributeType="String" syncable="YES"/>
@@ -86,5 +90,6 @@
         <element name="PseudonymKey" positionX="-297" positionY="-18" width="128" height="75"/>
         <element name="PseudonymMailAddress" positionX="-306" positionY="-27" width="128" height="75"/>
         <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="90"/>
+        <element name="PseudonymSubject" positionX="-315" positionY="-36" width="128" height="75"/>
     </elements>
 </model>
