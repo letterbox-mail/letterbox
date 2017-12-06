@@ -336,6 +336,8 @@ class DataHandler {
 
         removeAll(entity: "PseudonymKey")
         removeAll(entity: "PseudonymMailAddress")
+        removeAll(entity: "PseudonymSubject")
+        removeAll(entity: "PseudonymFolderPath")
     }
 
     // Save, load, search
@@ -812,6 +814,30 @@ class DataHandler {
         return createPseudonymSubject(subject: subject)
     }
 
+    private func createPseudonymFolderPath(folderPath: String) -> PseudonymFolderPath {
+        let pseudonymFolderPath = NSEntityDescription.insertNewObject(forEntityName: "PseudonymFolderPath", into: managedObjectContext) as! PseudonymFolderPath
+        var found = false
+        while !found {
+            let pseudo = String.random()
+            let response = find("PseudonymFolderPath", type: "pseudonym", search: pseudo) as? [PseudonymFolderPath]
+            if (response ?? []).count == 0 || response![0].pseudonym == "" {
+                pseudonymFolderPath.pseudonym = pseudo
+                found = true
+            }
+        }
+        pseudonymFolderPath.folderPath = folderPath
+        save()
+        return pseudonymFolderPath
+    }
+    
+    func getPseudonymFolderPath(folderPath: String) -> PseudonymFolderPath {
+        let result = find("PseudonymFolderPath", type: "folderPath", search: folderPath)
+        if let list = result as? [PseudonymFolderPath], list.count > 0 {
+            return list[0]
+        }
+        return createPseudonymFolderPath(folderPath: folderPath)
+    }
+    
     private func readMails() -> [PersistentMail] {
         var mails = [PersistentMail]()
         let result = findAll("PersistentMail")

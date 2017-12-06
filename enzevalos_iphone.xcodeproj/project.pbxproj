@@ -293,6 +293,8 @@
 		A102AA8A1EDDB4F40024B457 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
 		A1064BD21FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD11FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift */; };
 		A1064BD41FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD31FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift */; };
+		A1064BD61FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD51FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift */; };
+		A1064BD81FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD71FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift */; };
 		A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1083A531E8BFEA6003666B7 /* Onboarding.swift */; };
 		A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */; };
 		A111F6AD1FA77B170060AFDE /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
@@ -579,6 +581,8 @@
 		A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoOnboarding2.m4v; sourceTree = "<group>"; };
 		A1064BD11FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymSubject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A1064BD31FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymSubject+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A1064BD51FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymFolderPath+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A1064BD71FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymFolderPath+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A1083A531E8BFEA6003666B7 /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
 		A111F6AC1FA77B170060AFDE /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -926,6 +930,8 @@
 				A1D5BEA31FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift */,
 				A1064BD11FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift */,
 				A1064BD31FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift */,
+				A1064BD51FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift */,
+				A1064BD71FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift */,
 			);
 			name = coredata;
 			sourceTree = "<group>";
@@ -1365,7 +1371,7 @@
 					};
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = VJ9C93G68Y;
+                        DevelopmentTeam = VJ9C93G68Y;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1897,6 +1903,8 @@
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1D5BEA41FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift in Sources */,
 				471BC90C1F960B7C00D64416 /* PGPCompressedPacket.m in Sources */,
+				A1064BD61FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift in Sources */,
+				A1064BD81FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift in Sources */,
 				471BC9091F960B7C00D64416 /* PGPRSA.m in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				8428A85D1F436A05007649A5 /* Badges.swift in Sources */,
@@ -2339,7 +2347,7 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
+                DEVELOPMENT_TEAM = VJ9C93G68Y;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2369,7 +2377,7 @@
 					"\"VENTokenField\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
+                PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2390,7 +2398,7 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
+                DEVELOPMENT_TEAM = VJ9C93G68Y;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2420,7 +2428,7 @@
 					"\"VENTokenField\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
+                PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

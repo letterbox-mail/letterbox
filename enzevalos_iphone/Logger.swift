@@ -379,14 +379,30 @@ class Logger {
         return newSubject
     }
     
+    //takes backendFolderPath
     static func resolve(folder: Folder) -> String {
-        //TODO
-        return ""
+        return resolve(folderPath: folder.path)
     }
     
-    static func resolve(folderName: String) -> String {
-        //TODO
-        return ""
+    //takes backendFolderPath
+    static func resolve(folderPath: String) -> String {
+        if folderPath == UserManager.backendSentFolderPath {
+            return "sent"
+        }
+        if folderPath == UserManager.backendDraftFolderPath {
+            return "draft"
+        }
+        if folderPath == UserManager.backendInboxFolderPath {
+            return "inbox"
+        }
+        if folderPath == UserManager.backendTrashFolderPath {
+            return "trash"
+        }
+        if folderPath == UserManager.backendArchiveFolderPath {
+            return "archive"
+        }
+        
+        return DataHandler.handler.getPseudonymFolderPath(folderPath: folderPath).pseudonym
     }
     
     //get an pseudonym for a mailAddress
