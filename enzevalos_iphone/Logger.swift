@@ -396,6 +396,9 @@ class Logger {
     
     //get an pseudonym for a mailAddress
     static func resolve(mailAddress: String) -> String {
+        if mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
+            return mailAddress
+        }
         return DataHandler.handler.getPseudonymMailAddress(mailAddress: mailAddress).pseudonym
     }
     
