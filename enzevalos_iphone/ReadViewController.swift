@@ -54,7 +54,7 @@ class ReadViewController: UITableViewController {
 
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
-            DispatchQueue.global(qos: .background).async {
+            Logger.queue.async(flags: .barrier) {
                 if Logger.logging, let mail = self.mail {
                     var message = "none"
                     if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
@@ -71,7 +71,7 @@ class ReadViewController: UITableViewController {
             }
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
-            DispatchQueue.global(qos: .background).async {
+            Logger.queue.async(flags: .barrier) {
                 if Logger.logging, let mail = self.mail {
                     var message = "none"
                     if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
@@ -270,12 +270,12 @@ class ReadViewController: UITableViewController {
         if let mail = mail {
             let trashFolder = UserManager.backendTrashFolderPath
             if mail.folder.path == trashFolder {
-                DispatchQueue.global(qos: .background).async {
+                Logger.queue.async(flags: .barrier) {
                     Logger.log(delete: mail, toTrash: false)
                 }
                 AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
             } else {
-                DispatchQueue.global(qos: .background).async {
+                Logger.queue.async(flags: .barrier) {
                     Logger.log(delete: mail, toTrash: true)
                 }
                 AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: trashFolder)
@@ -287,7 +287,7 @@ class ReadViewController: UITableViewController {
     @IBAction func archiveButton(_ sender: AnyObject) {
         if let mail = mail {
             let archiveFolder = UserManager.backendArchiveFolderPath
-            DispatchQueue.global(qos: .background).async {
+            Logger.queue.async(flags: .barrier) {
                 Logger.log(archive: mail)
             }
             AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
@@ -305,7 +305,7 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/letter"
                 alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                    DispatchQueue.global(qos: .background).async {
+                    Logger.queue.async(flags: .barrier) {
                         Logger.log(close: url, mail: m, action: "exportKey")
                     }
                     self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)
@@ -323,17 +323,17 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard"
             }
-            DispatchQueue.global(qos: .background).async {
+            Logger.queue.async(flags: .barrier) {
                 Logger.log(open: url, mail: m)
             }
             alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                DispatchQueue.global(qos: .background).async {
+                Logger.queue.async(flags: .barrier) {
                     Logger.log(close: url, mail: m, action: "openURL")
                 }
                 UIApplication.shared.openURL(URL(string: url)!)
             }))
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action: UIAlertAction!) -> Void in
-                DispatchQueue.global(qos: .background).async {
+                Logger.queue.async(flags: .barrier) {
                     Logger.log(close: url, mail: m, action: "OK")
                 }
             }))

@@ -20,7 +20,7 @@ class KeyViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         openDate = Date()
-        DispatchQueue.global(qos: .background).async {
+        Logger.queue.async(flags: .barrier) {
             if let record = self.record, let keyID = record.keyId {
                 Logger.log(keyViewOpen: keyID)
             }
@@ -33,7 +33,7 @@ class KeyViewController: UIViewController {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        DispatchQueue.global(qos: .background).async {
+        Logger.queue.async(flags: .barrier) {
             if let record = self.record, let keyID = record.keyId {
                 Logger.log(keyViewClose: keyID, secondsOpened: Int(Date().timeIntervalSince(self.openDate)))
             }

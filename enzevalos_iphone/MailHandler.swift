@@ -309,7 +309,7 @@ class MailHandler {
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: keyIDs, myId:sk.keyID!)
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
-                DispatchQueue.global(qos: .background).async {
+                Logger.queue.async(flags: .barrier) {
                     if Logger.logging && logMail {
                         Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, encryptedForKeyIDs: keyIDs)
                     }
@@ -338,7 +338,8 @@ class MailHandler {
                 //TODO handle different callbacks
                 //TODO add logging call here for the case the full email is unencrypted
                 if unenc.count == allRec.count && logMail {
-                    DispatchQueue.global(qos: .background).async {
+                    Logger.queue
+                    Logger.queue.async(flags: .barrier) {
                         Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
                     }
                 }
@@ -718,7 +719,7 @@ class MailHandler {
                 for keyId in newKeyIds{
                     _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
                 }
-                DispatchQueue.global(qos: .background).async {
+                Logger.queue.async(flags: .barrier) {
                     if let mail = mail {
                         Logger.log(received: mail)
                     }

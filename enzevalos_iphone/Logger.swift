@@ -12,6 +12,8 @@ class Logger {
     
     static var logging = true//false
     
+    static let queue = DispatchQueue(label: "logging", qos: .background)
+    
     static let defaultFileName = "log.json"
     static let loggingInterval = 86400 //60*60*24 seconds
     
@@ -330,12 +332,13 @@ class Logger {
         
         event["type"] = LoggingEventType.overviewInbox.rawValue
         
-        let inbox = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
+        let inbox = DataHandler().findFolder(with: UserManager.backendInboxFolderPath)//DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
         event["nrOfMails"] = inbox.mailsOfFolder.count
         event["nrOfSecureMails"] = inbox.mailsOfFolder.reduce(0, { $1.isSecure ? $0 + 1: $0 }) as Int
         event["nrOfTroubleMails"] = inbox.mailsOfFolder.reduce(0, { $1.trouble ? $0 + 1: $0 }) as Int
         
         saveToDisk(json: dictToJSON(fields: event))
+        //Don't call sendCheck() here; this function is called into sendCheck()
     }
         
     static func logOverview() {
@@ -343,12 +346,13 @@ class Logger {
         var event = plainLogDict()
         
         event["type"] = LoggingEventType.overviewGeneral.rawValue
-        event["nrOfFolders"] = DataHandler.handler.allFolders.count
-        let gesendet = DataHandler.handler.findFolder(with: UserManager.backendSentFolderPath)
+        event["nrOfFolders"] = DataHandler().allFolders.count//DataHandler.handler.allFolders.count
+        let gesendet = DataHandler().findFolder(with: UserManager.backendSentFolderPath)//DataHandler.handler.findFolder(with: UserManager.backendSentFolderPath)
         event["nrOfGesendetMails"] = gesendet.mailsOfFolder.count //@Olli: should we fetch the counter before?
         //maybe add number of all mails that could be fetched? this could be much more, than we actually fetched
         
         saveToDisk(json: dictToJSON(fields: event))
+        //Don't call sendCheck() here; this function is called into sendCheck()
     }
 
     static func resolve(subject: String) -> String {
@@ -374,7 +378,7 @@ class Logger {
             }
         }
         
-        newSubject += DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
+        newSubject += DataHandler().getPseudonymSubject(subject: oldSubject).pseudonym//DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
         
         return newSubject
     }
@@ -402,7 +406,7 @@ class Logger {
             return "archive"
         }
         
-        return DataHandler.handler.getPseudonymFolderPath(folderPath: folderPath).pseudonym
+        return DataHandler().getPseudonymFolderPath(folderPath: folderPath).pseudonym//DataHandler.handler.getPseudonymFolderPath(folderPath: folderPath).pseudonym
     }
     
     //get an pseudonym for a mailAddress
@@ -415,12 +419,12 @@ class Logger {
         if mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
             return mailAddress
         }
-        return DataHandler.handler.getPseudonymMailAddress(mailAddress: mailAddress).pseudonym
+        return DataHandler().getPseudonymMailAddress(mailAddress: mailAddress).pseudonym//DataHandler.handler.getPseudonymMailAddress(mailAddress: mailAddress).pseudonym
     }
     
     //get an pseudonym for a keyID
     static func resolve(keyID: String) -> String {
-        return DataHandler.handler.getPseudonymKey(keyID: keyID).pseudonym
+        return DataHandler().getPseudonymKey(keyID: keyID).pseudonym//DataHandler.handler.getPseudonymKey(keyID: keyID).pseudonym
     }
     
     //escape the entry of one cell in a csv
