@@ -364,10 +364,10 @@ class DataHandler {
         let key = pgp.generateKey(adr: adr)
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         _ = DataHandler.handler.newSecretKey(keyID: key)
-        _ = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: useraddr, autocrypt: false)
+        _ = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: useraddr, autocrypt: false, newGenerated: true)
     }
 
-    func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil) -> PersistentKey {
+    func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil, newGenerated: Bool = false) -> PersistentKey {
         let date = Date.init() as NSDate
         let adr = getMailAddress(adr, temporary: false) as! Mail_Address
         var pk: PersistentKey
@@ -378,6 +378,18 @@ class DataHandler {
             }
             search.addToMailaddress(adr)
             pk = search
+            save()
+            Logger.queue.async(flags: .barrier) {
+                if Logger.logging {
+                    var importChannel = "autocrypt"
+                    if newGenerated {
+                        importChannel = "generated"
+                    } else if !autocrypt {
+                        importChannel = "attachment"
+                    }
+                    Logger.log(discover: keyID, mailAddress: adr.address, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: true)
+                }
+            }
         } else {
             pk = NSEntityDescription.insertNewObject(forEntityName: "PersistentKey", into: managedObjectContext) as! PersistentKey
             pk.addToMailaddress(adr)
@@ -389,8 +401,20 @@ class DataHandler {
             if autocrypt {
                 pk.lastSeenAutocrypt = date
             }
+            save()
+            Logger.queue.async(flags: .barrier) {
+                if Logger.logging {
+                    var importChannel = "autocrypt"
+                    if newGenerated {
+                        importChannel = "generated"
+                    } else if !autocrypt {
+                        importChannel = "attachment"
+                    }
+                    Logger.log(discover: keyID, mailAddress: adr.address, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: false)
+                }
+            }
         }
-        save()
+        
         return pk
     }
 

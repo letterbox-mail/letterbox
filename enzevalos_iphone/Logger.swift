@@ -281,21 +281,25 @@ class Logger {
         sendCheck()
     }
     
-    /*static func log(import publicKeyID: String, mailAddress: String, importChannel: String) {
+    static func log(discover publicKeyID: String, mailAddress: String, importChannel: String, knownPrivateKey: Bool, knownBefore: Bool) { //add reference to mail here?
         if !logging {
             return
         }
         
         var event = plainLogDict()
-        event["type"] = LoggingEventType.pubKeyImport.rawValue
+        if !knownBefore {
+            event["type"] = LoggingEventType.pubKeyDiscoveryNewKey.rawValue
+        } else {
+            event["type"] = LoggingEventType.pubKeyDiscoveryKnownKey.rawValue
+        }
         event["keyID"] = Logger.resolve(keyID: publicKeyID)
         event["mailAddress"] = Logger.resolve(mailAddress: mailAddress)
+        event["knownPrivateKey"] = knownPrivateKey //Do we have a private key for it?
         event["importChannel"] = importChannel
-        event = extract(from: mail, event: event)
         
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
-    }*/
+    }
 
     
     static fileprivate func extract(from mail: PersistentMail, event: [String: Any]) -> [String: Any] {
