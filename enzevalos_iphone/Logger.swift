@@ -266,7 +266,7 @@ class Logger {
         }
         
         var event = plainLogDict()
-        event["type"] = LoggingEventType.indicatorButtonOpen.rawValue
+        event["type"] = LoggingEventType.indicatorButtonClose.rawValue
         event["indicatorButton"] = indicatorButton
         if let mail = mail {
             event["view"] = "readView"
