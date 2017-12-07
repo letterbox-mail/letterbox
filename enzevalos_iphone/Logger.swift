@@ -300,7 +300,27 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-
+    
+    static func log(verify keyID: String, open: Bool, success: Bool? = nil) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.pubKeyVerification.rawValue
+        event["keyID"] = Logger.resolve(keyID: keyID)
+        var stateString = "open"
+        if !open {
+            stateString = "close"
+        }
+        event["state"] = stateString
+        if let success = success {
+            event["success"] = success
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
     
     static fileprivate func extract(from mail: PersistentMail, event: [String: Any]) -> [String: Any] {
         var event = event
@@ -428,6 +448,9 @@ class Logger {
     
     //get an pseudonym for a keyID
     static func resolve(keyID: String) -> String {
+        if keyID == "noKeyID" {
+            return keyID
+        }
         return DataHandler().getPseudonymKey(keyID: keyID).pseudonym//DataHandler.handler.getPseudonymKey(keyID: keyID).pseudonym
     }
     
