@@ -338,7 +338,6 @@ class MailHandler {
                 //TODO handle different callbacks
                 //TODO add logging call here for the case the full email is unencrypted
                 if unenc.count == allRec.count && logMail {
-                    Logger.queue
                     Logger.queue.async(flags: .barrier) {
                         Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
                     }
