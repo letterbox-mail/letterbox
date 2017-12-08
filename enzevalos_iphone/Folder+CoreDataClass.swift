@@ -38,7 +38,7 @@ public class Folder: NSManagedObject {
         }
     }
     
-    var liveRecords: [KeyRecord]{
+    private var liveRecords: [KeyRecord]{
         get{
             var records = [KeyRecord]()
             // Get all Keys, get all adrs
@@ -55,7 +55,8 @@ public class Folder: NSManagedObject {
                     records.append(record)
                 }
             }
-            return records.sorted()
+           return records.sorted()
+        //return records // TODO: Sorting makes function to slow!
         }
     }
     
@@ -98,7 +99,40 @@ public class Folder: NSManagedObject {
     
     
     //write value of liveRecords to records
-    func updateRecords() {
-        storedRecords = liveRecords
+    private func updateRecords() {
+       storedRecords = liveRecords
     }
+    
+    func updateRecords(mail: PersistentMail){
+        if let reccords = storedRecords {
+            var founded = false
+            for i in 1..<reccords.count {
+                let r = reccords[i]
+                if r.matchMail(mail: mail){
+                    founded = true
+                    if r.mailsInFolder(folder: self).first == mail {
+                        if reccords[i-1] > r {
+                            storedRecords?.sort()
+                            break
+                        }
+                    }
+                }
+            }
+            if !founded && mail.folder == self{
+                if mail.isSecure{
+                    let record = KeyRecord(keyID: mail.keyID!, folder: self)
+                    storedRecords?.append(record)
+                }
+                else {
+                    let record = KeyRecord(contact: mail.from.contact!, folder: self)
+                    storedRecords?.append(record)
+                }
+                storedRecords?.sort()
+                
+            }
+        }
+        
+    }
+    
+    
 }

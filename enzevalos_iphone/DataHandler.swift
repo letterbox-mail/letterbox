@@ -119,7 +119,7 @@ class DataHandler {
         }
         let records = folder.records
         checkRecords(records: records)
-        checkRecords(records: folder.liveRecords)
+        checkRecords(records: folder.records)
     }
 
 
@@ -741,6 +741,7 @@ class DataHandler {
         if mail.uid > myfolder.maxID {
             myfolder.maxID = mail.uid
         }
+        myfolder.updateRecords(mail: mail)
         save(during: "new mail")
         return mail
     }
