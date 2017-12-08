@@ -337,6 +337,8 @@ class DataHandler {
 
         removeAll(entity: "PseudonymKey")
         removeAll(entity: "PseudonymMailAddress")
+        removeAll(entity: "PseudonymSubject")
+        removeAll(entity: "PseudonymFolderPath")
     }
 
     // Save, load, search
@@ -363,10 +365,10 @@ class DataHandler {
         let key = pgp.generateKey(adr: adr)
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         _ = DataHandler.handler.newSecretKey(keyID: key)
-        _ = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: useraddr, autocrypt: false)
+        _ = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: useraddr, autocrypt: false, newGenerated: true)
     }
 
-    func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil) -> PersistentKey {
+    func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil, newGenerated: Bool = false) -> PersistentKey {
         let date = Date.init() as NSDate
         let adr = getMailAddress(adr, temporary: false) as! Mail_Address
         var pk: PersistentKey
@@ -377,6 +379,17 @@ class DataHandler {
             }
             search.addToMailaddress(adr)
             pk = search
+            Logger.queue.async(flags: .barrier) {
+                if Logger.logging {
+                    var importChannel = "autocrypt"
+                    if newGenerated {
+                        importChannel = "generated"
+                    } else if !autocrypt {
+                        importChannel = "attachment"
+                    }
+                    Logger.log(discover: keyID, mailAddress: adr.address, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: true)
+                }
+            }
         } else {
             pk = NSEntityDescription.insertNewObject(forEntityName: "PersistentKey", into: managedObjectContext) as! PersistentKey
             pk.addToMailaddress(adr)
@@ -388,8 +401,20 @@ class DataHandler {
             if autocrypt {
                 pk.lastSeenAutocrypt = date
             }
+            Logger.queue.async(flags: .barrier) {
+                if Logger.logging {
+                    var importChannel = "autocrypt"
+                    if newGenerated {
+                        importChannel = "generated"
+                    } else if !autocrypt {
+                        importChannel = "attachment"
+                    }
+                    Logger.log(discover: keyID, mailAddress: adr.address, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: false)
+                }
+            }
         }
         save(during: "new pk")
+        
         return pk
     }
 
@@ -793,7 +818,55 @@ class DataHandler {
         }
         return createPseudonymKey(keyID: keyID)
     }
+    
+    private func createPseudonymSubject(subject: String) -> PseudonymSubject {
+        let pseudonymSubject = NSEntityDescription.insertNewObject(forEntityName: "PseudonymSubject", into: managedObjectContext) as! PseudonymSubject
+        var found = false
+        while !found {
+            let pseudo = String.random()
+            let response = find("PseudonymSubject", type: "pseudonym", search: pseudo) as? [PseudonymSubject]
+            if (response ?? []).count == 0 || response![0].pseudonym == "" {
+                pseudonymSubject.pseudonym = pseudo
+                found = true
+            }
+        }
+        pseudonymSubject.subject = subject
+        save(during: "createPseudoSubject")
+        return pseudonymSubject
+    }
+    
+    func getPseudonymSubject(subject: String) -> PseudonymSubject {
+        let result = find("PseudonymSubject", type: "subject", search: subject)
+        if let list = result as? [PseudonymSubject], list.count > 0 {
+            return list[0]
+        }
+        return createPseudonymSubject(subject: subject)
+    }
 
+    private func createPseudonymFolderPath(folderPath: String) -> PseudonymFolderPath {
+        let pseudonymFolderPath = NSEntityDescription.insertNewObject(forEntityName: "PseudonymFolderPath", into: managedObjectContext) as! PseudonymFolderPath
+        var found = false
+        while !found {
+            let pseudo = String.random()
+            let response = find("PseudonymFolderPath", type: "pseudonym", search: pseudo) as? [PseudonymFolderPath]
+            if (response ?? []).count == 0 || response![0].pseudonym == "" {
+                pseudonymFolderPath.pseudonym = pseudo
+                found = true
+            }
+        }
+        pseudonymFolderPath.folderPath = folderPath
+        save(during: "Create PseudoFolder")
+        return pseudonymFolderPath
+    }
+    
+    func getPseudonymFolderPath(folderPath: String) -> PseudonymFolderPath {
+        let result = find("PseudonymFolderPath", type: "folderPath", search: folderPath)
+        if let list = result as? [PseudonymFolderPath], list.count > 0 {
+            return list[0]
+        }
+        return createPseudonymFolderPath(folderPath: folderPath)
+    }
+    
     private func readMails() -> [PersistentMail] {
         var mails = [PersistentMail]()
         let result = findAll("PersistentMail")

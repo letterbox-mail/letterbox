@@ -202,6 +202,7 @@ class MailHandler {
         builder.header.from = MCOAddress(displayName: username, mailbox: useraddr)
 
         builder.header.subject = subject
+        builder.header.setExtraHeaderValue("letterbox", forName: "X-Mailer")
 
         addAutocryptHeader(builder)
 
@@ -308,10 +309,11 @@ class MailHandler {
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: keyIDs, myId:sk.keyID!)
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
-                if Logger.logging && logMail {
-                    Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, encryptedForKeyIDs: keyIDs)
+                Logger.queue.async(flags: .barrier) {
+                    if Logger.logging && logMail {
+                        Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, encryptedForKeyIDs: keyIDs)
+                    }
                 }
-                
                 builder.textBody = "Dies ist verschlüsselt!"
                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
@@ -336,7 +338,9 @@ class MailHandler {
                 //TODO handle different callbacks
                 //TODO add logging call here for the case the full email is unencrypted
                 if unenc.count == allRec.count && logMail {
-                    Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
+                    Logger.queue.async(flags: .barrier) {
+                        Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
+                    }
                 }
                 sendOperation.start(callback)
                 if logMail {
@@ -377,7 +381,7 @@ class MailHandler {
         //TODO: Consider pref enc = false
         let pgp = SwiftPGP()
         let keys = DataHandler.handler.findSecretKeys()
-        if keys.count > 0{
+        if keys.count > 0 && allRec.reduce(true, {$0 && DataHandler.handler.hasKey(adr: $1)}) {
             let mykey = keys[0] //TODO: multiple privatekeys
             let receiverIds = [mykey.keyID] as! [String]
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: receiverIds, myId: mykey.keyID!)
@@ -396,6 +400,20 @@ class MailHandler {
             } else {
                 //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
+            }
+        }
+        else {
+            builder.textBody = message
+            sendData = builder.data()
+            
+            let drafts = UserManager.backendDraftFolderPath
+            
+            if !DataHandler.handler.existsFolder(with: drafts) {
+                let op = IMAPSession.createFolderOperation(drafts)
+                op?.start({ _ in self.saveDraft(data: sendData, callback: callback)})
+            }
+            else {
+                saveDraft(data: sendData, callback: callback)
             }
         }
     }
@@ -687,7 +705,6 @@ class MailHandler {
                 }
             }
             
-            
             if let header = header, let from = header.from, let date = header.date {
                 let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath)
                 
@@ -701,7 +718,7 @@ class MailHandler {
                 for keyId in newKeyIds{
                     _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
                 }
-                if Logger.logging {
+                Logger.queue.async(flags: .barrier) {
                     if let mail = mail {
                         Logger.log(received: mail)
                     }

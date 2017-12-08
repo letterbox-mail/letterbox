@@ -11,13 +11,20 @@ import UIKit
 class KeyViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
+    
+    var openDate: Date = Date() //used for logging issues [see Logger.log(keyViewClose keyID:String, timevisited: Date)]
 
     var record: KeyRecord?
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-
+        openDate = Date()
+        Logger.queue.async(flags: .barrier) {
+            if let record = self.record, let keyID = record.keyId {
+                Logger.log(keyViewOpen: keyID)
+            }
+        }
     }
 
     @IBAction func deleteKey(_ sender: AnyObject) {
@@ -25,6 +32,15 @@ class KeyViewController: UIViewController {
     
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        Logger.queue.async(flags: .barrier) {
+            if let record = self.record, let keyID = record.keyId {
+                Logger.log(keyViewClose: keyID, secondsOpened: Int(Date().timeIntervalSince(self.openDate)))
+            }
+        }
+        super.viewDidDisappear(animated)
+    }
+    
 }
 
 extension KeyViewController: UITableViewDataSource {

@@ -30,6 +30,7 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
     }
 
     var fingerprint: String?
+    var keyId: String? //used for logging
     var callback: (() -> ())?
 
     override func viewDidLoad() {
@@ -112,6 +113,9 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
     }
 
     @IBAction func close(_ sender: Any) {
+        Logger.queue.async(flags: .barrier) {
+            Logger.log(verify: self.keyId ?? "noKeyID", open: false, success: false)
+        }
         dismiss(animated: true, completion: nil)
     }
 

@@ -104,7 +104,11 @@ public class Folder: NSManagedObject {
     }
     
     func updateRecords(mail: PersistentMail){
-        if let reccords = storedRecords {
+        if let reccords = storedRecords{
+            if reccords.count <= 2{
+                updateRecords()
+                return
+            }
             var founded = false
             for i in 1..<reccords.count {
                 let r = reccords[i]

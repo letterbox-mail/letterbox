@@ -31,7 +31,7 @@ enum Attribute: Int{
         case .archiveFolderPath:
             return NSLocalizedString("Archive", comment: "Default name for the archiveFolder") as AnyObject?
         case .nextDeadline:
-            return Calendar.current.date(byAdding: .day, value: 1, to: Date()) as AnyObject?
+            return Date(timeIntervalSinceNow: TimeInterval(Logger.loggingInterval)) as AnyObject?
         default:
             return nil
         }

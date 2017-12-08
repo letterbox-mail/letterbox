@@ -54,10 +54,37 @@ class ReadViewController: UITableViewController {
 
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
+            Logger.queue.async(flags: .barrier) {
+                if Logger.logging, let mail = self.mail {
+                    var message = "none"
+                    if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+                        if mail.trouble {
+                            message = "corrupted"
+                        } else if mail.isEncrypted && mail.unableToDecrypt {
+                            message = "couldNotDecrypt"
+                        } else if mail.from.hasKey && !mail.isSecure {
+                            message = "encryptedBefore"
+                        }
+                    }
+                    Logger.log(readDraft: mail, message: message)
+                }
+            }
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
-            if Logger.logging, let mail = mail {
-                Logger.log(read: mail)
+            Logger.queue.async(flags: .barrier) {
+                if Logger.logging, let mail = self.mail {
+                    var message = "none"
+                    if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+                        if mail.trouble {
+                            message = "corrupted"
+                        } else if mail.isEncrypted && mail.unableToDecrypt {
+                            message = "couldNotDecrypt"
+                        } else if mail.from.hasKey && !mail.isSecure {
+                            message = "encryptedBefore"
+                        }
+                    }
+                    Logger.log(read: mail, message: message)
+                }
             }
         }
 
@@ -157,7 +184,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //if changed, change it for logging too. See around line 60 (in viewDidLoad)
 
             return 3
         }
@@ -243,8 +270,14 @@ class ReadViewController: UITableViewController {
         if let mail = mail {
             let trashFolder = UserManager.backendTrashFolderPath
             if mail.folder.path == trashFolder {
+                Logger.queue.async(flags: .barrier) {
+                    Logger.log(delete: mail, toTrash: false)
+                }
                 AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
             } else {
+                Logger.queue.async(flags: .barrier) {
+                    Logger.log(delete: mail, toTrash: true)
+                }
                 AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: trashFolder)
             }
         }
@@ -254,6 +287,9 @@ class ReadViewController: UITableViewController {
     @IBAction func archiveButton(_ sender: AnyObject) {
         if let mail = mail {
             let archiveFolder = UserManager.backendArchiveFolderPath
+            Logger.queue.async(flags: .barrier) {
+                Logger.log(archive: mail)
+            }
             AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
         }
         _ = navigationController?.popViewController(animated: true)
@@ -268,7 +304,12 @@ class ReadViewController: UITableViewController {
             } else if m.isSecure {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/letter"
-                alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil) }))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                    Logger.queue.async(flags: .barrier) {
+                        Logger.log(close: url, mail: m, action: "exportKey")
+                    }
+                    self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)
+                }))
             } else if m.isCorrectlySigned {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard_verified"
@@ -282,8 +323,20 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://enzevalos.de/infos/postcard"
             }
-            alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in UIApplication.shared.openURL(URL(string: url)!) }))
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            Logger.queue.async(flags: .barrier) {
+                Logger.log(open: url, mail: m)
+            }
+            alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                Logger.queue.async(flags: .barrier) {
+                    Logger.log(close: url, mail: m, action: "openURL")
+                }
+                UIApplication.shared.openURL(URL(string: url)!)
+            }))
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action: UIAlertAction!) -> Void in
+                Logger.queue.async(flags: .barrier) {
+                    Logger.log(close: url, mail: m, action: "OK")
+                }
+            }))
             DispatchQueue.main.async(execute: {
                 self.present(alert, animated: true, completion: nil)
             })

@@ -202,12 +202,19 @@ class ContactViewController: UIViewController {
             if let DestinationViewController = segue.destination as? QRScannerView {
                 DestinationViewController.fingerprint = keyRecord?.fingerprint
                 DestinationViewController.callback = verifySuccessfull
+                DestinationViewController.keyId = self.keyRecord?.keyId //used for logging
+                Logger.queue.async(flags: .barrier) {
+                    Logger.log(verify: self.keyRecord?.keyId ?? "noKeyID", open: true)
+                }
             }
         }
     }
 
     func verifySuccessfull() {
         keyRecord?.verify()
+        Logger.queue.async(flags: .barrier) {
+            Logger.log(verify: self.keyRecord?.keyId ?? "noKeyID", open: false, success: true)
+        }
         tableView.reloadData()
     }
 }

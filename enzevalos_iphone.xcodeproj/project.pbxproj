@@ -268,6 +268,10 @@
 		47A7975C1FCD56DF006B3BC4 /* PseudonymMailAddress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E42F1FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift */; };
 		47A7975D1FCD56E2006B3BC4 /* PseudonymKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5BEA31FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift */; };
 		47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */; };
+		47E9E63D1FDACE2A00213734 /* PseudonymSubject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD11FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift */; };
+		47E9E63E1FDACE3600213734 /* PseudonymFolderPath+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD51FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift */; };
+		47E9E63F1FDACE4B00213734 /* PseudonymSubject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD31FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift */; };
+		47E9E6401FDACF4200213734 /* PseudonymFolderPath+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD71FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift */; };
 		5DC190F2042BE7D956F796BE /* Pods_enzevalos_iphone_AdHoc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F4458FC892EBE555836F55 /* Pods_enzevalos_iphone_AdHoc.framework */; };
 		8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
 		8428A8551F4369CF007649A5 /* GamificationElements.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8541F4369CF007649A5 /* GamificationElements.xcassets */; };
@@ -301,6 +305,10 @@
 		9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */; };
 		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
 		A102AA8A1EDDB4F40024B457 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
+		A1064BD21FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD11FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift */; };
+		A1064BD41FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD31FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift */; };
+		A1064BD61FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD51FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift */; };
+		A1064BD81FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1064BD71FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift */; };
 		A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1083A531E8BFEA6003666B7 /* Onboarding.swift */; };
 		A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */; };
 		A111F6AD1FA77B170060AFDE /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
@@ -586,6 +594,10 @@
 		9A132EDE8BCA06ACDB505C22 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		9B3D62838C729BAC6832270A /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.debug.xcconfig"; sourceTree = "<group>"; };
 		A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoOnboarding2.m4v; sourceTree = "<group>"; };
+		A1064BD11FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymSubject+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A1064BD31FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymSubject+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A1064BD51FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymFolderPath+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A1064BD71FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymFolderPath+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A1083A531E8BFEA6003666B7 /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
 		A111F6AC1FA77B170060AFDE /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -932,6 +944,10 @@
 				A114E42F1FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift */,
 				A1D5BEA51FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift */,
 				A1D5BEA31FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift */,
+				A1064BD11FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift */,
+				A1064BD31FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift */,
+				A1064BD51FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift */,
+				A1064BD71FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift */,
 			);
 			name = coredata;
 			sourceTree = "<group>";
@@ -1768,6 +1784,7 @@
 				3E9708C11FAC95F5005825C9 /* NSDateCompare.swift in Sources */,
 				3E9708C21FAC95F5005825C9 /* PGPCompressedPacket.m in Sources */,
 				3E9708C31FAC95F5005825C9 /* PGPRSA.m in Sources */,
+				47E9E6401FDACF4200213734 /* PseudonymFolderPath+CoreDataProperties.swift in Sources */,
 				3E9708C41FAC95F5005825C9 /* InboxCellDelegator.swift in Sources */,
 				3E9708C51FAC95F5005825C9 /* Badges.swift in Sources */,
 				3E9708C61FAC95F5005825C9 /* BadgeCaseCollectionViewCell.swift in Sources */,
@@ -1781,6 +1798,7 @@
 				3E9708CE1FAC95F5005825C9 /* PGPModificationDetectionCodePacket.m in Sources */,
 				3E9708CF1FAC95F5005825C9 /* EphemeralMail.swift in Sources */,
 				3E9708D01FAC95F5005825C9 /* PGPPKCSEme.m in Sources */,
+				47E9E63F1FDACE4B00213734 /* PseudonymSubject+CoreDataProperties.swift in Sources */,
 				3E9708D11FAC95F5005825C9 /* SubBadgeHeaderTableViewCell.swift in Sources */,
 				3E9708D21FAC95F5005825C9 /* InboxViewController.swift in Sources */,
 				3E9708D31FAC95F5005825C9 /* PGPPublicSubKeyPacket.m in Sources */,
@@ -1801,6 +1819,7 @@
 				3E9708E01FAC95F5005825C9 /* VENDataDelegate.swift in Sources */,
 				3E9708E11FAC95F5005825C9 /* InviteFriendViewController.swift in Sources */,
 				3E9708E21FAC95F5005825C9 /* UIViewResolver.swift in Sources */,
+				47E9E63D1FDACE2A00213734 /* PseudonymSubject+CoreDataClass.swift in Sources */,
 				3E9708E31FAC95F5005825C9 /* PGPArmor.m in Sources */,
 				3E9708E41FAC95F5005825C9 /* SwiftPGP.swift in Sources */,
 				3E9708E51FAC95F5005825C9 /* PGPCryptoUtils.m in Sources */,
@@ -1881,6 +1900,7 @@
 				3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */,
 				3E97092B1FAC95F5005825C9 /* PGPPartialSubKey.m in Sources */,
 				3E97092C1FAC95F5005825C9 /* SubBadgeTableViewCell.swift in Sources */,
+				47E9E63E1FDACE3600213734 /* PseudonymFolderPath+CoreDataClass.swift in Sources */,
 				3E97092D1FAC95F5005825C9 /* FrequentCell.swift in Sources */,
 				3E97092E1FAC95F5005825C9 /* ListViewController.swift in Sources */,
 				3E97092F1FAC95F5005825C9 /* FlipTransition.swift in Sources */,
@@ -1913,6 +1933,8 @@
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1D5BEA41FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift in Sources */,
 				471BC90C1F960B7C00D64416 /* PGPCompressedPacket.m in Sources */,
+				A1064BD61FD84ACD00555BDB /* PseudonymFolderPath+CoreDataClass.swift in Sources */,
+				A1064BD81FD84B0A00555BDB /* PseudonymFolderPath+CoreDataProperties.swift in Sources */,
 				471BC9091F960B7C00D64416 /* PGPRSA.m in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				8428A85D1F436A05007649A5 /* Badges.swift in Sources */,
@@ -1922,6 +1944,7 @@
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
 				47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */,
 				471BC92F1F960B7C00D64416 /* PGPS2K.m in Sources */,
+				A1064BD41FD83D0200555BDB /* PseudonymSubject+CoreDataProperties.swift in Sources */,
 				471BC92A1F960B7C00D64416 /* PGPPacketFactory.m in Sources */,
 				A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
@@ -1947,6 +1970,7 @@
 				475B00351F7B9565006CDD41 /* CryptoObject.swift in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */,
+				A1064BD21FD83CC000555BDB /* PseudonymSubject+CoreDataClass.swift in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
 				471BC9211F960B7C00D64416 /* PGPArmor.m in Sources */,
 				475B00331F7B9565006CDD41 /* SwiftPGP.swift in Sources */,
