@@ -84,9 +84,9 @@ func importPublicKeys(){
 }
 
 func importSecretKey(file: String, type: String){
-    //TODO Remove old keys!
+    //TODO Remove old keys! 
     if let path = Bundle.main.path(forResource: file, ofType: type){
-        let ids = pgp.importKeysFromFile(file: path)
+        let ids = pgp.importKeysFromFile(file: path, pw: nil)
         for id in ids{
             let k = datahandler.newSecretKey(keyID: id)
             print("New secret key of \(file) with id \(String(describing: k.keyID))")
@@ -103,7 +103,7 @@ private func importPublicKeyDic(keys: [String:String], type: String){
 
 private func importPublicKey(file: String, type: String, adr: String){
     if let path = Bundle.main.path(forResource: file, ofType: type){
-        let ids = pgp.importKeysFromFile(file: path)
+        let ids = pgp.importKeysFromFile(file: path, pw: nil)
         for id in ids{
             let k = datahandler.newPublicKey(keyID: id, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false)
             print("New public key of \(adr) with id \(k.keyID)")

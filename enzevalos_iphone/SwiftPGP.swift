@@ -111,9 +111,8 @@ class SwiftPGP: Encryption{
         return storeKey(key: key)
     }
     
-    func importKeys(key: String, isSecretKey: Bool, autocrypt: Bool) -> [String]{
+    func importKeys(key: String,  pw: String?, isSecretKey: Bool, autocrypt: Bool) -> [String]{
         let pgp = ObjectivePGP()
-        var ids = [String]()
         let keys: Set<PGPKey>
         if autocrypt{
             let keyData = pgp.transformKey(key)
@@ -128,33 +127,31 @@ class SwiftPGP: Encryption{
                 keys = Set<PGPKey>()
             }
         }
-        for k in keys{
-            if k.isSecret && isSecretKey || !k.isSecret && !isSecretKey{
-                ids.append(storeKey(key: k))
-            }
-        }
-        return ids
+        return storeMultipleKeys(keys: keys, pw: pw, secret: isSecretKey)
     }
     
-    func importKeys(data: Data, secret: Bool) -> [String]{
+    func importKeys(data: Data,  pw: String?, secret: Bool) -> [String]{
         let pgp = ObjectivePGP()
-        var ids = [String]()
         let keys = pgp.importKeys(from: data)
-        for k in keys{
-            if k.isSecret && secret || !k.isSecret && !secret{
-                ids.append(storeKey(key: k))
-            }
-        }
-        return ids
+        return storeMultipleKeys(keys: keys, pw: pw, secret: secret)
     }
 
     
-    func importKeysFromFile(file: String) -> [String]{
+    func importKeysFromFile(file: String,  pw: String?) -> [String]{
         let pgp = ObjectivePGP()
         let keys = pgp.importKeys(fromFile: file)
+        return storeMultipleKeys(keys: keys, pw: pw, secret: false)
+    }
+    
+    private func storeMultipleKeys(keys: Set<PGPKey>, pw: String?, secret: Bool )-> [String]{
         var ids = [String]()
         for k in keys{
-            ids.append(storeKey(key: k))
+            if k.isSecret && secret || !k.isSecret && !secret{
+                ids.append(storeKey(key: k))
+                if let password = pw{
+                    pwKeyChain[k.keyID.longKeyString] = password
+                }
+            }
         }
         return ids
     }
@@ -228,20 +225,22 @@ class SwiftPGP: Encryption{
                 keys.append(key)
             }
         }
+        let signedAdr = vaildAddress(key: signKey)
         if let data = plaintext.data(using: String.Encoding.utf8){
             do{
                 let chipher = try pgp.encryptData(data, using: keys, signWith: signKey, passphrase: pw, armored: true)
-                return CryptoObject(chiphertext: chipher, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP)
+                return CryptoObject(chiphertext: chipher, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
             } catch {
                 print("Encryption error!") //TODO: Error handling!
             }
         }
-        return CryptoObject(chiphertext: nil, plaintext: nil,decryptedData: nil, sigState: SignatureState.InvalidSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: cryptoScheme)
+        return CryptoObject(chiphertext: nil, plaintext: nil,decryptedData: nil, sigState: SignatureState.InvalidSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: cryptoScheme, signedAdrs: signedAdr)
         
     }
     func decrypt(data: Data,decryptionId: String?, verifyIds: [String]) -> CryptoObject{
         let pgp = ObjectivePGP()
         var pw: String? = nil
+        var signedAdr = [String]()
         if let myId = decryptionId{
             pw = loadPassword(id: myId)
         }
@@ -277,6 +276,7 @@ class SwiftPGP: Encryption{
                 else if signed.pointee.boolValue && valid.pointee.boolValue{
                     sigState = SignatureState.ValidSignature
                     sigKey = id
+                    signedAdr = vaildAddress(keyId: sigKey)
                     break
                 }
                 else{
@@ -305,6 +305,35 @@ class SwiftPGP: Encryption{
         if plaindata != nil{
             plaintext = plaindata?.base64EncodedString()
         }
-        return CryptoObject(chiphertext: data, plaintext: plaintext, decryptedData: plaindata, sigState: sigState, encState: encState, signKey: sigKey, encType: CryptoScheme.PGP)
+        return CryptoObject(chiphertext: data, plaintext: plaintext, decryptedData: plaindata, sigState: sigState, encState: encState, signKey: sigKey, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
+    }
+    
+    
+    func vaildAddress(key: PGPKey?) -> [String]{
+        var adrs = [String]()
+        if let k = key{
+            if let pk = k.publicKey{
+                let users = pk.users
+                for user in users{
+                    if let start = user.userID.range(of: "<"),
+                        let end = user.userID.range(of: ">"){
+                        let s = start.lowerBound
+                        let e = end.upperBound
+                        let adr = user.userID[s..<e]
+                        adrs.append(adr)
+                    }
+                }
+            }
+        }
+        return adrs
+    }
+    
+    func vaildAddress(keyId: String?) -> [String]{
+        if let id = keyId{
+            if let key = loadKey(id: id){
+                return vaildAddress(key: key)
+            }
+        }
+        return []
     }
 }

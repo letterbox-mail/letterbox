@@ -34,6 +34,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
+fileprivate func ==(lhs: NSDate, rhs: NSDate) -> Bool {
+    return lhs === rhs || lhs.compare(rhs as Date) == .orderedSame
+}
+
+fileprivate func <(lhs: NSDate, rhs: NSDate) -> Bool {
+    return lhs.compare(rhs as Date) == .orderedAscending
+
+}
+
 //TODO: TO Felder mit Strings
 // KeyRecord mergen?? IMAP Snyc?
 
@@ -351,21 +360,28 @@ class DataHandler {
             sk = NSEntityDescription.insertNewObject(forEntityName: "SecretKey", into: managedObjectContext) as! SecretKey
             sk.keyID = keyID
             sk.obsolete = false
+            sk.importedDate = Date () as NSDate
         }
         save(during: "new sk")
         return sk
     }
+    
+    func newSecretKeys(keyIds:[String]){
+        for id in keyIds{
+            _ = newSecretKey(keyID: id)
+        }
+    }
 
-    func createNewSecretKey(adr: String) {
+    func createNewSecretKey(adr: String) -> SecretKey{
         let keys = findSecretKeys()
         if keys.count > 0 {
-            return
+            return findSecretKeys().first!
         }
         let pgp = SwiftPGP()
         let key = pgp.generateKey(adr: adr)
-        let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
-        _ = DataHandler.handler.newSecretKey(keyID: key)
-        _ = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: useraddr, autocrypt: false, newGenerated: true)
+        let sk = DataHandler.handler.newSecretKey(keyID: key)
+        _ = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false, newGenerated: true)
+        return sk
     }
 
     func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil, newGenerated: Bool = false) -> PersistentKey {
@@ -416,6 +432,27 @@ class DataHandler {
         save(during: "new pk")
         
         return pk
+    }
+    
+    func prefSecretKey()->SecretKey{
+        if let prefId = UserManager.loadUserValue(Attribute.prefSecretKeyID){
+            if let id = prefId as? String{
+                if let key =  findSecretKey(keyID: id){
+                    return key
+                }
+            }
+        }
+        var allSKs = findSecretKeys()
+        allSKs = allSKs.sorted(by: {($0.importedDate)!<($1.importedDate)!})
+        if allSKs.count > 0{
+            return allSKs[0]
+        }
+        if let adr = UserManager.loadUserValue(Attribute.userAddr){
+            if let adrString = adr as? String{
+                return createNewSecretKey(adr: adrString)
+            }
+        }
+        return createNewSecretKey(adr: "")
     }
 
     func findSecretKeys() -> [SecretKey] {
