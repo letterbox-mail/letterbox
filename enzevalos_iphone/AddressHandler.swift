@@ -111,7 +111,6 @@ class AddressHandler {
                         color = UIColor.gray //blackColor()
                     }
 
-                    //TODO: Add Image in EnzevalosContact
                     var entry = (cn.getImageOrDefault(), con.ezContact.displayname!, address.mailAddress, addrType, color)
 
                     list.append(entry)
@@ -124,32 +123,12 @@ class AddressHandler {
             }
         }
 
-        /*var entrys = CollectionDataDelegate.maxFrequent
-        if cons.count < entrys {
-            entrys = cons.count
-        }
-        if entrys <= 0 {
-            return []
-        }
-        for i in 0...entrys-1 {
-            //let index = abs(Int(arc4random())) % cons.count
-            let index = i % cons.count
-            list.append(cons[index])
-            cons.remove(at: index)
-        }*/
+        
 
         return list
     }
     
-    /*
- REMOVE???
-    static func proveAddress(_ s: NSString) -> Bool {
-        if addresses.contains((s as String).lowercased()) {
-            return true
-        }
-        return EnzevalosEncryptionHandler.hasKey(DataHandler.handler.getContactByAddress((s as String).lowercased()))
-    }
- */
+  
 
     static func inContacts(_ name: String) -> Bool {
         AppDelegate.getAppDelegate().requestForAccess({ access in })
@@ -256,6 +235,7 @@ class AddressHandler {
 
     static func contactByEmail(_ mailaddreses: [MailAddress]) -> [CNContact] {
         var contacts: [CNContact] = []
+        
 
         let fetchRequest = CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName), CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor])
 
@@ -273,5 +253,20 @@ class AddressHandler {
         }
 
         return contacts
+    }
+    
+    
+    static func updateCNContacts(){
+        let enzContacts = datahandler.getContacts()
+        
+        for contact in enzContacts{
+            if contact.cnContact == nil{
+                let contacts = findContact(contact)
+                if contacts.count > 0{
+                    contact.cnidentifier = contacts.first?.identifier
+                }
+            }
+        }
+        datahandler.save(during: "updateCNContacts")
     }
 }

@@ -160,13 +160,12 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
 
     open var cnContact: CNContact? {
         get {
-            let contactFromBook = AddressHandler.findContact(self)
-            if contactFromBook.count > 0 {
-                let con = contactFromBook.first
-                self.cnidentifier = con?.identifier
-                return con!
+            if let cn = cnidentifier{
+                let contacts = AddressHandler.getContactByID(cn)
+                if contacts.count > 0{
+                    return contacts.first
+                }
             }
-
             return nil
         }
     }

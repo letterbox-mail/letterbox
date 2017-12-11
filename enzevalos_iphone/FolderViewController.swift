@@ -180,7 +180,7 @@ class FolderViewController: UITableViewController {
         tableView.reloadData()
         refreshControl?.endRefreshing()
     }
-    func newMails() {
+    func newMails(mail: PersistentMail?) {
         print("newMails")
     }
 

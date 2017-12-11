@@ -119,7 +119,7 @@ class DataHandler {
         }
         let records = folder.records
         checkRecords(records: records)
-        checkRecords(records: folder.liveRecords)
+        checkRecords(records: folder.records)
     }
 
 
@@ -272,14 +272,15 @@ class DataHandler {
     }
 
     func terminate() {
-        save()
+        save(during: "Terminating")
     }
 
-    func save() {
+    func save(during:String) {
         do {
             try managedObjectContext.save()
         } catch {
-            fatalError("Failure to save context\(error)")
+            //fatalError("Failure to save context\(error)")
+            //print("Error during saving while: \(during)")
         }
     }
 
@@ -290,7 +291,7 @@ class DataHandler {
             for object in result {
                 self.managedObjectContext.delete(object)
             }
-            save()
+            save(during: "deleting")
         }
     }
 
@@ -301,13 +302,13 @@ class DataHandler {
             for object in result {
                 self.managedObjectContext.delete(object)
             }
-            save()
+            save(during: "Delte num")
         }
     }
 
     func delete(mail: PersistentMail) {
         self.managedObjectContext.delete(mail as NSManagedObject)
-        save()
+        save(during: "delete ")
     }
 
     func deleteMail(with uid: UInt64) {
@@ -351,7 +352,7 @@ class DataHandler {
             sk.keyID = keyID
             sk.obsolete = false
         }
-        save()
+        save(during: "new sk")
         return sk
     }
 
@@ -378,7 +379,6 @@ class DataHandler {
             }
             search.addToMailaddress(adr)
             pk = search
-            save()
             Logger.queue.async(flags: .barrier) {
                 if Logger.logging {
                     var importChannel = "autocrypt"
@@ -401,7 +401,6 @@ class DataHandler {
             if autocrypt {
                 pk.lastSeenAutocrypt = date
             }
-            save()
             Logger.queue.async(flags: .barrier) {
                 if Logger.logging {
                     var importChannel = "autocrypt"
@@ -414,6 +413,7 @@ class DataHandler {
                 }
             }
         }
+        save(during: "new pk")
         
         return pk
     }
@@ -591,6 +591,10 @@ class DataHandler {
         contact.displayname = lowerAdr
         let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
         adr.contact = contact
+        let cncontacts = AddressHandler.findContact(contact)
+        if cncontacts.count > 0{
+            contact.cnidentifier = cncontacts.first?.identifier
+        }
         return contact
     }
 
@@ -762,7 +766,8 @@ class DataHandler {
         if mail.uid > myfolder.maxID {
             myfolder.maxID = mail.uid
         }
-        save()
+        myfolder.updateRecords(mail: mail)
+        save(during: "new mail")
         return mail
     }
 
@@ -778,7 +783,7 @@ class DataHandler {
             }
         }
         pseudonymMailAddress.address = mailAddress.lowercased()
-        save()
+        save(during: "pseudomail")
         return pseudonymMailAddress
     }
     
@@ -802,7 +807,7 @@ class DataHandler {
             }
         }
         pseudonymKey.keyID = keyID.lowercased()
-        save()
+        save(during: "pseudoKey")
         return pseudonymKey
     }
     
@@ -826,7 +831,7 @@ class DataHandler {
             }
         }
         pseudonymSubject.subject = subject
-        save()
+        save(during: "createPseudoSubject")
         return pseudonymSubject
     }
     
@@ -850,7 +855,7 @@ class DataHandler {
             }
         }
         pseudonymFolderPath.folderPath = folderPath
-        save()
+        save(during: "Create PseudoFolder")
         return pseudonymFolderPath
     }
     

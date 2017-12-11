@@ -38,12 +38,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             
         } else {
+            AddressHandler.updateCNContacts()
             Logger.queue.async(flags: .barrier) {
                 Logger.log(startApp: false)
             }
             presentInboxViewController()
         }
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(addressBookDidChange),
+            name: NSNotification.Name.CNContactStoreDidChange,
+            object: nil)
         return true
+    }
+    
+    @objc func addressBookDidChange(notification: NSNotification){
+        AddressHandler.updateCNContacts()
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {

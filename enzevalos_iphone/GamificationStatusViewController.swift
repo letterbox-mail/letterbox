@@ -119,9 +119,11 @@ class GamificationStatusViewController: UIViewController, UITableViewDelegate, U
 
 
             // set user data
-            let username = UserManager.loadUserValue( Attribute.accountname ) as! String
             let usermail = UserManager.loadUserValue( Attribute.userAddr ) as! String
-
+            var username = usermail
+            if UserManager.loadUserValue( Attribute.accountname) != nil{
+                username = UserManager.loadUserValue( Attribute.accountname) as! String
+            }
             cell.userName.text = username
             cell.mailLabel.text = "(\(usermail))"
 
@@ -148,8 +150,16 @@ class GamificationStatusViewController: UIViewController, UITableViewDelegate, U
 
 
             // set user data
-            let username = UserManager.loadUserValue( Attribute.accountname ) as! String
-            let usermail = UserManager.loadUserValue( Attribute.userAddr ) as! String
+            
+            
+            let usermail = UserManager.loadUserValue( Attribute.userAddr) as! String
+            var username = usermail
+                
+            if UserManager.loadUserValue( Attribute.accountname) != nil{
+                username = UserManager.loadUserValue( Attribute.accountname) as! String
+                
+            }
+
 
             cell.userName.text = username
             cell.mailLabel.text = "(\(usermail))"
