@@ -202,6 +202,7 @@ class MailHandler {
         builder.header.from = MCOAddress(displayName: username, mailbox: useraddr)
 
         builder.header.subject = subject
+        builder.header.setExtraHeaderValue("letterbox", forName: "X-Mailer")
 
         addAutocryptHeader(builder)
 
@@ -276,7 +277,7 @@ class MailHandler {
     }
     
 
-    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void) {
+    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, logMail: Bool = true) {
 
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let session = createSMTPSession()
@@ -288,6 +289,7 @@ class MailHandler {
         var allRec: [String] = []
         allRec.append(contentsOf: toEntrys)
         allRec.append(contentsOf: ccEntrys)
+        allRec.append(contentsOf: bccEntrys)
         
         let ordered = orderReceiver(receiver: allRec)
 
@@ -307,16 +309,17 @@ class MailHandler {
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: keyIDs, myId:sk.keyID!)
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
-                if AppDelegate.getAppDelegate().logging {
-                    Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, isSigned: true, keyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, otherKeyIDs: keyIDs)
+                Logger.queue.async(flags: .barrier) {
+                    if Logger.logging && logMail {
+                        Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, encryptedForKeyIDs: keyIDs)
+                    }
                 }
-                
                 builder.textBody = "Dies ist verschlüsselt!"
                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
 
                 sendOperation.start(callback)
-                if ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0{
+                if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && logMail {
                     createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                 }
                 
@@ -333,8 +336,16 @@ class MailHandler {
                 sendData = builder.data()
                 sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
                 //TODO handle different callbacks
+                //TODO add logging call here for the case the full email is unencrypted
+                if unenc.count == allRec.count && logMail {
+                    Logger.queue.async(flags: .barrier) {
+                        Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
+                    }
+                }
                 sendOperation.start(callback)
-                createSendCopy(sendData: sendData)
+                if logMail {
+                    createSendCopy(sendData: sendData)
+                }
             }
         }
     }
@@ -370,7 +381,7 @@ class MailHandler {
         //TODO: Consider pref enc = false
         let pgp = SwiftPGP()
         let keys = DataHandler.handler.findSecretKeys()
-        if keys.count > 0{
+        if keys.count > 0 && allRec.reduce(true, {$0 && DataHandler.handler.hasKey(adr: $1)}) {
             let mykey = keys[0] //TODO: multiple privatekeys
             let receiverIds = [mykey.keyID] as! [String]
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: receiverIds, myId: mykey.keyID!)
@@ -389,6 +400,20 @@ class MailHandler {
             } else {
                 //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
+            }
+        }
+        else {
+            builder.textBody = message
+            sendData = builder.data()
+            
+            let drafts = UserManager.backendDraftFolderPath
+            
+            if !DataHandler.handler.existsFolder(with: drafts) {
+                let op = IMAPSession.createFolderOperation(drafts)
+                op?.start({ _ in self.saveDraft(data: sendData, callback: callback)})
+            }
+            else {
+                saveDraft(data: sendData, callback: callback)
             }
         }
     }
@@ -419,7 +444,7 @@ class MailHandler {
         return imapsession
     }
 
-    func startIMAPIdleIfSupported(addNewMail: @escaping (() -> ())) {
+    func startIMAPIdleIfSupported(addNewMail: @escaping ((_ mail: PersistentMail?) -> ())) {
         if let supported = IMAPIdleSupported {
             if supported && IMAPIdleSession == nil {
                 IMAPIdleSession = setupIMAPSession()
@@ -440,7 +465,7 @@ class MailHandler {
         }
     }
 
-    func checkIdleSupport(addNewMail: @escaping (() -> ())) {
+    func checkIdleSupport(addNewMail: @escaping ((_ mail: PersistentMail?) -> ())) {
         let op = setupIMAPSession().capabilityOperation()
         op?.start({ (error, capabilities) in
             guard error == nil else {
@@ -504,7 +529,7 @@ class MailHandler {
 
     
 
-    func loadMailsForRecord(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMailsForRecord(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         //TODO: Init update/old
         let addresses: [MailAddress]
         addresses = record.addresses
@@ -534,12 +559,12 @@ class MailHandler {
         }
     }
     
-    func loadMailsForInbox(newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMailsForInbox(newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let folder = datahandler.findFolder(with: INBOX)
         olderMails(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
 
-    private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping (() -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
 
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
@@ -579,7 +604,7 @@ class MailHandler {
         }
     }
 
-    private func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folderPath: String, newMailCallback: (() -> ())?) {
+    private func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folderPath: String, newMailCallback: ((_ mail: PersistentMail?) -> ())?) {
         guard error == nil else {
             print("Error while fetching mail: \(String(describing: error))")
             return
@@ -605,7 +630,7 @@ class MailHandler {
             // own key export message -> Drop message?.
             // TODO: Distinguish between other keys (future work)
             if newMailCallback != nil{
-                newMailCallback!()
+                newMailCallback!(nil)
             }
             return
         }
@@ -680,7 +705,6 @@ class MailHandler {
                 }
             }
             
-            
             if let header = header, let from = header.from, let date = header.date {
                 let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath)
                 
@@ -694,15 +718,13 @@ class MailHandler {
                 for keyId in newKeyIds{
                     _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
                 }
-                if AppDelegate.getAppDelegate().logging {
+                Logger.queue.async(flags: .barrier) {
                     if let mail = mail {
                         Logger.log(received: mail)
-                    } else {
-                        //TODO: log a bug (?)
                     }
                 }
                 if newMailCallback != nil{
-                    newMailCallback!()
+                    newMailCallback!(mail)
                 }
             }
         }
@@ -804,7 +826,7 @@ class MailHandler {
     }
     
     
-    func initFolder(folder: Folder, newMailCallback: @escaping (() -> ()),completionCallback: @escaping ((Bool) -> ())){
+    func initFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()),completionCallback: @escaping ((Bool) -> ())){
         let folderPath = folder.path
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)
         let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
@@ -833,9 +855,9 @@ class MailHandler {
         }
     }
     
-    func initInbox(inbox: Folder, newMailCallback: @escaping (() -> ()),completionCallback: @escaping ((Bool) -> ()) ){
+    func initInbox(inbox: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()),completionCallback: @escaping ((Bool) -> ()) ){
         if let date = Calendar.current.date(byAdding: .month, value: -1, to: Date()){
-            loadMailsSinceDate(folder: inbox, since: date, maxLoad: 200, newMailCallback: newMailCallback, completionCallback: completionCallback)
+            loadMailsSinceDate(folder: inbox, since: date, maxLoad: 100, newMailCallback: newMailCallback, completionCallback: completionCallback)
         }
         else{
             print("No date for init inbox!")
@@ -844,7 +866,7 @@ class MailHandler {
         
     }
     
-    func updateFolder(folder: Folder, newMailCallback: @escaping (() -> ()),completionCallback: @escaping ((Bool) -> ())){
+    func updateFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()),completionCallback: @escaping ((Bool) -> ())){
         if let date = folder.lastUpdate{
             loadMailsSinceDate(folder: folder, since: date, newMailCallback: newMailCallback, completionCallback: completionCallback)
         }
@@ -858,7 +880,7 @@ class MailHandler {
         }
     }
     
-    func olderMails(folder: Folder, newMailCallback: @escaping (() -> ()),completionCallback: @escaping ((Bool) -> ())){
+    func olderMails(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()),completionCallback: @escaping ((Bool) -> ())){
         let folderPath = UserManager.convertToBackendFolderPath(from: folder.path)
         if let mails = folder.mails{
             var oldestDate:Date?
@@ -899,7 +921,7 @@ class MailHandler {
     }
     
     
-    private func loadMailsSinceDate(folder: Folder, since: Date, maxLoad: Int = MailHandler.MAXMAILS, newMailCallback: @escaping (() -> ()),completionCallback: @escaping ((Bool) -> ())){
+    private func loadMailsSinceDate(folder: Folder, since: Date, maxLoad: Int = MailHandler.MAXMAILS, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()),completionCallback: @escaping ((Bool) -> ())){
         let folderPath = UserManager.convertToBackendFolderPath(from: folder.path)
         let searchExp = MCOIMAPSearchExpression.search(since: since)
         let searchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExp)

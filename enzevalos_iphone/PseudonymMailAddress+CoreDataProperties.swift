@@ -11,8 +11,12 @@ import CoreData
 
 extension PseudonymMailAddress {
     
-    @nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    /*@nonobjc open override class func fetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         return NSFetchRequest(entityName: "PseudonymMailAddress");
+    }*/
+    
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<PseudonymMailAddress> {
+        return NSFetchRequest<PseudonymMailAddress>(entityName: "PseudonymMailAddress")
     }
     
     @NSManaged public var address: String

@@ -35,7 +35,7 @@ class LoggerTests: XCTestCase {
     func testLogWriting() {
         let testString = "This is a test String"
         let testFile = "testLog.json"
-        Logger.saveToDisk(fileName: testFile, json: testString)
+        Logger.saveToDisk(json: testString, fileName: testFile)
 
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
 

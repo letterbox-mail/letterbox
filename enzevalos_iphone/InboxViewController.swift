@@ -82,8 +82,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
        
     }
 
-    func addNewMail() {
-        folder.updateRecords()
+    func addNewMail(mail: PersistentMail?) {
+        //folder.updateRecords()
         tableView.reloadData()
     }
 
@@ -93,7 +93,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             rc.endRefreshing()
             lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))"
             
-            folder.updateRecords()
+            //folder.updateRecords()
             self.tableView.reloadData()
         }
     }
@@ -147,8 +147,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         performSegue(withIdentifier: "readMailSegue", sender: mail)
     }
 
-    //TODO: Whats that? What is the error?
-
     func callSegueFromCell2(_ contact: KeyRecord?) {
         performSegue(withIdentifier: "mailListSegue", sender: contact)
     }
@@ -186,7 +184,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func filterContentForSearchText(_ searchText: String, scope: Int = 0) {
-        folder.updateRecords()
+       // folder.updateRecords()
         var records = [KeyRecord]()
         if scope == 0 || scope == 3 {
             records += folder.records.filter({ ( record: KeyRecord) -> Bool in

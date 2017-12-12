@@ -190,6 +190,26 @@ open class KeyRecord: Record {
     open func getImageOrDefault() -> UIImage {
         return ezContact.getImageOrDefault()
     }
+    
+    func matchMail(mail: PersistentMail) -> Bool{
+        if self.isSecure == mail.isSecure && self.folder == mail.folder{
+            if isSecure && self.key == mail.keyID {
+                return true
+            }
+            else if !isSecure {
+                if self.ezContact == mail.from.contact && mail.from.contact != nil{
+                    return true
+                }
+                for adr in addresses{
+                    if adr.mailAddress == mail.from.mailAddress {
+                        return true
+                    }
+                    
+                }
+            }
+        }
+        return false
+    }
 
 }
 

@@ -10,200 +10,429 @@ import Foundation
 
 class Logger {
     
+    static var logging = true//false
+    
+    static let queue = DispatchQueue(label: "logging", qos: .background)
+    
     static let defaultFileName = "log.json"
+    static let loggingInterval = 86400 //60*60*24 seconds
     
-    /**
-     * Attention: assumes message to be right escaped (espacially ',')
-     */
-    static func log(message: String, type: Log) {
-
-        /*
-         Date,type,...
-         */
-
-        var entries: [String] = []
+    static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
+    
+    static fileprivate func sendCheck() {
+        if nextDeadline <= Date() && AppDelegate.getAppDelegate().currentReachabilityStatus != .notReachable {
+            logInbox()
+            logOverview()
+            sendLog()
+        }
+    }
+    
+    static fileprivate func plainLogDict() -> [String: Any] {
+        var fields: [String: Any] = [:]
         let now = Date()
-        entries.append(escape(message: now.description))
-        entries.append(escape(message: type.rawValue))
-        entries.append(message)
-        NSLog("\(entries.joined(separator: ","))")
-    }
-
-    /**
-     * Attention: assumes message to be right escaped (espacially ',')
-     */
-    static func logMail(with from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, /*decryptedWithOldPrivateKey = false,*/ isSigned: Bool, /*isCorrectlySigned = true,*/ keyID: String, message: String) {
-        
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,...
-         */
-        
-        var messages: [String] = []
-        messages.append(escape(message: resolve(mailAddress: from)))
-        
-        //to
-        var array: [String] = []
-        for entry in to {
-            array.append(resolve(mailAddress: entry))
-        }
-        messages.append(escape(message: array.joined(separator: ";")))
-        
-        //cc
-        array = []
-        for entry in cc {
-            array.append(resolve(mailAddress: entry))
-        }
-        messages.append(escape(message: array.joined(separator: ";")))
-        
-        //bcc
-        array = []
-        for entry in bcc {
-            array.append(resolve(mailAddress: entry))
-        }
-        messages.append(escape(message: array.joined(separator: ";")))
-        
-        //bodyLength
-        messages.append(escape(message: String(bodyLength)))
-        
-        //isEncrypted
-        messages.append(escape(message: String(isEncrypted)))
-        
-        //decryptedBodyLength
-        messages.append(escape(message: String(decryptedBodyLength)))
-        
-        //decryptedWithOldPrivateKey
-        messages.append(escape(message: String(false)))
-        
-        //isSigned
-        messages.append(escape(message: String(isSigned)))
-        
-        //isCorrectlySigned
-        messages.append(escape(message: String(true)))
-        
-        //keyID - the keyID the message was signed with
-        messages.append(escape(message: resolve(keyID: keyID)))
-        
-        //message
-        messages.append(message)
-        
-        log(message: messages.joined(separator: ","), type: Log.mail)
+        //TODO add uuid here
+        fields["timestamp"] = now.description
+        return fields
     }
     
-    static func log(sent from: String, to: [String], cc: [String], bcc: [String], bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, /*decryptedWithOldPrivateKey = false,*/ isSigned: Bool, /*isCorrectlySigned = true,*/ keyID: String, /*, sent*/ secureAddresses: [String], otherKeyIDs: [String]) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,inSentFolder,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey(=false),isSigned,isCorrectlySigned(=true),keyID,sent,secureAddresses,otherKeyIDs
-         */
-        var messages: [String] = []
-        //sent - mailLog-type
-        messages.append(escape(message: MailLog.sent.rawValue))
-        
-        //secureAddresses
-        var array: [String] = []
-        for entry in secureAddresses {
-            array.append(resolve(mailAddress: entry))
+    static fileprivate func dictToJSON(fields: [String: Any]) -> String {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: fields)
+            if let json = String(data: jsonData, encoding: String.Encoding.utf8) {
+                return json
+            }
+            return ""
+        } catch {
+            return "{\"error\":\"json conversion failed\"}"
         }
-        messages.append(escape(message: array.joined(separator: ";")))
-        
-        //otherKeyIDs
-        array = []
-        for entry in otherKeyIDs {
-            array.append(resolve(keyID: entry))
-        }
-        messages.append(escape(message: array.joined(separator: ";")))
-        
-        logMail(with: from, to: to, cc: cc, bcc: bcc, bodyLength: bodyLength, isEncrypted: isEncrypted, decryptedBodyLength: decryptedBodyLength, isSigned: isSigned, keyID: keyID, message: messages.joined(separator: ","))
     }
     
-    /**
-     * Attention: assumes message to be right escaped (espacially ',')
-     */
-    static func log(generic mail: PersistentMail, message: String) {
-
-        /*
-         Date,type,from,cc,bcc,bodyLength,inSentFolder,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID...
-         */
-        //maybe add a resolved subject?
+    static func log(startApp onboarding: Bool) {
         
-        var messages: [String] = []
-        messages.append(escape(message: resolve(mailAddress: mail.from)))
-        var to: [String] = []
-        for addr in mail.to {
-            to.append(resolve(mailAddress: addr as! MailAddress))
+        if !logging {
+            return
         }
-        messages.append(escape(message: to.joined(separator: ";")))
-
-        var cc: [String] = []
-        if let mailCC = mail.cc {
-            for addr in mailCC {
-                cc.append(resolve(mailAddress: addr as! MailAddress))
-            }
-        }
-        messages.append(escape(message: cc.joined(separator: ";")))
-
-        var bcc: [String] = []
-        if let mailBCC = mail.bcc {
-            for addr in mailBCC {
-                bcc.append(resolve(mailAddress: addr as! MailAddress))
-            }
-        }
-        messages.append(escape(message: bcc.joined(separator: ";")))
-
-        messages.append(escape(message: String((mail.body ?? "").count)))
         
-        messages.append(escape(message: String(mail.folder.path == UserManager.backendSentFolderPath)))
-        
-        messages.append(escape(message: String(mail.isEncrypted)))
-        messages.append(escape(message: String(mail.unableToDecrypt)))
-        messages.append(escape(message: String((mail.decryptedBody ?? "").count)))
-        messages.append(escape(message: String(mail.decryptedWithOldPrivateKey)))
-        
-        messages.append(escape(message: String(mail.isSigned)))
-        messages.append(escape(message: String(mail.isCorrectlySigned)))
-        messages.append(escape(message: resolve(keyID: mail.keyID ?? "")))
-        
-        messages.append(message)
-        log(message: "\(messages.joined(separator: ","))", type: .mail)
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.appStart.rawValue
+        event["onboarding"] = onboarding
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
     }
-
+    
+    static func log(terminateApp: Void) {
+        if !logging {
+            return
+        }
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.appTerminate.rawValue
+        saveToDisk(json: dictToJSON(fields: event))
+    }
+    
+    static func log(background goto: Bool) {
+        
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.appBackground.rawValue
+        event["going to"] = goto //true -> goto background; false -> comming from background
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(keyViewOpen keyID: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.keyViewOpen.rawValue
+        event["keyID"] = resolve(keyID: keyID)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(keyViewClose keyID: String, secondsOpened: Int) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.keyViewClose.rawValue
+        event["keyID"] = resolve(keyID: keyID)
+        event["opened for seconds"] = secondsOpened
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(sent from: String, to: [String], cc: [String], bcc: [String], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
+        
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.mailSent.rawValue
+        event["from"] = Logger.resolve(mailAddress: from)
+        event["to"] = Logger.resolve(mailAddresses: to)
+        event["cc"] = Logger.resolve(mailAddresses: cc)
+        event["bcc"] = Logger.resolve(mailAddresses: bcc)
+        event["subject"] = Logger.resolve(subject: subject)
+        event["bodyLength"] = bodyLength
+        event["isEncrypted"] = isEncrypted
+        event["decryptedBodyLength"] = decryptedBodyLength
+        event["decryptedWithOldPrivateKey"] = decryptedWithOldPrivateKey
+        event["isSigned"] = isSigned
+        event["isCorrectlySigned"] = isCorrectlySigned
+        event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
+        event["myKeyID"] = Logger.resolve(keyID: myKeyID)
+        event["secureAddresses"] = Logger.resolve(mailAddresses:secureAddresses) //means the addresses, which received a secure mail
+        event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(read from: String, to: [String], cc: [String], bcc: [String], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = [], trouble: Bool, folder: Folder) {
+        
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.mailRead.rawValue
+        event["from"] = Logger.resolve(mailAddress: from)
+        event["to"] = Logger.resolve(mailAddresses: to)
+        event["cc"] = Logger.resolve(mailAddresses: cc)
+        event["bcc"] = Logger.resolve(mailAddresses: bcc)
+        event["subject"] = Logger.resolve(subject: subject)
+        event["bodyLength"] = bodyLength
+        event["isEncrypted"] = isEncrypted
+        event["decryptedBodyLength"] = decryptedBodyLength
+        event["decryptedWithOldPrivateKey"] = decryptedWithOldPrivateKey
+        event["isSigned"] = isSigned
+        event["isCorrectlySigned"] = isCorrectlySigned
+        event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
+        event["myKeyID"] = Logger.resolve(keyID: myKeyID)
+        event["secureAddresses"] = Logger.resolve(mailAddresses: secureAddresses) //could mean the addresses, in this mail we have a key for
+        event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        event["trouble"] = trouble
+        event["folder"] = Logger.resolve(folder: folder)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(read mail: PersistentMail, message: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.mailRead.rawValue
+        event = extract(from: mail, event: event)
+        event["messagePresented"] = message
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(readDraft mail: PersistentMail, message: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.mailDraftRead.rawValue
+        event = extract(from: mail, event: event)
+        event["messagePresented"] = message
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(received mail: PersistentMail) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,received,,
-         */
-        log(generic: mail, message: escape(message: MailLog.received.rawValue)+",,")
-    }
-
-    static func log(read mail: PersistentMail) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,read,,
-         */
-        log(generic: mail, message: escape(message: MailLog.read.rawValue)+",,")
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.mailReceived.rawValue
+        event = extract(from: mail, event: event)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
     }
     
-    /*static func log(sent mail: PersistentMail) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,sent
-         */
-        MailLog.sent.append(mail: mail)
-    }*/
+    static func log(delete mail: PersistentMail, toTrash: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        if toTrash {
+            event["type"] = LoggingEventType.mailDeletedToTrash.rawValue
+        } else {
+            event["type"] = LoggingEventType.mailDeletedPersistent.rawValue
+        }
+        event = extract(from: mail, event: event)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
     
-
-    static func log(sent mail: PersistentMail) {
-
+    static func log(archive mail: PersistentMail) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.mailArchived.rawValue
+        event = extract(from: mail, event: event)
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(open indicatorButton: String, mail: PersistentMail?) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.indicatorButtonOpen.rawValue
+        event["indicatorButton"] = indicatorButton
+        if let mail = mail {
+            event["view"] = "readView"
+            event = extract(from: mail, event: event)
+        } else {
+            event["view"] = "sendView"
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(close indicatorButton: String, mail: PersistentMail?, action: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.indicatorButtonClose.rawValue
+        event["indicatorButton"] = indicatorButton
+        if let mail = mail {
+            event["view"] = "readView"
+            event = extract(from: mail, event: event)
+        } else {
+            event["view"] = "sendView"
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(discover publicKeyID: String, mailAddress: String, importChannel: String, knownPrivateKey: Bool, knownBefore: Bool) { //add reference to mail here?
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        if !knownBefore {
+            event["type"] = LoggingEventType.pubKeyDiscoveryNewKey.rawValue
+        } else {
+            event["type"] = LoggingEventType.pubKeyDiscoveryKnownKey.rawValue
+        }
+        event["keyID"] = Logger.resolve(keyID: publicKeyID)
+        event["mailAddress"] = Logger.resolve(mailAddress: mailAddress)
+        event["knownPrivateKey"] = knownPrivateKey //Do we have a private key for it?
+        event["importChannel"] = importChannel
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(verify keyID: String, open: Bool, success: Bool? = nil) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.pubKeyVerification.rawValue
+        event["keyID"] = Logger.resolve(keyID: keyID)
+        var stateString = "open"
+        if !open {
+            stateString = "close"
+        }
+        event["state"] = stateString
+        if let success = success {
+            event["success"] = success
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static fileprivate func extract(from mail: PersistentMail, event: [String: Any]) -> [String: Any] {
+        var event = event
+        event["from"] = Logger.resolve(mailAddress: mail.from)
+        event["to"] = Logger.resolve(mailAddresses: mail.to)
+        event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
+        event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
+        event["subject"] = Logger.resolve(subject: mail.subject ?? "")
+        event["timeInHeader"] = mail.timeString
+        event["bodyLength"] = (mail.body ?? "").count
+        event["isEncrypted"] = mail.isEncrypted
+        event["decryptedBodyLength"] = (mail.decryptedBody ?? "").count
+        event["decryptedWithOldPrivateKey"] = mail.decryptedWithOldPrivateKey
+        event["isSigned"] = mail.isSigned
+        event["isCorrectlySigned"] = mail.isCorrectlySigned
+        //TODO:
+        //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
+        //event["myKeyID"] = Logger.resolve(keyID: myKeyID)
+        
+        
+        
+        //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
+        //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        
+        event["trouble"] = mail.trouble
+        event["folder"] = Logger.resolve(folder: mail.folder)
+        
+        return event
     }
 
     static func logInbox() {
-        let inbox = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
-        let nrOfMails = inbox.mailsOfFolder.count
-        let nrOfSecureMails = inbox.mailsOfFolder.reduce(0, { $1.isSecure ? $0 + 1: $0 })
-        let nrOfTroubleMails = inbox.mailsOfFolder.reduce(0, { $1.trouble ? $0 + 1: $0 })
+        var event = plainLogDict()
         
-        // temporary: move this to appropriate functions later
-        let nrOfFolders = DataHandler.handler.allFolders.count
-        let gesendet = DataHandler.handler.findFolder(with: UserManager.backendSentFolderPath)
-        let nrOfGesendetMails = gesendet.mailsOfFolder.count
+        event["type"] = LoggingEventType.overviewInbox.rawValue
         
+        let inbox = DataHandler().findFolder(with: UserManager.backendInboxFolderPath)//DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
+        event["nrOfMails"] = inbox.mailsOfFolder.count
+        event["nrOfSecureMails"] = inbox.mailsOfFolder.reduce(0, { $1.isSecure ? $0 + 1: $0 }) as Int
+        event["nrOfTroubleMails"] = inbox.mailsOfFolder.reduce(0, { $1.trouble ? $0 + 1: $0 }) as Int
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        //Don't call sendCheck() here; this function is called into sendCheck()
+    }
+        
+    static func logOverview() {
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.overviewGeneral.rawValue
+        event["nrOfFolders"] = DataHandler().allFolders.count//DataHandler.handler.allFolders.count
+        let gesendet = DataHandler().findFolder(with: UserManager.backendSentFolderPath)//DataHandler.handler.findFolder(with: UserManager.backendSentFolderPath)
+        event["nrOfGesendetMails"] = gesendet.mailsOfFolder.count //@Olli: should we fetch the counter before?
+        //maybe add number of all mails that could be fetched? this could be much more, than we actually fetched
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        //Don't call sendCheck() here; this function is called into sendCheck()
     }
 
+    static func resolve(subject: String) -> String {
+        if subject == "" {
+            return ""
+        }
+        var oldSubject = subject
+        var newSubject = ""
+        var hasPrefix = true
+        
+        while hasPrefix {
+            if oldSubject.hasPrefix("Re: ") || oldSubject.hasPrefix("RE: ") || oldSubject.hasPrefix("re: ") || oldSubject.hasPrefix("AW: ") || oldSubject.hasPrefix("Aw: ") || oldSubject.hasPrefix("aw: ") {
+                newSubject += "Re: "
+                oldSubject = oldSubject.substring(from: oldSubject.index(oldSubject.startIndex, offsetBy: 4)) //damn swift3!
+            } else if oldSubject.hasPrefix("Fwd: ") || oldSubject.hasPrefix("FWD: ") || oldSubject.hasPrefix("fwd: ") {
+                newSubject += "Fwd: "
+                oldSubject = oldSubject.substring(from: oldSubject.index(oldSubject.startIndex, offsetBy: 5))
+            } else if oldSubject.hasPrefix("WG: ") || oldSubject.hasPrefix("Wg: ") || oldSubject.hasPrefix("wg: ") {
+                newSubject += "Fwd: "
+                oldSubject = oldSubject.substring(from: oldSubject.index(oldSubject.startIndex, offsetBy: 4))
+            } else {
+                hasPrefix = false
+            }
+        }
+        
+        newSubject += DataHandler().getPseudonymSubject(subject: oldSubject).pseudonym//DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
+        
+        return newSubject
+    }
+    
+    //takes backendFolderPath
+    static func resolve(folder: Folder) -> String {
+        return resolve(folderPath: folder.path)
+    }
+    
+    //takes backendFolderPath
+    static func resolve(folderPath: String) -> String {
+        if folderPath == UserManager.backendSentFolderPath {
+            return "sent"
+        }
+        if folderPath == UserManager.backendDraftFolderPath {
+            return "draft"
+        }
+        if folderPath == UserManager.backendInboxFolderPath {
+            return "inbox"
+        }
+        if folderPath == UserManager.backendTrashFolderPath {
+            return "trash"
+        }
+        if folderPath == UserManager.backendArchiveFolderPath {
+            return "archive"
+        }
+        
+        return DataHandler().getPseudonymFolderPath(folderPath: folderPath).pseudonym//DataHandler.handler.getPseudonymFolderPath(folderPath: folderPath).pseudonym
+    }
+    
     //get an pseudonym for a mailAddress
     static func resolve(mailAddress: MailAddress) -> String {
         return resolve(mailAddress: mailAddress.mailAddress)
@@ -211,12 +440,18 @@ class Logger {
     
     //get an pseudonym for a mailAddress
     static func resolve(mailAddress: String) -> String {
-        return DataHandler.handler.getPseudonymMailAddress(mailAddress: mailAddress).pseudonym
+        if mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
+            return mailAddress
+        }
+        return DataHandler().getPseudonymMailAddress(mailAddress: mailAddress).pseudonym//DataHandler.handler.getPseudonymMailAddress(mailAddress: mailAddress).pseudonym
     }
     
     //get an pseudonym for a keyID
     static func resolve(keyID: String) -> String {
-        return ""
+        if keyID == "noKeyID" {
+            return keyID
+        }
+        return DataHandler().getPseudonymKey(keyID: keyID).pseudonym//DataHandler.handler.getPseudonymKey(keyID: keyID).pseudonym
     }
     
     //escape the entry of one cell in a csv
@@ -226,6 +461,30 @@ class Logger {
             mess = "\"" + mess.components(separatedBy: "") .map { $0 == "\"" ? "\"\"": $0 }.joined() + "\""
         }
         return mess
+    }
+    
+    static func resolve(mailAddresses: NSSet) -> [String] {
+        var result: [String] = []
+        for addr in mailAddresses {
+            result.append(resolve(mailAddress: addr as! MailAddress))
+        }
+        return result
+    }
+    
+    static func resolve(mailAddresses: [String]) -> [String] {
+        var result: [String] = []
+        for addr in mailAddresses {
+            result.append(resolve(mailAddress: addr))
+        }
+        return result
+    }
+    
+    static func resolve(keyIDs: [String]) -> [String] {
+        var result: [String] = []
+        for id in keyIDs {
+            result.append(resolve(keyID: id))
+        }
+        return result
     }
     
     static func saveToDisk(json: String, fileName: String = defaultFileName) {
@@ -240,7 +499,7 @@ class Logger {
                     let fileHandle = try FileHandle(forUpdating: fileURL)
                     
                     fileHandle.seekToEndOfFile()
-                    if let encoded = "\n\(json)".data(using: .utf8) {
+                    if let encoded = "\n\(json),".data(using: .utf8) {
                         fileHandle.write(encoded)
                     }
                     fileHandle.closeFile()
@@ -263,7 +522,7 @@ class Logger {
         }
     }
     
-    static func sendLog(fileName: String = defaultFileName) {
+    static func sendLog(fileName: String = defaultFileName, logMailAddress: String = "oliver.wiese@fu-berlin.de") {
         
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             
@@ -273,7 +532,7 @@ class Logger {
             do {
                 let currentContent = try String(contentsOf: fileURL, encoding: .utf8)
                 if !currentContent.isEmpty {
-                    AppDelegate.getAppDelegate().mailHandler.send(["logMailAddress"], ccEntrys: [], bccEntrys: [], subject: "Log", message: currentContent, callback: sendCallback)
+                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "[Enzevalos] Log", message: "["+currentContent.dropLast()+"\n]", callback: sendCallback, logMail: false)
                 }
             }
             catch {
@@ -289,6 +548,9 @@ class Logger {
         }
         
         clearLog()
+        let tmpNextDeadline = Date(timeIntervalSinceNow: TimeInterval(loggingInterval))
+            nextDeadline = tmpNextDeadline
+            UserManager.storeUserValue(nextDeadline as AnyObject?, attribute: Attribute.nextDeadline)
     }
     
     static func clearLog(fileName: String = defaultFileName) {
@@ -303,33 +565,5 @@ class Logger {
                 print("Error while clearing logfile: \(error.localizedDescription)")
             }
         }
-    }
-}
-
-enum Log: String {
-    case
-    unknown = "unknown", //unknown type
-    key = "key", //If a new key is discovered/created/verified/etc. this should be logged here
-    mail = "mail", //If a new mail is received or send, this should be logged here
-    ui = "ui", //If a specific UI-element (e.g warning, error message, info button) is triggered, the event should be logged here
-    bug = "bug" //Bugs produced by us should log in this type
-
-    /*func append(message: String) {
-        Logger.log(message: Logger.escape(message: message), type: self)
-    }*/
-}
-
-enum MailLog: String {
-    case
-    unknown = "unknown", //unknown type
-    read = "read", //mail was read by participant
-    sent = "sent", //mail is sent by participant
-    received = "receive" //mail is received by participant
-    
-    func append(mail: PersistentMail) {
-        /*
-         Date,type,from,cc,bcc,bodyLength,isEncrypted,unableToDecrypt,decryptBodyLength,decryptedWithOldPrivateKey,isSigned,isCorrectlySigned,keyID,mailLog
-         */
-        Logger.log(generic: mail, message: Logger.escape(message: self.rawValue))
     }
 }
