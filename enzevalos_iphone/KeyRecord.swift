@@ -75,6 +75,12 @@ open class KeyRecord: Record {
     var fingerprint: String?{
         get{
             if let k = pgpKey{
+                if let pk = k.publicKey{
+                    return pk.fingerprint.description()
+                }
+                else if let sk = k.secretKey{
+                    return sk.fingerprint.description()
+                }
                 return k.keyID.longKeyString
             }
             return nil
@@ -85,6 +91,7 @@ open class KeyRecord: Record {
         get{
             if let k = pgpKey{
                 return k.keyID.shortKeyString
+               
             }
             return nil
         }
