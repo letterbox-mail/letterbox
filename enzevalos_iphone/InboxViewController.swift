@@ -83,7 +83,9 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func addNewMail(mail: PersistentMail?) {
-        //folder.updateRecords()
+        if let m = mail{
+            folder.updateRecords(mail: m)
+        }
         tableView.reloadData()
     }
 
