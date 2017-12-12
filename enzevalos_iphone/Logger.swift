@@ -402,7 +402,7 @@ class Logger {
             }
         }
         
-        newSubject += DataHandler().getPseudonymSubject(subject: oldSubject).pseudonym//DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
+        newSubject += "" //DataHandler().getPseudonymSubject(subject: oldSubject).pseudonym//DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
         
         return newSubject
     }
@@ -430,7 +430,7 @@ class Logger {
             return "archive"
         }
         
-        return DataHandler().getPseudonymFolderPath(folderPath: folderPath).pseudonym//DataHandler.handler.getPseudonymFolderPath(folderPath: folderPath).pseudonym
+        return "" //DataHandler().getPseudonymFolderPath(folderPath: folderPath).pseudonym//DataHandler.handler.getPseudonymFolderPath(folderPath: folderPath).pseudonym
     }
     
     //get an pseudonym for a mailAddress
@@ -443,7 +443,7 @@ class Logger {
         if mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
             return mailAddress
         }
-        return DataHandler().getPseudonymMailAddress(mailAddress: mailAddress).pseudonym//DataHandler.handler.getPseudonymMailAddress(mailAddress: mailAddress).pseudonym
+        return "" //DataHandler().getPseudonymMailAddress(mailAddress: mailAddress).pseudonym//DataHandler.handler.getPseudonymMailAddress(mailAddress: mailAddress).pseudonym
     }
     
     //get an pseudonym for a keyID
@@ -451,7 +451,7 @@ class Logger {
         if keyID == "noKeyID" {
             return keyID
         }
-        return DataHandler().getPseudonymKey(keyID: keyID).pseudonym//DataHandler.handler.getPseudonymKey(keyID: keyID).pseudonym
+        return "" //DataHandler().getPseudonymKey(keyID: keyID).pseudonym//DataHandler.handler.getPseudonymKey(keyID: keyID).pseudonym
     }
     
     //escape the entry of one cell in a csv
