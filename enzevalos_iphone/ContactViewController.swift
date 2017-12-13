@@ -36,8 +36,8 @@ class ContactViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
         if let con = keyRecord {
             hasKey = false
-            if let adrs = con.ezContact.addresses{
-                for adr in adrs{
+            if let adrs = con.ezContact.addresses {
+                for adr in adrs {
                     let a = adr as! MailAddress
                     hasKey = hasKey || a.hasKey
                 }
@@ -224,7 +224,7 @@ extension ContactViewController: CNContactViewControllerDelegate {
 }
 
 extension ContactViewController: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if keyRecord != nil {
             switch indexPath.section {
@@ -277,7 +277,7 @@ extension ContactViewController: UITableViewDataSource {
                 } else if indexPath.row == 2 {
                     if isUser && keyRecord!.hasKey {
                         let progressCell = tableView.dequeueReusableCell(withIdentifier: "ProgressCell", for: indexPath) as! ProgressCell
-                        let (contact,mail) = GamificationData.sharedInstance.getSecureProgress()
+                        let (contact, mail) = GamificationData.sharedInstance.getSecureProgress()
 
                         progressCell.firstLabel.text = NSLocalizedString("secureContacts", comment: "")
                         progressCell.firstProgress.progress = contact
@@ -285,14 +285,14 @@ extension ContactViewController: UITableViewDataSource {
                         progressCell.secondLabel.text = NSLocalizedString("secureCommunication", comment: "")
                         progressCell.secondProgress.progress = mail
                         progressCell.secondPercent.text = "\(Int(mail * 100)) %"
-                        
+
                         return progressCell
                     }
                 } else if indexPath.row == 3 {
                     if isUser && keyRecord!.hasKey {
                         let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
                         actionCell.Button.setTitle(NSLocalizedString("ReadOnOtherDevices", comment: "read secure mails on other devices (export secret key)"), for: UIControlState())
-                        
+
                         return actionCell
                     }
                 }
@@ -356,18 +356,10 @@ extension ContactViewController: UITableViewDataSource {
                     cell.label.text = r[indexPath.row].addresses.first?.mailAddress
                 }
                 return cell
-            case 5 where (keyRecord?.hasKey ?? false) && isUser:
-                let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
-                if keyRecord!.hasKey {
-                    actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
-                } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
-                    actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
-                } else if hasKey {
-                    actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
-                } else {
-                    actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
-                }
-                return actionCell
+            case 5 where isUser:
+                let badgeCell = tableView.dequeueReusableCell(withIdentifier: "BadgeCaseCell", for: indexPath)
+                badgeCell.detailTextLabel?.text = NSLocalizedString("YourBadges", comment: "")
+                return badgeCell
             default:
                 break
             }
@@ -380,11 +372,11 @@ extension ContactViewController: UITableViewDataSource {
         if (keyRecord?.ezContact.records.count ?? 0) > 1 {
             sections += 1
         }
+        if isUser {
+            sections += 1
+        }
         if let hasKey = keyRecord?.hasKey, hasKey {
             sections += 1
-            /*if isUser {
-                sections += 1
-            }*/
         }
         return sections
     }
