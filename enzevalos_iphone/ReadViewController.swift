@@ -241,6 +241,8 @@ class ReadViewController: UITableViewController {
     }
 
     @IBAction func showEmailButton(_ sender: UIButton) {
+        //TODO: @Jakob: add Logger here for reaction with warning
+        
         mail?.showMessage = true
 
         self.tableView.beginUpdates()
