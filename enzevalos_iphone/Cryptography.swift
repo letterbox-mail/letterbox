@@ -21,6 +21,6 @@ public protocol Encryption{
     
     // operations on keys
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject
-    func decrypt(data: Data, decryptionId: String?, verifyIds: [String]) -> CryptoObject
+    func decrypt(data: Data, decryptionIDs: [String], verifyIds: [String], fromAdr: String?) -> CryptoObject
     
 }

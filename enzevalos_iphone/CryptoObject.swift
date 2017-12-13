@@ -30,7 +30,7 @@ public class CryptoObject{
     let plaintext: String?
     let decryptedData: Data?
     let signatureState: SignatureState
-    let encryptionState: EncryptionState
+    var encryptionState: EncryptionState
     let signKey: String?
     let encType: CryptoScheme
     let passcode: String?

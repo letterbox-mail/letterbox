@@ -188,17 +188,22 @@ class SwiftPGP: Encryption{
                     }
                     return keyData
                 }
-            }
-            
+            }            
             if key.isSecret && !isSecretkey{
-                let pk = try! key.export(PGPPartialKeyType.public, error: ())
-                let keys = pgp.keys(from: pk)
-                if (keys.count > 0){
-                    key = keys.first!
-                }
-                else{
+                var pk: Data
+                do {
+                    pk = try key.export(PGPPartialKeyType.public, error: ())
+                    let keys = pgp.keys(from: pk)
+                    if (keys.count > 0){
+                        key = keys.first!
+                    }
+                    else{
+                        return nil
+                    }
+                } catch {
                     return nil
                 }
+               
             }
             if autocrypt{
                 if let data = pgp.export(key, armored: false){
@@ -237,7 +242,28 @@ class SwiftPGP: Encryption{
         return CryptoObject(chiphertext: nil, plaintext: nil,decryptedData: nil, sigState: SignatureState.InvalidSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: cryptoScheme, signedAdrs: signedAdr)
         
     }
-    func decrypt(data: Data,decryptionId: String?, verifyIds: [String]) -> CryptoObject{
+    
+    func decrypt(data: Data,decryptionIDs: [String], verifyIds: [String], fromAdr: String?) -> CryptoObject{
+        var cryptoObject: CryptoObject? = nil
+        for decId in decryptionIDs{
+            let temp = decrypt(data: data, decryptionId: decId, verifyIds: verifyIds, fromAdr: fromAdr)
+            if temp.encryptionState != EncryptionState.UnableToDecrypt{
+                cryptoObject = temp
+                if decId != DataHandler.handler.prefSecretKey().keyID{
+                    temp.encryptionState = EncryptionState.ValidEncryptedWithOldKey
+                }
+                else{
+                    break
+                }
+            }
+        }
+        if let c = cryptoObject {
+            return c
+        }
+        return decrypt(data: data, decryptionId: nil, verifyIds: verifyIds, fromAdr: fromAdr)
+    }
+    
+    func decrypt(data: Data,decryptionId: String?, verifyIds: [String], fromAdr: String?) -> CryptoObject{
         let pgp = ObjectivePGP()
         var pw: String? = nil
         var signedAdr = [String]()
@@ -277,6 +303,9 @@ class SwiftPGP: Encryption{
                     sigState = SignatureState.ValidSignature
                     sigKey = id
                     signedAdr = vaildAddress(keyId: sigKey)
+                    if fromAdr != nil && !signedAdr.contains(fromAdr!){
+                        sigState = SignatureState.InvalidSignature
+                    }
                     break
                 }
                 else{

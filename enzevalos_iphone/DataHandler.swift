@@ -361,6 +361,10 @@ class DataHandler {
             sk.keyID = keyID
             sk.obsolete = false
             sk.importedDate = Date () as NSDate
+            print("New KEY: \(keyID) date: \(sk.importedDate)")
+            UserManager.storeUserValue(keyID as AnyObject, attribute: Attribute.prefSecretKeyID)
+            
+            
         }
         save(during: "new sk")
         return sk
@@ -445,6 +449,7 @@ class DataHandler {
         var allSKs = findSecretKeys()
         allSKs = allSKs.sorted(by: {($0.importedDate)!<($1.importedDate)!})
         if allSKs.count > 0{
+            UserManager.storeUserValue(allSKs[0].keyID as AnyObject, attribute: Attribute.prefSecretKeyID)
             return allSKs[0]
         }
         if let adr = UserManager.loadUserValue(Attribute.userAddr){

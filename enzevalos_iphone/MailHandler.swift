@@ -158,19 +158,17 @@ class MailHandler {
 
     func addAutocryptHeader(_ builder: MCOMessageBuilder) {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
-        let keyIDs = DataHandler.handler.findSecretKeys()
-        if keyIDs.count > 0{
-            let pgp = SwiftPGP()
-            if let id = keyIDs[0].keyID{
-                let enc = "yes"
-                if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true){
-                    var string = "\(ADDR)=" + adr //+ "; type=1"
-                    if enc == "yes"{
-                        //string = string + "; \(ENC)=mutal"
-                    }
-                    string = string + "; \(KEY)="+key
-                    builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
+        let skID = DataHandler.handler.prefSecretKey().keyID
+
+        if let id = skID{
+            let enc = "yes"
+            if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true){
+                var string = "\(ADDR)=" + adr //+ "; type=1"
+                if enc == "yes"{
+                    //string = string + "; \(ENC)=mutal"
                 }
+                string = string + "; \(KEY)="+key
+                builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
             }
         }
     }
@@ -294,14 +292,13 @@ class MailHandler {
         let ordered = orderReceiver(receiver: allRec)
 
         let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
-        let secretkeys = DataHandler.handler.findSecretKeys()
+        let sk = DataHandler.handler.prefSecretKey()
 
         var sendData: Data
         var sendOperation: MCOSMTPSendOperation
 
-        if let encPGP = ordered[CryptoScheme.PGP], ordered[CryptoScheme.PGP]?.count > 0, secretkeys.count > 0 {
+        if let encPGP = ordered[CryptoScheme.PGP], ordered[CryptoScheme.PGP]?.count > 0 {
             var keyIDs = addKeys(adrs: encPGP)
-            let sk = secretkeys[0]
             //added own public key here, so we can decrypt our own message to read it in sent-folder
             keyIDs.append(sk.keyID!)
             
@@ -680,6 +677,7 @@ class MailHandler {
                     body = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
                     for a in (msgParser?.attachments())!{
                         let at = a as! MCOAttachment
+                        newKeyIds.append(contentsOf: parsePublicKeys(attachment: at))
                         DataHandler.handler.newSecretKeys(keyIds: parseSecretKey(attachment: at, body: body))
 
                     }
@@ -742,7 +740,22 @@ class MailHandler {
     
     private func parsePublicKeys(attachment: MCOAttachment) -> [String]{
         var newKey = [String]()
-        if attachment.mimeType == "application/octet-stream", let content = String(data: attachment.data, encoding: String.Encoding.utf8), content.hasPrefix("-----BEGIN PGP PUBLIC KEY BLOCK-----") && (content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----") || content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----\n")) {
+        if let content = attachment.decodedString(){
+            print("Content: ####### \n \(content) \n ######")
+            if content.contains("-----BEGIN PGP PUBLIC KEY BLOCK-----"){
+                if let start = content.range(of: "-----BEGIN PGP PUBLIC KEY BLOCK-----"){
+                    if let end = content.range(of: "-----END PGP PUBLIC KEY BLOCK-----\n"){
+                        let s = start.lowerBound
+                        let e = end.upperBound
+                        let pk = content[s..<e]
+                        let pgp = SwiftPGP()
+                        let keyId = pgp.importKeys(key: pk, pw: nil, isSecretKey: false, autocrypt: false)
+                        newKey.append(contentsOf: keyId)
+                    }
+                }
+            }
+        }
+        else if attachment.mimeType == "application/octet-stream", let content = String(data: attachment.data, encoding: String.Encoding.utf8), content.hasPrefix("-----BEGIN PGP PUBLIC KEY BLOCK-----") && (content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----") || content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----\n")) {
             let pgp = SwiftPGP()
             let keyId = pgp.importKeys(key: content, pw: nil, isSecretKey: false, autocrypt: false)
             newKey.append(contentsOf: keyId)
@@ -751,12 +764,6 @@ class MailHandler {
             let pgp = SwiftPGP()
             let keyIds = pgp.importKeys(data: attachment.data, pw: nil, secret: false)
             newKey.append(contentsOf: keyIds)
-        }
-        else if attachment.decodedString() != nil &&  attachment.decodedString().hasPrefix("-----BEGIN PGP PUBLIC KEY BLOCK-----") && (attachment.decodedString().hasSuffix("-----END PGP PUBLIC KEY BLOCK-----\n") ||
-            attachment.decodedString().hasSuffix("-----END PGP PUBLIC KEY BLOCK-----")){
-            let pgp = SwiftPGP()
-            let keyId = pgp.importKeys(key: attachment.decodedString(), pw: nil,  isSecretKey: false, autocrypt: false)
-            newKey.append(contentsOf: keyId)
         }
         return newKey
     }
@@ -770,6 +777,9 @@ class MailHandler {
         else if body.contains("pw:"){
             keyword = "pw:"
         }
+        else if body.contains("password:"){
+            keyword = "password:"
+        }
         if let key = keyword{
             if let range = (body.range(of: key)?.upperBound){
                 pw = body.substring(from: range)
@@ -782,7 +792,6 @@ class MailHandler {
                         pw = split[1]
                     }
                 }
-                print("PW: \(pw)")
             }
         }
         return pw
@@ -797,15 +806,10 @@ class MailHandler {
                     let s = start.lowerBound
                     let e = end.upperBound
                     let sk = content[s..<e]
-                    
                     let pw = extractPassword(body: body)
-                    
                     let pgp = SwiftPGP()
                     let keyId = pgp.importKeys(key: sk, pw: pw, isSecretKey: true, autocrypt: false)
                     print("KeyIds: \(keyId)")
-                    
-                    
-                    
                     return keyId
                 }
             }
@@ -814,10 +818,14 @@ class MailHandler {
     }
     
     private func decryptText(body: String, from: MCOAddress?, autocrypt: AutocryptContact?) -> CryptoObject? {
-        if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data?, let sender = from?.mailbox {
+        var sender: String? = nil
+        if let fromMCO = from{
+            sender = fromMCO.mailbox
+        }
+        if let data = body.data(using: String.Encoding.utf8, allowLossyConversion: true) as Data? {
             let pgp = SwiftPGP()
             var keyIds = [String]()
-            if let adr = DataHandler.handler.findMailAddress(adr: sender){
+            if sender != nil, let adr = DataHandler.handler.findMailAddress(adr: sender!){
                 if let keys = adr.key{
                     for k in keys{
                         let key = k as! PersistentKey
@@ -830,15 +838,14 @@ class MailHandler {
                 keyIds.append(contentsOf: key)
             }
             let secretkeys = DataHandler.handler.findSecretKeys()
-            var decId: String? = nil
-            for s in secretkeys{
-                if !s.obsolete{
-                    decId = s.keyID
-                    break
+            var decIds = [String]()
+            for sk in secretkeys{
+                if let id = sk.keyID{
+                    decIds.append(id)
                 }
             }
             
-            return pgp.decrypt(data: data, decryptionId: decId, verifyIds: keyIds)
+            return pgp.decrypt(data: data, decryptionIDs: decIds, verifyIds: keyIds , fromAdr: sender)
             
         }
        
