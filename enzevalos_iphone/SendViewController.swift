@@ -36,7 +36,8 @@ class SendViewController: UIViewController {
     @IBOutlet weak var seperator2Leading: NSLayoutConstraint!
     @IBOutlet weak var seperator3Leading: NSLayoutConstraint!
     @IBOutlet weak var textViewLeading: NSLayoutConstraint!
-
+    @IBOutlet weak var scrollViewBottom: NSLayoutConstraint!
+    
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
     var UISecurityState = true
@@ -54,7 +55,7 @@ class SendViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, beginFunc: self.beginEditing, endFunc: self.endEditing, deleteFunc: { () -> Void in return })
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
@@ -136,15 +137,13 @@ class SendViewController: UIViewController {
         tableview.dataSource = tableDataDelegate
         tableview.register(UINib(nibName: "ContactCell", bundle: nil), forCellReuseIdentifier: "contacts")
         tableviewHeight.constant = 0
-
-
+        
         let indexPath = IndexPath()
         tableview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
 
         //register KeyBoardevents
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardOpen(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardClose(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil);
-
 
         toText.tag = UIViewResolver.toText.rawValue
         ccText.tag = UIViewResolver.ccText.rawValue
@@ -211,8 +210,10 @@ class SendViewController: UIViewController {
                         self.toCollectionview.isHidden = true
                 }
             }
+            
             self.toCollectionview.reloadData()
             self.ccCollectionview.reloadData()
+            
         }
     }
 
@@ -286,7 +287,8 @@ class SendViewController: UIViewController {
     }
 
     func beginEditing(_ tokenField: VENTokenField) {
-        if tokenField == toText {
+        UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(rawValue: 7), animations: {
+        if tokenField == self.toText {
             if self.collectionDataDelegate.collectionView(self.toCollectionview, numberOfItemsInSection: 0) > 0 {
                 self.toCollectionview.reloadData()
                 self.toCollectionviewHeight.constant = 100
@@ -296,7 +298,7 @@ class SendViewController: UIViewController {
                     self.toCollectionviewHeight.constant = 1
                     self.toCollectionview.isHidden = true
             }
-        } else if tokenField == ccText {
+        } else if tokenField == self.ccText {
             if self.collectionDataDelegate.collectionView(self.ccCollectionview, numberOfItemsInSection: 0) > 0 {
                 self.ccCollectionview.reloadData()
                 self.ccCollectionviewHeight.constant = 100
@@ -307,16 +309,21 @@ class SendViewController: UIViewController {
                     self.ccCollectionview.isHidden = true
             }
         }
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 
     func endEditing(_ tokenField: VENTokenField) {
-        if tokenField == toText {
+        UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(rawValue: 7), animations: {
+        if tokenField == self.toText {
             self.toCollectionviewHeight.constant = 1
             self.toCollectionview.isHidden = true
-        } else if tokenField == ccText {
+        } else if tokenField == self.ccText {
             self.ccCollectionviewHeight.constant = 1
             self.ccCollectionview.isHidden = true
         }
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 
     func insertName(_ name: String, address: String) {
@@ -372,13 +379,92 @@ class SendViewController: UIViewController {
 
     func keyboardOpen(_ notification: Notification) {
         LogHandler.doLog("keyboard", interaction: "open", point: CGPoint(x: 0, y: 0), comment: "")
-        var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        keyboardY = keyboardFrame.origin.y
+        
+        let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+        let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
+        
+        if #available(iOS 11.0, *) {
+            
+            guard let userInfo = notification.userInfo,
+                let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                    return
+            }
+            
+            let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
+            let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.bottom)
+            let intersection = safeAreaFrame.intersection(keyboardFrameInView)
+            
+            let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+            let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            
+            UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
+                self.additionalSafeAreaInsets.bottom = intersection.height
+                let desiredOffset = CGPoint(x: 0, y: -self.keyboardY)
+                self.scrollview.setContentOffset(desiredOffset, animated: false)
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+        else {
+            var info = notification.userInfo!
+            let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+            if keyboardY == 0 {
+                keyboardY = keyboardFrame.height
+            //keyboardY = keyboardFrame.origin.y
+            
+                UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
+                    self.scrollViewBottom.constant -= self.keyboardY
+                    let desiredOffset = CGPoint(x: 0, y: -self.keyboardY)
+                    self.scrollview.setContentOffset(desiredOffset, animated: false)
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        }
     }
 
+    override func viewSafeAreaInsetsDidChange() {
+        print("safeArea changed")
+    }
+    
     func keyboardClose(_ notification: Notification) {
         LogHandler.doLog("keyboard", interaction: "close", point: CGPoint(x: 0, y: 0), comment: "")
+        
+        let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+        let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
+        
+        if #available(iOS 11.0, *) {
+            
+            guard let userInfo = notification.userInfo,
+                let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                    return
+            }
+            
+            let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
+            let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.bottom)
+            let intersection = safeAreaFrame.intersection(keyboardFrameInView)
+            
+            let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+            let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            
+            UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
+                self.additionalSafeAreaInsets.bottom = intersection.height
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+        else {
+            UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
+                self.scrollViewBottom.constant += self.keyboardY
+                self.keyboardY = 0
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
     }
 
     func mailSend(_ error: Error?) {
