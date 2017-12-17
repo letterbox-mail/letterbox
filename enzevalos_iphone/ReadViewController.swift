@@ -354,7 +354,6 @@ class ReadViewController: UITableViewController {
             if mail.containsSecretKey{
                importSecretKeyDialog(first: true)
             }
-            print("============== Mail UID: \(mail.uid) ================")
 
             // mark mail as read if viewcontroller is open for more than 1.5 sec
             let delay = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)

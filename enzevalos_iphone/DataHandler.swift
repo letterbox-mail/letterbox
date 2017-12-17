@@ -688,29 +688,6 @@ class DataHandler {
             else {
                 print("ERROR! No ENzContact!")
         }
-
-        //let contact = getContactByMCOAddress(sender)
-        // adr = contact.getAddressByMCOAddress(sender)!
-
-        /* TODO: Handle AUtocrypt again!
-            if adr.lastSeen > fromMail.date{
-                adr.lastSeen = fromMail.date
-            }
-            if let ac = autocrypt {
-                adr.prefEnc = ac.prefer_encryption
-                adr.encryptionType = ac.type
-                if adr.lastSeenAutocrypt != nil && adr.lastSeenAutocrypt > fromMail.date{
-                    adr.lastSeenAutocrypt = fromMail.date
-                }
-                else if adr.lastSeenAutocrypt == nil{
-                    adr.lastSeenAutocrypt = fromMail.date
-                }
-                
-            }
-            else if adr.lastSeen < adr.lastSeenAutocrypt && adr.prefer_encryption != EncState.NOAUTOCRYPT{
-                adr.prefer_encryption = EncState.RESET
-            }
-             */
         fromMail.from = adr
     }
 

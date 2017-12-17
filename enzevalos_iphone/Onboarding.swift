@@ -731,19 +731,11 @@ extension PickerDataDelegate: UIPickerViewDelegate {
         label.text = rows[row]
         label.textAlignment = NSTextAlignment.center
         label.font = Onboarding.font?.withSize((Onboarding.font?.pointSize)! - CGFloat(5))
-        //label.backgroundColor = UIColor.greenColor()
         label.textColor = UIColor.white
         return label
     }
 
-    /*func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        if row < 0 || row >= rows.count {
-            return nil
-        }
-        return NSAttributedString(string: rows[row])
-    }*/
-
-
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         pickedValue = rows[row]
     }
