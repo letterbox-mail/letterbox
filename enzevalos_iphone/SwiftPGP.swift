@@ -111,7 +111,7 @@ class SwiftPGP: Encryption{
         return storeKey(key: key)
     }
     
-    func importKeys(key: String,  pw: String?, isSecretKey: Bool, autocrypt: Bool) -> [String]{
+    func importKeys (key: String,  pw: String?, isSecretKey: Bool, autocrypt: Bool) throws -> [String]{
         let pgp = ObjectivePGP()
         let keys: Set<PGPKey>
         if autocrypt{
@@ -120,24 +120,29 @@ class SwiftPGP: Encryption{
         }
         else{
             if let data = key.data(using: .utf8){
-                keys = pgp.importKeys(from: data) 
-                
+                keys = pgp.importKeys(from: data)
             }
             else{
                 keys = Set<PGPKey>()
             }
         }
+        for key in keys{
+            if key.isSecret{
+                //test key{
+                let m = try pgp.sign("1234".data(using: .utf8)!, using: key, passphrase: pw, detached: false)
+            }
+        }
         return storeMultipleKeys(keys: keys, pw: pw, secret: isSecretKey)
     }
     
-    func importKeys(data: Data,  pw: String?, secret: Bool) -> [String]{
+    func importKeys(data: Data,  pw: String?, secret: Bool) throws -> [String]{
         let pgp = ObjectivePGP()
         let keys = pgp.importKeys(from: data)
         return storeMultipleKeys(keys: keys, pw: pw, secret: secret)
     }
 
     
-    func importKeysFromFile(file: String,  pw: String?) -> [String]{
+    func importKeysFromFile(file: String,  pw: String?) throws -> [String]{
         let pgp = ObjectivePGP()
         let keys = pgp.importKeys(fromFile: file)
         return storeMultipleKeys(keys: keys, pw: pw, secret: false)
@@ -303,7 +308,7 @@ class SwiftPGP: Encryption{
                     sigState = SignatureState.ValidSignature
                     sigKey = id
                     signedAdr = vaildAddress(keyId: sigKey)
-                    if fromAdr != nil && !signedAdr.contains(fromAdr!){
+                    if fromAdr != nil && !signedAdr.contains(fromAdr!.lowercased()){
                         sigState = SignatureState.InvalidSignature
                     }
                     break
@@ -348,7 +353,12 @@ class SwiftPGP: Encryption{
                         let end = user.userID.range(of: ">"){
                         let s = start.lowerBound
                         let e = end.upperBound
-                        let adr = user.userID[s..<e]
+                        var adr = user.userID[s..<e]
+                        if adr.count > 2{
+                            adr = adr.substring(to: adr.index(before: adr.endIndex)) // remove >
+                            adr.remove(at: adr.startIndex) // remove <
+                        }
+                        adr = adr.lowercased()
                         adrs.append(adr)
                     }
                 }

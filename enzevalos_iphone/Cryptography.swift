@@ -12,9 +12,9 @@ public protocol Encryption{
     
     // Key handling
     func generateKey(adr: String) -> String
-    func importKeys(key: String, pw: String?, isSecretKey: Bool, autocrypt: Bool) -> [String]
-    func importKeys(data: Data,  pw: String?, secret: Bool) -> [String]
-    func importKeysFromFile(file: String,  pw: String?) -> [String]
+    func importKeys(key: String, pw: String?, isSecretKey: Bool, autocrypt: Bool) throws -> [String]
+    func importKeys(data: Data,  pw: String?, secret: Bool) throws-> [String]
+    func importKeysFromFile(file: String,  pw: String?) throws -> [String]
     
     func exportKey(id: String, isSecretkey: Bool, autocrypt: Bool) -> String?
     func exportKeyData(id: String, isSecretkey: Bool, autocrypt: Bool) -> Data?

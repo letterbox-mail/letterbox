@@ -361,19 +361,18 @@ class DataHandler {
             sk.keyID = keyID
             sk.obsolete = false
             sk.importedDate = Date () as NSDate
-            print("New KEY: \(keyID) date: \(sk.importedDate)")
             UserManager.storeUserValue(keyID as AnyObject, attribute: Attribute.prefSecretKeyID)
-            
-            
         }
         save(during: "new sk")
         return sk
     }
     
-    func newSecretKeys(keyIds:[String]){
+    func newSecretKeys(keyIds:[String])-> [SecretKey]{
+        var sks = [SecretKey]()
         for id in keyIds{
-            _ = newSecretKey(keyID: id)
+            sks.append(newSecretKey(keyID: id))
         }
+        return sks
     }
 
     func createNewSecretKey(adr: String) -> SecretKey{
@@ -727,7 +726,7 @@ class DataHandler {
 
     // -------- End handle to, cc, from addresses --------
 
-    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String) -> PersistentMail? {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?) -> PersistentMail? {
 
         let finding = findNum("PersistentMail", type: "uid", search: uid)
         let mail: PersistentMail
@@ -752,6 +751,7 @@ class DataHandler {
             mail.isSigned = false
             mail.isEncrypted = false
             mail.trouble = false
+            mail.secretKey  = secretKey
 
             if sender != nil {
                 handleFromAddress(sender!, fromMail: mail, autocrypt: autocrypt)
