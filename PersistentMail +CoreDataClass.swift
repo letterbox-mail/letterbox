@@ -127,52 +127,6 @@ open class PersistentMail: NSManagedObject, Mail {
         return receivers
     }
 
-    /*
-     TODO: REMOVE
-    //decrypt and/or check signature
-    func decryptIfPossible() {
-        let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
-        if let encryption = EnzevalosEncryptionHandler.getEncryption(encType) {
-            if encryption.isUsedForEncryption(self) == true {
-                self.isEncrypted = true
-                //decrypt
-                encryption.decryptAndSignatureCheck(self)
-
-            }
-            if encryption.isUsedForSignature(self) == true {
-                //TODO
-                //check signature
-                if (encryption.isCorrectlySigned(self) != nil) {
-                    self.isSigned = true
-                }
-            }
-
-        }
-    }
-
-
-    func liveDecrypt() -> String? {
-        let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
-        if let encryption = EnzevalosEncryptionHandler.getEncryption(encType) {
-            if encryption.isUsedForEncryption(self) == true {
-                self.isEncrypted = true
-                //decrypt
-                encryption.decryptAndSignatureCheck(self)
-                return encryption.decrypt(self)
-            }
-            if encryption.isUsedForSignature(self) == true {
-                //TODO
-                //check signature
-                if (encryption.isCorrectlySigned(self) != nil) {
-                    self.isSigned = true
-                }
-            }
-
-        }
-        return nil
-    }
- */
-
     func getSubjectWithFlagsString() -> String {
         let subj: String
         var returnString: String = ""

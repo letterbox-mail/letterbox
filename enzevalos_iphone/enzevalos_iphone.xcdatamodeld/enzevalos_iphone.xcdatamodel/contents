@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="16G1036" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13241" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="color" optional="YES" attributeType="Transformable" customClassName="UIColor" syncable="YES"/>
@@ -47,6 +47,7 @@
         <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isSigned" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="keyID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="secretKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subject" attributeType="String" syncable="YES"/>
         <attribute name="trouble" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uid" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
@@ -80,6 +81,7 @@
     </entity>
     <entity name="SecretKey" representedClassName="SecretKey" syncable="YES" codeGenerationType="class">
         <attribute name="exported" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="importedDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="keyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="obsolete" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
     </entity>
@@ -90,11 +92,11 @@
         <element name="Folder" positionX="-297" positionY="-18" width="128" height="165"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="165"/>
         <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="195"/>
-        <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="330"/>
+        <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="345"/>
+        <element name="PseudonymFolderPath" positionX="-306" positionY="-27" width="128" height="75"/>
         <element name="PseudonymKey" positionX="-297" positionY="-18" width="128" height="75"/>
         <element name="PseudonymMailAddress" positionX="-306" positionY="-27" width="128" height="75"/>
         <element name="PseudonymSubject" positionX="-315" positionY="-36" width="128" height="75"/>
-        <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="90"/>
-        <element name="PseudonymFolderPath" positionX="-306" positionY="-27" width="128" height="75"/>
+        <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="105"/>
     </elements>
 </model>

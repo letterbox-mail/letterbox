@@ -365,7 +365,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bg6-Th-yQH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-705" y="-296"/>
+            <point key="canvasLocation" x="-79" y="-297"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="z9j-Pi-N8o">
@@ -622,13 +622,7 @@
                             <outlet property="delegate" destination="eRp-By-lS3" id="uzM-L0-alX"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="qTG-y6-efi">
-                        <barButtonItem key="leftBarButtonItem" title="Me" id="NCb-YJ-ivf">
-                            <connections>
-                                <segue destination="CKo-sq-fa3" kind="show" id="0Xl-9C-1sw"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="qTG-y6-efi"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="i7r-Oq-y5T">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -762,7 +756,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="UITableViewController-ooe-0X-glz" id="ooe-0X-glz" customClass="ListViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ipK-4X-lVA">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -848,7 +842,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="UITableViewController-8Di-x2-cWQ" id="8Di-x2-cWQ" customClass="ContactViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="lK7-ug-OyQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -1087,15 +1081,35 @@
                                     <segue destination="olx-gF-WdV" kind="presentation" identifier="newMail" id="3Wb-uL-BB5"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="AllMails" textLabel="VTZ-4w-fot" style="IBUITableViewCellStyleDefault" id="dM9-jb-EcN">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="BadgeCaseCell" textLabel="W4e-hv-Sye" style="IBUITableViewCellStyleDefault" id="jQz-hn-5EU">
                                 <rect key="frame" x="0.0" y="501.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dM9-jb-EcN" id="tvN-re-z1Z">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jQz-hn-5EU" id="uhD-6F-ygC">
                                     <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VTZ-4w-fot">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Your Badges" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="W4e-hv-Sye">
                                             <rect key="frame" x="16" y="0.0" width="269" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="P4g-mj-QaO" kind="show" id="lfF-X0-wb5"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="AllMails" textLabel="VTZ-4w-fot" style="IBUITableViewCellStyleDefault" id="dM9-jb-EcN">
+                                <rect key="frame" x="0.0" y="545.5" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dM9-jb-EcN" id="tvN-re-z1Z">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VTZ-4w-fot">
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -1108,7 +1122,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="KeyCell" id="Lke-0s-P0i" userLabel="KeyCell">
-                                <rect key="frame" x="0.0" y="545.5" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="589.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lke-0s-P0i" id="QYX-AX-hbo">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
@@ -1119,7 +1133,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RecordCell" id="hTc-vs-AIl" customClass="RecordCell" customModule="enzevalos_iphone" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="589.5" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="633.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hTc-vs-AIl" id="pJ9-4e-7at">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
@@ -1178,12 +1192,20 @@
             </objects>
             <point key="canvasLocation" x="912.79999999999995" y="430.43478260869568"/>
         </scene>
+        <!--BadgeCase-->
+        <scene sceneID="XKH-qR-4br">
+            <objects>
+                <viewControllerPlaceholder storyboardName="BadgeCase" id="P4g-mj-QaO" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9L5-VV-4Lz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="860" y="958"/>
+        </scene>
         <!--Key View Controller-->
         <scene sceneID="oZj-u6-2pU">
             <objects>
                 <viewController id="jYD-fk-aIP" customClass="KeyViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ZAH-bZ-S6n">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
@@ -1453,7 +1475,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4mt-Fb-5hu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2436" y="1125"/>
+            <point key="canvasLocation" x="1253" y="1196"/>
         </scene>
         <!--Export View Controller-->
         <scene sceneID="He1-rP-VEe">
@@ -1605,7 +1627,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CDw-Xp-OBc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3197.5999999999999" y="1126.6866566716642"/>
+            <point key="canvasLocation" x="1710" y="1196"/>
         </scene>
         <!--Scanner View-->
         <scene sceneID="ey5-iR-K6K">
@@ -2026,14 +2048,14 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                 <viewControllerPlaceholder storyboardIdentifier="inboxViewController" storyboardName="Inbox" referencedIdentifier="inboxViewController" id="TFs-eK-jti" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bub-xE-esL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="-298"/>
+            <point key="canvasLocation" x="426" y="-299"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="QXm-7K-984"/>
-        <segue reference="hSn-Um-hji"/>
-        <segue reference="DcR-GX-scc"/>
-        <segue reference="NPH-pL-mw2"/>
-        <segue reference="6Ug-AV-lba"/>
+        <segue reference="3Wb-uL-BB5"/>
+        <segue reference="td8-VW-Wrt"/>
+        <segue reference="btx-4o-o0r"/>
+        <segue reference="TgN-rB-esa"/>
+        <segue reference="1Uz-Iv-Fbe"/>
     </inferredMetricsTieBreakers>
 </document>

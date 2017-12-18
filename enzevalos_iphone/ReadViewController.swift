@@ -45,6 +45,8 @@ class ReadViewController: UITableViewController {
     var isDraft = false
 
     var keyDiscoveryDate: Date? = nil
+    
+    var secretKeyPasswordField: UITextField? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -349,7 +351,9 @@ class ReadViewController: UITableViewController {
         if let mail = mail {
 
 
-            print("============== Mail UID: \(mail.uid) ================")
+            if mail.containsSecretKey{
+               importSecretKeyDialog(first: true)
+            }
 
             // mark mail as read if viewcontroller is open for more than 1.5 sec
             let delay = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -366,6 +370,8 @@ class ReadViewController: UITableViewController {
             if let name = mail.from.contact?.nameOptional {
                 senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: name, mail: mail.from.mailAddress)
             } else {
+                let name: String = mail.from.mailAddress
+                print("MYNAME IS: \(name)")
                 senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: mail.from.mailAddress, mail: mail.from.mailAddress)
             }
 
@@ -546,6 +552,40 @@ class ReadViewController: UITableViewController {
 
     func newMailCallback(Address: String) {
         performSegue(withIdentifier: "answerTo", sender: Address)
+    }
+   
+    func newSecretkeyPassword(textField: UITextField!){
+        if let tField = textField {
+            tField.isSecureTextEntry = true
+            secretKeyPasswordField = tField
+        }
+        
+    }
+    
+    func importSecretKey(alertAction: UIAlertAction!){
+        if let aAction = alertAction{
+            if let pw = secretKeyPasswordField?.text{
+                do {
+                    let suc = try mail?.processSecretKey(pw: pw)
+                    print("Successful import: \(suc)")
+                }catch _ {
+                    importSecretKeyDialog(first: false)
+                }
+            }
+        }
+    }
+    
+    private func importSecretKeyDialog(first: Bool){
+        var message = NSLocalizedString("Please, enter the password to import the new secret.", comment: "NewSecretKeyMessage")
+        if !first{
+            message = NSLocalizedString("Wrong password! Please, enter the password to import the new secret again.", comment: "NewSecretKeyMessage")
+        }
+        let alert = UIAlertController(title: NSLocalizedString("New secret", comment: "NewSecretKeyTitle"), message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No import", comment: "NoSecretKeyImport"), style: UIAlertActionStyle.destructive, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Import secret Key"), style: UIAlertActionStyle.default, handler: importSecretKey))
+        alert.addTextField(configurationHandler: newSecretkeyPassword(textField:))
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

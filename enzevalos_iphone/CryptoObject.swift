@@ -30,10 +30,11 @@ public class CryptoObject{
     let plaintext: String?
     let decryptedData: Data?
     let signatureState: SignatureState
-    let encryptionState: EncryptionState
+    var encryptionState: EncryptionState
     let signKey: String?
     let encType: CryptoScheme
     let passcode: String?
+    let signedAdrs: [String]
     
     var decryptedText: String?{
         if let data = decryptedData{
@@ -43,7 +44,7 @@ public class CryptoObject{
     }
     
     
-    init(chiphertext: Data?, plaintext: String?, decryptedData: Data?, sigState: SignatureState, encState: EncryptionState, signKey: String?, encType: CryptoScheme){
+    init(chiphertext: Data?, plaintext: String?, decryptedData: Data?, sigState: SignatureState, encState: EncryptionState, signKey: String?, encType: CryptoScheme, signedAdrs: [String]){
         self.chiphertext = chiphertext
         self.plaintext = plaintext
         self.decryptedData = decryptedData
@@ -52,6 +53,7 @@ public class CryptoObject{
         self.signKey = signKey
         self.encType = encType
         self.passcode = nil
+        self.signedAdrs = signedAdrs
     }
     
     

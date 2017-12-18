@@ -127,7 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if let path = Bundle.main.path(forResource: "researchteam", ofType: "asc") {
             let pgp = SwiftPGP()
-            let keyIds = pgp.importKeysFromFile(file: path)
+            let keyIds = try! pgp.importKeysFromFile(file: path, pw: nil)
             for keyId in keyIds {
                 _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: "oliver.wiese@fu-berlin.de", autocrypt: true, firstMail: nil)
                 _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: "jakob.bode@fu-berlin.de", autocrypt: true, firstMail: nil)

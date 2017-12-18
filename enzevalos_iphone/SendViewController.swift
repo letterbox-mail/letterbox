@@ -68,7 +68,7 @@ class SendViewController: UIViewController {
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
 
         let iconView = AnimatedSendIcon()
-        iconView.frame = iconView.frame.offsetBy(dx: -16, dy: -10)
+        iconView.frame = iconView.frame.offsetBy(dx: 0, dy: -10)
         iconButton.addSubview(iconView)
 
         toText.delegate = dataDelegate
