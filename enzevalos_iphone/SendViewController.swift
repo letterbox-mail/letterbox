@@ -421,6 +421,14 @@ class SendViewController: UIViewController {
                     self.scrollview.setContentOffset(desiredOffset, animated: false)
                     self.view.layoutIfNeeded()
                 }, completion: nil)
+            } else {
+                UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
+                    self.scrollViewBottom.constant += (self.keyboardY-keyboardFrame.height)
+                    let desiredOffset = CGPoint(x: 0, y: +(self.keyboardY-keyboardFrame.height))
+                    self.keyboardY = keyboardFrame.height
+                    self.scrollview.setContentOffset(desiredOffset, animated: false)
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
             }
         }
     }
