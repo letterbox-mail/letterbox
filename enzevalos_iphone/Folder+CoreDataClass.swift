@@ -125,11 +125,15 @@ public class Folder: NSManagedObject {
             if !founded && mail.folder == self{
                 if mail.isSecure{
                     let record = KeyRecord(keyID: mail.keyID!, folder: self)
-                    storedRecords?.append(record)
+                    if !(storedRecords?.contains(record))!{
+                        storedRecords?.append(record)
+                    }
                 }
                 else {
                     let record = KeyRecord(contact: mail.from.contact!, folder: self)
-                    storedRecords?.append(record)
+                    if !(storedRecords?.contains(record))!{
+                        storedRecords?.append(record)
+                    }
                 }
                 storedRecords?.sort()
                 

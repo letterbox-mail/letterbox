@@ -20,6 +20,7 @@ extension PersistentMail {
     @NSManaged public var visibleBody: String?
     @NSManaged public var decryptedBody: String?
     @NSManaged public var date: Date
+    @NSManaged public var secretKey: String?
     public var flag: MCOMessageFlag{
         set {
             if newValue != flag{
@@ -67,7 +68,6 @@ extension PersistentMail {
     
     }
     public var uid: UInt64{
-    
         set {
             self.willChangeValue(forKey: "uid")
             self.setPrimitiveValue(NSDecimalNumber.init(value: newValue as UInt64), forKey: "uid")
@@ -98,12 +98,55 @@ extension PersistentMail {
             self.didAccessValue(forKey: "from")
             return text!
         }
+    }
+    public var containsSecretKey: Bool{
+        get{
+            return secretKey != nil
+        }
+    }
     
+    private func extractPassword(body: String)-> String?{
+        var pw: String? = nil
+        var keyword: String? = nil
+        if body.contains("PW:"){
+            keyword = "PW:"
+        }
+        else if body.contains("pw:"){
+            keyword = "pw:"
+        }
+        else if body.contains("password:"){
+            keyword = "password:"
+        }
+        if let key = keyword{
+            if let range = (body.range(of: key)?.upperBound){
+                pw = body.substring(from: range)
+                if let split = pw?.components(separatedBy: CharacterSet.whitespacesAndNewlines){
+                    print(split)
+                    if split.count > 0 && split[0].count > 0{
+                        pw = split[0]
+                    }
+                    else if split.count > 1{
+                        pw = split[1]
+                    }
+                }
+            }
+        }
+        return pw
+        
+    }
+    
+    public func processSecretKey(pw: String?) throws -> Bool{
+        if let sk = secretKey{
+            let pgp = SwiftPGP()
+            let keyIDs = try pgp.importKeys(key: sk, pw: pw, isSecretKey: true, autocrypt: false)
+            let sks = DataHandler.handler.newSecretKeys(keyIds: keyIDs)
+            return sks.count > 0
+        }
+        return false
     }
     
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
-    //@NSManaged public var from: Mail_Address
     @NSManaged public var to: NSSet
 
 }

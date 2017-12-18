@@ -12,7 +12,7 @@ import KeychainAccess
 
 
 enum Attribute: Int{
-    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline //used for Logging; determines the earliest next time a log is send to the researchers
+    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline, prefSecretKeyID //used for Logging; determines the earliest next time a log is send to the researchers
     
     var defaultValue:AnyObject? {
         switch self {
