@@ -365,7 +365,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bg6-Th-yQH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-705" y="-296"/>
+            <point key="canvasLocation" x="-79" y="-297"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="z9j-Pi-N8o">
@@ -570,8 +570,8 @@
                                                         <constraint firstAttribute="width" constant="15" id="ons-Pp-k3n"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
-                                                    <rect key="frame" x="0.0" y="15" width="15" height="17.5"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
+                                                    <rect key="frame" x="0.0" y="17.5" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="SmT-9e-ovi"/>
                                                         <constraint firstAttribute="width" constant="15" id="uKU-PK-flD"/>
@@ -622,13 +622,7 @@
                             <outlet property="delegate" destination="eRp-By-lS3" id="uzM-L0-alX"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="qTG-y6-efi">
-                        <barButtonItem key="leftBarButtonItem" title="Me" id="NCb-YJ-ivf">
-                            <connections>
-                                <segue destination="CKo-sq-fa3" kind="show" id="0Xl-9C-1sw"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="qTG-y6-efi"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="i7r-Oq-y5T">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -696,15 +690,15 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="OlN-1g-hBJ">
                                             <rect key="frame" x="21" y="38.5" width="15" height="24"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="imI-nB-es5">
-                                                    <rect key="frame" x="0.0" y="0.0" width="15" height="9"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="imI-nB-es5">
+                                                    <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="NJi-27-Up8"/>
                                                         <constraint firstAttribute="width" constant="15" id="auJ-Nm-E8J"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C7X-Yt-kz2">
-                                                    <rect key="frame" x="0.0" y="9" width="15" height="15"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C7X-Yt-kz2">
+                                                    <rect key="frame" x="0.0" y="15" width="15" height="9"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="15" id="Sjh-9U-pfX"/>
                                                         <constraint firstAttribute="height" constant="15" id="sLj-Te-fV3"/>
@@ -1111,11 +1105,11 @@
                                 <rect key="frame" x="0.0" y="545.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dM9-jb-EcN" id="tvN-re-z1Z">
-                                    <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VTZ-4w-fot">
-                                            <rect key="frame" x="16" y="0.0" width="269" height="43.5"/>
+                                            <rect key="frame" x="15" y="0.0" width="270" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -1481,7 +1475,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4mt-Fb-5hu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2436" y="1125"/>
+            <point key="canvasLocation" x="1253" y="1196"/>
         </scene>
         <!--Export View Controller-->
         <scene sceneID="He1-rP-VEe">
@@ -1633,7 +1627,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CDw-Xp-OBc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3197.5999999999999" y="1126.6866566716642"/>
+            <point key="canvasLocation" x="1710" y="1196"/>
         </scene>
         <!--Scanner View-->
         <scene sceneID="ey5-iR-K6K">
@@ -2054,14 +2048,14 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                 <viewControllerPlaceholder storyboardIdentifier="inboxViewController" storyboardName="Inbox" referencedIdentifier="inboxViewController" id="TFs-eK-jti" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bub-xE-esL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="-298"/>
+            <point key="canvasLocation" x="426" y="-299"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="QXm-7K-984"/>
-        <segue reference="hSn-Um-hji"/>
-        <segue reference="DcR-GX-scc"/>
-        <segue reference="NPH-pL-mw2"/>
-        <segue reference="6Ug-AV-lba"/>
+        <segue reference="3Wb-uL-BB5"/>
+        <segue reference="td8-VW-Wrt"/>
+        <segue reference="btx-4o-o0r"/>
+        <segue reference="TgN-rB-esa"/>
+        <segue reference="1Uz-Iv-Fbe"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -71,7 +71,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         dateFormatter.timeStyle = .medium
 
         tableView.register(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
-        
+
         AppDelegate.getAppDelegate().mailHandler.startIMAPIdleIfSupported(addNewMail: addNewMail)
     }
 
@@ -79,7 +79,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
         AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: getMailCompleted)
-       
+
     }
 
     func addNewMail(mail: PersistentMail?) {
@@ -92,7 +92,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             lastUpdate = Date()
             rc.endRefreshing()
             lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))"
-            
+
             //folder.updateRecords()
             self.tableView.reloadData()
         }
@@ -117,7 +117,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         if isFiltering() {
             cell.enzContact = filteredRecords[indexPath.section]
         } else {
-            
             cell.enzContact = folder.records[indexPath.section]
         }
 
@@ -171,9 +170,29 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
                 let DestinationViewController: ContactViewController = segue.destination as! ContactViewController
                 DestinationViewController.keyRecord = contact
             }
+        } else if segue.identifier == "yourTraySegue" {
+            if let DestinationNavigationController = segue.destination as? UINavigationController {
+                if let DestinationViewController = DestinationNavigationController.topViewController as? ContactViewController {
+                    DestinationViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
+                    let records = folder.records.filter({
+                        $0.addresses.contains(where: {
+                            $0.mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? ""
+                        })
+                    })
+                    if let record = records.filter({$0.isSecure}).first {
+                        DestinationViewController.keyRecord = record
+                    } else {
+                        // TODO: create user keyRecord
+                    }
+                }
+            }
         }
     }
 
+    func dismissView() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     func searchBarIsEmpty() -> Bool {
         // Returns true if the text is empty or nil
         return searchController.searchBar.text?.isEmpty ?? true
@@ -184,7 +203,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func filterContentForSearchText(_ searchText: String, scope: Int = 0) {
-       // folder.updateRecords()
+        // folder.updateRecords()
         var records = [KeyRecord]()
         if scope == 0 || scope == 3 {
             records += folder.records.filter({ ( record: KeyRecord) -> Bool in
@@ -238,21 +257,21 @@ extension InboxViewController {
         let inset = scrollView.contentInset
         let y = offset.y + bounds.size.height - inset.bottom
         let h = size.height
-        
+
         let reload_distance: CGFloat = 200
         if y > h + reload_distance && !loading {
             print("loading new mail because we scrolled to the bottom")
             loading = true
-            
+
             AppDelegate.getAppDelegate().mailHandler.loadMailsForInbox(newMailCallback: addNewMail, completionCallback: doneLoading)
         }
     }
-    
+
     func doneLoading(_ error: Bool) {
         if error {
             // TODO: maybe we should do something about this? maybe not?
         }
-        
+
         loading = false
     }
 }

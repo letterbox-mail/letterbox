@@ -67,6 +67,10 @@ class ContactViewController: UIViewController {
     }
 
     func prepareContactSheet() {
+        guard !isUser else {
+            return
+        }
+        
         let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
         if authorizationStatus == CNAuthorizationStatus.authorized {
             do {
