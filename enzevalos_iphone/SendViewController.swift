@@ -40,6 +40,7 @@ class SendViewController: UIViewController {
     
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
+    var keyboardHeight: CGFloat = 0
     var UISecurityState = true
     var toSecure = true
     var ccSecure = true
@@ -411,13 +412,22 @@ class SendViewController: UIViewController {
         else {
             var info = notification.userInfo!
             let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-            if keyboardY == 0 {
-                keyboardY = keyboardFrame.height
+            keyboardY = keyboardFrame.origin.y
+            if keyboardHeight == 0 {
+                keyboardHeight = keyboardFrame.height
             //keyboardY = keyboardFrame.origin.y
             
                 UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
-                    self.scrollViewBottom.constant -= self.keyboardY
-                    let desiredOffset = CGPoint(x: 0, y: -self.keyboardY)
+                    self.scrollViewBottom.constant -= self.keyboardHeight
+                    let desiredOffset = CGPoint(x: 0, y: -self.keyboardHeight)
+                    self.scrollview.setContentOffset(desiredOffset, animated: false)
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            } else {
+                UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
+                    self.scrollViewBottom.constant += (self.keyboardHeight-keyboardFrame.height)
+                    let desiredOffset = CGPoint(x: 0, y: +(self.keyboardHeight-keyboardFrame.height))
+                    self.keyboardHeight = keyboardFrame.height
                     self.scrollview.setContentOffset(desiredOffset, animated: false)
                     self.view.layoutIfNeeded()
                 }, completion: nil)
@@ -460,8 +470,9 @@ class SendViewController: UIViewController {
         }
         else {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
-                self.scrollViewBottom.constant += self.keyboardY
+                self.scrollViewBottom.constant += self.keyboardHeight
                 self.keyboardY = 0
+                self.keyboardHeight = 0
                 self.view.layoutIfNeeded()
             }, completion: nil)
         }

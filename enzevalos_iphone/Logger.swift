@@ -169,6 +169,21 @@ class Logger {
         sendCheck()
     }
     
+    static func log(show mail: PersistentMail, message: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.mailRead.rawValue
+        event = extract(from: mail, event: event)
+        event["messagePresented"] = message
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(read mail: PersistentMail, message: String) {
         if !logging {
             return
