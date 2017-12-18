@@ -63,7 +63,7 @@
 "KeyNotFound" = "No Key Found. This is an error, contact the developers!";
 "Letter" = "Letter";
 "LetterDamaged" = "Damaged Letter";
-"LetterDescription" = "• a confidential mail\n• written by the stated sender\n• needs participation of sender and receiver. Therefore you can invite contacts in the app.";
+"LetterDescription" = "• A confidential mail\n• Written by the stated sender\n• Needs participation of sender and receiver. Therefor you can invite contacts in the app.";
 "mail from" = "mail from";
 "Message" = "Message";
 "MoreInformation" = "More Information";
@@ -77,7 +77,7 @@
 "Password" = "Password";
 "Plaintext" = "Plaintext";
 "Postcard" = "Postcard";
-"PostcardDescription" = "• the kind of mail you know\n• neighter confidential, nor you know if it's a forgery\n• everybody can read and manipulate it";
+"PostcardDescription" = "• The kind of mail you know\n• Neihter confidential, nor you know if it's a forgery\n• Everybody can read and manipulate it";
 "Re" = "Re";
 "ReadFollowingPages" = "We want to make secure mail easy to use.\nTherefore please read the next three pages.";
 "ReadMailOnOtherDevice" = "Read this email on another device";
@@ -166,3 +166,4 @@
 "secureContacts" = "Secure Contacts";
 "secureCommunication" = "Secure Communication";
 "ErrorText" = "An error occured. Are you connected to the internet?";
+"YourBadges" = "Your Badges";
