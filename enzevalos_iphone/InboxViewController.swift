@@ -184,7 +184,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
                     if let record = records.filter({$0.isSecure}).first {
                         DestinationViewController.keyRecord = record
                     } else {
-                        // TODO: create user keyRecord
+                        // TODO @Olli: create user keyRecord
                     }
                 }
             }
