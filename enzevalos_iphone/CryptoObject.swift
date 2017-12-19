@@ -20,9 +20,35 @@ enum EncryptionState {
     case ValidedEncryptedWithCurrentKey
 }
 
-enum CryptoScheme {
+public enum CryptoScheme {
     case PGP
     case UNKNOWN
+    
+    var description: String{
+        switch self {
+        case .PGP:
+            return "PGP"
+        default:
+            return ""
+        }
+    }
+    
+    static func find(i: Int) -> CryptoScheme{
+        switch i {
+        case 0:
+            return CryptoScheme.PGP
+        default:
+            return CryptoScheme.UNKNOWN
+        }
+    }
+    func asInt()-> Int16{
+        switch self {
+        case CryptoScheme.PGP:
+            return 0
+        case CryptoScheme.UNKNOWN:
+            return 99
+        }
+    }
 }
 
 public class CryptoObject{

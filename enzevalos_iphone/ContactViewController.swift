@@ -163,10 +163,10 @@ class ContactViewController: UIViewController {
         } else if sender.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
             let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0, predecessor: nil)
             performSegue(withIdentifier: "newMail", sender: mail)
-        } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") && keyRecord!.key != nil {
+        } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") && keyRecord!.keyID != nil {
             AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
             performSegue(withIdentifier: "verifyQRCode", sender: keyRecord?.fingerprint)
-        } else if sender.titleLabel?.text == NSLocalizedString("ReadOnOtherDevices", comment: "ReadOnOtherDevices") && keyRecord!.key != nil {
+        } else if sender.titleLabel?.text == NSLocalizedString("ReadOnOtherDevices", comment: "ReadOnOtherDevices") && keyRecord!.keyID != nil {
             //AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
             performSegue(withIdentifier: "exportKeyFromKeyRecord", sender: nil)
         }
@@ -206,9 +206,9 @@ class ContactViewController: UIViewController {
             if let DestinationViewController = segue.destination as? QRScannerView {
                 DestinationViewController.fingerprint = keyRecord?.fingerprint
                 DestinationViewController.callback = verifySuccessfull
-                DestinationViewController.keyId = self.keyRecord?.keyId //used for logging
+                DestinationViewController.keyId = self.keyRecord?.keyID //used for logging
                 Logger.queue.async(flags: .barrier) {
-                    Logger.log(verify: self.keyRecord?.keyId ?? "noKeyID", open: true)
+                    Logger.log(verify: self.keyRecord?.keyID ?? "noKeyID", open: true)
                 }
             }
         }
@@ -217,7 +217,8 @@ class ContactViewController: UIViewController {
     func verifySuccessfull() {
         keyRecord?.verify()
         Logger.queue.async(flags: .barrier) {
-            Logger.log(verify: self.keyRecord?.keyId ?? "noKeyID", open: false, success: true)
+            let keyId: String = self.keyRecord?.keyID ??  "noKeyID"
+            Logger.log(verify: keyId, open: false, success: true)
         }
         tableView.reloadData()
     }
@@ -327,7 +328,7 @@ extension ContactViewController: UITableViewDataSource {
             case 3 where !((keyRecord?.hasKey) ?? false):
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! RecordCell
                 if let r = otherRecords {
-                    if let key = r[indexPath.row].key, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
+                    if let key = r[indexPath.row].keyID, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
                         let dateFormatter = DateFormatter()
                         dateFormatter.locale = Locale.current
                         dateFormatter.dateStyle = .medium
@@ -347,7 +348,7 @@ extension ContactViewController: UITableViewDataSource {
             case 4 where (keyRecord?.hasKey) ?? false:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! RecordCell
                 if let r = otherRecords {
-                    if let key = r[indexPath.row].key, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
+                    if let key = r[indexPath.row].keyID, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
                         let dateFormatter = DateFormatter()
                         dateFormatter.locale = Locale.current
                         dateFormatter.dateStyle = .medium

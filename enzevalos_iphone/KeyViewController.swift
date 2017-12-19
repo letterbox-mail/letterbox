@@ -22,7 +22,7 @@ class KeyViewController: UIViewController {
         tableView.delegate = self
         openDate = Date()
         Logger.queue.async(flags: .barrier) {
-            if let record = self.record, let keyID = record.keyId {
+            if let record = self.record, let keyID = record.keyID {
                 Logger.log(keyViewOpen: keyID)
             }
         }
@@ -31,14 +31,12 @@ class KeyViewController: UIViewController {
     }
 
     @IBAction func copyKey(_ sender: AnyObject) {
-        guard let record = record, let keyId = record.keyId else {
+        guard let record = record, let keyId = record.keyID else {
             return
         }
 
         let swiftpgp = SwiftPGP()
-        print("\(keyId)")
-        //TODO @Olli: fix get key
-        if let key = swiftpgp.exportKey(id: keyId, isSecretkey: false, autocrypt: true) {
+        if let key = swiftpgp.exportKey(id: keyId, isSecretkey: false, autocrypt: false) {
             UIPasteboard.general.string = key
             copyButton.isEnabled = false
         } else {
@@ -48,7 +46,7 @@ class KeyViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         Logger.queue.async(flags: .barrier) {
-            if let record = self.record, let keyID = record.keyId {
+            if let record = self.record, let keyID = record.keyID {
                 Logger.log(keyViewClose: keyID, secondsOpened: Int(Date().timeIntervalSince(self.openDate)))
             }
         }
@@ -79,7 +77,7 @@ extension KeyViewController: UITableViewDataSource {
             if toRowType(indexPath) == .keyID {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "KeyIDCell")!
                 cell.textLabel?.text = NSLocalizedString("KeyID", comment: "Identifier of the key")
-                cell.detailTextLabel?.text = record?.keyId
+                cell.detailTextLabel?.text = record?.keyID
                 return cell
             }
             else if toRowType(indexPath) == .fingerprint {
@@ -92,7 +90,8 @@ extension KeyViewController: UITableViewDataSource {
             }
             else if toRowType(indexPath) == .encryptionType {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "EncryptionTypeCell")!
-                cell.detailTextLabel?.text = "\(String(describing: record?.cryptoscheme))"
+                let cryptoscheme: String = record?.cryptoscheme.description ?? ""
+                cell.detailTextLabel?.text = cryptoscheme
                 cell.textLabel?.text = NSLocalizedString("EncryptionType", comment: "Type of Encryption")
                 return cell
             }

@@ -362,6 +362,9 @@ class DataHandler {
             sk.obsolete = false
             sk.importedDate = Date () as NSDate
             UserManager.storeUserValue(keyID as AnyObject, attribute: Attribute.prefSecretKeyID)
+            let name = UserManager.loadUserValue(Attribute.accountname) as! String
+            let adr = UserManager.loadUserValue(Attribute.userAddr) as! String
+            _ = getContact(name: name, address: adr, key: keyID, prefer_enc: true)
         }
         save(during: "new sk")
         return sk
@@ -413,7 +416,7 @@ class DataHandler {
             pk = NSEntityDescription.insertNewObject(forEntityName: "PersistentKey", into: managedObjectContext) as! PersistentKey
             pk.addToMailaddress(adr)
             pk.keyID = keyID
-            pk.encryptionType = Int16(cryptoType.hashValue)
+            pk.encryptionType = cryptoType
             pk.lastSeen = date
             pk.discoveryDate = date
             pk.firstMail = firstMail
@@ -637,6 +640,20 @@ class DataHandler {
             contact.cnidentifier = cncontacts.first?.identifier
         }
         return contact
+    }
+    
+    func getContact(keyID: String)-> EnzevalosContact?{
+        if let key = findKey(keyID: keyID){
+            if let adrs = key.mailaddress{
+                for item in adrs{
+                    let adr = item as! Mail_Address
+                    if adr.contact != nil{
+                        return adr.contact
+                    }
+                }
+            }
+        }
+        return nil
     }
 
     func getContact(name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
