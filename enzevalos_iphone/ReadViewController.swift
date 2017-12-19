@@ -397,6 +397,10 @@ class ReadViewController: UITableViewController {
                 }
             }
 
+            if senderTokenField.frame.height > 60 {
+                senderTokenField.collapse()
+            }
+            
             if toTokenField.frame.height > 60 {
                 toTokenField.collapse()
             }
