@@ -53,8 +53,8 @@ extension KeyViewController: UITableViewDataSource {
             return returnValue
         }
         if toSectionType(section) == .addresses {
-            if let key = record?.storedKey, key.mailaddress != nil{
-                return key.mailaddress!.count
+            if let record = record {
+                return record.addresses.count
             }
             return 0
         }
@@ -112,8 +112,7 @@ extension KeyViewController: UITableViewDataSource {
                 return cell
             }
         }
-
-            else if toSectionType(indexPath.section) == .addresses {
+        else if toSectionType(indexPath.section) == .addresses {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MailAddressCell")!
             if let addr = record?.addressNames[indexPath.row] { //TODO: Or of key???
                 for ourAddr in (record?.addressNames)! {
