@@ -317,7 +317,7 @@ class SwiftPGP: Encryption{
                 }
             }catch{
                 encState = EncryptionState.UnableToDecrypt
-                sigState = SignatureState.InvalidSignature
+                sigState = SignatureState.NoSignature
                 break
             }
         }

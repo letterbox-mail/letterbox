@@ -362,8 +362,8 @@ class DataHandler {
             sk.obsolete = false
             sk.importedDate = Date () as NSDate
             UserManager.storeUserValue(keyID as AnyObject, attribute: Attribute.prefSecretKeyID)
-            let name = UserManager.loadUserValue(Attribute.accountname) as! String
             let adr = UserManager.loadUserValue(Attribute.userAddr) as! String
+            let name = UserManager.loadUserValue(Attribute.accountname) as? String ?? adr
             _ = getContact(name: name, address: adr, key: keyID, prefer_enc: true)
         }
         save(during: "new sk")
@@ -768,7 +768,7 @@ class DataHandler {
                 case EncryptionState.UnableToDecrypt:
                     mail.unableToDecrypt = true
                     mail.isEncrypted = true
-                    mail.trouble = true
+                    mail.trouble = false //TODO @jakob: we should discuss this
                 case EncryptionState.ValidEncryptedWithOldKey, EncryptionState.ValidedEncryptedWithCurrentKey:
                     mail.isEncrypted = true
                     mail.trouble = false
