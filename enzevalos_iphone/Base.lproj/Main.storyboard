@@ -1211,11 +1211,10 @@
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
                             <rect key="frame" x="0.0" y="425.5" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Delete Key">
-                                <color key="titleColor" red="1" green="0.089482954909999995" blue="0.088961529910000003" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
+                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                            <state key="normal" title="Copy Key"/>
                             <connections>
-                                <action selector="deleteKey:" destination="jYD-fk-aIP" eventType="primaryActionTriggered" id="dzD-Ik-KEZ"/>
+                                <action selector="copyKey:" destination="jYD-fk-aIP" eventType="primaryActionTriggered" id="dzD-Ik-KEZ"/>
                             </connections>
                         </button>
                         <prototypes>
@@ -1366,6 +1365,7 @@
                         </prototypes>
                     </tableView>
                     <connections>
+                        <outlet property="copyButton" destination="KaX-Vg-m5j" id="bsa-2i-eWo"/>
                         <outlet property="tableView" destination="ZAH-bZ-S6n" id="U5l-d5-Nz5"/>
                     </connections>
                 </viewController>

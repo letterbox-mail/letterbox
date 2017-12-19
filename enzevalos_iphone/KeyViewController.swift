@@ -11,6 +11,7 @@ import UIKit
 class KeyViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var copyButton: UIButton!
     
     var openDate: Date = Date() //used for logging issues [see Logger.log(keyViewClose keyID:String, timevisited: Date)]
 
@@ -25,11 +26,24 @@ class KeyViewController: UIViewController {
                 Logger.log(keyViewOpen: keyID)
             }
         }
+        copyButton.setTitle(NSLocalizedString("copyKey", comment: ""), for: .normal)
+        copyButton.setTitle(NSLocalizedString("copied", comment: "the key has been copied to the clipboard"), for: .disabled)
     }
 
-    @IBAction func deleteKey(_ sender: AnyObject) {
-        //TODO: REMOVE KEY!
-    
+    @IBAction func copyKey(_ sender: AnyObject) {
+        guard let record = record, let keyId = record.keyId else {
+            return
+        }
+
+        let swiftpgp = SwiftPGP()
+        print("\(keyId)")
+        //TODO @Olli: fix get key
+        if let key = swiftpgp.exportKey(id: keyId, isSecretkey: false, autocrypt: true) {
+            UIPasteboard.general.string = key
+            copyButton.isEnabled = false
+        } else {
+            print("Error while getting key")
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -40,7 +54,6 @@ class KeyViewController: UIViewController {
         }
         super.viewDidDisappear(animated)
     }
-    
 }
 
 extension KeyViewController: UITableViewDataSource {
