@@ -43,17 +43,17 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         var name = String()
 
         if let cnc = cnContact {
-            if cnc.givenName.characters.count > 0 {
+            if cnc.givenName.count > 0 {
                 name += cnc.givenName
             }
-            if cnc.familyName.characters.count > 0 {
-                if name.characters.count > 0 {
+            if cnc.familyName.count > 0 {
+                if name.count > 0 {
                     name += " "
                 }
                 name += cnc.familyName
             }
         }
-        if name.characters.count > 0 {
+        if name.count > 0 {
             return name
         } else {
             return nil
@@ -174,7 +174,7 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         let con = CNMutableContact()
         let name = self.displayname
         if let n = name {
-            let nameArray = n.characters.split(separator: " ").map(String.init)
+            let nameArray = n.split(separator: " ").map(String.init)
             switch nameArray.count {
             case 1:
                 con.givenName = nameArray.first!

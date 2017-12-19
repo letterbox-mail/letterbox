@@ -91,8 +91,8 @@ open class PersistentMail: NSManagedObject, Mail {
 
         if message != nil {
             message = message!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            if message!.characters.count > 50 {
-                message = message!.substring(to: message!.characters.index(message!.startIndex, offsetBy: 50))
+            if message!.count > 50 {
+                message = message!.substring(to: message!.index(message!.startIndex, offsetBy: 50))
             }
             let messageArray = message!.components(separatedBy: "\n")
             return messageArray.joined(separator: " ")

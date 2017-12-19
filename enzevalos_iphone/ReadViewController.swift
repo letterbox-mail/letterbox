@@ -370,8 +370,6 @@ class ReadViewController: UITableViewController {
             if let name = mail.from.contact?.nameOptional {
                 senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: name, mail: mail.from.mailAddress)
             } else {
-                let name: String = mail.from.mailAddress
-                print("MYNAME IS: \(name)")
                 senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: mail.from.mailAddress, mail: mail.from.mailAddress)
             }
 
@@ -406,7 +404,7 @@ class ReadViewController: UITableViewController {
             receivedTime.text = mail.timeString
 
             if let subj = mail.subject {
-                if subj.trimmingCharacters(in: CharacterSet.whitespaces).characters.count > 0 {
+                if subj.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
                     subject.text = subj
                 } else {
                     subject.text = NSLocalizedString("SubjectNo", comment: "This mail has no subject")

@@ -93,7 +93,7 @@ class AutocryptContact {
                         pref = value.trimmingCharacters(in: .whitespacesAndNewlines)
                         break
                     case KEY:
-                        if value.characters.count > 0 {
+                        if value.count > 0 {
                             key = value
                         }
                         break
@@ -127,7 +127,7 @@ class AutocryptContact {
     }
 
     func toString() -> String {
-        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption) key size: \(key.characters.count)"
+        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption) key size: \(key.count)"
     }
 }
 
