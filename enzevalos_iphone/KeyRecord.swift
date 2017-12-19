@@ -230,10 +230,10 @@ private func isEmpty(_ contact: KeyRecord) -> Bool {
 
 public func == (lhs: KeyRecord, rhs: KeyRecord) -> Bool {
     if isEmpty(lhs) {
-        return false
+        return lhs.hasKey == rhs.hasKey && lhs.keyID == rhs.keyID
     }
     if isEmpty(rhs) {
-        return false
+        return lhs.hasKey == rhs.hasKey && lhs.keyID == rhs.keyID
     }
     return lhs.mails.first!.date == rhs.mails.first!.date && lhs.hasKey == rhs.hasKey && lhs.keyID == rhs.keyID
 }

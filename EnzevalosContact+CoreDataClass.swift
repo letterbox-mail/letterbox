@@ -141,6 +141,25 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
                 }
             }
             
+            if self.hasKey, let adrs = addresses{
+                let mykeys = DataHandler.handler.findSecretKeys()
+                let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
+                let myAdr = UserManager.loadUserValue(Attribute.userAddr) as! String
+                for item in adrs{
+                    if let adr = item as? Mail_Address{
+                        let adrField = adr.address
+                        if adrField == myAdr{ // owner's enzevalos-contact!
+                            for sk in mykeys{
+                                let secureRecord = KeyRecord(keyID: sk.keyID!, folder: folder)
+                                if !myrecords.contains(secureRecord){
+                                    myrecords.append(secureRecord)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
             return myrecords
 
         }
