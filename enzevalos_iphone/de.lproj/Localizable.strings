@@ -168,5 +168,5 @@
 "secureCommunication" = "Sichere Kommunikation";
 "ErrorText" = "Es gab einen Fehler. Besteht eine Verbindung zum Internet?";
 "YourBadges" = "Deine Abzeichen";
-"copied" = "Schlüssel in Zwischenablage kopieren";
-"copyKey" = "Schlüssel wurde kopiert";
+"copied" = "Schlüssel wurde kopiert";
+"copyKey" = "Schlüssel in Zwischenablage kopieren";
