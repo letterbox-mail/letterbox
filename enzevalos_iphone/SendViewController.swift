@@ -701,7 +701,10 @@ extension SendViewController: UIGestureRecognizerDelegate {
     }
 
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
-        if LogHandler.logging {
+        if let view = sender.view, view == scrollview, sender.location(in: view).y >= textView.frame.minY {
+            textView.becomeFirstResponder()
+        }
+        else if LogHandler.logging {
             LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "tap", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: self.view), /*debugDescription: sender.view.debugDescription,*/ comment: "")
         }
     }
