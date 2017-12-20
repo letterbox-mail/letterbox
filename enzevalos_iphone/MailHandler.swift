@@ -274,7 +274,7 @@ class MailHandler {
         createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
     }
     
-
+    //logMail should be false, if called from Logger, otherwise 
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, logMail: Bool = true) {
 
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)

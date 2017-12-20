@@ -415,7 +415,6 @@ class SendViewController: UIViewController {
             keyboardY = keyboardFrame.origin.y
             if keyboardHeight == 0 {
                 keyboardHeight = keyboardFrame.height
-            //keyboardY = keyboardFrame.origin.y
             
                 UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
                     self.scrollViewBottom.constant -= self.keyboardHeight
@@ -433,10 +432,6 @@ class SendViewController: UIViewController {
                 }, completion: nil)
             }
         }
-    }
-
-    override func viewSafeAreaInsetsDidChange() {
-        print("safeArea changed")
     }
     
     func keyboardClose(_ notification: Notification) {
