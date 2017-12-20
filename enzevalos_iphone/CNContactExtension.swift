@@ -18,16 +18,16 @@ extension CNContact: Contact {
     public var name: String {
         var name: String
         name = String()
-        if self.givenName.characters.count > 0 {
+        if self.givenName.count > 0 {
             name += self.givenName
         }
-        if self.familyName.characters.count > 0 {
-            if name.characters.count > 0 {
+        if self.familyName.count > 0 {
+            if name.count > 0 {
                 name += " "
             }
             name += self.familyName
         }
-        if name.characters.count == 0 && self.emailAddresses.count > 0 {
+        if name.count == 0 && self.emailAddresses.count > 0 {
             let adr = (self.emailAddresses.first?.value)! as String
             return adr
         }

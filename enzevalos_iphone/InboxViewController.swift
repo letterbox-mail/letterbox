@@ -184,7 +184,11 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
                     if let record = records.filter({$0.isSecure}).first {
                         DestinationViewController.keyRecord = record
                     } else {
-                        // TODO: create user keyRecord
+                        // TODO @Olli: create user keyRecord
+                        let keyID = UserManager.loadUserValue(Attribute.prefSecretKeyID) as! String
+                        let folderName = UserManager.backendInboxFolderPath
+                        let folder = DataHandler.handler.findFolder(with: folderName)
+                        DestinationViewController.keyRecord = KeyRecord(keyID: keyID, folder: folder)
                     }
                 }
             }

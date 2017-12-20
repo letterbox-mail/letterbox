@@ -187,7 +187,6 @@ class SwiftPGP: Encryption{
                         }
                         exportPwKeyChain[key.keyID.longKeyString] = passcode
                         let cipher = try! pgp.symmetricEncrypt(keyData, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: true)
-                        print(String.init(data: cipher, encoding: .utf8) ?? "NO KEY")
                         
                         return cipher
                     }
@@ -318,7 +317,7 @@ class SwiftPGP: Encryption{
                 }
             }catch{
                 encState = EncryptionState.UnableToDecrypt
-                sigState = SignatureState.InvalidSignature
+                sigState = SignatureState.NoSignature
                 break
             }
         }

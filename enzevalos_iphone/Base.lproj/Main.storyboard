@@ -32,7 +32,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zNO-Uq-ewV" customClass="VENTokenField">
-                                                    <rect key="frame" x="8" y="-1" width="250" height="44"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="258" height="44"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="T2D-H0-pg7"/>
@@ -46,7 +46,7 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="zNO-Uq-ewV" firstAttribute="leading" secondItem="Zam-cw-cBg" secondAttribute="leadingMargin" constant="-8" id="B2O-dm-B1m"/>
+                                                <constraint firstItem="zNO-Uq-ewV" firstAttribute="leading" secondItem="Zam-cw-cBg" secondAttribute="leading" id="B2O-dm-B1m"/>
                                                 <constraint firstItem="EB5-Z7-WoN" firstAttribute="leading" secondItem="zNO-Uq-ewV" secondAttribute="trailing" constant="8" id="FAE-hS-zcP"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="EB5-Z7-WoN" secondAttribute="trailing" id="lpT-6r-N5C"/>
                                                 <constraint firstItem="EB5-Z7-WoN" firstAttribute="centerY" secondItem="Zam-cw-cBg" secondAttribute="centerY" id="paU-zM-6x9"/>
@@ -66,13 +66,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y6C-hE-SJx" customClass="VENTokenField">
-                                                    <rect key="frame" x="8" y="2" width="296" height="39"/>
+                                                    <rect key="frame" x="0.0" y="2" width="304" height="39"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Y6C-hE-SJx" firstAttribute="centerY" secondItem="nTH-P7-ZD7" secondAttribute="centerY" id="2Gu-Ak-JeA"/>
-                                                <constraint firstItem="Y6C-hE-SJx" firstAttribute="leading" secondItem="nTH-P7-ZD7" secondAttribute="leadingMargin" constant="-8" id="Emg-3w-wsJ"/>
+                                                <constraint firstItem="Y6C-hE-SJx" firstAttribute="leading" secondItem="nTH-P7-ZD7" secondAttribute="leading" id="Emg-3w-wsJ"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Y6C-hE-SJx" secondAttribute="bottom" constant="-8" id="S57-wW-YMx"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Y6C-hE-SJx" secondAttribute="trailing" id="Xz0-18-zPc"/>
                                                 <constraint firstItem="Y6C-hE-SJx" firstAttribute="top" secondItem="nTH-P7-ZD7" secondAttribute="topMargin" constant="-9" id="o8q-UN-UF4"/>
@@ -87,7 +87,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subject" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ywe-G2-0wJ">
-                                                    <rect key="frame" x="23" y="15" width="277" height="15.5"/>
+                                                    <rect key="frame" x="16" y="15" width="284" height="15.5"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" none="YES"/>
                                                     </accessibility>
@@ -99,7 +99,7 @@
                                             <constraints>
                                                 <constraint firstItem="Ywe-G2-0wJ" firstAttribute="top" secondItem="kAy-AZ-pKo" secondAttribute="topMargin" constant="4" id="LTH-Nh-db6"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Ywe-G2-0wJ" secondAttribute="trailing" constant="4" id="aFd-Ii-7v7"/>
-                                                <constraint firstItem="Ywe-G2-0wJ" firstAttribute="leading" secondItem="kAy-AZ-pKo" secondAttribute="leadingMargin" constant="7" id="kH7-Ta-mh5"/>
+                                                <constraint firstItem="Ywe-G2-0wJ" firstAttribute="leading" secondItem="kAy-AZ-pKo" secondAttribute="leadingMargin" id="kH7-Ta-mh5"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Ywe-G2-0wJ" secondAttribute="bottom" constant="2.5" id="w5B-6h-ECY"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -570,8 +570,8 @@
                                                         <constraint firstAttribute="width" constant="15" id="ons-Pp-k3n"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
-                                                    <rect key="frame" x="0.0" y="17.5" width="15" height="15"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
+                                                    <rect key="frame" x="0.0" y="15" width="15" height="17.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="SmT-9e-ovi"/>
                                                         <constraint firstAttribute="width" constant="15" id="uKU-PK-flD"/>
@@ -1211,11 +1211,10 @@
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
                             <rect key="frame" x="0.0" y="425.5" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Delete Key">
-                                <color key="titleColor" red="1" green="0.089482954909999995" blue="0.088961529910000003" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
+                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                            <state key="normal" title="Copy Key"/>
                             <connections>
-                                <action selector="deleteKey:" destination="jYD-fk-aIP" eventType="primaryActionTriggered" id="dzD-Ik-KEZ"/>
+                                <action selector="copyKey:" destination="jYD-fk-aIP" eventType="primaryActionTriggered" id="dzD-Ik-KEZ"/>
                             </connections>
                         </button>
                         <prototypes>
@@ -1366,6 +1365,7 @@
                         </prototypes>
                     </tableView>
                     <connections>
+                        <outlet property="copyButton" destination="KaX-Vg-m5j" id="bsa-2i-eWo"/>
                         <outlet property="tableView" destination="ZAH-bZ-S6n" id="U5l-d5-Nz5"/>
                     </connections>
                 </viewController>

@@ -119,8 +119,8 @@ class ReadViewController: UITableViewController {
         messageBody.delegate = textDelegate
 
         _ = mail?.from.contact?.records.flatMap { x in
-            if x.hasKey && x.key != nil {
-                let keyWrapper = DataHandler.handler.findKey(keyID: x.key!)
+            if x.hasKey && x.keyID != nil {
+                let keyWrapper = DataHandler.handler.findKey(keyID: x.keyID!)
                 keyDiscoveryDate = keyWrapper?.discoveryDate as Date?
             }
             return nil
@@ -370,8 +370,6 @@ class ReadViewController: UITableViewController {
             if let name = mail.from.contact?.nameOptional {
                 senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: name, mail: mail.from.mailAddress)
             } else {
-                let name: String = mail.from.mailAddress
-                print("MYNAME IS: \(name)")
                 senderTokenField.delegate?.tokenField!(senderTokenField, didEnterText: mail.from.mailAddress, mail: mail.from.mailAddress)
             }
 
@@ -399,6 +397,10 @@ class ReadViewController: UITableViewController {
                 }
             }
 
+            if senderTokenField.frame.height > 60 {
+                senderTokenField.collapse()
+            }
+            
             if toTokenField.frame.height > 60 {
                 toTokenField.collapse()
             }
@@ -406,7 +408,7 @@ class ReadViewController: UITableViewController {
             receivedTime.text = mail.timeString
 
             if let subj = mail.subject {
-                if subj.trimmingCharacters(in: CharacterSet.whitespaces).characters.count > 0 {
+                if subj.trimmingCharacters(in: CharacterSet.whitespaces).count > 0 {
                     subject.text = subj
                 } else {
                     subject.text = NSLocalizedString("SubjectNo", comment: "This mail has no subject")
