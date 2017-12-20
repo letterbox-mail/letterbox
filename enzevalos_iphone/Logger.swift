@@ -138,37 +138,6 @@ class Logger {
         sendCheck()
     }
     
-    static func log(read from: String, to: [String], cc: [String], bcc: [String], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = [], trouble: Bool, folder: Folder) {
-        
-        if !logging {
-            return
-        }
-        
-        var event = plainLogDict()
-        
-        event["type"] = LoggingEventType.mailRead.rawValue
-        event["from"] = Logger.resolve(mailAddress: from)
-        event["to"] = Logger.resolve(mailAddresses: to)
-        event["cc"] = Logger.resolve(mailAddresses: cc)
-        event["bcc"] = Logger.resolve(mailAddresses: bcc)
-        event["subject"] = Logger.resolve(subject: subject)
-        event["bodyLength"] = bodyLength
-        event["isEncrypted"] = isEncrypted
-        event["decryptedBodyLength"] = decryptedBodyLength
-        event["decryptedWithOldPrivateKey"] = decryptedWithOldPrivateKey
-        event["isSigned"] = isSigned
-        event["isCorrectlySigned"] = isCorrectlySigned
-        event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
-        event["myKeyID"] = Logger.resolve(keyID: myKeyID)
-        event["secureAddresses"] = Logger.resolve(mailAddresses: secureAddresses) //could mean the addresses, in this mail we have a key for
-        event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
-        event["trouble"] = trouble
-        event["folder"] = Logger.resolve(folder: folder)
-        
-        saveToDisk(json: dictToJSON(fields: event))
-        sendCheck()
-    }
-    
     static func log(show mail: PersistentMail, message: String) {
         if !logging {
             return
