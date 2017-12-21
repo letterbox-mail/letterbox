@@ -82,6 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    // Option removed from Settings app, but this might still be usefull in the future
     func resetApp() {
         if UserDefaults.standard.bool(forKey: "reset") {
             DataHandler.handler.reset()
