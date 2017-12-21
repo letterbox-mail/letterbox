@@ -795,7 +795,7 @@ class DataHandler {
                 case EncryptionState.UnableToDecrypt:
                     mail.unableToDecrypt = true
                     mail.isEncrypted = true
-                    mail.trouble = false //TODO @jakob: we should discuss this
+                    mail.trouble = false
                 case EncryptionState.ValidEncryptedWithOldKey, EncryptionState.ValidedEncryptedWithCurrentKey:
                     mail.isEncrypted = true
                     mail.trouble = false
