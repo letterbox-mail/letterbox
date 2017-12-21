@@ -247,12 +247,12 @@ class SendViewController: UIViewController {
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
                     if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
-                        to.append(DataHandler.handler.getMailAddress(mail, temporary: true))
+                        to.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
                 for mail in ccText.mailTokens {
                     if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
-                        cc.append(DataHandler.handler.getMailAddress(mail, temporary: true))
+                        cc.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
 

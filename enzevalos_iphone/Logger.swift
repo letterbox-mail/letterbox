@@ -16,13 +16,14 @@ class Logger {
     
     static let defaultFileName = "log.json"
     static let loggingInterval = 86400 //60*60*24 seconds
+    static let logReceiver = "oliver.wiese@fu-berlin.de"
     
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
     
     static fileprivate func sendCheck() {
         if nextDeadline <= Date() && AppDelegate.getAppDelegate().currentReachabilityStatus != .notReachable {
-            logInbox()
-            logOverview()
+            //logInbox()
+            //logOverview()
             sendLog()
         }
     }
@@ -109,7 +110,7 @@ class Logger {
         sendCheck()
     }
     
-    static func log(sent from: String, to: [String], cc: [String], bcc: [String], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [String] = [], encryptedForKeyIDs: [String] = []) {
+    static func log(sent from: Mail_Address, to: [Mail_Address], cc: [Mail_Address], bcc: [Mail_Address], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [Mail_Address] = [], encryptedForKeyIDs: [String] = []) {
         
         if !logging {
             return
@@ -265,7 +266,7 @@ class Logger {
         sendCheck()
     }
     
-    static func log(discover publicKeyID: String, mailAddress: String, importChannel: String, knownPrivateKey: Bool, knownBefore: Bool) { //add reference to mail here?
+    static func log(discover publicKeyID: String, mailAddress: Mail_Address, importChannel: String, knownPrivateKey: Bool, knownBefore: Bool) { //add reference to mail here?
         if !logging {
             return
         }
@@ -277,7 +278,7 @@ class Logger {
             event["type"] = LoggingEventType.pubKeyDiscoveryKnownKey.rawValue
         }
         event["keyID"] = Logger.resolve(keyID: publicKeyID)
-        event["mailAddress"] = Logger.resolve(mailAddress: mailAddress)
+        event["mailAddress"] = Logger.resolve(mail_address: mailAddress)
         event["knownPrivateKey"] = knownPrivateKey //Do we have a private key for it?
         event["importChannel"] = importChannel
         
@@ -393,11 +394,27 @@ class Logger {
     
     //takes backendFolderPath
     static func resolve(folder: Folder) -> String {
-        return resolve(folderPath: folder.path)
+        let folderPath = folder.path
+        if folderPath == UserManager.backendSentFolderPath {
+            return "sent"
+        }
+        if folderPath == UserManager.backendDraftFolderPath {
+            return "draft"
+        }
+        if folderPath == UserManager.backendInboxFolderPath {
+            return "inbox"
+        }
+        if folderPath == UserManager.backendTrashFolderPath {
+            return "trash"
+        }
+        if folderPath == UserManager.backendArchiveFolderPath {
+            return "archive"
+        }
+        return folder.pseudonym
     }
     
     //takes backendFolderPath
-    static func resolve(folderPath: String) -> String {
+    /*static func resolve(folderPath: String) -> String {
         if folderPath == UserManager.backendSentFolderPath {
             return "sent"
         }
@@ -415,27 +432,77 @@ class Logger {
         }
         
         return "" //DataHandler().getPseudonymFolderPath(folderPath: folderPath).pseudonym//DataHandler.handler.getPseudonymFolderPath(folderPath: folderPath).pseudonym
-    }
+    }*/
     
     //get an pseudonym for a mailAddress
     static func resolve(mailAddress: MailAddress) -> String {
-        return resolve(mailAddress: mailAddress.mailAddress)
+        if let addr = mailAddress as? Mail_Address {
+            return resolve(mail_address: addr)
+        }
+        return "notMail_Address"
     }
     
     //get an pseudonym for a mailAddress
-    static func resolve(mailAddress: String) -> String {
+    /*static func resolve(mailAddress: String) -> String {
         if mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
             return mailAddress
         }
         return "" //DataHandler().getPseudonymMailAddress(mailAddress: mailAddress).pseudonym//DataHandler.handler.getPseudonymMailAddress(mailAddress: mailAddress).pseudonym
+    }*/
+    
+    static func resolve(mail_address: Mail_Address) -> String {
+        if mail_address.mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
+            return mail_address.mailAddress
+        }
+        return mail_address.pseudonym
     }
+    
+    static func resolve(mailAddresses: NSSet) -> [String] {
+        var result: [String] = []
+        for addr in mailAddresses {
+            if let addr = addr as? Mail_Address {
+                result.append(resolve(mail_address: addr))
+            } else {
+                result.append("notMail_Address")
+            }
+        }
+        return result
+    }
+    
+    static func resolve(mailAddresses: [Mail_Address]) -> [String] {
+        var result: [String] = []
+        for addr in mailAddresses {
+            result.append(resolve(mail_address: addr))
+        }
+        return result
+    }
+    
+    /*static func resolve(mailAddresses: [String]) -> [String] {
+        var result: [String] = []
+        for addr in mailAddresses {
+            result.append(resolve(mailAddress: addr))
+        }
+        return result
+    }*/
     
     //get an pseudonym for a keyID
     static func resolve(keyID: String) -> String {
-        if keyID == "noKeyID" {
-            return keyID
+        if let key = DataHandler.handler.findKey(keyID: keyID) {
+            return key.pseudonym
         }
-        return "" //DataHandler().getPseudonymKey(keyID: keyID).pseudonym//DataHandler.handler.getPseudonymKey(keyID: keyID).pseudonym
+        return "noKeyID"
+    }
+    
+    static func resolve(key: PersistentKey) -> String {
+        return key.pseudonym
+    }
+    
+    static func resolve(keyIDs: [String]) -> [String] {
+        var result: [String] = []
+        for id in keyIDs {
+            result.append(resolve(keyID: id))
+        }
+        return result
     }
     
     //escape the entry of one cell in a csv
@@ -445,30 +512,6 @@ class Logger {
             mess = "\"" + mess.components(separatedBy: "") .map { $0 == "\"" ? "\"\"": $0 }.joined() + "\""
         }
         return mess
-    }
-    
-    static func resolve(mailAddresses: NSSet) -> [String] {
-        var result: [String] = []
-        for addr in mailAddresses {
-            result.append(resolve(mailAddress: addr as! MailAddress))
-        }
-        return result
-    }
-    
-    static func resolve(mailAddresses: [String]) -> [String] {
-        var result: [String] = []
-        for addr in mailAddresses {
-            result.append(resolve(mailAddress: addr))
-        }
-        return result
-    }
-    
-    static func resolve(keyIDs: [String]) -> [String] {
-        var result: [String] = []
-        for id in keyIDs {
-            result.append(resolve(keyID: id))
-        }
-        return result
     }
     
     static func saveToDisk(json: String, fileName: String = defaultFileName) {
@@ -506,7 +549,7 @@ class Logger {
         }
     }
     
-    static func sendLog(fileName: String = defaultFileName, logMailAddress: String = "oliver.wiese@fu-berlin.de") {
+    static func sendLog(fileName: String = defaultFileName, logMailAddress: String = logReceiver) {
         
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             

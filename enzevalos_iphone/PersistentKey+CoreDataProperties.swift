@@ -23,6 +23,7 @@ extension PersistentKey {
     @NSManaged public var discoveryDate: NSDate?
     @NSManaged public var mailaddress: NSSet?
     @NSManaged public var firstMail: PersistentMail?
+    @NSManaged public var pseudonym: String
     
     public var prefer_encryption: EncState{
         set {

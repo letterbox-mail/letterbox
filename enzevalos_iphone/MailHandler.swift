@@ -283,11 +283,25 @@ class MailHandler {
 
         createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
 
-
         var allRec: [String] = []
         allRec.append(contentsOf: toEntrys)
         allRec.append(contentsOf: ccEntrys)
         allRec.append(contentsOf: bccEntrys)
+        
+        let fromLogging: Mail_Address = DataHandler.handler.getMailAddress(useraddr, temporary: false) as! Mail_Address
+        var toLogging: [Mail_Address] = []
+        var ccLogging: [Mail_Address] = []
+        var bccLogging: [Mail_Address] = []
+        
+        for entry in toEntrys {
+            toLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
+        }
+        for entry in ccEntrys {
+            ccLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
+        }
+        for entry in bccEntrys {
+            bccLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
+        }
         
         let ordered = orderReceiver(receiver: allRec)
 
@@ -308,7 +322,30 @@ class MailHandler {
                 sendData = encData
                 Logger.queue.async(flags: .barrier) {
                     if Logger.logging && logMail {
-                        Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, encryptedForKeyIDs: keyIDs)
+                        let secureAddrsInString = encPGP.map{$0.mailbox}
+                        var secureAddresses: [Mail_Address] = []
+                        for addr in toLogging {
+                            for sec in secureAddrsInString {
+                                if addr.address == sec {
+                                    secureAddresses.append(addr)
+                                }
+                            }
+                        }
+                        for addr in ccLogging {
+                            for sec in secureAddrsInString {
+                                if addr.address == sec {
+                                    secureAddresses.append(addr)
+                                }
+                            }
+                        }
+                        for addr in bccLogging {
+                            for sec in secureAddrsInString {
+                                if addr.address == sec {
+                                    secureAddresses.append(addr)
+                                }
+                            }
+                        }
+                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs)
                     }
                 }
                 builder.textBody = "Dies ist verschlüsselt!"
@@ -336,7 +373,7 @@ class MailHandler {
                 //TODO add logging call here for the case the full email is unencrypted
                 if unenc.count == allRec.count && logMail {
                     Logger.queue.async(flags: .barrier) {
-                        Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
+                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
                     }
                 }
                 sendOperation.start(callback)

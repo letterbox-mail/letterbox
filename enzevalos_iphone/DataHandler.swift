@@ -409,7 +409,7 @@ class DataHandler {
                     } else if !autocrypt {
                         importChannel = "attachment"
                     }
-                    Logger.log(discover: keyID, mailAddress: adr.address, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: true)
+                    Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: true)
                 }
             }
         } else {
@@ -423,6 +423,16 @@ class DataHandler {
             if autocrypt {
                 pk.lastSeenAutocrypt = date
             }
+            var found = false
+            while !found {
+                let pseudo = String.random()
+                let response = find("PersistentKey", type: "pseudonym", search: pseudo) as? [PersistentKey]
+                if (response ?? []).count == 0 || response![0].pseudonym == "" {
+                    pk.pseudonym = pseudo
+                    found = true
+                }
+            }
+            save(during: "new pk")
             Logger.queue.async(flags: .barrier) {
                 if Logger.logging {
                     var importChannel = "autocrypt"
@@ -431,11 +441,10 @@ class DataHandler {
                     } else if !autocrypt {
                         importChannel = "attachment"
                     }
-                    Logger.log(discover: keyID, mailAddress: adr.address, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: false)
+                    Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: false)
                 }
             }
         }
-        save(during: "new pk")
         
         return pk
     }
@@ -535,6 +544,15 @@ class DataHandler {
         }
         let folder = NSEntityDescription.insertNewObject(forEntityName: "Folder", into: managedObjectContext) as! Folder
         folder.path = path
+        var found = false
+        while !found {
+            let pseudo = String.random()
+            let response = find("Folder", type: "pseudonym", search: pseudo) as? [Folder]
+            if (response ?? []).count == 0 || response![0].pseudonym == "" {
+                folder.pseudonym = pseudo
+                found = true
+            }
+        }
         return folder
     }
 
@@ -555,6 +573,15 @@ class DataHandler {
             } else {
                 let mail_address = NSEntityDescription.insertNewObject(forEntityName: "Mail_Address", into: managedObjectContext) as! Mail_Address
                 mail_address.address = adr
+                var found = false
+                while !found {
+                    let pseudo = String.random()
+                    let response = find("Mail_Address", type: "pseudonym", search: pseudo) as? [Mail_Address]
+                    if (response ?? []).count == 0 || response![0].pseudonym == "" {
+                        mail_address.pseudonym = pseudo
+                        found = true
+                    }
+                }
                 return mail_address
             }
         } else {
