@@ -64,22 +64,6 @@
             <fetchIndexElement property="date" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="PseudonymFolderPath" representedClassName="PseudonymFolderPath" syncable="YES">
-        <attribute name="folderPath" attributeType="String" syncable="YES"/>
-        <attribute name="pseudonym" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="PseudonymKey" representedClassName="PseudonymKey" syncable="YES">
-        <attribute name="keyID" attributeType="String" syncable="YES"/>
-        <attribute name="pseudonym" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="PseudonymMailAddress" representedClassName="PseudonymMailAddress" syncable="YES">
-        <attribute name="address" attributeType="String" syncable="YES"/>
-        <attribute name="pseudonym" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="PseudonymSubject" representedClassName="PseudonymSubject" syncable="YES">
-        <attribute name="pseudonym" attributeType="String" syncable="YES"/>
-        <attribute name="subject" attributeType="String" syncable="YES"/>
-    </entity>
     <entity name="SecretKey" representedClassName="SecretKey" syncable="YES" codeGenerationType="class">
         <attribute name="exported" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="importedDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -95,10 +79,6 @@
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="165"/>
         <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="195"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="345"/>
-        <element name="PseudonymFolderPath" positionX="-306" positionY="-27" width="128" height="75"/>
-        <element name="PseudonymKey" positionX="-297" positionY="-18" width="128" height="75"/>
-        <element name="PseudonymMailAddress" positionX="-306" positionY="-27" width="128" height="75"/>
-        <element name="PseudonymSubject" positionX="-315" positionY="-36" width="128" height="75"/>
         <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="120"/>
     </elements>
 </model>

@@ -22,8 +22,6 @@ class Logger {
     
     static fileprivate func sendCheck() {
         if nextDeadline <= Date() && AppDelegate.getAppDelegate().currentReachabilityStatus != .notReachable {
-            //logInbox()
-            //logOverview()
             sendLog()
         }
     }
@@ -31,7 +29,7 @@ class Logger {
     static fileprivate func plainLogDict() -> [String: Any] {
         var fields: [String: Any] = [:]
         let now = Date()
-        //TODO add uuid here
+        //add participant identification here
         fields["timestamp"] = now.description
         return fields
     }
@@ -336,34 +334,6 @@ class Logger {
         return event
     }
 
-    static func logInbox() {
-        var event = plainLogDict()
-        
-        event["type"] = LoggingEventType.overviewInbox.rawValue
-        
-        let inbox = DataHandler().findFolder(with: UserManager.backendInboxFolderPath)//DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
-        event["nrOfMails"] = inbox.mailsOfFolder.count
-        event["nrOfSecureMails"] = inbox.mailsOfFolder.reduce(0, { $1.isSecure ? $0 + 1: $0 }) as Int
-        event["nrOfTroubleMails"] = inbox.mailsOfFolder.reduce(0, { $1.trouble ? $0 + 1: $0 }) as Int
-        
-        saveToDisk(json: dictToJSON(fields: event))
-        //Don't call sendCheck() here; this function is called into sendCheck()
-    }
-        
-    static func logOverview() {
-        
-        var event = plainLogDict()
-        
-        event["type"] = LoggingEventType.overviewGeneral.rawValue
-        event["nrOfFolders"] = DataHandler().allFolders.count//DataHandler.handler.allFolders.count
-        let gesendet = DataHandler().findFolder(with: UserManager.backendSentFolderPath)//DataHandler.handler.findFolder(with: UserManager.backendSentFolderPath)
-        event["nrOfGesendetMails"] = gesendet.mailsOfFolder.count //@Olli: should we fetch the counter before?
-        //maybe add number of all mails that could be fetched? this could be much more, than we actually fetched
-        
-        saveToDisk(json: dictToJSON(fields: event))
-        //Don't call sendCheck() here; this function is called into sendCheck()
-    }
-
     static func resolve(subject: String) -> String {
         if subject == "" {
             return ""
@@ -413,27 +383,6 @@ class Logger {
         return folder.pseudonym
     }
     
-    //takes backendFolderPath
-    /*static func resolve(folderPath: String) -> String {
-        if folderPath == UserManager.backendSentFolderPath {
-            return "sent"
-        }
-        if folderPath == UserManager.backendDraftFolderPath {
-            return "draft"
-        }
-        if folderPath == UserManager.backendInboxFolderPath {
-            return "inbox"
-        }
-        if folderPath == UserManager.backendTrashFolderPath {
-            return "trash"
-        }
-        if folderPath == UserManager.backendArchiveFolderPath {
-            return "archive"
-        }
-        
-        return "" //DataHandler().getPseudonymFolderPath(folderPath: folderPath).pseudonym//DataHandler.handler.getPseudonymFolderPath(folderPath: folderPath).pseudonym
-    }*/
-    
     //get an pseudonym for a mailAddress
     static func resolve(mailAddress: MailAddress) -> String {
         if let addr = mailAddress as? Mail_Address {
@@ -441,14 +390,6 @@ class Logger {
         }
         return "notMail_Address"
     }
-    
-    //get an pseudonym for a mailAddress
-    /*static func resolve(mailAddress: String) -> String {
-        if mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
-            return mailAddress
-        }
-        return "" //DataHandler().getPseudonymMailAddress(mailAddress: mailAddress).pseudonym//DataHandler.handler.getPseudonymMailAddress(mailAddress: mailAddress).pseudonym
-    }*/
     
     static func resolve(mail_address: Mail_Address) -> String {
         if mail_address.mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
@@ -476,14 +417,6 @@ class Logger {
         }
         return result
     }
-    
-    /*static func resolve(mailAddresses: [String]) -> [String] {
-        var result: [String] = []
-        for addr in mailAddresses {
-            result.append(resolve(mailAddress: addr))
-        }
-        return result
-    }*/
     
     //get an pseudonym for a keyID
     static func resolve(keyID: String) -> String {
