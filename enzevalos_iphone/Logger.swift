@@ -438,15 +438,6 @@ class Logger {
         return result
     }
     
-    //escape the entry of one cell in a csv
-    static func escape(message: String) -> String {
-        var mess = message
-        if mess.contains(",") || mess.contains("\"") {
-            mess = "\"" + mess.components(separatedBy: "") .map { $0 == "\"" ? "\"\"": $0 }.joined() + "\""
-        }
-        return mess
-    }
-    
     static func saveToDisk(json: String, fileName: String = defaultFileName) {
         
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
