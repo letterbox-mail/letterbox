@@ -307,7 +307,12 @@ class MailHandler {
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: keyIDs, myId:sk.keyID!)
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
-                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
+                if AppDelegate.getAppDelegate().logging {
+                    Logger.log(sent: useraddr, to: toEntrys, cc: ccEntrys, bcc: bccEntrys, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, isSigned: true, keyID: sk.keyID!, secureAddresses: encPGP.map{$0.mailbox}, otherKeyIDs: keyIDs)
+                }
+                
+                builder.textBody = "Dies ist verschlüsselt!"
+                sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
 
                 sendOperation.start(callback)
@@ -365,7 +370,7 @@ class MailHandler {
         //TODO: Consider pref enc = false
         let pgp = SwiftPGP()
         let keys = DataHandler.handler.findSecretKeys()
-        if keys.count > 0{
+        if keys.count > 0 && allRec.reduce(true, {$0 && DataHandler.handler.hasKey(adr: $1)}) {
             let mykey = keys[0] //TODO: multiple privatekeys
             let receiverIds = [mykey.keyID] as! [String]
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: receiverIds, myId: mykey.keyID!)
@@ -384,6 +389,20 @@ class MailHandler {
             } else {
                 //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
+            }
+        }
+        else {
+            builder.textBody = message
+            sendData = builder.data()
+            
+            let drafts = UserManager.backendDraftFolderPath
+            
+            if !DataHandler.handler.existsFolder(with: drafts) {
+                let op = IMAPSession.createFolderOperation(drafts)
+                op?.start({ _ in self.saveDraft(data: sendData, callback: callback)})
+            }
+            else {
+                saveDraft(data: sendData, callback: callback)
             }
         }
     }
@@ -688,6 +707,13 @@ class MailHandler {
                 }
                 for keyId in newKeyIds{
                     _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
+                }
+                if AppDelegate.getAppDelegate().logging {
+                    if let mail = mail {
+                        Logger.log(received: mail)
+                    } else {
+                        //TODO: log a bug (?)
+                    }
                 }
                 if newMailCallback != nil{
                     newMailCallback!()

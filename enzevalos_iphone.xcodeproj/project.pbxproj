@@ -295,7 +295,10 @@
 		A102AA8A1EDDB4F40024B457 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
 		A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1083A531E8BFEA6003666B7 /* Onboarding.swift */; };
 		A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */; };
+		A111F6AD1FA77B170060AFDE /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
 		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
+		A114E4301FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E42F1FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift */; };
+		A114E4321FACB23000E40243 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E4311FACB23000E40243 /* StringExtension.swift */; };
 		A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
 		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
 		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
@@ -304,15 +307,20 @@
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
 		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
+		A18E7D751FBDE560002F7CC9 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D741FBDE560002F7CC9 /* Event.swift */; };
+		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
+		A1B3C6F01FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B3C6EF1FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
+		A1D5BEA41FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5BEA31FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift */; };
+		A1D5BEA61FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5BEA51FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift */; };
 		A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */; };
 		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
@@ -565,8 +573,11 @@
 		A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoOnboarding2.m4v; sourceTree = "<group>"; };
 		A1083A531E8BFEA6003666B7 /* Onboarding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
+		A111F6AC1FA77B170060AFDE /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		A1123E6B1DA682850069551C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A114E42F1FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymMailAddress+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A114E4311FACB23000E40243 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		A11E733B1E019AE3006574DD /* InitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitViewController.swift; sourceTree = "<group>"; };
 		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -580,16 +591,21 @@
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
 		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
+		A18E7D741FBDE560002F7CC9 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingEventType.swift; sourceTree = "<group>"; };
 		A19028E31F853E700030EA98 /* ExportInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportInfoViewController.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jabo.asc; path = keys/jabo.asc; sourceTree = "<group>"; };
 		A1A9DE721F864B0500B808AA /* ExportCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportCells.swift; sourceTree = "<group>"; };
+		A1B3C6EF1FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymMailAddress+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-2.gpg"; path = "keys/alice2005-2.gpg"; sourceTree = "<group>"; };
 		A1BE3FF71E9664660040114B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A1BE3FF91E96646A0040114B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-private.gpg"; path = "keys/alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
+		A1D5BEA31FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A1D5BEA51FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PseudonymKey+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListViewController.swift; sourceTree = "<group>"; };
 		A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListCell.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
@@ -649,7 +665,6 @@
 		F1984D731E1E92B300804E1E /* LabelStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelStyleKit.swift; sourceTree = "<group>"; };
 		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		F1AF938E1E2D04BA00755128 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
-		F1C91456D4E3F1421E66FC28 /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.debug.xcconfig"; sourceTree = "<group>"; };
 		F1F070271FA0DF3F004A860A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -705,7 +720,6 @@
 				8B87EFB6CEAA31452F744015 /* Pods-enzevalos_iphoneUITests.release.xcconfig */,
 				91B6C9020C660BEA78FAEF28 /* Pods-enzevalos_iphone.debug.xcconfig */,
 				AA686D4FC9B86445A0C87F0F /* Pods-enzevalos_iphone.release.xcconfig */,
-				F1C91456D4E3F1421E66FC28 /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */,
 				1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */,
 			);
 			name = Pods;
@@ -888,6 +902,7 @@
 				475B00401F7BB6D6006CDD41 /* PersistentKey+CoreDataClass.swift */,
 				475B00411F7BB6D6006CDD41 /* PersistentKey+CoreDataProperties.swift */,
 				472F39781E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift */,
+				472F396F1E14F75C009260FB /* DataHandler.swift */,
 				475DF4771F0D54C9009D807F /* Folder+CoreDataClass.swift */,
 				475DF4781F0D54C9009D807F /* Folder+CoreDataProperties.swift */,
 				472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */,
@@ -895,6 +910,10 @@
 				472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */,
 				472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */,
 				472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */,
+				A1B3C6EF1FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift */,
+				A114E42F1FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift */,
+				A1D5BEA51FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift */,
+				A1D5BEA31FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift */,
 			);
 			name = coredata;
 			sourceTree = "<group>";
@@ -903,7 +922,7 @@
 			isa = PBXGroup;
 			children = (
 				472F39921E279792009260FB /* protocols */,
-				472F396F1E14F75C009260FB /* DataHandler.swift */,
+				A114E4311FACB23000E40243 /* StringExtension.swift */,
 				47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */,
 				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
 				472F39871E1FA377009260FB /* KeyRecord.swift */,
@@ -992,6 +1011,16 @@
 			name = folders;
 			sourceTree = "<group>";
 		};
+		A111F6AB1FA77AF80060AFDE /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				A18E7D741FBDE560002F7CC9 /* Event.swift */,
+				A111F6AC1FA77B170060AFDE /* Logger.swift */,
+				A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */,
+			);
+			name = Logging;
+			sourceTree = "<group>";
+		};
 		A11E733A1E019AB5006574DD /* init */ = {
 			isa = PBXGroup;
 			children = (
@@ -1039,6 +1068,7 @@
 			children = (
 				471BC8931F960B7C00D64416 /* ObjectivePGP */,
 				8428A8511F436952007649A5 /* Gamification */,
+				A111F6AB1FA77AF80060AFDE /* Logging */,
 				47B91AC11EC0C1FB000AE3EE /* data */,
 				A1C7FF8B1E895316000D1E92 /* keys */,
 				A11E733A1E019AB5006574DD /* init */,
@@ -1849,11 +1879,13 @@
 				471BC9141F960B7C00D64416 /* PGPSecretKeyPacket.m in Sources */,
 				A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
+				A1D5BEA41FB0C25900780360 /* PseudonymKey+CoreDataProperties.swift in Sources */,
 				471BC90C1F960B7C00D64416 /* PGPCompressedPacket.m in Sources */,
 				471BC9091F960B7C00D64416 /* PGPRSA.m in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				8428A85D1F436A05007649A5 /* Badges.swift in Sources */,
 				8428A8651F436A11007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
+				A1B3C6F01FACA31F00EE6B85 /* PseudonymMailAddress+CoreDataClass.swift in Sources */,
 				472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
 				47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */,
@@ -1865,11 +1897,13 @@
 				47691A8C1ECC3EC7004BCFC5 /* EphemeralMail.swift in Sources */,
 				471BC92D1F960B7C00D64416 /* PGPPKCSEme.m in Sources */,
 				8428A8671F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */,
+				A114E4301FACAB2700E40243 /* PseudonymMailAddress+CoreDataProperties.swift in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
 				471BC9131F960B7C00D64416 /* PGPPublicSubKeyPacket.m in Sources */,
 				F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */,
 				471BC9261F960B7C00D64416 /* PGPKey.m in Sources */,
 				8428A8691F436A11007649A5 /* UserNameGamificationTableViewCell.swift in Sources */,
+				A114E4321FACB23000E40243 /* StringExtension.swift in Sources */,
 				472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */,
 				471BC92E1F960B7C00D64416 /* PGPPKCSEmsa.m in Sources */,
 				F113C3851F30D06800E7F1D6 /* QRScannerView.swift in Sources */,
@@ -1931,6 +1965,7 @@
 				8428A85C1F436A05007649A5 /* ArrowView.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */,
+				A111F6AD1FA77B170060AFDE /* Logger.swift in Sources */,
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
 				A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */,
 				8428A85F1F436A05007649A5 /* GamificationData.swift in Sources */,
@@ -1951,13 +1986,16 @@
 				471BC9251F960B7C00D64416 /* PGPFoundation.m in Sources */,
 				471BC90D1F960B7C00D64416 /* PGPLiteralPacket.m in Sources */,
 				471BC9121F960B7C00D64416 /* PGPPublicKeyPacket.m in Sources */,
+				A18E7D751FBDE560002F7CC9 /* Event.swift in Sources */,
 				471BC9271F960B7C00D64416 /* PGPKeyGenerator.m in Sources */,
+				A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */,
 				471BC9071F960B7C00D64416 /* PGPDSA.m in Sources */,
 				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
 				3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */,
 				471BC92C1F960B7C00D64416 /* PGPPartialSubKey.m in Sources */,
 				8428A8681F436A11007649A5 /* SubBadgeTableViewCell.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
+				A1D5BEA61FB0C3A900780360 /* PseudonymKey+CoreDataClass.swift in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
 				F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */,
 				471BC91B1F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
@@ -2074,7 +2112,6 @@
 /* Begin XCBuildConfiguration section */
 		3E9709601FAC95F5005825C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1C91456D4E3F1421E66FC28 /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
