@@ -12,7 +12,7 @@ import KeychainAccess
 
 
 enum Attribute: Int{
-    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline/*used for Logging; determines the earliest next time a log is send to the researchers*/, prefSecretKeyID, subjectSalt /*used for Logging; salt for the hashfunction for mail subjects*/
+    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline/*used for Logging; determines the earliest next time a log is send to the researchers*/, prefSecretKeyID, subjectSalt /*used for Logging; salt for the hashfunction for mail subjects*/, loggingFolderPath
     
     var defaultValue:AnyObject? {
         switch self {
@@ -34,6 +34,8 @@ enum Attribute: Int{
             return Date(timeIntervalSinceNow: TimeInterval(Logger.loggingInterval)) as AnyObject?
         case .subjectSalt:
             return String.random() as AnyObject?
+        case .loggingFolderPath:
+            return "letterbox-study" as AnyObject?
         default:
             return nil
         }

@@ -484,7 +484,7 @@ class Logger {
             do {
                 let currentContent = try String(contentsOf: fileURL, encoding: .utf8)
                 if !currentContent.isEmpty {
-                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "[Enzevalos] Log", message: "["+currentContent.dropLast()+"\n]", callback: sendCallback, logMail: false)
+                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "[Enzevalos] Log", message: "["+currentContent.dropLast()+"\n]", callback: sendCallback, loggingMail: true)
                 }
             }
             catch {

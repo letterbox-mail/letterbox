@@ -275,7 +275,7 @@ class MailHandler {
     }
     
     //logMail should be false, if called from Logger, otherwise 
-    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, logMail: Bool = true) {
+    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false) {
 
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let session = createSMTPSession()
@@ -321,7 +321,7 @@ class MailHandler {
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
                 Logger.queue.async(flags: .barrier) {
-                    if Logger.logging && logMail {
+                    if Logger.logging && !loggingMail {
                         let secureAddrsInString = encPGP.map{$0.mailbox}
                         var secureAddresses: [Mail_Address] = []
                         for addr in toLogging {
@@ -353,8 +353,11 @@ class MailHandler {
                 //TODO handle different callbacks
 
                 sendOperation.start(callback)
-                if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && logMail {
+                if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && !loggingMail {
                     createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
+                }
+                if Logger.logging && loggingMail {
+                    createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                 }
                 
                 builder.textBody = message
@@ -364,20 +367,20 @@ class MailHandler {
             }
         }
 
-        if let unenc = ordered[CryptoScheme.UNKNOWN]{
+        if let unenc = ordered[CryptoScheme.UNKNOWN], !loggingMail {
             if unenc.count > 0 {
                 builder.textBody = message
                 sendData = builder.data()
                 sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
                 //TODO handle different callbacks
                 //TODO add logging call here for the case the full email is unencrypted
-                if unenc.count == allRec.count && logMail {
+                if unenc.count == allRec.count && !loggingMail {
                     Logger.queue.async(flags: .barrier) {
                         Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
                     }
                 }
                 sendOperation.start(callback)
-                if logMail {
+                if !loggingMail {
                     createSendCopy(sendData: sendData)
                 }
             }
@@ -396,6 +399,21 @@ class MailHandler {
         else {
             let op = IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
             op?.start({_,_ in print("done")})
+        }
+    }
+    
+    fileprivate func createLoggingSendCopy(sendData: Data) {
+        let sentFolder = UserManager.loadUserValue(.loggingFolderPath) as! String
+        if !DataHandler.handler.existsFolder(with: sentFolder) {
+            let op = IMAPSession.createFolderOperation(sentFolder)
+            op?.start({ error in
+                let op = self.IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
+                op?.start({_,_ in }) // TODO: @jakob: is this necessary?
+            })
+        }
+        else {
+            let op = IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
+            op?.start({_,_ in })
         }
     }
 
