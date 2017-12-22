@@ -12,10 +12,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--About View Controller-->
         <scene sceneID="qTR-AB-eSb">
             <objects>
-                <viewController id="pRa-P9-r1m" sceneMemberID="viewController">
+                <viewController id="pRa-P9-r1m" customClass="AboutViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0iw-Xf-yJQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -205,10 +205,22 @@
                         <viewLayoutGuide key="safeArea" id="Eyn-V3-WbF"/>
                     </view>
                     <navigationItem key="navigationItem" id="d3Y-9C-4G2"/>
+                    <connections>
+                        <outlet property="aboutText" destination="8YI-1F-Udq" id="TjM-BN-cPm"/>
+                        <segue destination="LFr-fh-W1G" kind="showDetail" identifier="newMail" id="XEr-Ej-oC6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TI7-Sn-xrL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="472.80000000000001" y="154.27286356821591"/>
+            <point key="canvasLocation" x="529" y="153"/>
+        </scene>
+        <!--SendViewController-->
+        <scene sceneID="eKB-ko-L5O">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="SendViewController" id="LFr-fh-W1G" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FLz-Ym-WqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1207" y="152"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wCE-fR-WYX">
