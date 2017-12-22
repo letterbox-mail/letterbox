@@ -370,6 +370,7 @@
 		F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
 		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
 		F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AF938E1E2D04BA00755128 /* CustomCells.swift */; };
+		F1C733351FEC1CE2005A497E /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1C733341FEC1CE2005A497E /* About.storyboard */; };
 		F1F070281FA0DF3F004A860A /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1F070261FA0DF3F004A860A /* Inbox.storyboard */; };
 		F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 /* End PBXBuildFile section */
@@ -665,6 +666,7 @@
 		F1984D731E1E92B300804E1E /* LabelStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelStyleKit.swift; sourceTree = "<group>"; };
 		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		F1AF938E1E2D04BA00755128 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
+		F1C733341FEC1CE2005A497E /* About.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = About.storyboard; sourceTree = "<group>"; };
 		F1F070271FA0DF3F004A860A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1066,6 +1068,7 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
+				F1C733331FEC1CAC005A497E /* About */,
 				471BC8931F960B7C00D64416 /* ObjectivePGP */,
 				8428A8511F436952007649A5 /* Gamification */,
 				A111F6AB1FA77AF80060AFDE /* Logging */,
@@ -1241,6 +1244,14 @@
 				F18B445F1E704C550080C041 /* ReplaceSegue.swift */,
 			);
 			name = contactView;
+			sourceTree = "<group>";
+		};
+		F1C733331FEC1CAC005A497E /* About */ = {
+			isa = PBXGroup;
+			children = (
+				F1C733341FEC1CE2005A497E /* About.storyboard */,
+			);
+			path = About;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1456,6 +1467,7 @@
 				471BC90A1F960B7C00D64416 /* Info.plist in Resources */,
 				F14D189D1ED880680080515D /* nchr-public.gpg in Resources */,
 				F14D189C1ED880680080515D /* nchr-private.gpg in Resources */,
+				F1C733351FEC1CE2005A497E /* About.storyboard in Resources */,
 				F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */,
 				F14D189E1ED880680080515D /* ncpayroll-private.gpg in Resources */,
 				4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */,
