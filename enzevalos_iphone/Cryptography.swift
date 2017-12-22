@@ -12,15 +12,15 @@ public protocol Encryption{
     
     // Key handling
     func generateKey(adr: String) -> String
-    func importKeys(key: String, isSecretKey: Bool, autocrypt: Bool) -> [String]
-    func importKeys(data: Data, secret: Bool) -> [String]
-    func importKeysFromFile(file: String) -> [String]
+    func importKeys(key: String, pw: String?, isSecretKey: Bool, autocrypt: Bool) throws -> [String]
+    func importKeys(data: Data,  pw: String?, secret: Bool) throws-> [String]
+    func importKeysFromFile(file: String,  pw: String?) throws -> [String]
     
     func exportKey(id: String, isSecretkey: Bool, autocrypt: Bool) -> String?
     func exportKeyData(id: String, isSecretkey: Bool, autocrypt: Bool) -> Data?
     
     // operations on keys
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject
-    func decrypt(data: Data, decryptionId: String?, verifyIds: [String]) -> CryptoObject
+    func decrypt(data: Data, decryptionIDs: [String], verifyIds: [String], fromAdr: String?) -> CryptoObject
     
 }

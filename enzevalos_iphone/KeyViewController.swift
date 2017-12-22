@@ -11,20 +11,47 @@ import UIKit
 class KeyViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
+    @IBOutlet weak var copyButton: UIButton!
+    
+    var openDate: Date = Date() //used for logging issues [see Logger.log(keyViewClose keyID:String, timevisited: Date)]
 
     var record: KeyRecord?
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-
+        openDate = Date()
+        Logger.queue.async(flags: .barrier) {
+            if let record = self.record, let keyID = record.keyID {
+                Logger.log(keyViewOpen: keyID)
+            }
+        }
+        copyButton.setTitle(NSLocalizedString("copyKey", comment: ""), for: .normal)
+        copyButton.setTitle(NSLocalizedString("copied", comment: "the key has been copied to the clipboard"), for: .disabled)
     }
 
-    @IBAction func deleteKey(_ sender: AnyObject) {
-        //TODO: REMOVE KEY!
-    
+    @IBAction func copyKey(_ sender: AnyObject) {
+        guard let record = record, let keyId = record.keyID else {
+            return
+        }
+
+        let swiftpgp = SwiftPGP()
+        if let key = swiftpgp.exportKey(id: keyId, isSecretkey: false, autocrypt: false) {
+            UIPasteboard.general.string = key
+            copyButton.isEnabled = false
+        } else {
+            print("Error while getting key")
+        }
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        Logger.queue.async(flags: .barrier) {
+            if let record = self.record, let keyID = record.keyID {
+                Logger.log(keyViewClose: keyID, secondsOpened: Int(Date().timeIntervalSince(self.openDate)))
+            }
+        }
+        super.viewDidDisappear(animated)
+    }
 }
 
 extension KeyViewController: UITableViewDataSource {
@@ -37,8 +64,8 @@ extension KeyViewController: UITableViewDataSource {
             return returnValue
         }
         if toSectionType(section) == .addresses {
-            if let key = record?.storedKey, key.mailaddress != nil{
-                return key.mailaddress!.count
+            if let record = record {
+                return record.addresses.count
             }
             return 0
         }
@@ -50,7 +77,7 @@ extension KeyViewController: UITableViewDataSource {
             if toRowType(indexPath) == .keyID {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "KeyIDCell")!
                 cell.textLabel?.text = NSLocalizedString("KeyID", comment: "Identifier of the key")
-                cell.detailTextLabel?.text = record?.keyId
+                cell.detailTextLabel?.text = record?.keyID
                 return cell
             }
             else if toRowType(indexPath) == .fingerprint {
@@ -63,7 +90,8 @@ extension KeyViewController: UITableViewDataSource {
             }
             else if toRowType(indexPath) == .encryptionType {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "EncryptionTypeCell")!
-                cell.detailTextLabel?.text = "\(String(describing: record?.cryptoscheme))"
+                let cryptoscheme: String = record?.cryptoscheme.description ?? ""
+                cell.detailTextLabel?.text = cryptoscheme
                 cell.textLabel?.text = NSLocalizedString("EncryptionType", comment: "Type of Encryption")
                 return cell
             }
@@ -96,8 +124,7 @@ extension KeyViewController: UITableViewDataSource {
                 return cell
             }
         }
-
-            else if toSectionType(indexPath.section) == .addresses {
+        else if toSectionType(indexPath.section) == .addresses {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MailAddressCell")!
             if let addr = record?.addressNames[indexPath.row] { //TODO: Or of key???
                 for ourAddr in (record?.addressNames)! {

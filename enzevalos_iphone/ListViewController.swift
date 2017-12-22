@@ -83,7 +83,7 @@ class ListViewController: UITableViewController {
         tableView.reloadData()
     }
 
-    func addNewMail() {
+    func addNewMail(mail: PersistentMail?) {
         tableView.reloadData()
     }
 

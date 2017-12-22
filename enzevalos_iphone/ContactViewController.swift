@@ -36,8 +36,8 @@ class ContactViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
         if let con = keyRecord {
             hasKey = false
-            if let adrs = con.ezContact.addresses{
-                for adr in adrs{
+            if let adrs = con.ezContact.addresses {
+                for adr in adrs {
                     let a = adr as! MailAddress
                     hasKey = hasKey || a.hasKey
                 }
@@ -67,6 +67,10 @@ class ContactViewController: UIViewController {
     }
 
     func prepareContactSheet() {
+        guard !isUser else {
+            return
+        }
+
         let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
         if authorizationStatus == CNAuthorizationStatus.authorized {
             do {
@@ -159,10 +163,10 @@ class ContactViewController: UIViewController {
         } else if sender.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
             let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0, predecessor: nil)
             performSegue(withIdentifier: "newMail", sender: mail)
-        } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") && keyRecord!.key != nil {
+        } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") && keyRecord!.keyID != nil {
             AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
             performSegue(withIdentifier: "verifyQRCode", sender: keyRecord?.fingerprint)
-        } else if sender.titleLabel?.text == NSLocalizedString("ReadOnOtherDevices", comment: "ReadOnOtherDevices") && keyRecord!.key != nil {
+        } else if sender.titleLabel?.text == NSLocalizedString("ReadOnOtherDevices", comment: "ReadOnOtherDevices") && keyRecord!.keyID != nil {
             //AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
             performSegue(withIdentifier: "exportKeyFromKeyRecord", sender: nil)
         }
@@ -202,12 +206,20 @@ class ContactViewController: UIViewController {
             if let DestinationViewController = segue.destination as? QRScannerView {
                 DestinationViewController.fingerprint = keyRecord?.fingerprint
                 DestinationViewController.callback = verifySuccessfull
+                DestinationViewController.keyId = self.keyRecord?.keyID //used for logging
+                Logger.queue.async(flags: .barrier) {
+                    Logger.log(verify: self.keyRecord?.keyID ?? "noKeyID", open: true)
+                }
             }
         }
     }
 
     func verifySuccessfull() {
         keyRecord?.verify()
+        Logger.queue.async(flags: .barrier) {
+            let keyId: String = self.keyRecord?.keyID ?? "noKeyID"
+            Logger.log(verify: keyId, open: false, success: true)
+        }
         tableView.reloadData()
     }
 }
@@ -217,22 +229,22 @@ extension ContactViewController: CNContactViewControllerDelegate {
 }
 
 extension ContactViewController: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if keyRecord != nil {
+        if let keyRecord = keyRecord {
             switch indexPath.section {
             case 0:
                 if indexPath.row == 0 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "ContactViewCell") as! ContactViewCell
-                    cell.contactImage.image = keyRecord!.ezContact.getImageOrDefault()
+                    cell.contactImage.image = keyRecord.ezContact.getImageOrDefault()
                     cell.contactImage.layer.cornerRadius = cell.contactImage.frame.height / 2
                     cell.contactImage.clipsToBounds = true
                     cell.iconImage.image = drawStatusCircle()
                     if isUser {
                         cell.contactStatus.text = NSLocalizedString("thisIsYou", comment: "This contact is the user")
-                    } else if keyRecord!.isVerified {
+                    } else if keyRecord.isVerified {
                         cell.contactStatus.text = NSLocalizedString("Verified", comment: "Contact is verified")
-                    } else if keyRecord!.hasKey {
+                    } else if keyRecord.hasKey {
                         cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
                     } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         cell.contactStatus.text = NSLocalizedString("otherEncryption", comment: "Contact is using encryption, this is the unsecure collection")
@@ -243,9 +255,9 @@ extension ContactViewController: UITableViewDataSource {
                     }
                     return cell
                 } else if indexPath.row == 1 {
-                    if isUser && keyRecord!.hasKey {
+                    if let fingerprint = keyRecord.fingerprint, isUser && keyRecord.hasKey {
                         let qrCodeCell = tableView.dequeueReusableCell(withIdentifier: "QRCodeCell", for: indexPath) as! QRCodeCell
-                        let qrCode = QRCode.generate(input: "OPENPGP4FPR:\(String(describing: keyRecord?.fingerprint))")
+                        let qrCode = QRCode.generate(input: "OPENPGP4FPR:\(fingerprint)")
 
                         let scaleX = qrCodeCell.qrCode.frame.size.width / qrCode.extent.size.width
                         let scaleY = qrCodeCell.qrCode.frame.size.height / qrCode.extent.size.height
@@ -256,7 +268,7 @@ extension ContactViewController: UITableViewDataSource {
                         return qrCodeCell
                     } else {
                         let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
-                        if keyRecord!.hasKey {
+                        if keyRecord.hasKey {
                             actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
                         } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                             actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
@@ -268,9 +280,9 @@ extension ContactViewController: UITableViewDataSource {
                         return actionCell
                     }
                 } else if indexPath.row == 2 {
-                    if isUser && keyRecord!.hasKey {
+                    if isUser && keyRecord.hasKey {
                         let progressCell = tableView.dequeueReusableCell(withIdentifier: "ProgressCell", for: indexPath) as! ProgressCell
-                        let (contact,mail) = GamificationData.sharedInstance.getSecureProgress()
+                        let (contact, mail) = GamificationData.sharedInstance.getSecureProgress()
 
                         progressCell.firstLabel.text = NSLocalizedString("secureContacts", comment: "")
                         progressCell.firstProgress.progress = contact
@@ -278,27 +290,27 @@ extension ContactViewController: UITableViewDataSource {
                         progressCell.secondLabel.text = NSLocalizedString("secureCommunication", comment: "")
                         progressCell.secondProgress.progress = mail
                         progressCell.secondPercent.text = "\(Int(mail * 100)) %"
-                        
+
                         return progressCell
                     }
                 } else if indexPath.row == 3 {
-                    if isUser && keyRecord!.hasKey {
+                    if isUser && keyRecord.hasKey {
                         let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
                         actionCell.Button.setTitle(NSLocalizedString("ReadOnOtherDevices", comment: "read secure mails on other devices (export secret key)"), for: UIControlState())
-                        
+
                         return actionCell
                     }
                 }
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MailCell") as! MailCell
-                if let address = keyRecord?.ezContact.getMailAddresses()[indexPath.item].mailAddress {
-                    if let highlightEmail = highlightEmail, highlightEmail.contains(address) {
-                        cell.detailLabel.textColor = view.tintColor
-                        cell.titleLabel.textColor = view.tintColor
-                    }
-                    cell.detailLabel.text = address
+                let address = keyRecord.ezContact.getMailAddresses()[indexPath.item].mailAddress
+                if let highlightEmail = highlightEmail, highlightEmail.contains(address) {
+                    cell.detailLabel.textColor = view.tintColor
+                    cell.titleLabel.textColor = view.tintColor
                 }
-                if let label = keyRecord?.ezContact.getMailAddresses()[indexPath.item].label.label {
+                cell.detailLabel.text = address
+
+                if let label = keyRecord.ezContact.getMailAddresses()[indexPath.item].label.label {
                     cell.titleLabel.text = CNLabeledValue<NSString>.localizedString(forLabel: label)
                 } else {
                     cell.titleLabel.text = ""
@@ -309,14 +321,14 @@ extension ContactViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AllMails", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("allMessages", comment: "show all messages")
                 return cell
-            case 3 where (keyRecord?.hasKey) ?? false:
+            case 3 where keyRecord.hasKey:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "KeyCell", for: indexPath)
                 cell.textLabel?.text = NSLocalizedString("Details", comment: "Details")
                 return cell
-            case 3 where !((keyRecord?.hasKey) ?? false):
+            case 3 where !keyRecord.hasKey:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! RecordCell
                 if let r = otherRecords {
-                    if let key = r[indexPath.row].key, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
+                    if let key = r[indexPath.row].keyID, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
                         let dateFormatter = DateFormatter()
                         dateFormatter.locale = Locale.current
                         dateFormatter.dateStyle = .medium
@@ -329,14 +341,14 @@ extension ContactViewController: UITableViewDataSource {
                     cell.label.text = r[indexPath.row].addresses.first?.mailAddress
                 }
                 return cell
-            case 4 where !((keyRecord?.hasKey) ?? false):
+            case 4 where !keyRecord.hasKey:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "KeyCell", for: indexPath)
-                cell.textLabel?.text = "abc"
+                cell.textLabel?.text = "abc" // @jakob: ??
                 return cell
-            case 4 where (keyRecord?.hasKey) ?? false:
+            case 4 where keyRecord.hasKey:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! RecordCell
                 if let r = otherRecords {
-                    if let key = r[indexPath.row].key, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
+                    if let key = r[indexPath.row].keyID, let pk = DataHandler.handler.findKey(keyID: key), let time = pk.discoveryDate {
                         let dateFormatter = DateFormatter()
                         dateFormatter.locale = Locale.current
                         dateFormatter.dateStyle = .medium
@@ -349,18 +361,10 @@ extension ContactViewController: UITableViewDataSource {
                     cell.label.text = r[indexPath.row].addresses.first?.mailAddress
                 }
                 return cell
-            case 5 where (keyRecord?.hasKey ?? false) && isUser:
-                let actionCell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
-                if keyRecord!.hasKey {
-                    actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
-                } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
-                    actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
-                } else if hasKey {
-                    actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
-                } else {
-                    actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
-                }
-                return actionCell
+            case 5 where isUser:
+                let badgeCell = tableView.dequeueReusableCell(withIdentifier: "BadgeCaseCell", for: indexPath)
+                badgeCell.detailTextLabel?.text = NSLocalizedString("YourBadges", comment: "")
+                return badgeCell
             default:
                 break
             }
@@ -373,11 +377,11 @@ extension ContactViewController: UITableViewDataSource {
         if (keyRecord?.ezContact.records.count ?? 0) > 1 {
             sections += 1
         }
+        if isUser {
+            sections += 1
+        }
         if let hasKey = keyRecord?.hasKey, hasKey {
             sections += 1
-            /*if isUser {
-                sections += 1
-            }*/
         }
         return sections
     }

@@ -20,9 +20,35 @@ enum EncryptionState {
     case ValidedEncryptedWithCurrentKey
 }
 
-enum CryptoScheme {
+public enum CryptoScheme {
     case PGP
     case UNKNOWN
+    
+    var description: String{
+        switch self {
+        case .PGP:
+            return "PGP"
+        default:
+            return ""
+        }
+    }
+    
+    static func find(i: Int) -> CryptoScheme{
+        switch i {
+        case 0:
+            return CryptoScheme.PGP
+        default:
+            return CryptoScheme.UNKNOWN
+        }
+    }
+    func asInt()-> Int16{
+        switch self {
+        case CryptoScheme.PGP:
+            return 0
+        case CryptoScheme.UNKNOWN:
+            return 99
+        }
+    }
 }
 
 public class CryptoObject{
@@ -30,10 +56,11 @@ public class CryptoObject{
     let plaintext: String?
     let decryptedData: Data?
     let signatureState: SignatureState
-    let encryptionState: EncryptionState
+    var encryptionState: EncryptionState
     let signKey: String?
     let encType: CryptoScheme
     let passcode: String?
+    let signedAdrs: [String]
     
     var decryptedText: String?{
         if let data = decryptedData{
@@ -43,7 +70,7 @@ public class CryptoObject{
     }
     
     
-    init(chiphertext: Data?, plaintext: String?, decryptedData: Data?, sigState: SignatureState, encState: EncryptionState, signKey: String?, encType: CryptoScheme){
+    init(chiphertext: Data?, plaintext: String?, decryptedData: Data?, sigState: SignatureState, encState: EncryptionState, signKey: String?, encType: CryptoScheme, signedAdrs: [String]){
         self.chiphertext = chiphertext
         self.plaintext = plaintext
         self.decryptedData = decryptedData
@@ -52,6 +79,7 @@ public class CryptoObject{
         self.signKey = signKey
         self.encType = encType
         self.passcode = nil
+        self.signedAdrs = signedAdrs
     }
     
     

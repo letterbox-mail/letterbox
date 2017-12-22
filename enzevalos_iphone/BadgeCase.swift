@@ -50,7 +50,6 @@ class BadgeCase: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       // print((section + 1) * 2)
         if (section + 1) * 2 < GamificationData.sharedInstance.badges.count {
             return 2
         } else {
@@ -152,16 +151,13 @@ class BadgeCase: UICollectionViewController, UICollectionViewDelegateFlowLayout 
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier else {
-            print("Identifier Failure")
             return
         }
         if identifier == "linearView" {
             guard let source = segue.source as? BadgeCase else {
-                print("Badge Case Failure")
                 return
             }
             guard let destination = segue.destination as? LinearBadgeViewController else {
-                print("LinearBadgeViewController Failure")
                 return
             }
             destination.superBadge = source.selected
@@ -170,11 +166,9 @@ class BadgeCase: UICollectionViewController, UICollectionViewDelegateFlowLayout 
 
         if identifier == "inviteFriend" {
             guard let source = segue.source as? BadgeCase else {
-                print("Badge Case Failure")
                 return
             }
             guard let destination = segue.destination as? InviteFriendViewController else {
-                print("InviteFriendViewController Failure")
                 return
             }
             destination.superBadge = source.selected

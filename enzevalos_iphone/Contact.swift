@@ -21,9 +21,9 @@ extension Contact {
     private func makeImageFromName(_ name: String) -> UIImage {
         var text: NSAttributedString
         var tag = String()
-        if name.characters.count > 0 {
+        if name.count > 0 {
             let seperated = name.components(separatedBy: " ")
-            tag = seperated.map({if let a = $0.characters.first { return "\(a)" }; return "" }).joined()
+            tag = seperated.map({if let a = $0.first { return "\(a)" }; return "" }).joined()
         }
 
         text = NSAttributedString(string: tag.uppercased(), attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.systemFont(ofSize: 32.2)])

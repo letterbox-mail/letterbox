@@ -23,6 +23,7 @@ extension Mail_Address {
     @NSManaged public var from: NSSet?
     @NSManaged public var to: NSSet?
     @NSManaged public var key: NSSet?
+    @NSManaged public var pseudonym: String
 
 
 }

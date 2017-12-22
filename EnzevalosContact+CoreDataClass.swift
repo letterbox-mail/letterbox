@@ -43,17 +43,17 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         var name = String()
 
         if let cnc = cnContact {
-            if cnc.givenName.characters.count > 0 {
+            if cnc.givenName.count > 0 {
                 name += cnc.givenName
             }
-            if cnc.familyName.characters.count > 0 {
-                if name.characters.count > 0 {
+            if cnc.familyName.count > 0 {
+                if name.count > 0 {
                     name += " "
                 }
                 name += cnc.familyName
             }
         }
-        if name.characters.count > 0 {
+        if name.count > 0 {
             return name
         } else {
             return nil
@@ -141,6 +141,25 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
                 }
             }
             
+            if self.hasKey, let adrs = addresses{
+                let mykeys = DataHandler.handler.findSecretKeys()
+                let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
+                let myAdr = UserManager.loadUserValue(Attribute.userAddr) as! String
+                for item in adrs{
+                    if let adr = item as? Mail_Address{
+                        let adrField = adr.address
+                        if adrField == myAdr{ // owner's enzevalos-contact!
+                            for sk in mykeys{
+                                let secureRecord = KeyRecord(keyID: sk.keyID!, folder: folder)
+                                if !myrecords.contains(secureRecord){
+                                    myrecords.append(secureRecord)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
             return myrecords
 
         }
@@ -160,13 +179,12 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
 
     open var cnContact: CNContact? {
         get {
-            let contactFromBook = AddressHandler.findContact(self)
-            if contactFromBook.count > 0 {
-                let con = contactFromBook.first
-                self.cnidentifier = con?.identifier
-                return con!
+            if let cn = cnidentifier{
+                let contacts = AddressHandler.getContactByID(cn)
+                if contacts.count > 0{
+                    return contacts.first
+                }
             }
-
             return nil
         }
     }
@@ -175,7 +193,7 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         let con = CNMutableContact()
         let name = self.displayname
         if let n = name {
-            let nameArray = n.characters.split(separator: " ").map(String.init)
+            let nameArray = n.split(separator: " ").map(String.init)
             switch nameArray.count {
             case 1:
                 con.givenName = nameArray.first!

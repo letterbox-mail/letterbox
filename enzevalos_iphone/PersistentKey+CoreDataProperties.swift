@@ -18,12 +18,12 @@ extension PersistentKey {
 
     @NSManaged public var keyID: String
     @NSManaged public var verifiedDate: NSDate?
-    @NSManaged public var encryptionType: Int16
     @NSManaged public var lastSeen: NSDate?
     @NSManaged public var lastSeenAutocrypt: NSDate?
     @NSManaged public var discoveryDate: NSDate?
     @NSManaged public var mailaddress: NSSet?
     @NSManaged public var firstMail: PersistentMail?
+    @NSManaged public var pseudonym: String
     
     public var prefer_encryption: EncState{
         set {
@@ -40,8 +40,23 @@ extension PersistentKey {
             self.didAccessValue(forKey: name)
             return EncState.find(i: i)
         }
-        
-        
+    }
+    
+    public var encryptionType: CryptoScheme{
+        set{
+            let name = "encryptionType"
+            self.willChangeValue(forKey: name)
+            self.setPrimitiveValue(newValue.asInt(), forKey: name)
+            self.didChangeValue(forKey: name)
+        }
+        get {
+            
+            let name = "encryptionType"
+            self.willAccessValue(forKey: name)
+            let i = self.primitiveValue(forKey: name) as! Int
+            self.didAccessValue(forKey: name)
+            return CryptoScheme.find(i: i)
+        }
     }
 }
 

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,7 +14,7 @@
             <objects>
                 <tableViewController restorationIdentifier="inboxViewController" storyboardIdentifier="inboxViewController" id="X5Y-Rf-Qzd" customClass="InboxViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="130" sectionHeaderHeight="18" sectionFooterHeight="18" id="hiB-1s-b08">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <connections>
@@ -19,6 +23,11 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
+                        <barButtonItem title="ID" id="aed-mv-upX">
+                            <connections>
+                                <segue destination="xlF-hH-9dv" kind="presentation" identifier="yourTraySegue" id="gM2-C1-uCD"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="1te-jl-dHf"/>
                         <barButtonItem enabled="NO" title="last Update" id="mki-ya-mz8">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -32,6 +41,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="ynL-Jf-k4T">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -54,7 +64,27 @@
                 <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="UITableViewController-Ouw-WD-EV6" id="p8z-t4-9Mf" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="moe-H2-YzH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="914.39999999999998" y="-296.40179910044981"/>
+            <point key="canvasLocation" x="875" y="-277"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Bhf-pX-KlP">
+            <objects>
+                <navigationController id="xlF-hH-9dv" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Mgf-Rd-FQE">
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="8dz-xs-FtU"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="biq-vv-cNt"/>
+                    </navigationItem>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="VtM-GN-1RZ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="OtZ-YD-EDj" kind="relationship" relationship="rootViewController" id="q4D-qx-9aJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2sl-M7-PjM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-806" y="456"/>
         </scene>
         <!--UITableViewController-ooe-0X-glz-->
         <scene sceneID="Q1z-Sn-gcX">
@@ -62,15 +92,17 @@
                 <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="UITableViewController-ooe-0X-glz" id="cZg-8p-MQm" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DTQ-q3-Uz6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="210" y="430"/>
+            <point key="canvasLocation" x="-174" y="275"/>
         </scene>
         <!--UITableViewController-8Di-x2-cWQ-->
         <scene sceneID="T67-3e-28x">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="UITableViewController-8Di-x2-cWQ" id="OtZ-YD-EDj" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="UITableViewController-8Di-x2-cWQ" id="OtZ-YD-EDj" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="lNA-e7-lPf"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zrQ-mB-Bxb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="912.79999999999995" y="430.43478260869568"/>
+            <point key="canvasLocation" x="444" y="274"/>
         </scene>
         <!--sendNavigation-->
         <scene sceneID="lfH-RM-nTe">
@@ -78,7 +110,10 @@
                 <viewControllerPlaceholder storyboardIdentifier="sendNavigation" storyboardName="Main" referencedIdentifier="sendNavigation" id="1FD-Zq-lKZ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="USW-Yh-nR9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1710" y="-297"/>
+            <point key="canvasLocation" x="772" y="-321"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="q4D-qx-9aJ"/>
+    </inferredMetricsTieBreakers>
 </document>

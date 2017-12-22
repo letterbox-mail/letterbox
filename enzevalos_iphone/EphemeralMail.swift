@@ -19,7 +19,7 @@ open class EphemeralMail: Mail {
     public var uid: UInt64
     public var predecessor: PersistentMail?
 
-    public init(to: NSSet, cc: NSSet, bcc: NSSet, date: Date, subject: String?, body: String?, uid: UInt64, predecessor: PersistentMail?) { //TODO: is casting cc and bcc necessary?
+    public init(to: NSSet, cc: NSSet, bcc: NSSet, date: Date, subject: String?, body: String?, uid: UInt64, predecessor: PersistentMail?) { 
         self.cc = cc
         self.bcc = bcc
         self.to = to

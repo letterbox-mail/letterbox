@@ -33,7 +33,7 @@ open class PersistentMail: NSManagedObject, Mail {
             } else {
                 flag.insert(MCOMessageFlag.seen)
             }
-            _ = DataHandler.handler.save()
+            _ = DataHandler.handler.save(during: "set read flag")
         }
     }
     
@@ -48,7 +48,7 @@ open class PersistentMail: NSManagedObject, Mail {
             } else {
                 flag.insert(MCOMessageFlag.answered)
             }
-            _ = DataHandler.handler.save()
+            _ = DataHandler.handler.save(during: "set answer flag")
         }
     }
 
@@ -91,8 +91,8 @@ open class PersistentMail: NSManagedObject, Mail {
 
         if message != nil {
             message = message!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            if message!.characters.count > 50 {
-                message = message!.substring(to: message!.characters.index(message!.startIndex, offsetBy: 50))
+            if message!.count > 50 {
+                message = message!.substring(to: message!.index(message!.startIndex, offsetBy: 50))
             }
             let messageArray = message!.components(separatedBy: "\n")
             return messageArray.joined(separator: " ")
@@ -126,52 +126,6 @@ open class PersistentMail: NSManagedObject, Mail {
         }
         return receivers
     }
-
-    /*
-     TODO: REMOVE
-    //decrypt and/or check signature
-    func decryptIfPossible() {
-        let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
-        if let encryption = EnzevalosEncryptionHandler.getEncryption(encType) {
-            if encryption.isUsedForEncryption(self) == true {
-                self.isEncrypted = true
-                //decrypt
-                encryption.decryptAndSignatureCheck(self)
-
-            }
-            if encryption.isUsedForSignature(self) == true {
-                //TODO
-                //check signature
-                if (encryption.isCorrectlySigned(self) != nil) {
-                    self.isSigned = true
-                }
-            }
-
-        }
-    }
-
-
-    func liveDecrypt() -> String? {
-        let encType = EnzevalosEncryptionHandler.getEncryptionTypeForMail(self)
-        if let encryption = EnzevalosEncryptionHandler.getEncryption(encType) {
-            if encryption.isUsedForEncryption(self) == true {
-                self.isEncrypted = true
-                //decrypt
-                encryption.decryptAndSignatureCheck(self)
-                return encryption.decrypt(self)
-            }
-            if encryption.isUsedForSignature(self) == true {
-                //TODO
-                //check signature
-                if (encryption.isCorrectlySigned(self) != nil) {
-                    self.isSigned = true
-                }
-            }
-
-        }
-        return nil
-    }
- */
 
     func getSubjectWithFlagsString() -> String {
         let subj: String

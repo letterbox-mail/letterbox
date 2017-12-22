@@ -31,7 +31,7 @@ class ExportSecretCell: UITableViewCell {
     @IBOutlet weak var secretRow3: UILabel!
     
     func setSecretToLabels(secret: String) {
-        if secret.characters.count == 44 {
+        if secret.count == 44 {
             let cut1 = secret.index(secret.startIndex, offsetBy: 15)
             let cut2 = secret.index(secret.startIndex, offsetBy: 30)
             secretRow1.text = secret.substring(to: cut1)

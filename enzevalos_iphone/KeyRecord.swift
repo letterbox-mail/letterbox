@@ -18,7 +18,7 @@ open class KeyRecord: Record {
      Each mail is signed with the key or unsigned. The contact contains the ''from-'' mail-addresses of signed mails (or unsigned).
      */
 
-    let key: String?
+    let keyID: String?
     
     let cryptoscheme = CryptoScheme.PGP
     
@@ -32,7 +32,7 @@ open class KeyRecord: Record {
     
     var pgpKey: PGPKey?{
         get{
-            if let k = key{
+            if let k = keyID{
                 let pgp = SwiftPGP()
                  return pgp.loadKey(id: k)
             }
@@ -42,7 +42,7 @@ open class KeyRecord: Record {
     
     var storedKey: PersistentKey?{
         get{
-            if let k = keyId{
+            if let k = keyID{
                 return DataHandler.handler.findKey(keyID: k)
             }
             return nil
@@ -54,7 +54,7 @@ open class KeyRecord: Record {
     
     public var isVerified: Bool{
         get{
-            if let k = key{
+            if let k = keyID{
                 if let pk = DataHandler.handler.findKey(keyID: k){
                     return pk.isVerified()
                 }
@@ -65,7 +65,7 @@ open class KeyRecord: Record {
     }
     
     func verify(){
-        if let k = key{
+        if let k = keyID{
             if let pk = DataHandler.handler.findKey(keyID: k){
                 pk.verify()
             }
@@ -75,20 +75,16 @@ open class KeyRecord: Record {
     var fingerprint: String?{
         get{
             if let k = pgpKey{
+                if let pk = k.publicKey{
+                    return pk.fingerprint.description()
+                }
+                else if let sk = k.secretKey{
+                    return sk.fingerprint.description()
+                }
                 return k.keyID.longKeyString
             }
             return nil
         }
-    }
-    
-    var keyId: String?{
-        get{
-            if let k = pgpKey{
-                return k.keyID.shortKeyString
-            }
-            return nil
-        }
-    
     }
     
     open var mails: [PersistentMail] {
@@ -120,7 +116,7 @@ open class KeyRecord: Record {
     }
     open var hasKey: Bool {
         // Public encryption key. May missing for secure mails since mail is only signed and encrypted
-        return key != nil
+        return keyID != nil
     }
     
 
@@ -137,23 +133,23 @@ open class KeyRecord: Record {
 
 
     public init(keyID: String?, contact: EnzevalosContact, folder: Folder) {
-        key = keyID
+        self.keyID = keyID
         ezContact = contact
         self.folder = folder
-        if key != nil{
+        if keyID != nil{
             isSecure = true
         }
     }
     
     public init(contact: EnzevalosContact, folder: Folder){
-        key = nil
+        keyID = nil
         ezContact = contact
         self.folder = folder
         isSecure = false
     }
     
     public init (keyID: String, folder: Folder){
-        key = keyID
+        self.keyID = keyID
         self.folder = folder
         isSecure = true
         let mails = DataHandler.handler.allMailsInFolder(key: keyID, contact: nil, folder: folder, isSecure: isSecure)
@@ -162,18 +158,30 @@ open class KeyRecord: Record {
                 ezContact = c
             }
             else{
-                ezContact = DataHandler.handler.getContact(name: "", address: "", key: "", prefer_enc: false)
+                let contact = DataHandler.handler.getContact(keyID: keyID)
+                if contact ==  nil{
+                    ezContact = DataHandler.handler.getContact(name: "", address: "", key: keyID, prefer_enc: false)
+                }
+                else{
+                    ezContact = contact as! EnzevalosContact
+                }
             }
         }
         else{
-            ezContact = DataHandler.handler.getContact(name: "", address: "", key: "", prefer_enc: false)
+            let contact = DataHandler.handler.getContact(keyID: keyID)
+            if contact ==  nil{
+                ezContact = DataHandler.handler.getContact(name: "", address: "", key: keyID, prefer_enc: false)
+            }
+            else{
+                ezContact = contact as! EnzevalosContact
+            }
         }
     }
     
 
     
     func mailsInFolder(folder: Folder?) -> [PersistentMail]{
-        return DataHandler.handler.allMailsInFolder(key: key, contact: ezContact, folder: folder, isSecure: isSecure)
+        return DataHandler.handler.allMailsInFolder(key: keyID, contact: ezContact, folder: folder, isSecure: isSecure)
     }
 
    
@@ -190,6 +198,26 @@ open class KeyRecord: Record {
     open func getImageOrDefault() -> UIImage {
         return ezContact.getImageOrDefault()
     }
+    
+    func matchMail(mail: PersistentMail) -> Bool{
+        if self.isSecure == mail.isSecure && self.folder == mail.folder{
+            if isSecure && self.keyID == mail.keyID {
+                return true
+            }
+            else if !isSecure {
+                if self.ezContact == mail.from.contact && mail.from.contact != nil{
+                    return true
+                }
+                for adr in addresses{
+                    if adr.mailAddress == mail.from.mailAddress {
+                        return true
+                    }
+                    
+                }
+            }
+        }
+        return false
+    }
 
 }
 
@@ -202,12 +230,12 @@ private func isEmpty(_ contact: KeyRecord) -> Bool {
 
 public func == (lhs: KeyRecord, rhs: KeyRecord) -> Bool {
     if isEmpty(lhs) {
-        return false
+        return lhs.hasKey == rhs.hasKey && lhs.keyID == rhs.keyID
     }
     if isEmpty(rhs) {
-        return false
+        return lhs.hasKey == rhs.hasKey && lhs.keyID == rhs.keyID
     }
-    return lhs.mails.first!.date == rhs.mails.first!.date && lhs.hasKey == rhs.hasKey && lhs.key == rhs.key
+    return lhs.mails.first!.date == rhs.mails.first!.date && lhs.hasKey == rhs.hasKey && lhs.keyID == rhs.keyID
 }
 
 public func < (lhs: KeyRecord, rhs: KeyRecord) -> Bool {

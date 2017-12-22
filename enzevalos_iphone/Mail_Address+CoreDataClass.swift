@@ -18,7 +18,7 @@ open class Mail_Address: NSManagedObject, MailAddress {
         return address.lowercased()
     }
 
-    open var label: CNLabeledValue<NSString> { //Wie in MailAddress; Ist der NSString hier richtig? (http://stackoverflow.com/questions/39648830/how-to-add-new-email-to-cnmutablecontact-in-swift-3)
+    open var label: CNLabeledValue<NSString> { 
         if let cnc = self.contact?.cnContact {
             for adr in cnc.emailAddresses {
                 if adr.value as String == address {
