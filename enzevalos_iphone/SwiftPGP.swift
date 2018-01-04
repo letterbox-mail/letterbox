@@ -119,11 +119,12 @@ class SwiftPGP: Encryption{
     }
     
     func importKeys (key: String,  pw: String?, isSecretKey: Bool, autocrypt: Bool) throws -> [String]{
-        let pgp = ObjectivePGP()
         var keys = [Key]()
         if autocrypt{
-           // let keyData = pgp.transformKey(key)
-           // keys = pgp.importKeys(from: keyData)
+            let keyData = ObjectivePGP.transformKey(key)
+            if let readKeys = try? ObjectivePGP.readKeys(from: keyData){
+                keys.append(contentsOf: readKeys)
+            }
         }
         else{
             if let data = key.data(using: .utf8){

@@ -110,6 +110,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (nullable NSArray<PGPKeyID *> *)recipientsKeyIDForMessage:(NSData *)data error:(NSError * __autoreleasing _Nullable *)error;
 
+
++ (NSData*) transformKey: (NSString *) string;
 @end
 
 NS_ASSUME_NONNULL_END
