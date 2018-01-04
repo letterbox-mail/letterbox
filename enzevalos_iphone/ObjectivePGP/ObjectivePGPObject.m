@@ -723,7 +723,7 @@ NS_ASSUME_NONNULL_BEGIN
     return partialKeys;
 }
 
-
+// NEW FUNCTIONS
 + (NSData*) transformKey: (NSString *) string{
     NSMutableDictionary *headers = [@{@"Comment": @"Created with ObjectivePGP",
                                       @"Charset": @"UTF-8"} mutableCopy];
@@ -763,6 +763,66 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSData *armoredData = [armoredMessage dataUsingEncoding:NSASCIIStringEncoding];
     return armoredData;
+}
+
+- (nullable NSData *)symmetricEncrypt:(NSData *)dataToEncrypt signWithKey:(nullable PGPKey *)signKey encryptionKey: (nullable NSString *) key passphrase:(nullable NSString *)passphrase armored:(BOOL)armored error:(NSError *__autoreleasing _Nullable *)error {
+    let encryptedMessage = [NSMutableData data];
+    let symAlgo = PGPSymmetricAES128;
+    let s2k = [[PGPS2K alloc] initWithSpecifier:PGPS2KSpecifierIteratedAndSalted hashAlgorithm:PGPHashSHA256];
+    
+    PGPSymetricKeyEncryptedSessionKeyPacket *symEncKeyPacket = [[PGPSymetricKeyEncryptedSessionKeyPacket alloc] init];
+    symEncKeyPacket.version = 4;
+    symEncKeyPacket.symmetricAlgorithm = symAlgo;
+    symEncKeyPacket.s2k = s2k;
+    
+    let sessionKeyData = [s2k produceSessionKeyWithPassphrase:passphrase symmetricAlgorithm:symAlgo];
+    
+    [encryptedMessage pgp_appendData: [symEncKeyPacket export:error]];
+    
+    NSData *content;
+    // sign data if requested
+    if (signKey) {
+       //TODO
+        
+    } else {
+        // Prepare literal packet
+        let literalPacket = [PGPLiteralPacket literalPacket:PGPLiteralPacketBinary withData:dataToEncrypt];
+        literalPacket.filename = nil;
+        literalPacket.timestamp = [NSDate date];
+        PGPLogWarning(@"Missing literal data");
+        if (error && *error) {
+            return nil;
+        }
+        let literalPacketData = [literalPacket export:error];
+        if (error && *error) {
+            return nil;
+        }
+        
+        let compressedPacket = [[PGPCompressedPacket alloc] initWithData:literalPacketData type:PGPCompressionBZIP2];
+        content = [compressedPacket export:error];
+        if (error && *error) {
+            return nil;
+        }
+    }
+    
+    let symEncryptedDataPacket = [[PGPSymmetricallyEncryptedIntegrityProtectedDataPacket alloc] init];
+    [symEncryptedDataPacket encrypt:content symmetricAlgorithm:symEncKeyPacket.symmetricAlgorithm sessionKeyData:sessionKeyData error:error];
+    
+    if (error && *error) {
+        return nil;
+    }
+    
+    [encryptedMessage pgp_appendData:[symEncryptedDataPacket export:error]];
+    
+    if (error && *error) {
+        return nil;
+    }
+    
+    if (armored) {
+        NSString* msg = [PGPArmor armored:encryptedMessage as:PGPArmorMessage];
+        return [msg dataUsingEncoding:NSUTF8StringEncoding];
+    }
+    return encryptedMessage;
 }
 
 @end
