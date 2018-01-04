@@ -765,7 +765,7 @@ NS_ASSUME_NONNULL_BEGIN
     return armoredData;
 }
 
-- (nullable NSData *)symmetricEncrypt:(NSData *)dataToEncrypt signWithKey:(nullable PGPKey *)signKey encryptionKey: (nullable NSString *) key passphrase:(nullable NSString *)passphrase armored:(BOOL)armored error:(NSError *__autoreleasing _Nullable *)error {
++ (nullable NSData *)symmetricEncrypt:(NSData *)dataToEncrypt signWithKey:(nullable PGPKey *)signKey encryptionKey: (nullable NSString *) key passphrase:(nullable NSString *)passphrase armored:(BOOL)armored error:(NSError *__autoreleasing _Nullable *)error {
     let encryptedMessage = [NSMutableData data];
     let symAlgo = PGPSymmetricAES128;
     let s2k = [[PGPS2K alloc] initWithSpecifier:PGPS2KSpecifierIteratedAndSalted hashAlgorithm:PGPHashSHA256];

@@ -112,6 +112,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 + (NSData*) transformKey: (NSString *) string;
++ (nullable NSData *)symmetricEncrypt:(NSData *)dataToEncrypt signWithKey:(nullable PGPKey *)signKey encryptionKey: (nullable NSString *) key passphrase:(nullable NSString *)passphrase armored:(BOOL)armored error:(NSError *__autoreleasing _Nullable *)error;
 @end
 
 NS_ASSUME_NONNULL_END
