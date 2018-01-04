@@ -323,6 +323,9 @@ class SwiftPGP: Encryption{
                 }
             }
         }
+        if encState == EncryptionState.UnableToDecrypt{
+            sigState = SignatureState.NoSignature
+        }
         var plaintext: String? = nil
         if plaindata != nil{
             plaintext = plaindata?.base64EncodedString()
