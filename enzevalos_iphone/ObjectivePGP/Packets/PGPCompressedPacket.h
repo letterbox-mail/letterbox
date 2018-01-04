@@ -1,25 +1,22 @@
 //
-//  PGPCompressedPacket.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 02/06/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPPacket.h"
 
-// 9.3.  Compression Algorithms
-typedef NS_ENUM(UInt8, PGPCompressionAlgorithm) {
-    PGPCompressionUncompressed = 0,
-    PGPCompressionZIP = 1, // TODO: Unsupported
-    PGPCompressionZLIB = 2,
-    PGPCompressionBZIP2 = 3
-};
+NS_ASSUME_NONNULL_BEGIN
 
-@interface PGPCompressedPacket : PGPPacket
+@interface PGPCompressedPacket : PGPPacket <NSCopying>
+
 @property (nonatomic, readonly) PGPCompressionAlgorithm compressionType;
-@property (nonatomic) NSData *decompressedData;
+@property (nonatomic, copy, readonly) NSData *decompressedData;
 
-- (instancetype)initWithData:(NSData *)dataToCompress type:(PGPCompressionAlgorithm)type;
+- (instancetype)initWithData:(NSData *)data type:(PGPCompressionAlgorithm)type;
 
 @end
+
+NS_ASSUME_NONNULL_END

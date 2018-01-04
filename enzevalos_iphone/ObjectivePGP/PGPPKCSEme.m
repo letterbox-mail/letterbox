@@ -1,9 +1,9 @@
 //
-//  PGPPKCSEme.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 06/06/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPPKCSEme.h"
@@ -14,7 +14,7 @@
 
 @implementation PGPPKCSEme
 
-+ (NSData *)encodeMessage:(NSData *)m keyModulusLength:(NSUInteger)k error:(NSError *__autoreleasing *)error {
++ (NSData *)encodeMessage:(NSData *)m keyModulusLength:(NSUInteger)k error:(NSError * __autoreleasing *)error {
     if (m.length > k - 11) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Message to long" }];
@@ -39,10 +39,10 @@
     [emData appendData:psData];
     [emData appendBytes:emSuffix length:sizeof(emSuffix)];
     [emData appendData:m];
-    return [emData copy];
+    return emData;
 }
 
-+ (NSData *)decodeMessage:(NSData *)m error:(NSError *__autoreleasing *)error {
++ (NSData *)decodeMessage:(NSData *)m error:(NSError * __autoreleasing *)error {
     NSUInteger position = 0;
     UInt8 emPrefix[2];
     [m getBytes:&emPrefix range:(NSRange){position, sizeof(emPrefix)}];
@@ -58,7 +58,7 @@
     } while (b != 0x00 && position < (m.length - 1));
 
     // last read is separator 0x00, so current position at start of M
-    NSData *emData = [m subdataWithRange:(NSRange){position, m.length - position}];
+    let emData = [m subdataWithRange:(NSRange){position, m.length - position}];
     return emData;
 }
 

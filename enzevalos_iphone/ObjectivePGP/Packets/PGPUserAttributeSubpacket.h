@@ -1,18 +1,22 @@
 //
-//  PGPUserAttributeSubpacket.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 24/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface PGPUserAttributeSubpacket : NSObject
+NS_ASSUME_NONNULL_BEGIN
+
+@interface PGPUserAttributeSubpacket : NSObject <NSCopying>
 
 // Subpacket types 100 through 110 are reserved for private or experimental use.
 @property (nonatomic) UInt8 type;
 // Value
-@property (nonatomic) NSData *valueData;
+@property (nonatomic, copy) NSData *valueData;
 
 @end
+
+NS_ASSUME_NONNULL_END

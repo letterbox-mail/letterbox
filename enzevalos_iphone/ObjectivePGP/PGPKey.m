@@ -1,9 +1,9 @@
 //
-//  PGPKey.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 31/05/2017.
-//  Copyright © 2017 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPKey.h"
@@ -11,6 +11,7 @@
 #import "PGPPartialSubKey.h"
 #import "PGPLogging.h"
 #import "PGPMacros+Private.h"
+#import "PGPFoundation.h"
 
 #import "PGPSecretKeyPacket.h"
 #import "PGPSecretKeyPacket+Private.h"
@@ -20,16 +21,14 @@
 #import "PGPDSA.h"
 #import "NSMutableData+PGPUtils.h"
 
-#import "PGPMacros+Private.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation PGPKey
 
 - (instancetype)initWithSecretKey:(nullable PGPPartialKey *)secretKey publicKey:(nullable PGPPartialKey *)publicKey {
     if ((self = [super init])) {
-        _secretKey = secretKey;
-        _publicKey = publicKey;
+        _secretKey = [secretKey copy];
+        _publicKey = [publicKey copy];
     }
     return self;
 }
@@ -40,6 +39,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isPublic {
     return self.publicKey != nil;
+}
+
+- (BOOL)isEncryptedWithPassword {
+    return self.publicKey.isEncryptedWithPassword || self.secretKey.isEncryptedWithPassword;
 }
 
 - (NSString *)description {
@@ -69,6 +72,14 @@ NS_ASSUME_NONNULL_BEGIN
     return signingPacket;
 }
 
+- (nullable PGPKey *)decryptedWithPassphrase:(NSString *)passphrase error:(NSError * __autoreleasing _Nullable *)error {
+    let decryptedPartialKey = [self.secretKey decryptedWithPassphrase:passphrase error:error];
+    if (decryptedPartialKey) {
+        return [[PGPKey alloc] initWithSecretKey:decryptedPartialKey publicKey:self.publicKey];
+    }
+    return nil;
+}
+
 #pragma mark - isEqual
 
 - (BOOL)isEqual:(id)other {
@@ -93,26 +104,32 @@ NS_ASSUME_NONNULL_BEGIN
     return result;
 }
 
+#pragma mark - NSCopying
+
+- (instancetype)copyWithZone:(nullable NSZone *)zone {
+    let duplicate = PGPCast([[self.class allocWithZone:zone] initWithSecretKey:self.secretKey publicKey:self.publicKey], PGPKey);
+    return duplicate;
+}
 
 #pragma mark - PGPExportable
 
 /// Export public and secret keys together.
-- (nullable NSData *)export:(NSError *__autoreleasing _Nullable *)error {
+- (nullable NSData *)export:(NSError * __autoreleasing _Nullable *)error {
     let exportData = [NSMutableData data];
     if (self.publicKey) {
-        [exportData pgp_appendData:[self export:PGPPartialKeyPublic error:error]];
+        [exportData pgp_appendData:[self export:PGPKeyTypePublic error:error]];
     }
 
     if (self.secretKey) {
-        [exportData pgp_appendData:[self export:PGPPartialKeySecret error:error]];
+        [exportData pgp_appendData:[self export:PGPKeyTypeSecret error:error]];
     }
 
     return exportData;
 }
 
-- (nullable NSData *)export:(PGPPartialKeyType)keyType error:(NSError *__autoreleasing _Nullable *)error {
+- (nullable NSData *)export:(PGPKeyType)keyType error:(NSError * __autoreleasing _Nullable *)error {
     switch (keyType) {
-        case PGPPartialKeyPublic: {
+        case PGPKeyTypePublic: {
             if (!self.publicKey) {
                 return nil;
             }
@@ -120,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
             return [self.publicKey export:error];
         }
         break;
-        case PGPPartialKeySecret: {
+        case PGPKeyTypeSecret: {
             if (!self.secretKey) {
                 return nil;
             }
@@ -129,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
         break;
         default: {
-            PGPLogError(@"Can't export unknown key type: %@", self);
+            PGPLogDebug(@"Can't export unknown key type: %@", self);
             if (error) {
                 *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"Can't export unknown key type"}];
             }

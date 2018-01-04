@@ -1,9 +1,9 @@
 //
-//  PGPCryptoCFB.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 05/06/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPS2K.h"
@@ -17,12 +17,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSData *)decryptData:(NSData *)encryptedData
                   sessionKeyData:(NSData *)sessionKeyData // s2k produceSessionKeyWithPassphrase
               symmetricAlgorithm:(PGPSymmetricAlgorithm)symmetricAlgorithm
-                              iv:(NSData *)ivData;
+                              iv:(NSData *)ivData
+                         syncCFB:(BOOL)openpgpCFB;
 
 + (nullable NSData *)encryptData:(NSData *)encryptedData
                   sessionKeyData:(NSData *)sessionKeyData // s2k produceSessionKeyWithPassphrase
               symmetricAlgorithm:(PGPSymmetricAlgorithm)symmetricAlgorithm
-                              iv:(NSData *)ivData;
+                              iv:(NSData *)ivData
+                         syncCFB:(BOOL)openpgpCFB;
 
 @end
 

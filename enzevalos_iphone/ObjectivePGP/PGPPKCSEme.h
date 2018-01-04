@@ -1,16 +1,16 @@
 //
-//  PGPPKCSEme.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 06/06/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import <Foundation/Foundation.h>
 
 @interface PGPPKCSEme : NSObject
 
-+ (NSData *)encodeMessage:(NSData *)m keyModulusLength:(NSUInteger)k error:(NSError *__autoreleasing *)error;
-+ (NSData *)decodeMessage:(NSData *)m error:(NSError *__autoreleasing *)error;
++ (NSData *)encodeMessage:(NSData *)m keyModulusLength:(NSUInteger)k error:(NSError * __autoreleasing *)error;
++ (NSData *)decodeMessage:(NSData *)m error:(NSError * __autoreleasing *)error;
 
 @end

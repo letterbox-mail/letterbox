@@ -1,19 +1,23 @@
 //
-//  PGPSignatureSubPacket.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 04/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPSignatureSubpacket.h"
 #import "PGPSignatureSubpacket+Private.h"
 #import "PGPSignatureSubpacketCreationTime.h"
+#import "PGPSignatureSubpacketEmbeddedSignature.h"
 #import "PGPSignatureSubpacketHeader.h"
 #import "PGPCompressedPacket.h"
+#import "PGPPacketHeader.h"
+#import "PGPSignaturePacket.h"
 #import "PGPKeyID.h"
 #import "PGPPacket.h"
 #import "PGPPacket+Private.h"
+#import "PGPFoundation.h"
 #import "NSMutableData+PGPUtils.h"
 
 #import "PGPLogging.h"
@@ -28,16 +32,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PGPSignatureSubpacket
 
-- (instancetype)initWithType:(PGPSignatureSubpacketType)type andValue:(id)value {
+- (instancetype)initWithType:(PGPSignatureSubpacketType)type andValue:(nullable id<NSObject, NSCopying>)value {
     if ((self = [super init])) {
         _type = type;
-        _value = value;
+        _value = [value copyWithZone:nil];
     }
     return self;
 }
 
-- (instancetype)initWithHeader:(PGPSignatureSubpacketHeader *)header body:(NSData *)subPacketBodyData {
-    if (self = [self initWithType:header.type andValue:NSNull.null]) {
+- (nullable instancetype)initWithHeader:(PGPSignatureSubpacketHeader *)header body:(NSData *)subPacketBodyData {
+    if (self = [self initWithType:header.type andValue:nil]) {
         _length = header.headerLength + header.bodyLength;
         [self parseSubpacketBody:subPacketBodyData];
     }
@@ -45,23 +49,31 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ %@ %@", [super description], @(self.type), self.value];
+    return [NSString stringWithFormat:@"%@ type: %@ value: %@", [super description], @(self.type), self.value ?: @"nil"];
+}
+
+// Bit 7 of the subpacket type is the "critical" bit.
+- (BOOL)isCritical {
+    return (1 << 7) & self.type;
 }
 
 /**
  *  5.2.3.1.  Signature Subpacket Specification
  *
- *  @param packetBody A single subpacket body data.
+ *  @param packetBodyData A single subpacket body data.
  */
 - (void)parseSubpacketBody:(NSData *)packetBodyData {
-   // PGPLogDebug(@"parseSubpacketBody %@, body %@",@(self.type), packetBodyData);
-
     switch (self.type & 0x7F) {
         case PGPSignatureSubpacketTypeSignatureCreationTime: // NSDate
         {
             //  5.2.3.4.  Signature Creation Time
             //  Signature Creation Time MUST be present in the hashed area.
             self.value = [PGPSignatureSubpacketCreationTime packetWithData:packetBodyData].value;
+        } break;
+        case PGPSignatureSubpacketTypeEmbeddedSignature: {
+            //  5.2.3.26.  Embedded Signature
+            // TODO: such a mess with subpackets. Needs refactor: specific subpacket inherit from the PGPSignatureSubpacket and implements import/export
+            self.value = [PGPSignatureSubpacketEmbeddedSignature packetWithData:packetBodyData];
         } break;
         case PGPSignatureSubpacketTypeSignatureExpirationTime: // NSNumber
         case PGPSignatureSubpacketTypeKeyExpirationTime: {
@@ -81,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
         {
             //  5.2.3.5.  Issuer
 
-            PGPKeyID *keyID = [[PGPKeyID alloc] initWithLongKey:packetBodyData];
+            let keyID = [[PGPKeyID alloc] initWithLongKey:packetBodyData];
             self.value = keyID; //[packetBody subdataWithRange:(NSRange){0,8}];
         } break;
         case PGPSignatureSubpacketTypeExportableCertification: // NSNumber BOOL
@@ -142,12 +154,12 @@ NS_ASSUME_NONNULL_BEGIN
                 [flagsArray addObject:@(PGPSignatureFlagPrivateKeyMayBeInThePossesionOfManyPersons)];
             }
 
-            self.value = [flagsArray copy];
+            self.value = flagsArray;
         } break;
         case PGPSignatureSubpacketTypePreferredSymetricAlgorithm: // NSArray of NSNumber(PGPSymmetricAlgorithm)
         {
             // 5.2.3.7.  Preferred Symmetric Algorithms
-            NSMutableArray *algorithmsArray = [NSMutableArray array];
+            let algorithmsArray = [NSMutableArray array];
 
             for (NSUInteger i = 0; i < packetBodyData.length; i++) {
                 PGPSymmetricAlgorithm algorithm = PGPSymmetricPlaintext;
@@ -155,7 +167,7 @@ NS_ASSUME_NONNULL_BEGIN
                 [algorithmsArray addObject:@(algorithm)];
             }
 
-            self.value = [algorithmsArray copy];
+            self.value = algorithmsArray;
         } break;
         case PGPSignatureSubpacketTypePreferredHashAlgorithm: // NSArray of NSNumber(PGPHashAlgorithm)
         {
@@ -182,7 +194,7 @@ NS_ASSUME_NONNULL_BEGIN
                 [algorithmsArray addObject:@(algorithm)];
             }
 
-            self.value = [algorithmsArray copy];
+            self.value = algorithmsArray;
         } break;
         case PGPSignatureSubpacketTypeKeyServerPreference: // NSArray of NSNumber(PGPKeyServerPreferenceFlags)
         {
@@ -194,7 +206,7 @@ NS_ASSUME_NONNULL_BEGIN
             if (flag & PGPKeyServerPreferenceNoModify) {
                 [flagsArray addObject:@(PGPKeyServerPreferenceNoModify)];
             }
-            self.value = [flagsArray copy];
+            self.value = flagsArray;
         } break;
         case PGPSignatureSubpacketTypeFeatures: // NSArray of NSNumber(PGPFeature)
         {
@@ -207,19 +219,56 @@ NS_ASSUME_NONNULL_BEGIN
                 [featuresArray addObject:@(feature)];
             }
 
-            self.value = [featuresArray copy];
+            self.value = featuresArray;
         } break;
         default:
             if (self.type & 0x80) {
-                PGPLogError(@"Unsupported critical subpacket type %d", self.type);
+                PGPLogWarning(@"Unsupported critical subpacket type %d", self.type);
             } else {
                 PGPLogDebug(@"Unsupported subpacket type %d", self.type);
             }
+            self.value = packetBodyData;
             break;
     }
 }
 
-- (nullable NSData *)export:(NSError *__autoreleasing *)error {
++ (PGPSignatureSubpacketHeader *)subpacketHeaderFromData:(NSData *)headerData {
+    NSUInteger position = 0;
+
+    UInt8 lengthOctets = 0;
+    NSUInteger subpacketLength = 0;
+
+    // The length includes the type octet but not this length.  Its format
+    // is similar to the "new" format packet header lengths, but cannot have Partial Body Lengths.
+    [PGPPacketHeader getLengthFromNewFormatOctets:headerData bodyLength:&subpacketLength bytesCount:&lengthOctets isPartial:nil];
+    position = position + lengthOctets;
+
+    // TODO: Bit 7 of the subpacket type is the "critical" bit.
+    PGPSignatureSubpacketType subpacketType = PGPSignatureSubpacketTypeUnknown;
+    [headerData getBytes:&subpacketType range:(NSRange){position, 1}];
+    lengthOctets += 1;
+
+    // Note: "The length includes the type octet but not this length"
+    // Example: 02 19 01
+    // length 0x02 = 2
+    // type 0x19   = 25
+    // body: 0x01  = 1
+    // so... given body length is = 2 but body length is in fact = 1
+    // this is because given body length include type octet which is from header namespace, not body really.
+    // I'm drunk, or person who defined it this way was drunk.
+    subpacketLength = subpacketLength - 1;
+
+    let subpacketHeader = [[PGPSignatureSubpacketHeader alloc] init];
+    subpacketHeader.type = subpacketType;
+    subpacketHeader.headerLength = lengthOctets;
+    subpacketHeader.bodyLength = subpacketLength;
+
+    return subpacketHeader;
+}
+
+#pragma mark - PGPExportable
+
+- (nullable NSData *)export:(NSError * __autoreleasing _Nullable *)error {
     NSMutableData *data = [NSMutableData data];
 
     // subpacket type
@@ -232,6 +281,11 @@ NS_ASSUME_NONNULL_BEGIN
             let date = PGPCast(self.value, NSDate);
             let signatureCreationTimestamp = CFSwapInt32HostToBig((UInt32)[date timeIntervalSince1970]);
             [data appendBytes:&signatureCreationTimestamp length:4];
+        } break;
+        case PGPSignatureSubpacketTypeEmbeddedSignature: // PGPSignature
+        {
+            let subpacketEmbeddedSignature = PGPCast(self.value, PGPSignatureSubpacketEmbeddedSignature);
+            return [subpacketEmbeddedSignature export:error];
         } break;
         case PGPSignatureSubpacketTypeSignatureExpirationTime: // NSNumber
         case PGPSignatureSubpacketTypeKeyExpirationTime: {
@@ -307,6 +361,7 @@ NS_ASSUME_NONNULL_BEGIN
             if (!algorithmsArray) {
                 break;
             }
+
             for (NSNumber *val in algorithmsArray) {
                 PGPCompressionAlgorithm hashAlgorithm = (UInt8)val.unsignedIntValue;
                 [data appendBytes:&hashAlgorithm length:sizeof(PGPCompressionAlgorithm)];
@@ -343,69 +398,53 @@ NS_ASSUME_NONNULL_BEGIN
         } break;
         default:
             if (self.type & 0x80) {
-                PGPLogError(@"Unsupported critical subpacket type %d", self.type);
+                PGPLogDebug(@"Unsupported critical subpacket type %d", self.type);
             } else {
                 PGPLogDebug(@"Unsupported subpacket type %d", self.type);
             }
+            let unsupportedValueData = PGPCast(self.value, NSData);
+            [data appendData:unsupportedValueData];
             break;
     }
 
     // subpacket = length + tag(type) + body
     NSMutableData *subpacketData = [NSMutableData data];
     // the subpacket length (1, 2, or 5 octets),
-    NSData *subpacketLengthData = [PGPPacket buildNewFormatLengthDataForData:data];
-    [subpacketData appendData:subpacketLengthData]; // data with tag
-    [subpacketData appendData:data];
-
-    return [subpacketData copy];
+    let subpacketLengthData = [PGPPacketHeader buildNewFormatLengthDataForData:data];
+    [subpacketData pgp_appendData:subpacketLengthData]; // data with tag
+    [subpacketData pgp_appendData:data];
+    return subpacketData;
 }
 
-+ (PGPSignatureSubpacketHeader *)subpacketHeaderFromData:(NSData *)headerData {
-    NSUInteger position = 0;
+#pragma mark - isEqual
 
-    const UInt8 *lengthOctets = [headerData subdataWithRange:NSMakeRange(position, MIN((NSUInteger)5, headerData.length))].bytes;
-    UInt32 headerLength = 0;
-    UInt32 subpacketLength = 0;
-
-    //TODO: Use -[PGPPacket parseNewFormatHeaderPacket:]. headerLength is different size !?
-    //      Its format is similar to the "new" format packet header lengths, but cannot have Partial Body Lengths.
-    if (lengthOctets[0] < 192) {
-        // subpacketLen = 1st_octet;
-        subpacketLength = lengthOctets[0];
-        headerLength = 1;
-    } else if (lengthOctets[0] >= 192 && lengthOctets[0] < 255) {
-        // subpacketLen = ((1st_octet - 192) << 8) + (2nd_octet) + 192
-        subpacketLength = ((lengthOctets[0] - 192) << 8) + (lengthOctets[1]) + 192;
-        headerLength = 2;
-    } else if (lengthOctets[0] == 255) {
-        // subpacketLen = (2nd_octet << 24) | (3rd_octet << 16) |
-        //                (4th_octet << 8)  | 5th_octet
-        subpacketLength = (lengthOctets[1] << 24) | (lengthOctets[2] << 16) | (lengthOctets[3] << 8) | lengthOctets[4];
-        headerLength = 5;
+- (BOOL)isEqual:(id)other {
+    if (self == other) { return YES; }
+    if ([other isKindOfClass:self.class]) {
+        return [self isEqualToSignatureSubpacket:other];
     }
-    position = position + headerLength;
+    return NO;
+}
 
-    // TODO: Bit 7 of the subpacket type is the "critical" bit.
-    PGPSignatureSubpacketType subpacketType = PGPSignatureSubpacketTypeUnknown;
-    [headerData getBytes:&subpacketType range:(NSRange){position, 1}];
-    headerLength = headerLength + 1;
+- (BOOL)isEqualToSignatureSubpacket:(PGPSignatureSubpacket *)packet {
+    return  self.type == packet.type &&
+            self.length == packet.length &&
+            PGPEqualObjects(self.value, packet.value);
+}
 
-    // Note: "The length includes the type octet but not this length"
-    // Example: 02 19 01
-    // length 0x02 = 2
-    // type 0x19   = 25
-    // body: 0x01  = 1
-    // so... given body length is = 2 but body length is in fact = 1
-    // this is because given body length include type octet which is from header namespace, not body really.
-    // I'm drunk, or person who defined it this way was drunk.
-    subpacketLength = subpacketLength - 1;
+- (NSUInteger)hash {
+    NSUInteger prime = 31;
+    NSUInteger result = 1;
+    result = prime * result + self.type;
+    result = prime * result + self.length;
+    result = prime * result + self.value.hash;
+    return result;
+}
 
-    PGPSignatureSubpacketHeader *subpacketHeader = [[PGPSignatureSubpacketHeader alloc] init];
-    subpacketHeader.type = subpacketType;
-    subpacketHeader.headerLength = headerLength;
-    subpacketHeader.bodyLength = subpacketLength;
+#pragma mark - NSCopying
 
-    return subpacketHeader;
+- (instancetype)copyWithZone:(nullable NSZone * __unused)zone {
+    return [[PGPSignatureSubpacket alloc] initWithType:self.type andValue:self.value];
 }
 
 @end

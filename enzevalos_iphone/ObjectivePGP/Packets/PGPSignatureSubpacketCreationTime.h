@@ -1,24 +1,23 @@
 //
-//  PGPSignatureSubpacketCreationTime.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 10/07/2017.
-//  Copyright © 2017 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 //  5.2.3.4.  Signature Creation Time
 //  Signature Creation Time MUST be present in the hashed area.
 
-#import "PGPTypes.h"
-#import "PGPMacros.h"
-#import "PGPExportableProtocol.h"
+#import "PGPTypes.h>
+#import "PGPMacros.h>
+#import "PGPExportableProtocol.h>
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PGPSignatureSubpacketCreationTime : NSObject <PGPExportable>
+@interface PGPSignatureSubpacketCreationTime : NSObject <NSCopying>
 
 @property (nonatomic, copy, readonly) NSDate *value;
-@property (class, nonatomic, readonly) PGPSignatureSubpacketType type;
 
 PGP_EMPTY_INIT_UNAVAILABLE
 

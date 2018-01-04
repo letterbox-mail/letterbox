@@ -1,13 +1,14 @@
 //
-//  PGPSymmetricallyEncryptedDataPacket.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 04/06/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h"
 #import "NSData+PGPUtils.h"
+#import "PGPPacket+Private.h"
 #import "PGPCompressedPacket.h"
 #import "PGPCryptoCFB.h"
 #import "PGPCryptoUtils.h"
@@ -34,6 +35,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface PGPSymmetricallyEncryptedIntegrityProtectedDataPacket ()
+
+@property (nonatomic, readwrite) NSUInteger version;
+
+@end
+
+
 @implementation PGPSymmetricallyEncryptedIntegrityProtectedDataPacket
 
 - (instancetype)init {
@@ -47,7 +55,51 @@ NS_ASSUME_NONNULL_BEGIN
     return PGPSymmetricallyEncryptedIntegrityProtectedDataPacketTag; // 18
 }
 
-- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError *__autoreleasing *)error {
+- (NSArray<PGPPacket *> *)readPacketsFromData:(NSData *)keyringData offset:(NSUInteger)offsetPosition mdcLength:(nullable NSUInteger *)mdcLength {
+    let accumulatedPackets = [NSMutableArray<PGPPacket *> array];
+    if (mdcLength) { *mdcLength = 0; }
+    NSInteger offset = offsetPosition;
+    NSUInteger consumedBytes = 0;
+    while (offset < (NSInteger)keyringData.length) {
+        let packet = [PGPPacketFactory packetWithData:keyringData offset:offset consumedBytes:&consumedBytes];
+        if (packet) {
+            [accumulatedPackets addObject:packet];
+            if (packet.tag != PGPModificationDetectionCodePacketTag) {
+                if (mdcLength) {
+                    *mdcLength += consumedBytes;
+                }
+            }
+
+            // A compressed Packet contains more packets
+            let _Nullable compressedPacket = PGPCast(packet, PGPCompressedPacket);
+            if (compressedPacket) {
+                // TODO: Compression should be moved outside, be more generic to handle compressed packet from anywhere
+                let packets = [self readPacketsFromData:compressedPacket.decompressedData offset:0 mdcLength:nil];
+                if (packets) {
+                    [accumulatedPackets addObjectsFromArray:packets];
+                }
+            }
+
+            if (packet.indeterminateLength && accumulatedPackets.count > 0 && PGPCast(accumulatedPackets.firstObject, PGPCompressedPacket)) {
+                // FIXME: substract size of PGPModificationDetectionCodePacket in this very special case - TODO: fix this
+                offset -= 22;
+                if (mdcLength) {
+                    *mdcLength -= 22;
+                }
+            }
+        }
+
+        // corrupted data. Move by one byte in hope we find some packet there, or EOF.
+        if (consumedBytes == 0) {
+            offset++;
+        }
+
+        offset += consumedBytes;
+    }
+    return accumulatedPackets;
+}
+
+- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError * __autoreleasing _Nullable *)error {
     NSUInteger position = 0;
 
     // The content of an encrypted data packet is more OpenPGP packets
@@ -62,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
     return position;
 }
 
-- (nullable NSData *)export:(NSError *__autoreleasing _Nullable *)error {
+- (nullable NSData *)export:(NSError * __autoreleasing _Nullable *)error {
     NSAssert(self.encryptedData, @"No encrypted data?");
     NSAssert(self.version == 1, @"Require version == 1");
 
@@ -84,67 +136,13 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 }
 
-- (NSArray<PGPPacket *> *)readPacketsFromData:(NSData *)keyringData offset:(NSUInteger)offset mdcLength:(nullable NSUInteger *)mdcLength {
-    let accumulatedPackets = [NSMutableArray<PGPPacket *> array];
-    NSUInteger nextPacketOffset = 0;
-    if (mdcLength) { *mdcLength = 0; }
-    while (offset < keyringData.length) {
-        let _Nullable packet = [PGPPacketFactory packetWithData:keyringData offset:offset nextPacketOffset:&nextPacketOffset];
-        if (packet) {
-            [accumulatedPackets addObject:packet];
-            if (packet.tag != PGPModificationDetectionCodePacketTag) {
-                if (mdcLength) {
-                    *mdcLength += nextPacketOffset;
-                }
-            }
-        }
-
-        // A compressed Packet contains more packets
-        let _Nullable compressedPacket = PGPCast(packet, PGPCompressedPacket);
-        if (compressedPacket) {
-            let packets = [self readPacketsFromData:compressedPacket.decompressedData offset:0 mdcLength:nil];
-            if (packets) {
-                [accumulatedPackets addObjectsFromArray:packets];
-            }
-        }
-
-        if (packet.indeterminateLength && accumulatedPackets.count > 0 && PGPCast(accumulatedPackets.firstObject, PGPCompressedPacket)) {
-            //FIXME: substract size of PGPModificationDetectionCodePacket in this very special case - TODO: fix this
-            offset -= 22;
-            if (mdcLength) {
-                *mdcLength -= 22;
-            }
-        }
-
-        // corrupted data. Move by one byte in hope we find some packet there, or EOF.
-        if (nextPacketOffset == 0) {
-            offset++;
-        }
-        offset += nextPacketOffset;
-    }
-    return accumulatedPackets;
-}
-
 // return array of packets
-- (NSArray<PGPPacket *> *)decryptWithSecretKeyPacket:(PGPSecretKeyPacket *)secretKeyPacket sessionKeyAlgorithm:(PGPSymmetricAlgorithm)sessionKeyAlgorithm sessionKeyData:(NSData *)sessionKeyData isIntegrityProtected:(BOOL *)isIntegrityProtected error:(NSError *__autoreleasing _Nullable *)error {
+- (NSArray<PGPPacket *> *)decryptWithSessionKeyAlgorithm:(PGPSymmetricAlgorithm)sessionKeyAlgorithm sessionKeyData:(NSData *)sessionKeyData error:(NSError * __autoreleasing _Nullable *)error {
     NSAssert(self.encryptedData, @"Missing encrypted data to decrypt");
-    NSAssert(secretKeyPacket, @"Missing secret key");
-
-    // initialize if Packet isIntegrityProtected
-    if (isIntegrityProtected) {
-        *isIntegrityProtected = NO;
-    }
 
     if (!self.encryptedData) {
         if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Missing encrypted data" }];
-        }
-        return @[];
-    }
-
-    if (secretKeyPacket.isEncryptedWithPassphrase) {
-        if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Encrypted secret key used to decryption. Decrypt key first" }];
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Missing data to decrypt." }];
         }
         return @[];
     }
@@ -156,15 +154,15 @@ NS_ASSUME_NONNULL_BEGIN
 
     NSUInteger position = 0;
     // preamble + data + mdc
-    let decryptedData = [PGPCryptoCFB decryptData:self.encryptedData sessionKeyData:sessionKeyData symmetricAlgorithm:sessionKeyAlgorithm iv:ivData];
+    let decryptedData = [PGPCryptoCFB decryptData:self.encryptedData sessionKeyData:sessionKeyData symmetricAlgorithm:sessionKeyAlgorithm iv:ivData syncCFB:NO];
     // full prefix blockSize + 2
     let prefixRandomFullData = [decryptedData subdataWithRange:(NSRange){position, blockSize + 2}];
     position = position + blockSize + 2;
 
     // check if suffix match
-    if (![[prefixRandomFullData subdataWithRange:(NSRange){blockSize + 2 - 4, 2}] isEqualToData:[prefixRandomFullData subdataWithRange:(NSRange){blockSize + 2 - 2, 2}]]) {
+    if (!PGPEqualObjects([prefixRandomFullData subdataWithRange:(NSRange){blockSize + 2 - 4, 2}] ,[prefixRandomFullData subdataWithRange:(NSRange){blockSize + 2 - 2, 2}])) {
         if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Random suffix mismatch" }];
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Unable to decrypt. Validation failed. Random suffix mismatch." }];
         }
         return @[];
     }
@@ -174,15 +172,21 @@ NS_ASSUME_NONNULL_BEGIN
 
     let _Nullable lastPacket = PGPCast(packets.lastObject, PGPPacket);
     if (!lastPacket || lastPacket.tag != PGPModificationDetectionCodePacketTag) {
-        // Not Integrity Protected, isIntegrityProtected will be reported to NO (see initialization)
-        return packets;
-    }
-    // indicate accordingly if packet was found (might still be invalid)
-    if (isIntegrityProtected) {
-        *isIntegrityProtected = YES;
+        // No Integrity Protected found, can't verify. Guess it's modified.
+        // if (checkIsContentModified) { *checkIsContentModified = YES; }
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Unable to decrypt. Content modification detected." }];
+        }
+        return @[];
     }
 
     let _Nullable mdcPacket = PGPCast(lastPacket, PGPModificationDetectionCodePacket);
+    if (!mdcPacket) {
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Unable to decrypt. Unexpected sequence of data (missing MDC)." }];
+        }
+        return @[];
+    }
 
     let toMDCData = [[NSMutableData alloc] init];
     // preamble
@@ -195,9 +199,9 @@ NS_ASSUME_NONNULL_BEGIN
     [toMDCData appendBytes:&mdc_suffix length:2];
 
     let mdcHash = [toMDCData pgp_SHA1];
-    if (!mdcPacket || ![mdcHash isEqualToData:mdcPacket.hashData]) {
+    if (!mdcPacket || !PGPEqualObjects(mdcHash,mdcPacket.hashData)) {
         if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"MDC validation failed" }];
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Unable to decrypt. Validation failed. Content modification detected." }];
         }
         return @[];
     }
@@ -205,80 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
     return [packets subarrayWithRange:(NSRange){0, packets.count - 1}];
 }
 
-// return array of packets
-- (NSArray<PGPPacket *> *)decryptWithSecretKeyPacket: (PGPSymmetricAlgorithm)sessionKeyAlgorithm sessionKeyData:(NSData *)sessionKeyData isIntegrityProtected:(BOOL *)isIntegrityProtected error:(NSError *__autoreleasing _Nullable *)error {
-    NSAssert(self.encryptedData, @"Missing encrypted data to decrypt");
-    
-    
-    // initialize if Packet isIntegrityProtected
-    if (isIntegrityProtected) {
-        *isIntegrityProtected = NO;
-    }
-    
-    if (!self.encryptedData) {
-        if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Missing encrypted data" }];
-        }
-        return @[];
-    }
-    
-    NSUInteger blockSize = [PGPCryptoUtils blockSizeOfSymmetricAlhorithm:sessionKeyAlgorithm];
-    
-    // The Initial Vector (IV) is specified as all zeros.
-    let ivData = [NSMutableData dataWithLength:blockSize];
-    
-    NSUInteger position = 0;
-    // preamble + data + mdc
-    let decryptedData = [PGPCryptoCFB decryptData:self.encryptedData sessionKeyData:sessionKeyData symmetricAlgorithm:sessionKeyAlgorithm iv:ivData];
-    // full prefix blockSize + 2
-    let prefixRandomFullData = [decryptedData subdataWithRange:(NSRange){position, blockSize + 2}];
-    position = position + blockSize + 2;
-    
-    
-    // check if suffix match
-    if (![[prefixRandomFullData subdataWithRange:(NSRange){blockSize + 2 - 4, 2}] isEqualToData:[prefixRandomFullData subdataWithRange:(NSRange){blockSize + 2 - 2, 2}]]) {
-        if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Random suffix mismatch" }];
-        }
-        return @[];
-    }
-    NSUInteger mdcLength = 0;
-    let packets = [self readPacketsFromData:decryptedData offset:position mdcLength:&mdcLength];
-    
-    let _Nullable lastPacket = PGPCast(packets.lastObject, PGPPacket);
-    if (!lastPacket || lastPacket.tag != PGPModificationDetectionCodePacketTag) {
-        // Not Integrity Protected, isIntegrityProtected will be reported to NO (see initialization)
-        return packets;
-    }
-    // indicate accordingly if packet was found (might still be invalid)
-    if (isIntegrityProtected) {
-        *isIntegrityProtected = YES;
-    }
-    
-    let _Nullable mdcPacket = PGPCast(lastPacket, PGPModificationDetectionCodePacket);
-    
-    let toMDCData = [[NSMutableData alloc] init];
-    // preamble
-    [toMDCData appendData:prefixRandomFullData];
-    // validation: calculate MDC hash to check if literal data is modified
-    [toMDCData appendData:[decryptedData subdataWithRange:(NSRange){position, mdcLength}]];
-    
-    // and then also includes two octets of values 0xD3, 0x14 (sha length)
-    UInt8 mdc_suffix[2] = {0xD3, 0x14};
-    [toMDCData appendBytes:&mdc_suffix length:2];
-    
-    let mdcHash = [toMDCData pgp_SHA1];
-    if (!mdcPacket || ![mdcHash isEqualToData:mdcPacket.hashData]) {
-        if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"MDC validation failed" }];
-        }
-        return @[];
-    }
-    return [packets subarrayWithRange:(NSRange){0, packets.count - 1}];
-}
-
-
-- (BOOL)encrypt:(NSData *)literalPacketData symmetricAlgorithm:(PGPSymmetricAlgorithm)sessionKeyAlgorithm sessionKeyData:(NSData *)sessionKeyData error:(NSError *__autoreleasing _Nullable *)error {
+- (BOOL)encrypt:(NSData *)literalPacketData symmetricAlgorithm:(PGPSymmetricAlgorithm)sessionKeyAlgorithm sessionKeyData:(NSData *)sessionKeyData error:(NSError * __autoreleasing _Nullable *)error {
     // OpenPGP does symmetric encryption using a variant of Cipher Feedback mode (CFB mode).
     NSUInteger blockSize = [PGPCryptoUtils blockSizeOfSymmetricAlhorithm:sessionKeyAlgorithm];
 
@@ -290,7 +221,9 @@ NS_ASSUME_NONNULL_BEGIN
     // The first block-size octets (for example, 8 octets for a 64-bit block length) are random,
     uint8_t buf[blockSize];
     if (SecRandomCopyBytes(kSecRandomDefault, blockSize, buf) == -1) {
-        //TODO: error
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorGeneral userInfo:@{NSLocalizedDescriptionKey: @"Encryption failed. Cannot prepare random data."}];
+        }
         return NO;
     }
     let prefixRandomData = [NSMutableData dataWithBytes:buf length:blockSize];
@@ -321,10 +254,43 @@ NS_ASSUME_NONNULL_BEGIN
     [toEncrypt appendData:prefixRandomFullData];
     [toEncrypt appendData:literalPacketData];
     [toEncrypt appendData:mdcPacketData];
-    let encrypted = [PGPCryptoCFB encryptData:toEncrypt sessionKeyData:sessionKeyData symmetricAlgorithm:sessionKeyAlgorithm iv:ivData];
+    let encrypted = [PGPCryptoCFB encryptData:toEncrypt sessionKeyData:sessionKeyData symmetricAlgorithm:sessionKeyAlgorithm iv:ivData syncCFB:NO];
 
     self.encryptedData = encrypted;
     return YES;
+}
+
+#pragma mark - isEqual
+
+- (BOOL)isEqual:(id)other {
+    if (self == other) { return YES; }
+    if ([super isEqual:other] && [other isKindOfClass:self.class]) {
+        return [self isEqualToPGPSymmetricallyEncryptedIntegrityProtectedDataPacket:other];
+    }
+    return NO;
+}
+
+- (BOOL)isEqualToPGPSymmetricallyEncryptedIntegrityProtectedDataPacket:(PGPSymmetricallyEncryptedIntegrityProtectedDataPacket *)packet {
+    return self.version == packet.version;
+}
+
+- (NSUInteger)hash {
+    NSUInteger prime = 31;
+    NSUInteger result = [super hash];
+    result = prime * result + self.version;
+    return result;
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(nullable NSZone *)zone {
+    let _Nullable duplicate = PGPCast([super copyWithZone:zone], PGPSymmetricallyEncryptedIntegrityProtectedDataPacket);
+    if (!duplicate) {
+        return nil;
+    }
+
+    duplicate.version = self.version;
+    return duplicate;
 }
 
 @end

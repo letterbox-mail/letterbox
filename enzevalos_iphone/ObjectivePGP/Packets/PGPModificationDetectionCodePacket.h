@@ -1,16 +1,21 @@
 //
-//  PGPModificationDetectionCodePacket.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 12/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPPacket.h"
 
-@interface PGPModificationDetectionCodePacket : PGPPacket
-@property (nonatomic, readonly) NSData *hashData;
+NS_ASSUME_NONNULL_BEGIN
+
+@interface PGPModificationDetectionCodePacket : PGPPacket <NSCopying, PGPExportable>
+
+@property (nonatomic, copy, readonly) NSData *hashData;
 
 - (instancetype)initWithData:(NSData *)data;
 
 @end
+
+NS_ASSUME_NONNULL_END

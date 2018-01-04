@@ -1,9 +1,9 @@
 //
-//  PGPTypes.h
-//  PGPKeyring
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 04/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import <Foundation/Foundation.h>
@@ -14,12 +14,21 @@
 
 #define PGP_NOESCAPE __attribute__((noescape))
 
-static NSString *const PGPErrorDomain = @"ObjectivePGP";
+static const UInt32 PGPUnknownLength = UINT32_MAX;
+static NSString *const PGPErrorDomain = @"com.objectivepgp";
 
-typedef NS_ENUM(NSInteger, PGPErrorCode) {
+typedef NS_ERROR_ENUM(PGPErrorDomain, PGPErrorCode) {
     PGPErrorGeneral = -1,
     PGPErrorPassphraseRequired = 5,
-    PGPErrorPassphraseInvalid = 6
+    PGPErrorPassphraseInvalid = 6,
+    /// Invalid signature. Signature is invalid or cannot be verified (eg. missing key)
+    PGPErrorInvalidSignature = 7,
+    /// The message is not signed.
+    PGPErrorNotSigned = 8,
+    /// Invalid PGP message. Invalid or corrupted data that can't be processed.
+    PGPErrorInvalidMessage = 9,
+    PGPErrorMissingSignature = 10,
+    PGPErrorNotFound = 11
 };
 
 typedef NS_ENUM(NSInteger, PGPFormatType) {
@@ -37,13 +46,13 @@ typedef NS_ENUM(UInt8, PGPPacketTag) {
     PGPInvalidPacketTag = 0,
     PGPPublicKeyEncryptedSessionKeyPacketTag = 1,
     PGPSignaturePacketTag = 2,
-    PGPSymetricKeyEncryptedSessionKeyPacketTag = 3, // TODO
+    PGPSymetricKeyEncryptedSessionKeyPacketTag = 3,
     PGPOnePassSignaturePacketTag = 4,
     PGPSecretKeyPacketTag = 5,
     PGPPublicKeyPacketTag = 6,
     PGPSecretSubkeyPacketTag = 7,
     PGPCompressedDataPacketTag = 8,
-    PGPSymmetricallyEncryptedDataPacketTag = 9, // TODO
+    PGPSymmetricallyEncryptedDataPacketTag = 9,
     PGPMarkerPacketTag = 10, // Ignored (Obsolete Literal Packet)
     PGPLiteralDataPacketTag = 11,
     PGPTrustPacketTag = 12,
@@ -52,6 +61,10 @@ typedef NS_ENUM(UInt8, PGPPacketTag) {
     PGPUserAttributePacketTag = 17,
     PGPSymmetricallyEncryptedIntegrityProtectedDataPacketTag = 18,
     PGPModificationDetectionCodePacketTag = 19,
+};
+
+typedef NS_ENUM(UInt8, PGPUserAttributeSubpacketType) {
+    PGPUserAttributeSubpacketImage = 0x01 // The only currently defined subpacket type is 1, signifying an image.
 };
 
 // 9.1.  Public-Key Algorithms
@@ -64,7 +77,7 @@ typedef NS_ENUM(UInt8, PGPPublicKeyAlgorithm) {
     PGPPublicKeyAlgorithmElliptic = 18,
     PGPPublicKeyAlgorithmECDSA = 19,
     PGPPublicKeyAlgorithmElgamalEncryptorSign = 20, // Deprecated ?
-    PGPPublicKeyAlgorithmDiffieHellman = 21,
+    PGPPublicKeyAlgorithmDiffieHellman = 21, // TODO: Deprecated?
     PGPPublicKeyAlgorithmPrivate1 = 100,
     PGPPublicKeyAlgorithmPrivate2 = 101,
     PGPPublicKeyAlgorithmPrivate3 = 102,
@@ -119,7 +132,8 @@ typedef NS_ENUM(UInt8, PGPSignatureType) {
     PGPSignatureSubkeyRevocation = 0x28, // 0x28: Subkey revocation signature (subkey_revocation)
     PGPSignatureCertificationRevocation = 0x30, // 0x30: Certification revocation signature (cert_revocation)
     PGPSignatureTimestamp = 0x40,
-    PGPSignature3PartyConfirmation = 0x50
+    PGPSignature3PartyConfirmation = 0x50,
+    PGPSignatureUnknown = 0xFF
 };
 
 typedef NS_ENUM(UInt8, PGPSignatureSubpacketType) {
@@ -145,8 +159,9 @@ typedef NS_ENUM(UInt8, PGPSignatureSubpacketType) {
     PGPSignatureSubpacketTypeSignerUserID = 28,
     PGPSignatureSubpacketTypeReasonForRevocation = 29,
     PGPSignatureSubpacketTypeFeatures = 30,
-    PGPSignatureSubpacketTypeSignatureTarget = 31, // TODO
-    PGPSignatureSubpacketTypeEmbeddedSignature = 32 // TODO
+    PGPSignatureSubpacketTypeSignatureTarget = 31, // Seems unused at all
+    PGPSignatureSubpacketTypeEmbeddedSignature = 32,
+    PGPSignatureSubpacketTypeIssuerFingerprint = 33 // TODO: Experimental: Issuer fingerprint
 };
 
 // 5.2.3.21.  Key Flags
@@ -178,11 +193,24 @@ typedef NS_ENUM(UInt8, PGPS2KSpecifier) {
     PGPS2KSpecifierSimple = 0,
     PGPS2KSpecifierSalted = 1,
     PGPS2KSpecifierIteratedAndSalted = 3,
-    PGPS2KSpecifierGnuDummy = 101 // The "gnu-dummy S2K" is the marker which will tell that this file does *not* actually contain the secret key.
+    // GNU extensions to the S2K algorithm.
+    // see: https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;a=blob;f=doc/DETAILS;h=8ead6a8f5250656f72aea99042f392cb6749b8ff;hb=refs/heads/master#l1309
+    // The "gnu-dummy S2K" is the marker which will tell that this file does *not* actually contain the secret key.
+    PGPS2KSpecifierGnuDummy = 101,
+    // TODO: gnu-divert-to-card S2K
+    PGPS2KSpecifierDivertToCard = 102
 };
 
 typedef NS_ENUM(UInt8, PGPS2KUsage) {
     PGPS2KUsageNonEncrypted = 0, // no passphrase
     PGPS2KUsageEncryptedAndHashed = 254,
     PGPS2KUsageEncrypted = 255
+};
+
+// 9.3.  Compression Algorithms
+typedef NS_ENUM(UInt8, PGPCompressionAlgorithm) {
+    PGPCompressionUncompressed = 0,
+    PGPCompressionZIP = 1,
+    PGPCompressionZLIB = 2,
+    PGPCompressionBZIP2 = 3
 };

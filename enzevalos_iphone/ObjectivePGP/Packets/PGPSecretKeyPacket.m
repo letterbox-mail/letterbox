@@ -1,9 +1,9 @@
 //
-//  PGPSecretKeyPacket.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 07/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 //  A Secret-Key packet contains all the information that is found in a
 //  Public-Key packet, including the public-key material, but also
@@ -19,11 +19,14 @@
 
 #import "PGPLogging.h"
 #import "PGPMacros+Private.h"
+#import "PGPFoundation.h"
 
 #import "NSData+PGPUtils.h"
 #import "PGPCryptoCFB.h"
 #import "PGPCryptoUtils.h"
 #import "PGPRSA.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface PGPSecretKeyPacket ()
 
@@ -52,8 +55,8 @@
 }
 
 - (nullable PGPMPI *)secretMPI:(NSString *)identifier {
-    for (PGPMPI *mpi in self.secretMPIArray) {
-        if ([mpi.identifier isEqual:identifier]) {
+    for (PGPMPI *mpi in self.secretMPIs) {
+        if (PGPEqualObjects(mpi.identifier, identifier)) {
             return mpi;
         }
     }
@@ -65,7 +68,9 @@
     return [super fingerprint];
 }
 
-- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError *__autoreleasing *)error {
+- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError * __autoreleasing _Nullable *)error {
+    PGPAssertClass(packetBody, NSData);
+
     NSUInteger position = [super parsePacketBody:packetBody error:error];
     //  5.5.3.  Secret-Key Packet Formats
 
@@ -86,10 +91,11 @@
     }
 
     let encryptedData = [packetBody subdataWithRange:(NSRange){position, packetBody.length - position}];
-    if (self.isEncryptedWithPassphrase) {
-        position = position + [self parseEncryptedPart:encryptedData error:error];
-    } else {
-        position = position + [self parseUnencryptedPart:encryptedData error:error];
+    NSUInteger length = 0;
+    if (self.isEncryptedWithPassphrase && [self parseEncryptedPart:encryptedData length:&length error:error]) {
+        position = position + length;
+    } else if ([self parseUnencryptedPart:encryptedData length:&length error:error]) {
+        position = position + length;
     }
 
     return position;
@@ -99,11 +105,12 @@
  *  Encrypted algorithm-specific fields for secret keys
  *
  *  @param data Encrypted data
+ *  @param length Length of parsed data
  *  @param error error
  *
- *  @return length
+ *  @return YES on success.
  */
-- (NSUInteger)parseEncryptedPart:(NSData *)data error:(NSError *__autoreleasing *)error {
+- (BOOL)parseEncryptedPart:(NSData *)data length:(NSUInteger *)length error:(NSError * __autoreleasing _Nullable *)error {
     NSUInteger position = 0;
 
     if (self.s2kUsage == PGPS2KUsageEncrypted || self.s2kUsage == PGPS2KUsageEncryptedAndHashed) {
@@ -119,12 +126,18 @@
 
     if (self.s2k.specifier == PGPS2KSpecifierGnuDummy) {
         self.ivData = NSData.data;
+    } else if (self.s2k.specifier == PGPS2KSpecifierDivertToCard) {
+        self.ivData = NSData.data;
     } else if (self.s2kUsage != PGPS2KUsageNonEncrypted) {
         // Initial Vector (IV) of the same length as the cipher's block size
         NSUInteger blockSize = [PGPCryptoUtils blockSizeOfSymmetricAlhorithm:self.symmetricAlgorithm];
         NSAssert(blockSize <= 16, @"invalid blockSize");
         self.ivData = [data subdataWithRange:(NSRange){position, blockSize}];
         position = position + blockSize;
+    } else if (error) {
+        *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorGeneral userInfo:@{NSLocalizedDescriptionKey: @"Cannot export packet. Unsupported S2K setup."}];
+        *length = data.length;
+        return NO;
     }
 
     // encrypted MPIArray
@@ -132,7 +145,8 @@
     self.encryptedMPIPartData = [data subdataWithRange:(NSRange){position, data.length - position}];
     // position = position + self.encryptedMPIPartData.length;
 
-    return data.length;
+    *length = data.length;
+    return YES;
 }
 
 /**
@@ -144,7 +158,7 @@
  *
  *  @return length
  */
-- (NSUInteger)parseUnencryptedPart:(NSData *)data error:(NSError *__autoreleasing *)error {
+- (BOOL)parseUnencryptedPart:(NSData *)data length:(nullable NSUInteger *)length error:(NSError * __autoreleasing _Nullable *)error {
     NSUInteger position = 0;
 
     // check hash before read actual data
@@ -154,19 +168,27 @@
             // a 20-octet SHA-1 hash of the plaintext of the algorithm-specific portion.
             NSUInteger hashSize = [PGPCryptoUtils hashSizeOfHashAlhorithm:PGPHashSHA1];
             if (hashSize == NSNotFound) {
-                PGPLogWarning(@"Invalid hash size");
-                return 0;
+                if (error) {
+                    *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorPassphraseInvalid userInfo:@{ NSLocalizedDescriptionKey: @"Decrypted hash mismatch, invalid passphrase." }];
+                }
+                if (length) {
+                    *length = data.length;
+                }
+                return NO;
             }
 
             let clearTextData = [data subdataWithRange:(NSRange){0, data.length - hashSize}];
             let hashData = [data subdataWithRange:(NSRange){data.length - hashSize, hashSize}];
             let calculatedHashData = clearTextData.pgp_SHA1;
 
-            if (![hashData isEqualToData:calculatedHashData]) {
+            if (!PGPEqualObjects(hashData,calculatedHashData)) {
                 if (error) {
                     *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorPassphraseInvalid userInfo:@{ NSLocalizedDescriptionKey: @"Decrypted hash mismatch, invalid passphrase." }];
-                    return data.length;
                 }
+                if (length) {
+                    *length = data.length;
+                }
+                return NO;
             }
 
         } break;
@@ -183,9 +205,13 @@
 
             if (checksum != calculatedChecksum) {
                 if (error) {
-                    *error = [NSError errorWithDomain:PGPErrorDomain code:-1 userInfo:@{ NSLocalizedDescriptionKey: @"Decrypted hash mismatch, check passphrase." }];
-                    return data.length;
+                    *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorGeneral userInfo:@{ NSLocalizedDescriptionKey: @"Decrypted hash mismatch, check passphrase." }];
                 }
+
+                if (length) {
+                    *length = data.length;
+                }
+                return NO;
             }
         } break;
     }
@@ -211,14 +237,14 @@
             let mpiU = [[PGPMPI alloc] initWithMPIData:data identifier:PGPMPI_U atPosition:position];
             position = position + mpiU.packetLength;
 
-            self.secretMPIArray = @[mpiD, mpiP, mpiQ, mpiU];
+            self.secretMPIs = @[mpiD, mpiP, mpiQ, mpiU];
         } break;
         case PGPPublicKeyAlgorithmDSA: {
             // MPI of DSA secret exponent x.
             let mpiX = [[PGPMPI alloc] initWithMPIData:data identifier:PGPMPI_X atPosition:position];
             position = position + mpiX.packetLength;
 
-            self.secretMPIArray = @[mpiX];
+            self.secretMPIs = @[mpiX];
         } break;
         case PGPPublicKeyAlgorithmElgamal:
         case PGPPublicKeyAlgorithmElgamalEncryptorSign: {
@@ -226,13 +252,16 @@
             let mpiX = [[PGPMPI alloc] initWithMPIData:data identifier:PGPMPI_X atPosition:position];
             position = position + mpiX.packetLength;
 
-            self.secretMPIArray = @[mpiX];
+            self.secretMPIs = @[mpiX];
         } break;
         default:
             break;
     }
 
-    return data.length;
+    if (length) {
+        *length = data.length;
+    }
+    return YES;
 }
 
 #pragma mark - Decrypt
@@ -243,40 +272,46 @@
  *  TODO: V3 support - partially supported, need testing.
  *  NOTE: Decrypted packet data should be released/forget after use
  */
-- (nullable PGPSecretKeyPacket *)decryptedKeyPacket:(NSString *)passphrase error:(NSError *__autoreleasing *)error {
+- (nullable PGPSecretKeyPacket *)decryptedWithPassphrase:(nullable NSString *)passphrase error:(NSError * __autoreleasing _Nullable *)error {
     PGPAssertClass(passphrase, NSString);
-    NSParameterAssert(error);
 
     if (!self.isEncryptedWithPassphrase) {
-        PGPLogDebug(@"No need to decrypt key.");
+        // PGPLogDebug(@"No need to decrypt key.");
         return self;
     }
 
     if (!self.ivData) {
         PGPLogError(@"IV is missing...");
-        if (error) { *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: @"IV is missing" } ]; };
+        if (error) { *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorGeneral userInfo:@{NSLocalizedDescriptionKey: @"IV is missing" } ]; };
         return nil;
     }
 
-    PGPSecretKeyPacket *encryptedKey = self.copy;
-    let encryptionSymmetricAlgorithm = encryptedKey.symmetricAlgorithm;
+    PGPSecretKeyPacket *decryptedKeyPacket = self.copy;
+    let encryptionSymmetricAlgorithm = decryptedKeyPacket.symmetricAlgorithm;
 
     // Session key for passphrase
     // producing a key to be used with a symmetric block cipher from a string of octets
-    let sessionKeyData = [encryptedKey.s2k produceSessionKeyWithPassphrase:passphrase symmetricAlgorithm:encryptionSymmetricAlgorithm];
+    let sessionKeyData = [decryptedKeyPacket.s2k produceSessionKeyWithPassphrase:passphrase symmetricAlgorithm:encryptionSymmetricAlgorithm];
+    if (!sessionKeyData) {
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorGeneral userInfo:@{NSLocalizedDescriptionKey: @"Can't build session key." } ];
+        }
+        return nil;
+    }
 
     // Decrypted MPIArray
-    let decryptedData = [PGPCryptoCFB decryptData:encryptedKey.encryptedMPIPartData sessionKeyData:sessionKeyData symmetricAlgorithm:encryptionSymmetricAlgorithm iv:encryptedKey.ivData];
+    let decryptedData = [PGPCryptoCFB decryptData:decryptedKeyPacket.encryptedMPIPartData sessionKeyData:sessionKeyData symmetricAlgorithm:encryptionSymmetricAlgorithm iv:decryptedKeyPacket.ivData syncCFB:NO];
 
     // now read mpis
     if (decryptedData) {
-        [encryptedKey parseUnencryptedPart:decryptedData error:error];
+        [decryptedKeyPacket parseUnencryptedPart:decryptedData length:nil error:error];
         if (*error) {
             return nil;
         }
     }
-    encryptedKey.wasDecrypted = YES;
-    return encryptedKey;
+
+    decryptedKeyPacket.wasDecrypted = YES;
+    return decryptedKeyPacket;
 }
 
 #pragma mark - Private
@@ -307,11 +342,11 @@
         NSAssert(self.ivData, @"Require IV");
         // If secret data is encrypted (string-to-key usage octet not zero), an Initial Vector (IV) of the same length as the cipher's block size.
         // Initial Vector (IV) of the same length as the cipher's block size
-        [data appendData:self.ivData];
+        [data pgp_appendData:self.ivData];
     }
 
     if (self.s2kUsage == PGPS2KUsageNonEncrypted) {
-        for (PGPMPI *mpi in self.secretMPIArray) {
+        for (PGPMPI *mpi in self.secretMPIs) {
             let exportMPI = [mpi exportMPI];
             [data pgp_appendData:exportMPI];
         }
@@ -327,75 +362,68 @@
         PGPLogWarning(@"Cannot build secret key data. Missing secret MPIs....");
     }
 
-    // If the string-to-key usage octet is zero or 255, then a two-octet checksum of the plaintext of the algorithm-specific portion (sum of all octets, mod 65536).
-    // This checksum or hash is encrypted together with the algorithm-specific fields
-    // ---> is part of self.encryptedMPIPartData
-    // if (self.s2kUsage == PGPS2KUsageNonEncrypted || self.s2kUsage == PGPS2KUsageEncrypted) {
-    //    // Checksum
-    //    UInt16 checksum = CFSwapInt16HostToBig([data pgp_Checksum]);
-    //    [data appendBytes:&checksum length:2];
-    //} else if (self.s2kUsage == PGPS2KUsageEncryptedAndHashed) {
-    //    // If the string-to-key usage octet was 254, then a 20-octet SHA-1 hash of the plaintext of the algorithm-specific portion.
-    //    [data appendData:[data pgp_SHA1]];
-    //}
-
-    //    } else if (self.s2kUsage != PGPS2KUsageNonEncrypted) {
-    //        // this is version 3, looks just like a V4 simple hash
-    //        self.symmetricAlgorithm = (PGPSymmetricAlgorithm)self.s2kUsage; // this is tricky, but this is right. V3 algorithm is in place of s2kUsage of V4
-    //        self.s2kUsage = PGPS2KUsageEncrypted;
-    //
-    //        self.s2k = [[PGPS2K alloc] init]; // not really parsed s2k
-    //        self.s2k.specifier = PGPS2KSpecifierSimple;
-    //        self.s2k.algorithm = PGPHashMD5;
-
     return data;
 }
 
 #pragma mark - PGPExportable
 
-- (nullable NSData *)export:(NSError *__autoreleasing _Nullable *)error {
+- (nullable NSData *)export:(NSError * __autoreleasing _Nullable *)error {
     return [PGPPacket buildPacketOfType:self.tag withBody:^NSData * {
         let secretKeyPacketData = [NSMutableData data];
         [secretKeyPacketData appendData:[self buildKeyBodyData:YES]];
         [secretKeyPacketData appendData:[self buildSecretKeyDataAndForceV4:YES]];
-        return  secretKeyPacketData;
+        return secretKeyPacketData;
     }];
+}
 
-    //TODO: to be removed when verified
-    //    let data = [NSMutableData data];
-    //    let publicKeyData = [super buildKeyBodyData:YES];
-    //
-    //    let secretKeyPacketData = [NSMutableData data];
-    //    [secretKeyPacketData appendData:publicKeyData];
-    //    [secretKeyPacketData appendData:[self buildSecretKeyDataAndForceV4:YES]];
-    //    if (!self.bodyData) {
-    //        self.bodyData = secretKeyPacketData;
-    //    }
-    //
-    //    let headerData = [self buildHeaderData:secretKeyPacketData];
-    //    if (!self.headerData) {
-    //        self.headerData = headerData;
-    //    }
-    //    [data appendData:headerData];
-    //    [data appendData:secretKeyPacketData];
-    //
-    //    // header not always match because export new format while input can be old format
-    //    NSAssert(!self.bodyData || [secretKeyPacketData isEqualToData:self.bodyData], @"Secret key doesn't match");
-    //    return data;
+#pragma mark - isEqual
+
+- (BOOL)isEqual:(id)other {
+    if (self == other) { return YES; }
+    if ([super isEqual:other] && [other isKindOfClass:self.class]) {
+        return [self isEqualToKeyPacket:other];
+    }
+    return NO;
+}
+
+- (BOOL)isEqualToKeyPacket:(PGPSecretKeyPacket *)packet {
+    return self.version == packet.version &&
+        self.s2kUsage == packet.s2kUsage &&
+        self.publicKeyAlgorithm == packet.publicKeyAlgorithm &&
+        self.V3validityPeriod == packet.V3validityPeriod &&
+        PGPEqualObjects(self.createDate, packet.createDate) &&
+        PGPEqualObjects(self.publicMPIs, packet.publicMPIs) &&
+        PGPEqualObjects(self.secretMPIs, packet.secretMPIs);
+}
+
+- (NSUInteger)hash {
+    NSUInteger prime = 31;
+    NSUInteger result = [super hash];
+    result = prime * result + self.version;
+    result = prime * result + self.s2kUsage;
+    result = prime * result + self.publicKeyAlgorithm;
+    result = prime * result + self.V3validityPeriod;
+    result = prime * result + self.createDate.hash;
+    result = prime * result + self.publicMPIs.hash;
+    result = prime * result + self.secretMPIs.hash;
+    return result;
 }
 
 #pragma mark - NSCopying
 
-- (id)copyWithZone:(NSZone *)zone {
-    PGPSecretKeyPacket *copy = [super copyWithZone:zone];
-    copy->_s2kUsage = self.s2kUsage;
-    copy->_s2k = [self.s2k copy];
-    copy->_symmetricAlgorithm = self.symmetricAlgorithm;
-    copy->_ivData = [self.ivData copy];
-    copy->_secretMPIArray = [self.secretMPIArray copy];
-    copy->_encryptedMPIPartData = [self.encryptedMPIPartData copy];
-    copy->_wasDecrypted = self.wasDecrypted;
-    return copy;
+- (id)copyWithZone:(nullable NSZone *)zone {
+    let duplicate = PGPCast([super copyWithZone:zone], PGPSecretKeyPacket);
+    duplicate.version = self.version;
+    duplicate.s2kUsage = self.s2kUsage;
+    duplicate.s2k = self.s2k;
+    duplicate.symmetricAlgorithm = self.symmetricAlgorithm;
+    duplicate.ivData = self.ivData;
+    duplicate.secretMPIs = self.secretMPIs;
+    duplicate.encryptedMPIPartData = self.encryptedMPIPartData;;
+    duplicate.wasDecrypted = self.wasDecrypted;
+    return duplicate;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

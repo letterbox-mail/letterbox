@@ -1,9 +1,9 @@
 //
-//  PGPOnePassSignaturePacket.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 29/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPPacket.h"
@@ -13,14 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class PGPKeyID;
 
-@interface PGPOnePassSignaturePacket : PGPPacket <PGPExportable>
+@interface PGPOnePassSignaturePacket : PGPPacket <PGPExportable, NSCopying>
 
 @property (nonatomic) UInt8 version; //  The current version is 3.
 @property (nonatomic) PGPSignatureType signatureType;
 @property (nonatomic) PGPHashAlgorithm hashAlgorith;
 @property (nonatomic) PGPPublicKeyAlgorithm publicKeyAlgorithm;
-@property (nonatomic) PGPKeyID *keyID; // 8
-@property (nonatomic) BOOL notNested;
+@property (nonatomic, copy) PGPKeyID *keyID; // 8
+@property (nonatomic) BOOL isNested;
 
 @end
 

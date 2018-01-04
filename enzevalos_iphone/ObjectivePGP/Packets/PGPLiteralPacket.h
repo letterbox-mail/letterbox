@@ -1,9 +1,9 @@
 //
-//  PGPLiteralPacket.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 24/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPExportableProtocol.h"
@@ -11,15 +11,19 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(UInt8, PGPLiteralPacketFormat) { PGPLiteralPacketBinary = 'b', PGPLiteralPacketText = 't', PGPLiteralPacketTextUTF8 = 'u' };
+typedef NS_ENUM(UInt8, PGPLiteralPacketFormat) {
+    PGPLiteralPacketBinary = 'b',
+    PGPLiteralPacketText = 't',
+    PGPLiteralPacketTextUTF8 = 'u'
+};
 
-@interface PGPLiteralPacket : PGPPacket <PGPExportable>
+@interface PGPLiteralPacket : PGPPacket <PGPExportable, NSCopying>
 
 @property (nonatomic) PGPLiteralPacketFormat format;
-@property (nonatomic) NSDate *timestamp;
-@property (nonatomic, nullable) NSString *filename;
+@property (nonatomic, copy) NSDate *timestamp;
+@property (nonatomic, copy, nullable) NSString *filename;
 
-@property (nonatomic) NSData *literalRawData;
+@property (nonatomic, copy) NSData *literalRawData;
 
 - (instancetype)initWithData:(NSData *)rawData;
 + (PGPLiteralPacket *)literalPacket:(PGPLiteralPacketFormat)format withData:(NSData *)rawData;

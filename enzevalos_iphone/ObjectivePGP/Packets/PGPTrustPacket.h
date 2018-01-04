@@ -1,17 +1,17 @@
 //
-//  PGPTrustPacket.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 06/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 //  Tag 12
 
 #import "PGPPacketFactory.h"
 #import <Foundation/Foundation.h>
 
-@interface PGPTrustPacket : PGPPacket
+@interface PGPTrustPacket : PGPPacket <NSCopying>
 
-@property (nonatomic, readonly) NSData *data;
+@property (nonatomic, copy, readonly) NSData *data;
 
 @end

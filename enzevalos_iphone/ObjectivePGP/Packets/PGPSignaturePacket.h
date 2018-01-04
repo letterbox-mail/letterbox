@@ -1,9 +1,9 @@
 //
-//  PGPSignature.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 04/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 //  Tag 2
 
@@ -20,21 +20,21 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PGPSignaturePacket : PGPPacket <NSCopying>
 
 @property (nonatomic) UInt8 version;
-@property (nonatomic) PGPSignatureType type;
+@property (nonatomic, readonly) PGPSignatureType type;
 @property (nonatomic) PGPPublicKeyAlgorithm publicKeyAlgorithm;
 @property (nonatomic) PGPHashAlgorithm hashAlgoritm;
 @property (nonatomic, copy, readonly) NSArray<PGPSignatureSubpacket *> *hashedSubpackets;
 @property (nonatomic, copy, readonly) NSArray<PGPSignatureSubpacket *> *unhashedSubpackets;
 /// Two-octet field holding the left 16 bits of the signed hash value.
 /// Read from the key or set byt the call to `-[PGPSignaturePacket signData:usingKey:passphrase:userID:error]`
-@property (nonatomic, nullable) NSData *signedHashValueData;
-@property (nonatomic, copy) NSArray<PGPMPI *> *signatureMPIArray;
+@property (nonatomic, copy, nullable) NSData *signedHashValueData;
+@property (nonatomic, copy) NSArray<PGPMPI *> *signatureMPIs;
 
 @property (nonatomic, readonly) BOOL canBeUsedToSign; // computed
 @property (nonatomic, readonly) BOOL canBeUsedToEncrypt; // computed
 
-@property (nonatomic, nullable, readonly) PGPKeyID *issuerKeyID;
-@property (nonatomic, copy, readonly) NSArray<PGPSignatureSubpacket *> *subpackets;
+@property (nonatomic, nullable, readonly) PGPKeyID *issuerKeyID; // computed
+@property (nonatomic, copy, readonly) NSArray<PGPSignatureSubpacket *> *subpackets; // computed
 @property (nonatomic, nullable, readonly) NSDate *expirationDate; // computed
 @property (nonatomic, readonly, readonly, getter=isExpired) BOOL expired; // computed
 @property (nonatomic, nullable, readonly) NSDate *creationDate; // computed
@@ -65,11 +65,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return YES on success.
  */
-- (BOOL)signData:(nullable NSData *)inputData withKey:(PGPKey *)key subKey:(nullable PGPKey *)subKey passphrase:(nullable NSString *)passphrase userID:(nullable NSString *)userID error:(NSError *__autoreleasing *)error;
+- (BOOL)signData:(nullable NSData *)inputData withKey:(PGPKey *)key subKey:(nullable PGPKey *)subKey passphrase:(nullable NSString *)passphrase userID:(nullable NSString *)userID error:(NSError * __autoreleasing *)error;
 
-- (BOOL)verifyData:(NSData *)inputData withKey:(PGPKey *)publicKey error:(NSError *__autoreleasing *)error;
-- (BOOL)verifyData:(NSData *)inputData withKey:(PGPKey *)publicKey userID:(nullable NSString *)userID error:(NSError *__autoreleasing *)error;
-- (BOOL)verifyData:(NSData *)inputData withKey:(PGPKey *)publicKey signingKeyPacket:(PGPPublicKeyPacket *)signingKeyPacket userID:(nullable NSString *)userID error:(NSError *__autoreleasing *)error;
+- (BOOL)verifyData:(NSData *)inputData publicKey:(PGPKey *)publicKey error:(NSError * __autoreleasing _Nullable *)error;
+- (BOOL)verifyData:(NSData *)inputData publicKey:(PGPKey *)publicKey userID:(nullable NSString *)userID error:(NSError * __autoreleasing _Nullable *)error;
+- (BOOL)verifyData:(NSData *)inputData publicKey:(PGPKey *)publicKey signingKeyPacket:(PGPPublicKeyPacket *)signingKeyPacket userID:(nullable NSString *)userID error:(NSError * __autoreleasing _Nullable *)error;
 
 @end
 

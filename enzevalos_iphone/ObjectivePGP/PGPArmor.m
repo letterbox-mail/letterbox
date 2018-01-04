@@ -1,15 +1,19 @@
 //
-//  PGPArmor.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 18/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPArmor.h"
-#import "NSData+PGPUtils.h"
-#import "PGPMacros+Private.h"
 #import "PGPPacket.h"
+
+#import "NSData+PGPUtils.h"
+#import "NSArray+PGPUtils.h"
+
+#import "PGPFoundation.h"
+#import "PGPMacros+Private.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,37 +30,37 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
 }
 
-+ (NSData *)armoredData:(NSData *)dataToArmor as:(PGPArmorType)armorType {
-    return [[self class] armoredData:dataToArmor as:armorType part:NSUIntegerMax of:NSUIntegerMax];
++ (NSString *)armored:(NSData *)data as:(PGPArmorType)type {
+    return [[self class] armored:data as:type part:NSUIntegerMax of:NSUIntegerMax];
 }
 
-+ (NSData *)armoredData:(NSData *)dataToArmor as:(PGPArmorType)armorType part:(NSUInteger)part of:(NSUInteger)ofParts {
++ (NSString *)armored:(NSData *)data as:(PGPArmorType)type part:(NSUInteger)part of:(NSUInteger)ofParts {
     NSMutableDictionary *headers = [@{ @"Version": @"ObjectivePGP", @"Comment": @"https://www.objectivepgp.com", @"Charset": @"UTF-8" } mutableCopy];
 
     NSMutableString *headerString = [NSMutableString stringWithString:@"-----"];
     NSMutableString *footerString = [NSMutableString stringWithString:@"-----"];
-    switch (armorType) {
-        case PGPArmorTypePublicKey:
+    switch (type) {
+        case PGPArmorPublicKey:
             [headerString appendString:@"BEGIN PGP PUBLIC KEY BLOCK"];
             [footerString appendString:@"END PGP PUBLIC KEY BLOCK"];
             break;
-        case PGPArmorTypeSecretKey:
+        case PGPArmorSecretKey:
             [headerString appendString:@"BEGIN PGP PRIVATE KEY BLOCK"];
             [footerString appendString:@"END PGP PRIVATE KEY BLOCK"];
             break;
-        case PGPArmorTypeSignature:
+        case PGPArmorSignature:
             [headerString appendString:@"BEGIN PGP SIGNATURE"];
             [footerString appendString:@"END PGP SIGNATURE"];
             break;
-        case PGPArmorTypeMessage:
+        case PGPArmorMessage:
             [headerString appendString:@"BEGIN PGP MESSAGE"];
             [footerString appendString:@"END PGP MESSAGE"];
             break;
-        case PGPArmorTypeMultipartMessagePartX:
+        case PGPArmorMultipartMessagePartX:
             [headerString appendFormat:@"BEGIN PGP MESSAGE, PART %@", @(part)];
             [footerString appendFormat:@"END PGP MESSAGE, PART %@", @(part)];
             break;
-        case PGPArmorTypeMultipartMessagePartXOfY:
+        case PGPArmorMultipartMessagePartXOfY:
             [headerString appendFormat:@"BEGIN PGP MESSAGE, PART %@/%@", @(part), @(ofParts)];
             [footerString appendFormat:@"END PGP MESSAGE, PART %@/%@", @(part), @(ofParts)];
             break;
@@ -81,12 +85,12 @@ NS_ASSUME_NONNULL_BEGIN
     [armoredMessage appendString:@"\n"];
 
     // - The ASCII-Armored data
-    NSString *radix64 = [dataToArmor base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength | NSDataBase64EncodingEndLineWithLineFeed];
+    NSString *radix64 = [data base64EncodedStringWithOptions:NSDataBase64Encoding76CharacterLineLength | NSDataBase64EncodingEndLineWithLineFeed];
     [armoredMessage appendString:radix64];
     [armoredMessage appendString:@"\n"];
 
     // - An Armor Checksum
-    UInt32 checksum = [dataToArmor pgp_CRC24];
+    UInt32 checksum = [data pgp_CRC24];
     UInt8 c[3]; // 24 bit
     c[0] = (UInt8)(checksum >> 16);
     c[1] = (UInt8)(checksum >> 8);
@@ -99,23 +103,22 @@ NS_ASSUME_NONNULL_BEGIN
 
     // - The Armor Tail, which depends on the Armor Header Line
     [armoredMessage appendString:footerString];
-
-    return [armoredMessage dataUsingEncoding:NSASCIIStringEncoding];
+    return armoredMessage;
 };
 
-+ (nullable NSData *)readArmoredData:(NSString *)armoredString error:(NSError *__autoreleasing _Nullable *)error {
-    PGPAssertClass(armoredString, NSString);
++ (nullable NSData *)readArmored:(NSString *)string error:(NSError * __autoreleasing _Nullable *)error {
+    PGPAssertClass(string, NSString);
 
-    NSScanner *scanner = [[NSScanner alloc] initWithString:armoredString];
+    NSScanner *scanner = [[NSScanner alloc] initWithString:string];
     scanner.charactersToBeSkipped = nil;
 
     // check header line
     NSString *headerLine = nil;
     [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&headerLine];
-    if (![headerLine isEqualToString:@"-----BEGIN PGP MESSAGE-----"] && ![headerLine isEqualToString:@"-----BEGIN PGP PUBLIC KEY BLOCK-----"] && ![headerLine isEqualToString:@"-----BEGIN PGP PRIVATE KEY BLOCK-----"] && ![headerLine isEqualToString:@"-----BEGIN PGP SECRET KEY BLOCK-----"] && // PGP 2.x generates the header "BEGIN PGP SECRET KEY BLOCK" instead of "BEGIN PGP PRIVATE KEY BLOCK"
-        ![headerLine isEqualToString:@"-----BEGIN PGP SIGNATURE-----"] && ![headerLine hasPrefix:@"-----BEGIN PGP MESSAGE, PART"]) {
+    if (!PGPEqualObjects(headerLine, @"-----BEGIN PGP MESSAGE-----") && !PGPEqualObjects(headerLine, @"-----BEGIN PGP PUBLIC KEY BLOCK-----") && !PGPEqualObjects(headerLine, @"-----BEGIN PGP PRIVATE KEY BLOCK-----") && !PGPEqualObjects(headerLine, @"-----BEGIN PGP SECRET KEY BLOCK-----") && // PGP 2.x generates the header "BEGIN PGP SECRET KEY BLOCK" instead of "BEGIN PGP PRIVATE KEY BLOCK"
+        !PGPEqualObjects(headerLine, @"-----BEGIN PGP SIGNATURE-----") && ![headerLine hasPrefix:@"-----BEGIN PGP MESSAGE, PART"]) {
         if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Invalid header" }];
+            *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorInvalidMessage userInfo:@{ NSLocalizedDescriptionKey: @"Invalid header" }];
         }
         return nil;
     }
@@ -170,13 +173,6 @@ NS_ASSUME_NONNULL_BEGIN
         [scanner scanString:@"\n" intoString:nil];
     }
 
-    if (!checksumString) {
-        if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Missing checksum" }];
-        }
-        return nil;
-    }
-
     // read footer
     BOOL footerMatchHeader = NO;
     [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&line];
@@ -190,7 +186,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (!footerMatchHeader) {
         if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Footer don't match to header" }];
+            *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorInvalidMessage userInfo:@{ NSLocalizedDescriptionKey: @"Footer don't match to header" }];
         }
         return nil;
     }
@@ -198,21 +194,61 @@ NS_ASSUME_NONNULL_BEGIN
     // binary data from base64 part
     NSData *binaryData = [[NSData alloc] initWithBase64EncodedString:base64String options:NSDataBase64DecodingIgnoreUnknownCharacters];
 
+    // The checksum with its leading equal sign MAY appear on the first line after the base64 encoded data.
     // validate checksum
-    NSData *readChecksumData = [[NSData alloc] initWithBase64EncodedString:checksumString options:NSDataBase64DecodingIgnoreUnknownCharacters];
+    if (checksumString) {
+        let readChecksumData = [[NSData alloc] initWithBase64EncodedString:checksumString options:NSDataBase64DecodingIgnoreUnknownCharacters];
 
-    UInt32 calculatedCRC24 = [binaryData pgp_CRC24];
-    calculatedCRC24 = CFSwapInt32HostToBig(calculatedCRC24);
-    calculatedCRC24 = calculatedCRC24 >> 8;
-    NSData *calculatedCRC24Data = [NSData dataWithBytes:&calculatedCRC24 length:3];
-    if (![calculatedCRC24Data isEqualToData:readChecksumData]) {
-        if (error) {
-            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Checksum mismatch" }];
+        UInt32 calculatedCRC24 = [binaryData pgp_CRC24];
+        calculatedCRC24 = CFSwapInt32HostToBig(calculatedCRC24);
+        calculatedCRC24 = calculatedCRC24 >> 8;
+        let calculatedCRC24Data = [NSData dataWithBytes:&calculatedCRC24 length:3];
+        if (!PGPEqualObjects(calculatedCRC24Data, readChecksumData)) {
+            if (error) {
+                *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorInvalidMessage userInfo:@{ NSLocalizedDescriptionKey: @"Checksum mismatch" }];
+            }
+            return nil;
         }
-        return nil;
     }
-
     return binaryData;
+}
+
++ (nullable NSArray<NSData *> *)convertArmoredMessage2BinaryBlocksWhenNecessary:(NSData *)binOrArmorData error:(NSError * __autoreleasing _Nullable *)error {
+    let binRingData = binOrArmorData;
+    // detect if armored, check for string -----BEGIN PGP
+    if ([PGPArmor isArmoredData:binRingData]) {
+        var armoredString = [[NSString alloc] initWithData:binRingData encoding:NSUTF8StringEncoding];
+
+        // replace \n to \r\n
+        // propably unecessary since armore code care about \r\n or \n as newline sentence
+        armoredString = [armoredString stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
+        armoredString = [armoredString stringByReplacingOccurrencesOfString:@"\n" withString:@"\r\n"];
+
+        let extractedBlocks = [[NSMutableArray<NSString *> alloc] init];
+        let regex = [[NSRegularExpression alloc] initWithPattern:@"(-----)(BEGIN|END)[ ](PGP)[A-Z ]*(-----)" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
+        __block NSInteger offset = 0;
+        [regex enumerateMatchesInString:armoredString options:NSMatchingReportCompletion range:NSMakeRange(0, armoredString.length) usingBlock:^(NSTextCheckingResult *_Nullable result, __unused NSMatchingFlags flags, __unused BOOL *stop) {
+            let substring = [armoredString substringWithRange:result.range];
+            if ([substring containsString:@"END"]) {
+                NSInteger endIndex = result.range.location + result.range.length;
+                [extractedBlocks addObject:[armoredString substringWithRange:NSMakeRange(offset, endIndex - offset)]];
+            } else if ([substring containsString:@"BEGIN"]) {
+                offset = result.range.location;
+            }
+        }];
+
+        let extractedData = [[NSMutableArray<NSData *> alloc] init];
+        for (NSString *extractedString in extractedBlocks) {
+            let armodedData = [PGPArmor readArmored:extractedString error:error];
+            if (error && *error) {
+                return nil;
+            }
+
+            [extractedData pgp_addObject:armodedData];
+        }
+        return extractedData;
+    }
+    return @[binRingData];
 }
 
 @end

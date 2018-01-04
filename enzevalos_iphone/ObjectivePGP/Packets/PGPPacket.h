@@ -1,13 +1,12 @@
 //
-//  PGPPacket.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 06/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPExportableProtocol.h"
-#import "PGPPacketProtocol.h"
 #import "PGPTypes.h"
 #import <Foundation/Foundation.h>
 
@@ -15,17 +14,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern const UInt32 PGPUnknownLength;
 
-@interface PGPPacket : NSObject <PGPPacketProtocol, NSCopying, PGPExportable>
-@property (nonatomic) BOOL indeterminateLength; // should not be used, but gpg use it
+@interface PGPPacket : NSObject <NSCopying, PGPExportable>
+
+@property (nonatomic, readonly) PGPPacketTag tag;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithHeader:(NSData *)headerData body:(NSData *)bodyData;
++ (nullable instancetype)packetWithBody:(NSData *)bodyData;
 
-+ (nullable NSData *)parsePacketHeader:(NSData *)data headerLength:(UInt32 *)headerLength nextPacketOffset:(nullable NSUInteger *)nextPacketOffset packetTag:(PGPPacketTag *)tag indeterminateLength:(BOOL *)indeterminateLength;
-- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError *__autoreleasing *)error;
++ (nullable NSData *)readPacketBody:(NSData *)data headerLength:(UInt32 *)headerLength consumedBytes:(nullable NSUInteger *)consumedBytes packetTag:(nullable PGPPacketTag *)tag indeterminateLength:(nullable BOOL *)indeterminateLength;
+- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError * __autoreleasing _Nullable *)error;
 
 + (NSData *)buildPacketOfType:(PGPPacketTag)tag withBody:(PGP_NOESCAPE NSData *(^)(void))body;
 
+- (id)copyWithZone:(nullable NSZone *)zone NS_REQUIRES_SUPER;
 
 @end
 

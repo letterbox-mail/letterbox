@@ -1,29 +1,37 @@
 //
-//  PGPUser.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 15/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPUser.h"
+#import "PGPUser+Private.h"
 #import "PGPPartialKey.h"
 #import "PGPPublicKeyPacket.h"
 #import "PGPSignaturePacket.h"
 #import "PGPUserAttributePacket.h"
+#import "PGPUserAttributeImageSubpacket.h"
 #import "PGPUserIDPacket.h"
 #import "PGPMacros+Private.h"
 #import "PGPFoundation.h"
+#import "NSArray+PGPUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation PGPUser
 
+@synthesize userIDPacket = _userIDPacket;
+
 - (instancetype)initWithUserIDPacket:(PGPUserIDPacket *)userPacket {
     PGPAssertClass(userPacket, PGPUserIDPacket);
 
     if (self = [super init]) {
-        _userIDPacket = userPacket;
+        _userIDPacket = [userPacket copy];
+        _otherSignatures = [NSArray<PGPSignaturePacket *> array];
+        _revocationSignatures = [NSArray<PGPSignaturePacket *> array];
+        _selfCertifications = [NSArray<PGPSignaturePacket *> array];
     }
     return self;
 }
@@ -32,33 +40,40 @@ NS_ASSUME_NONNULL_BEGIN
     return self.userIDPacket.userID;
 }
 
-- (NSArray *)otherSignatures {
-    if (!_otherSignatures) {
-        _otherSignatures = [NSArray array];
-    }
-    return _otherSignatures;
+- (nullable NSData *)image {
+    // find image uset attribute
+    let imageAttributeSubpacket = PGPCast([[self.userAttribute.subpackets pgp_objectsPassingTest:^BOOL(PGPUserAttributeSubpacket * _Nonnull subpacket, BOOL * _Nonnull stop) {
+        BOOL found = subpacket.type == PGPUserAttributeSubpacketImage;
+        *stop = found;
+        return found;
+    }] firstObject], PGPUserAttributeImageSubpacket);
+
+    return imageAttributeSubpacket.image;
 }
 
-- (NSArray *)revocationSignatures {
-    if (!_revocationSignatures) {
-        _revocationSignatures = [NSArray array];
+- (void)setImage:(nullable NSData *)image {
+    // Replace image subpacket
+    if (!self.userAttribute) {
+        self.userAttribute = [[PGPUserAttributePacket alloc] init];
     }
-    return _revocationSignatures;
-}
 
-- (NSArray *)selfCertifications {
-    if (!_selfCertifications) {
-        _selfCertifications = [NSArray array];
-    }
-    return _selfCertifications;
-}
+    NSMutableArray<PGPUserAttributeSubpacket *> *subpackets = [self.userAttribute.subpackets mutableCopy];
+    let imageSubpacketIndex = [subpackets indexOfObjectPassingTest:^BOOL(PGPUserAttributeSubpacket * _Nonnull subpacket, NSUInteger __unused idx, BOOL * _Nonnull stop) {
+        BOOL found = subpacket.type == PGPUserAttributeSubpacketImage;
+        *stop = found;
+        return found;
+    }];
 
-- (PGPUserIDPacket *)userIDPacket {
-    if (!_userIDPacket) {
-        NSAssert(false, @"wat?");
-        // build userIDPacket
+    if (imageSubpacketIndex != NSNotFound) {
+        [subpackets removeObjectAtIndex:imageSubpacketIndex];
     }
-    return _userIDPacket;
+
+    let imageSubpacket = [PGPUserAttributeImageSubpacket new];
+    imageSubpacket.type = PGPUserAttributeSubpacketImage;
+    imageSubpacket.image = image;
+
+    [subpackets addObject:imageSubpacket];
+    self.userAttribute.subpackets = [subpackets copy];
 }
 
 - (NSString *)description {
@@ -68,9 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<PGPPacket *> *)allPackets {
     let arr = [NSMutableArray<PGPPacket *> array];
 
-    if (self.userIDPacket) {
-        [arr addObject:self.userIDPacket]; // TODO: || [arr addObject:self.userAttribute]
-    }
+    [arr pgp_addObject:self.userIDPacket];
+    [arr pgp_addObject:self.userAttribute];
 
     for (id packet in self.revocationSignatures) {
         [arr addObject:packet];
@@ -113,7 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
 //};
 
 // Returns the most significant (latest valid) self signature of the user
-- (nullable PGPSignaturePacket *)validSelfCertificate:(PGPPartialKey *)key {
+- (nullable PGPSignaturePacket *)validSelfCertificate {
     if (self.selfCertifications.count == 0) {
         return nil;
     }
@@ -186,6 +200,17 @@ NS_ASSUME_NONNULL_BEGIN
     result = prime * result + self.userIDPacket.hash;
 
     return result;
+}
+
+#pragma mark - NSCopying
+
+- (instancetype)copyWithZone:(nullable NSZone *)zone {
+    let user = PGPCast([[self.class allocWithZone:zone] initWithUserIDPacket:self.userIDPacket], PGPUser);
+    user.userAttribute = self.userAttribute;
+    user.selfCertifications = [[NSArray alloc] initWithArray:self.selfCertifications copyItems:YES];
+    user.otherSignatures = [[NSArray alloc] initWithArray:self.otherSignatures copyItems:YES];
+    user.revocationSignatures = [[NSArray alloc] initWithArray:self.revocationSignatures copyItems:YES];
+    return user;
 }
 
 @end

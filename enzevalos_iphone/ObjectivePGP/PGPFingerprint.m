@@ -1,9 +1,9 @@
 //
-//  PGPFingerprint.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 14/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPFingerprint.h"
@@ -26,7 +26,7 @@
     for (NSUInteger i = 0; i < self.hashedData.length; ++i) {
         [sbuf appendFormat:@"%02X", (unsigned int)buf[i]];
     }
-    return [sbuf copy];
+    return sbuf;
 }
 
 #pragma mark - isEqual

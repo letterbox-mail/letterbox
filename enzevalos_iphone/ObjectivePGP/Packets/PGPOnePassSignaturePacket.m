@@ -1,14 +1,17 @@
 //
-//  PGPOnePassSignaturePacket.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 29/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPOnePassSignaturePacket.h"
 #import "PGPKeyID.h"
+#import "PGPMacros.h"
 #import "PGPMacros+Private.h"
+#import "PGPFoundation.h"
+#import "NSMutableData+PGPUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
     return PGPOnePassSignaturePacketTag;
 }
 
-- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError *__autoreleasing *)error {
+- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError * __autoreleasing _Nullable *)error {
     NSUInteger position = [super parsePacketBody:packetBody error:error];
 
     [packetBody getBytes:&_version range:(NSRange){position, 1}];
@@ -40,33 +43,82 @@ NS_ASSUME_NONNULL_BEGIN
     [packetBody getBytes:&_publicKeyAlgorithm range:(NSRange){position, 1}];
     position = position + 1;
 
-    PGPKeyID *keyID = [[PGPKeyID alloc] initWithLongKey:[packetBody subdataWithRange:(NSRange){position, 8}]];
-    self.keyID = keyID;
+    self.keyID = [[PGPKeyID alloc] initWithLongKey:[packetBody subdataWithRange:(NSRange){position, 8}]];
     position = position + 8;
 
-    [packetBody getBytes:&_notNested range:(NSRange){position, 1}];
+    BOOL nestedValue;
+    [packetBody getBytes:&nestedValue range:(NSRange){position, 1}];
+    _isNested = nestedValue == 0 ? YES : NO;
     position = position + 1;
 
     return position;
 }
 
+#pragma mark - isEqual
+
+- (BOOL)isEqual:(id)other {
+    if (self == other) { return YES; }
+    if ([super isEqual:other] && [other isKindOfClass:self.class]) {
+        return [self isEqualToOnePassSignaturePacket:other];
+    }
+    return NO;
+}
+
+- (BOOL)isEqualToOnePassSignaturePacket:(PGPOnePassSignaturePacket *)packet {
+    return self.version == packet.version &&
+           self.signatureType == packet.signatureType &&
+           self.hashAlgorith == packet.hashAlgorith &&
+           self.publicKeyAlgorithm == packet.publicKeyAlgorithm &&
+           PGPEqualObjects(self.keyID, packet.keyID) &&
+           self.isNested == packet.isNested;
+}
+
+- (NSUInteger)hash {
+    NSUInteger prime = 31;
+    NSUInteger result = [super hash];
+    result = prime * result + self.version;
+    result = prime * result + self.signatureType;
+    result = prime * result + self.hashAlgorith;
+    result = prime * result + self.publicKeyAlgorithm;
+    result = prime * result + self.keyID.hash;
+    result = prime * result + self.isNested;
+    return result;
+}
+
+#pragma mark - NSCopying
+
+- (instancetype)copyWithZone:(nullable NSZone *)zone {
+    let _Nullable duplicate = PGPCast([super copyWithZone:zone], PGPOnePassSignaturePacket);
+    if (!duplicate) {
+        return nil;
+    }
+
+    duplicate.version = self.version;
+    duplicate.signatureType = self.signatureType;
+    duplicate.hashAlgorith = self.hashAlgorith;
+    duplicate.publicKeyAlgorithm = self.publicKeyAlgorithm;
+    duplicate.keyID = self.keyID;
+    duplicate.isNested = self.isNested;
+    return duplicate;
+}
+
 #pragma mark - PGPExportable
 
-- (nullable NSData *)export:(NSError *__autoreleasing _Nullable *)error {
+- (nullable NSData *)export:(NSError * __autoreleasing _Nullable *)error {
     NSAssert(self.keyID, @"Missing keyID");
 
-    weakify(self);
+    pgpweakify(self);
     return [PGPPacket buildPacketOfType:self.tag withBody:^NSData * {
-        strongify(self)
+        pgpstrongify(self)
         let bodyData = [NSMutableData data];
 
         [bodyData appendBytes:&self->_version length:1];
         [bodyData appendBytes:&self->_signatureType length:1];
         [bodyData appendBytes:&self->_hashAlgorith length:1];
         [bodyData appendBytes:&self->_publicKeyAlgorithm length:1];
-        [bodyData appendData:[self.keyID export:nil]];
+        [bodyData pgp_appendData:[self.keyID export:error]];
 
-        [bodyData appendBytes:&self->_notNested length:1];
+        [bodyData appendBytes:&self->_isNested length:1];
 
         return bodyData;
     }];

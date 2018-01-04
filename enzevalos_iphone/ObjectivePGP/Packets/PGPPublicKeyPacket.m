@@ -1,9 +1,9 @@
 //
-//  OpenPGPPublicKey.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 04/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPPublicKeyPacket+Private.h"
@@ -12,6 +12,7 @@
 #import "PGPMPI.h"
 #import "PGPRSA.h"
 #import "PGPTypes.h"
+#import "PGPFoundation.h"
 #import "NSMutableData+PGPUtils.h"
 #import "PGPMacros+Private.h"
 
@@ -29,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
     if ((self = [super init])) {
         _version = 0x04;
         _createDate = NSDate.date;
+        _publicMPIs = [NSArray<PGPMPI *> array];
     }
     return self;
 }
@@ -41,18 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
     return [NSString stringWithFormat:@"%@ %@", [super description], self.keyID];
 }
 
-- (NSUInteger)keySize {
-    for (PGPMPI *mpi in self.publicMPIArray) {
-        if ([mpi.identifier isEqualToString:PGPMPI_N]) {
-            return (mpi.bigNum.bitsCount + 7) / 8; // ks
-        }
-    }
-    return 0;
-}
-
 - (nullable PGPMPI *)publicMPI:(NSString *)identifier {
-    for (PGPMPI *mpi in self.publicMPIArray) {
-        if ([mpi.identifier isEqualToString:identifier]) {
+    for (PGPMPI *mpi in self.publicMPIs) {
+        if (PGPEqualObjects(mpi.identifier, identifier)) {
             return mpi;
         }
     }
@@ -60,7 +53,16 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
 }
 
-#pragma mark - KeyID and Fingerprint
+#pragma mark - Properties
+
+- (NSUInteger)keySize {
+    for (PGPMPI *mpi in self.publicMPIs) {
+        if (PGPEqualObjects(mpi.identifier, PGPMPI_N)) {
+            return (mpi.bigNum.bitsCount + 7) / 8; // ks
+        }
+    }
+    return 0;
+}
 
 /**
  *  12.2.  Key IDs and Fingerprints
@@ -88,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param packetBody Packet body
  */
-- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError *__autoreleasing *)error {
+- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError * __autoreleasing _Nullable *)error {
     NSUInteger position = [super parsePacketBody:packetBody error:error];
 
     // A one-octet version number (2,3,4).
@@ -131,7 +133,7 @@ NS_ASSUME_NONNULL_BEGIN
             let mpiE = [[PGPMPI alloc] initWithMPIData:packetBody identifier:PGPMPI_E atPosition:position];
             position = position + mpiE.packetLength;
 
-            self.publicMPIArray = @[mpiN, mpiE];
+            self.publicMPIs = @[mpiN, mpiE];
         } break;
         case PGPPublicKeyAlgorithmDSA:
         case PGPPublicKeyAlgorithmECDSA: {
@@ -151,7 +153,7 @@ NS_ASSUME_NONNULL_BEGIN
             let mpiY = [[PGPMPI alloc] initWithMPIData:packetBody identifier:PGPMPI_Y atPosition:position];
             position = position + mpiY.packetLength;
 
-            self.publicMPIArray = @[mpiP, mpiQ, mpiG, mpiY];
+            self.publicMPIs = @[mpiP, mpiQ, mpiG, mpiY];
         } break;
         case PGPPublicKeyAlgorithmElgamal:
         case PGPPublicKeyAlgorithmElgamalEncryptorSign: {
@@ -167,10 +169,12 @@ NS_ASSUME_NONNULL_BEGIN
             let mpiY = [[PGPMPI alloc] initWithMPIData:packetBody identifier:PGPMPI_Y atPosition:position];
             position = position + mpiY.packetLength;
 
-            self.publicMPIArray = @[mpiP, mpiG, mpiY];
+            self.publicMPIs = @[mpiP, mpiG, mpiY];
         } break;
         default:
-            @throw [NSException exceptionWithName:@"Unknown Algorithm" reason:@"Given algorithm is not supported" userInfo:nil];
+            if (error) {
+                *error = [NSError errorWithDomain:PGPErrorDomain code:PGPErrorGeneral userInfo:@{ NSLocalizedDescriptionKey: @"Public key algorithm is not supported" }];
+            }
             break;
     }
 
@@ -200,7 +204,7 @@ NS_ASSUME_NONNULL_BEGIN
     [data appendBytes:&_publicKeyAlgorithm length:1];
 
     // publicMPI is always available, no need to decrypt
-    for (PGPMPI *mpi in self.publicMPIArray) {
+    for (PGPMPI *mpi in self.publicMPIs) {
         let exportMPI = [mpi exportMPI];
         [data pgp_appendData:exportMPI];
     }
@@ -236,29 +240,6 @@ NS_ASSUME_NONNULL_BEGIN
     return [PGPPacket buildPacketOfType:self.tag withBody:^NSData * {
         return [self buildKeyBodyData:NO];
     }];
-
-    //TODO: to be removed when verified
-    //    let data = [NSMutableData data];
-    //
-    //    let bodyData = [self buildKeyBodyData:NO];
-    //    if (!self.bodyData) {
-    //        self.bodyData = bodyData;
-    //    }
-    //
-    //    let headerData = [self buildHeaderData:bodyData];
-    //    if (!self.headerData) {
-    //        self.headerData = headerData;
-    //    }
-    //    [data appendData:headerData];
-    //    [data appendData:bodyData];
-    //
-    //    // it wont match, because input data is OLD world, and we export in NEW world format
-    //    // NSAssert([headerData isEqualToData:self.headerData], @"Header not match");
-    //    if ([self class] == [PGPPublicKeyPacket class]) {
-    //        NSAssert([bodyData isEqualToData:self.bodyData], @"Body doesn't match");
-    //    }
-    //
-    //    return data;
 }
 
 #pragma mark - Encrypt & Decrypt
@@ -279,19 +260,49 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
 }
 
+#pragma mark - isEqual
+
+- (BOOL)isEqual:(id)other {
+    if (self == other) { return YES; }
+    if ([super isEqual:other] && [other isKindOfClass:self.class]) {
+        return [self isEqualToKeyPacket:other];
+    }
+    return NO;
+}
+
+- (BOOL)isEqualToKeyPacket:(PGPPublicKeyPacket *)packet {
+    return self.version == packet.version &&
+           self.publicKeyAlgorithm == packet.publicKeyAlgorithm &&
+           self.V3validityPeriod == packet.V3validityPeriod &&
+           PGPEqualObjects(self.createDate, packet.createDate) &&
+           PGPEqualObjects(self.publicMPIs, packet.publicMPIs);
+}
+
+- (NSUInteger)hash {
+    NSUInteger prime = 31;
+    NSUInteger result = [super hash];
+    result = prime * result + self.version;
+    result = prime * result + self.publicKeyAlgorithm;
+    result = prime * result + self.V3validityPeriod;
+    result = prime * result + self.createDate.hash;
+    result = prime * result + self.publicMPIs.hash;
+    return result;
+}
+
+
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(nullable NSZone *)zone {
-    let _Nullable copy = PGPCast([super copyWithZone:zone], PGPPublicKeyPacket);
-    if (!copy) {
+    let _Nullable duplicate = PGPCast([super copyWithZone:zone], PGPPublicKeyPacket);
+    if (!duplicate) {
         return nil;
     }
-    copy.version = self.version;
-    copy.createDate = [self.createDate copy];
-    copy.V3validityPeriod = self.V3validityPeriod;
-    copy.publicKeyAlgorithm = self.publicKeyAlgorithm;
-    copy.publicMPIArray = [self.publicMPIArray copy];
-    return copy;
+    duplicate.version = self.version;
+    duplicate.publicKeyAlgorithm = self.publicKeyAlgorithm;
+    duplicate.V3validityPeriod = self.V3validityPeriod;
+    duplicate.createDate = self.createDate;
+    duplicate.publicMPIs = [[NSArray alloc] initWithArray:self.publicMPIs copyItems:YES];
+    return duplicate;
 }
 
 @end

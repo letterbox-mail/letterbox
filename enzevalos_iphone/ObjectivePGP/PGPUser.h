@@ -1,34 +1,22 @@
 //
-//  PGPUser.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 15/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPMacros.h"
-#import "PGPPacket.h"
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class PGPUserIDPacket, PGPUserAttributePacket, PGPSignaturePacket, PGPPartialKey;
-
-@interface PGPUser : NSObject
+NS_SWIFT_NAME(User) @interface PGPUser : NSObject <NSCopying>
 
 @property (nonatomic, copy) NSString *userID;
-@property (nonatomic) PGPUserAttributePacket *userAttribute;
-@property (nonatomic) NSArray<PGPSignaturePacket *> *selfCertifications;
-@property (nonatomic) NSArray<PGPSignaturePacket *> *otherSignatures;
-@property (nonatomic) NSArray<PGPSignaturePacket *> *revocationSignatures;
-
-@property (nonatomic) PGPUserIDPacket *userIDPacket;
-@property (nonatomic) NSArray<PGPPacket *> *allPackets;
+@property (nonatomic, nullable) NSData *image;
 
 PGP_EMPTY_INIT_UNAVAILABLE
-
-- (instancetype)initWithUserIDPacket:(PGPUserIDPacket *)userPacket NS_DESIGNATED_INITIALIZER;
-- (nullable PGPSignaturePacket *)validSelfCertificate:(PGPPartialKey *)key;
 
 @end
 

@@ -1,18 +1,19 @@
 //
-//  PGPS2K.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 07/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPMacros.h"
 #import "PGPTypes.h"
+#import "PGPExportableProtocol.h"
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PGPS2K : NSObject <NSCopying>
+@interface PGPS2K : NSObject <NSCopying, PGPExportable>
 
 @property (nonatomic, readonly) PGPS2KSpecifier specifier;
 @property (nonatomic, readonly) PGPHashAlgorithm hashAlgorithm;
@@ -29,7 +30,7 @@ PGP_EMPTY_INIT_UNAVAILABLE
 
 - (nullable NSData *)buildKeyDataForPassphrase:(NSData *)passphrase prefix:(nullable NSData *)prefix salt:(NSData *)salt codedCount:(UInt32)codedCount;
 - (nullable NSData *)produceSessionKeyWithPassphrase:(NSString *)passphrase symmetricAlgorithm:(PGPSymmetricAlgorithm)symmetricAlgorithm;
-- (nullable NSData *)export:(NSError *__autoreleasing *)error;
+- (nullable NSData *)export:(NSError * __autoreleasing _Nullable *)error;
 
 @end
 
