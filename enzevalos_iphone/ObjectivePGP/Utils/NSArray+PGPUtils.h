@@ -6,20 +6,19 @@
 //  This notice may not be removed from this file.
 //
 
-#import "PGPBigNum.h"
-#import "PGPMacros.h"
-#import <openssl/bn.h>
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PGPBigNum ()
+@interface NSMutableArray <ObjectType> (PGPUtils)
 
-@property (nonatomic, readonly) BIGNUM *bignumRef;
+- (void)pgp_addObject:(nullable ObjectType)anObject;
 
-PGP_EMPTY_INIT_UNAVAILABLE;
+@end
 
-- (instancetype)initWithBIGNUM:(BIGNUM *)bignumRef;
+@interface NSArray <ObjectType> (PGPUtils)
+
+- (NSArray<ObjectType> *)pgp_objectsPassingTest:(BOOL (^)(ObjectType obj, BOOL *stop))predicate;
 
 @end
 

@@ -1,4 +1,3 @@
-//
 //  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
 //  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
@@ -6,20 +5,13 @@
 //  This notice may not be removed from this file.
 //
 
-#import "PGPBigNum.h"
-#import "PGPMacros.h"
-#import <openssl/bn.h>
-#import <Foundation/Foundation.h>
+#import "ObjectivePGP-Private.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PGPBigNum ()
+@interface PGPUserAttributeImageSubpacket : PGPUserAttributeSubpacket
 
-@property (nonatomic, readonly) BIGNUM *bignumRef;
-
-PGP_EMPTY_INIT_UNAVAILABLE;
-
-- (instancetype)initWithBIGNUM:(BIGNUM *)bignumRef;
+@property (nonatomic, nullable) NSData *image;
 
 @end
 

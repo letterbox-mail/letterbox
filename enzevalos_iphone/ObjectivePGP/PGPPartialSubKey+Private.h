@@ -6,15 +6,10 @@
 //  This notice may not be removed from this file.
 //
 
-#import "PGPUserAttributeSubpacket.h"
-#import "PGPPacket.h"
+#import "ObjectivePGP.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@interface PGPPartialSubKey ()
 
-@interface PGPUserAttributePacket : PGPPacket <NSCopying>
-
-@property (nonatomic, copy) NSArray<PGPUserAttributeSubpacket *> *subpackets;
+@property (nonatomic, nullable, copy) PGPSignaturePacket *bindingSignature;
 
 @end
-
-NS_ASSUME_NONNULL_END

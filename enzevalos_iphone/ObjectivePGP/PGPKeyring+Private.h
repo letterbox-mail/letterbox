@@ -6,21 +6,19 @@
 //  This notice may not be removed from this file.
 //
 
-#import "PGPBigNum.h"
-#import "PGPMacros.h"
-#import <openssl/bn.h>
+#import "PGPKeyring.h"
+#import "PGPKey.h"
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PGPBigNum ()
+@interface PGPKeyring ()
 
-@property (nonatomic, readonly) BIGNUM *bignumRef;
-
-PGP_EMPTY_INIT_UNAVAILABLE;
-
-- (instancetype)initWithBIGNUM:(BIGNUM *)bignumRef;
+// Private
++ (nullable PGPKey *)findKeyWithKeyID:(PGPKeyID *)searchKeyID in:(NSArray<PGPKey *> *)keys;
++ (NSArray<PGPKey *> *)addOrUpdatePartialKey:(nullable PGPPartialKey *)key inContainer:(NSArray<PGPKey *> *)keys;
 
 @end
 
 NS_ASSUME_NONNULL_END
+
