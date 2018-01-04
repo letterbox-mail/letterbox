@@ -806,6 +806,9 @@ class DataHandler {
                 switch signState {
                 case SignatureState.NoSignature:
                     mail.isSigned = false
+                case SignatureState.NoPublicKey:
+                    mail.isSigned = true
+                    mail.isCorrectlySigned = false
                 case SignatureState.InvalidSignature:
                     mail.isSigned = true
                     mail.isCorrectlySigned = true
