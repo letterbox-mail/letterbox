@@ -254,6 +254,8 @@ class SwiftPGP: Encryption{
                 print(error)
             }
         }
+        
+        
         return CryptoObject(chiphertext: nil, plaintext: nil,decryptedData: nil, sigState: SignatureState.InvalidSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: cryptoScheme, signedAdrs: signedAdr)
         
     }

@@ -386,7 +386,8 @@ class DataHandler {
         let pgp = SwiftPGP()
         let key = pgp.generateKey(adr: adr)
         let sk = DataHandler.handler.newSecretKey(keyID: key)
-        _ = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false, newGenerated: true)
+        let pk = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false, newGenerated: true)
+        pk.sentOwnPublicKey = true
         return sk
     }
 
@@ -398,6 +399,10 @@ class DataHandler {
             search.lastSeen = date
             if autocrypt {
                 search.lastSeenAutocrypt = date
+                search.sentOwnPublicKey = true
+            }
+            else{
+                
             }
             search.addToMailaddress(adr)
             pk = search
@@ -422,6 +427,7 @@ class DataHandler {
             pk.firstMail = firstMail
             if autocrypt {
                 pk.lastSeenAutocrypt = date
+                pk.sentOwnPublicKey = true
             }
             var found = false
             while !found {

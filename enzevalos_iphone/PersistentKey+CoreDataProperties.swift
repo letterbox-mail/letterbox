@@ -24,6 +24,7 @@ extension PersistentKey {
     @NSManaged public var mailaddress: NSSet?
     @NSManaged public var firstMail: PersistentMail?
     @NSManaged public var pseudonym: String
+    @NSManaged public var sentOwnPublicKey: Bool
     
     public var prefer_encryption: EncState{
         set {
