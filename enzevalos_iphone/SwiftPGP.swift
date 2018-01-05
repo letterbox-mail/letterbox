@@ -112,9 +112,11 @@ class SwiftPGP: Encryption{
     
     func generateKey(adr: String) -> String{
         let gen = KeyGenerator()
-        let pw = generatePW(size: PasscodeSize)
+        let pw: String? = nil //generatePW(size: PasscodeSize)
         let key = gen.generate(for: "\(adr) <\(adr)>", passphrase: pw)
-        pwKeyChain[key.keyID.longIdentifier] = pw
+        if pw != nil{
+            pwKeyChain[key.keyID.longIdentifier] = pw
+        }
         return storeKey(key: key)
     }
     
@@ -136,7 +138,7 @@ class SwiftPGP: Encryption{
         for key in keys{
             if key.isSecret{
                 //test key{
-                let m = try ObjectivePGP.sign("1234".data(using: .utf8)!, detached: false, using: [key], passphraseForKey: {(key) -> String? in return pw})
+                try ObjectivePGP.sign("1234".data(using: .utf8)!, detached: false, using: [key], passphraseForKey: {(key) -> String? in return pw})
             }
         }
         return storeMultipleKeys(keys: keys, pw: pw, secret: isSecretKey)
@@ -191,14 +193,14 @@ class SwiftPGP: Encryption{
                     if autocrypt{
                         // Create Autocrypt Setup-message
                         // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
-                       // var passcode = loadPassword(id: id)
-                       // if passcode == nil{
-                         //   passcode = generatePW(size: PasscodeSize)
-                       // }
-                       // exportPwKeyChain[key.keyID.longKeyString] = passcode
-                       // let cipher = try! pgp.symmetricEncrypt(keyData, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: true)
+                        var passcode = loadPassword(id: id)
+                        if passcode == nil{
+                            passcode = generatePW(size: PasscodeSize)
+                        }
+                        exportPwKeyChain[key.keyID.longIdentifier] = passcode
+                        let cipher = try! ObjectivePGP.symmetricEncrypt(keyData, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: true)
                         
-                        //return cipher
+                        return cipher
                     }
                     return keyData
                 }
@@ -228,22 +230,28 @@ class SwiftPGP: Encryption{
     
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject{
         var keys = [Key]()
-        let signKey = loadKey(id: myId)
         for id in ids{
             if let key = loadKey(id: id){
                 keys.append(key)
+                print("ID to encrypt: \(id)")
             }
         }
+        let signKey = loadKey(id: myId)
         if signKey != nil{
+            print("signing id: \(myId)")
             keys.append(signKey!)
         }
         let signedAdr = vaildAddress(key: signKey)
         if let data = plaintext.data(using: String.Encoding.utf8){
             do{
                 let chipher = try ObjectivePGP.encrypt(data, addSignature: true, using: keys, passphraseForKey: loadPassword)
-                return CryptoObject(chiphertext: chipher, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
+                let armorChipherString = Armor.armored(chipher, as: .message)
+                print("Encrypted: \n \(armorChipherString)")
+                let armorChipherData = armorChipherString.data(using: .utf8)
+                return CryptoObject(chiphertext: armorChipherData, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
             } catch {
-                print("Encryption error!") //TODO: Error handling!
+                print("Encryption error!")
+                print(error)
             }
         }
         return CryptoObject(chiphertext: nil, plaintext: nil,decryptedData: nil, sigState: SignatureState.InvalidSignature, encState: EncryptionState.UnableToDecrypt, signKey: nil, encType: cryptoScheme, signedAdrs: signedAdr)
@@ -251,64 +259,39 @@ class SwiftPGP: Encryption{
     }
     
     func decrypt(data: Data,decryptionIDs: [String], verifyIds: [String], fromAdr: String?) -> CryptoObject{
-        var cryptoObject: CryptoObject? = nil
-        for decId in decryptionIDs{
-            let temp = decrypt(data: data, decryptionId: decId, verifyIds: verifyIds, fromAdr: fromAdr)
-            if temp.encryptionState != EncryptionState.UnableToDecrypt{
-                cryptoObject = temp
-                if decId != DataHandler.handler.prefSecretKey().keyID{
-                    temp.encryptionState = EncryptionState.ValidEncryptedWithOldKey
-                }
-                else{
-                    break
-                }
-            }
-        }
-        if let c = cryptoObject {
-            return c
-        }
-        return decrypt(data: data, decryptionId: nil, verifyIds: verifyIds, fromAdr: fromAdr)
-    }
-    
-    func decrypt(data: Data,decryptionId: String?, verifyIds: [String], fromAdr: String?) -> CryptoObject{
         var plaindata: Data? = nil
+        var plaintext: String? = nil
         var sigState = SignatureState.NoSignature
         var encState = EncryptionState.UnableToDecrypt
         var sigKeyID: String? = nil
         var signedAdr = [String]()
-        var decKey: Key
-        var encForCurrentSK = false
+        let prefID = DataHandler.handler.prefSecretKey().keyID
         var keys = [Key]()
-
-        if let decIDs = try? ObjectivePGP.recipientsKeyID(forMessage: data){
-            let currentSkID =  DataHandler.handler.prefSecretKey().keyID
-            for id in decIDs{
-                if let key = loadKey(id: id.longIdentifier){
-                    decKey = key
-                    keys.append(decKey)
+        /*
+             DECRYPTION
+         */
+        // TODO: Maybe consider: try ObjectivePGP.recipientsKeyID(forMessage: ...) but currently not working...
+        for decID in decryptionIDs{
+            if let decKey = loadKey(id: decID){
+                if decID == prefID{
+                    let (currentPlain, currentEncState) = decryptMessage(data: data, keys: [decKey], encForCurrentSK: true)
+                    if encState != EncryptionState.ValidEncryptedWithOldKey || currentEncState == EncryptionState.ValidedEncryptedWithCurrentKey{
+                        plaindata = currentPlain
+                        encState = currentEncState
+                    }
                 }
-                if id.longIdentifier == currentSkID{
-                    encForCurrentSK = true
-                    break
-                }
-                
+                keys.append(decKey)
             }
         }
-        
-        if let plain = try? ObjectivePGP.decrypt(data, andVerifySignature: false, using: keys, passphraseForKey: loadPassword){
-            plaindata = plain
-            if encForCurrentSK{
-                encState = EncryptionState.ValidedEncryptedWithCurrentKey
-            }
-            else{
-                encState = EncryptionState.ValidEncryptedWithOldKey
-            }
+        if encState != EncryptionState.ValidedEncryptedWithCurrentKey{
+            (plaindata, encState) = decryptMessage(data: data, keys: keys, encForCurrentSK: false)
         }
-        else{
-            encState = EncryptionState.UnableToDecrypt
-        }
-        // test if message ist signed
+        /*
+             VERIFICATION
+         */
+       // test if message ist signed
         sigState = verifyMessage(data: data, keys: keys)
+        
         for id in verifyIds{
             if let key = loadKey(id: id){
                 keys.append(key)
@@ -324,30 +307,60 @@ class SwiftPGP: Encryption{
                 }
             }
         }
+        
         if encState == EncryptionState.UnableToDecrypt{
             sigState = SignatureState.NoSignature
         }
-        var plaintext: String? = nil
         if plaindata != nil{
             plaintext = plaindata?.base64EncodedString()
         }
         return CryptoObject(chiphertext: data, plaintext: plaintext, decryptedData: plaindata, sigState: sigState, encState: encState, signKey: sigKeyID, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
     }
     
+    
+    func decrypt(data: Data,decryptionId: String?, verifyIds: [String], fromAdr: String?) -> CryptoObject{
+        if let decId = decryptionId{
+            return decrypt(data: data, decryptionIDs: [decId], verifyIds: verifyIds, fromAdr: fromAdr)
+        }
+        return decrypt(data: data, decryptionIDs: [String](), verifyIds: verifyIds, fromAdr: fromAdr)
+    }
+    
+    
+    private func decryptMessage(data: Data, keys: [Key], encForCurrentSK: Bool) -> (Data?, EncryptionState){
+        if let dataString = String(data: data, encoding: .utf8), let unarmored = try? Armor.readArmored(dataString){
+            if let plain = try? ObjectivePGP.decrypt(unarmored, andVerifySignature: true, using: keys, passphraseForKey: loadPassword){
+                if encForCurrentSK{
+                    return (plain, EncryptionState.ValidedEncryptedWithCurrentKey)
+                }
+                else{
+                    return(plain, EncryptionState.ValidEncryptedWithOldKey)
+                }
+            }
+            else{
+                return (nil, EncryptionState.UnableToDecrypt)
+            }
+        }
+        return (nil, EncryptionState.NoEncryption)
+    }
+    
     private func verifyMessage(data: Data, keys: [Key]) -> SignatureState{
-        do{
-            try ObjectivePGP.verify(data, withSignature: nil, using: keys, passphraseForKey: loadPassword)
-        } catch {
-            let nsError = error as NSError
-            switch nsError.code {
-            case 7:
-                return SignatureState.NoPublicKey
-            case 8:
-                return SignatureState.NoSignature
-            case 9: // unable to decrypt
-                return SignatureState.InvalidSignature
-            default:
-                return SignatureState.InvalidSignature
+        if let dataString = String(data: data, encoding: .utf8), let unarmored = try? Armor.readArmored(dataString){
+            do{
+                try ObjectivePGP.verify(unarmored, withSignature: nil, using: keys, passphraseForKey: loadPassword)
+                return SignatureState.ValidSignature
+            } catch {
+                let nsError = error as NSError
+                print(error)
+                switch nsError.code {
+                case 7: // no public key
+                    return SignatureState.NoPublicKey
+                case 8: // no signature
+                    return SignatureState.NoSignature
+                case 9: // unable to decrypt
+                    return SignatureState.InvalidSignature
+                default:
+                    return SignatureState.InvalidSignature
+                }
             }
         }
         return SignatureState.NoSignature

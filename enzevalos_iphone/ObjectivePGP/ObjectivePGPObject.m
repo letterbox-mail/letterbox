@@ -824,6 +824,104 @@ NS_ASSUME_NONNULL_BEGIN
     }
     return encryptedMessage;
 }
++ (nullable NSData *)symmetricDecrypt:(NSData *)messageDataToDecrypt key:(nullable NSString *)encKey verifyWithKey:(nullable PGPKey *)key signed:(nullable BOOL *)isSigned valid:(nullable BOOL *)isValid integrityProtected:(nullable BOOL *)isIntegrityProtected error:(NSError *__autoreleasing _Nullable *)error {
+    PGPAssertClass(messageDataToDecrypt, NSData);
+    
+    let binaryMessages = [PGPArmor convertArmoredMessage2BinaryBlocksWhenNecessary:messageDataToDecrypt error:error];
+    
+    // decrypt first message only
+    let binaryMessageToDecrypt = binaryMessages.count > 0 ? binaryMessages.firstObject : nil;
+    if (!binaryMessageToDecrypt) {
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Invalid input data" }];
+        }
+        return nil;
+    }
+    
+    // parse packets
+    var packets = [self readPacketsFromData:binaryMessageToDecrypt];
+    PGPSymetricKeyEncryptedSessionKeyPacket *sessionKey = nil;
+    for (PGPPacket *packet in packets) {
+        if (packet.tag == PGPSymetricKeyEncryptedSessionKeyPacketTag){
+            sessionKey = PGPCast(packet, PGPSymetricKeyEncryptedSessionKeyPacket);
+            break;
+        }
+    }
+    
+    NSAssert(sessionKey, @"Missing session key data");
+    if (!sessionKey) {
+        if (error) {
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Missing session key data" }];
+        }
+        return nil;
+    }
+    
+    // 2
+    
+    NSAssert(sessionKey.s2k, @"Missing s2k data\n");
+    if (sessionKey.s2k == nil){
+        if (error){
+            *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Missing s2k data" }];
+        }
+        return nil;
+    }
+    let sessionKeyData = [sessionKey.s2k produceSessionKeyWithPassphrase: encKey symmetricAlgorithm:sessionKey.symmetricAlgorithm];
+    
+    for (PGPPacket *packet in packets) {
+        switch (packet.tag) {
+            case PGPSymmetricallyEncryptedIntegrityProtectedDataPacketTag: {
+                // decrypt PGPSymmetricallyEncryptedIntegrityProtectedDataPacket
+                let symEncryptedDataPacket = PGPCast(packet, PGPSymmetricallyEncryptedIntegrityProtectedDataPacket);
+                packets = [symEncryptedDataPacket decryptWithSessionKeyAlgorithm:sessionKey.symmetricAlgorithm sessionKeyData:sessionKeyData error:error];
+            } break;
+            default:
+                break;
+        }
+    }
+    
+    if (packets.count == 0) {
+        return nil;
+    }
+    
+    PGPLiteralPacket * _Nullable literalPacket = nil;
+    PGPSignaturePacket * _Nullable signaturePacket = nil;
+    for (PGPPacket *packet in packets) {
+        switch (packet.tag) {
+            case PGPCompressedDataPacketTag:
+            case PGPOnePassSignaturePacketTag:
+                // ignore here
+                break;
+            case PGPLiteralDataPacketTag:
+                literalPacket = PGPCast(packet, PGPLiteralPacket);
+                break;
+            case PGPSignaturePacketTag:
+                signaturePacket = PGPCast(packet, PGPSignaturePacket);
+                break;
+            default:
+                if (error) {
+                    *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Unknown packet (expected literal or compressed)" }];
+                }
+                return nil;
+        }
+    }
+    
+    BOOL dataIsSigned = signaturePacket != nil;
+    if (isSigned) { *isSigned = dataIsSigned; }
+    
+    // available if literalPacket is available
+    let _Nullable plaintextData = literalPacket.literalRawData;
+    if (!plaintextData) {
+        return nil;
+    }
+    
+    BOOL dataIsValid = NO;
+    if (signaturePacket && key.publicKey) {
+      // TODO
+    }
+    if (isValid) { *isValid = dataIsValid; }
+    
+    return plaintextData;
+}
 
 @end
 
