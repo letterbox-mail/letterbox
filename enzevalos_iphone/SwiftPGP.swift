@@ -229,24 +229,26 @@ class SwiftPGP: Encryption{
 
     
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject{
-        var keys = [Key]()
-        for id in ids{
-            if let key = loadKey(id: id){
-                keys.append(key)
-                print("ID to encrypt: \(id)")
-            }
-        }
+        let keyring = Keyring()
         let signKey = loadKey(id: myId)
         if signKey != nil{
             print("signing id: \(myId)")
-            keys.append(signKey!)
+            keyring.import(keys: [signKey!])
         }
         let signedAdr = vaildAddress(key: signKey)
+        for id in ids{
+            if let key = loadKey(id: id){
+                keyring.import(keys: [key])
+                print("ID to encrypt: \(id)")
+            }
+        }
         if let data = plaintext.data(using: String.Encoding.utf8){
             do{
-                let chipher = try ObjectivePGP.encrypt(data, addSignature: true, using: keys, passphraseForKey: loadPassword)
+                for key in keyring.keys{
+                    print("Key: \(key.keyID.longIdentifier) is secret?: \(key.isSecret)")
+                }
+                let chipher = try ObjectivePGP.encrypt(data, addSignature: true, using: keyring.keys, passphraseForKey: loadPassword)
                 let armorChipherString = Armor.armored(chipher, as: .message)
-                print("Encrypted: \n \(armorChipherString)")
                 let armorChipherData = armorChipherString.data(using: .utf8)
                 return CryptoObject(chiphertext: armorChipherData, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
             } catch {
@@ -268,7 +270,7 @@ class SwiftPGP: Encryption{
         var sigKeyID: String? = nil
         var signedAdr = [String]()
         let prefID = DataHandler.handler.prefSecretKey().keyID
-        var keys = [Key]()
+        let keyring = Keyring()
         /*
              DECRYPTION
          */
@@ -282,22 +284,22 @@ class SwiftPGP: Encryption{
                         encState = currentEncState
                     }
                 }
-                keys.append(decKey)
+                keyring.import(keys: [decKey])
             }
         }
         if encState != EncryptionState.ValidedEncryptedWithCurrentKey{
-            (plaindata, encState) = decryptMessage(data: data, keys: keys, encForCurrentSK: false)
+            (plaindata, encState) = decryptMessage(data: data, keys: keyring.keys, encForCurrentSK: false)
         }
         /*
              VERIFICATION
          */
        // test if message ist signed
-        sigState = verifyMessage(data: data, keys: keys)
+        sigState = verifyMessage(data: data, keys: keyring.keys)
         
         for id in verifyIds{
             if let key = loadKey(id: id){
-                keys.append(key)
-                let currentState = verifyMessage(data: data, keys: keys)
+                keyring.import(keys: [key])
+                let currentState = verifyMessage(data: data, keys: keyring.keys)
                 if currentState == SignatureState.ValidSignature{
                     sigState = currentState
                     sigKeyID = id
