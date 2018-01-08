@@ -7,3 +7,39 @@
 //
 
 import UIKit
+
+extension String {
+
+	/// Returns all Words (word is surrunded by whitespaces and newlines) within the given range
+	///
+	/// - Parameter range: range that includes all words that should be returned
+	/// - Returns: all single words within the Range
+	func words(inRange range: NSRange) -> [(word: String, index: Int)] {
+
+		let strings = self.components(separatedBy: .whitespacesAndNewlines)
+		var result = [(word: String, index: Int)]()
+
+		var index = 0
+		let start = range.location
+		let length = range.length
+
+		for string in strings {
+
+			guard (index < start + length) else {
+				break
+			}
+
+			guard (index + string.count >= start) else {
+				index += (1 + string.count)
+				continue
+			}
+
+			result.append((word: string, index: index))
+			index += (1 + string.count)
+		}
+
+		return result.filter({ (word: String, index: Int) -> Bool in
+			return (word.isEmpty == false)
+		})
+	}
+}

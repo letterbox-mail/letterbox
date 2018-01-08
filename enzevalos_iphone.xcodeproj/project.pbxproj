@@ -184,6 +184,8 @@
 		3EC35F2B2003766F008BDF95 /* InvitationDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */; };
 		3EC35F2D200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */; };
 		3EC35F2E200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */; };
+		3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2F2003838E008BDF95 /* InvitationTests.swift */; };
+		45262931B4C72A96C686C533 /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 		4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
 		471BC9051F960B7C00D64416 /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8961F960B7C00D64416 /* PGPCryptoHash.m */; };
 		471BC9061F960B7C00D64416 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */; };
@@ -252,7 +254,6 @@
 		472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398B1E2519C8009260FB /* CNContactExtension.swift */; };
 		472F398E1E251B8D009260FB /* MailAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398D1E251B8D009260FB /* MailAddress.swift */; };
 		472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398F1E252470009260FB /* CNMailAddressesExtension.swift */; };
-		473BA6421FCD4F0C00EB0D9E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
 		475B00331F7B9565006CDD41 /* SwiftPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00301F7B9565006CDD41 /* SwiftPGP.swift */; };
 		475B00341F7B9565006CDD41 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00311F7B9565006CDD41 /* Cryptography.swift */; };
 		475B00351F7B9565006CDD41 /* CryptoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00321F7B9565006CDD41 /* CryptoObject.swift */; };
@@ -290,20 +291,8 @@
 		8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */; };
 		8428A8701F436A1E007649A5 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
 		8428A8711F436A1E007649A5 /* GamificationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */; };
-		8428A8771F436A9D007649A5 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
-		8428A8791F436AA4007649A5 /* BadgeCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86A1F436A1E007649A5 /* BadgeCase.swift */; };
-		8428A87A1F436AA9007649A5 /* ArrowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */; };
-		8428A87B1F436AAC007649A5 /* UserNameGamificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8641F436A11007649A5 /* UserNameGamificationTableViewCell.swift */; };
-		8428A87C1F436AAF007649A5 /* SubBadgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8631F436A11007649A5 /* SubBadgeTableViewCell.swift */; };
-		8428A87D1F436AB2007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8621F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift */; };
-		8428A87E1F436AB5007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8601F436A11007649A5 /* BadgeCaseCollectionViewCell.swift */; };
-		8428A87F1F436AB8007649A5 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85A1F436A05007649A5 /* CircleView.swift */; };
-		8428A8801F436ABB007649A5 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8581F436A05007649A5 /* ArrowView.swift */; };
-		8428A8811F436AC0007649A5 /* GamificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85B1F436A05007649A5 /* GamificationData.swift */; };
-		8428A8821F436AC3007649A5 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8591F436A05007649A5 /* Badges.swift */; };
 		8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8561F4369EA007649A5 /* GamificationDataUnitTest.swift */; };
 		8428A8841F436ACC007649A5 /* GamificationElements.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8541F4369CF007649A5 /* GamificationElements.xcassets */; };
-		8428A8851F436AD5007649A5 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
 		9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */; };
 		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
 		A102AA8A1EDDB4F40024B457 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
@@ -382,14 +371,10 @@
 		F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
 		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
 		F1ADF0751FBDF7D20017AE31 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
-		F1ADF0761FBDF8120017AE31 /* PersistentMail +CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */; };
-		F1ADF0771FBDF9B40017AE31 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AF938E1E2D04BA00755128 /* CustomCells.swift */; };
 		F1C733351FEC1CE2005A497E /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1C733341FEC1CE2005A497E /* About.storyboard */; };
 		F1C7AC821FED6473007629DB /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C7AC811FED6473007629DB /* AboutViewController.swift */; };
-		F1E918D71FBDEECB00D60418 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E918D61FBDEECA00D60418 /* LoggerTests.swift */; };
 		F1F070281FA0DF3F004A860A /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1F070261FA0DF3F004A860A /* Inbox.storyboard */; };
-		F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -422,6 +407,7 @@
 		3EC35F2620037664008BDF95 /* InvitationApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationApi.swift; sourceTree = "<group>"; };
 		3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDialogViewController.swift; sourceTree = "<group>"; };
 		3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendViewController+Invitation.swift"; sourceTree = "<group>"; };
+		3EC35F2F2003838E008BDF95 /* InvitationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationTests.swift; sourceTree = "<group>"; };
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		471BC8951F960B7C00D64416 /* PGPCryptoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoHash.h; sourceTree = "<group>"; };
@@ -718,7 +704,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */,
+				45262931B4C72A96C686C533 /* Pods_enzevalos_iphoneTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1148,6 +1134,7 @@
 				A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */,
 				A13526921D955BE000D3BFE1 /* Info.plist */,
 				F1E918D61FBDEECA00D60418 /* LoggerTests.swift */,
+				3EC35F2F2003838E008BDF95 /* InvitationTests.swift */,
 			);
 			path = enzevalos_iphoneTests;
 			sourceTree = "<group>";
@@ -1542,7 +1529,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8428A8841F436ACC007649A5 /* GamificationElements.xcassets in Resources */,
-				8428A8851F436AD5007649A5 /* Gamification.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1624,9 +1610,20 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BZipCompression/BZipCompression.framework",
+				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/Onboard/Onboard.framework",
+				"${BUILT_PRODUCTS_DIR}/VENTokenField/VENTokenField.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BZipCompression.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FrameAccessor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Onboard.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VENTokenField.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1711,9 +1708,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2076,23 +2076,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1ADF0771FBDF9B40017AE31 /* Mail.swift in Sources */,
-				8428A8771F436A9D007649A5 /* LinearBadgeViewController.swift in Sources */,
-				8428A87A1F436AA9007649A5 /* ArrowTableViewCell.swift in Sources */,
 				A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */,
-				8428A87B1F436AAC007649A5 /* UserNameGamificationTableViewCell.swift in Sources */,
 				8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */,
-				8428A8811F436AC0007649A5 /* GamificationData.swift in Sources */,
-				F1ADF0761FBDF8120017AE31 /* PersistentMail +CoreDataClass.swift in Sources */,
-				473BA6421FCD4F0C00EB0D9E /* Logger.swift in Sources */,
-				8428A87F1F436AB8007649A5 /* CircleView.swift in Sources */,
-				8428A87E1F436AB5007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
-				8428A8821F436AC3007649A5 /* Badges.swift in Sources */,
-				8428A8801F436ABB007649A5 /* ArrowView.swift in Sources */,
-				8428A87D1F436AB2007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */,
-				8428A87C1F436AAF007649A5 /* SubBadgeTableViewCell.swift in Sources */,
-				8428A8791F436AA4007649A5 /* BadgeCase.swift in Sources */,
-				F1E918D71FBDEECB00D60418 /* LoggerTests.swift in Sources */,
+				3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2389,6 +2375,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2440,6 +2427,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2484,11 +2472,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6EBCCD02AD3B95D8317810E2 /* Pods-enzevalos_iphoneTests.debug.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/enzevalos_iphone.app/enzevalos_iphone";
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
 		};
@@ -2496,11 +2486,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/enzevalos_iphone.app/enzevalos_iphone";
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};
