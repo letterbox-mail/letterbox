@@ -384,11 +384,11 @@ extension ContactViewController: UITableViewDataSource {
         if (keyRecord?.ezContact.records.count ?? 0) > 1 {
             sections += 1
         }
-        if isUser {
-            sections += 1
-        }
         if let hasKey = keyRecord?.hasKey, hasKey {
             sections += 1
+            if isUser {
+                sections += 1
+            }
         }
         return sections
     }
