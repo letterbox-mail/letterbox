@@ -10,6 +10,10 @@ import UIKit
 
 extension String {
 
+	/// Returns all Words (word is surrunded by whitespaces and newlines) within the given range
+	///
+	/// - Parameter range: range that includes all words that should be returned
+	/// - Returns: all single words within the Range
 	func words(inRange range: NSRange) -> [(word: String, index: Int)] {
 
 		let strings = self.components(separatedBy: .whitespacesAndNewlines)
