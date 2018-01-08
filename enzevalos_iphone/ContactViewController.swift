@@ -13,7 +13,7 @@ import ContactsUI
 
 class ContactViewController: UIViewController {
     var keyRecord: KeyRecord? = nil
-    var hasKey: Bool = false
+    var addressWithKey: MailAddress?
     var highlightEmail: String? = nil
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
@@ -35,11 +35,12 @@ class ContactViewController: UIViewController {
 
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
         if let con = keyRecord {
-            hasKey = false
             if let adrs = con.ezContact.addresses {
                 for adr in adrs {
                     let a = adr as! MailAddress
-                    hasKey = hasKey || a.hasKey
+                    if a.hasKey {
+                        addressWithKey = a
+                    }
                 }
             }
 
@@ -65,7 +66,7 @@ class ContactViewController: UIViewController {
         }
         navigationController?.toolbar.isHidden = false
     }
-    
+
     func dismissView() {
         self.dismiss(animated: true, completion: nil)
     }
@@ -170,9 +171,20 @@ class ContactViewController: UIViewController {
         } else if sender.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
             let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: NSLocalizedString("inviteText", comment: ""), uid: 0, predecessor: nil)
             performSegue(withIdentifier: "newMail", sender: mail)
-        } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") && keyRecord!.keyID != nil {
+        } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") {
             AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
-            performSegue(withIdentifier: "verifyQRCode", sender: keyRecord?.fingerprint)
+            var fingerprint: String?
+            if let keyRecordFingerprint = keyRecord?.fingerprint {
+                fingerprint = keyRecordFingerprint
+            } else {
+                if let keyID = addressWithKey?.Key?.keyID {
+                    let swiftPGP = SwiftPGP()
+                    if let key = swiftPGP.loadKey(id: keyID) {
+                        fingerprint = key.keyID.longKeyString
+                    }
+                }
+            }
+            performSegue(withIdentifier: "verifyQRCode", sender: fingerprint)
         } else if sender.titleLabel?.text == NSLocalizedString("ReadOnOtherDevices", comment: "ReadOnOtherDevices") && keyRecord!.keyID != nil {
             //AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
             performSegue(withIdentifier: "exportKeyFromKeyRecord", sender: nil)
@@ -211,9 +223,9 @@ class ContactViewController: UIViewController {
             destinationViewController.record = keyRecord
         } else if segue.identifier == "verifyQRCode" {
             if let DestinationViewController = segue.destination as? QRScannerView {
-                DestinationViewController.fingerprint = keyRecord?.fingerprint
+                DestinationViewController.fingerprint = sender as? String
                 DestinationViewController.callback = verifySuccessfull
-                DestinationViewController.keyId = self.keyRecord?.keyID //used for logging
+                DestinationViewController.keyId = self.keyRecord?.keyID //used for logging TODO @jakob: is this suficient? The keyID might also be in the MailAddress
                 Logger.queue.async(flags: .barrier) {
                     Logger.log(verify: self.keyRecord?.keyID ?? "noKeyID", open: true)
                 }
@@ -222,7 +234,11 @@ class ContactViewController: UIViewController {
     }
 
     func verifySuccessfull() {
-        keyRecord?.verify()
+        if keyRecord?.keyID != nil {
+            keyRecord?.verify()
+        } else {
+            addressWithKey?.Key?.verify()
+        }
         Logger.queue.async(flags: .barrier) {
             let keyId: String = self.keyRecord?.keyID ?? "noKeyID"
             Logger.log(verify: keyId, open: false, success: true)
@@ -255,7 +271,7 @@ extension ContactViewController: UITableViewDataSource {
                         cell.contactStatus.text = NSLocalizedString("notVerified", comment: "Contact is not verified jet")
                     } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                         cell.contactStatus.text = NSLocalizedString("otherEncryption", comment: "Contact is using encryption, this is the unsecure collection")
-                    } else if hasKey {
+                    } else if addressWithKey?.hasKey ?? false {
                         cell.contactStatus.text = NSLocalizedString("hasKeyButNoMail", comment: "We have a key to this contact but haven't received an encrypted mail jet")
                     } else {
                         cell.contactStatus.text = NSLocalizedString("noEncryption", comment: "Contact is not jet using encryption")
@@ -279,7 +295,7 @@ extension ContactViewController: UITableViewDataSource {
                             actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
                         } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                             actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
-                        } else if hasKey {
+                        } else if addressWithKey?.hasKey ?? false {
                             actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
                         } else {
                             actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
