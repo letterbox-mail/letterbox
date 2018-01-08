@@ -65,9 +65,16 @@ class ContactViewController: UIViewController {
         }
         navigationController?.toolbar.isHidden = false
     }
+    
+    func dismissView() {
+        self.dismiss(animated: true, completion: nil)
+    }
 
     func prepareContactSheet() {
         guard !isUser else {
+            if let viewControllers = navigationController?.viewControllers.count, viewControllers == 1 {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
+            }
             return
         }
 
