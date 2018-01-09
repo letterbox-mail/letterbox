@@ -359,8 +359,8 @@ class Logger {
         }
         
         newSubject += sha256(oldSubject+subjectSalt) ?? "ErrorInHashGeneration" //DataHandler().getPseudonymSubject(subject: oldSubject).pseudonym//DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
-        
-        return newSubject
+        return ""
+        //return newSubject
     }
     
     //takes backendFolderPath
