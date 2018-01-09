@@ -6,6 +6,7 @@
 //  Copyright © 2017 fu-berlin. All rights reserved.
 //
 import XCTest
+
 @testable import enzevalos_iphone
 
 class GamificationDataUnitTest: XCTestCase {

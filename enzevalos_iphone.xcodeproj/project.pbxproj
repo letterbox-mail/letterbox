@@ -9,29 +9,46 @@
 /* Begin PBXBuildFile section */
 		3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
 		3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
+		3E9708B31FAC95F5005825C9 /* PGPPartialKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F01F960B7C00D64416 /* PGPPartialKey.m */; };
 		3E9708B41FAC95F5005825C9 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		3E9708B51FAC95F5005825C9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39891E251787009260FB /* Contact.swift */; };
 		3E9708B61FAC95F5005825C9 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39851E1FA34E009260FB /* Record.swift */; };
+		3E9708B71FAC95F5005825C9 /* PGPPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AF1F960B7C00D64416 /* PGPPacket.m */; };
+		3E9708B81FAC95F5005825C9 /* PGPKeyID.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E71F960B7C00D64416 /* PGPKeyID.m */; };
+		3E9708B91FAC95F5005825C9 /* NSData+compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8FE1F960B7C00D64416 /* NSData+compression.m */; };
 		3E9708BA1FAC95F5005825C9 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		3E9708BB1FAC95F5005825C9 /* Providers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2A5681E85586300320275 /* Providers.swift */; };
+		3E9708BC1FAC95F5005825C9 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C81F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m */; };
 		3E9708BD1FAC95F5005825C9 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
+		3E9708BE1FAC95F5005825C9 /* PGPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8FB1F960B7C00D64416 /* PGPUser.m */; };
+		3E9708BF1FAC95F5005825C9 /* PGPSecretKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8BA1F960B7C00D64416 /* PGPSecretKeyPacket.m */; };
 		3E9708C01FAC95F5005825C9 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
 		3E9708C11FAC95F5005825C9 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
+		3E9708C21FAC95F5005825C9 /* PGPCompressedPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8A61F960B7C00D64416 /* PGPCompressedPacket.m */; };
+		3E9708C31FAC95F5005825C9 /* PGPRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89E1F960B7C00D64416 /* PGPRSA.m */; };
 		3E9708C41FAC95F5005825C9 /* InboxCellDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05931D956931008659C1 /* InboxCellDelegator.swift */; };
 		3E9708C51FAC95F5005825C9 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8591F436A05007649A5 /* Badges.swift */; };
 		3E9708C61FAC95F5005825C9 /* BadgeCaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8601F436A11007649A5 /* BadgeCaseCollectionViewCell.swift */; };
 		3E9708C71FAC95F5005825C9 /* Mail_Address+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */; };
 		3E9708C81FAC95F5005825C9 /* CollectionDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */; };
 		3E9708C91FAC95F5005825C9 /* DebugSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */; };
+		3E9708CA1FAC95F5005825C9 /* PGPS2K.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F81F960B7C00D64416 /* PGPS2K.m */; };
+		3E9708CB1FAC95F5005825C9 /* PGPPacketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8EE1F960B7C00D64416 /* PGPPacketFactory.m */; };
 		3E9708CC1FAC95F5005825C9 /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
 		3E9708CD1FAC95F5005825C9 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057F1D956851008659C1 /* SendViewController.swift */; };
+		3E9708CE1FAC95F5005825C9 /* PGPModificationDetectionCodePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AA1F960B7C00D64416 /* PGPModificationDetectionCodePacket.m */; };
 		3E9708CF1FAC95F5005825C9 /* EphemeralMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */; };
+		3E9708D01FAC95F5005825C9 /* PGPPKCSEme.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F41F960B7C00D64416 /* PGPPKCSEme.m */; };
 		3E9708D11FAC95F5005825C9 /* SubBadgeHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8621F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift */; };
 		3E9708D21FAC95F5005825C9 /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05971D956947008659C1 /* InboxViewController.swift */; };
+		3E9708D31FAC95F5005825C9 /* PGPPublicSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8B71F960B7C00D64416 /* PGPPublicSubKeyPacket.m */; };
 		3E9708D41FAC95F5005825C9 /* IconsStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D711E1D327200804E1E /* IconsStyleKit.swift */; };
+		3E9708D51FAC95F5005825C9 /* PGPKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E31F960B7C00D64416 /* PGPKey.m */; };
 		3E9708D61FAC95F5005825C9 /* UserNameGamificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8641F436A11007649A5 /* UserNameGamificationTableViewCell.swift */; };
 		3E9708D71FAC95F5005825C9 /* CNContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398B1E2519C8009260FB /* CNContactExtension.swift */; };
+		3E9708D81FAC95F5005825C9 /* PGPPKCSEmsa.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F61F960B7C00D64416 /* PGPPKCSEmsa.m */; };
 		3E9708D91FAC95F5005825C9 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C3841F30D06800E7F1D6 /* QRScannerView.swift */; };
+		3E9708DA1FAC95F5005825C9 /* PGPCryptoCFB.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8DB1F960B7C00D64416 /* PGPCryptoCFB.m */; };
 		3E9708DB1FAC95F5005825C9 /* ReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445F1E704C550080C041 /* ReplaceSegue.swift */; };
 		3E9708DC1FAC95F5005825C9 /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39871E1FA377009260FB /* KeyRecord.swift */; };
 		3E9708DD1FAC95F5005825C9 /* ArrowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */; };
@@ -40,29 +57,44 @@
 		3E9708E01FAC95F5005825C9 /* VENDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057D1D956848008659C1 /* VENDataDelegate.swift */; };
 		3E9708E11FAC95F5005825C9 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */; };
 		3E9708E21FAC95F5005825C9 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
+		3E9708E31FAC95F5005825C9 /* PGPArmor.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D61F960B7C00D64416 /* PGPArmor.m */; };
 		3E9708E41FAC95F5005825C9 /* SwiftPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00301F7B9565006CDD41 /* SwiftPGP.swift */; };
+		3E9708E51FAC95F5005825C9 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */; };
 		3E9708E61FAC95F5005825C9 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
 		3E9708E71FAC95F5005825C9 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
+		3E9708E81FAC95F5005825C9 /* NSMutableData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC9041F960B7C00D64416 /* NSMutableData+PGPUtils.m */; };
 		3E9708E91FAC95F5005825C9 /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
 		3E9708EA1FAC95F5005825C9 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AF938E1E2D04BA00755128 /* CustomCells.swift */; };
 		3E9708EB1FAC95F5005825C9 /* GamificationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */; };
+		3E9708EC1FAC95F5005825C9 /* ObjectivePGPObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8A31F960B7C00D64416 /* ObjectivePGPObject.m */; };
+		3E9708ED1FAC95F5005825C9 /* PGPFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8DE1F960B7C00D64416 /* PGPFingerprint.m */; };
+		3E9708EE1FAC95F5005825C9 /* PGPBigNum.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D91F960B7C00D64416 /* PGPBigNum.m */; };
 		3E9708EF1FAC95F5005825C9 /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */; };
 		3E9708F01FAC95F5005825C9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476142071E07E52B00FD5E4F /* Theme.swift */; };
 		3E9708F11FAC95F5005825C9 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
 		3E9708F21FAC95F5005825C9 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
+		3E9708F41FAC95F5005825C9 /* PGPSecretSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8BC1F960B7C00D64416 /* PGPSecretSubKeyPacket.m */; };
+		3E9708F51FAC95F5005825C9 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D41F960B7C00D64416 /* PGPUserIDPacket.m */; };
 		3E9708F61FAC95F5005825C9 /* Folder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475DF4781F0D54C9009D807F /* Folder+CoreDataProperties.swift */; };
 		3E9708F71FAC95F5005825C9 /* PersistentMail +CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */; };
+		3E9708F81FAC95F5005825C9 /* PGPTrustPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8CE1F960B7C00D64416 /* PGPTrustPacket.m */; };
 		3E9708F91FAC95F5005825C9 /* PersistentKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00411F7BB6D6006CDD41 /* PersistentKey+CoreDataProperties.swift */; };
 		3E9708FA1FAC95F5005825C9 /* AnimatedSendIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */; };
 		3E9708FB1FAC95F5005825C9 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
 		3E9708FC1FAC95F5005825C9 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
+		3E9708FD1FAC95F5005825C9 /* PGPMPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8EC1F960B7C00D64416 /* PGPMPI.m */; };
 		3E9708FF1FAC95F5005825C9 /* Mail_Address+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */; };
 		3E9709001FAC95F5005825C9 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
+		3E9709011FAC95F5005825C9 /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8961F960B7C00D64416 /* PGPCryptoHash.m */; };
+		3E9709021FAC95F5005825C9 /* PGPKeyMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89C1F960B7C00D64416 /* PGPKeyMaterial.m */; };
 		3E9709031FAC95F5005825C9 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		3E9709041FAC95F5005825C9 /* ReadVENDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B44611E73286C0080C041 /* ReadVENDelegate.swift */; };
+		3E9709051FAC95F5005825C9 /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D01F960B7C00D64416 /* PGPUserAttributePacket.m */; };
 		3E9709061FAC95F5005825C9 /* PersistentKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00401F7BB6D6006CDD41 /* PersistentKey+CoreDataClass.swift */; };
+		3E9709071FAC95F5005825C9 /* PGPSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8BF1F960B7C00D64416 /* PGPSignaturePacket.m */; };
 		3E9709081FAC95F5005825C9 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
 		3E9709091FAC95F5005825C9 /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
+		3E97090A1FAC95F5005825C9 /* PGPSignatureSubpacketCreationTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C41F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.m */; };
 		3E97090B1FAC95F5005825C9 /* CNMailAddressesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398F1E252470009260FB /* CNMailAddressesExtension.swift */; };
 		3E97090C1FAC95F5005825C9 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */; };
 		3E97090D1FAC95F5005825C9 /* ViewControllerPannable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C38A1F3344C200E7F1D6 /* ViewControllerPannable.swift */; };
@@ -76,19 +108,32 @@
 		3E9709151FAC95F5005825C9 /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */; };
 		3E9709161FAC95F5005825C9 /* GamificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85B1F436A05007649A5 /* GamificationData.swift */; };
 		3E9709171FAC95F5005825C9 /* Folder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475DF4771F0D54C9009D807F /* Folder+CoreDataClass.swift */; };
+		3E9709181FAC95F5005825C9 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8B21F960B7C00D64416 /* PGPPublicKeyEncryptedSessionKeyPacket.m */; };
 		3E97091A1FAC95F5005825C9 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00311F7B9565006CDD41 /* Cryptography.swift */; };
 		3E97091B1FAC95F5005825C9 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
 		3E97091C1FAC95F5005825C9 /* AddressHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05871D956879008659C1 /* AddressHandler.swift */; };
 		3E97091D1FAC95F5005825C9 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F396F1E14F75C009260FB /* DataHandler.swift */; };
+		3E97091E1FAC95F5005825C9 /* PGPSignatureSubpacketHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C61F960B7C00D64416 /* PGPSignatureSubpacketHeader.m */; };
+		3E97091F1FAC95F5005825C9 /* NSData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC9001F960B7C00D64416 /* NSData+PGPUtils.m */; };
 		3E9709201FAC95F5005825C9 /* ReadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB058F1D956923008659C1 /* ReadViewController.swift */; };
+		3E9709211FAC95F5005825C9 /* PGPSignatureSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C21F960B7C00D64416 /* PGPSignatureSubpacket.m */; };
 		3E9709221FAC95F5005825C9 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		3E9709231FAC95F5005825C9 /* MailAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398D1E251B8D009260FB /* MailAddress.swift */; };
 		3E9709241FAC95F5005825C9 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
+		3E9709251FAC95F5005825C9 /* PGPFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E01F960B7C00D64416 /* PGPFoundation.m */; };
+		3E9709261FAC95F5005825C9 /* PGPLiteralPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8A81F960B7C00D64416 /* PGPLiteralPacket.m */; };
+		3E9709271FAC95F5005825C9 /* PGPPublicKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8B51F960B7C00D64416 /* PGPPublicKeyPacket.m */; };
+		3E9709281FAC95F5005825C9 /* PGPKeyGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E51F960B7C00D64416 /* PGPKeyGenerator.m */; };
+		3E9709291FAC95F5005825C9 /* PGPDSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89A1F960B7C00D64416 /* PGPDSA.m */; };
 		3E97092A1FAC95F5005825C9 /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
+		3E97092B1FAC95F5005825C9 /* PGPPartialSubKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F21F960B7C00D64416 /* PGPPartialSubKey.m */; };
 		3E97092C1FAC95F5005825C9 /* SubBadgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8631F436A11007649A5 /* SubBadgeTableViewCell.swift */; };
 		3E97092D1FAC95F5005825C9 /* FrequentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05851D956872008659C1 /* FrequentCell.swift */; };
 		3E97092E1FAC95F5005825C9 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FA1DA3FBF7002E4940 /* ListViewController.swift */; };
 		3E97092F1FAC95F5005825C9 /* FlipTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445D1E7044B70080C041 /* FlipTransition.swift */; };
+		3E9709301FAC95F5005825C9 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8CA1F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */; };
+		3E9709311FAC95F5005825C9 /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D21F960B7C00D64416 /* PGPUserAttributeSubpacket.m */; };
+		3E9709321FAC95F5005825C9 /* PGPOnePassSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AC1F960B7C00D64416 /* PGPOnePassSignaturePacket.m */; };
 		3E9709331FAC95F5005825C9 /* EnzevalosContact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F397A1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift */; };
 		3E9709341FAC95F5005825C9 /* BadgeCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86A1F436A1E007649A5 /* BadgeCase.swift */; };
 		3E9709371FAC95F5005825C9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472F396D1E14F384009260FB /* CoreData.framework */; };
@@ -103,6 +148,7 @@
 		3E9709421FAC95F5005825C9 /* alice_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD91EFEA17900A2107C /* alice_enzevalos_public.asc */; };
 		3E9709431FAC95F5005825C9 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		3E9709441FAC95F5005825C9 /* idsolutions-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */; };
+		3E9709451FAC95F5005825C9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 471BC89F1F960B7C00D64416 /* Info.plist */; };
 		3E9709461FAC95F5005825C9 /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
 		3E9709471FAC95F5005825C9 /* nchr-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18981ED880680080515D /* nchr-private.gpg */; };
 		3E9709481FAC95F5005825C9 /* idsolutions-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */; };
@@ -126,116 +172,68 @@
 		3E97095A1FAC95F5005825C9 /* FrequentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB058B1D9568AB008659C1 /* FrequentCell.xib */; };
 		3E97095B1FAC95F5005825C9 /* bob-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F41EDDADA10068235E /* bob-private.gpg */; };
 		3E97095C1FAC95F5005825C9 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
+		3EC35F2120037628008BDF95 /* InvitationDialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EC35F2020037628008BDF95 /* InvitationDialog.storyboard */; };
+		3EC35F2220037628008BDF95 /* InvitationDialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EC35F2020037628008BDF95 /* InvitationDialog.storyboard */; };
+		3EC35F2420037651008BDF95 /* InvitationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2320037651008BDF95 /* InvitationHelper.swift */; };
+		3EC35F2520037651008BDF95 /* InvitationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2320037651008BDF95 /* InvitationHelper.swift */; };
+		3EC35F2720037664008BDF95 /* InvitationApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2620037664008BDF95 /* InvitationApi.swift */; };
+		3EC35F2820037664008BDF95 /* InvitationApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2620037664008BDF95 /* InvitationApi.swift */; };
+		3EC35F2A2003766F008BDF95 /* InvitationDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */; };
+		3EC35F2B2003766F008BDF95 /* InvitationDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */; };
+		3EC35F2D200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */; };
+		3EC35F2E200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */; };
+		3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2F2003838E008BDF95 /* InvitationTests.swift */; };
+		45262931B4C72A96C686C533 /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 		4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
+		471BC9051F960B7C00D64416 /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8961F960B7C00D64416 /* PGPCryptoHash.m */; };
+		471BC9061F960B7C00D64416 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */; };
+		471BC9071F960B7C00D64416 /* PGPDSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89A1F960B7C00D64416 /* PGPDSA.m */; };
+		471BC9081F960B7C00D64416 /* PGPKeyMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89C1F960B7C00D64416 /* PGPKeyMaterial.m */; };
+		471BC9091F960B7C00D64416 /* PGPRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89E1F960B7C00D64416 /* PGPRSA.m */; };
+		471BC90A1F960B7C00D64416 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 471BC89F1F960B7C00D64416 /* Info.plist */; };
+		471BC90B1F960B7C00D64416 /* ObjectivePGPObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8A31F960B7C00D64416 /* ObjectivePGPObject.m */; };
+		471BC90C1F960B7C00D64416 /* PGPCompressedPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8A61F960B7C00D64416 /* PGPCompressedPacket.m */; };
+		471BC90D1F960B7C00D64416 /* PGPLiteralPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8A81F960B7C00D64416 /* PGPLiteralPacket.m */; };
+		471BC90E1F960B7C00D64416 /* PGPModificationDetectionCodePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AA1F960B7C00D64416 /* PGPModificationDetectionCodePacket.m */; };
+		471BC90F1F960B7C00D64416 /* PGPOnePassSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AC1F960B7C00D64416 /* PGPOnePassSignaturePacket.m */; };
+		471BC9101F960B7C00D64416 /* PGPPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AF1F960B7C00D64416 /* PGPPacket.m */; };
+		471BC9111F960B7C00D64416 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8B21F960B7C00D64416 /* PGPPublicKeyEncryptedSessionKeyPacket.m */; };
+		471BC9121F960B7C00D64416 /* PGPPublicKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8B51F960B7C00D64416 /* PGPPublicKeyPacket.m */; };
+		471BC9131F960B7C00D64416 /* PGPPublicSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8B71F960B7C00D64416 /* PGPPublicSubKeyPacket.m */; };
+		471BC9141F960B7C00D64416 /* PGPSecretKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8BA1F960B7C00D64416 /* PGPSecretKeyPacket.m */; };
+		471BC9151F960B7C00D64416 /* PGPSecretSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8BC1F960B7C00D64416 /* PGPSecretSubKeyPacket.m */; };
+		471BC9161F960B7C00D64416 /* PGPSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8BF1F960B7C00D64416 /* PGPSignaturePacket.m */; };
+		471BC9171F960B7C00D64416 /* PGPSignatureSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C21F960B7C00D64416 /* PGPSignatureSubpacket.m */; };
+		471BC9181F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C41F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.m */; };
+		471BC9191F960B7C00D64416 /* PGPSignatureSubpacketHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C61F960B7C00D64416 /* PGPSignatureSubpacketHeader.m */; };
+		471BC91A1F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C81F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m */; };
+		471BC91B1F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8CA1F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */; };
+		471BC91D1F960B7C00D64416 /* PGPTrustPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8CE1F960B7C00D64416 /* PGPTrustPacket.m */; };
+		471BC91E1F960B7C00D64416 /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D01F960B7C00D64416 /* PGPUserAttributePacket.m */; };
+		471BC91F1F960B7C00D64416 /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D21F960B7C00D64416 /* PGPUserAttributeSubpacket.m */; };
+		471BC9201F960B7C00D64416 /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D41F960B7C00D64416 /* PGPUserIDPacket.m */; };
+		471BC9211F960B7C00D64416 /* PGPArmor.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D61F960B7C00D64416 /* PGPArmor.m */; };
+		471BC9221F960B7C00D64416 /* PGPBigNum.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8D91F960B7C00D64416 /* PGPBigNum.m */; };
+		471BC9231F960B7C00D64416 /* PGPCryptoCFB.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8DB1F960B7C00D64416 /* PGPCryptoCFB.m */; };
+		471BC9241F960B7C00D64416 /* PGPFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8DE1F960B7C00D64416 /* PGPFingerprint.m */; };
+		471BC9251F960B7C00D64416 /* PGPFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E01F960B7C00D64416 /* PGPFoundation.m */; };
+		471BC9261F960B7C00D64416 /* PGPKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E31F960B7C00D64416 /* PGPKey.m */; };
+		471BC9271F960B7C00D64416 /* PGPKeyGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E51F960B7C00D64416 /* PGPKeyGenerator.m */; };
+		471BC9281F960B7C00D64416 /* PGPKeyID.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8E71F960B7C00D64416 /* PGPKeyID.m */; };
+		471BC9291F960B7C00D64416 /* PGPMPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8EC1F960B7C00D64416 /* PGPMPI.m */; };
+		471BC92A1F960B7C00D64416 /* PGPPacketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8EE1F960B7C00D64416 /* PGPPacketFactory.m */; };
+		471BC92B1F960B7C00D64416 /* PGPPartialKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F01F960B7C00D64416 /* PGPPartialKey.m */; };
+		471BC92C1F960B7C00D64416 /* PGPPartialSubKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F21F960B7C00D64416 /* PGPPartialSubKey.m */; };
+		471BC92D1F960B7C00D64416 /* PGPPKCSEme.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F41F960B7C00D64416 /* PGPPKCSEme.m */; };
+		471BC92E1F960B7C00D64416 /* PGPPKCSEmsa.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F61F960B7C00D64416 /* PGPPKCSEmsa.m */; };
+		471BC92F1F960B7C00D64416 /* PGPS2K.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F81F960B7C00D64416 /* PGPS2K.m */; };
+		471BC9301F960B7C00D64416 /* PGPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8FB1F960B7C00D64416 /* PGPUser.m */; };
+		471BC9311F960B7C00D64416 /* NSData+compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8FE1F960B7C00D64416 /* NSData+compression.m */; };
+		471BC9321F960B7C00D64416 /* NSData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC9001F960B7C00D64416 /* NSData+PGPUtils.m */; };
+		471BC9341F960B7C00D64416 /* NSMutableData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC9041F960B7C00D64416 /* NSMutableData+PGPUtils.m */; };
 		472276BC1FCD46B200ADA507 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		472276BE1FCD484C00ADA507 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E4311FACB23000E40243 /* StringExtension.swift */; };
 		472276BF1FCD48B600ADA507 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D741FBDE560002F7CC9 /* Event.swift */; };
-		4724A13C1FFE6B2500647B6B /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0BD1FFE6B2500647B6B /* PGPCryptoHash.m */; };
-		4724A13D1FFE6B2500647B6B /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0BD1FFE6B2500647B6B /* PGPCryptoHash.m */; };
-		4724A13E1FFE6B2500647B6B /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0BF1FFE6B2500647B6B /* PGPCryptoUtils.m */; };
-		4724A13F1FFE6B2500647B6B /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0BF1FFE6B2500647B6B /* PGPCryptoUtils.m */; };
-		4724A1401FFE6B2500647B6B /* PGPDSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0C11FFE6B2500647B6B /* PGPDSA.m */; };
-		4724A1411FFE6B2500647B6B /* PGPDSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0C11FFE6B2500647B6B /* PGPDSA.m */; };
-		4724A1421FFE6B2500647B6B /* PGPKeyMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0C31FFE6B2500647B6B /* PGPKeyMaterial.m */; };
-		4724A1431FFE6B2500647B6B /* PGPKeyMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0C31FFE6B2500647B6B /* PGPKeyMaterial.m */; };
-		4724A1441FFE6B2500647B6B /* PGPRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0C51FFE6B2500647B6B /* PGPRSA.m */; };
-		4724A1451FFE6B2500647B6B /* PGPRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0C51FFE6B2500647B6B /* PGPRSA.m */; };
-		4724A1461FFE6B2500647B6B /* twofish.c in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0C71FFE6B2500647B6B /* twofish.c */; };
-		4724A1471FFE6B2500647B6B /* twofish.c in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0C71FFE6B2500647B6B /* twofish.c */; };
-		4724A1481FFE6B2500647B6B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4724A0C91FFE6B2500647B6B /* Info.plist */; };
-		4724A1491FFE6B2500647B6B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4724A0C91FFE6B2500647B6B /* Info.plist */; };
-		4724A14A1FFE6B2500647B6B /* ObjectivePGPObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0CE1FFE6B2500647B6B /* ObjectivePGPObject.m */; };
-		4724A14B1FFE6B2500647B6B /* ObjectivePGPObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0CE1FFE6B2500647B6B /* ObjectivePGPObject.m */; };
-		4724A14C1FFE6B2500647B6B /* PGPCompressedPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0D11FFE6B2500647B6B /* PGPCompressedPacket.m */; };
-		4724A14D1FFE6B2500647B6B /* PGPCompressedPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0D11FFE6B2500647B6B /* PGPCompressedPacket.m */; };
-		4724A14E1FFE6B2500647B6B /* PGPLiteralPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0D41FFE6B2500647B6B /* PGPLiteralPacket.m */; };
-		4724A14F1FFE6B2500647B6B /* PGPLiteralPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0D41FFE6B2500647B6B /* PGPLiteralPacket.m */; };
-		4724A1501FFE6B2500647B6B /* PGPModificationDetectionCodePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0D61FFE6B2500647B6B /* PGPModificationDetectionCodePacket.m */; };
-		4724A1511FFE6B2500647B6B /* PGPModificationDetectionCodePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0D61FFE6B2500647B6B /* PGPModificationDetectionCodePacket.m */; };
-		4724A1521FFE6B2500647B6B /* PGPOnePassSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0D81FFE6B2500647B6B /* PGPOnePassSignaturePacket.m */; };
-		4724A1531FFE6B2500647B6B /* PGPOnePassSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0D81FFE6B2500647B6B /* PGPOnePassSignaturePacket.m */; };
-		4724A1541FFE6B2500647B6B /* PGPPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0DB1FFE6B2500647B6B /* PGPPacket.m */; };
-		4724A1551FFE6B2500647B6B /* PGPPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0DB1FFE6B2500647B6B /* PGPPacket.m */; };
-		4724A1561FFE6B2500647B6B /* PGPPacketHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0DD1FFE6B2500647B6B /* PGPPacketHeader.m */; };
-		4724A1571FFE6B2500647B6B /* PGPPacketHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0DD1FFE6B2500647B6B /* PGPPacketHeader.m */; };
-		4724A1581FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0DF1FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.m */; };
-		4724A1591FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0DF1FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.m */; };
-		4724A15A1FFE6B2500647B6B /* PGPPublicKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0E21FFE6B2500647B6B /* PGPPublicKeyPacket.m */; };
-		4724A15B1FFE6B2500647B6B /* PGPPublicKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0E21FFE6B2500647B6B /* PGPPublicKeyPacket.m */; };
-		4724A15C1FFE6B2500647B6B /* PGPPublicSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0E41FFE6B2500647B6B /* PGPPublicSubKeyPacket.m */; };
-		4724A15D1FFE6B2500647B6B /* PGPPublicSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0E41FFE6B2500647B6B /* PGPPublicSubKeyPacket.m */; };
-		4724A15E1FFE6B2500647B6B /* PGPSecretKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0E71FFE6B2500647B6B /* PGPSecretKeyPacket.m */; };
-		4724A15F1FFE6B2500647B6B /* PGPSecretKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0E71FFE6B2500647B6B /* PGPSecretKeyPacket.m */; };
-		4724A1601FFE6B2500647B6B /* PGPSecretSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0E91FFE6B2500647B6B /* PGPSecretSubKeyPacket.m */; };
-		4724A1611FFE6B2500647B6B /* PGPSecretSubKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0E91FFE6B2500647B6B /* PGPSecretSubKeyPacket.m */; };
-		4724A1621FFE6B2500647B6B /* PGPSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0EC1FFE6B2500647B6B /* PGPSignaturePacket.m */; };
-		4724A1631FFE6B2500647B6B /* PGPSignaturePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0EC1FFE6B2500647B6B /* PGPSignaturePacket.m */; };
-		4724A1641FFE6B2500647B6B /* PGPSignatureSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0EF1FFE6B2500647B6B /* PGPSignatureSubpacket.m */; };
-		4724A1651FFE6B2500647B6B /* PGPSignatureSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0EF1FFE6B2500647B6B /* PGPSignatureSubpacket.m */; };
-		4724A1661FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F11FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.m */; };
-		4724A1671FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F11FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.m */; };
-		4724A1681FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F31FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.m */; };
-		4724A1691FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F31FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.m */; };
-		4724A16A1FFE6B2500647B6B /* PGPSignatureSubpacketHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F51FFE6B2500647B6B /* PGPSignatureSubpacketHeader.m */; };
-		4724A16B1FFE6B2500647B6B /* PGPSignatureSubpacketHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F51FFE6B2500647B6B /* PGPSignatureSubpacketHeader.m */; };
-		4724A16C1FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F71FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.m */; };
-		4724A16D1FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F71FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.m */; };
-		4724A16E1FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F91FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.m */; };
-		4724A16F1FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0F91FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.m */; };
-		4724A1701FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0FB1FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */; };
-		4724A1711FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0FB1FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */; };
-		4724A1721FFE6B2500647B6B /* PGPTrustPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0FD1FFE6B2500647B6B /* PGPTrustPacket.m */; };
-		4724A1731FFE6B2500647B6B /* PGPTrustPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0FD1FFE6B2500647B6B /* PGPTrustPacket.m */; };
-		4724A1741FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0FF1FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.m */; };
-		4724A1751FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A0FF1FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.m */; };
-		4724A1761FFE6B2500647B6B /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1011FFE6B2500647B6B /* PGPUserAttributePacket.m */; };
-		4724A1771FFE6B2500647B6B /* PGPUserAttributePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1011FFE6B2500647B6B /* PGPUserAttributePacket.m */; };
-		4724A1781FFE6B2500647B6B /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1031FFE6B2500647B6B /* PGPUserAttributeSubpacket.m */; };
-		4724A1791FFE6B2500647B6B /* PGPUserAttributeSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1031FFE6B2500647B6B /* PGPUserAttributeSubpacket.m */; };
-		4724A17A1FFE6B2500647B6B /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1051FFE6B2500647B6B /* PGPUserIDPacket.m */; };
-		4724A17B1FFE6B2500647B6B /* PGPUserIDPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1051FFE6B2500647B6B /* PGPUserIDPacket.m */; };
-		4724A17C1FFE6B2500647B6B /* PGPArmor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1071FFE6B2500647B6B /* PGPArmor.m */; };
-		4724A17D1FFE6B2500647B6B /* PGPArmor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1071FFE6B2500647B6B /* PGPArmor.m */; };
-		4724A17E1FFE6B2500647B6B /* PGPBigNum.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A10A1FFE6B2500647B6B /* PGPBigNum.m */; };
-		4724A17F1FFE6B2500647B6B /* PGPBigNum.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A10A1FFE6B2500647B6B /* PGPBigNum.m */; };
-		4724A1801FFE6B2500647B6B /* PGPCryptoCFB.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A10C1FFE6B2500647B6B /* PGPCryptoCFB.m */; };
-		4724A1811FFE6B2500647B6B /* PGPCryptoCFB.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A10C1FFE6B2500647B6B /* PGPCryptoCFB.m */; };
-		4724A1821FFE6B2500647B6B /* PGPFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A10F1FFE6B2500647B6B /* PGPFingerprint.m */; };
-		4724A1831FFE6B2500647B6B /* PGPFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A10F1FFE6B2500647B6B /* PGPFingerprint.m */; };
-		4724A1841FFE6B2500647B6B /* PGPFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1111FFE6B2500647B6B /* PGPFoundation.m */; };
-		4724A1851FFE6B2500647B6B /* PGPFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1111FFE6B2500647B6B /* PGPFoundation.m */; };
-		4724A1861FFE6B2500647B6B /* PGPKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1141FFE6B2500647B6B /* PGPKey.m */; };
-		4724A1871FFE6B2500647B6B /* PGPKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1141FFE6B2500647B6B /* PGPKey.m */; };
-		4724A1881FFE6B2500647B6B /* PGPKeyGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1161FFE6B2500647B6B /* PGPKeyGenerator.m */; };
-		4724A1891FFE6B2500647B6B /* PGPKeyGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1161FFE6B2500647B6B /* PGPKeyGenerator.m */; };
-		4724A18A1FFE6B2500647B6B /* PGPKeyID.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1181FFE6B2500647B6B /* PGPKeyID.m */; };
-		4724A18B1FFE6B2500647B6B /* PGPKeyID.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1181FFE6B2500647B6B /* PGPKeyID.m */; };
-		4724A18C1FFE6B2500647B6B /* PGPKeyring.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A11B1FFE6B2500647B6B /* PGPKeyring.m */; };
-		4724A18D1FFE6B2500647B6B /* PGPKeyring.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A11B1FFE6B2500647B6B /* PGPKeyring.m */; };
-		4724A18E1FFE6B2500647B6B /* PGPMPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1201FFE6B2500647B6B /* PGPMPI.m */; };
-		4724A18F1FFE6B2500647B6B /* PGPMPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1201FFE6B2500647B6B /* PGPMPI.m */; };
-		4724A1901FFE6B2500647B6B /* PGPPacketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1221FFE6B2500647B6B /* PGPPacketFactory.m */; };
-		4724A1911FFE6B2500647B6B /* PGPPacketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1221FFE6B2500647B6B /* PGPPacketFactory.m */; };
-		4724A1921FFE6B2500647B6B /* PGPPartialKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1251FFE6B2500647B6B /* PGPPartialKey.m */; };
-		4724A1931FFE6B2500647B6B /* PGPPartialKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1251FFE6B2500647B6B /* PGPPartialKey.m */; };
-		4724A1941FFE6B2500647B6B /* PGPPartialSubKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1281FFE6B2500647B6B /* PGPPartialSubKey.m */; };
-		4724A1951FFE6B2500647B6B /* PGPPartialSubKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1281FFE6B2500647B6B /* PGPPartialSubKey.m */; };
-		4724A1961FFE6B2500647B6B /* PGPPKCSEme.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A12A1FFE6B2500647B6B /* PGPPKCSEme.m */; };
-		4724A1971FFE6B2500647B6B /* PGPPKCSEme.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A12A1FFE6B2500647B6B /* PGPPKCSEme.m */; };
-		4724A1981FFE6B2500647B6B /* PGPPKCSEmsa.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A12C1FFE6B2500647B6B /* PGPPKCSEmsa.m */; };
-		4724A1991FFE6B2500647B6B /* PGPPKCSEmsa.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A12C1FFE6B2500647B6B /* PGPPKCSEmsa.m */; };
-		4724A19A1FFE6B2500647B6B /* PGPS2K.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A12E1FFE6B2500647B6B /* PGPS2K.m */; };
-		4724A19B1FFE6B2500647B6B /* PGPS2K.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A12E1FFE6B2500647B6B /* PGPS2K.m */; };
-		4724A19C1FFE6B2500647B6B /* PGPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1321FFE6B2500647B6B /* PGPUser.m */; };
-		4724A19D1FFE6B2500647B6B /* PGPUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1321FFE6B2500647B6B /* PGPUser.m */; };
-		4724A19E1FFE6B2500647B6B /* NSArray+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1351FFE6B2500647B6B /* NSArray+PGPUtils.m */; };
-		4724A19F1FFE6B2500647B6B /* NSArray+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1351FFE6B2500647B6B /* NSArray+PGPUtils.m */; };
-		4724A1A01FFE6B2500647B6B /* NSData+compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1371FFE6B2500647B6B /* NSData+compression.m */; };
-		4724A1A11FFE6B2500647B6B /* NSData+compression.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1371FFE6B2500647B6B /* NSData+compression.m */; };
-		4724A1A21FFE6B2500647B6B /* NSData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1391FFE6B2500647B6B /* NSData+PGPUtils.m */; };
-		4724A1A31FFE6B2500647B6B /* NSData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A1391FFE6B2500647B6B /* NSData+PGPUtils.m */; };
-		4724A1A41FFE6B2500647B6B /* NSMutableData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A13B1FFE6B2500647B6B /* NSMutableData+PGPUtils.m */; };
-		4724A1A51FFE6B2500647B6B /* NSMutableData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 4724A13B1FFE6B2500647B6B /* NSMutableData+PGPUtils.m */; };
 		4725C4F61EDDADA10068235E /* bob-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F41EDDADA10068235E /* bob-private.gpg */; };
 		4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F51EDDADA10068235E /* bob-public.gpg */; };
 		472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
@@ -252,7 +250,20 @@
 		472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398B1E2519C8009260FB /* CNContactExtension.swift */; };
 		472F398E1E251B8D009260FB /* MailAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398D1E251B8D009260FB /* MailAddress.swift */; };
 		472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398F1E252470009260FB /* CNMailAddressesExtension.swift */; };
-		473BA6421FCD4F0C00EB0D9E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
+		473AC39320054D07006EB8A6 /* PGPUserAttributeImageSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39120054D06006EB8A6 /* PGPUserAttributeImageSubpacket.m */; };
+		473AC39420054D07006EB8A6 /* PGPUserAttributeImageSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39120054D06006EB8A6 /* PGPUserAttributeImageSubpacket.m */; };
+		473AC39720054D29006EB8A6 /* NSArray+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39620054D29006EB8A6 /* NSArray+PGPUtils.m */; };
+		473AC39820054D29006EB8A6 /* NSArray+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39620054D29006EB8A6 /* NSArray+PGPUtils.m */; };
+		473AC39C20054D7D006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39A20054D7C006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.m */; };
+		473AC39D20054D7D006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39A20054D7C006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.m */; };
+		473AC3A120054DDA006EB8A6 /* PGPPacketHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39F20054DD9006EB8A6 /* PGPPacketHeader.m */; };
+		473AC3A220054DDA006EB8A6 /* PGPPacketHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39F20054DD9006EB8A6 /* PGPPacketHeader.m */; };
+		473AC3A520054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC3A420054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m */; };
+		473AC3A620054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC3A420054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m */; };
+		473AC3AA20054E25006EB8A6 /* twofish.c in Sources */ = {isa = PBXBuildFile; fileRef = 473AC3A820054E25006EB8A6 /* twofish.c */; };
+		473AC3AB20054E25006EB8A6 /* twofish.c in Sources */ = {isa = PBXBuildFile; fileRef = 473AC3A820054E25006EB8A6 /* twofish.c */; };
+		473AC3AE20054EAA006EB8A6 /* PGPKeyring.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC3AC20054EAA006EB8A6 /* PGPKeyring.m */; };
+		473AC3AF20054EAA006EB8A6 /* PGPKeyring.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC3AC20054EAA006EB8A6 /* PGPKeyring.m */; };
 		475B00331F7B9565006CDD41 /* SwiftPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00301F7B9565006CDD41 /* SwiftPGP.swift */; };
 		475B00341F7B9565006CDD41 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00311F7B9565006CDD41 /* Cryptography.swift */; };
 		475B00351F7B9565006CDD41 /* CryptoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00321F7B9565006CDD41 /* CryptoObject.swift */; };
@@ -290,20 +301,8 @@
 		8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */; };
 		8428A8701F436A1E007649A5 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
 		8428A8711F436A1E007649A5 /* GamificationStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86D1F436A1E007649A5 /* GamificationStatusViewController.swift */; };
-		8428A8771F436A9D007649A5 /* LinearBadgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86C1F436A1E007649A5 /* LinearBadgeViewController.swift */; };
-		8428A8791F436AA4007649A5 /* BadgeCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86A1F436A1E007649A5 /* BadgeCase.swift */; };
-		8428A87A1F436AA9007649A5 /* ArrowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */; };
-		8428A87B1F436AAC007649A5 /* UserNameGamificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8641F436A11007649A5 /* UserNameGamificationTableViewCell.swift */; };
-		8428A87C1F436AAF007649A5 /* SubBadgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8631F436A11007649A5 /* SubBadgeTableViewCell.swift */; };
-		8428A87D1F436AB2007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8621F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift */; };
-		8428A87E1F436AB5007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8601F436A11007649A5 /* BadgeCaseCollectionViewCell.swift */; };
-		8428A87F1F436AB8007649A5 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85A1F436A05007649A5 /* CircleView.swift */; };
-		8428A8801F436ABB007649A5 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8581F436A05007649A5 /* ArrowView.swift */; };
-		8428A8811F436AC0007649A5 /* GamificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85B1F436A05007649A5 /* GamificationData.swift */; };
-		8428A8821F436AC3007649A5 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8591F436A05007649A5 /* Badges.swift */; };
 		8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8561F4369EA007649A5 /* GamificationDataUnitTest.swift */; };
 		8428A8841F436ACC007649A5 /* GamificationElements.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8541F4369CF007649A5 /* GamificationElements.xcassets */; };
-		8428A8851F436AD5007649A5 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
 		9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */; };
 		9C1FA3A01B089C653802A88C /* Pods_enzevalos_iphoneUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */; };
 		A102AA8A1EDDB4F40024B457 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
@@ -382,12 +381,10 @@
 		F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
 		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
 		F1ADF0751FBDF7D20017AE31 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
-		F1ADF0761FBDF8120017AE31 /* PersistentMail +CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */; };
-		F1ADF0771FBDF9B40017AE31 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AF938E1E2D04BA00755128 /* CustomCells.swift */; };
-		F1E918D71FBDEECB00D60418 /* LoggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E918D61FBDEECA00D60418 /* LoggerTests.swift */; };
+		F1C733351FEC1CE2005A497E /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1C733341FEC1CE2005A497E /* About.storyboard */; };
+		F1C7AC821FED6473007629DB /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C7AC811FED6473007629DB /* AboutViewController.swift */; };
 		F1F070281FA0DF3F004A860A /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1F070261FA0DF3F004A860A /* Inbox.storyboard */; };
-		F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -415,133 +412,119 @@
 		3E9709621FAC95F5005825C9 /* enzevalos_iphone-AdHoc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "enzevalos_iphone-AdHoc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E9709651FAC9694005825C9 /* enzevalos_iphone-AdHoc.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "enzevalos_iphone-AdHoc.entitlements"; sourceTree = "<group>"; };
 		3E9709661FAC9694005825C9 /* enzevalos-AdHoc-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "enzevalos-AdHoc-Info.plist"; sourceTree = "<group>"; };
+		3EC35F2020037628008BDF95 /* InvitationDialog.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = InvitationDialog.storyboard; path = Invitation/InvitationDialog.storyboard; sourceTree = "<group>"; };
+		3EC35F2320037651008BDF95 /* InvitationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InvitationHelper.swift; path = Invitation/InvitationHelper.swift; sourceTree = "<group>"; };
+		3EC35F2620037664008BDF95 /* InvitationApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationApi.swift; sourceTree = "<group>"; };
+		3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDialogViewController.swift; sourceTree = "<group>"; };
+		3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendViewController+Invitation.swift"; sourceTree = "<group>"; };
+		3EC35F2F2003838E008BDF95 /* InvitationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationTests.swift; sourceTree = "<group>"; };
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
-		4724A0BC1FFE6B2500647B6B /* PGPCryptoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoHash.h; sourceTree = "<group>"; };
-		4724A0BD1FFE6B2500647B6B /* PGPCryptoHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoHash.m; sourceTree = "<group>"; };
-		4724A0BE1FFE6B2500647B6B /* PGPCryptoUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoUtils.h; sourceTree = "<group>"; };
-		4724A0BF1FFE6B2500647B6B /* PGPCryptoUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoUtils.m; sourceTree = "<group>"; };
-		4724A0C01FFE6B2500647B6B /* PGPDSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPDSA.h; sourceTree = "<group>"; };
-		4724A0C11FFE6B2500647B6B /* PGPDSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPDSA.m; sourceTree = "<group>"; };
-		4724A0C21FFE6B2500647B6B /* PGPKeyMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyMaterial.h; sourceTree = "<group>"; };
-		4724A0C31FFE6B2500647B6B /* PGPKeyMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyMaterial.m; sourceTree = "<group>"; };
-		4724A0C41FFE6B2500647B6B /* PGPRSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPRSA.h; sourceTree = "<group>"; };
-		4724A0C51FFE6B2500647B6B /* PGPRSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPRSA.m; sourceTree = "<group>"; };
-		4724A0C71FFE6B2500647B6B /* twofish.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = twofish.c; sourceTree = "<group>"; };
-		4724A0C81FFE6B2500647B6B /* twofish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = twofish.h; sourceTree = "<group>"; };
-		4724A0C91FFE6B2500647B6B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4724A0CA1FFE6B2500647B6B /* ObjectivePGP-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ObjectivePGP-Prefix.pch"; sourceTree = "<group>"; };
-		4724A0CB1FFE6B2500647B6B /* ObjectivePGP-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ObjectivePGP-Private.h"; sourceTree = "<group>"; };
-		4724A0CC1FFE6B2500647B6B /* ObjectivePGP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectivePGP.h; sourceTree = "<group>"; };
-		4724A0CD1FFE6B2500647B6B /* ObjectivePGPObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectivePGPObject.h; sourceTree = "<group>"; };
-		4724A0CE1FFE6B2500647B6B /* ObjectivePGPObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectivePGPObject.m; sourceTree = "<group>"; };
-		4724A0D01FFE6B2500647B6B /* PGPCompressedPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCompressedPacket.h; sourceTree = "<group>"; };
-		4724A0D11FFE6B2500647B6B /* PGPCompressedPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCompressedPacket.m; sourceTree = "<group>"; };
-		4724A0D21FFE6B2500647B6B /* PGPEncryptedSessionKeyPacketProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPEncryptedSessionKeyPacketProtocol.h; sourceTree = "<group>"; };
-		4724A0D31FFE6B2500647B6B /* PGPLiteralPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPLiteralPacket.h; sourceTree = "<group>"; };
-		4724A0D41FFE6B2500647B6B /* PGPLiteralPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPLiteralPacket.m; sourceTree = "<group>"; };
-		4724A0D51FFE6B2500647B6B /* PGPModificationDetectionCodePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPModificationDetectionCodePacket.h; sourceTree = "<group>"; };
-		4724A0D61FFE6B2500647B6B /* PGPModificationDetectionCodePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPModificationDetectionCodePacket.m; sourceTree = "<group>"; };
-		4724A0D71FFE6B2500647B6B /* PGPOnePassSignaturePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPOnePassSignaturePacket.h; sourceTree = "<group>"; };
-		4724A0D81FFE6B2500647B6B /* PGPOnePassSignaturePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPOnePassSignaturePacket.m; sourceTree = "<group>"; };
-		4724A0D91FFE6B2500647B6B /* PGPPacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPPacket+Private.h"; sourceTree = "<group>"; };
-		4724A0DA1FFE6B2500647B6B /* PGPPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPacket.h; sourceTree = "<group>"; };
-		4724A0DB1FFE6B2500647B6B /* PGPPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPacket.m; sourceTree = "<group>"; };
-		4724A0DC1FFE6B2500647B6B /* PGPPacketHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPacketHeader.h; sourceTree = "<group>"; };
-		4724A0DD1FFE6B2500647B6B /* PGPPacketHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPacketHeader.m; sourceTree = "<group>"; };
-		4724A0DE1FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicKeyEncryptedSessionKeyPacket.h; sourceTree = "<group>"; };
-		4724A0DF1FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicKeyEncryptedSessionKeyPacket.m; sourceTree = "<group>"; };
-		4724A0E01FFE6B2500647B6B /* PGPPublicKeyPacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPPublicKeyPacket+Private.h"; sourceTree = "<group>"; };
-		4724A0E11FFE6B2500647B6B /* PGPPublicKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicKeyPacket.h; sourceTree = "<group>"; };
-		4724A0E21FFE6B2500647B6B /* PGPPublicKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicKeyPacket.m; sourceTree = "<group>"; };
-		4724A0E31FFE6B2500647B6B /* PGPPublicSubKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicSubKeyPacket.h; sourceTree = "<group>"; };
-		4724A0E41FFE6B2500647B6B /* PGPPublicSubKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicSubKeyPacket.m; sourceTree = "<group>"; };
-		4724A0E51FFE6B2500647B6B /* PGPSecretKeyPacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPSecretKeyPacket+Private.h"; sourceTree = "<group>"; };
-		4724A0E61FFE6B2500647B6B /* PGPSecretKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSecretKeyPacket.h; sourceTree = "<group>"; };
-		4724A0E71FFE6B2500647B6B /* PGPSecretKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSecretKeyPacket.m; sourceTree = "<group>"; };
-		4724A0E81FFE6B2500647B6B /* PGPSecretSubKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSecretSubKeyPacket.h; sourceTree = "<group>"; };
-		4724A0E91FFE6B2500647B6B /* PGPSecretSubKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSecretSubKeyPacket.m; sourceTree = "<group>"; };
-		4724A0EA1FFE6B2500647B6B /* PGPSignaturePacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPSignaturePacket+Private.h"; sourceTree = "<group>"; };
-		4724A0EB1FFE6B2500647B6B /* PGPSignaturePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignaturePacket.h; sourceTree = "<group>"; };
-		4724A0EC1FFE6B2500647B6B /* PGPSignaturePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignaturePacket.m; sourceTree = "<group>"; };
-		4724A0ED1FFE6B2500647B6B /* PGPSignatureSubpacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPSignatureSubpacket+Private.h"; sourceTree = "<group>"; };
-		4724A0EE1FFE6B2500647B6B /* PGPSignatureSubpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignatureSubpacket.h; sourceTree = "<group>"; };
-		4724A0EF1FFE6B2500647B6B /* PGPSignatureSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignatureSubpacket.m; sourceTree = "<group>"; };
-		4724A0F01FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignatureSubpacketCreationTime.h; sourceTree = "<group>"; };
-		4724A0F11FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignatureSubpacketCreationTime.m; sourceTree = "<group>"; };
-		4724A0F21FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignatureSubpacketEmbeddedSignature.h; sourceTree = "<group>"; };
-		4724A0F31FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignatureSubpacketEmbeddedSignature.m; sourceTree = "<group>"; };
-		4724A0F41FFE6B2500647B6B /* PGPSignatureSubpacketHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignatureSubpacketHeader.h; sourceTree = "<group>"; };
-		4724A0F51FFE6B2500647B6B /* PGPSignatureSubpacketHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignatureSubpacketHeader.m; sourceTree = "<group>"; };
-		4724A0F61FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSymetricKeyEncryptedSessionKeyPacket.h; sourceTree = "<group>"; };
-		4724A0F71FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSymetricKeyEncryptedSessionKeyPacket.m; sourceTree = "<group>"; };
-		4724A0F81FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSymmetricallyEncryptedDataPacket.h; sourceTree = "<group>"; };
-		4724A0F91FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSymmetricallyEncryptedDataPacket.m; sourceTree = "<group>"; };
-		4724A0FA1FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h; sourceTree = "<group>"; };
-		4724A0FB1FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m; sourceTree = "<group>"; };
-		4724A0FC1FFE6B2500647B6B /* PGPTrustPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPTrustPacket.h; sourceTree = "<group>"; };
-		4724A0FD1FFE6B2500647B6B /* PGPTrustPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPTrustPacket.m; sourceTree = "<group>"; };
-		4724A0FE1FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserAttributeImageSubpacket.h; sourceTree = "<group>"; };
-		4724A0FF1FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeImageSubpacket.m; sourceTree = "<group>"; };
-		4724A1001FFE6B2500647B6B /* PGPUserAttributePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserAttributePacket.h; sourceTree = "<group>"; };
-		4724A1011FFE6B2500647B6B /* PGPUserAttributePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributePacket.m; sourceTree = "<group>"; };
-		4724A1021FFE6B2500647B6B /* PGPUserAttributeSubpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserAttributeSubpacket.h; sourceTree = "<group>"; };
-		4724A1031FFE6B2500647B6B /* PGPUserAttributeSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeSubpacket.m; sourceTree = "<group>"; };
-		4724A1041FFE6B2500647B6B /* PGPUserIDPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserIDPacket.h; sourceTree = "<group>"; };
-		4724A1051FFE6B2500647B6B /* PGPUserIDPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserIDPacket.m; sourceTree = "<group>"; };
-		4724A1061FFE6B2500647B6B /* PGPArmor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPArmor.h; sourceTree = "<group>"; };
-		4724A1071FFE6B2500647B6B /* PGPArmor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPArmor.m; sourceTree = "<group>"; };
-		4724A1081FFE6B2500647B6B /* PGPBigNum+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPBigNum+Private.h"; sourceTree = "<group>"; };
-		4724A1091FFE6B2500647B6B /* PGPBigNum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPBigNum.h; sourceTree = "<group>"; };
-		4724A10A1FFE6B2500647B6B /* PGPBigNum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPBigNum.m; sourceTree = "<group>"; };
-		4724A10B1FFE6B2500647B6B /* PGPCryptoCFB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoCFB.h; sourceTree = "<group>"; };
-		4724A10C1FFE6B2500647B6B /* PGPCryptoCFB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoCFB.m; sourceTree = "<group>"; };
-		4724A10D1FFE6B2500647B6B /* PGPExportableProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPExportableProtocol.h; sourceTree = "<group>"; };
-		4724A10E1FFE6B2500647B6B /* PGPFingerprint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPFingerprint.h; sourceTree = "<group>"; };
-		4724A10F1FFE6B2500647B6B /* PGPFingerprint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPFingerprint.m; sourceTree = "<group>"; };
-		4724A1101FFE6B2500647B6B /* PGPFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPFoundation.h; sourceTree = "<group>"; };
-		4724A1111FFE6B2500647B6B /* PGPFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPFoundation.m; sourceTree = "<group>"; };
-		4724A1121FFE6B2500647B6B /* PGPKey+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPKey+Private.h"; sourceTree = "<group>"; };
-		4724A1131FFE6B2500647B6B /* PGPKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKey.h; sourceTree = "<group>"; };
-		4724A1141FFE6B2500647B6B /* PGPKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKey.m; sourceTree = "<group>"; };
-		4724A1151FFE6B2500647B6B /* PGPKeyGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyGenerator.h; sourceTree = "<group>"; };
-		4724A1161FFE6B2500647B6B /* PGPKeyGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyGenerator.m; sourceTree = "<group>"; };
-		4724A1171FFE6B2500647B6B /* PGPKeyID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyID.h; sourceTree = "<group>"; };
-		4724A1181FFE6B2500647B6B /* PGPKeyID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyID.m; sourceTree = "<group>"; };
-		4724A1191FFE6B2500647B6B /* PGPKeyring+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPKeyring+Private.h"; sourceTree = "<group>"; };
-		4724A11A1FFE6B2500647B6B /* PGPKeyring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyring.h; sourceTree = "<group>"; };
-		4724A11B1FFE6B2500647B6B /* PGPKeyring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyring.m; sourceTree = "<group>"; };
-		4724A11C1FFE6B2500647B6B /* PGPLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPLogging.h; sourceTree = "<group>"; };
-		4724A11D1FFE6B2500647B6B /* PGPMacros+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPMacros+Private.h"; sourceTree = "<group>"; };
-		4724A11E1FFE6B2500647B6B /* PGPMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPMacros.h; sourceTree = "<group>"; };
-		4724A11F1FFE6B2500647B6B /* PGPMPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPMPI.h; sourceTree = "<group>"; };
-		4724A1201FFE6B2500647B6B /* PGPMPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPMPI.m; sourceTree = "<group>"; };
-		4724A1211FFE6B2500647B6B /* PGPPacketFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPacketFactory.h; sourceTree = "<group>"; };
-		4724A1221FFE6B2500647B6B /* PGPPacketFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPacketFactory.m; sourceTree = "<group>"; };
-		4724A1231FFE6B2500647B6B /* PGPPartialKey+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPPartialKey+Private.h"; sourceTree = "<group>"; };
-		4724A1241FFE6B2500647B6B /* PGPPartialKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPartialKey.h; sourceTree = "<group>"; };
-		4724A1251FFE6B2500647B6B /* PGPPartialKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPartialKey.m; sourceTree = "<group>"; };
-		4724A1261FFE6B2500647B6B /* PGPPartialSubKey+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPPartialSubKey+Private.h"; sourceTree = "<group>"; };
-		4724A1271FFE6B2500647B6B /* PGPPartialSubKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPartialSubKey.h; sourceTree = "<group>"; };
-		4724A1281FFE6B2500647B6B /* PGPPartialSubKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPartialSubKey.m; sourceTree = "<group>"; };
-		4724A1291FFE6B2500647B6B /* PGPPKCSEme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPKCSEme.h; sourceTree = "<group>"; };
-		4724A12A1FFE6B2500647B6B /* PGPPKCSEme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPKCSEme.m; sourceTree = "<group>"; };
-		4724A12B1FFE6B2500647B6B /* PGPPKCSEmsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPKCSEmsa.h; sourceTree = "<group>"; };
-		4724A12C1FFE6B2500647B6B /* PGPPKCSEmsa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPKCSEmsa.m; sourceTree = "<group>"; };
-		4724A12D1FFE6B2500647B6B /* PGPS2K.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPS2K.h; sourceTree = "<group>"; };
-		4724A12E1FFE6B2500647B6B /* PGPS2K.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPS2K.m; sourceTree = "<group>"; };
-		4724A12F1FFE6B2500647B6B /* PGPTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPTypes.h; sourceTree = "<group>"; };
-		4724A1301FFE6B2500647B6B /* PGPUser+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPUser+Private.h"; sourceTree = "<group>"; };
-		4724A1311FFE6B2500647B6B /* PGPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUser.h; sourceTree = "<group>"; };
-		4724A1321FFE6B2500647B6B /* PGPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUser.m; sourceTree = "<group>"; };
-		4724A1341FFE6B2500647B6B /* NSArray+PGPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PGPUtils.h"; sourceTree = "<group>"; };
-		4724A1351FFE6B2500647B6B /* NSArray+PGPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PGPUtils.m"; sourceTree = "<group>"; };
-		4724A1361FFE6B2500647B6B /* NSData+compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+compression.h"; sourceTree = "<group>"; };
-		4724A1371FFE6B2500647B6B /* NSData+compression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+compression.m"; sourceTree = "<group>"; };
-		4724A1381FFE6B2500647B6B /* NSData+PGPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+PGPUtils.h"; sourceTree = "<group>"; };
-		4724A1391FFE6B2500647B6B /* NSData+PGPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+PGPUtils.m"; sourceTree = "<group>"; };
-		4724A13A1FFE6B2500647B6B /* NSMutableData+PGPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableData+PGPUtils.h"; sourceTree = "<group>"; };
-		4724A13B1FFE6B2500647B6B /* NSMutableData+PGPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData+PGPUtils.m"; sourceTree = "<group>"; };
+		471BC8951F960B7C00D64416 /* PGPCryptoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoHash.h; sourceTree = "<group>"; };
+		471BC8961F960B7C00D64416 /* PGPCryptoHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoHash.m; sourceTree = "<group>"; };
+		471BC8971F960B7C00D64416 /* PGPCryptoUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoUtils.h; sourceTree = "<group>"; };
+		471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoUtils.m; sourceTree = "<group>"; };
+		471BC8991F960B7C00D64416 /* PGPDSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPDSA.h; sourceTree = "<group>"; };
+		471BC89A1F960B7C00D64416 /* PGPDSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPDSA.m; sourceTree = "<group>"; };
+		471BC89B1F960B7C00D64416 /* PGPKeyMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyMaterial.h; sourceTree = "<group>"; };
+		471BC89C1F960B7C00D64416 /* PGPKeyMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyMaterial.m; sourceTree = "<group>"; };
+		471BC89D1F960B7C00D64416 /* PGPRSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPRSA.h; sourceTree = "<group>"; };
+		471BC89E1F960B7C00D64416 /* PGPRSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPRSA.m; sourceTree = "<group>"; };
+		471BC89F1F960B7C00D64416 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		471BC8A01F960B7C00D64416 /* ObjectivePGP-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ObjectivePGP-Prefix.pch"; sourceTree = "<group>"; };
+		471BC8A11F960B7C00D64416 /* ObjectivePGP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectivePGP.h; sourceTree = "<group>"; };
+		471BC8A21F960B7C00D64416 /* ObjectivePGPObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectivePGPObject.h; sourceTree = "<group>"; };
+		471BC8A31F960B7C00D64416 /* ObjectivePGPObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectivePGPObject.m; sourceTree = "<group>"; };
+		471BC8A51F960B7C00D64416 /* PGPCompressedPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCompressedPacket.h; sourceTree = "<group>"; };
+		471BC8A61F960B7C00D64416 /* PGPCompressedPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCompressedPacket.m; sourceTree = "<group>"; };
+		471BC8A71F960B7C00D64416 /* PGPLiteralPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPLiteralPacket.h; sourceTree = "<group>"; };
+		471BC8A81F960B7C00D64416 /* PGPLiteralPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPLiteralPacket.m; sourceTree = "<group>"; };
+		471BC8A91F960B7C00D64416 /* PGPModificationDetectionCodePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPModificationDetectionCodePacket.h; sourceTree = "<group>"; };
+		471BC8AA1F960B7C00D64416 /* PGPModificationDetectionCodePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPModificationDetectionCodePacket.m; sourceTree = "<group>"; };
+		471BC8AB1F960B7C00D64416 /* PGPOnePassSignaturePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPOnePassSignaturePacket.h; sourceTree = "<group>"; };
+		471BC8AC1F960B7C00D64416 /* PGPOnePassSignaturePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPOnePassSignaturePacket.m; sourceTree = "<group>"; };
+		471BC8AD1F960B7C00D64416 /* PGPPacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPPacket+Private.h"; sourceTree = "<group>"; };
+		471BC8AE1F960B7C00D64416 /* PGPPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPacket.h; sourceTree = "<group>"; };
+		471BC8AF1F960B7C00D64416 /* PGPPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPacket.m; sourceTree = "<group>"; };
+		471BC8B11F960B7C00D64416 /* PGPPublicKeyEncryptedSessionKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicKeyEncryptedSessionKeyPacket.h; sourceTree = "<group>"; };
+		471BC8B21F960B7C00D64416 /* PGPPublicKeyEncryptedSessionKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicKeyEncryptedSessionKeyPacket.m; sourceTree = "<group>"; };
+		471BC8B31F960B7C00D64416 /* PGPPublicKeyPacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPPublicKeyPacket+Private.h"; sourceTree = "<group>"; };
+		471BC8B41F960B7C00D64416 /* PGPPublicKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicKeyPacket.h; sourceTree = "<group>"; };
+		471BC8B51F960B7C00D64416 /* PGPPublicKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicKeyPacket.m; sourceTree = "<group>"; };
+		471BC8B61F960B7C00D64416 /* PGPPublicSubKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPublicSubKeyPacket.h; sourceTree = "<group>"; };
+		471BC8B71F960B7C00D64416 /* PGPPublicSubKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPublicSubKeyPacket.m; sourceTree = "<group>"; };
+		471BC8B81F960B7C00D64416 /* PGPSecretKeyPacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPSecretKeyPacket+Private.h"; sourceTree = "<group>"; };
+		471BC8B91F960B7C00D64416 /* PGPSecretKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSecretKeyPacket.h; sourceTree = "<group>"; };
+		471BC8BA1F960B7C00D64416 /* PGPSecretKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSecretKeyPacket.m; sourceTree = "<group>"; };
+		471BC8BB1F960B7C00D64416 /* PGPSecretSubKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSecretSubKeyPacket.h; sourceTree = "<group>"; };
+		471BC8BC1F960B7C00D64416 /* PGPSecretSubKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSecretSubKeyPacket.m; sourceTree = "<group>"; };
+		471BC8BD1F960B7C00D64416 /* PGPSignaturePacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPSignaturePacket+Private.h"; sourceTree = "<group>"; };
+		471BC8BE1F960B7C00D64416 /* PGPSignaturePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignaturePacket.h; sourceTree = "<group>"; };
+		471BC8BF1F960B7C00D64416 /* PGPSignaturePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignaturePacket.m; sourceTree = "<group>"; };
+		471BC8C01F960B7C00D64416 /* PGPSignatureSubpacket+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPSignatureSubpacket+Private.h"; sourceTree = "<group>"; };
+		471BC8C11F960B7C00D64416 /* PGPSignatureSubpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignatureSubpacket.h; sourceTree = "<group>"; };
+		471BC8C21F960B7C00D64416 /* PGPSignatureSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignatureSubpacket.m; sourceTree = "<group>"; };
+		471BC8C31F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignatureSubpacketCreationTime.h; sourceTree = "<group>"; };
+		471BC8C41F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignatureSubpacketCreationTime.m; sourceTree = "<group>"; };
+		471BC8C51F960B7C00D64416 /* PGPSignatureSubpacketHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignatureSubpacketHeader.h; sourceTree = "<group>"; };
+		471BC8C61F960B7C00D64416 /* PGPSignatureSubpacketHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignatureSubpacketHeader.m; sourceTree = "<group>"; };
+		471BC8C71F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSymmetricallyEncryptedDataPacket.h; sourceTree = "<group>"; };
+		471BC8C81F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSymmetricallyEncryptedDataPacket.m; sourceTree = "<group>"; };
+		471BC8C91F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h; sourceTree = "<group>"; };
+		471BC8CA1F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m; sourceTree = "<group>"; };
+		471BC8CD1F960B7C00D64416 /* PGPTrustPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPTrustPacket.h; sourceTree = "<group>"; };
+		471BC8CE1F960B7C00D64416 /* PGPTrustPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPTrustPacket.m; sourceTree = "<group>"; };
+		471BC8CF1F960B7C00D64416 /* PGPUserAttributePacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserAttributePacket.h; sourceTree = "<group>"; };
+		471BC8D01F960B7C00D64416 /* PGPUserAttributePacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributePacket.m; sourceTree = "<group>"; };
+		471BC8D11F960B7C00D64416 /* PGPUserAttributeSubpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserAttributeSubpacket.h; sourceTree = "<group>"; };
+		471BC8D21F960B7C00D64416 /* PGPUserAttributeSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeSubpacket.m; sourceTree = "<group>"; };
+		471BC8D31F960B7C00D64416 /* PGPUserIDPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserIDPacket.h; sourceTree = "<group>"; };
+		471BC8D41F960B7C00D64416 /* PGPUserIDPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserIDPacket.m; sourceTree = "<group>"; };
+		471BC8D51F960B7C00D64416 /* PGPArmor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPArmor.h; sourceTree = "<group>"; };
+		471BC8D61F960B7C00D64416 /* PGPArmor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPArmor.m; sourceTree = "<group>"; };
+		471BC8D71F960B7C00D64416 /* PGPBigNum+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPBigNum+Private.h"; sourceTree = "<group>"; };
+		471BC8D81F960B7C00D64416 /* PGPBigNum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPBigNum.h; sourceTree = "<group>"; };
+		471BC8D91F960B7C00D64416 /* PGPBigNum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPBigNum.m; sourceTree = "<group>"; };
+		471BC8DA1F960B7C00D64416 /* PGPCryptoCFB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoCFB.h; sourceTree = "<group>"; };
+		471BC8DB1F960B7C00D64416 /* PGPCryptoCFB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoCFB.m; sourceTree = "<group>"; };
+		471BC8DC1F960B7C00D64416 /* PGPExportableProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPExportableProtocol.h; sourceTree = "<group>"; };
+		471BC8DD1F960B7C00D64416 /* PGPFingerprint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPFingerprint.h; sourceTree = "<group>"; };
+		471BC8DE1F960B7C00D64416 /* PGPFingerprint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPFingerprint.m; sourceTree = "<group>"; };
+		471BC8DF1F960B7C00D64416 /* PGPFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPFoundation.h; sourceTree = "<group>"; };
+		471BC8E01F960B7C00D64416 /* PGPFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPFoundation.m; sourceTree = "<group>"; };
+		471BC8E11F960B7C00D64416 /* PGPKey+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPKey+Private.h"; sourceTree = "<group>"; };
+		471BC8E21F960B7C00D64416 /* PGPKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKey.h; sourceTree = "<group>"; };
+		471BC8E31F960B7C00D64416 /* PGPKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKey.m; sourceTree = "<group>"; };
+		471BC8E41F960B7C00D64416 /* PGPKeyGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyGenerator.h; sourceTree = "<group>"; };
+		471BC8E51F960B7C00D64416 /* PGPKeyGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyGenerator.m; sourceTree = "<group>"; };
+		471BC8E61F960B7C00D64416 /* PGPKeyID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyID.h; sourceTree = "<group>"; };
+		471BC8E71F960B7C00D64416 /* PGPKeyID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyID.m; sourceTree = "<group>"; };
+		471BC8E81F960B7C00D64416 /* PGPLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPLogging.h; sourceTree = "<group>"; };
+		471BC8E91F960B7C00D64416 /* PGPMacros+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPMacros+Private.h"; sourceTree = "<group>"; };
+		471BC8EA1F960B7C00D64416 /* PGPMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPMacros.h; sourceTree = "<group>"; };
+		471BC8EB1F960B7C00D64416 /* PGPMPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPMPI.h; sourceTree = "<group>"; };
+		471BC8EC1F960B7C00D64416 /* PGPMPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPMPI.m; sourceTree = "<group>"; };
+		471BC8ED1F960B7C00D64416 /* PGPPacketFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPacketFactory.h; sourceTree = "<group>"; };
+		471BC8EE1F960B7C00D64416 /* PGPPacketFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPacketFactory.m; sourceTree = "<group>"; };
+		471BC8EF1F960B7C00D64416 /* PGPPartialKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPartialKey.h; sourceTree = "<group>"; };
+		471BC8F01F960B7C00D64416 /* PGPPartialKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPartialKey.m; sourceTree = "<group>"; };
+		471BC8F11F960B7C00D64416 /* PGPPartialSubKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPartialSubKey.h; sourceTree = "<group>"; };
+		471BC8F21F960B7C00D64416 /* PGPPartialSubKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPartialSubKey.m; sourceTree = "<group>"; };
+		471BC8F31F960B7C00D64416 /* PGPPKCSEme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPKCSEme.h; sourceTree = "<group>"; };
+		471BC8F41F960B7C00D64416 /* PGPPKCSEme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPKCSEme.m; sourceTree = "<group>"; };
+		471BC8F51F960B7C00D64416 /* PGPPKCSEmsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPKCSEmsa.h; sourceTree = "<group>"; };
+		471BC8F61F960B7C00D64416 /* PGPPKCSEmsa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPKCSEmsa.m; sourceTree = "<group>"; };
+		471BC8F71F960B7C00D64416 /* PGPS2K.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPS2K.h; sourceTree = "<group>"; };
+		471BC8F81F960B7C00D64416 /* PGPS2K.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPS2K.m; sourceTree = "<group>"; };
+		471BC8F91F960B7C00D64416 /* PGPTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPTypes.h; sourceTree = "<group>"; };
+		471BC8FA1F960B7C00D64416 /* PGPUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUser.h; sourceTree = "<group>"; };
+		471BC8FB1F960B7C00D64416 /* PGPUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUser.m; sourceTree = "<group>"; };
+		471BC8FD1F960B7C00D64416 /* NSData+compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+compression.h"; sourceTree = "<group>"; };
+		471BC8FE1F960B7C00D64416 /* NSData+compression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+compression.m"; sourceTree = "<group>"; };
+		471BC8FF1F960B7C00D64416 /* NSData+PGPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+PGPUtils.h"; sourceTree = "<group>"; };
+		471BC9001F960B7C00D64416 /* NSData+PGPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+PGPUtils.m"; sourceTree = "<group>"; };
+		471BC9031F960B7C00D64416 /* NSMutableData+PGPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableData+PGPUtils.h"; sourceTree = "<group>"; };
+		471BC9041F960B7C00D64416 /* NSMutableData+PGPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData+PGPUtils.m"; sourceTree = "<group>"; };
 		4725C4F41EDDADA10068235E /* bob-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-private.gpg"; path = "keys/bob-private.gpg"; sourceTree = "<group>"; };
 		4725C4F51EDDADA10068235E /* bob-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-public.gpg"; path = "keys/bob-public.gpg"; sourceTree = "<group>"; };
 		472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "EnzevalosContact+CoreDataClass.swift"; path = "../EnzevalosContact+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -558,6 +541,23 @@
 		472F398B1E2519C8009260FB /* CNContactExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CNContactExtension.swift; sourceTree = "<group>"; };
 		472F398D1E251B8D009260FB /* MailAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailAddress.swift; sourceTree = "<group>"; };
 		472F398F1E252470009260FB /* CNMailAddressesExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CNMailAddressesExtension.swift; sourceTree = "<group>"; };
+		473AC39120054D06006EB8A6 /* PGPUserAttributeImageSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeImageSubpacket.m; sourceTree = "<group>"; };
+		473AC39220054D07006EB8A6 /* PGPUserAttributeImageSubpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserAttributeImageSubpacket.h; sourceTree = "<group>"; };
+		473AC39520054D29006EB8A6 /* NSArray+PGPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PGPUtils.h"; sourceTree = "<group>"; };
+		473AC39620054D29006EB8A6 /* NSArray+PGPUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PGPUtils.m"; sourceTree = "<group>"; };
+		473AC39920054D54006EB8A6 /* ObjectivePGP-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ObjectivePGP-Private.h"; sourceTree = "<group>"; };
+		473AC39A20054D7C006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSymetricKeyEncryptedSessionKeyPacket.m; sourceTree = "<group>"; };
+		473AC39B20054D7D006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSymetricKeyEncryptedSessionKeyPacket.h; sourceTree = "<group>"; };
+		473AC39E20054DBA006EB8A6 /* PGPEncryptedSessionKeyPacketProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPEncryptedSessionKeyPacketProtocol.h; sourceTree = "<group>"; };
+		473AC39F20054DD9006EB8A6 /* PGPPacketHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPPacketHeader.m; sourceTree = "<group>"; };
+		473AC3A020054DDA006EB8A6 /* PGPPacketHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPPacketHeader.h; sourceTree = "<group>"; };
+		473AC3A320054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPSignatureSubpacketEmbeddedSignature.h; sourceTree = "<group>"; };
+		473AC3A420054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPSignatureSubpacketEmbeddedSignature.m; sourceTree = "<group>"; };
+		473AC3A820054E25006EB8A6 /* twofish.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = twofish.c; sourceTree = "<group>"; };
+		473AC3A920054E25006EB8A6 /* twofish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = twofish.h; sourceTree = "<group>"; };
+		473AC3AC20054EAA006EB8A6 /* PGPKeyring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyring.m; sourceTree = "<group>"; };
+		473AC3AD20054EAA006EB8A6 /* PGPKeyring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyring.h; sourceTree = "<group>"; };
+		473AC3B020054EB2006EB8A6 /* PGPKeyring+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPKeyring+Private.h"; sourceTree = "<group>"; };
 		475B00301F7B9565006CDD41 /* SwiftPGP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPGP.swift; sourceTree = "<group>"; };
 		475B00311F7B9565006CDD41 /* Cryptography.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; };
 		475B00321F7B9565006CDD41 /* CryptoObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoObject.swift; sourceTree = "<group>"; };
@@ -696,6 +696,8 @@
 		F1984D731E1E92B300804E1E /* LabelStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelStyleKit.swift; sourceTree = "<group>"; };
 		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		F1AF938E1E2D04BA00755128 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
+		F1C733341FEC1CE2005A497E /* About.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = About.storyboard; sourceTree = "<group>"; };
+		F1C7AC811FED6473007629DB /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		F1E918D61FBDEECA00D60418 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		F1F070271FA0DF3F004A860A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -724,7 +726,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F678F71DFB726D912D039FFF /* Pods_enzevalos_iphoneTests.framework in Frameworks */,
+				45262931B4C72A96C686C533 /* Pods_enzevalos_iphoneTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,166 +779,166 @@
 			path = PLists;
 			sourceTree = "<group>";
 		};
-		4724A0BA1FFE6B2500647B6B /* ObjectivePGP */ = {
+		3EC35F1F2003755F008BDF95 /* Invitation */ = {
 			isa = PBXGroup;
 			children = (
-				4724A0BB1FFE6B2500647B6B /* CryptoBox */,
-				4724A0C91FFE6B2500647B6B /* Info.plist */,
-				4724A0CA1FFE6B2500647B6B /* ObjectivePGP-Prefix.pch */,
-				4724A0CB1FFE6B2500647B6B /* ObjectivePGP-Private.h */,
-				4724A0CC1FFE6B2500647B6B /* ObjectivePGP.h */,
-				4724A0CD1FFE6B2500647B6B /* ObjectivePGPObject.h */,
-				4724A0CE1FFE6B2500647B6B /* ObjectivePGPObject.m */,
-				4724A0CF1FFE6B2500647B6B /* Packets */,
-				4724A1061FFE6B2500647B6B /* PGPArmor.h */,
-				4724A1071FFE6B2500647B6B /* PGPArmor.m */,
-				4724A1081FFE6B2500647B6B /* PGPBigNum+Private.h */,
-				4724A1091FFE6B2500647B6B /* PGPBigNum.h */,
-				4724A10A1FFE6B2500647B6B /* PGPBigNum.m */,
-				4724A10B1FFE6B2500647B6B /* PGPCryptoCFB.h */,
-				4724A10C1FFE6B2500647B6B /* PGPCryptoCFB.m */,
-				4724A10D1FFE6B2500647B6B /* PGPExportableProtocol.h */,
-				4724A10E1FFE6B2500647B6B /* PGPFingerprint.h */,
-				4724A10F1FFE6B2500647B6B /* PGPFingerprint.m */,
-				4724A1101FFE6B2500647B6B /* PGPFoundation.h */,
-				4724A1111FFE6B2500647B6B /* PGPFoundation.m */,
-				4724A1121FFE6B2500647B6B /* PGPKey+Private.h */,
-				4724A1131FFE6B2500647B6B /* PGPKey.h */,
-				4724A1141FFE6B2500647B6B /* PGPKey.m */,
-				4724A1151FFE6B2500647B6B /* PGPKeyGenerator.h */,
-				4724A1161FFE6B2500647B6B /* PGPKeyGenerator.m */,
-				4724A1171FFE6B2500647B6B /* PGPKeyID.h */,
-				4724A1181FFE6B2500647B6B /* PGPKeyID.m */,
-				4724A1191FFE6B2500647B6B /* PGPKeyring+Private.h */,
-				4724A11A1FFE6B2500647B6B /* PGPKeyring.h */,
-				4724A11B1FFE6B2500647B6B /* PGPKeyring.m */,
-				4724A11C1FFE6B2500647B6B /* PGPLogging.h */,
-				4724A11D1FFE6B2500647B6B /* PGPMacros+Private.h */,
-				4724A11E1FFE6B2500647B6B /* PGPMacros.h */,
-				4724A11F1FFE6B2500647B6B /* PGPMPI.h */,
-				4724A1201FFE6B2500647B6B /* PGPMPI.m */,
-				4724A1211FFE6B2500647B6B /* PGPPacketFactory.h */,
-				4724A1221FFE6B2500647B6B /* PGPPacketFactory.m */,
-				4724A1231FFE6B2500647B6B /* PGPPartialKey+Private.h */,
-				4724A1241FFE6B2500647B6B /* PGPPartialKey.h */,
-				4724A1251FFE6B2500647B6B /* PGPPartialKey.m */,
-				4724A1261FFE6B2500647B6B /* PGPPartialSubKey+Private.h */,
-				4724A1271FFE6B2500647B6B /* PGPPartialSubKey.h */,
-				4724A1281FFE6B2500647B6B /* PGPPartialSubKey.m */,
-				4724A1291FFE6B2500647B6B /* PGPPKCSEme.h */,
-				4724A12A1FFE6B2500647B6B /* PGPPKCSEme.m */,
-				4724A12B1FFE6B2500647B6B /* PGPPKCSEmsa.h */,
-				4724A12C1FFE6B2500647B6B /* PGPPKCSEmsa.m */,
-				4724A12D1FFE6B2500647B6B /* PGPS2K.h */,
-				4724A12E1FFE6B2500647B6B /* PGPS2K.m */,
-				4724A12F1FFE6B2500647B6B /* PGPTypes.h */,
-				4724A1301FFE6B2500647B6B /* PGPUser+Private.h */,
-				4724A1311FFE6B2500647B6B /* PGPUser.h */,
-				4724A1321FFE6B2500647B6B /* PGPUser.m */,
-				4724A1331FFE6B2500647B6B /* Utils */,
+				3EC35F2020037628008BDF95 /* InvitationDialog.storyboard */,
+				3EC35F2320037651008BDF95 /* InvitationHelper.swift */,
+				3EC35F2620037664008BDF95 /* InvitationApi.swift */,
+				3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */,
+				3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */,
+			);
+			name = Invitation;
+			sourceTree = "<group>";
+		};
+		471BC8931F960B7C00D64416 /* ObjectivePGP */ = {
+			isa = PBXGroup;
+			children = (
+				471BC8941F960B7C00D64416 /* CryptoBox */,
+				471BC89F1F960B7C00D64416 /* Info.plist */,
+				471BC8A01F960B7C00D64416 /* ObjectivePGP-Prefix.pch */,
+				471BC8A11F960B7C00D64416 /* ObjectivePGP.h */,
+				471BC8A21F960B7C00D64416 /* ObjectivePGPObject.h */,
+				471BC8A31F960B7C00D64416 /* ObjectivePGPObject.m */,
+				471BC8A41F960B7C00D64416 /* Packets */,
+				471BC8D51F960B7C00D64416 /* PGPArmor.h */,
+				473AC39920054D54006EB8A6 /* ObjectivePGP-Private.h */,
+				471BC8D61F960B7C00D64416 /* PGPArmor.m */,
+				471BC8D71F960B7C00D64416 /* PGPBigNum+Private.h */,
+				471BC8D81F960B7C00D64416 /* PGPBigNum.h */,
+				471BC8D91F960B7C00D64416 /* PGPBigNum.m */,
+				471BC8DA1F960B7C00D64416 /* PGPCryptoCFB.h */,
+				471BC8DB1F960B7C00D64416 /* PGPCryptoCFB.m */,
+				471BC8DC1F960B7C00D64416 /* PGPExportableProtocol.h */,
+				471BC8DD1F960B7C00D64416 /* PGPFingerprint.h */,
+				471BC8DE1F960B7C00D64416 /* PGPFingerprint.m */,
+				471BC8DF1F960B7C00D64416 /* PGPFoundation.h */,
+				471BC8E01F960B7C00D64416 /* PGPFoundation.m */,
+				471BC8E11F960B7C00D64416 /* PGPKey+Private.h */,
+				471BC8E21F960B7C00D64416 /* PGPKey.h */,
+				471BC8E31F960B7C00D64416 /* PGPKey.m */,
+				471BC8E41F960B7C00D64416 /* PGPKeyGenerator.h */,
+				471BC8E51F960B7C00D64416 /* PGPKeyGenerator.m */,
+				471BC8E61F960B7C00D64416 /* PGPKeyID.h */,
+				471BC8E71F960B7C00D64416 /* PGPKeyID.m */,
+				471BC8E81F960B7C00D64416 /* PGPLogging.h */,
+				471BC8E91F960B7C00D64416 /* PGPMacros+Private.h */,
+				471BC8EA1F960B7C00D64416 /* PGPMacros.h */,
+				471BC8EB1F960B7C00D64416 /* PGPMPI.h */,
+				471BC8EC1F960B7C00D64416 /* PGPMPI.m */,
+				471BC8ED1F960B7C00D64416 /* PGPPacketFactory.h */,
+				471BC8EE1F960B7C00D64416 /* PGPPacketFactory.m */,
+				473AC3B020054EB2006EB8A6 /* PGPKeyring+Private.h */,
+				471BC8EF1F960B7C00D64416 /* PGPPartialKey.h */,
+				473AC3AD20054EAA006EB8A6 /* PGPKeyring.h */,
+				473AC3AC20054EAA006EB8A6 /* PGPKeyring.m */,
+				471BC8F01F960B7C00D64416 /* PGPPartialKey.m */,
+				471BC8F11F960B7C00D64416 /* PGPPartialSubKey.h */,
+				471BC8F21F960B7C00D64416 /* PGPPartialSubKey.m */,
+				471BC8F31F960B7C00D64416 /* PGPPKCSEme.h */,
+				471BC8F41F960B7C00D64416 /* PGPPKCSEme.m */,
+				471BC8F51F960B7C00D64416 /* PGPPKCSEmsa.h */,
+				471BC8F61F960B7C00D64416 /* PGPPKCSEmsa.m */,
+				471BC8F71F960B7C00D64416 /* PGPS2K.h */,
+				471BC8F81F960B7C00D64416 /* PGPS2K.m */,
+				471BC8F91F960B7C00D64416 /* PGPTypes.h */,
+				471BC8FA1F960B7C00D64416 /* PGPUser.h */,
+				471BC8FB1F960B7C00D64416 /* PGPUser.m */,
+				471BC8FC1F960B7C00D64416 /* Utils */,
 			);
 			path = ObjectivePGP;
 			sourceTree = "<group>";
 		};
-		4724A0BB1FFE6B2500647B6B /* CryptoBox */ = {
+		471BC8941F960B7C00D64416 /* CryptoBox */ = {
 			isa = PBXGroup;
 			children = (
-				4724A0BC1FFE6B2500647B6B /* PGPCryptoHash.h */,
-				4724A0BD1FFE6B2500647B6B /* PGPCryptoHash.m */,
-				4724A0BE1FFE6B2500647B6B /* PGPCryptoUtils.h */,
-				4724A0BF1FFE6B2500647B6B /* PGPCryptoUtils.m */,
-				4724A0C01FFE6B2500647B6B /* PGPDSA.h */,
-				4724A0C11FFE6B2500647B6B /* PGPDSA.m */,
-				4724A0C21FFE6B2500647B6B /* PGPKeyMaterial.h */,
-				4724A0C31FFE6B2500647B6B /* PGPKeyMaterial.m */,
-				4724A0C41FFE6B2500647B6B /* PGPRSA.h */,
-				4724A0C51FFE6B2500647B6B /* PGPRSA.m */,
-				4724A0C61FFE6B2500647B6B /* twofish */,
+				473AC3A720054E25006EB8A6 /* twofish */,
+				471BC8951F960B7C00D64416 /* PGPCryptoHash.h */,
+				471BC8961F960B7C00D64416 /* PGPCryptoHash.m */,
+				471BC8971F960B7C00D64416 /* PGPCryptoUtils.h */,
+				471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */,
+				471BC8991F960B7C00D64416 /* PGPDSA.h */,
+				471BC89A1F960B7C00D64416 /* PGPDSA.m */,
+				471BC89B1F960B7C00D64416 /* PGPKeyMaterial.h */,
+				471BC89C1F960B7C00D64416 /* PGPKeyMaterial.m */,
+				471BC89D1F960B7C00D64416 /* PGPRSA.h */,
+				471BC89E1F960B7C00D64416 /* PGPRSA.m */,
 			);
 			path = CryptoBox;
 			sourceTree = "<group>";
 		};
-		4724A0C61FFE6B2500647B6B /* twofish */ = {
+		471BC8A41F960B7C00D64416 /* Packets */ = {
 			isa = PBXGroup;
 			children = (
-				4724A0C71FFE6B2500647B6B /* twofish.c */,
-				4724A0C81FFE6B2500647B6B /* twofish.h */,
-			);
-			path = twofish;
-			sourceTree = "<group>";
-		};
-		4724A0CF1FFE6B2500647B6B /* Packets */ = {
-			isa = PBXGroup;
-			children = (
-				4724A0D01FFE6B2500647B6B /* PGPCompressedPacket.h */,
-				4724A0D11FFE6B2500647B6B /* PGPCompressedPacket.m */,
-				4724A0D21FFE6B2500647B6B /* PGPEncryptedSessionKeyPacketProtocol.h */,
-				4724A0D31FFE6B2500647B6B /* PGPLiteralPacket.h */,
-				4724A0D41FFE6B2500647B6B /* PGPLiteralPacket.m */,
-				4724A0D51FFE6B2500647B6B /* PGPModificationDetectionCodePacket.h */,
-				4724A0D61FFE6B2500647B6B /* PGPModificationDetectionCodePacket.m */,
-				4724A0D71FFE6B2500647B6B /* PGPOnePassSignaturePacket.h */,
-				4724A0D81FFE6B2500647B6B /* PGPOnePassSignaturePacket.m */,
-				4724A0D91FFE6B2500647B6B /* PGPPacket+Private.h */,
-				4724A0DA1FFE6B2500647B6B /* PGPPacket.h */,
-				4724A0DB1FFE6B2500647B6B /* PGPPacket.m */,
-				4724A0DC1FFE6B2500647B6B /* PGPPacketHeader.h */,
-				4724A0DD1FFE6B2500647B6B /* PGPPacketHeader.m */,
-				4724A0DE1FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.h */,
-				4724A0DF1FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.m */,
-				4724A0E01FFE6B2500647B6B /* PGPPublicKeyPacket+Private.h */,
-				4724A0E11FFE6B2500647B6B /* PGPPublicKeyPacket.h */,
-				4724A0E21FFE6B2500647B6B /* PGPPublicKeyPacket.m */,
-				4724A0E31FFE6B2500647B6B /* PGPPublicSubKeyPacket.h */,
-				4724A0E41FFE6B2500647B6B /* PGPPublicSubKeyPacket.m */,
-				4724A0E51FFE6B2500647B6B /* PGPSecretKeyPacket+Private.h */,
-				4724A0E61FFE6B2500647B6B /* PGPSecretKeyPacket.h */,
-				4724A0E71FFE6B2500647B6B /* PGPSecretKeyPacket.m */,
-				4724A0E81FFE6B2500647B6B /* PGPSecretSubKeyPacket.h */,
-				4724A0E91FFE6B2500647B6B /* PGPSecretSubKeyPacket.m */,
-				4724A0EA1FFE6B2500647B6B /* PGPSignaturePacket+Private.h */,
-				4724A0EB1FFE6B2500647B6B /* PGPSignaturePacket.h */,
-				4724A0EC1FFE6B2500647B6B /* PGPSignaturePacket.m */,
-				4724A0ED1FFE6B2500647B6B /* PGPSignatureSubpacket+Private.h */,
-				4724A0EE1FFE6B2500647B6B /* PGPSignatureSubpacket.h */,
-				4724A0EF1FFE6B2500647B6B /* PGPSignatureSubpacket.m */,
-				4724A0F01FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.h */,
-				4724A0F11FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.m */,
-				4724A0F21FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.h */,
-				4724A0F31FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.m */,
-				4724A0F41FFE6B2500647B6B /* PGPSignatureSubpacketHeader.h */,
-				4724A0F51FFE6B2500647B6B /* PGPSignatureSubpacketHeader.m */,
-				4724A0F61FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.h */,
-				4724A0F71FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.m */,
-				4724A0F81FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.h */,
-				4724A0F91FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.m */,
-				4724A0FA1FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h */,
-				4724A0FB1FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */,
-				4724A0FC1FFE6B2500647B6B /* PGPTrustPacket.h */,
-				4724A0FD1FFE6B2500647B6B /* PGPTrustPacket.m */,
-				4724A0FE1FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.h */,
-				4724A0FF1FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.m */,
-				4724A1001FFE6B2500647B6B /* PGPUserAttributePacket.h */,
-				4724A1011FFE6B2500647B6B /* PGPUserAttributePacket.m */,
-				4724A1021FFE6B2500647B6B /* PGPUserAttributeSubpacket.h */,
-				4724A1031FFE6B2500647B6B /* PGPUserAttributeSubpacket.m */,
-				4724A1041FFE6B2500647B6B /* PGPUserIDPacket.h */,
-				4724A1051FFE6B2500647B6B /* PGPUserIDPacket.m */,
+				473AC39E20054DBA006EB8A6 /* PGPEncryptedSessionKeyPacketProtocol.h */,
+				473AC39220054D07006EB8A6 /* PGPUserAttributeImageSubpacket.h */,
+				473AC3A020054DDA006EB8A6 /* PGPPacketHeader.h */,
+				473AC39F20054DD9006EB8A6 /* PGPPacketHeader.m */,
+				473AC39120054D06006EB8A6 /* PGPUserAttributeImageSubpacket.m */,
+				473AC3A320054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.h */,
+				473AC3A420054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m */,
+				471BC8A51F960B7C00D64416 /* PGPCompressedPacket.h */,
+				471BC8A61F960B7C00D64416 /* PGPCompressedPacket.m */,
+				471BC8A71F960B7C00D64416 /* PGPLiteralPacket.h */,
+				471BC8A81F960B7C00D64416 /* PGPLiteralPacket.m */,
+				473AC39B20054D7D006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.h */,
+				473AC39A20054D7C006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.m */,
+				471BC8A91F960B7C00D64416 /* PGPModificationDetectionCodePacket.h */,
+				471BC8AA1F960B7C00D64416 /* PGPModificationDetectionCodePacket.m */,
+				471BC8AB1F960B7C00D64416 /* PGPOnePassSignaturePacket.h */,
+				471BC8AC1F960B7C00D64416 /* PGPOnePassSignaturePacket.m */,
+				471BC8AD1F960B7C00D64416 /* PGPPacket+Private.h */,
+				471BC8AE1F960B7C00D64416 /* PGPPacket.h */,
+				471BC8AF1F960B7C00D64416 /* PGPPacket.m */,
+				471BC8B11F960B7C00D64416 /* PGPPublicKeyEncryptedSessionKeyPacket.h */,
+				471BC8B21F960B7C00D64416 /* PGPPublicKeyEncryptedSessionKeyPacket.m */,
+				471BC8B31F960B7C00D64416 /* PGPPublicKeyPacket+Private.h */,
+				471BC8B41F960B7C00D64416 /* PGPPublicKeyPacket.h */,
+				471BC8B51F960B7C00D64416 /* PGPPublicKeyPacket.m */,
+				471BC8B61F960B7C00D64416 /* PGPPublicSubKeyPacket.h */,
+				471BC8B71F960B7C00D64416 /* PGPPublicSubKeyPacket.m */,
+				471BC8B81F960B7C00D64416 /* PGPSecretKeyPacket+Private.h */,
+				471BC8B91F960B7C00D64416 /* PGPSecretKeyPacket.h */,
+				471BC8BA1F960B7C00D64416 /* PGPSecretKeyPacket.m */,
+				471BC8BB1F960B7C00D64416 /* PGPSecretSubKeyPacket.h */,
+				471BC8BC1F960B7C00D64416 /* PGPSecretSubKeyPacket.m */,
+				471BC8BD1F960B7C00D64416 /* PGPSignaturePacket+Private.h */,
+				471BC8BE1F960B7C00D64416 /* PGPSignaturePacket.h */,
+				471BC8BF1F960B7C00D64416 /* PGPSignaturePacket.m */,
+				471BC8C01F960B7C00D64416 /* PGPSignatureSubpacket+Private.h */,
+				471BC8C11F960B7C00D64416 /* PGPSignatureSubpacket.h */,
+				471BC8C21F960B7C00D64416 /* PGPSignatureSubpacket.m */,
+				471BC8C31F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.h */,
+				471BC8C41F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.m */,
+				471BC8C51F960B7C00D64416 /* PGPSignatureSubpacketHeader.h */,
+				471BC8C61F960B7C00D64416 /* PGPSignatureSubpacketHeader.m */,
+				471BC8C71F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.h */,
+				471BC8C81F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m */,
+				471BC8C91F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.h */,
+				471BC8CA1F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m */,
+				471BC8CD1F960B7C00D64416 /* PGPTrustPacket.h */,
+				471BC8CE1F960B7C00D64416 /* PGPTrustPacket.m */,
+				471BC8CF1F960B7C00D64416 /* PGPUserAttributePacket.h */,
+				471BC8D01F960B7C00D64416 /* PGPUserAttributePacket.m */,
+				471BC8D11F960B7C00D64416 /* PGPUserAttributeSubpacket.h */,
+				471BC8D21F960B7C00D64416 /* PGPUserAttributeSubpacket.m */,
+				471BC8D31F960B7C00D64416 /* PGPUserIDPacket.h */,
+				471BC8D41F960B7C00D64416 /* PGPUserIDPacket.m */,
 			);
 			path = Packets;
 			sourceTree = "<group>";
 		};
-		4724A1331FFE6B2500647B6B /* Utils */ = {
+		471BC8FC1F960B7C00D64416 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				4724A1341FFE6B2500647B6B /* NSArray+PGPUtils.h */,
-				4724A1351FFE6B2500647B6B /* NSArray+PGPUtils.m */,
-				4724A1361FFE6B2500647B6B /* NSData+compression.h */,
-				4724A1371FFE6B2500647B6B /* NSData+compression.m */,
-				4724A1381FFE6B2500647B6B /* NSData+PGPUtils.h */,
-				4724A1391FFE6B2500647B6B /* NSData+PGPUtils.m */,
-				4724A13A1FFE6B2500647B6B /* NSMutableData+PGPUtils.h */,
-				4724A13B1FFE6B2500647B6B /* NSMutableData+PGPUtils.m */,
+				471BC8FD1F960B7C00D64416 /* NSData+compression.h */,
+				471BC8FE1F960B7C00D64416 /* NSData+compression.m */,
+				471BC8FF1F960B7C00D64416 /* NSData+PGPUtils.h */,
+				473AC39520054D29006EB8A6 /* NSArray+PGPUtils.h */,
+				473AC39620054D29006EB8A6 /* NSArray+PGPUtils.m */,
+				471BC9001F960B7C00D64416 /* NSData+PGPUtils.m */,
+				471BC9031F960B7C00D64416 /* NSMutableData+PGPUtils.h */,
+				471BC9041F960B7C00D64416 /* NSMutableData+PGPUtils.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -950,6 +952,15 @@
 				47691A891ECB56D1004BCFC5 /* Mail.swift */,
 			);
 			name = protocols;
+			sourceTree = "<group>";
+		};
+		473AC3A720054E25006EB8A6 /* twofish */ = {
+			isa = PBXGroup;
+			children = (
+				473AC3A820054E25006EB8A6 /* twofish.c */,
+				473AC3A920054E25006EB8A6 /* twofish.h */,
+			);
+			path = twofish;
 			sourceTree = "<group>";
 		};
 		47B91AC01EC0C1CF000AE3EE /* coredata */ = {
@@ -1119,7 +1130,9 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
-				4724A0BA1FFE6B2500647B6B /* ObjectivePGP */,
+				3EC35F1F2003755F008BDF95 /* Invitation */,
+				F1C733331FEC1CAC005A497E /* About */,
+				471BC8931F960B7C00D64416 /* ObjectivePGP */,
 				8428A8511F436952007649A5 /* Gamification */,
 				A111F6AB1FA77AF80060AFDE /* Logging */,
 				47B91AC11EC0C1FB000AE3EE /* data */,
@@ -1163,6 +1176,7 @@
 				A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */,
 				A13526921D955BE000D3BFE1 /* Info.plist */,
 				F1E918D61FBDEECA00D60418 /* LoggerTests.swift */,
+				3EC35F2F2003838E008BDF95 /* InvitationTests.swift */,
 			);
 			path = enzevalos_iphoneTests;
 			sourceTree = "<group>";
@@ -1297,6 +1311,15 @@
 				F18B445F1E704C550080C041 /* ReplaceSegue.swift */,
 			);
 			name = contactView;
+			sourceTree = "<group>";
+		};
+		F1C733331FEC1CAC005A497E /* About */ = {
+			isa = PBXGroup;
+			children = (
+				F1C733341FEC1CE2005A497E /* About.storyboard */,
+				F1C7AC811FED6473007629DB /* AboutViewController.swift */,
+			);
+			path = About;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1467,16 +1490,17 @@
 				3E9709421FAC95F5005825C9 /* alice_enzevalos_public.asc in Resources */,
 				3E9709431FAC95F5005825C9 /* providers.json in Resources */,
 				3E9709441FAC95F5005825C9 /* idsolutions-private.gpg in Resources */,
+				3E9709451FAC95F5005825C9 /* Info.plist in Resources */,
 				3E9709461FAC95F5005825C9 /* nchr-public.gpg in Resources */,
 				3E9709471FAC95F5005825C9 /* nchr-private.gpg in Resources */,
 				3E9709481FAC95F5005825C9 /* idsolutions-public.gpg in Resources */,
 				3E9709491FAC95F5005825C9 /* ncpayroll-private.gpg in Resources */,
 				3E97094A1FAC95F5005825C9 /* bob-public.gpg in Resources */,
+				3EC35F2220037628008BDF95 /* InvitationDialog.storyboard in Resources */,
 				3E97094B1FAC95F5005825C9 /* bob_enzevalos_public.asc in Resources */,
 				3E97094C1FAC95F5005825C9 /* Localizable.strings in Resources */,
 				47953AAA1FD7000200D4631A /* bitcoinde.asc in Resources */,
 				3E97094D1FAC95F5005825C9 /* Main.storyboard in Resources */,
-				4724A1491FFE6B2500647B6B /* Info.plist in Resources */,
 				3E97094E1FAC95F5005825C9 /* ullimuelle-private.gpg in Resources */,
 				3E97094F1FAC95F5005825C9 /* ullimuelle-public.gpg in Resources */,
 				3E9709501FAC95F5005825C9 /* InfoPlist.strings in Resources */,
@@ -1510,9 +1534,11 @@
 				479BBDDB1EFEA17900A2107C /* alice_enzevalos_public.asc in Resources */,
 				A16BA2121E0439B6005E29E3 /* providers.json in Resources */,
 				F189C17F1ED59FEF00BAE9B3 /* idsolutions-private.gpg in Resources */,
+				471BC90A1F960B7C00D64416 /* Info.plist in Resources */,
 				47953AA91FD7000200D4631A /* bitcoinde.asc in Resources */,
 				F14D189D1ED880680080515D /* nchr-public.gpg in Resources */,
 				F14D189C1ED880680080515D /* nchr-private.gpg in Resources */,
+				F1C733351FEC1CE2005A497E /* About.storyboard in Resources */,
 				F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */,
 				F14D189E1ED880680080515D /* ncpayroll-private.gpg in Resources */,
 				4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */,
@@ -1520,6 +1546,7 @@
 				479BBDDA1EFEA17900A2107C /* bob_enzevalos_public.asc in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
+				3EC35F2120037628008BDF95 /* InvitationDialog.storyboard in Resources */,
 				F18C5E561FE025D300C3B86D /* BadgeCase.storyboard in Resources */,
 				F14D18A21ED8811F0080515D /* ullimuelle-private.gpg in Resources */,
 				F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */,
@@ -1527,7 +1554,6 @@
 				8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */,
 				A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */,
 				8428A8551F4369CF007649A5 /* GamificationElements.xcassets in Resources */,
-				4724A1481FFE6B2500647B6B /* Info.plist in Resources */,
 				F14D189F1ED880680080515D /* ncpayroll-public.gpg in Resources */,
 				A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */,
 				479BBDE01EFEA4D800A2107C /* bob_enzvalos_private.asc in Resources */,
@@ -1545,7 +1571,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8428A8841F436ACC007649A5 /* GamificationElements.xcassets in Resources */,
-				8428A8851F436AD5007649A5 /* Gamification.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1627,9 +1652,20 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BZipCompression/BZipCompression.framework",
+				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/Onboard/Onboard.framework",
+				"${BUILT_PRODUCTS_DIR}/VENTokenField/VENTokenField.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BZipCompression.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FrameAccessor.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Onboard.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VENTokenField.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1714,9 +1750,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1786,145 +1825,149 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E9708B31FAC95F5005825C9 /* PGPPartialKey.m in Sources */,
 				3E9708B41FAC95F5005825C9 /* Mail.swift in Sources */,
 				3E9708B51FAC95F5005825C9 /* Contact.swift in Sources */,
 				3E9708B61FAC95F5005825C9 /* Record.swift in Sources */,
-				4724A1A51FFE6B2500647B6B /* NSMutableData+PGPUtils.m in Sources */,
+				3E9708B71FAC95F5005825C9 /* PGPPacket.m in Sources */,
+				473AC3AB20054E25006EB8A6 /* twofish.c in Sources */,
+				3E9708B81FAC95F5005825C9 /* PGPKeyID.m in Sources */,
+				3E9708B91FAC95F5005825C9 /* NSData+compression.m in Sources */,
 				3E9708BA1FAC95F5005825C9 /* TextFormatter.swift in Sources */,
-				4724A1571FFE6B2500647B6B /* PGPPacketHeader.m in Sources */,
-				4724A1651FFE6B2500647B6B /* PGPSignatureSubpacket.m in Sources */,
 				3E9708BB1FAC95F5005825C9 /* Providers.swift in Sources */,
-				4724A16D1FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.m in Sources */,
+				3E9708BC1FAC95F5005825C9 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
 				3E9708BD1FAC95F5005825C9 /* ListViewCell.swift in Sources */,
+				3E9708BE1FAC95F5005825C9 /* PGPUser.m in Sources */,
+				473AC39420054D07006EB8A6 /* PGPUserAttributeImageSubpacket.m in Sources */,
+				3E9708BF1FAC95F5005825C9 /* PGPSecretKeyPacket.m in Sources */,
 				3E9708C01FAC95F5005825C9 /* FolderListCell.swift in Sources */,
-				4724A1791FFE6B2500647B6B /* PGPUserAttributeSubpacket.m in Sources */,
-				4724A16F1FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
 				3E9708C11FAC95F5005825C9 /* NSDateCompare.swift in Sources */,
+				3E9708C21FAC95F5005825C9 /* PGPCompressedPacket.m in Sources */,
+				3E9708C31FAC95F5005825C9 /* PGPRSA.m in Sources */,
 				3E9708C41FAC95F5005825C9 /* InboxCellDelegator.swift in Sources */,
 				3E9708C51FAC95F5005825C9 /* Badges.swift in Sources */,
 				3E9708C61FAC95F5005825C9 /* BadgeCaseCollectionViewCell.swift in Sources */,
 				3E9708C71FAC95F5005825C9 /* Mail_Address+CoreDataClass.swift in Sources */,
+				3EC35F2B2003766F008BDF95 /* InvitationDialogViewController.swift in Sources */,
 				3E9708C81FAC95F5005825C9 /* CollectionDataDelegate.swift in Sources */,
-				4724A1711FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
-				4724A15F1FFE6B2500647B6B /* PGPSecretKeyPacket.m in Sources */,
-				4724A15B1FFE6B2500647B6B /* PGPPublicKeyPacket.m in Sources */,
 				3E9708C91FAC95F5005825C9 /* DebugSettings.swift in Sources */,
+				473AC39D20054D7D006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.m in Sources */,
+				3E9708CA1FAC95F5005825C9 /* PGPS2K.m in Sources */,
+				3E9708CB1FAC95F5005825C9 /* PGPPacketFactory.m in Sources */,
 				3E9708CC1FAC95F5005825C9 /* LogHandler.swift in Sources */,
 				3E9708CD1FAC95F5005825C9 /* SendViewController.swift in Sources */,
+				3E9708CE1FAC95F5005825C9 /* PGPModificationDetectionCodePacket.m in Sources */,
 				3E9708CF1FAC95F5005825C9 /* EphemeralMail.swift in Sources */,
-				4724A1451FFE6B2500647B6B /* PGPRSA.m in Sources */,
+				3E9708D01FAC95F5005825C9 /* PGPPKCSEme.m in Sources */,
 				3E9708D11FAC95F5005825C9 /* SubBadgeHeaderTableViewCell.swift in Sources */,
-				4724A17F1FFE6B2500647B6B /* PGPBigNum.m in Sources */,
 				3E9708D21FAC95F5005825C9 /* InboxViewController.swift in Sources */,
+				3E9708D31FAC95F5005825C9 /* PGPPublicSubKeyPacket.m in Sources */,
 				3E9708D41FAC95F5005825C9 /* IconsStyleKit.swift in Sources */,
-				4724A18F1FFE6B2500647B6B /* PGPMPI.m in Sources */,
+				3E9708D51FAC95F5005825C9 /* PGPKey.m in Sources */,
 				3E9708D61FAC95F5005825C9 /* UserNameGamificationTableViewCell.swift in Sources */,
-				4724A1931FFE6B2500647B6B /* PGPPartialKey.m in Sources */,
-				4724A1771FFE6B2500647B6B /* PGPUserAttributePacket.m in Sources */,
-				4724A1811FFE6B2500647B6B /* PGPCryptoCFB.m in Sources */,
-				4724A1891FFE6B2500647B6B /* PGPKeyGenerator.m in Sources */,
 				3E9708D71FAC95F5005825C9 /* CNContactExtension.swift in Sources */,
-				4724A13F1FFE6B2500647B6B /* PGPCryptoUtils.m in Sources */,
-				4724A16B1FFE6B2500647B6B /* PGPSignatureSubpacketHeader.m in Sources */,
+				3E9708D81FAC95F5005825C9 /* PGPPKCSEmsa.m in Sources */,
 				3E9708D91FAC95F5005825C9 /* QRScannerView.swift in Sources */,
+				473AC3A620054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */,
+				3E9708DA1FAC95F5005825C9 /* PGPCryptoCFB.m in Sources */,
 				3E9708DB1FAC95F5005825C9 /* ReplaceSegue.swift in Sources */,
 				3E9708DC1FAC95F5005825C9 /* KeyRecord.swift in Sources */,
-				4724A1831FFE6B2500647B6B /* PGPFingerprint.m in Sources */,
-				4724A14F1FFE6B2500647B6B /* PGPLiteralPacket.m in Sources */,
 				3E9708DD1FAC95F5005825C9 /* ArrowTableViewCell.swift in Sources */,
+				3EC35F2820037664008BDF95 /* InvitationApi.swift in Sources */,
 				3E9708DE1FAC95F5005825C9 /* ContactViewController.swift in Sources */,
 				472276BF1FCD48B600ADA507 /* Event.swift in Sources */,
 				3E9708DF1FAC95F5005825C9 /* CryptoObject.swift in Sources */,
-				4724A1671FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.m in Sources */,
 				3E9708E01FAC95F5005825C9 /* VENDataDelegate.swift in Sources */,
 				3E9708E11FAC95F5005825C9 /* InviteFriendViewController.swift in Sources */,
 				3E9708E21FAC95F5005825C9 /* UIViewResolver.swift in Sources */,
+				3EC35F2E200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */,
+				3E9708E31FAC95F5005825C9 /* PGPArmor.m in Sources */,
 				3E9708E41FAC95F5005825C9 /* SwiftPGP.swift in Sources */,
+				3E9708E51FAC95F5005825C9 /* PGPCryptoUtils.m in Sources */,
 				3E9708E61FAC95F5005825C9 /* QRCodeGenerator.swift in Sources */,
-				4724A1551FFE6B2500647B6B /* PGPPacket.m in Sources */,
 				3E9708E71FAC95F5005825C9 /* ExportInfoViewController.swift in Sources */,
-				4724A1751FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.m in Sources */,
+				473AC3A220054DDA006EB8A6 /* PGPPacketHeader.m in Sources */,
+				3E9708E81FAC95F5005825C9 /* NSMutableData+PGPUtils.m in Sources */,
 				3E9708E91FAC95F5005825C9 /* EnzevalosContact+CoreDataClass.swift in Sources */,
-				4724A1991FFE6B2500647B6B /* PGPPKCSEmsa.m in Sources */,
 				3E9708EA1FAC95F5005825C9 /* CustomCells.swift in Sources */,
 				3E9708EB1FAC95F5005825C9 /* GamificationStatusViewController.swift in Sources */,
+				3E9708EC1FAC95F5005825C9 /* ObjectivePGPObject.m in Sources */,
+				3E9708ED1FAC95F5005825C9 /* PGPFingerprint.m in Sources */,
+				3E9708EE1FAC95F5005825C9 /* PGPBigNum.m in Sources */,
 				3E9708EF1FAC95F5005825C9 /* FolderViewController.swift in Sources */,
-				4724A18B1FFE6B2500647B6B /* PGPKeyID.m in Sources */,
 				3E9708F01FAC95F5005825C9 /* Theme.swift in Sources */,
+				473AC3AF20054EAA006EB8A6 /* PGPKeyring.m in Sources */,
 				3E9708F11FAC95F5005825C9 /* LinearBadgeViewController.swift in Sources */,
 				3E9708F21FAC95F5005825C9 /* ContactCell.swift in Sources */,
-				4724A1A31FFE6B2500647B6B /* NSData+PGPUtils.m in Sources */,
-				4724A19D1FFE6B2500647B6B /* PGPUser.m in Sources */,
 				47A7975B1FCD56B7006B3BC4 /* enzevalos_iphone.xcdatamodeld in Sources */,
+				3E9708F41FAC95F5005825C9 /* PGPSecretSubKeyPacket.m in Sources */,
+				3E9708F51FAC95F5005825C9 /* PGPUserIDPacket.m in Sources */,
 				F1ADF0751FBDF7D20017AE31 /* Logger.swift in Sources */,
 				3E9708F61FAC95F5005825C9 /* Folder+CoreDataProperties.swift in Sources */,
-				4724A13D1FFE6B2500647B6B /* PGPCryptoHash.m in Sources */,
 				3E9708F71FAC95F5005825C9 /* PersistentMail +CoreDataClass.swift in Sources */,
+				3E9708F81FAC95F5005825C9 /* PGPTrustPacket.m in Sources */,
 				3E9708F91FAC95F5005825C9 /* PersistentKey+CoreDataProperties.swift in Sources */,
-				4724A1471FFE6B2500647B6B /* twofish.c in Sources */,
 				3E9708FA1FAC95F5005825C9 /* AnimatedSendIcon.swift in Sources */,
 				3E9708FB1FAC95F5005825C9 /* ExportViewController.swift in Sources */,
 				3E9708FC1FAC95F5005825C9 /* RefreshControlExtension.swift in Sources */,
 				472276BE1FCD484C00ADA507 /* StringExtension.swift in Sources */,
-				4724A1631FFE6B2500647B6B /* PGPSignaturePacket.m in Sources */,
 				472276BC1FCD46B200ADA507 /* LoggingEventType.swift in Sources */,
+				3E9708FD1FAC95F5005825C9 /* PGPMPI.m in Sources */,
 				3E9708FF1FAC95F5005825C9 /* Mail_Address+CoreDataProperties.swift in Sources */,
 				3E9709001FAC95F5005825C9 /* UserData.swift in Sources */,
+				3E9709011FAC95F5005825C9 /* PGPCryptoHash.m in Sources */,
+				3E9709021FAC95F5005825C9 /* PGPKeyMaterial.m in Sources */,
 				3E9709031FAC95F5005825C9 /* MessageBodyTableViewCell.swift in Sources */,
 				3E9709041FAC95F5005825C9 /* ReadVENDelegate.swift in Sources */,
+				3E9709051FAC95F5005825C9 /* PGPUserAttributePacket.m in Sources */,
 				3E9709061FAC95F5005825C9 /* PersistentKey+CoreDataClass.swift in Sources */,
+				3E9709071FAC95F5005825C9 /* PGPSignaturePacket.m in Sources */,
 				3E9709081FAC95F5005825C9 /* KeyViewController.swift in Sources */,
 				3E9709091FAC95F5005825C9 /* ExportCells.swift in Sources */,
+				3E97090A1FAC95F5005825C9 /* PGPSignatureSubpacketCreationTime.m in Sources */,
 				3E97090B1FAC95F5005825C9 /* CNMailAddressesExtension.swift in Sources */,
-				4724A14B1FFE6B2500647B6B /* ObjectivePGPObject.m in Sources */,
 				3E97090C1FAC95F5005825C9 /* FolderListViewController.swift in Sources */,
 				3E97090D1FAC95F5005825C9 /* ViewControllerPannable.swift in Sources */,
-				4724A1A11FFE6B2500647B6B /* NSData+compression.m in Sources */,
 				3E97090E1FAC95F5005825C9 /* TableViewDataDelegate.swift in Sources */,
-				4724A14D1FFE6B2500647B6B /* PGPCompressedPacket.m in Sources */,
-				4724A1731FFE6B2500647B6B /* PGPTrustPacket.m in Sources */,
-				4724A1851FFE6B2500647B6B /* PGPFoundation.m in Sources */,
 				3E97090F1FAC95F5005825C9 /* CircleView.swift in Sources */,
 				3E9709101FAC95F5005825C9 /* PersistentMail +CoreDataProperties.swift in Sources */,
 				3E9709111FAC95F5005825C9 /* ArrowView.swift in Sources */,
+				473AC39820054D29006EB8A6 /* NSArray+PGPUtils.m in Sources */,
 				3E9709121FAC95F5005825C9 /* InboxTableViewCell.swift in Sources */,
-				4724A1511FFE6B2500647B6B /* PGPModificationDetectionCodePacket.m in Sources */,
 				3E9709131FAC95F5005825C9 /* Onboarding.swift in Sources */,
-				4724A1431FFE6B2500647B6B /* PGPKeyMaterial.m in Sources */,
 				3E9709141FAC95F5005825C9 /* AppDelegate.swift in Sources */,
+				3EC35F2520037651008BDF95 /* InvitationHelper.swift in Sources */,
 				3E9709151FAC95F5005825C9 /* FolderCell.swift in Sources */,
 				3E9709161FAC95F5005825C9 /* GamificationData.swift in Sources */,
-				4724A15D1FFE6B2500647B6B /* PGPPublicSubKeyPacket.m in Sources */,
-				4724A1951FFE6B2500647B6B /* PGPPartialSubKey.m in Sources */,
 				3E9709171FAC95F5005825C9 /* Folder+CoreDataClass.swift in Sources */,
-				4724A19F1FFE6B2500647B6B /* NSArray+PGPUtils.m in Sources */,
-				4724A18D1FFE6B2500647B6B /* PGPKeyring.m in Sources */,
+				3E9709181FAC95F5005825C9 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
 				3E97091A1FAC95F5005825C9 /* Cryptography.swift in Sources */,
-				4724A1591FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
 				3E97091B1FAC95F5005825C9 /* MailHandler.swift in Sources */,
-				4724A1691FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */,
-				4724A17D1FFE6B2500647B6B /* PGPArmor.m in Sources */,
 				3E97091C1FAC95F5005825C9 /* AddressHandler.swift in Sources */,
-				4724A1531FFE6B2500647B6B /* PGPOnePassSignaturePacket.m in Sources */,
 				3E97091D1FAC95F5005825C9 /* DataHandler.swift in Sources */,
-				4724A1411FFE6B2500647B6B /* PGPDSA.m in Sources */,
+				3E97091E1FAC95F5005825C9 /* PGPSignatureSubpacketHeader.m in Sources */,
+				3E97091F1FAC95F5005825C9 /* NSData+PGPUtils.m in Sources */,
 				3E9709201FAC95F5005825C9 /* ReadViewController.swift in Sources */,
+				3E9709211FAC95F5005825C9 /* PGPSignatureSubpacket.m in Sources */,
 				3E9709221FAC95F5005825C9 /* InitViewController.swift in Sources */,
 				3E9709231FAC95F5005825C9 /* MailAddress.swift in Sources */,
 				3E9709241FAC95F5005825C9 /* MailHandlerDelegator.swift in Sources */,
-				4724A19B1FFE6B2500647B6B /* PGPS2K.m in Sources */,
+				3E9709251FAC95F5005825C9 /* PGPFoundation.m in Sources */,
+				3E9709261FAC95F5005825C9 /* PGPLiteralPacket.m in Sources */,
+				3E9709271FAC95F5005825C9 /* PGPPublicKeyPacket.m in Sources */,
+				3E9709281FAC95F5005825C9 /* PGPKeyGenerator.m in Sources */,
+				3E9709291FAC95F5005825C9 /* PGPDSA.m in Sources */,
 				3E97092A1FAC95F5005825C9 /* LabelStyleKit.swift in Sources */,
 				3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */,
-				4724A1911FFE6B2500647B6B /* PGPPacketFactory.m in Sources */,
-				4724A1971FFE6B2500647B6B /* PGPPKCSEme.m in Sources */,
+				3E97092B1FAC95F5005825C9 /* PGPPartialSubKey.m in Sources */,
 				3E97092C1FAC95F5005825C9 /* SubBadgeTableViewCell.swift in Sources */,
 				3E97092D1FAC95F5005825C9 /* FrequentCell.swift in Sources */,
 				3E97092E1FAC95F5005825C9 /* ListViewController.swift in Sources */,
-				4724A17B1FFE6B2500647B6B /* PGPUserIDPacket.m in Sources */,
-				4724A1871FFE6B2500647B6B /* PGPKey.m in Sources */,
 				3E97092F1FAC95F5005825C9 /* FlipTransition.swift in Sources */,
+				3E9709301FAC95F5005825C9 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
+				3E9709311FAC95F5005825C9 /* PGPUserAttributeSubpacket.m in Sources */,
+				3E9709321FAC95F5005825C9 /* PGPOnePassSignaturePacket.m in Sources */,
 				3E9709331FAC95F5005825C9 /* EnzevalosContact+CoreDataProperties.swift in Sources */,
-				4724A1611FFE6B2500647B6B /* PGPSecretSubKeyPacket.m in Sources */,
 				3E9709341FAC95F5005825C9 /* BadgeCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1933,145 +1976,150 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				471BC92B1F960B7C00D64416 /* PGPPartialKey.m in Sources */,
+				3EC35F2A2003766F008BDF95 /* InvitationDialogViewController.swift in Sources */,
 				47691A8A1ECB56D1004BCFC5 /* Mail.swift in Sources */,
 				472F398A1E251787009260FB /* Contact.swift in Sources */,
 				472F39861E1FA34E009260FB /* Record.swift in Sources */,
-				4724A1A41FFE6B2500647B6B /* NSMutableData+PGPUtils.m in Sources */,
+				471BC9101F960B7C00D64416 /* PGPPacket.m in Sources */,
+				471BC9281F960B7C00D64416 /* PGPKeyID.m in Sources */,
+				471BC9311F960B7C00D64416 /* NSData+compression.m in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
-				4724A1561FFE6B2500647B6B /* PGPPacketHeader.m in Sources */,
-				4724A1641FFE6B2500647B6B /* PGPSignatureSubpacket.m in Sources */,
 				A1F2A5691E85586300320275 /* Providers.swift in Sources */,
-				4724A16C1FFE6B2500647B6B /* PGPSymetricKeyEncryptedSessionKeyPacket.m in Sources */,
+				471BC91A1F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
+				471BC9301F960B7C00D64416 /* PGPUser.m in Sources */,
+				471BC9141F960B7C00D64416 /* PGPSecretKeyPacket.m in Sources */,
 				A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */,
-				4724A1781FFE6B2500647B6B /* PGPUserAttributeSubpacket.m in Sources */,
-				4724A16E1FFE6B2500647B6B /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
+				471BC90C1F960B7C00D64416 /* PGPCompressedPacket.m in Sources */,
+				471BC9091F960B7C00D64416 /* PGPRSA.m in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				8428A85D1F436A05007649A5 /* Badges.swift in Sources */,
+				473AC3A120054DDA006EB8A6 /* PGPPacketHeader.m in Sources */,
 				8428A8651F436A11007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
 				472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
-				4724A1701FFE6B2500647B6B /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
-				4724A15E1FFE6B2500647B6B /* PGPSecretKeyPacket.m in Sources */,
-				4724A15A1FFE6B2500647B6B /* PGPPublicKeyPacket.m in Sources */,
+				473AC3AA20054E25006EB8A6 /* twofish.c in Sources */,
 				47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */,
+				471BC92F1F960B7C00D64416 /* PGPS2K.m in Sources */,
+				471BC92A1F960B7C00D64416 /* PGPPacketFactory.m in Sources */,
 				A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
+				471BC90E1F960B7C00D64416 /* PGPModificationDetectionCodePacket.m in Sources */,
 				47691A8C1ECC3EC7004BCFC5 /* EphemeralMail.swift in Sources */,
-				4724A1441FFE6B2500647B6B /* PGPRSA.m in Sources */,
+				471BC92D1F960B7C00D64416 /* PGPPKCSEme.m in Sources */,
 				8428A8671F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */,
-				4724A17E1FFE6B2500647B6B /* PGPBigNum.m in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
+				473AC39C20054D7D006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.m in Sources */,
+				471BC9131F960B7C00D64416 /* PGPPublicSubKeyPacket.m in Sources */,
 				F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */,
-				4724A18E1FFE6B2500647B6B /* PGPMPI.m in Sources */,
+				471BC9261F960B7C00D64416 /* PGPKey.m in Sources */,
 				8428A8691F436A11007649A5 /* UserNameGamificationTableViewCell.swift in Sources */,
-				4724A1921FFE6B2500647B6B /* PGPPartialKey.m in Sources */,
-				4724A1761FFE6B2500647B6B /* PGPUserAttributePacket.m in Sources */,
-				4724A1801FFE6B2500647B6B /* PGPCryptoCFB.m in Sources */,
-				4724A1881FFE6B2500647B6B /* PGPKeyGenerator.m in Sources */,
 				A114E4321FACB23000E40243 /* StringExtension.swift in Sources */,
-				4724A13E1FFE6B2500647B6B /* PGPCryptoUtils.m in Sources */,
-				4724A16A1FFE6B2500647B6B /* PGPSignatureSubpacketHeader.m in Sources */,
 				472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */,
+				471BC92E1F960B7C00D64416 /* PGPPKCSEmsa.m in Sources */,
 				F113C3851F30D06800E7F1D6 /* QRScannerView.swift in Sources */,
+				471BC9231F960B7C00D64416 /* PGPCryptoCFB.m in Sources */,
+				473AC39320054D07006EB8A6 /* PGPUserAttributeImageSubpacket.m in Sources */,
 				F18B44601E704C550080C041 /* ReplaceSegue.swift in Sources */,
-				4724A1821FFE6B2500647B6B /* PGPFingerprint.m in Sources */,
-				4724A14E1FFE6B2500647B6B /* PGPLiteralPacket.m in Sources */,
 				472F39881E1FA377009260FB /* KeyRecord.swift in Sources */,
 				8428A8661F436A11007649A5 /* ArrowTableViewCell.swift in Sources */,
 				F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */,
 				475B00351F7B9565006CDD41 /* CryptoObject.swift in Sources */,
-				4724A1661FFE6B2500647B6B /* PGPSignatureSubpacketCreationTime.m in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
+				471BC9211F960B7C00D64416 /* PGPArmor.m in Sources */,
 				475B00331F7B9565006CDD41 /* SwiftPGP.swift in Sources */,
+				471BC9061F960B7C00D64416 /* PGPCryptoUtils.m in Sources */,
 				F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */,
-				4724A1541FFE6B2500647B6B /* PGPPacket.m in Sources */,
 				A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */,
-				4724A1741FFE6B2500647B6B /* PGPUserAttributeImageSubpacket.m in Sources */,
+				471BC9341F960B7C00D64416 /* NSMutableData+PGPUtils.m in Sources */,
 				472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */,
-				4724A1981FFE6B2500647B6B /* PGPPKCSEmsa.m in Sources */,
 				F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */,
+				473AC3AE20054EAA006EB8A6 /* PGPKeyring.m in Sources */,
 				8428A8711F436A1E007649A5 /* GamificationStatusViewController.swift in Sources */,
+				471BC90B1F960B7C00D64416 /* ObjectivePGPObject.m in Sources */,
+				471BC9241F960B7C00D64416 /* PGPFingerprint.m in Sources */,
+				471BC9221F960B7C00D64416 /* PGPBigNum.m in Sources */,
 				A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */,
-				4724A18A1FFE6B2500647B6B /* PGPKeyID.m in Sources */,
+				473AC39720054D29006EB8A6 /* NSArray+PGPUtils.m in Sources */,
 				476142081E07E52B00FD5E4F /* Theme.swift in Sources */,
+				3EC35F2720037664008BDF95 /* InvitationApi.swift in Sources */,
 				8428A8701F436A1E007649A5 /* LinearBadgeViewController.swift in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
-				4724A1A21FFE6B2500647B6B /* NSData+PGPUtils.m in Sources */,
-				4724A19C1FFE6B2500647B6B /* PGPUser.m in Sources */,
+				471BC9151F960B7C00D64416 /* PGPSecretSubKeyPacket.m in Sources */,
+				471BC9201F960B7C00D64416 /* PGPUserIDPacket.m in Sources */,
 				475DF47A1F0D54C9009D807F /* Folder+CoreDataProperties.swift in Sources */,
 				472F392C1E1277D2009260FB /* PersistentMail +CoreDataClass.swift in Sources */,
+				471BC91D1F960B7C00D64416 /* PGPTrustPacket.m in Sources */,
 				475B00431F7BB6D6006CDD41 /* PersistentKey+CoreDataProperties.swift in Sources */,
-				4724A13C1FFE6B2500647B6B /* PGPCryptoHash.m in Sources */,
 				F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */,
 				4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */,
-				4724A1461FFE6B2500647B6B /* twofish.c in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
+				471BC9291F960B7C00D64416 /* PGPMPI.m in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				472F39821E1E5347009260FB /* Mail_Address+CoreDataProperties.swift in Sources */,
 				476373C21E09BA88004D5EFE /* UserData.swift in Sources */,
-				4724A1621FFE6B2500647B6B /* PGPSignaturePacket.m in Sources */,
+				471BC9051F960B7C00D64416 /* PGPCryptoHash.m in Sources */,
+				471BC9081F960B7C00D64416 /* PGPKeyMaterial.m in Sources */,
 				A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */,
 				F18B44621E73286C0080C041 /* ReadVENDelegate.swift in Sources */,
+				471BC91E1F960B7C00D64416 /* PGPUserAttributePacket.m in Sources */,
 				475B00421F7BB6D6006CDD41 /* PersistentKey+CoreDataClass.swift in Sources */,
+				471BC9161F960B7C00D64416 /* PGPSignaturePacket.m in Sources */,
+				3EC35F2420037651008BDF95 /* InvitationHelper.swift in Sources */,
 				A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */,
 				A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */,
+				471BC9181F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.m in Sources */,
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
 				A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */,
 				F113C38B1F3344C200E7F1D6 /* ViewControllerPannable.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
-				4724A14A1FFE6B2500647B6B /* ObjectivePGPObject.m in Sources */,
 				8428A85E1F436A05007649A5 /* CircleView.swift in Sources */,
+				F1C7AC821FED6473007629DB /* AboutViewController.swift in Sources */,
 				472F397C1E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift in Sources */,
-				4724A1A01FFE6B2500647B6B /* NSData+compression.m in Sources */,
 				8428A85C1F436A05007649A5 /* ArrowView.swift in Sources */,
-				4724A14C1FFE6B2500647B6B /* PGPCompressedPacket.m in Sources */,
-				4724A1721FFE6B2500647B6B /* PGPTrustPacket.m in Sources */,
-				4724A1841FFE6B2500647B6B /* PGPFoundation.m in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */,
 				A111F6AD1FA77B170060AFDE /* Logger.swift in Sources */,
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
-				4724A1501FFE6B2500647B6B /* PGPModificationDetectionCodePacket.m in Sources */,
 				A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */,
-				4724A1421FFE6B2500647B6B /* PGPKeyMaterial.m in Sources */,
 				8428A85F1F436A05007649A5 /* GamificationData.swift in Sources */,
 				475DF4791F0D54C9009D807F /* Folder+CoreDataClass.swift in Sources */,
+				3EC35F2D200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */,
+				471BC9111F960B7C00D64416 /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
 				475B00341F7B9565006CDD41 /* Cryptography.swift in Sources */,
-				4724A15C1FFE6B2500647B6B /* PGPPublicSubKeyPacket.m in Sources */,
-				4724A1941FFE6B2500647B6B /* PGPPartialSubKey.m in Sources */,
 				A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */,
-				4724A19E1FFE6B2500647B6B /* NSArray+PGPUtils.m in Sources */,
-				4724A18C1FFE6B2500647B6B /* PGPKeyring.m in Sources */,
 				A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */,
-				4724A1581FFE6B2500647B6B /* PGPPublicKeyEncryptedSessionKeyPacket.m in Sources */,
 				472F39701E14F75C009260FB /* DataHandler.swift in Sources */,
-				4724A1681FFE6B2500647B6B /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */,
-				4724A17C1FFE6B2500647B6B /* PGPArmor.m in Sources */,
+				471BC9191F960B7C00D64416 /* PGPSignatureSubpacketHeader.m in Sources */,
+				471BC9321F960B7C00D64416 /* NSData+PGPUtils.m in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
-				4724A1521FFE6B2500647B6B /* PGPOnePassSignaturePacket.m in Sources */,
+				471BC9171F960B7C00D64416 /* PGPSignatureSubpacket.m in Sources */,
 				A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */,
-				4724A1401FFE6B2500647B6B /* PGPDSA.m in Sources */,
 				472F398E1E251B8D009260FB /* MailAddress.swift in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
+				471BC9251F960B7C00D64416 /* PGPFoundation.m in Sources */,
+				471BC90D1F960B7C00D64416 /* PGPLiteralPacket.m in Sources */,
+				473AC3A520054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */,
+				471BC9121F960B7C00D64416 /* PGPPublicKeyPacket.m in Sources */,
 				A18E7D751FBDE560002F7CC9 /* Event.swift in Sources */,
+				471BC9271F960B7C00D64416 /* PGPKeyGenerator.m in Sources */,
 				A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */,
-				4724A19A1FFE6B2500647B6B /* PGPS2K.m in Sources */,
+				471BC9071F960B7C00D64416 /* PGPDSA.m in Sources */,
 				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
 				3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */,
-				4724A1901FFE6B2500647B6B /* PGPPacketFactory.m in Sources */,
-				4724A1961FFE6B2500647B6B /* PGPPKCSEme.m in Sources */,
+				471BC92C1F960B7C00D64416 /* PGPPartialSubKey.m in Sources */,
 				8428A8681F436A11007649A5 /* SubBadgeTableViewCell.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
-				4724A17A1FFE6B2500647B6B /* PGPUserIDPacket.m in Sources */,
-				4724A1861FFE6B2500647B6B /* PGPKey.m in Sources */,
 				F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */,
+				471BC91B1F960B7C00D64416 /* PGPSymmetricallyEncryptedIntegrityProtectedDataPacket.m in Sources */,
+				471BC91F1F960B7C00D64416 /* PGPUserAttributeSubpacket.m in Sources */,
+				471BC90F1F960B7C00D64416 /* PGPOnePassSignaturePacket.m in Sources */,
 				472F397E1E1D0B0B009260FB /* EnzevalosContact+CoreDataProperties.swift in Sources */,
-				4724A1601FFE6B2500647B6B /* PGPSecretSubKeyPacket.m in Sources */,
 				8428A86E1F436A1E007649A5 /* BadgeCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2080,23 +2128,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1ADF0771FBDF9B40017AE31 /* Mail.swift in Sources */,
-				8428A8771F436A9D007649A5 /* LinearBadgeViewController.swift in Sources */,
-				8428A87A1F436AA9007649A5 /* ArrowTableViewCell.swift in Sources */,
 				A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */,
-				8428A87B1F436AAC007649A5 /* UserNameGamificationTableViewCell.swift in Sources */,
 				8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */,
-				8428A8811F436AC0007649A5 /* GamificationData.swift in Sources */,
-				F1ADF0761FBDF8120017AE31 /* PersistentMail +CoreDataClass.swift in Sources */,
-				473BA6421FCD4F0C00EB0D9E /* Logger.swift in Sources */,
-				8428A87F1F436AB8007649A5 /* CircleView.swift in Sources */,
-				8428A87E1F436AB5007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
-				8428A8821F436AC3007649A5 /* Badges.swift in Sources */,
-				8428A8801F436ABB007649A5 /* ArrowView.swift in Sources */,
-				8428A87D1F436AB2007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */,
-				8428A87C1F436AAF007649A5 /* SubBadgeTableViewCell.swift in Sources */,
-				8428A8791F436AA4007649A5 /* BadgeCase.swift in Sources */,
-				F1E918D71FBDEECB00D60418 /* LoggerTests.swift in Sources */,
+				3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2388,11 +2422,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2439,11 +2474,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2488,11 +2524,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6EBCCD02AD3B95D8317810E2 /* Pods-enzevalos_iphoneTests.debug.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/enzevalos_iphone.app/enzevalos_iphone";
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
 		};
@@ -2500,11 +2538,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/enzevalos_iphone.app/enzevalos_iphone";
 				INFOPLIST_FILE = enzevalos_iphoneTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphoneTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};

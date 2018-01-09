@@ -166,6 +166,7 @@
 "secureContacts" = "Secure Contacts";
 "secureCommunication" = "Secure Communication";
 "ErrorText" = "An error occured. Are you connected to the internet?";
+"about" = "About";
 "YourBadges" = "Your Badges";
 "copied" = "Copied key to your clipboard";
 "copyKey" = "Copy key to clipboard";

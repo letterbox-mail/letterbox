@@ -54,6 +54,8 @@ class SendViewController: UIViewController {
     var toField: String? = nil
     var sendEncryptedIfPossible = true
 
+	var invitationSelection = InvitationSelection()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
