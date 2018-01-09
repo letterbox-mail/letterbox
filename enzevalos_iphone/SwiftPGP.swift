@@ -17,9 +17,27 @@ class SwiftPGP: Encryption{
     let PasscodeSize = 36
     
     
-    private func generatePW(size: Int)-> String{
+    private func generatePW(size: Int) -> String{
+        let file = open("/dev/urandom", O_RDONLY)
+        if file >= 0{
+            var pw = ""
+            while pw.count < size{
+                var bits: UInt64 = 0
+                read(file, &bits, MemoryLayout<UInt64>.size)
+                
+                
+            }
+             return generatePW(arc4: size)
+        }
+        else{
+            return generatePW(arc4: size)
+        }
+    }
+    
+    private func generatePW(arc4 size: Int)-> String{
         var pw = ""
         for i in 0..<size{
+            // digit from 0...9
             let p = Int(arc4random_uniform(10))
             pw.append(String(p))
             if i % 4 == 3 && i < size - 4{
