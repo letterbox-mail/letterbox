@@ -12,7 +12,7 @@ let pgp = SwiftPGP()
 let datahandler = DataHandler.handler
 
 func loadTestAcc(){
-    loadBobEnzevalos()
+    //loadBobEnzevalos()
     //loadAlice2005()
     //loadCharlieEnzevalos()
     //importPublicKeys()
