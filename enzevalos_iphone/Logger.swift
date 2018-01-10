@@ -264,13 +264,13 @@ class Logger {
         sendCheck()
     }
     
-    static func log(showDespiteWarning mail: PersistentMail?) {
+    static func log(showBroken mail: PersistentMail?) {
         if !logging {
             return
         }
         
         var event = plainLogDict()
-        event["type"] = LoggingEventType.showMailDespiteWarning.rawValue
+        event["type"] = LoggingEventType.showBrokenMail.rawValue
         event["view"] = "readView"
         if let mail = mail {
             event = extract(from: mail, event: event)
