@@ -693,10 +693,6 @@ extension SendViewController: UITextViewDelegate {
 //Logging
 extension SendViewController: UIGestureRecognizerDelegate {
 
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         if let view = sender.view, view == scrollview, sender.location(in: view).y >= textView.frame.minY {
             textView.becomeFirstResponder()
