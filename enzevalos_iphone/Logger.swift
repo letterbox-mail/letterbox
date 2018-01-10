@@ -264,6 +264,22 @@ class Logger {
         sendCheck()
     }
     
+    static func log(showDespiteWarning mail: PersistentMail?) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.showMailDespiteWarning.rawValue
+        event["view"] = "readView"
+        if let mail = mail {
+            event = extract(from: mail, event: event)
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(discover publicKeyID: String, mailAddress: Mail_Address, importChannel: String, knownPrivateKey: Bool, knownBefore: Bool) { //add reference to mail here?
         if !logging {
             return

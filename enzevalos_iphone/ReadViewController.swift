@@ -243,7 +243,9 @@ class ReadViewController: UITableViewController {
     }
 
     @IBAction func showEmailButton(_ sender: UIButton) {
-        //TODO: @Jakob: add Logger here for reaction with warning
+        Logger.queue.async(flags: .barrier) {
+            Logger.log(showDespiteWarning: self.mail)
+        }
         
         mail?.showMessage = true
 

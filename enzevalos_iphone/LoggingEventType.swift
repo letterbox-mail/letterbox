@@ -29,5 +29,6 @@ enum LoggingEventType: String {
     pubKeyDiscoveryKnownKey = "pubKeyDiscoveryKnownKey",
     pubKeyVerification = "pubKeyVerification",
     indicatorButtonOpen = "indicatorButtonOpen",
-    indicatorButtonClose = "indicatorButtonClose"
+    indicatorButtonClose = "indicatorButtonClose",
+    showMailDespiteWarning = "showMailDespiteWarning"
 }
