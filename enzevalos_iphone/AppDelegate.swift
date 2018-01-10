@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
 
         resetApp()
-		HockeySDK.setup()
+        HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             Logger.queue.async(flags: .barrier) {
                 Logger.log(startApp: true)
@@ -130,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let pgp = SwiftPGP()
             let keyIds = try! pgp.importKeysFromFile(file: path, pw: nil)
             for keyId in keyIds {
-                _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: "letterbox@zedat.fu-berlin.de", autocrypt: true, firstMail: nil)
+                _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: Logger.logReceiver, autocrypt: true, firstMail: nil)
             }
         }
     }
