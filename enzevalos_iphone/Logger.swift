@@ -16,8 +16,7 @@ class Logger {
     
     static let defaultFileName = "log.json"
     static let loggingInterval = 86400 //60*60*24 seconds
-    static let logReceiver = "letterbox@zedat.fu-berlin.de"
-    static let subjectSalt = UserManager.loadUserValue(.subjectSalt) as! String
+    static let logReceiver = "letterbox@zedat.fu-berlin.de" //Don't forget to register keys! Have a look at AppDelegate.setupKeys()
     
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
     
@@ -122,7 +121,7 @@ class Logger {
         event["to"] = Logger.resolve(mailAddresses: to)
         event["cc"] = Logger.resolve(mailAddresses: cc)
         event["bcc"] = Logger.resolve(mailAddresses: bcc)
-        event["subject"] = Logger.resolve(subject: subject)
+        event["communicationState"] = Logger.communicationState(subject: subject)
         event["bodyLength"] = bodyLength
         event["isEncrypted"] = isEncrypted
         event["decryptedBodyLength"] = decryptedBodyLength
@@ -312,7 +311,7 @@ class Logger {
         event["to"] = Logger.resolve(mailAddresses: mail.to)
         event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
         event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
-        event["subject"] = Logger.resolve(subject: mail.subject ?? "")
+        event["communicationState"] = Logger.communicationState(subject: mail.subject ?? "")
         event["timeInHeader"] = mail.timeString
         event["bodyLength"] = (mail.body ?? "").count
         event["isEncrypted"] = mail.isEncrypted
@@ -335,7 +334,7 @@ class Logger {
         return event
     }
 
-    static func resolve(subject: String) -> String {
+    static func communicationState(subject: String) -> String {
         if subject == "" {
             return ""
         }
@@ -358,9 +357,7 @@ class Logger {
             }
         }
         
-        newSubject += sha256(oldSubject+subjectSalt) ?? "ErrorInHashGeneration" //DataHandler().getPseudonymSubject(subject: oldSubject).pseudonym//DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
-        return ""
-        //return newSubject
+        return newSubject
     }
     
     //takes backendFolderPath
@@ -517,22 +514,5 @@ class Logger {
                 print("Error while clearing logfile: \(error.localizedDescription)")
             }
         }
-    }
-    
-    //In reference to https://stackoverflow.com/questions/25388747/sha256-in-swift
-    static func sha256(_ data: Data) -> Data? {
-        guard let res = NSMutableData(length: Int(CC_SHA256_DIGEST_LENGTH)) else { return nil }
-        CC_SHA256((data as NSData).bytes, CC_LONG(data.count), res.mutableBytes.assumingMemoryBound(to: UInt8.self))
-        return res as Data
-    }
-    
-    //In reference to https://stackoverflow.com/questions/25388747/sha256-in-swift
-    static func sha256(_ str: String) -> String? {
-        guard
-            let data = str.data(using: String.Encoding.utf8),
-            let shaData = sha256(data)
-            else { return nil }
-        let rc = shaData.base64EncodedString(options: [])
-        return rc
     }
 }
