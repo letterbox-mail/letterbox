@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Amm-QN-vA7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Amm-QN-vA7">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -578,8 +578,8 @@
                                                         <constraint firstAttribute="width" constant="15" id="ons-Pp-k3n"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
-                                                    <rect key="frame" x="0.0" y="15" width="15" height="17.5"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
+                                                    <rect key="frame" x="0.0" y="17.5" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="SmT-9e-ovi"/>
                                                         <constraint firstAttribute="width" constant="15" id="uKU-PK-flD"/>
@@ -704,15 +704,15 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="OlN-1g-hBJ">
                                             <rect key="frame" x="21" y="38.5" width="15" height="24"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="imI-nB-es5">
-                                                    <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="imI-nB-es5">
+                                                    <rect key="frame" x="0.0" y="0.0" width="15" height="9"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="NJi-27-Up8"/>
                                                         <constraint firstAttribute="width" constant="15" id="auJ-Nm-E8J"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C7X-Yt-kz2">
-                                                    <rect key="frame" x="0.0" y="15" width="15" height="9"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C7X-Yt-kz2">
+                                                    <rect key="frame" x="0.0" y="9" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="15" id="Sjh-9U-pfX"/>
                                                         <constraint firstAttribute="height" constant="15" id="sLj-Te-fV3"/>
@@ -1740,9 +1740,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" identifier="tokenFieldHeight" id="CIk-PS-cBx"/>
                                         </constraints>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="uWH-WG-0hT" appends="YES" id="XzP-g3-Y8F"/>
-                                        </connections>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" placeholderIntrinsicWidth="373" placeholderIntrinsicHeight="100" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KMI-R1-Q95">
                                         <rect key="frame" x="0.0" y="44" width="318" height="100"/>
@@ -1758,10 +1755,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="b27-VB-voz" appends="YES" id="XZE-Dy-asu"/>
-                                            <outletCollection property="gestureRecognizers" destination="Dyz-bi-xHw" appends="YES" id="LL1-Iz-H3Q"/>
-                                        </connections>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L5B-h5-HOl">
                                         <rect key="frame" x="0.0" y="144" width="318" height="1"/>
@@ -1769,9 +1762,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="veB-dJ-Aq3"/>
                                         </constraints>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="nNs-nd-j1C" appends="YES" id="aPz-In-MVP"/>
-                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HOW-9b-T8z" customClass="VENTokenField">
                                         <rect key="frame" x="0.0" y="145" width="318" height="44"/>
@@ -1779,9 +1769,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" identifier="tokenFieldHeight" id="gjA-gA-kgR"/>
                                         </constraints>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="rts-b0-KoE" appends="YES" id="uDk-bp-RfX"/>
-                                        </connections>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="w9d-ml-jRA">
                                         <rect key="frame" x="0.0" y="189" width="318" height="100"/>
@@ -1796,9 +1783,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="7ir-1V-kSk" appends="YES" id="l5Z-Xj-HlA"/>
-                                        </connections>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gUv-Jf-9DD">
                                         <rect key="frame" x="0.0" y="289" width="318" height="1"/>
@@ -1806,9 +1790,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="ojt-b3-hEs"/>
                                         </constraints>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="Mrn-Zn-b3E" appends="YES" id="XgT-ow-a88"/>
-                                        </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zbn-j5-Dz7" customClass="VENTokenField">
                                         <rect key="frame" x="0.0" y="290" width="318" height="44"/>
@@ -1816,9 +1797,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="Ija-JO-UZ4"/>
                                         </constraints>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="LHc-53-Rjd" appends="YES" id="KNa-J3-ITp"/>
-                                        </connections>
                                     </view>
                                     <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="vj8-uM-8eP">
                                         <rect key="frame" x="0.0" y="334" width="318" height="1"/>
@@ -1826,9 +1804,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="ejd-X4-e7O"/>
                                         </constraints>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="QzT-UB-ohJ" appends="YES" id="y0t-Ge-Ti7"/>
-                                        </connections>
                                     </view>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="quA-hP-Xkp">
                                         <rect key="frame" x="5" y="335" width="308" height="30"/>
@@ -1838,9 +1813,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                         </accessibility>
                                         <attributedString key="attributedText"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="5Nw-fP-Sop" appends="YES" id="MoD-Bq-Hcq"/>
-                                        </connections>
                                     </textView>
                                 </subviews>
                                 <gestureRecognizers/>
@@ -1858,7 +1830,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                     <constraint firstItem="vj8-uM-8eP" firstAttribute="top" secondItem="zbn-j5-Dz7" secondAttribute="bottom" id="yMw-KE-GS7"/>
                                 </constraints>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="zu2-PQ-J4Y" appends="YES" id="dyB-2A-E1t"/>
                                     <outletCollection property="gestureRecognizers" destination="cFD-MN-1kg" appends="YES" id="mYN-hO-gvB"/>
                                 </connections>
                             </scrollView>
@@ -1869,9 +1840,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                     <constraint firstAttribute="height" constant="100" id="fcx-4L-TLn"/>
                                 </constraints>
                                 <sections/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="4sw-b8-JJf" appends="YES" id="dYM-pN-Zf5"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1904,9 +1872,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                             <constraint firstAttribute="trailingMargin" secondItem="HOW-9b-T8z" secondAttribute="trailing" constant="-15" id="zR7-WX-Eg8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Vzj-HE-m8t"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="K6h-QT-Csm" appends="YES" id="YEu-Mz-U43"/>
-                        </connections>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
@@ -1959,84 +1924,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lv5-U9-uUg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <rotationGestureRecognizer cancelsTouchesInView="NO" id="K6h-QT-Csm">
-                    <connections>
-                        <action selector="rotated:" destination="4Ey-v4-VeB" id="586-1i-2CD"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="BgN-nU-v33"/>
-                    </connections>
-                </rotationGestureRecognizer>
-                <swipeGestureRecognizer cancelsTouchesInView="NO" direction="right" id="Dyz-bi-xHw" userLabel="toCollectionview Swipe Gesture Recognizer">
-                    <connections>
-                        <action selector="swiped:" destination="4Ey-v4-VeB" id="dYc-tY-IBQ"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="Vy9-Yw-BGZ"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <panGestureRecognizer cancelsTouchesInView="NO" minimumNumberOfTouches="1" id="zu2-PQ-J4Y" userLabel="scrollview Pan Gesture Recognizer">
-                    <connections>
-                        <action selector="panned:" destination="4Ey-v4-VeB" id="I2O-c1-CK1"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="CgL-ka-ncO"/>
-                    </connections>
-                </panGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="uWH-WG-0hT" userLabel="toText Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="Or8-ff-LLE"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="XsS-3t-Yi1"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="b27-VB-voz" userLabel="toCollectionview Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="kPe-9S-TOh"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="QVe-4k-TSH"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="nNs-nd-j1C" userLabel="seperator1 Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="j6N-Kq-gRi"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="0sU-Ag-o2B"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="rts-b0-KoE" userLabel="ccText Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="QxX-yw-Icz"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="rd6-Af-9dV"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="7ir-1V-kSk" userLabel="ccCollectionview Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="FJi-Ty-Ji9"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="9b6-pw-xaT"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="Mrn-Zn-b3E" userLabel="seperator2 Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="xzL-uL-7Rv"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="ofL-bx-K8K"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="LHc-53-Rjd" userLabel="subjectText Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="I3d-dI-edH"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="aFV-WX-04N"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="QzT-UB-ohJ" userLabel="seperator3 Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="7kd-1z-gva"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="JU1-Zt-iBr"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="5Nw-fP-Sop" userLabel="textview Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="FGa-LE-p9S"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="dCt-BE-yT4"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer cancelsTouchesInView="NO" id="4sw-b8-JJf" userLabel="tableview Tap Gesture Recognizer">
-                    <connections>
-                        <action selector="tapped:" destination="4Ey-v4-VeB" id="cuh-kH-UvI"/>
-                        <outlet property="delegate" destination="4Ey-v4-VeB" id="3jq-wi-4U0"/>
-                    </connections>
-                </tapGestureRecognizer>
                 <tapGestureRecognizer id="cFD-MN-1kg">
                     <connections>
                         <action selector="tapped:" destination="4Ey-v4-VeB" id="JXM-FS-kOV"/>
@@ -2077,6 +1964,6 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
         <segue reference="td8-VW-Wrt"/>
         <segue reference="DcR-GX-scc"/>
         <segue reference="TgN-rB-esa"/>
-        <segue reference="6Ug-AV-lba"/>
+        <segue reference="1Uz-Iv-Fbe"/>
     </inferredMetricsTieBreakers>
 </document>
