@@ -20,6 +20,8 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     
     var tappedWhenSelectedFunc: ((String) -> Void)? = nil
     
+    var editing = false
+    
     override init() {
         super.init()
     }
@@ -50,7 +52,10 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenFieldDidBeginEditing(_ tokenField: VENTokenField) {
-        beginFunc(tokenField)
+        if !editing {
+            editing = true
+            beginFunc(tokenField)
+        }
     }
     
     func tokenField(_ tokenField: VENTokenField, didEnterText text: String) {
@@ -114,6 +119,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     
     
     func tokenFieldDidEndEditing(_ tokenF: VENTokenField){
+        editing = false
         if let last = tokenF.inputText() {
             if last.replacingOccurrences(of: " ", with: "") != "" {
                 tokenField(tokenF, didEnterText: last)

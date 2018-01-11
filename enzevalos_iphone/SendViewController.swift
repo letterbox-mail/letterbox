@@ -278,11 +278,11 @@ class SendViewController: UIViewController {
                     scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
                     tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
                     tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
-                } else {
+                } else if !scrollview.isScrollEnabled {
                     scrollview.isScrollEnabled = true
                     tableviewHeight.constant = 0
                 }
-            } else {
+            } else if !scrollview.isScrollEnabled {
                 scrollview.isScrollEnabled = true
                 tableviewHeight.constant = 0
             }
