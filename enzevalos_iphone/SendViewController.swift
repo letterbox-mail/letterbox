@@ -37,6 +37,7 @@ class SendViewController: UIViewController {
     @IBOutlet weak var seperator3Leading: NSLayoutConstraint!
     @IBOutlet weak var textViewLeading: NSLayoutConstraint!
     @IBOutlet weak var scrollViewBottom: NSLayoutConstraint!
+    @IBOutlet var scrollviewRecognizer: UITapGestureRecognizer!
     
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
@@ -644,6 +645,13 @@ class SendViewController: UIViewController {
 }
 
 extension SendViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if gestureRecognizer == scrollviewRecognizer && touch.location(in: textView).y >= 0 {
+            return true
+        }
+        return false
+    }
+    
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         if let view = sender.view, view == scrollview, sender.location(in: view).y >= textView.frame.minY {
             textView.becomeFirstResponder()

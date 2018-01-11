@@ -1222,7 +1222,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
                             <rect key="frame" x="0.0" y="425.5" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
@@ -1903,6 +1903,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                         <outlet property="iconButton" destination="iUk-lk-1LN" id="kjS-6C-jzA"/>
                         <outlet property="scrollViewBottom" destination="7Yr-li-b6Z" id="4Sl-VE-EKg"/>
                         <outlet property="scrollview" destination="sij-Oe-ann" id="8k5-VA-Nfk"/>
+                        <outlet property="scrollviewRecognizer" destination="cFD-MN-1kg" id="TVN-cD-zhw"/>
                         <outlet property="seperator1Height" destination="veB-dJ-Aq3" id="3zW-z5-ATB"/>
                         <outlet property="seperator1Leading" destination="6Vg-lw-tja" id="kBF-2U-K8X"/>
                         <outlet property="seperator2Height" destination="ojt-b3-hEs" id="eRT-pm-Xjk"/>
@@ -1927,6 +1928,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                 <tapGestureRecognizer id="cFD-MN-1kg">
                     <connections>
                         <action selector="tapped:" destination="4Ey-v4-VeB" id="JXM-FS-kOV"/>
+                        <outlet property="delegate" destination="4Ey-v4-VeB" id="ZjZ-eN-L4j"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
