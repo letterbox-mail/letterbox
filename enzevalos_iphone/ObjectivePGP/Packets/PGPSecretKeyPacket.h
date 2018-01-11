@@ -1,20 +1,21 @@
 //
-//  PGPSecretKeyPacket.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 07/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPPublicKeyPacket.h"
-#import "PGPS2K.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class PGPS2K;
 
 @interface PGPSecretKeyPacket : PGPPublicKeyPacket <NSCopying, PGPExportable>
 
 @property (nonatomic, readonly) PGPS2KUsage s2kUsage;
-@property (nonatomic, readonly) PGPS2K *s2k;
+@property (nonatomic, copy, readonly) PGPS2K *s2k;
 @property (nonatomic, readonly) PGPSymmetricAlgorithm symmetricAlgorithm;
 @property (nonatomic, nullable, copy, readonly) NSData *ivData;
 @property (nonatomic, getter=isEncryptedWithPassphrase, readonly) BOOL encryptedWithPassphrase;
@@ -27,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return Decrypted key on success
  */
-- (nullable PGPSecretKeyPacket *)decryptedKeyPacket:(NSString *)passphrase error:(NSError *__autoreleasing *)error;
+- (nullable PGPSecretKeyPacket *)decryptedWithPassphrase:(nullable NSString *)passphrase error:(NSError * __autoreleasing _Nullable *)error;
 
 - (nullable PGPMPI *)secretMPI:(NSString *)identifier;
 

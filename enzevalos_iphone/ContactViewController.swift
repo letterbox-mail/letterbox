@@ -180,7 +180,7 @@ class ContactViewController: UIViewController {
                 if let keyID = addressWithKey?.Key?.keyID {
                     let swiftPGP = SwiftPGP()
                     if let key = swiftPGP.loadKey(id: keyID) {
-                        fingerprint = key.keyID.longKeyString
+                        fingerprint = key.keyID.longIdentifier
                     }
                 }
             }

@@ -1,9 +1,9 @@
 //
-//  PGPRSA.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 26/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPRSA.h"
@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
         return nil;
     }
 
-    uint8_t *encrypted_em = calloc(BN_num_bytes(rsa->n) & SIZE_T_MAX, 1);
+    uint8_t *encrypted_em = calloc((size_t)BN_num_bytes(rsa->n) & SIZE_T_MAX, 1);
     pgp_defer { free(encrypted_em); };
     int em_len = RSA_public_encrypt(toEncrypt.length & INT_MAX, toEncrypt.bytes, encrypted_em, rsa, RSA_NO_PADDING);
     if (em_len == -1 || em_len != (publicKeyPacket.keySize & INT_MAX)) {
@@ -216,7 +216,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     // decrypted PKCS emsa
-    NSData *decryptedEm = [NSData dataWithBytes:decrypted_em length:em_len];
+    let decryptedEm = [NSData dataWithBytes:decrypted_em length:em_len];
 
     rsa->n = rsa->e = NULL;
 

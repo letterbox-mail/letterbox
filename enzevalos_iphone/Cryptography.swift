@@ -18,7 +18,7 @@ public protocol Encryption{
     
     func exportKey(id: String, isSecretkey: Bool, autocrypt: Bool) -> String?
     func exportKeyData(id: String, isSecretkey: Bool, autocrypt: Bool) -> Data?
-    
+        
     // operations on keys
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject
     func decrypt(data: Data, decryptionIDs: [String], verifyIds: [String], fromAdr: String?) -> CryptoObject

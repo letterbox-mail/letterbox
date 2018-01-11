@@ -1,17 +1,20 @@
 //
-//  PGPUserAttributePacket.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 24/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
-#import "PGPPacket.h"
 #import "PGPUserAttributeSubpacket.h"
+#import "PGPPacket.h"
 
-@interface PGPUserAttributePacket : PGPPacket
+NS_ASSUME_NONNULL_BEGIN
 
-// array of PGPUserAttributeSubpacket
-@property (nonatomic) NSArray<PGPUserAttributeSubpacket *> *subpackets;
+@interface PGPUserAttributePacket : PGPPacket <NSCopying>
+
+@property (nonatomic, copy) NSArray<PGPUserAttributeSubpacket *> *subpackets;
 
 @end
+
+NS_ASSUME_NONNULL_END

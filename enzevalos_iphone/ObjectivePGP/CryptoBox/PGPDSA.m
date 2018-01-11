@@ -1,9 +1,9 @@
 //
-//  PGPDSA.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 26/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPDSA.h"
@@ -14,9 +14,11 @@
 #import "PGPSecretKeyPacket.h"
 #import "PGPSignaturePacket+Private.h"
 #import "PGPBigNum+Private.h"
+#import "PGPKey.h"
 
 #import "PGPLogging.h"
 #import "PGPMacros+Private.h"
+#import "PGPFoundation.h"
 
 #import <openssl/err.h>
 #import <openssl/ssl.h>

@@ -1,9 +1,9 @@
 //
-//  PGPPKCS.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 22/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPPKCSEmsa.h"
@@ -37,7 +37,7 @@ static UInt8 prefix_ripemd160[] = {0x30, 0x21, 0x30, 0x09, 0x06, 0x05, 0x2B, 0x2
  *
  *  @return encoded message
  */
-+ (NSData *)encode:(PGPHashAlgorithm)hashAlgorithm message:(NSData *)m encodedMessageLength:(NSUInteger)emLength error:(NSError *__autoreleasing *)error {
++ (NSData *)encode:(PGPHashAlgorithm)hashAlgorithm message:(NSData *)m encodedMessageLength:(NSUInteger)emLength error:(NSError * __autoreleasing *)error {
     let tData = [NSMutableData data]; // prefix + hash
     switch (hashAlgorithm) {
         case PGPHashMD5: {
@@ -104,7 +104,7 @@ static UInt8 prefix_ripemd160[] = {0x30, 0x21, 0x30, 0x09, 0x06, 0x05, 0x2B, 0x2
     [emData appendBytes:emSuffix length:sizeof(emSuffix)];
     [emData appendData:tData];
 
-    return [emData copy];
+    return emData;
 }
 
 @end

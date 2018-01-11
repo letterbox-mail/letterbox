@@ -35,7 +35,7 @@
 "Emailaddress" = "E-Mail-Adresse";
 "EncryptionType" = "Verschlüsselungsart";
 "EverythingCorrect" = "Alles richtig?";
-"ExportInfoViewText" = "Damit deine sicheren E-Mails gelesen werden können, muss man ein Geheimnis kennen. Dieses befindet sich momentan auf deinem Smartphone.\nUm deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss das Geheimnis von diesem Gerät auf das andere übertragen werden. Wenn du das tun möchtest, öffne auf dem anderen Gerät die";
+"ExportInfoViewText" = "Damit deine Briefe gelesen werden können, muss das Gerät ein Geheimnis kennen. Dieses befindet sich momentan nur auf deinem Smartphone.\n Das Geheimnis kannst du einfach und sicher auf deine anderen Geräte übertragen. Wenn du das tun möchtest, öffne auf dem anderen Gerät die";
 "ExportKeyMailWasSentTopLabel" = "Dein Geheimnis wurde in einer E-Mail an die Adresse";
 "ExportKeyMailWasSentBottomLabel" = "geschickt.";
 "ExportKeyMailWillBeSentTopLabel" = "Dein Geheimnis wird in einer E-Mail an die Adresse";
@@ -64,7 +64,7 @@
 "KeyNotFound" = "Schlüssel konnte nicht gefunden werden. Dies ist ein Fehler, bitte wende dich an die Entwickler!";
 "Letter" = "Brief";
 "LetterDamaged" = "Angerissener Brief";
-"LetterDescription" = "• Das ist eine sichere E-Mail\n• Sie stammt tatsächlich vom angegebenen Absender\n• Nur Empfänger und Sender können die Nachricht lesen.\n• Benötigt Beteiligung von Sender und Empfänger. Dafür können in der App Kontakte eingeladen werden.";
+"LetterDescription" = "• Briefe wurden tatsächlich vom angegebenen Absender versendet\n• Nur Empfänger und Sender können die Nachricht lesen.\n• Für eine sichere Kommunikation müssen alle zusammenarbeiten. Dafür können in der App Kontakte eingeladen werden.";
 "mail from" = "Nachricht von";
 "Message" = "Nachricht";
 "MoreInformation" = "Mehr Informationen";
@@ -78,11 +78,11 @@
 "Password" = "Passwort";
 "Plaintext" = "Klartext";
 "Postcard" = "Postkarte";
-"PostcardDescription" = "• Eine E-Mail, wie du sie bisher kennst\n• Weder vertraulich, noch steht fest, ob sie gefälscht wurde\n• Von jedem lesbar und veränderbar";
+"PostcardDescription" = "• Eine Postkarte ist eine E-Mail, wie du sie bisher kennst\n• Weder vertraulich, noch steht fest, ob sie gefälscht wurde\n• Von jedem lesbar und veränderbar";
 "Re" = "AW";
 "ReadFollowingPages" = "Wir wollen sichere E-Mail einfach nutzbar machen.\nDafür lies dir bitte die kommenden drei Seiten durch.";
 "ReadMailOnOtherDevice" = "Auf anderem Gerät lesen";
-"ReadOnOtherDevices" = "Sichere E-Mails auf anderen Geräten lesen!";
+"ReadOnOtherDevices" = "Briefe auf anderen Geräten lesen!";
 "Receive" = "Empfangen";
 "ReceiveError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
 "ReceiveDamagedInfo" = "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.";
@@ -123,11 +123,11 @@
 "LastUpdate" = "Letzte Aktualisierung";
 "notVerified" = "Kontakt ist noch nicht verifiziert";
 "noEncryption" = "Kontakt nutzt noch keine Verschlüsselung";
-"otherEncryption" = "Dies ist die unsichere Ablage dieses Kontakt";
-"hasKeyButNoMail" = "Kontakt nutzt Verschlüsselung, hat dir aber noch keine sichere E-Mail gesendet";
+"otherEncryption" = "Dies ist die Ablage für Postkarten dieser Person";
+"hasKeyButNoMail" = "Kontakt nutzt Verschlüsselung, hat dir aber noch keine Briefe gesendet";
 "Verified" = "Kontakt ist verifiziert";
 "verifyNow" = "Jetzt verifizieren";
-"toEncrypted" = "Zur sicheren Ablage";
+"toEncrypted" = "Zur Ablage von Briefen";
 "invite" = "Kontakt einladen Verschlüsselung zu nutzen";
 "discardButton" = "Verwerfen";
 "allMessages" = "Alle Nachrichten dieser Ablage";
@@ -138,8 +138,8 @@
 "Body" = "Nachricht";
 "and" = "und";
 "more" = "weitere";
-"encryptedBeforeHeadline" = "Unsichere Nachricht";
-"encryptedBeforeText" = "Früher hat dieser Kontakt sichere Nachrichten gesendet. Vertraue dem Inhalt vielleicht nicht zu sehr oder kontaktiere den Absender ob die Nachricht legitim ist.\n";
+"encryptedBeforeHeadline" = "Postkarte";
+"encryptedBeforeText" = "Früher hat dieser Kontakt Briefe gesendet. Vertraue dem Inhalt vielleicht nicht zu sehr oder kontaktiere den Absender ob die Nachricht legitim ist.\n";
 "corruptedText" = "Diese E-Mail könnte verändert worden sein! Bitte misstrauen Sie dem Inhalt, falls Sie ihn trotzdem lesen möchten.\n";
 "corruptedHeadline" = "Achtung!";
 "answer" = "Antworten";

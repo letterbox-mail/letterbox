@@ -310,14 +310,36 @@ class MailHandler {
 
         var sendData: Data
         var sendOperation: MCOSMTPSendOperation
+        let pgp = SwiftPGP()
 
         if let encPGP = ordered[CryptoScheme.PGP], ordered[CryptoScheme.PGP]?.count > 0 {
             var keyIDs = addKeys(adrs: encPGP)
             //added own public key here, so we can decrypt our own message to read it in sent-folder
             keyIDs.append(sk.keyID!)
             
-            let pgp = SwiftPGP()
-            let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: keyIDs, myId:sk.keyID!)
+            /*
+             Attach own public key
+             */
+            var missingOwnPublic = false
+            for id in keyIDs{
+                if let key = datahandler.findKey(keyID: id){
+                    if !key.sentOwnPublicKey{
+                        missingOwnPublic = true
+                        key.sentOwnPublicKey = true
+                    }
+                }
+            }
+            
+            var msg = message
+            if missingOwnPublic{
+                if let myPK = pgp.exportKey(id: sk.keyID!, isSecretkey: false, autocrypt: false){
+                    msg = msg + "\n" + myPK
+                }
+            }
+            /* ######## */
+            
+            
+            let cryptoObject = pgp.encrypt(plaintext: "\n" + msg, ids: keyIDs, myId:sk.keyID!)
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
                 Logger.queue.async(flags: .barrier) {
@@ -477,12 +499,12 @@ class MailHandler {
     
     func setupIMAPSession() -> MCOIMAPSession {
         let imapsession = MCOIMAPSession()
-        imapsession.hostname = UserManager.loadUserValue(Attribute.imapHostname) as! String
-        imapsession.port = UInt32(UserManager.loadUserValue(Attribute.imapPort) as! Int)
-        imapsession.username = UserManager.loadUserValue(Attribute.userAddr) as! String
-        imapsession.password = UserManager.loadUserValue(Attribute.userPW) as! String
+        imapsession.hostname = UserManager.loadUserValue(Attribute.imapHostname) as? String ?? ""
+        imapsession.port = UInt32(UserManager.loadUserValue(Attribute.imapPort) as? Int ?? 0)
+        imapsession.username = UserManager.loadUserValue(Attribute.userAddr) as? String ?? ""
+        imapsession.password = UserManager.loadUserValue(Attribute.userPW) as? String ?? ""
         imapsession.authType = UserManager.loadImapAuthType()
-        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)
+        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as? Int ?? 0)
         
         let y = imapsession.folderStatusOperation(INBOX)
         y?.start{(error, status) -> Void in

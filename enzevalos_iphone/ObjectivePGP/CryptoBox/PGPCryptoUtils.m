@@ -1,9 +1,9 @@
 //
-//  PGPCryptoUtils.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 12/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPCryptoUtils.h"
@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
         case PGPSymmetricAES256:
             return kCCKeySizeAES256;
         case PGPSymmetricTwofish256:
-            return 16; // 128bit (??or 32)
+            return 32;
         default:
             break;
     }
@@ -95,14 +95,14 @@ NS_ASSUME_NONNULL_BEGIN
     return NSNotFound;
 }
 
-+ (NSData *)randomData:(NSInteger)length {
-    NSMutableData *data = [NSMutableData dataWithLength:length];
++ (NSData *)randomData:(NSUInteger)length {
+    let data = [NSMutableData dataWithLength:length];
     int status = SecRandomCopyBytes(kSecRandomDefault, length, data.mutableBytes);
     NSAssert(status == errSecSuccess, @"Failed to generate secure random bytes");
     return data;
 }
 
-+ (nullable NSData *)decryptData:(NSData *)data usingSecretKeyPacket:(PGPSecretKeyPacket *)keyPacket {
++ (nullable NSData *)decrypt:(NSData *)data usingSecretKeyPacket:(PGPSecretKeyPacket *)keyPacket {
     PGPAssertClass(data, NSData);
 
     switch (keyPacket.publicKeyAlgorithm) {

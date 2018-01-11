@@ -1,19 +1,19 @@
 //
-//  PGPPacket+Private.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 09/07/2017.
-//  Copyright © 2017 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPPacket.h"
-#import "ObjectivePGP.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PGPPacket ()
 
-+ (NSData *)buildNewFormatLengthDataForData:(NSData *)bodyData;
+@property (nonatomic) BOOL indeterminateLength; // should not be used, but gpg uses it
+@property (nonatomic, readwrite) PGPPacketTag tag;
 
 @end
 

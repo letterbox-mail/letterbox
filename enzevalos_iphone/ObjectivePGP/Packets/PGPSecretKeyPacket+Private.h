@@ -1,12 +1,14 @@
 //
-//  PGPSecretKeyPacket+Private.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 09/07/2017.
-//  Copyright © 2017 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPPublicKeyPacket+Private.h"
+#import "PGPS2K.h"
+#import "PGPSecretKeyPacket.h"
 #import "ObjectivePGP.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, /* copy, */ readwrite) PGPS2K *s2k;
 @property (nonatomic, readwrite) PGPSymmetricAlgorithm symmetricAlgorithm;
 @property (nonatomic, copy, nullable, readwrite) NSData *ivData;
-@property (nonatomic, copy) NSArray<PGPMPI *> *secretMPIArray; // decrypted MPI
+@property (nonatomic, copy) NSArray<PGPMPI *> *secretMPIs; // decrypted MPI
 @property (nonatomic, nullable, copy) NSData *encryptedMPIPartData; // after decrypt -> secretMPIArray
 
 @end

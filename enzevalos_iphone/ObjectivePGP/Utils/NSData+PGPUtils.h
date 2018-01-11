@@ -1,9 +1,9 @@
 //
-//  NSData+PGPUtils.h
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 04/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPTypes.h"
@@ -23,10 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSData *)pgp_SHA512;
 - (NSData *)pgp_RIPEMD160;
 
++ (NSData *)xor:(NSData *)d1 d2:(NSData *)d2;
+
 + (NSData *)dataWithValue:(NSValue *)value;
 
 - (NSData *)pgp_HashedWithAlgorithm:(PGPHashAlgorithm)hashAlgorithm;
-- (NSData *)pgp_encryptBlockWithSymmetricAlgorithm:(PGPSymmetricAlgorithm)symmetricAlgorithm sessionKeyData:(NSData *)sessionKeyData;
 
 @end
 

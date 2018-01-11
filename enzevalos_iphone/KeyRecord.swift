@@ -30,7 +30,7 @@ open class KeyRecord: Record {
     open var ezContact: EnzevalosContact
 
     
-    var pgpKey: PGPKey?{
+    var pgpKey: Key?{
         get{
             if let k = keyID{
                 let pgp = SwiftPGP()
@@ -81,7 +81,7 @@ open class KeyRecord: Record {
                 else if let sk = k.secretKey{
                     return sk.fingerprint.description()
                 }
-                return k.keyID.longKeyString
+                return k.keyID.longIdentifier
             }
             return nil
         }

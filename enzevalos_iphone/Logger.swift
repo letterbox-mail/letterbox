@@ -16,7 +16,7 @@ class Logger {
     
     static let defaultFileName = "log.json"
     static let loggingInterval = 86400 //60*60*24 seconds
-    static let logReceiver = "oliver.wiese@fu-berlin.de"
+    static let logReceiver = "letterbox@zedat.fu-berlin.de"
     static let subjectSalt = UserManager.loadUserValue(.subjectSalt) as! String
     
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
@@ -359,8 +359,8 @@ class Logger {
         }
         
         newSubject += sha256(oldSubject+subjectSalt) ?? "ErrorInHashGeneration" //DataHandler().getPseudonymSubject(subject: oldSubject).pseudonym//DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
-        
-        return newSubject
+        return ""
+        //return newSubject
     }
     
     //takes backendFolderPath

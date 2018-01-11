@@ -1,9 +1,9 @@
 //
-//  PGPSignatureSubpacketCreationTime.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 10/07/2017.
-//  Copyright © 2017 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPSignatureSubpacketCreationTime.h"
@@ -11,6 +11,8 @@
 #import "PGPPacket.h"
 #import "PGPPacket+Private.h"
 #import "PGPMacros+Private.h"
+
+// PGPSignatureSubpacketTypeSignatureCreationTime
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,10 +27,6 @@ static const NSUInteger PGPSignatureSubpacketLength = 4;
     return self;
 }
 
-+ (PGPSignatureSubpacketType)type {
-    return PGPSignatureSubpacketTypeSignatureCreationTime;
-}
-
 + (instancetype)packetWithData:(NSData *)packetBodyData {
     UInt32 signatureCreationTimestamp = 0;
     [packetBodyData getBytes:&signatureCreationTimestamp length:PGPSignatureSubpacketLength];
@@ -37,21 +35,10 @@ static const NSUInteger PGPSignatureSubpacketLength = 4;
     return [[PGPSignatureSubpacketCreationTime alloc] initWithDate:date];
 }
 
-#pragma mark - PGPExportable
+#pragma mark - NSCopying
 
-- (nullable NSData *)export:(NSError *__autoreleasing  _Nullable *)error {
-    let timestamp = CFSwapInt32HostToBig((UInt32)[self.value timeIntervalSince1970]);
-    let valueData = [NSData dataWithBytes:&timestamp length:PGPSignatureSubpacketLength];
-
-    let type = self.class.type;
-    let typedData = [NSMutableData dataWithBytes:&type length:1];
-    [typedData appendData:valueData];
-
-
-    let output = [NSMutableData data];
-    [output appendData:[PGPPacket buildNewFormatLengthDataForData:typedData]];
-    [output appendData:typedData];
-    return output;
+- (instancetype)copyWithZone:(nullable NSZone * __unused)zone {
+    return [[PGPSignatureSubpacketCreationTime alloc] initWithDate:self.value];
 }
 
 @end

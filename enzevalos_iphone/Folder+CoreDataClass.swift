@@ -47,13 +47,16 @@ public class Folder: NSManagedObject {
            
             for key in keys{
                 let record = KeyRecord(keyID: key, folder: self)
-                records.append(record)
+                if record.mails.count > 0{
+                    records.append(record)
+                }
             }
             for adr in adrs{
                 if let ec = adr.contact{
                     let record = KeyRecord(contact: ec, folder: self)
-                    records.append(record)
-                }
+                    if record.mails.count > 0{
+                        records.append(record)
+                    }                }
             }
            return records.sorted()
         //return records // TODO: Sorting makes function to slow!
@@ -126,13 +129,17 @@ public class Folder: NSManagedObject {
                 if mail.isSecure{
                     let record = KeyRecord(keyID: mail.keyID!, folder: self)
                     if !(storedRecords?.contains(record))!{
-                        storedRecords?.append(record)
+                        if record.mails.count > 0{
+                            storedRecords?.append(record)
+                        }
                     }
                 }
                 else {
                     let record = KeyRecord(contact: mail.from.contact!, folder: self)
                     if !(storedRecords?.contains(record))!{
-                        storedRecords?.append(record)
+                        if record.mails.count > 0{
+                            storedRecords?.append(record)
+                        }
                     }
                 }
                 storedRecords?.sort()

@@ -1,9 +1,9 @@
 //
-//  OpenPGPMPI.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 04/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 //  Multiprecision integers (also called MPIArray) are unsigned integers used
 //  to hold large integers such as the ones used in cryptographic
@@ -13,6 +13,7 @@
 #import "PGPBigNum+Private.h"
 #import "PGPLogging.h"
 #import "PGPMacros+Private.h"
+#import "PGPFoundation.h"
 #import <openssl/bn.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -69,13 +70,13 @@ NSString * const PGPMPI_M = @"M";
         return nil;
     }
 
-    BIGNUM *mpi_BN = BN_dup(self.bigNum.bignumRef);
-    NSInteger mpi_BN_length = (BN_num_bits(mpi_BN) + 7) / 8;
-    UInt8 *bn_bin = calloc(mpi_BN_length, sizeof(UInt8));
-    NSUInteger len = BN_bn2bin(mpi_BN, bn_bin);
+    let mpi_BN = BN_dup(self.bigNum.bignumRef);
+    let mpi_BN_length = (BN_num_bits(mpi_BN) + 7) / 8;
+    UInt8 *bn_bin = calloc((size_t)mpi_BN_length, sizeof(UInt8));
+    let len = (NSUInteger)BN_bn2bin(mpi_BN, bn_bin);
     BN_clear_free(mpi_BN);
 
-    NSData *data = [NSData dataWithBytes:bn_bin length:len];
+    let data = [NSData dataWithBytes:bn_bin length:len];
     free(bn_bin);
     return data;
 }
@@ -93,7 +94,7 @@ NSString * const PGPMPI_M = @"M";
     [outData appendBytes:&bitsBE length:2];
 
     // mpi
-    UInt8 *buf = calloc(BN_num_bytes(self.bigNum.bignumRef), sizeof(UInt8));
+    UInt8 *buf = calloc((size_t)BN_num_bytes(self.bigNum.bignumRef), sizeof(UInt8));
     pgp_defer { free(buf); };
     UInt16 bytes = (bits + 7) / 8;
     BN_bn2bin(self.bigNum.bignumRef, buf);
@@ -106,12 +107,34 @@ NSString * const PGPMPI_M = @"M";
     return [NSString stringWithFormat:@"%@, \"%@\", %@ bytes, total: %@ bytes", [super description], self.identifier, @(self.bigNum.bytesCount), @(self.packetLength)];
 }
 
+#pragma mark - isEqual
+
+- (BOOL)isEqual:(id)other {
+    if (self == other) { return YES; }
+    if ([other isKindOfClass:self.class]) {
+        return [self isEqualToMPI:other];
+    }
+    return NO;
+}
+
+- (BOOL)isEqualToMPI:(PGPMPI *)other {
+    return PGPEqualObjects(self.identifier, other.identifier) && PGPEqualObjects(self.bigNum, other.bigNum);
+}
+
+- (NSUInteger)hash {
+    NSUInteger prime = 31;
+    NSUInteger result = 1;
+    result = prime * result + self.identifier.hash;
+    result = prime * result + self.bigNum.hash;
+    return result;
+}
+
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(nullable NSZone *)zone {
-    let copy = [[PGPMPI alloc] initWithBigNum:self.bigNum identifier:self.identifier];
-    copy.packetLength = self.packetLength;
-    return copy;
+    let duplicate = PGPCast([[self.class allocWithZone:zone] initWithBigNum:self.bigNum identifier:self.identifier], PGPMPI);
+    duplicate.packetLength = self.packetLength;
+    return duplicate;
 }
 
 @end

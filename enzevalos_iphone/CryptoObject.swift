@@ -9,6 +9,7 @@
 import Foundation
 enum SignatureState {
     case NoSignature
+    case NoPublicKey
     case InvalidSignature
     case ValidSignature
 }

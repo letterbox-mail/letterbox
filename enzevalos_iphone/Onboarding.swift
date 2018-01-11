@@ -102,8 +102,8 @@ class Onboarding: NSObject {
         let path = Bundle.main.path(forResource: "videoOnboarding2", ofType: "m4v")
         let url = URL.init(fileURLWithPath: path!)
 
-        let videoView = UIView.init(frame: CGRect.init(x: 0, y: 0, width: 30, height: (AppDelegate.getAppDelegate().window?.frame.height)! - 70))
-
+        let videoView = UIView.init(frame: CGRect.init(x: 40, y: (AppDelegate.getAppDelegate().window?.frame.height)!*0.5, width: (AppDelegate.getAppDelegate().window?.frame.width)! - 80, height: 1.779*((AppDelegate.getAppDelegate().window?.frame.width)! - 80)))
+        
         let intro3 = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("GetHelp", comment: ""), videoURL: url, inputView: videoView, buttonText: nil, actionBlock: nil)
 
         //Content

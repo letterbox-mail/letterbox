@@ -1,14 +1,15 @@
 //
-//  PGPLiteralPacket.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 24/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "PGPLiteralPacket.h"
 #import "PGPTypes.h"
 #import "PGPMacros+Private.h"
+#import "PGPFoundation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithData:(NSData *)rawData {
     if (self = [self init]) {
-        _literalRawData = rawData;
+        _literalRawData = [rawData copy];
     }
     return self;
 }
@@ -42,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
     return PGPLiteralDataPacketTag;
 }
 
-- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError *__autoreleasing *)error {
+- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError * __autoreleasing _Nullable *)error {
     NSUInteger position = [super parsePacketBody:packetBody error:error];
 
     // A one-octet field that describes how the data is formatted.
@@ -89,8 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
     return position;
 }
 
-- (nullable NSData *)export:(NSError *_Nullable __autoreleasing *)error {
-    NSAssert(self.literalRawData, @"Missing literal data");
+- (nullable NSData *)export:(NSError * __autoreleasing _Nullable *)error {
     if (!self.literalRawData) {
         if (error) {
             *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"Missing literal data" }];
@@ -132,6 +132,48 @@ NS_ASSUME_NONNULL_BEGIN
     return [PGPPacket buildPacketOfType:self.tag withBody:^NSData * {
         return bodyData;
     }];
+}
+
+#pragma mark - isEqual
+
+- (BOOL)isEqual:(id)other {
+    if (self == other) { return YES; }
+    if ([super isEqual:other] && [other isKindOfClass:self.class]) {
+        return [self isEqualToLiteralPacket:other];
+    }
+    return NO;
+}
+
+- (BOOL)isEqualToLiteralPacket:(PGPLiteralPacket *)packet {
+    return  self.format == packet.format &&
+            PGPEqualObjects(self.timestamp, packet.timestamp) &&
+            PGPEqualObjects(self.filename, packet.filename) &&
+            PGPEqualObjects(self.literalRawData, packet.literalRawData);
+}
+
+- (NSUInteger)hash {
+    NSUInteger prime = 31;
+    NSUInteger result = [super hash];
+    result = prime * result + self.format;
+    result = prime * result + self.timestamp.hash;
+    result = prime * result + self.filename.hash;
+    result = prime * result + self.literalRawData.hash;
+    return result;
+}
+
+#pragma mark - NSCopying
+
+- (instancetype)copyWithZone:(nullable NSZone *)zone {
+    let _Nullable duplicate = PGPCast([super copyWithZone:zone], PGPLiteralPacket);
+    if (!duplicate) {
+        return nil;
+    }
+
+    duplicate.format = self.format;
+    duplicate.timestamp = self.timestamp;
+    duplicate.filename = self.filename;
+    duplicate.literalRawData = self.literalRawData;
+    return duplicate;
 }
 
 @end

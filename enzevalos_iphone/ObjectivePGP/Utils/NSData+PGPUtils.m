@@ -1,9 +1,9 @@
 //
-//  NSData+PGPUtils.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 04/05/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
 
 #import "NSData+PGPUtils.h"
@@ -47,15 +47,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (UInt32)pgp_CRC24 {
     UInt32 crc = CRC24_INIT;
     NSUInteger len = self.length;
+    NSUInteger j = 0;
     const UInt8 *octets = self.bytes;
-    int i;
-    while (len--) {
+    for (j = len; j > 0; j--) {
         crc ^= (*octets++) << 16;
-        for (i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++) {
             crc <<= 1;
             if (crc & 0x1000000) crc ^= CRC24_POLY;
         }
     }
+
     return crc & 0xFFFFFFL;
 }
 
@@ -107,6 +108,17 @@ NS_ASSUME_NONNULL_BEGIN
     });
 }
 
++ (NSData *)xor:(NSData *)d1 d2:(NSData *)d2 {
+    let output = [NSMutableData dataWithLength:d1.length];
+    let outputBuf = (uint8_t *)output.mutableBytes;
+    let d1buf = (uint8_t *)d1.bytes;
+    let d2buf = (uint8_t *)d2.bytes;
+    for (NSUInteger i = 0; i < d1.length; i++) {
+        outputBuf[i] = d1buf[i] ^ d2buf[i];
+    }
+    return output;
+}
+
 #pragma mark - NSValue
 
 + (NSData *)dataWithValue:(NSValue *)value {
@@ -122,77 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
     return data;
 }
 
-#pragma mark - Encryption
-
-- (NSData *)pgp_encryptBlockWithSymmetricAlgorithm:(PGPSymmetricAlgorithm)symmetricAlgorithm sessionKeyData:(NSData *)sessionKeyData {
-    NSAssert(sessionKeyData, @"Missing key data");
-
-    if (!sessionKeyData) {
-        return nil;
-    }
-
-    NSUInteger keySize = [PGPCryptoUtils keySizeOfSymmetricAlgorithm:symmetricAlgorithm];
-
-    NSData *ret = nil;
-
-    switch (symmetricAlgorithm) {
-        case PGPSymmetricCAST5: {
-            CAST_KEY *encrypt_key = calloc(1, sizeof(CAST_KEY));
-            CAST_set_key(encrypt_key, (unsigned int)keySize, sessionKeyData.bytes);
-            UInt8 *outBuf = calloc(self.length, sizeof(UInt8));
-            CAST_ecb_encrypt(self.bytes, outBuf, encrypt_key, CAST_ENCRYPT);
-            ret = [NSData dataWithBytes:&outBuf length:self.length];
-
-            free(outBuf);
-            free(encrypt_key);
-        } break;
-        case PGPSymmetricAES256:
-        case PGPSymmetricAES128:
-        case PGPSymmetricAES192: {
-            AES_KEY *encrypt_key = calloc(1, sizeof(AES_KEY));
-            AES_set_encrypt_key(sessionKeyData.bytes, (int)(keySize * 8), encrypt_key);
-
-            UInt8 *outBuf = calloc(self.length, sizeof(UInt8));
-            AES_encrypt(self.bytes, outBuf, encrypt_key);
-            ret = [NSData dataWithBytes:&outBuf length:self.length];
-
-            free(outBuf);
-            free(encrypt_key);
-        } break;
-        case PGPSymmetricIDEA: {
-            IDEA_KEY_SCHEDULE *encrypt_key = calloc(1, sizeof(IDEA_KEY_SCHEDULE));
-            idea_set_encrypt_key(sessionKeyData.bytes, encrypt_key);
-
-            UInt8 *outBuf = calloc(self.length, sizeof(UInt8));
-            idea_ecb_encrypt(self.bytes, outBuf, encrypt_key);
-            ret = [NSData dataWithBytes:&outBuf length:self.length];
-
-            free(outBuf);
-            free(encrypt_key);
-        } break;
-        case PGPSymmetricTripleDES: {
-            // Very unsure if this is working, need some tests later
-            const void *key = sessionKeyData.bytes;
-
-            DES_key_schedule *keys3 = calloc(3, sizeof(DES_key_schedule));
-            for (int n = 0; n < 3; ++n) {
-                DES_set_key((DES_cblock *)(void *)(key + n * 8), &keys3[n]);
-            }
-
-            DES_cblock *outBuf = calloc(self.length, sizeof(DES_cblock));
-            DES_ecb3_encrypt((void *)(unsigned long)(const void *)(self.bytes), outBuf, &keys3[0], &keys3[1], &keys3[2], DES_ENCRYPT);
-            ret = [NSData dataWithBytes:&outBuf length:self.length];
-
-            free(outBuf);
-            free(keys3);
-        } break;
-        default:
-            [NSException raise:@"PGPNotSupported" format:@"Encryption unsupported, cant encrypt data"];
-            break;
-    }
-    return ret;
-}
-
 @end
 
 NS_ASSUME_NONNULL_END
+

@@ -1,23 +1,33 @@
 //
-//  PGPCompressedPacket.m
-//  ObjectivePGP
+//  Copyright (c) Marcin Krzyżanowski. All rights reserved.
 //
-//  Created by Marcin Krzyzanowski on 02/06/14.
-//  Copyright (c) 2014 Marcin Krzyżanowski. All rights reserved.
+//  THIS SOURCE CODE AND ANY ACCOMPANYING DOCUMENTATION ARE PROTECTED BY
+//  INTERNATIONAL COPYRIGHT LAW. USAGE IS BOUND TO THE LICENSE AGREEMENT.
+//  This notice may not be removed from this file.
 //
-//  TODO: add support for ZIP and BZIP2
 
 #import "PGPCompressedPacket.h"
 #import "NSData+compression.h"
 #import "NSMutableData+PGPUtils.h"
 #import "PGPMacros+Private.h"
+#import "PGPFoundation.h"
+#import "PGPLogging.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface PGPCompressedPacket ()
+
+@property (nonatomic, readwrite) PGPCompressionAlgorithm compressionType;
+@property (nonatomic, copy, readwrite) NSData *decompressedData;
+
+@end
 
 @implementation PGPCompressedPacket
 
-- (instancetype)initWithData:(NSData *)dataToCompress type:(PGPCompressionAlgorithm)type {
+- (instancetype)initWithData:(NSData *)data type:(PGPCompressionAlgorithm)type {
     if (self = [self init]) {
-        self->_decompressedData = dataToCompress;
-        self->_compressionType = type;
+        _decompressedData = [data copy];
+        _compressionType = type;
     }
     return self;
 }
@@ -26,7 +36,7 @@
     return PGPCompressedDataPacketTag;
 }
 
-- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError *__autoreleasing *)error {
+- (NSUInteger)parsePacketBody:(NSData *)packetBody error:(NSError * __autoreleasing _Nullable *)error {
     NSUInteger position = [super parsePacketBody:packetBody error:error];
 
     // - One octet that gives the algorithm used to compress the packet.
@@ -34,13 +44,14 @@
     position = position + 1;
 
     // - Compressed data, which makes up the remainder of the packet.
-    NSData *compressedData = [packetBody subdataWithRange:(NSRange){position, packetBody.length - position}];
+    let compressedData = [packetBody subdataWithRange:(NSRange){position, packetBody.length - position}];
 
-    // TODO: for ZIP use AgileBits/objective-zip
     switch (self.compressionType) {
-        case PGPCompressionZLIB:
         case PGPCompressionZIP:
-            self.decompressedData = [compressedData zlibDecompressed:error compressionType:self.compressionType];
+            self.decompressedData = [compressedData zipDecompressed:error];
+            break;
+        case PGPCompressionZLIB:
+            self.decompressedData = [compressedData zlibDecompressed:error];
             break;
         case PGPCompressionBZIP2:
             self.decompressedData = [compressedData bzip2Decompressed:error];
@@ -50,15 +61,13 @@
             if (error) {
                 *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"This type of compression is not supported" }];
             }
-            @throw [NSException exceptionWithName:@"Unsupported Compression" reason:@"Compression type is not supported" userInfo:nil];
             break;
     }
 
-    compressedData = nil;
     return position;
 }
 
-- (NSData *)export:(NSError *__autoreleasing *)error {
+- (nullable NSData *)export:(NSError * __autoreleasing _Nullable *)error {
     let bodyData = [NSMutableData data];
 
     // - One octet that gives the algorithm used to compress the packet.
@@ -67,13 +76,15 @@
     // - Compressed data, which makes up the remainder of the packet.
     NSData * _Nullable compressedData = nil;
     switch (self.compressionType) {
+        case PGPCompressionZIP:
+            compressedData = [self.decompressedData zipCompressed:error];
+            break;
         case PGPCompressionZLIB:
             compressedData = [self.decompressedData zlibCompressed:error];
             break;
         case PGPCompressionBZIP2:
             compressedData = [self.decompressedData bzip2Compressed:error];
             break;
-
         default:
             if (error) {
                 *error = [NSError errorWithDomain:PGPErrorDomain code:0 userInfo:@{ NSLocalizedDescriptionKey: @"This type of compression is not supported" }];
@@ -81,7 +92,11 @@
             return nil;
             break;
     }
-    NSAssert(compressedData, @"Compression failed");
+
+    if (error && *error) {
+        PGPLogDebug(@"Compression failed: %@", (*error).localizedDescription);
+        return nil;
+    }
     [bodyData pgp_appendData:compressedData];
 
     return [PGPPacket buildPacketOfType:self.tag withBody:^NSData * {
@@ -89,6 +104,39 @@
     }];
 }
 
+#pragma mark - isEqual
+
+- (BOOL)isEqual:(id)other {
+    if (self == other) { return YES; }
+    if ([super isEqual:other] && [other isKindOfClass:self.class]) {
+        return [self isEqualToCompressedPacket:other];
+    }
+    return NO;
+}
+
+- (BOOL)isEqualToCompressedPacket:(PGPCompressedPacket *)packet {
+    return  self.compressionType == packet.compressionType &&
+            PGPEqualObjects(self.decompressedData, packet.decompressedData);
+}
+
+- (NSUInteger)hash {
+    NSUInteger prime = 31;
+    NSUInteger result = [super hash];
+    result = prime * result + self.compressionType;
+    result = prime * result + self.decompressedData.hash;
+    return result;
+}
+
+#pragma mark - NSCopying
+
+- (instancetype)copyWithZone:(nullable NSZone *)zone {
+    let duplicate = PGPCast([super copyWithZone:zone], PGPCompressedPacket);
+    PGPAssertClass(duplicate, PGPCompressedPacket)
+    duplicate.compressionType = self.compressionType;
+    duplicate.decompressedData = self.decompressedData;
+    return duplicate;
+}
+
 @end
 
-// ret = (int)inflateInit2(&z.zstream, -15)
+NS_ASSUME_NONNULL_END
