@@ -421,4 +421,37 @@ class SwiftPGP: Encryption{
         }
         return []
     }
+    /*
+         encrypt a array of strings with one password. Returns encrypted strings and the password for decryption
+     */
+    func symmetricEncrypt(textToEncrypt: [String]) -> ([String], String){
+        let password = generatePW(size: 8)
+        var chiphers = [String]()
+        
+        for text in textToEncrypt{
+            if let data = text.data(using: .utf8){
+                if let chipher = try? ObjectivePGP.symmetricEncrypt(data, signWith: nil, encryptionKey: nil, passphrase: password, armored: false){
+                    if let chipherString = String(data: chipher, encoding: .utf8){
+                        chiphers.append(chipherString)
+                    }
+                }
+            }
+        }
+        return (chiphers, password)
+    }
+    
+    func symmetricDecrypt(chipherTexts: [String], password: String) -> [String]{
+        var plaintexts = [String]()
+        
+        for chipher in chipherTexts{
+            if let data = chipher.data(using: .utf8){
+                if let plainData = try? ObjectivePGP.symmetricDecrypt(data, key: password, verifyWith: nil, signed: nil, valid: nil, integrityProtected: nil){
+                    if let plainText = String(data: plainData, encoding: .utf8){
+                        plaintexts.append(plainText)
+                    }
+                }
+            }
+        }
+        return plaintexts
+    }
 }
