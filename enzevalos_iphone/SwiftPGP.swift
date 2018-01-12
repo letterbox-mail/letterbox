@@ -17,17 +17,31 @@ class SwiftPGP: Encryption{
     let PasscodeSize = 36
     
     
-    private func generatePW(size: Int) -> String{
+    private func generatePW(size: Int, splitInBlocks: Bool) -> String{
         let file = open("/dev/urandom", O_RDONLY)
         if file >= 0{
             var pw = ""
             while pw.count < size{
                 var bits: UInt64 = 0
                 read(file, &bits, MemoryLayout<UInt64>.size)
-                
-                
+                pw = pw + String(bits)
             }
-             return generatePW(arc4: size)
+            let subpw = pw.prefix(size)
+            if splitInBlocks{
+                pw = ""
+                var i = 0
+                for c in subpw{
+                    pw.append(c)
+                    if i % 4 == 3 && i < size - 4{
+                        pw.append("-")
+                    }
+                    i = i + 1
+                }
+            }
+            else{
+                pw = String(subpw)
+            }
+            return pw
         }
         else{
             return generatePW(arc4: size)
@@ -213,7 +227,7 @@ class SwiftPGP: Encryption{
                         // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
                         var passcode = loadPassword(id: id)
                         if passcode == nil{
-                            passcode = generatePW(size: PasscodeSize)
+                            passcode = generatePW(size: PasscodeSize, splitInBlocks: true)
                         }
                         exportPwKeyChain[key.keyID.longIdentifier] = passcode
                         let cipher = try! ObjectivePGP.symmetricEncrypt(keyData, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: true)
@@ -425,7 +439,7 @@ class SwiftPGP: Encryption{
          encrypt a array of strings with one password. Returns encrypted strings and the password for decryption
      */
     func symmetricEncrypt(textToEncrypt: [String]) -> ([String], String){
-        let password = generatePW(size: 8)
+        let password = generatePW(size: 8, splitInBlocks: true)
         var chiphers = [String]()
         
         for text in textToEncrypt{
