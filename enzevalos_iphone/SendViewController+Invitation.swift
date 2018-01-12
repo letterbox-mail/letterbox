@@ -12,7 +12,7 @@ import UIKit
 
 struct InvitationSelection {
 
-	var selectedWords = Set<Int>()
+	var selectedWords = Set<NSRange>()
 }
 
 // MARK: - SendViewController Extension

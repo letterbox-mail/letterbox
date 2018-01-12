@@ -431,9 +431,7 @@ class SwiftPGP: Encryption{
         for text in textToEncrypt{
             if let data = text.data(using: .utf8){
                 if let chipher = try? ObjectivePGP.symmetricEncrypt(data, signWith: nil, encryptionKey: password, passphrase: password, armored: false){
-                    if let chipherString = String(data: chipher, encoding: .utf8){
-                        chiphers.append(chipherString)
-                    }
+					chiphers.append(chipher.base64EncodedString())
                 }
             }
         }
