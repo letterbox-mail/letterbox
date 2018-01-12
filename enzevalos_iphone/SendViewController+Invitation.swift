@@ -43,7 +43,6 @@ extension SendViewController {
 
 	}
 
-
 	/// The Selected Text in the given TextView should be marked.
 	/// Store starting Indexes in the Invitation Selection
 	///

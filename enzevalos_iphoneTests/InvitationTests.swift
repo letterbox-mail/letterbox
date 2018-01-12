@@ -35,4 +35,19 @@ class InvitationTests: XCTestCase {
 		XCTAssertEqual(secondResult[1].index, 10)
 		XCTAssertEqual(secondResult[2].index, 14)
 	}
+
+	func testEncryptAndDecryptStrings() {
+
+		let texts = ["Kontonummer", "DE 12345 625636 23", "Alice und Bob", "PLZ", "12207", "🤨", "🤨 ABC123"]
+		let pgp = SwiftPGP()
+
+		let encryption = pgp.symmetricEncrypt(textToEncrypt: texts)
+
+		XCTAssertEqual(encryption.chiphers.count, texts.count)
+		XCTAssertEqual(encryption.password.count, 8)
+
+		let decryption = pgp.symmetricDecrypt(chipherTexts: encryption.chiphers, password: encryption.password)
+
+		XCTAssertEqual(decryption, texts)
+	}
 }
