@@ -74,3 +74,18 @@ extension SendViewController {
 		return true
 	}
 }
+
+// MARK: - IBAction
+
+extension SendViewController {
+
+	@IBAction private func unmarkTapped(sender: Any?) {
+
+		self.unmarkSelectedText(for: self.textView)
+	}
+
+	@IBAction private func markTapped(sender: Any?) {
+
+		self.markSelectedText(for: self.textView)
+	}
+}
