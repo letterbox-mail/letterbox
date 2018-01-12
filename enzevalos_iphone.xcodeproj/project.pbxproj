@@ -34,7 +34,6 @@
 		3E9708C91FAC95F5005825C9 /* DebugSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */; };
 		3E9708CA1FAC95F5005825C9 /* PGPS2K.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F81F960B7C00D64416 /* PGPS2K.m */; };
 		3E9708CB1FAC95F5005825C9 /* PGPPacketFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8EE1F960B7C00D64416 /* PGPPacketFactory.m */; };
-		3E9708CC1FAC95F5005825C9 /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
 		3E9708CD1FAC95F5005825C9 /* SendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057F1D956851008659C1 /* SendViewController.swift */; };
 		3E9708CE1FAC95F5005825C9 /* PGPModificationDetectionCodePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8AA1F960B7C00D64416 /* PGPModificationDetectionCodePacket.m */; };
 		3E9708CF1FAC95F5005825C9 /* EphemeralMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */; };
@@ -318,7 +317,6 @@
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
-		A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17C04831DC6504E00F66EDB /* LogHandler.swift */; };
 		A18E7D751FBDE560002F7CC9 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D741FBDE560002F7CC9 /* Event.swift */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
@@ -622,7 +620,6 @@
 		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
-		A17C04831DC6504E00F66EDB /* LogHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHandler.swift; sourceTree = "<group>"; };
 		A18E7D741FBDE560002F7CC9 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingEventType.swift; sourceTree = "<group>"; };
 		A19028E31F853E700030EA98 /* ExportInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportInfoViewController.swift; sourceTree = "<group>"; };
@@ -1259,7 +1256,6 @@
 				A1EB05791D956829008659C1 /* ContactCell.swift */,
 				A1EB05851D956872008659C1 /* FrequentCell.swift */,
 				A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */,
-				A17C04831DC6504E00F66EDB /* LogHandler.swift */,
 				A1EB05891D956890008659C1 /* ContactCell.xib */,
 				A1EB058B1D9568AB008659C1 /* FrequentCell.xib */,
 			);
@@ -1854,7 +1850,6 @@
 				473AC39D20054D7D006EB8A6 /* PGPSymetricKeyEncryptedSessionKeyPacket.m in Sources */,
 				3E9708CA1FAC95F5005825C9 /* PGPS2K.m in Sources */,
 				3E9708CB1FAC95F5005825C9 /* PGPPacketFactory.m in Sources */,
-				3E9708CC1FAC95F5005825C9 /* LogHandler.swift in Sources */,
 				3E9708CD1FAC95F5005825C9 /* SendViewController.swift in Sources */,
 				3E9708CE1FAC95F5005825C9 /* PGPModificationDetectionCodePacket.m in Sources */,
 				3E9708CF1FAC95F5005825C9 /* EphemeralMail.swift in Sources */,
@@ -2004,7 +1999,6 @@
 				47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */,
 				471BC92F1F960B7C00D64416 /* PGPS2K.m in Sources */,
 				471BC92A1F960B7C00D64416 /* PGPPacketFactory.m in Sources */,
-				A17C04841DC6504E00F66EDB /* LogHandler.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
 				471BC90E1F960B7C00D64416 /* PGPModificationDetectionCodePacket.m in Sources */,
 				47691A8C1ECC3EC7004BCFC5 /* EphemeralMail.swift in Sources */,

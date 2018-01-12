@@ -37,6 +37,7 @@ class SendViewController: UIViewController {
     @IBOutlet weak var seperator3Leading: NSLayoutConstraint!
     @IBOutlet weak var textViewLeading: NSLayoutConstraint!
     @IBOutlet weak var scrollViewBottom: NSLayoutConstraint!
+    @IBOutlet var scrollviewRecognizer: UITapGestureRecognizer!
     
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
@@ -64,7 +65,6 @@ class SendViewController: UIViewController {
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
         startIconAnimation()
 
-        textView.delegate = self
         textView.font = UIFont.systemFont(ofSize: 17)
         textView.text = ""
 
@@ -93,7 +93,6 @@ class SendViewController: UIViewController {
         ccCollectionviewHeight.constant = 0
         toCollectionviewHeight.constant = 0
 
-        subjectText.delegate = self
         subjectText.setColorScheme(self.view.tintColor)
 
         //will always be thrown, when a token was editied
@@ -160,10 +159,6 @@ class SendViewController: UIViewController {
         updateNavigationBar()
 
         sendEncryptedIfPossible = currentSecurityState
-
-        //LogHandler.printLogs()
-        //LogHandler.deleteLogs()
-        //LogHandler.newLog()
     }
 
     deinit {
@@ -268,9 +263,6 @@ class SendViewController: UIViewController {
 
     func editName(_ tokenField: VENTokenField) {
         if let inText = tokenField.inputText() {
-            if LogHandler.logging {
-                LogHandler.doLog(UIViewResolver.resolve(tokenField.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: inText)
-            }
             if inText != "" {
                 searchContacts(inText)
                 if tableDataDelegate.contacts != [] {
@@ -278,11 +270,11 @@ class SendViewController: UIViewController {
                     scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
                     tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
                     tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
-                } else {
+                } else if !scrollview.isScrollEnabled {
                     scrollview.isScrollEnabled = true
                     tableviewHeight.constant = 0
                 }
-            } else {
+            } else if !scrollview.isScrollEnabled {
                 scrollview.isScrollEnabled = true
                 tableviewHeight.constant = 0
             }
@@ -333,14 +325,8 @@ class SendViewController: UIViewController {
         let address = address.lowercased()
         if toText.isFirstResponder {
             toText.delegate?.tokenField!(toText, didEnterText: name, mail: address)
-            if LogHandler.logging {
-                LogHandler.doLog(UIViewResolver.resolve(toText.tag), interaction: "insert", point: CGPoint(x: 0, y: Int((toText.dataSource?.numberOfTokens!(in: toText))!)), comment: name + " " + address)
-            }
         } else if ccText.isFirstResponder {
             ccText.delegate?.tokenField!(ccText, didEnterText: name, mail: address)
-            if LogHandler.logging {
-                LogHandler.doLog(UIViewResolver.resolve(ccText.tag), interaction: "insert", point: CGPoint(x: 0, y: Int((ccText.dataSource?.numberOfTokens!(in: ccText))!)), comment: name + " " + address)
-            }
         }
     }
 
@@ -381,8 +367,6 @@ class SendViewController: UIViewController {
     }
 
     func keyboardOpen(_ notification: Notification) {
-        LogHandler.doLog("keyboard", interaction: "open", point: CGPoint(x: 0, y: 0), comment: "")
-        
         let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
         let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
@@ -437,8 +421,6 @@ class SendViewController: UIViewController {
     }
     
     func keyboardClose(_ notification: Notification) {
-        LogHandler.doLog("keyboard", interaction: "close", point: CGPoint(x: 0, y: 0), comment: "")
-        
         let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
         let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
@@ -662,70 +644,17 @@ class SendViewController: UIViewController {
     }
 }
 
-//subject field
-extension SendViewController: VENTokenFieldDelegate {
-    func tokenField(_ tokenField: VENTokenField, didChangeText text: String?) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve(subjectText.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: subjectText.inputText()!)
-        }
-        if text == "log" {
-            /*LogHandler.stopLogging()
-            textView.text = LogHandler.getLogs()
-            LogHandler.deleteLogs()
-            LogHandler.newLog()*/
-            //Logger.sendLog()
-        }
-    }
-
-    func tokenFieldDidEndEditing(_ tokenField: VENTokenField) { }
-}
-
-//messagefield
-extension SendViewController: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve(textView.tag), interaction: "changeText", point: CGPoint(x: 0, y: 0), comment: textView.text)
-        }
-    }
-}
-
-
-//Logging
 extension SendViewController: UIGestureRecognizerDelegate {
-
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if gestureRecognizer == scrollviewRecognizer && touch.location(in: textView).y >= 0 {
+            return true
+        }
+        return false
     }
-
+    
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         if let view = sender.view, view == scrollview, sender.location(in: view).y >= textView.frame.minY {
             textView.becomeFirstResponder()
-        }
-        else if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "tap", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: self.view), /*debugDescription: sender.view.debugDescription,*/ comment: "")
-        }
-    }
-
-    @IBAction func panned(_ sender: UIPanGestureRecognizer) {
-        if LogHandler.logging {
-            if sender.state == .began {
-                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "beginPan", point: sender.location(in: sender.view), comment: String(describing: sender.translation(in: sender.view)))
-            }
-            if sender.state == .ended {
-                LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "endPan", point: sender.location(in: sender.view), comment: String(describing: sender.translation(in: sender.view)))
-            }
-        }
-    }
-
-    @IBAction func swiped(_ sender: UISwipeGestureRecognizer) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "swipe", point: sender.location(ofTouch: sender.numberOfTouches - 1, in: sender.view), comment: String(describing: sender.direction))
-        }
-    }
-
-    @IBAction func rotated(_ sender: UIRotationGestureRecognizer) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve((sender.view?.tag)!), interaction: "rotate", point: CGPoint(x: 0, y: 0), comment: String(describing: sender.rotation))
         }
     }
 }

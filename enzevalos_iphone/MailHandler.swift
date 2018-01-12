@@ -499,12 +499,12 @@ class MailHandler {
     
     func setupIMAPSession() -> MCOIMAPSession {
         let imapsession = MCOIMAPSession()
-        imapsession.hostname = UserManager.loadUserValue(Attribute.imapHostname) as! String
-        imapsession.port = UInt32(UserManager.loadUserValue(Attribute.imapPort) as! Int)
-        imapsession.username = UserManager.loadUserValue(Attribute.userAddr) as! String
-        imapsession.password = UserManager.loadUserValue(Attribute.userPW) as! String
+        imapsession.hostname = UserManager.loadUserValue(Attribute.imapHostname) as? String ?? ""
+        imapsession.port = UInt32(UserManager.loadUserValue(Attribute.imapPort) as? Int ?? 0)
+        imapsession.username = UserManager.loadUserValue(Attribute.userAddr) as? String ?? ""
+        imapsession.password = UserManager.loadUserValue(Attribute.userPW) as? String ?? ""
         imapsession.authType = UserManager.loadImapAuthType()
-        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as! Int)
+        imapsession.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.imapConnectionType) as? Int ?? 0)
         
         let y = imapsession.folderStatusOperation(INBOX)
         y?.start{(error, status) -> Void in
