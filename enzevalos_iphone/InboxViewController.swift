@@ -91,9 +91,11 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
     func getMailCompleted(_ error: Bool) {
         if let rc = self.refreshControl {
-            lastUpdate = Date()
+            if !error {
+                lastUpdate = Date()
+            }
             rc.endRefreshing()
-            lastUpdateText = "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))"
+            lastUpdateText = lastUpdate != nil ? "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))" : NSLocalizedString("NeverUpdated", comment: "No internet connection since last launch")
 
             //folder.updateRecords()
             self.tableView.reloadData()
