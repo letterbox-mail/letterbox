@@ -11,7 +11,7 @@ import KeychainAccess
 
 
 
-enum Attribute: Int{
+enum Attribute: Int {
     case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline/*used for Logging; determines the earliest next time a log is send to the researchers*/, prefSecretKeyID, subjectSalt /*used for Logging; salt for the hashfunction for mail subjects*/, loggingFolderPath
     
     var defaultValue:AnyObject? {
@@ -45,10 +45,10 @@ enum Attribute: Int{
 }
 
 
-struct UserManager{
+struct UserManager {
     
-    private static var pwKeyChain: Keychain{
-        get{
+    private static var pwKeyChain: Keychain {
+        get {
             return Keychain(service: "Enzevalos/Password")
         }
     }
@@ -148,28 +148,24 @@ struct UserManager{
         if attribute == Attribute.userPW {
             let pw = value as! String
             pwKeyChain["userPW"] = pw
-        }
-        else{
+        } else {
             UserDefaults.standard.set(value, forKey: "\(attribute.rawValue)")
-            UserDefaults.standard.synchronize()
-    
         }
     }
     
-    static func loadUserValue(_ attribute: Attribute) -> AnyObject?{
+    static func loadUserValue(_ attribute: Attribute) -> AnyObject? {
         if attribute == Attribute.userPW {
-            do{
+            do {
                 let value = try pwKeyChain.getString("userPW")
                 return value as AnyObject?
-            }catch{
+            } catch {
                 return nil
             }
         }
         let value = UserDefaults.standard.value(forKey: "\(attribute.rawValue)")
-        if((value) != nil){
+        if value != nil {
             return value as AnyObject?
-        }
-        else{
+        } else {
             _ = storeUserValue(attribute.defaultValue, attribute: attribute)
             return attribute.defaultValue
 
