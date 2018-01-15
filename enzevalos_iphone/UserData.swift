@@ -117,17 +117,31 @@ struct UserManager{
     }
     
     //Usable for paths too
-    static func convertToFrontendFolderPath(from backendFolderPath: String, with delimiter: String = ".") -> String{
-        return (AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.components(fromPath: backendFolderPath) as! [String]).joined(separator: delimiter)
+    static func convertToFrontendFolderPath(from backendFolderPath: String, with delimiter: String = ".") -> String {
+        let mcoConverted = (AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace?.components(fromPath: backendFolderPath) as? [String])?.joined(separator: delimiter)
+        if mcoConverted != nil && backendFolderPath != mcoConverted && UserDefaults.standard.string(forKey: backendFolderPath) == nil {
+            UserDefaults.standard.set(mcoConverted, forKey: backendFolderPath)
+            UserDefaults.standard.set(backendFolderPath, forKey: mcoConverted!)
+        } else if mcoConverted == nil {
+            if let cached = UserDefaults.standard.string(forKey: backendFolderPath) {
+                return cached
+            }
+        }
+        return mcoConverted ?? backendFolderPath
     }
     
     //Usable for paths too
     static func convertToBackendFolderPath(from frontendFolderPath: String) -> String {
-        let session = AppDelegate.getAppDelegate().mailHandler.IMAPSession
-        if session.defaultNamespace == nil && frontendFolderPath == frontendInboxFolderPath { //FIXME: Dirty Fix for Issue #105
-            return "INBOX"
+        let mcoConverted = AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace?.path(forComponents: [frontendFolderPath])
+        if mcoConverted != nil && frontendFolderPath != mcoConverted && UserDefaults.standard.string(forKey: frontendFolderPath) == nil {
+            UserDefaults.standard.set(mcoConverted, forKey: frontendFolderPath)
+            UserDefaults.standard.set(frontendFolderPath, forKey: mcoConverted!)
+        } else if mcoConverted == nil {
+            if let cached = UserDefaults.standard.string(forKey: frontendFolderPath) {
+                return cached
+            }
         }
-        return AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.path(forComponents: [frontendFolderPath])
+        return mcoConverted ?? frontendFolderPath
     }
     
     static func storeUserValue(_ value: AnyObject?, attribute: Attribute) {
