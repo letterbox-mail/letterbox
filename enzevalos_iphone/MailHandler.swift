@@ -206,22 +206,16 @@ class MailHandler {
 
     }
     
-    private func orderReceiver(receiver: [String]) -> [CryptoScheme: [MCOAddress]]{
+    private func orderReceiver(receiver: [String], sendEncryptedIfPossible: Bool) -> [CryptoScheme: [MCOAddress]] {
         var orderedReceiver = [CryptoScheme: [MCOAddress]]()
         orderedReceiver[CryptoScheme.PGP] = [MCOAddress]()
         orderedReceiver[CryptoScheme.UNKNOWN] = [MCOAddress]()
 
-        for r in receiver{
+        for r in receiver {
             let mco = MCOAddress(displayName: r, mailbox: r)
-            if let adr = DataHandler.handler.findMailAddress(adr: r){
-                if adr.hasKey{ //TODO: CONSIDER AUTOCRYPT!
-                    orderedReceiver[CryptoScheme.PGP]?.append(mco!)
-                }
-                else{
-                    orderedReceiver[CryptoScheme.UNKNOWN]?.append(mco!)
-                }
-            }
-            else{
+            if let adr = DataHandler.handler.findMailAddress(adr: r), adr.hasKey, sendEncryptedIfPossible { // TODO: include encryption preference of Autocrypt
+                orderedReceiver[CryptoScheme.PGP]?.append(mco!)
+            } else {
                 orderedReceiver[CryptoScheme.UNKNOWN]?.append(mco!)
             }
         }
@@ -303,7 +297,7 @@ class MailHandler {
             bccLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
         }
         
-        let ordered = orderReceiver(receiver: allRec)
+        let ordered = orderReceiver(receiver: allRec, sendEncryptedIfPossible: sendEncryptedIfPossible)
 
         let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
         let sk = DataHandler.handler.prefSecretKey()
