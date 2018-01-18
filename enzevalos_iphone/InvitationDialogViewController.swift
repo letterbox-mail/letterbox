@@ -83,6 +83,7 @@ extension InvitationDialogViewController {
 extension InvitationDialogViewController {
 
 	func showDialog(_ animated: Bool) {
+
 		let animationInterval: TimeInterval = ((animated == true) ? 0.3 : 0)
 		self.dialogView?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
 		self.dialogView?.alpha = 0
@@ -93,6 +94,18 @@ extension InvitationDialogViewController {
 			self?.dialogView?.alpha = 1
 		})
 	}
+
+	func hideDialog(_ animated: Bool, completion: (() -> Void)?) {
+
+		let animationInterval: TimeInterval = ((animated == true) ? 0.3 : 0)
+
+		UIView.animate(withDuration: animationInterval, animations: { [weak self] in
+			self?.dialogView?.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+			self?.dialogView?.alpha = 0
+		}) { (completed: Bool) in
+			completion?()
+		}
+	}
 }
 
 // MARK: - IBAction
@@ -100,10 +113,14 @@ extension InvitationDialogViewController {
 extension InvitationDialogViewController {
 
 	@IBAction private func ctaButtonTapped(sender: Any) {
-
+		self.hideDialog(true) { [weak self] in
+			self?.dismiss(animated: false, completion: nil)
+		}
 	}
 
 	@IBAction private func dismissButtonTapped(sender: Any) {
-
+		self.hideDialog(true) { [weak self] in
+			self?.dismiss(animated: false, completion: nil)
+		}
 	}
 }
