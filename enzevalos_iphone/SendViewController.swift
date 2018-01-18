@@ -166,9 +166,9 @@ class SendViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        updateNavigationBar()
+		super.viewWillAppear(animated)
 
-		InvitationDialogViewController.present(on: self, animated: true)
+        updateNavigationBar()
     }
 
     override func willMove(toParentViewController parent: UIViewController?) {
