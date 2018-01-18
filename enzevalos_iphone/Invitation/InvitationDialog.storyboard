@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H9Q-Ab-s6V">
-                                <rect key="frame" x="42" y="164.5" width="290" height="338.5"/>
+                                <rect key="frame" x="42" y="160.5" width="290" height="346.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWO-wf-Sxa">
                                         <rect key="frame" x="0.0" y="0.5" width="290" height="100"/>
@@ -67,6 +67,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="190" id="7RX-fs-c4R"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
@@ -91,7 +92,7 @@
                                     <constraint firstItem="jWO-wf-Sxa" firstAttribute="top" secondItem="H9Q-Ab-s6V" secondAttribute="top" id="D0j-Zb-S7e"/>
                                     <constraint firstItem="ypW-3y-x5z" firstAttribute="top" secondItem="jWO-wf-Sxa" secondAttribute="bottom" constant="-49" id="h1x-bA-DYF"/>
                                     <constraint firstAttribute="trailing" secondItem="jWO-wf-Sxa" secondAttribute="trailing" id="jaU-Yl-GFQ"/>
-                                    <constraint firstAttribute="bottom" secondItem="ypW-3y-x5z" secondAttribute="bottom" constant="8" id="kIW-Bk-e8F"/>
+                                    <constraint firstAttribute="bottom" secondItem="ypW-3y-x5z" secondAttribute="bottom" constant="16" id="kIW-Bk-e8F"/>
                                     <constraint firstItem="ypW-3y-x5z" firstAttribute="leading" secondItem="H9Q-Ab-s6V" secondAttribute="leading" constant="32" id="nJP-aV-EkA"/>
                                     <constraint firstAttribute="width" constant="290" id="rsG-v4-nDL"/>
                                 </constraints>

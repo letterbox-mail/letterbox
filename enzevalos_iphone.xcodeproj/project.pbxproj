@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
 		3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
+		3E6B07DB20111D3C00E49609 /* InvitationOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6B07DA20111D3C00E49609 /* InvitationOption.swift */; };
+		3E6B07DC20111D3C00E49609 /* InvitationOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6B07DA20111D3C00E49609 /* InvitationOption.swift */; };
 		3E9708B31FAC95F5005825C9 /* PGPPartialKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F01F960B7C00D64416 /* PGPPartialKey.m */; };
 		3E9708B41FAC95F5005825C9 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		3E9708B51FAC95F5005825C9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39891E251787009260FB /* Contact.swift */; };
@@ -403,6 +405,7 @@
 /* Begin PBXFileReference section */
 		1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.release.xcconfig"; sourceTree = "<group>"; };
 		3E048C041FAC9ABD00948524 /* HockeySDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HockeySDK.swift; sourceTree = "<group>"; };
+		3E6B07DA20111D3C00E49609 /* InvitationOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InvitationOption.swift; path = Invitation/InvitationOption.swift; sourceTree = "<group>"; };
 		3E9708AD1FAC925D005825C9 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
 		3E9708AE1FAC925D005825C9 /* enzevalos-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "enzevalos-Info.plist"; sourceTree = "<group>"; };
 		3E9709621FAC95F5005825C9 /* enzevalos_iphone-AdHoc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "enzevalos_iphone-AdHoc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -780,6 +783,7 @@
 				3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */,
 				3EC35F2320037651008BDF95 /* InvitationHelper.swift */,
 				3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */,
+				3E6B07DA20111D3C00E49609 /* InvitationOption.swift */,
 			);
 			name = Invitation;
 			sourceTree = "<group>";
@@ -1852,6 +1856,7 @@
 				3E9708D01FAC95F5005825C9 /* PGPPKCSEme.m in Sources */,
 				3E9708D11FAC95F5005825C9 /* SubBadgeHeaderTableViewCell.swift in Sources */,
 				3E9708D21FAC95F5005825C9 /* InboxViewController.swift in Sources */,
+				3E6B07DC20111D3C00E49609 /* InvitationOption.swift in Sources */,
 				3E9708D31FAC95F5005825C9 /* PGPPublicSubKeyPacket.m in Sources */,
 				3E9708D41FAC95F5005825C9 /* IconsStyleKit.swift in Sources */,
 				3E9708D51FAC95F5005825C9 /* PGPKey.m in Sources */,
@@ -2013,6 +2018,7 @@
 				473AC39320054D07006EB8A6 /* PGPUserAttributeImageSubpacket.m in Sources */,
 				F18B44601E704C550080C041 /* ReplaceSegue.swift in Sources */,
 				472F39881E1FA377009260FB /* KeyRecord.swift in Sources */,
+				3E6B07DB20111D3C00E49609 /* InvitationOption.swift in Sources */,
 				8428A8661F436A11007649A5 /* ArrowTableViewCell.swift in Sources */,
 				F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */,
 				475B00351F7B9565006CDD41 /* CryptoObject.swift in Sources */,

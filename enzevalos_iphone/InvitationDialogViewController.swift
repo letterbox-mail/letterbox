@@ -59,6 +59,17 @@ extension InvitationDialogViewController {
 		self.titleLabel?.textColor = UIColor.Invitation.gray
 		self.messageLabel?.textColor = UIColor.Invitation.gray
 	}
+
+	func layout(for option: InvitationOption) {
+		self.titleLabel?.isHidden = (option.title == nil)
+		self.titleLabel?.text = option.title
+		self.messageLabel?.isHidden = (option.message == nil)
+		self.messageLabel?.text = option.message
+		self.ctaButton?.isHidden = (option.ctaButtonTitle == nil)
+		self.ctaButton?.setTitle(option.ctaButtonTitle, for: .normal)
+		self.dismissButton?.isHidden = (option.dismissButtonTitle == nil)
+		self.dismissButton?.setTitle(option.dismissButtonTitle, for: .normal)
+	}
 }
 
 // MARK: - Presentation
@@ -67,12 +78,13 @@ extension InvitationDialogViewController {
 
 	static func present(on viewController: UIViewController, animated: Bool) {
 
-		guard let invitationViewController = UIStoryboard(name: "InvitationDialog", bundle: nil).instantiateInitialViewController() else {
+		guard let invitationViewController = UIStoryboard(name: "InvitationDialog", bundle: nil).instantiateInitialViewController() as? InvitationDialogViewController else {
 			return
 		}
 
 		invitationViewController.view.isOpaque = false
 		invitationViewController.modalPresentationStyle = .overCurrentContext
+		invitationViewController.layout(for: .welcome)
 
 		viewController.present(invitationViewController, animated: false, completion: nil)
 	}
