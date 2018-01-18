@@ -175,8 +175,6 @@
 		3EC35F2220037628008BDF95 /* InvitationDialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EC35F2020037628008BDF95 /* InvitationDialog.storyboard */; };
 		3EC35F2420037651008BDF95 /* InvitationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2320037651008BDF95 /* InvitationHelper.swift */; };
 		3EC35F2520037651008BDF95 /* InvitationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2320037651008BDF95 /* InvitationHelper.swift */; };
-		3EC35F2720037664008BDF95 /* InvitationApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2620037664008BDF95 /* InvitationApi.swift */; };
-		3EC35F2820037664008BDF95 /* InvitationApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2620037664008BDF95 /* InvitationApi.swift */; };
 		3EC35F2A2003766F008BDF95 /* InvitationDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */; };
 		3EC35F2B2003766F008BDF95 /* InvitationDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */; };
 		3EC35F2D200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */; };
@@ -412,7 +410,6 @@
 		3E9709661FAC9694005825C9 /* enzevalos-AdHoc-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "enzevalos-AdHoc-Info.plist"; sourceTree = "<group>"; };
 		3EC35F2020037628008BDF95 /* InvitationDialog.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = InvitationDialog.storyboard; path = Invitation/InvitationDialog.storyboard; sourceTree = "<group>"; };
 		3EC35F2320037651008BDF95 /* InvitationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InvitationHelper.swift; path = Invitation/InvitationHelper.swift; sourceTree = "<group>"; };
-		3EC35F2620037664008BDF95 /* InvitationApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationApi.swift; sourceTree = "<group>"; };
 		3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationDialogViewController.swift; sourceTree = "<group>"; };
 		3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendViewController+Invitation.swift"; sourceTree = "<group>"; };
 		3EC35F2F2003838E008BDF95 /* InvitationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationTests.swift; sourceTree = "<group>"; };
@@ -780,9 +777,8 @@
 			isa = PBXGroup;
 			children = (
 				3EC35F2020037628008BDF95 /* InvitationDialog.storyboard */,
-				3EC35F2320037651008BDF95 /* InvitationHelper.swift */,
-				3EC35F2620037664008BDF95 /* InvitationApi.swift */,
 				3EC35F292003766F008BDF95 /* InvitationDialogViewController.swift */,
+				3EC35F2320037651008BDF95 /* InvitationHelper.swift */,
 				3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */,
 			);
 			name = Invitation;
@@ -1868,7 +1864,6 @@
 				3E9708DB1FAC95F5005825C9 /* ReplaceSegue.swift in Sources */,
 				3E9708DC1FAC95F5005825C9 /* KeyRecord.swift in Sources */,
 				3E9708DD1FAC95F5005825C9 /* ArrowTableViewCell.swift in Sources */,
-				3EC35F2820037664008BDF95 /* InvitationApi.swift in Sources */,
 				3E9708DE1FAC95F5005825C9 /* ContactViewController.swift in Sources */,
 				472276BF1FCD48B600ADA507 /* Event.swift in Sources */,
 				3E9708DF1FAC95F5005825C9 /* CryptoObject.swift in Sources */,
@@ -2040,7 +2035,6 @@
 				A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */,
 				473AC39720054D29006EB8A6 /* NSArray+PGPUtils.m in Sources */,
 				476142081E07E52B00FD5E4F /* Theme.swift in Sources */,
-				3EC35F2720037664008BDF95 /* InvitationApi.swift in Sources */,
 				8428A8701F436A1E007649A5 /* LinearBadgeViewController.swift in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
 				471BC9151F960B7C00D64416 /* PGPSecretSubKeyPacket.m in Sources */,
