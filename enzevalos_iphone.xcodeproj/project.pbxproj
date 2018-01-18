@@ -11,6 +11,8 @@
 		3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
 		3E6B07DB20111D3C00E49609 /* InvitationOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6B07DA20111D3C00E49609 /* InvitationOption.swift */; };
 		3E6B07DC20111D3C00E49609 /* InvitationOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6B07DA20111D3C00E49609 /* InvitationOption.swift */; };
+		3E6B07DE2011246500E49609 /* invitationText.html in Resources */ = {isa = PBXBuildFile; fileRef = 3E6B07DD2011246500E49609 /* invitationText.html */; };
+		3E6B07DF2011246500E49609 /* invitationText.html in Resources */ = {isa = PBXBuildFile; fileRef = 3E6B07DD2011246500E49609 /* invitationText.html */; };
 		3E9708B31FAC95F5005825C9 /* PGPPartialKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8F01F960B7C00D64416 /* PGPPartialKey.m */; };
 		3E9708B41FAC95F5005825C9 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		3E9708B51FAC95F5005825C9 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39891E251787009260FB /* Contact.swift */; };
@@ -406,6 +408,7 @@
 		1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.release.xcconfig"; sourceTree = "<group>"; };
 		3E048C041FAC9ABD00948524 /* HockeySDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HockeySDK.swift; sourceTree = "<group>"; };
 		3E6B07DA20111D3C00E49609 /* InvitationOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InvitationOption.swift; path = Invitation/InvitationOption.swift; sourceTree = "<group>"; };
+		3E6B07DD2011246500E49609 /* invitationText.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = invitationText.html; path = Invitation/invitationText.html; sourceTree = "<group>"; };
 		3E9708AD1FAC925D005825C9 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
 		3E9708AE1FAC925D005825C9 /* enzevalos-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "enzevalos-Info.plist"; sourceTree = "<group>"; };
 		3E9709621FAC95F5005825C9 /* enzevalos_iphone-AdHoc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "enzevalos_iphone-AdHoc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -784,6 +787,7 @@
 				3EC35F2320037651008BDF95 /* InvitationHelper.swift */,
 				3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */,
 				3E6B07DA20111D3C00E49609 /* InvitationOption.swift */,
+				3E6B07DD2011246500E49609 /* invitationText.html */,
 			);
 			name = Invitation;
 			sourceTree = "<group>";
@@ -1501,6 +1505,7 @@
 				3E97094F1FAC95F5005825C9 /* ullimuelle-public.gpg in Resources */,
 				3E9709501FAC95F5005825C9 /* InfoPlist.strings in Resources */,
 				3E9709511FAC95F5005825C9 /* Gamification.storyboard in Resources */,
+				3E6B07DF2011246500E49609 /* invitationText.html in Resources */,
 				3E9709521FAC95F5005825C9 /* JakobBode.asc in Resources */,
 				3E9709531FAC95F5005825C9 /* GamificationElements.xcassets in Resources */,
 				3E9709541FAC95F5005825C9 /* ncpayroll-public.gpg in Resources */,
@@ -1547,6 +1552,7 @@
 				F14D18A21ED8811F0080515D /* ullimuelle-private.gpg in Resources */,
 				F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */,
 				A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */,
+				3E6B07DE2011246500E49609 /* invitationText.html in Resources */,
 				8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */,
 				A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */,
 				8428A8551F4369CF007649A5 /* GamificationElements.xcassets in Resources */,
