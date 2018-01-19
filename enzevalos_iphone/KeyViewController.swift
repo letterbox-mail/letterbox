@@ -20,6 +20,8 @@ class KeyViewController: UIViewController {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 100
         openDate = Date()
         Logger.queue.async(flags: .barrier) {
             if let record = self.record, let keyID = record.keyID {
@@ -83,9 +85,23 @@ extension KeyViewController: UITableViewDataSource {
             else if toRowType(indexPath) == .fingerprint {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "FingerprintCell")!
                 cell.detailTextLabel?.numberOfLines = 0
-                cell.detailTextLabel?.text = record?.fingerprint
+                var result: String = ""
+                let characters = Array((record?.fingerprint ?? "").characters)
+                var i = 0
+                stride(from: 0, to: characters.count, by: 4).forEach {
+                    result += String(characters[$0..<min($0+4, characters.count)])
+                    if $0+4 < characters.count {
+                        i = (i+1) % 3
+                        if i == 0 {
+                            result += "\n"
+                        }
+                        else {
+                            result += " "
+                        }
+                    }
+                }
+                cell.detailTextLabel?.text = result
                 cell.textLabel?.text = NSLocalizedString("Fingerprint", comment: "Fingerprint of key")
-                cell.frame = CGRect(x: cell.frame.minX, y: cell.frame.minY, width: cell.frame.width, height: cell.frame.height+20.5)
                 return cell
             }
             else if toRowType(indexPath) == .encryptionType {
@@ -169,6 +185,19 @@ extension KeyViewController: UITableViewDataSource {
             return NSLocalizedString("KeyAddresses", comment: "Mailaddresses Connected to the key")
         }
         return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if toSectionType(indexPath.section) == .keyDetails {
+            if toRowType(indexPath) == .fingerprint {
+                return 100
+            }
+        }
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
     }
 
     func toSectionType(_ sectionNumber: Int) -> KeyViewSectionType {

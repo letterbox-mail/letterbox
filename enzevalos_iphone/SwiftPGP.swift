@@ -433,16 +433,14 @@ class SwiftPGP: Encryption{
     /*
          encrypt a array of strings with one password. Returns encrypted strings and the password for decryption
      */
-    func symmetricEncrypt(textToEncrypt: [String]) -> ([String], String){
-        let password = generatePW(size: 8, splitInBlocks: true)
+	func symmetricEncrypt(textToEncrypt: [String]) -> (chiphers: [String], password: String){
+        let password = generatePW(arc4: 8)
         var chiphers = [String]()
         
         for text in textToEncrypt{
             if let data = text.data(using: .utf8){
-                if let chipher = try? ObjectivePGP.symmetricEncrypt(data, signWith: nil, encryptionKey: nil, passphrase: password, armored: false){
-                    if let chipherString = String(data: chipher, encoding: .utf8){
-                        chiphers.append(chipherString)
-                    }
+                if let chipher = try? ObjectivePGP.symmetricEncrypt(data, signWith: nil, encryptionKey: password, passphrase: password, armored: false){
+					chiphers.append(chipher.base64EncodedString())
                 }
             }
         }

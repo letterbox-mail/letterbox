@@ -22,10 +22,6 @@ func setupStudyPublicKeys(studyMode: Bool){
         importPublicKeyDic(keys: keys, type: "asc")
         let l = datahandler.getContact(name: "Letterbox", address: SUPPORT_MAIL_ADR, key: "F3ADDC8B81F82CCEB534CFC766BA7478AD254666", prefer_enc: true)
         datahandler.save(during: "init study keys")
-        print(l.hasKey)
-        print(l.getMailAddresses().first?.Key?.keyID)
-        print(datahandler.findKey(keyID: "F3ADDC8B81F82CCEB534CFC766BA7478AD254666") != nil)
-        print(datahandler.hasKey(adr: SUPPORT_MAIL_ADR))
     }
 }
 
