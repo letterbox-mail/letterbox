@@ -31,10 +31,11 @@ func setupStudyPublicKeys(studyMode: Bool){
 
 
 func loadTestAcc(){
-    loadBobEnzevalos()
+   //loadBobEnzevalos()
     //loadAlice2005()
     //loadCharlieEnzevalos()
     //importPublicKeys()
+    //loadBob2005()
 
     
 }
@@ -47,8 +48,9 @@ func loadUlli(){
 }
 
 func loadBob2005(){
+    let user = web(name: "bob2005", pw: "WJ$CE:EtUo3E$")
+    userdefaults(defaults: user)
     importSecretKey(file: "bob2005-private", type: "gpg")
-
 }
 
 func loadAlice2005(){
