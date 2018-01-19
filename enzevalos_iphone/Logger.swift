@@ -17,7 +17,6 @@ class Logger {
     static let defaultFileName = "log.json"
     static let loggingInterval = 86400 //60*60*24 seconds
     static let logReceiver = LOGGING_MAIL_ADR
-    static let subjectSalt = UserManager.loadUserValue(.subjectSalt) as! String
     
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
     
@@ -82,6 +81,60 @@ class Logger {
         sendCheck()
     }
     
+    static func log(contactViewOpen keyRecord: KeyRecord?, otherRecords: [KeyRecord]?, isUser: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.contactViewOpen.rawValue
+        
+        if let keyRecord = keyRecord {
+            if let keyID = keyRecord.keyID {
+                event["keyID"] = resolve(keyID: keyID)
+            } else {
+                event["keyID"] = "nil"
+            }
+            event["mailaddresses"] = resolve(mailAddresses: keyRecord.addresses)
+        }
+        event["isUser"] = isUser
+        if isUser {
+            let (contact, mail) = GamificationData.sharedInstance.getSecureProgress()
+            event["gamificationContact"] = contact
+            event["gamificationMail"] = mail
+        }
+        event["numberOfOtherRecords"] = (otherRecords ?? []).count
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(contactViewClose keyRecord: KeyRecord?, otherRecords: [KeyRecord]?, isUser: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.contactViewClose.rawValue
+        
+        if let keyRecord = keyRecord {
+            if let keyID = keyRecord.keyID {
+                event["keyID"] = resolve(keyID: keyID)
+            } else {
+                event["keyID"] = "nil"
+            }
+            event["mailaddresses"] = resolve(mailAddresses: keyRecord.addresses)
+        }
+        event["isUser"] = isUser
+        if isUser {
+            let (contact, mail) = GamificationData.sharedInstance.getSecureProgress()
+            event["gamificationContact"] = contact
+            event["gamificationMail"] = mail
+        }
+        event["numberOfOtherRecords"] = (otherRecords ?? []).count
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(keyViewOpen keyID: String) {
         if !logging {
             return
@@ -122,7 +175,7 @@ class Logger {
         event["to"] = Logger.resolve(mailAddresses: to)
         event["cc"] = Logger.resolve(mailAddresses: cc)
         event["bcc"] = Logger.resolve(mailAddresses: bcc)
-        event["subject"] = Logger.resolve(subject: subject)
+        event["communicationState"] = Logger.communicationState(subject: subject)
         event["bodyLength"] = bodyLength
         event["isEncrypted"] = isEncrypted
         event["decryptedBodyLength"] = decryptedBodyLength
@@ -265,6 +318,22 @@ class Logger {
         sendCheck()
     }
     
+    static func log(showBroken mail: PersistentMail?) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.showBrokenMail.rawValue
+        event["view"] = "readView"
+        if let mail = mail {
+            event = extract(from: mail, event: event)
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(discover publicKeyID: String, mailAddress: Mail_Address, importChannel: String, knownPrivateKey: Bool, knownBefore: Bool) { //add reference to mail here?
         if !logging {
             return
@@ -312,7 +381,7 @@ class Logger {
         event["to"] = Logger.resolve(mailAddresses: mail.to)
         event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
         event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
-        event["subject"] = Logger.resolve(subject: mail.subject ?? "")
+        event["communicationState"] = Logger.communicationState(subject: mail.subject ?? "")
         event["timeInHeader"] = mail.timeString
         event["bodyLength"] = (mail.body ?? "").count
         event["isEncrypted"] = mail.isEncrypted
@@ -335,7 +404,7 @@ class Logger {
         return event
     }
 
-    static func resolve(subject: String) -> String {
+    static func communicationState(subject: String) -> String {
         if subject == "" {
             return ""
         }
@@ -358,9 +427,7 @@ class Logger {
             }
         }
         
-        newSubject += sha256(oldSubject+subjectSalt) ?? "ErrorInHashGeneration" //DataHandler().getPseudonymSubject(subject: oldSubject).pseudonym//DataHandler.handler.getPseudonymSubject(subject: oldSubject).pseudonym
-        return ""
-        //return newSubject
+        return newSubject
     }
     
     //takes backendFolderPath
@@ -388,13 +455,15 @@ class Logger {
     static func resolve(mailAddress: MailAddress) -> String {
         if let addr = mailAddress as? Mail_Address {
             return resolve(mail_address: addr)
+        } else if mailAddress is CNMailAddressExtension {
+            return "CNMailAddress"
         }
-        return "notMail_Address"
+        return "unknownMailAddressType"
     }
     
     static func resolve(mail_address: Mail_Address) -> String {
         if mail_address.mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
-            return mail_address.mailAddress
+            return "self"//mail_address.mailAddress
         }
         return mail_address.pseudonym
     }
@@ -404,8 +473,10 @@ class Logger {
         for addr in mailAddresses {
             if let addr = addr as? Mail_Address {
                 result.append(resolve(mail_address: addr))
+            } else if addr is CNMailAddressExtension {
+                result.append("CNMailAddress")
             } else {
-                result.append("notMail_Address")
+                result.append("unknownMailAddressType")
             }
         }
         return result
@@ -415,6 +486,20 @@ class Logger {
         var result: [String] = []
         for addr in mailAddresses {
             result.append(resolve(mail_address: addr))
+        }
+        return result
+    }
+    
+    static func resolve(mailAddresses: [MailAddress]) -> [String] {
+        var result: [String] = []
+        for addr in mailAddresses {
+            if let addr = addr as? Mail_Address {
+                result.append(resolve(mail_address: addr))
+            } else if addr is CNMailAddressExtension {
+                result.append("CNMailAddress")
+            } else {
+                result.append("unknownMailAddressType")
+            }
         }
         return result
     }
@@ -517,22 +602,5 @@ class Logger {
                 print("Error while clearing logfile: \(error.localizedDescription)")
             }
         }
-    }
-    
-    //In reference to https://stackoverflow.com/questions/25388747/sha256-in-swift
-    static func sha256(_ data: Data) -> Data? {
-        guard let res = NSMutableData(length: Int(CC_SHA256_DIGEST_LENGTH)) else { return nil }
-        CC_SHA256((data as NSData).bytes, CC_LONG(data.count), res.mutableBytes.assumingMemoryBound(to: UInt8.self))
-        return res as Data
-    }
-    
-    //In reference to https://stackoverflow.com/questions/25388747/sha256-in-swift
-    static func sha256(_ str: String) -> String? {
-        guard
-            let data = str.data(using: String.Encoding.utf8),
-            let shaData = sha256(data)
-            else { return nil }
-        let rc = shaData.base64EncodedString(options: [])
-        return rc
     }
 }

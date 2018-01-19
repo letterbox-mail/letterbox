@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
 
         resetApp()
-		HockeySDK.setup()
+        HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             Logger.queue.async(flags: .barrier) {
                 Logger.log(startApp: true)
@@ -128,7 +128,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let handler = DataHandler.init()
         _ = handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
         setupStudyPublicKeys(studyMode: STUDYMODE)
-        
     }
 
     func onboardingDone() {

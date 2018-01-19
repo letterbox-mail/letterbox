@@ -57,6 +57,9 @@ class ContactViewController: UIViewController {
             prepareContactSheet()
 
             otherRecords = con.ezContact.records.filter({ $0 != keyRecord })
+            Logger.queue.async(flags: .barrier) {
+                Logger.log(contactViewOpen: self.keyRecord, otherRecords: self.otherRecords, isUser: self.isUser)
+            }
         }
     }
 
@@ -69,6 +72,9 @@ class ContactViewController: UIViewController {
 
     func dismissView() {
         self.dismiss(animated: true, completion: nil)
+        Logger.queue.async(flags: .barrier) {
+            Logger.log(contactViewClose: self.keyRecord, otherRecords: self.otherRecords, isUser: self.isUser)
+        }
     }
 
     func prepareContactSheet() {
