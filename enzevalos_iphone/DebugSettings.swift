@@ -28,6 +28,8 @@ func loadUlli(){
 }
 
 func loadBob2005(){
+    let user =  web(name: "bob2005", pw: "WJ$CE:EtUo3E$")
+    userdefaults(defaults: user)
     importSecretKey(file: "bob2005-private", type: "gpg")
 
 }
