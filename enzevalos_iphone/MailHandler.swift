@@ -160,6 +160,7 @@ class MailHandler {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
         let skID = DataHandler.handler.prefSecretKey().keyID
 
+        let pgp = SwiftPGP()
         if let id = skID{
             let enc = "yes"
             if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true){
@@ -308,7 +309,7 @@ class MailHandler {
              */
             var missingOwnPublic = false
             for id in keyIDs{
-                if let key = datahandler.findKey(keyID: id){
+                if let key = DataHandler.handler.findKey(keyID: id){
                     if !key.sentOwnPublicKey{
                         missingOwnPublic = true
                         key.sentOwnPublicKey = true
@@ -620,7 +621,7 @@ class MailHandler {
     }
     
     func loadMailsForInbox(newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        let folder = datahandler.findFolder(with: INBOX)
+        let folder = DataHandler.handler.findFolder(with: INBOX)
         olderMails(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
 
@@ -864,9 +865,12 @@ class MailHandler {
             let pgp = SwiftPGP()
             var keyIds = [String]()
             if sender != nil, let adr = DataHandler.handler.findMailAddress(adr: sender!){
+                print(adr.address)
+                print(adr.key?.count)
                 if let keys = adr.key{
                     for k in keys{
                         let key = k as! PersistentKey
+                        print(key.keyID)
                         keyIds.append(key.keyID)
                     }
                 }

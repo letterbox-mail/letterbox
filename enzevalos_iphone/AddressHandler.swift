@@ -257,7 +257,7 @@ class AddressHandler {
     
     
     static func updateCNContacts(){
-        let enzContacts = datahandler.getContacts()
+        let enzContacts = DataHandler.handler.getContacts()
         
         for contact in enzContacts{
             if contact.cnContact == nil{
@@ -267,6 +267,6 @@ class AddressHandler {
                 }
             }
         }
-        datahandler.save(during: "updateCNContacts")
+        DataHandler.handler.save(during: "updateCNContacts")
     }
 }

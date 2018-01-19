@@ -283,6 +283,9 @@
 		479BBDE01EFEA4D800A2107C /* bob_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */; };
 		479BBDE11EFEA4D800A2107C /* alice_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */; };
 		47A7975B1FCD56B7006B3BC4 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
+		47CD5AAA2012368D00E771A1 /* logging_pk.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AA82012368D00E771A1 /* logging_pk.asc */; };
+		47CD5AAB2012368D00E771A1 /* bitcoinde.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AA92012368D00E771A1 /* bitcoinde.asc */; };
+		47CD5AAD2012369400E771A1 /* support_pk.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AAC2012369300E771A1 /* support_pk.asc */; };
 		47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */; };
 		5DC190F2042BE7D956F796BE /* Pods_enzevalos_iphone_AdHoc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F4458FC892EBE555836F55 /* Pods_enzevalos_iphone_AdHoc.framework */; };
 		8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
@@ -575,6 +578,9 @@
 		479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bob_enzvalos_private.asc; path = keys/bob_enzvalos_private.asc; sourceTree = "<group>"; };
 		479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = alice_enzvalos_private.asc; path = keys/alice_enzvalos_private.asc; sourceTree = "<group>"; };
 		47B2318A1F0D458100961B28 /* enzevalos_iphone 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "enzevalos_iphone 2.xcdatamodel"; sourceTree = "<group>"; };
+		47CD5AA82012368D00E771A1 /* logging_pk.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = logging_pk.asc; path = keys/logging_pk.asc; sourceTree = "<group>"; };
+		47CD5AA92012368D00E771A1 /* bitcoinde.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bitcoinde.asc; path = keys/bitcoinde.asc; sourceTree = "<group>"; };
+		47CD5AAC2012369300E771A1 /* support_pk.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = support_pk.asc; path = keys/support_pk.asc; sourceTree = "<group>"; };
 		47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugSettings.swift; sourceTree = "<group>"; };
 		48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1223,6 +1229,9 @@
 				479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */,
 				F14D189A1ED880680080515D /* ncpayroll-private.gpg */,
 				F14D189B1ED880680080515D /* ncpayroll-public.gpg */,
+				47CD5AA92012368D00E771A1 /* bitcoinde.asc */,
+				47CD5AAC2012369300E771A1 /* support_pk.asc */,
+				47CD5AA82012368D00E771A1 /* logging_pk.asc */,
 				F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */,
 				F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */,
 				F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */,
@@ -1521,6 +1530,7 @@
 			files = (
 				A102AA8A1EDDB4F40024B457 /* videoOnboarding2.m4v in Resources */,
 				A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */,
+				47CD5AAD2012369400E771A1 /* support_pk.asc in Resources */,
 				479BBDE11EFEA4D800A2107C /* alice_enzvalos_private.asc in Resources */,
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
 				F1F070281FA0DF3F004A860A /* Inbox.storyboard in Resources */,
@@ -1532,6 +1542,7 @@
 				F189C17F1ED59FEF00BAE9B3 /* idsolutions-private.gpg in Resources */,
 				471BC90A1F960B7C00D64416 /* Info.plist in Resources */,
 				47953AA91FD7000200D4631A /* bitcoinde.asc in Resources */,
+				47CD5AAB2012368D00E771A1 /* bitcoinde.asc in Resources */,
 				F14D189D1ED880680080515D /* nchr-public.gpg in Resources */,
 				F14D189C1ED880680080515D /* nchr-private.gpg in Resources */,
 				F1C733351FEC1CE2005A497E /* About.storyboard in Resources */,
@@ -1554,6 +1565,7 @@
 				A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */,
 				479BBDE01EFEA4D800A2107C /* bob_enzvalos_private.asc in Resources */,
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
+				47CD5AAA2012368D00E771A1 /* logging_pk.asc in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
 				A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,

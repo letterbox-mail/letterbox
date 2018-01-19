@@ -16,7 +16,7 @@ class Logger {
     
     static let defaultFileName = "log.json"
     static let loggingInterval = 86400 //60*60*24 seconds
-    static let logReceiver = "letterbox@zedat.fu-berlin.de"
+    static let logReceiver = LOGGING_MAIL_ADR
     static let subjectSalt = UserManager.loadUserValue(.subjectSalt) as! String
     
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()

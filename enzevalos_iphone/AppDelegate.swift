@@ -16,6 +16,8 @@ import SystemConfiguration
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    let STUDYMODE = true
+    
     var window: UIWindow?
     var contactStore = CNContactStore()
     var mailHandler = MailHandler()
@@ -90,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func contactCheck(_ accessGranted: Bool) {
         if accessGranted {
-            self.setupKeys()
+            setupKeys()
         } else {
             //self.onboardingDone()
             DispatchQueue.main.async(execute: {
@@ -125,14 +127,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         });
         let handler = DataHandler.init()
         _ = handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
+        setupStudyPublicKeys(studyMode: STUDYMODE)
         
-        if let path = Bundle.main.path(forResource: "researchteam", ofType: "asc") {
-            let pgp = SwiftPGP()
-            let keyIds = try! pgp.importKeysFromFile(file: path, pw: nil)
-            for keyId in keyIds {
-                _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: "letterbox@zedat.fu-berlin.de", autocrypt: true, firstMail: nil)
-            }
-        }
     }
 
     func onboardingDone() {
