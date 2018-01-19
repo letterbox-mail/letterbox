@@ -239,7 +239,7 @@ class MailHandler {
         return ids
     }
     
-    func sendSecretKey(keyData: Data, passcode: String, callback: @escaping (Error?) -> Void){
+    func sendSecretKey(key: String, passcode: String, callback: @escaping (Error?) -> Void){
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let session = createSMTPSession()
         let builder = MCOMessageBuilder()
@@ -249,29 +249,15 @@ class MailHandler {
         builder.header.setExtraHeaderValue("v0", forName: SETUPMESSAGE)
         
         
-        /*
-        if let key = MCOAttachment.init(rfc822Message: keyData){
-            print("ID: \(key.contentID)")
-            print("Type: \(key.mimeType)")
-            // Use and test later:
-            // see https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
-            // key.mimeType = "application/autocrypt-key-backup"
-            key.mimeType = "application/pgp-encrypted"
-            builder.addAttachment(key)
-        }
-        let plain = MCOAttachment.init(text: "Klartext!")
-        builder.addAttachment(plain)
+        builder.addAttachment(MCOAttachment.init(text: NSLocalizedString("This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit: www.enzevalos.de/other \n\n", comment: "Message when sending the secret key")))
         
- */
-        builder.addAttachment(MCOAttachment.init(text: NSLocalizedString("This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret into your pgp program on the device.  \n\n For more information visit: www.enzevalos.de/other", comment: "Message when sending the secret key")))
-
-        let key = MCOAttachment.init(rfc822Message: keyData)
-        builder.addAttachment(key)
-        
-     
+        // See: https://autocrypt.org/level1.html#autocrypt-setup-message
+        let keyAttachment = MCOAttachment.init(text: key)
+        builder.addAttachment(keyAttachment)
+      
         let sendOperation = session.sendOperation(with: builder.data() , from: userID, recipients: [userID])
         sendOperation?.start(callback)
-        createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
+        //createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
     }
     
     //logMail should be false, if called from Logger, otherwise 

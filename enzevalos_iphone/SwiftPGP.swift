@@ -205,60 +205,55 @@ class SwiftPGP: Encryption{
     }
     
     func exportKey(id: String, isSecretkey isSecretKey: Bool, autocrypt: Bool) -> String?{
-        if let key = exportKeyData(id: id, isSecretkey: isSecretKey, autocrypt: autocrypt){
+        if let key = exportKeyData(id: id, isSecretkey: isSecretKey){
             if !isSecretKey && autocrypt{
                 return key.base64EncodedString()
             }
             else{
-                return String.init(data: key, encoding: .utf8)
-            }
-        }
-        return nil
-    }
-    
-    func exportKeyData(id: String, isSecretkey: Bool, autocrypt: Bool) -> Data?{
-        let keyring = Keyring()
-        if var key = loadKey(id: id){
-            if isSecretkey && key.isSecret{
-                keyring.import(keys: [key])
-                if let keyData =  keyring.export(key: key, armored: true){
-                    if autocrypt{
-                        // Create Autocrypt Setup-message
-                        // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
-                        var passcode = loadPassword(id: id)
-                        if passcode == nil{
-                            passcode = generatePW(size: PasscodeSize, splitInBlocks: true)
-                        }
-                        exportPwKeyChain[key.keyID.longIdentifier] = passcode
-                        let cipher = try! ObjectivePGP.symmetricEncrypt(keyData, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: true)
-                        
-                        return cipher
-                    }
-                    return keyData
+                var armoredKey : String
+                if isSecretKey{
+                    armoredKey = Armor.armored(key, as: PGPArmorType.secretKey)
                 }
-            }            
-            if key.isSecret && !isSecretkey{
-                var pk: Data
-                do{
-                    pk = try key.export(keyType: PGPKeyType.public)
-                    if let keys = try? ObjectivePGP.readKeys(from: pk), keys.count > 0{
-                        key = keys.first!
-                        keyring.import(keys: [key])
+                else{
+                     armoredKey = Armor.armored(key, as: PGPArmorType.publicKey)
+                }
+                print(armoredKey)
+                if isSecretKey && autocrypt{
+                    // Create Autocrypt Setup-message
+                    // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
+                    var passcode = loadPassword(id: id)
+                    if passcode == nil{
+                        passcode = generatePW(size: PasscodeSize, splitInBlocks: true)
                     }
-                } catch {
+                    exportPwKeyChain[id] = passcode
+                    if let message = armoredKey.data(using: .utf8){
+                        if let cipher = try? ObjectivePGP.symmetricEncrypt(message, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: false){
+                            let armorMessage =  Armor.armored(cipher, as: PGPArmorType.message)
+                            return armorMessage
+                        }
+                    }
                     return nil
                 }
-            }
-            if autocrypt{
-                return keyring.export(key: key, armored: false)
-            }
-            else{
-               return keyring.export(key: key, armored: true)
+                return armoredKey
             }
         }
         return nil
     }
-
+    private func exportKeyData(id: String, isSecretkey: Bool) -> Data?{
+        if var key = loadKey(id: id){
+            if key.isSecret && isSecretkey{
+                if let keyData = try? key.export(keyType: PGPKeyType.secret){
+                    return keyData
+                }
+            }
+            if key.isPublic && !isSecretkey{
+                if let keyData = try? key.export(keyType: PGPKeyType.public){
+                    return keyData
+                }
+            }
+        }
+        return nil
+    }
     
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject{
         let keyring = Keyring()

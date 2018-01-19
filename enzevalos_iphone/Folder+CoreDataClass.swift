@@ -126,7 +126,7 @@ public class Folder: NSManagedObject {
                 }
             }
             if !founded && mail.folder == self{
-                if mail.isSecure{
+                if mail.isSecure && mail.keyID != nil{
                     let record = KeyRecord(keyID: mail.keyID!, folder: self)
                     if !(storedRecords?.contains(record))!{
                         if record.mails.count > 0{
