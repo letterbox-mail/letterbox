@@ -81,6 +81,60 @@ class Logger {
         sendCheck()
     }
     
+    static func log(contactViewOpen keyRecord: KeyRecord?, otherRecords: [KeyRecord]?, isUser: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.contactViewOpen.rawValue
+        
+        if let keyRecord = keyRecord {
+            if let keyID = keyRecord.keyID {
+                event["keyID"] = resolve(keyID: keyID)
+            } else {
+                event["keyID"] = "nil"
+            }
+            event["mailaddresses"] = resolve(mailAddresses: keyRecord.addresses)
+        }
+        event["isUser"] = isUser
+        if isUser {
+            let (contact, mail) = GamificationData.sharedInstance.getSecureProgress()
+            event["gamificationContact"] = contact
+            event["gamificationMail"] = mail
+        }
+        event["numberOfOtherRecords"] = (otherRecords ?? []).count
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(contactViewClose keyRecord: KeyRecord?, otherRecords: [KeyRecord]?, isUser: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.contactViewClose.rawValue
+        
+        if let keyRecord = keyRecord {
+            if let keyID = keyRecord.keyID {
+                event["keyID"] = resolve(keyID: keyID)
+            } else {
+                event["keyID"] = "nil"
+            }
+            event["mailaddresses"] = resolve(mailAddresses: keyRecord.addresses)
+        }
+        event["isUser"] = isUser
+        if isUser {
+            let (contact, mail) = GamificationData.sharedInstance.getSecureProgress()
+            event["gamificationContact"] = contact
+            event["gamificationMail"] = mail
+        }
+        event["numberOfOtherRecords"] = (otherRecords ?? []).count
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(keyViewOpen keyID: String) {
         if !logging {
             return
@@ -432,6 +486,20 @@ class Logger {
         var result: [String] = []
         for addr in mailAddresses {
             result.append(resolve(mail_address: addr))
+        }
+        return result
+    }
+    
+    static func resolve(mailAddresses: [MailAddress]) -> [String] {
+        var result: [String] = []
+        for addr in mailAddresses {
+            if let addr = addr as? Mail_Address {
+                result.append(resolve(mail_address: addr))
+            } else if addr is CNMailAddressExtension {
+                result.append("CNMailAddress")
+            } else {
+                result.append("unknownMailAddressType")
+            }
         }
         return result
     }
