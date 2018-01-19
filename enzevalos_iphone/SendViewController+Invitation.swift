@@ -12,7 +12,7 @@ import UIKit
 
 struct InvitationSelection {
 
-	var selectedWords = Set<Int>()
+	var selectedWords = Set<NSRange>()
 }
 
 // MARK: - SendViewController Extension
@@ -43,7 +43,6 @@ extension SendViewController {
 
 	}
 
-
 	/// The Selected Text in the given TextView should be marked.
 	/// Store starting Indexes in the Invitation Selection
 	///
@@ -73,5 +72,20 @@ extension SendViewController {
 
 		self.textChanged(inRange: range, with: text)
 		return true
+	}
+}
+
+// MARK: - IBAction
+
+extension SendViewController {
+
+	@IBAction private func unmarkTapped(sender: Any?) {
+
+		self.unmarkSelectedText(for: self.textView)
+	}
+
+	@IBAction private func markTapped(sender: Any?) {
+
+		self.markSelectedText(for: self.textView)
 	}
 }
