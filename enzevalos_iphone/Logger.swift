@@ -401,8 +401,10 @@ class Logger {
     static func resolve(mailAddress: MailAddress) -> String {
         if let addr = mailAddress as? Mail_Address {
             return resolve(mail_address: addr)
+        } else if mailAddress is CNMailAddressExtension {
+            return "CNMailAddress"
         }
-        return "notMail_Address"
+        return "unknownMailAddressType"
     }
     
     static func resolve(mail_address: Mail_Address) -> String {
@@ -417,8 +419,10 @@ class Logger {
         for addr in mailAddresses {
             if let addr = addr as? Mail_Address {
                 result.append(resolve(mail_address: addr))
+            } else if addr is CNMailAddressExtension {
+                result.append("CNMailAddress")
             } else {
-                result.append("notMail_Address")
+                result.append("unknownMailAddressType")
             }
         }
         return result
