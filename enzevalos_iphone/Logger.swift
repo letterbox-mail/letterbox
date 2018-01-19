@@ -409,7 +409,7 @@ class Logger {
     
     static func resolve(mail_address: Mail_Address) -> String {
         if mail_address.mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? "" {
-            return mail_address.mailAddress
+            return "self"//mail_address.mailAddress
         }
         return mail_address.pseudonym
     }
