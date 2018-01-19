@@ -17,17 +17,31 @@ class SwiftPGP: Encryption{
     let PasscodeSize = 36
     
     
-    private func generatePW(size: Int) -> String{
+    private func generatePW(size: Int, splitInBlocks: Bool) -> String{
         let file = open("/dev/urandom", O_RDONLY)
         if file >= 0{
             var pw = ""
             while pw.count < size{
                 var bits: UInt64 = 0
                 read(file, &bits, MemoryLayout<UInt64>.size)
-                
-                
+                pw = pw + String(bits)
             }
-             return generatePW(arc4: size)
+            let subpw = pw.prefix(size)
+            if splitInBlocks{
+                pw = ""
+                var i = 0
+                for c in subpw{
+                    pw.append(c)
+                    if i % 4 == 3 && i < size - 4{
+                        pw.append("-")
+                    }
+                    i = i + 1
+                }
+            }
+            else{
+                pw = String(subpw)
+            }
+            return pw
         }
         else{
             return generatePW(arc4: size)
@@ -191,60 +205,55 @@ class SwiftPGP: Encryption{
     }
     
     func exportKey(id: String, isSecretkey isSecretKey: Bool, autocrypt: Bool) -> String?{
-        if let key = exportKeyData(id: id, isSecretkey: isSecretKey, autocrypt: autocrypt){
+        if let key = exportKeyData(id: id, isSecretkey: isSecretKey){
             if !isSecretKey && autocrypt{
                 return key.base64EncodedString()
             }
             else{
-                return String.init(data: key, encoding: .utf8)
-            }
-        }
-        return nil
-    }
-    
-    func exportKeyData(id: String, isSecretkey: Bool, autocrypt: Bool) -> Data?{
-        let keyring = Keyring()
-        if var key = loadKey(id: id){
-            if isSecretkey && key.isSecret{
-                keyring.import(keys: [key])
-                if let keyData =  keyring.export(key: key, armored: true){
-                    if autocrypt{
-                        // Create Autocrypt Setup-message
-                        // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
-                        var passcode = loadPassword(id: id)
-                        if passcode == nil{
-                            passcode = generatePW(size: PasscodeSize)
-                        }
-                        exportPwKeyChain[key.keyID.longIdentifier] = passcode
-                        let cipher = try! ObjectivePGP.symmetricEncrypt(keyData, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: true)
-                        
-                        return cipher
-                    }
-                    return keyData
+                var armoredKey : String
+                if isSecretKey{
+                    armoredKey = Armor.armored(key, as: PGPArmorType.secretKey)
                 }
-            }            
-            if key.isSecret && !isSecretkey{
-                var pk: Data
-                do{
-                    pk = try key.export(keyType: PGPKeyType.public)
-                    if let keys = try? ObjectivePGP.readKeys(from: pk), keys.count > 0{
-                        key = keys.first!
-                        keyring.import(keys: [key])
+                else{
+                     armoredKey = Armor.armored(key, as: PGPArmorType.publicKey)
+                }
+                print(armoredKey)
+                if isSecretKey && autocrypt{
+                    // Create Autocrypt Setup-message
+                    // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
+                    var passcode = loadPassword(id: id)
+                    if passcode == nil{
+                        passcode = generatePW(size: PasscodeSize, splitInBlocks: true)
                     }
-                } catch {
+                    exportPwKeyChain[id] = passcode
+                    if let message = armoredKey.data(using: .utf8){
+                        if let cipher = try? ObjectivePGP.symmetricEncrypt(message, signWith: nil, encryptionKey: passcode, passphrase: passcode, armored: false){
+                            let armorMessage =  Armor.armored(cipher, as: PGPArmorType.message)
+                            return armorMessage
+                        }
+                    }
                     return nil
                 }
-            }
-            if autocrypt{
-                return keyring.export(key: key, armored: false)
-            }
-            else{
-               return keyring.export(key: key, armored: true)
+                return armoredKey
             }
         }
         return nil
     }
-
+    private func exportKeyData(id: String, isSecretkey: Bool) -> Data?{
+        if var key = loadKey(id: id){
+            if key.isSecret && isSecretkey{
+                if let keyData = try? key.export(keyType: PGPKeyType.secret){
+                    return keyData
+                }
+            }
+            if key.isPublic && !isSecretkey{
+                if let keyData = try? key.export(keyType: PGPKeyType.public){
+                    return keyData
+                }
+            }
+        }
+        return nil
+    }
     
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject{
         let keyring = Keyring()
@@ -420,5 +429,36 @@ class SwiftPGP: Encryption{
             }
         }
         return []
+    }
+    /*
+         encrypt a array of strings with one password. Returns encrypted strings and the password for decryption
+     */
+	func symmetricEncrypt(textToEncrypt: [String]) -> (chiphers: [String], password: String){
+        let password = generatePW(arc4: 8)
+        var chiphers = [String]()
+        
+        for text in textToEncrypt{
+            if let data = text.data(using: .utf8){
+                if let chipher = try? ObjectivePGP.symmetricEncrypt(data, signWith: nil, encryptionKey: password, passphrase: password, armored: false){
+					chiphers.append(chipher.base64EncodedString())
+                }
+            }
+        }
+        return (chiphers, password)
+    }
+    
+    func symmetricDecrypt(chipherTexts: [String], password: String) -> [String]{
+        var plaintexts = [String]()
+        
+        for chipher in chipherTexts{
+            if let data = chipher.data(using: .utf8){
+                if let plainData = try? ObjectivePGP.symmetricDecrypt(data, key: password, verifyWith: nil, signed: nil, valid: nil, integrityProtected: nil){
+                    if let plainText = String(data: plainData, encoding: .utf8){
+                        plaintexts.append(plainText)
+                    }
+                }
+            }
+        }
+        return plaintexts
     }
 }

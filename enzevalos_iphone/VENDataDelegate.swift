@@ -20,6 +20,8 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     
     var tappedWhenSelectedFunc: ((String) -> Void)? = nil
     
+    var editing = false
+    
     override init() {
         super.init()
     }
@@ -50,7 +52,10 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenFieldDidBeginEditing(_ tokenField: VENTokenField) {
-        beginFunc(tokenField)
+        if !editing {
+            editing = true
+            beginFunc(tokenField)
+        }
     }
     
     func tokenField(_ tokenField: VENTokenField, didEnterText text: String) {
@@ -77,9 +82,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     }
     
     func tokenField(_ tokenField: VENTokenField, didDeleteTokenAt index: UInt) {
-        if LogHandler.logging {
-            LogHandler.doLog(UIViewResolver.resolve(tokenField.tag), interaction: "delete", point: CGPoint(x: Int(index), y: 0), comment: (tokenField.textTokens[Int(index)] as! String)+" "+(tokenField.mailTokens[Int(index)] as! String))
-        }
         tokenField.textTokens.removeObject(at: Int(index))
         tokenField.mailTokens.removeObject(at: Int(index))
         tokenField.reloadData()
@@ -114,6 +116,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     
     
     func tokenFieldDidEndEditing(_ tokenF: VENTokenField){
+        editing = false
         if let last = tokenF.inputText() {
             if last.replacingOccurrences(of: " ", with: "") != "" {
                 tokenField(tokenF, didEnterText: last)

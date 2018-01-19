@@ -35,7 +35,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ucv-8n-UVn"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Inbox" id="5GZ-GC-SZf">
-                        <barButtonItem key="rightBarButtonItem" title="New Mail" id="j5W-eH-o1q">
+                        <barButtonItem key="rightBarButtonItem" title="Neue Nachricht" id="j5W-eH-o1q">
                             <connections>
                                 <segue destination="1FD-Zq-lKZ" kind="presentation" id="j4Q-k1-ud3"/>
                             </connections>
@@ -114,6 +114,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="q4D-qx-9aJ"/>
+        <segue reference="kND-73-kqr"/>
     </inferredMetricsTieBreakers>
 </document>

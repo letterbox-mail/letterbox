@@ -301,7 +301,7 @@ extension ContactViewController: UITableViewDataSource {
                             actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
                         } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                             actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
-                        } else if addressWithKey?.hasKey ?? false {
+                        } else if addressWithKey?.hasKey ?? false && !(addressWithKey?.Key?.isVerified() ?? false) {
                             actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
                         } else {
                             actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
@@ -420,7 +420,7 @@ extension ContactViewController: UITableViewDataSource {
             switch section {
             case 0:
                 var counter = 1
-                if !record.isVerified {
+                if !record.isVerified || !(addressWithKey?.Key?.isVerified() ?? false) {
                     counter += 1
                 }
                 if isUser && record.hasKey {

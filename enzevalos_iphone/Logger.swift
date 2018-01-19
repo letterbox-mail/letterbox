@@ -16,7 +16,7 @@ class Logger {
     
     static let defaultFileName = "log.json"
     static let loggingInterval = 86400 //60*60*24 seconds
-    static let logReceiver = "letterbox@zedat.fu-berlin.de" //Don't forget to register keys! Have a look at AppDelegate.setupKeys()
+    static let logReceiver = LOGGING_MAIL_ADR
     
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
     

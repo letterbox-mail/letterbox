@@ -27,7 +27,7 @@
 "ContentNo" = "Kein Inhalt";
 "CreateAndManageKeys" = "Erstelle und verwalte Schlüssel";
 "DeleteCode" = "Code löschen";
-"Details" = "Key Details";
+"Details" = "Schlüssel Details";
 "DiscoveryTime" = "Bekannt seit";
 "Done" = "Fertig";
 "Drafts" = "Entwürfe";
@@ -147,14 +147,14 @@
 "couldNotDecryptText" = "Diese Nachricht konnte nicht entschlüsselt werden. Vielleicht hat der Absender den falschen Schlüssel verwendet. Falls du von diesem Absender eine Nachricht erwartest könntest du versuchen auf einem anderen Weg in Verbindung zu treten.\n";
 "inviteContacts" = "Unsichere Kontakte einladen";
 "inviteSubject" = "Lass uns unsere E-Mails verschlüsseln!";
-"inviteText" = "Hallo!\n\nEs gibt eine neue App die es super einfach macht verschlüsselt über E-Mail zu kommunizieren. Sie heißt Enzevalos und ist kostenlos im App Store zu finden.\n\nEs wäre toll wenn du sie mal ausprobieren würdest!\n\nViele Grüße!";
+"inviteText" = "Hallo!\n\nEs gibt eine neue App die es super einfach macht verschlüsselt über E-Mail zu kommunizieren. Sie heißt Letterbox und wird aktuell in einer wissenschaftlichen Studie getestet.\n\nEs wäre toll wenn du sie mal ausprobieren würdest!\n\nGehe einfach auf https://enzevalos.de um mitzumachen.\n\nViele Grüße!";
 "noName" = "OHNE NAME";
 "you" = "Deine Ablage";
 "thisIsYou" = "Hier werden E-Mails, die du dir selber schickst, gesammelt";
 "didYouSendThis" = "Hallo, haben Sie mir diese E-Mail geschickt?\nIch frage nur, weil die E-Mail unsicher versendet wurde.\n\n";
 "reactButton" = "Bestätigung erfragen";
-"sendSecureIfPossible" = "Sicher versenden";
-"sendInsecure" = "Unsicher versenden";
+"sendSecureIfPossible" = "Als Brief senden";
+"sendInsecure" = "Als Postkarte senden";
 "verifyContact" = "Kontakt verifizieren";
 "scanQRCode" = "Scanne den QR Code des Kontaktes";
 "wrongQRCode" = "Kein passender QR Code gefunden";
@@ -171,3 +171,5 @@
 "YourBadges" = "Deine Abzeichen";
 "copied" = "Schlüssel wurde kopiert";
 "copyKey" = "Schlüssel in Zwischenablage kopieren";
+"NeverUpdated" = "Fehler bei Aktualisierung";
+

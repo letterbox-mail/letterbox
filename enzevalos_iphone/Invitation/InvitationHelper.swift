@@ -43,3 +43,24 @@ extension String {
 		})
 	}
 }
+
+extension UIView {
+
+	func roundRect(_ radius: CGFloat) {
+		self.layer.cornerRadius = radius
+		self.layer.masksToBounds = true
+	}
+
+	func roundRect() {
+		self.roundRect(self.frame.height / 2)
+	}
+}
+
+extension UIColor {
+
+	struct Invitation {
+
+		static let gray 	= #colorLiteral(red: 0.2392156863, green: 0.2392156863, blue: 0.2392156863, alpha: 1)
+		static let orange	= #colorLiteral(red: 1, green: 0.7058823529, blue: 0.2549019608, alpha: 1)
+	}
+}

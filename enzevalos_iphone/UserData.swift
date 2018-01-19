@@ -11,8 +11,10 @@ import KeychainAccess
 
 
 
+
 enum Attribute: Int{
     case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline/*used for Logging; determines the earliest next time a log is send to the researchers*/, prefSecretKeyID, loggingFolderPath
+
     
     var defaultValue:AnyObject? {
         switch self {
@@ -43,10 +45,10 @@ enum Attribute: Int{
 }
 
 
-struct UserManager{
+struct UserManager {
     
-    private static var pwKeyChain: Keychain{
-        get{
+    private static var pwKeyChain: Keychain {
+        get {
             return Keychain(service: "Enzevalos/Password")
         }
     }
@@ -115,45 +117,59 @@ struct UserManager{
     }
     
     //Usable for paths too
-    static func convertToFrontendFolderPath(from backendFolderPath: String, with delimiter: String = ".") -> String{
-        return (AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.components(fromPath: backendFolderPath) as! [String]).joined(separator: delimiter)
+    static func convertToFrontendFolderPath(from backendFolderPath: String, with delimiter: String = ".") -> String {
+        if let mcoConverted = (AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace?.components(fromPath: backendFolderPath) as? [String])?.joined(separator: delimiter) {
+            if backendFolderPath != mcoConverted && UserDefaults.standard.string(forKey: backendFolderPath) != mcoConverted {
+                UserDefaults.standard.set(mcoConverted, forKey: backendFolderPath)
+                UserDefaults.standard.set(backendFolderPath, forKey: mcoConverted)
+            }
+            return mcoConverted
+        } else {
+            if let cached = UserDefaults.standard.string(forKey: backendFolderPath) {
+                return cached
+            }
+            return backendFolderPath
+        }
     }
     
     //Usable for paths too
     static func convertToBackendFolderPath(from frontendFolderPath: String) -> String {
-        let session = AppDelegate.getAppDelegate().mailHandler.IMAPSession
-        if session.defaultNamespace == nil && frontendFolderPath == frontendInboxFolderPath { //FIXME: Dirty Fix for Issue #105
-            return "INBOX"
+        if let mcoConverted = AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace?.path(forComponents: [frontendFolderPath]) {
+            if frontendFolderPath != mcoConverted && UserDefaults.standard.string(forKey: frontendFolderPath) != mcoConverted {
+                UserDefaults.standard.set(mcoConverted, forKey: frontendFolderPath)
+                UserDefaults.standard.set(frontendFolderPath, forKey: mcoConverted)
+            }
+            return mcoConverted
+        } else {
+            if let cached = UserDefaults.standard.string(forKey: frontendFolderPath) {
+                return cached
+            }
+            return frontendFolderPath
         }
-        return AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace.path(forComponents: [frontendFolderPath])
     }
     
     static func storeUserValue(_ value: AnyObject?, attribute: Attribute) {
         if attribute == Attribute.userPW {
             let pw = value as! String
             pwKeyChain["userPW"] = pw
-        }
-        else{
+        } else {
             UserDefaults.standard.set(value, forKey: "\(attribute.rawValue)")
-            UserDefaults.standard.synchronize()
-    
         }
     }
     
-    static func loadUserValue(_ attribute: Attribute) -> AnyObject?{
+    static func loadUserValue(_ attribute: Attribute) -> AnyObject? {
         if attribute == Attribute.userPW {
-            do{
+            do {
                 let value = try pwKeyChain.getString("userPW")
                 return value as AnyObject?
-            }catch{
+            } catch {
                 return nil
             }
         }
         let value = UserDefaults.standard.value(forKey: "\(attribute.rawValue)")
-        if((value) != nil){
+        if value != nil {
             return value as AnyObject?
-        }
-        else{
+        } else {
             _ = storeUserValue(attribute.defaultValue, attribute: attribute)
             return attribute.defaultValue
 
