@@ -174,7 +174,7 @@ class Logger {
         event["from"] = Logger.resolve(mailAddress: from)
         event["to"] = Logger.resolve(mailAddresses: to)
         event["cc"] = Logger.resolve(mailAddresses: cc)
-        event["bcc"] = Logger.resolve(mailAddresses: bcc)
+//        event["bcc"] = Logger.resolve(mailAddresses: bcc)
         event["communicationState"] = Logger.communicationState(subject: subject)
         event["bodyLength"] = bodyLength
         event["isEncrypted"] = isEncrypted
@@ -380,7 +380,7 @@ class Logger {
         event["from"] = Logger.resolve(mailAddress: mail.from)
         event["to"] = Logger.resolve(mailAddresses: mail.to)
         event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
-        event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
+//        event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
         event["communicationState"] = Logger.communicationState(subject: mail.subject ?? "")
         event["timeInHeader"] = mail.timeString
         event["bodyLength"] = (mail.body ?? "").count
