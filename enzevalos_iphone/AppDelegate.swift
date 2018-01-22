@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
 
         resetApp()
-		HockeySDK.setup()
+//        HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
             Logger.queue.async(flags: .barrier) {
                 Logger.log(startApp: true)
