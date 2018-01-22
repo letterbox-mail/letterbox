@@ -215,7 +215,7 @@ class GamificationData: NSObject {
 
             var mailsTo : [PersistentMail] = contact.to
             mailsTo.append(contentsOf: contact.cc)
-//            mailsTo.append(contentsOf: contact.bcc)
+            mailsTo.append(contentsOf: contact.bcc)
 
             let mailsFrom : [PersistentMail] = contact.from
 
@@ -299,7 +299,7 @@ class GamificationData: NSObject {
 
             var mailsTo : [PersistentMail] = contact.to
             mailsTo.append(contentsOf: contact.cc)
-//            mailsTo.append(contentsOf: contact.bcc)
+            mailsTo.append(contentsOf: contact.bcc)
 
             let mailsFrom : [PersistentMail] = contact.from
 
