@@ -108,6 +108,58 @@ class Logger {
         sendCheck()
     }
     
+    static func log(badgeCaseViewOpen badges: [Badges]) {
+        if !logging {
+            return
+        }
+    
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.badgeCaseViewOpen.rawValue
+        
+        var achievedBadges: [String] = []
+        var missingBadges: [String] = []
+        
+        for badge in badges {
+            if badge.isAchieved() {
+                achievedBadges.append(badge.displayName)
+            } else {
+                missingBadges.append(badge.displayName)
+            }
+        }
+        
+        event["achievedBadges"] = achievedBadges
+        event["missingBadges"] = missingBadges
+    
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(badgeCaseViewClose badges: [Badges]) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.badgeCaseViewClose.rawValue
+        
+        var achievedBadges: [String] = []
+        var missingBadges: [String] = []
+        
+        for badge in badges {
+            if badge.isAchieved() {
+                achievedBadges.append(badge.displayName)
+            } else {
+                missingBadges.append(badge.displayName)
+            }
+        }
+        
+        event["achievedBadges"] = achievedBadges
+        event["missingBadges"] = missingBadges
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(contactViewClose keyRecord: KeyRecord?, otherRecords: [KeyRecord]?, isUser: Bool) {
         if !logging {
             return

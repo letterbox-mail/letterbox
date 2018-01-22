@@ -27,6 +27,8 @@ enum LoggingEventType: String {
     keyViewClose = "keyViewClose",
     contactViewOpen = "contactViewOpen",
     contactViewClose = "contactViewClose",
+    badgeCaseViewOpen = "badgeCaseViewOpen",
+    badgeCaseViewClose = "badgeCaseViewClose",
     pubKeyDiscoveryNewKey = "pubKeyDiscoveryNewKey",
     pubKeyDiscoveryKnownKey = "pubKeyDiscoveryKnownKey",
     pubKeyVerification = "pubKeyVerification",

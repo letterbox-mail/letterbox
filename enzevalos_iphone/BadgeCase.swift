@@ -37,8 +37,10 @@ class BadgeCase: UICollectionViewController, UICollectionViewDelegateFlowLayout 
         if selected != nil {
             self.badgeSelected()
         }
-
-
+        let badges = GamificationData.sharedInstance.badges
+        Logger.queue.async(flags: .barrier) {
+            Logger.log(badgeCaseViewOpen: badges)
+        }
     }
 
 
@@ -177,6 +179,13 @@ class BadgeCase: UICollectionViewController, UICollectionViewDelegateFlowLayout 
         self.selected = nil
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        let badges = GamificationData.sharedInstance.badges
+        Logger.queue.async(flags: .barrier) {
+            Logger.log(badgeCaseViewClose: badges)
+        }
+        super.viewWillDisappear(animated)
+    }
 
 }
 
