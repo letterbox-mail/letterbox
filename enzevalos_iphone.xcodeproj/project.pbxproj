@@ -234,7 +234,6 @@
 		471BC9341F960B7C00D64416 /* NSMutableData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC9041F960B7C00D64416 /* NSMutableData+PGPUtils.m */; };
 		472276BC1FCD46B200ADA507 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		472276BE1FCD484C00ADA507 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E4311FACB23000E40243 /* StringExtension.swift */; };
-		472276BF1FCD48B600ADA507 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D741FBDE560002F7CC9 /* Event.swift */; };
 		4725C4F61EDDADA10068235E /* bob-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F41EDDADA10068235E /* bob-private.gpg */; };
 		4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F51EDDADA10068235E /* bob-public.gpg */; };
 		472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
@@ -322,7 +321,6 @@
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
-		A18E7D751FBDE560002F7CC9 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D741FBDE560002F7CC9 /* Event.swift */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
@@ -629,7 +627,6 @@
 		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
-		A18E7D741FBDE560002F7CC9 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingEventType.swift; sourceTree = "<group>"; };
 		A19028E31F853E700030EA98 /* ExportInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportInfoViewController.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1085,7 +1082,6 @@
 		A111F6AB1FA77AF80060AFDE /* Logging */ = {
 			isa = PBXGroup;
 			children = (
-				A18E7D741FBDE560002F7CC9 /* Event.swift */,
 				A111F6AC1FA77B170060AFDE /* Logger.swift */,
 				A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */,
 			);
@@ -1888,7 +1884,6 @@
 				3E9708DC1FAC95F5005825C9 /* KeyRecord.swift in Sources */,
 				3E9708DD1FAC95F5005825C9 /* ArrowTableViewCell.swift in Sources */,
 				3E9708DE1FAC95F5005825C9 /* ContactViewController.swift in Sources */,
-				472276BF1FCD48B600ADA507 /* Event.swift in Sources */,
 				3E9708DF1FAC95F5005825C9 /* CryptoObject.swift in Sources */,
 				3E9708E01FAC95F5005825C9 /* VENDataDelegate.swift in Sources */,
 				3E9708E11FAC95F5005825C9 /* InviteFriendViewController.swift in Sources */,
@@ -2117,7 +2112,6 @@
 				471BC90D1F960B7C00D64416 /* PGPLiteralPacket.m in Sources */,
 				473AC3A520054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */,
 				471BC9121F960B7C00D64416 /* PGPPublicKeyPacket.m in Sources */,
-				A18E7D751FBDE560002F7CC9 /* Event.swift in Sources */,
 				471BC9271F960B7C00D64416 /* PGPKeyGenerator.m in Sources */,
 				A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */,
 				471BC9071F960B7C00D64416 /* PGPDSA.m in Sources */,
