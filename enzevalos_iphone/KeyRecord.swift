@@ -189,10 +189,11 @@ open class KeyRecord: Record {
 
 
     open func showInfos() {
-        print("-----------------")
+        print("----------------- \n \n")
         print("Name: \(String(describing: ezContact.displayname)) | State: \(hasKey) | #Mails: \(mails.count)")
         print("First mail: \(String(describing: mails.first?.uid)) | Adr: \(String(describing: mails.first?.from.mailAddress)) | date: \(String(describing: mails.first?.date.description)) ")
         print("subj: \(String(describing: mails.first?.subject?.capitalized))")
+        print("----------- \n \n")
     }
 
     open func getImageOrDefault() -> UIImage {

@@ -8,14 +8,30 @@
 
 import Foundation
 
-let pgp = SwiftPGP()
-let datahandler = DataHandler.handler
+private let pgp = SwiftPGP()
+private let datahandler = DataHandler.handler
+
+let SUPPORT_MAIL_ADR = "letterbox@inf.fu-berlin.de"
+let LOGGING_MAIL_ADR = "letterbox-reports@inf.fu-berlin.de"
+
+func setupStudyPublicKeys(studyMode: Bool){
+    if studyMode{
+        let logging_pk = "logging_pk"
+        let support_pk = "support_pk"
+        let keys = ["noreply@bitcoin.de": "bitcoinde", "letterbox@zedat.fu-berlin.de": support_pk, SUPPORT_MAIL_ADR: support_pk, "letterbox-hilfe@inf.fu-berlin.de": support_pk, "enzevalos@inf.fu-berlin.de": support_pk, LOGGING_MAIL_ADR: logging_pk]
+        importPublicKeyDic(keys: keys, type: "asc")
+        let l = datahandler.getContact(name: "Letterbox", address: SUPPORT_MAIL_ADR, key: "F3ADDC8B81F82CCEB534CFC766BA7478AD254666", prefer_enc: true)
+        datahandler.save(during: "init study keys")
+    }
+}
+
 
 func loadTestAcc(){
-    //loadBobEnzevalos()
+   //loadBobEnzevalos()
     //loadAlice2005()
     //loadCharlieEnzevalos()
     //importPublicKeys()
+    //loadBob2005()
 
     
 }
@@ -28,8 +44,9 @@ func loadUlli(){
 }
 
 func loadBob2005(){
+    let user = web(name: "bob2005", pw: "WJ$CE:EtUo3E$")
+    userdefaults(defaults: user)
     importSecretKey(file: "bob2005-private", type: "gpg")
-
 }
 
 func loadAlice2005(){
@@ -76,27 +93,24 @@ private func enzevalos(name: String, pw: String)-> [Attribute: AnyObject?]{
 
 
 func importPublicKeys(){
-    let asc = ["JakobBode":"jakob.bode@fu-berlin.de", "alice_enzevalos_public":"alice@enzevalos.de", "bob_enzevalos_public":"bob@enzevalos.de", "dave_enzevalos_public":"dave@enzevalos.de"]
-    let gpg = ["idsolutions-public": "idsolutions@enzevalos.de", "nchr-public":"nchr@enzevalos.de", "ncpayroll-public":"ncpayroll@enzevalos.de", "bob-public":"bob2005@web.de", "ullimuelle-public": "ullimuelle@web.de", "alice2005-public":"alice2005@web.de"]
+    let asc = ["jakob.bode@fu-berlin.de":"JakobBode", "alice@enzevalos.de":"alice_enzevalos_public", "bob@enzevalos.de":"bob_enzevalos_public", "dave@enzevalos.de":"dave_enzevalos_public"]
+    let gpg = ["bob2005@web.de":"bob-public", "ullimuelle@web.de":"ullimuelle-public", "alice2005@web.de":"alice2005-public"]
     importPublicKeyDic(keys: asc, type: "asc")
     importPublicKeyDic(keys: gpg, type: "gpg")
   
 }
 
 func importSecretKey(file: String, type: String){
-    //TODO Remove old keys! 
     if let path = Bundle.main.path(forResource: file, ofType: type){
         let ids = try! pgp.importKeysFromFile(file: path, pw: nil)
         for id in ids{
-            let k = datahandler.newSecretKey(keyID: id)
-            print("New secret key of \(file) with id \(String(describing: k.keyID))")
+            _ = datahandler.newSecretKey(keyID: id)
         }
     }
 }
 
-
 private func importPublicKeyDic(keys: [String:String], type: String){
-    for (file, adr) in keys{
+    for (adr, file) in keys{
         importPublicKey(file: file, type: type, adr: adr)
     }
 }

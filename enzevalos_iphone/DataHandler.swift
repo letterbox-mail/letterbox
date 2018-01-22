@@ -401,9 +401,6 @@ class DataHandler {
                 search.lastSeenAutocrypt = date
                 search.sentOwnPublicKey = true
             }
-            else{
-                
-            }
             search.addToMailaddress(adr)
             pk = search
             Logger.queue.async(flags: .barrier) {

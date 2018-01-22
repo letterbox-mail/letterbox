@@ -160,6 +160,7 @@ class MailHandler {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
         let skID = DataHandler.handler.prefSecretKey().keyID
 
+        let pgp = SwiftPGP()
         if let id = skID{
             let enc = "yes"
             if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true){
@@ -233,7 +234,7 @@ class MailHandler {
         return ids
     }
     
-    func sendSecretKey(keyData: Data, passcode: String, callback: @escaping (Error?) -> Void){
+    func sendSecretKey(key: String, passcode: String, callback: @escaping (Error?) -> Void){
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let session = createSMTPSession()
         let builder = MCOMessageBuilder()
@@ -243,29 +244,15 @@ class MailHandler {
         builder.header.setExtraHeaderValue("v0", forName: SETUPMESSAGE)
         
         
-        /*
-        if let key = MCOAttachment.init(rfc822Message: keyData){
-            print("ID: \(key.contentID)")
-            print("Type: \(key.mimeType)")
-            // Use and test later:
-            // see https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
-            // key.mimeType = "application/autocrypt-key-backup"
-            key.mimeType = "application/pgp-encrypted"
-            builder.addAttachment(key)
-        }
-        let plain = MCOAttachment.init(text: "Klartext!")
-        builder.addAttachment(plain)
+        builder.addAttachment(MCOAttachment.init(text: NSLocalizedString("This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices \n\n", comment: "Message when sending the secret key")))
         
- */
-        builder.addAttachment(MCOAttachment.init(text: NSLocalizedString("This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret into your pgp program on the device.  \n\n For more information visit: www.enzevalos.de/other", comment: "Message when sending the secret key")))
-
-        let key = MCOAttachment.init(rfc822Message: keyData)
-        builder.addAttachment(key)
-        
-     
+        // See: https://autocrypt.org/level1.html#autocrypt-setup-message
+        let keyAttachment = MCOAttachment.init(text: key)
+        builder.addAttachment(keyAttachment)
+      
         let sendOperation = session.sendOperation(with: builder.data() , from: userID, recipients: [userID])
         sendOperation?.start(callback)
-        createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
+        //createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
     }
     
     //logMail should be false, if called from Logger, otherwise 
@@ -316,7 +303,7 @@ class MailHandler {
              */
             var missingOwnPublic = false
             for id in keyIDs{
-                if let key = datahandler.findKey(keyID: id){
+                if let key = DataHandler.handler.findKey(keyID: id){
                     if !key.sentOwnPublicKey{
                         missingOwnPublic = true
                         key.sentOwnPublicKey = true
@@ -628,7 +615,7 @@ class MailHandler {
     }
     
     func loadMailsForInbox(newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
-        let folder = datahandler.findFolder(with: INBOX)
+        let folder = DataHandler.handler.findFolder(with: INBOX)
         olderMails(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
     }
 
@@ -872,9 +859,12 @@ class MailHandler {
             let pgp = SwiftPGP()
             var keyIds = [String]()
             if sender != nil, let adr = DataHandler.handler.findMailAddress(adr: sender!){
+                print(adr.address)
+                print(adr.key?.count)
                 if let keys = adr.key{
                     for k in keys{
                         let key = k as! PersistentKey
+                        print(key.keyID)
                         keyIds.append(key.keyID)
                     }
                 }

@@ -31,8 +31,6 @@ enum Attribute: Int {
             return NSLocalizedString("Archive", comment: "Default name for the archiveFolder") as AnyObject?
         case .nextDeadline:
             return Date(timeIntervalSinceNow: TimeInterval(Logger.loggingInterval)) as AnyObject?
-        case .subjectSalt:
-            return String.random() as AnyObject?
         case .loggingFolderPath:
             return "letterbox-study" as AnyObject?
         default:

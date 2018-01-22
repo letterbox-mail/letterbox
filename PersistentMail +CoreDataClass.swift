@@ -19,7 +19,7 @@ open class PersistentMail: NSManagedObject, Mail {
     var showMessage: Bool = false
 
     var isSecure: Bool {
-        return isEncrypted && isSigned && !unableToDecrypt && !trouble
+        return isEncrypted && isSigned && isCorrectlySigned && !unableToDecrypt && !trouble &&  keyID != nil
     }
 
     var isRead: Bool {
