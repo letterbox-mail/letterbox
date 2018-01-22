@@ -10,18 +10,15 @@ import Foundation
 import KeychainAccess
 
 
+enum Attribute: Int {
+    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline/*used for Logging; determines the earliest next time a log is send to the researchers*/, prefSecretKeyID, subjectSalt /*used for Logging; salt for the hashfunction for mail subjects*/, loggingFolderPath
 
-
-enum Attribute: Int{
-    case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline/*used for Logging; determines the earliest next time a log is send to the researchers*/, prefSecretKeyID, loggingFolderPath
-
-    
-    var defaultValue:AnyObject? {
+    var defaultValue: AnyObject? {
         switch self {
-            case .prefEncryption:
-                return "mutal" as AnyObject? 
-            case .autocryptType:
-                return "1" as AnyObject? // only openpgp
+        case .prefEncryption:
+            return "mutal" as AnyObject?
+        case .autocryptType:
+            return "1" as AnyObject? // only openpgp
         case .sentFolderPath:
             return NSLocalizedString("Sent", comment: "Default name for the sentFolder") as AnyObject?
         case .draftFolderPath:
@@ -40,19 +37,19 @@ enum Attribute: Int{
             return nil
         }
     }
-    
+
     static let allAttributes = [accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType]
 }
 
 
 struct UserManager {
-    
+
     private static var pwKeyChain: Keychain {
         get {
             return Keychain(service: "Enzevalos/Password")
         }
     }
-    
+
     //Frontend (GUI and providers.json) uses UTF-8 String-Encoding
     //The backend uses because of the definition of IMAP UTF-7 String-Encoding
     static var frontendDraftFolderPath: String {
@@ -60,62 +57,61 @@ struct UserManager {
             return loadUserValue(Attribute.draftFolderPath) as? String ?? NSLocalizedString("Drafts", comment: "")
         }
     }
-    
+
     static var frontendInboxFolderPath: String {
         get {
             return loadUserValue(Attribute.inboxFolderPath) as? String ?? NSLocalizedString("INBOX", comment: "")
         }
     }
-    
+
     static var frontendSentFolderPath: String {
         get {
             return loadUserValue(Attribute.sentFolderPath) as? String ?? NSLocalizedString("Sent", comment: "")
         }
     }
-    
-    static var frontendArchiveFolderPath
-        : String {
+
+    static var frontendArchiveFolderPath: String {
         get {
             return loadUserValue(Attribute.archiveFolderPath) as? String ?? NSLocalizedString("Archive", comment: "")
         }
     }
-    
+
     static var frontendTrashFolderPath: String {
         get {
             return loadUserValue(Attribute.trashFolderPath) as? String ?? NSLocalizedString("Trash", comment: "")
         }
     }
-    
+
     static var backendDraftFolderPath: String {
         get {
             return convertToBackendFolderPath(from: frontendDraftFolderPath)
         }
     }
-    
+
     static var backendSentFolderPath: String {
         get {
             return convertToBackendFolderPath(from: frontendSentFolderPath)
         }
     }
-    
+
     static var backendArchiveFolderPath: String {
         get {
             return convertToBackendFolderPath(from: frontendArchiveFolderPath)
         }
     }
-    
+
     static var backendTrashFolderPath: String {
         get {
             return convertToBackendFolderPath(from: frontendTrashFolderPath)
         }
     }
-    
+
     static var backendInboxFolderPath: String {
         get {
             return convertToBackendFolderPath(from: frontendInboxFolderPath)
         }
     }
-    
+
     //Usable for paths too
     static func convertToFrontendFolderPath(from backendFolderPath: String, with delimiter: String = ".") -> String {
         if let mcoConverted = (AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace?.components(fromPath: backendFolderPath) as? [String])?.joined(separator: delimiter) {
@@ -131,7 +127,7 @@ struct UserManager {
             return backendFolderPath
         }
     }
-    
+
     //Usable for paths too
     static func convertToBackendFolderPath(from frontendFolderPath: String) -> String {
         if let mcoConverted = AppDelegate.getAppDelegate().mailHandler.IMAPSession.defaultNamespace?.path(forComponents: [frontendFolderPath]) {
@@ -147,7 +143,7 @@ struct UserManager {
             return frontendFolderPath
         }
     }
-    
+
     static func storeUserValue(_ value: AnyObject?, attribute: Attribute) {
         if attribute == Attribute.userPW {
             let pw = value as! String
@@ -156,7 +152,7 @@ struct UserManager {
             UserDefaults.standard.set(value, forKey: "\(attribute.rawValue)")
         }
     }
-    
+
     static func loadUserValue(_ attribute: Attribute) -> AnyObject? {
         if attribute == Attribute.userPW {
             do {
@@ -172,25 +168,24 @@ struct UserManager {
         } else {
             _ = storeUserValue(attribute.defaultValue, attribute: attribute)
             return attribute.defaultValue
-
         }
     }
-    
+
     static func loadImapAuthType() -> MCOAuthType {
         if let auth = UserManager.loadUserValue(Attribute.imapAuthType) as? Int, auth != 0 {
             return MCOAuthType.init(rawValue: auth)
         }
         return []
     }
-    
+
     static func loadSmtpAuthType() -> MCOAuthType {
         if let auth = UserManager.loadUserValue(Attribute.smtpAuthType) as? Int, auth != 0 {
             return MCOAuthType.init(rawValue: auth)
         }
         return []
     }
-    
-    static func resetUserValues(){
+
+    static func resetUserValues() {
         for a in Attribute.allAttributes {
             storeUserValue(a.defaultValue, attribute: a)
             //UserDefaults.standard.removeObject(forKey: "\(a.hashValue)")
