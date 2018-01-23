@@ -260,7 +260,7 @@ class DataHandler {
             fatalError("Error initializing mom from: \(modelURL)")
         }
         let psc = NSPersistentStoreCoordinator(managedObjectModel: mom)
-        self.managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        self.managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType) // This is why we have trouble with concurrency: https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/Concurrency.html
         self.managedObjectContext.persistentStoreCoordinator = psc
 
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
