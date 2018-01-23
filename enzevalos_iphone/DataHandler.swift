@@ -215,11 +215,10 @@ class DataHandler {
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         var predicates = [NSPredicate]()
         if let k = key, k != "" {
-            predicates.append(NSPredicate(format: "keyID = %@", k))
+            predicates.append(NSPredicate(format: "signedKey.keyID = %@", k))
         }
         if let c = contact {
             if c.getMailAddresses().count == 0 {
-                print("Contact with no Mail Adress: \(String(describing: c.displayname))")
             } else {
                 let adr: Mail_Address = c.getMailAddresses()[0] as! Mail_Address
                 predicates.append(NSPredicate(format: "from == %@", adr))
@@ -751,6 +750,9 @@ class DataHandler {
     // -------- End handle to, cc, from addresses --------
 
     func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?) -> PersistentMail? {
+        let myfolder = findFolder(with: folderPath) as Folder
+
+        let counterMails = myfolder.counterMails
 
         let finding = findNum("PersistentMail", type: "uid", search: uid)
         let mail: PersistentMail
@@ -788,7 +790,6 @@ class DataHandler {
             if let decData = decryptedData {
                 let encState: EncryptionState = decData.encryptionState
                 let signState: SignatureState = decData.signatureState
-                mail.keyID = decData.signKey
 
                 switch encState {
                 case EncryptionState.NoEncryption:
@@ -819,6 +820,13 @@ class DataHandler {
                 case SignatureState.ValidSignature:
                     mail.isCorrectlySigned = true
                     mail.isSigned = true
+                    if let signedKey = findKey(keyID: decData.signKey!){
+                         mail.signedKey = signedKey
+                    }
+                    else{
+                        mail.signedKey = newPublicKey(keyID: decData.signKey!, cryptoType: decData.encType, adr: decData.signedAdrs.first!, autocrypt: false, firstMail: mail, newGenerated: false)
+                    }
+                   
                 }
             }
                 else {
@@ -827,16 +835,28 @@ class DataHandler {
                     //mail.decryptIfPossible()
             }
         }
-            else {
-                return nil
+        else {
+            return nil
         }
-        let myfolder = findFolder(with: folderPath) as Folder
+        mail.folder = myfolder
         myfolder.addToMails(mail)
         if mail.uid > myfolder.maxID {
             myfolder.maxID = mail.uid
         }
         myfolder.updateRecords(mail: mail)
         save(during: "new mail")
+        
+        
+        if let mails = myfolder.mails{
+                for m in mails{
+                    if let x = m as? PersistentMail{
+                       // print("\(x.subject) from \(x.from.mailAddress) at \(x.date)")
+                        if x.subject == mail.subject && x.date == mail.date{
+                            print("Mail found in folder!")
+                        }
+                    }
+                }
+            }
         return mail
     }
     
