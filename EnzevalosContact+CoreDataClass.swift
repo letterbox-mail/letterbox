@@ -65,9 +65,8 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
             var mails = [PersistentMail]()
             if let adrs = addresses {
                 for adr in adrs {
-                    let a = adr as! Mail_Address
-                    if a.to != nil {
-                        for m in a.to! {
+                    if let a = adr as? Mail_Address, let to = a.to {
+                        for m in to {
                             mails.append(m as! PersistentMail)
                         }
                     }
@@ -82,9 +81,8 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
             var mails = [PersistentMail]()
             if let adrs = addresses {
                 for adr in adrs {
-                    let a = adr as! Mail_Address
-                    if a.bcc != nil {
-                        for m in a.bcc! {
+                    if let a = adr as? Mail_Address, let bcc = a.bcc {
+                        for m in bcc {
                             mails.append(m as! PersistentMail)
                         }
                     }
@@ -101,9 +99,8 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
             var mails = [PersistentMail]()
             if let adrs = addresses {
                 for adr in adrs {
-                    let a = adr as! Mail_Address
-                    if a.cc != nil {
-                        for m in a.cc! {
+                    if let a = adr as? Mail_Address, let cc = a.cc {
+                        for m in cc {
                             mails.append(m as! PersistentMail)
                         }
                     }
@@ -118,9 +115,8 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
             var mails = [PersistentMail]()
             if let adrs = addresses {
                 for adr in adrs {
-                    let a = adr as! Mail_Address
-                    if a.from != nil {
-                        for m in a.from! {
+                    if let a = adr as? Mail_Address, let from = a.from {
+                        for m in from {
                             mails.append(m as! PersistentMail)
                         }
                     }
