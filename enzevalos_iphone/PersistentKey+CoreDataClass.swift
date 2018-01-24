@@ -21,6 +21,13 @@ public class PersistentKey: NSManagedObject {
         }
     }
     
+    var counterSignedMails: Int{
+        if let signedMails = self.signedMails{
+            return signedMails.count
+        }
+        return 0
+    }
+    
     func verify(){
         self.verifiedDate = Date.init() as NSDate
     }

@@ -48,7 +48,6 @@ class AboutTextDelegate: NSObject, UITextViewDelegate {
     var callback: ((String) -> ())?
 
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
-        print(URL)
         if URL.scheme == "mailto" {
             callback?(URL.absoluteString.replacingOccurrences(of: "mailto:", with: ""))
             return false

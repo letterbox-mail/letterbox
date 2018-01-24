@@ -25,6 +25,8 @@ extension PersistentKey {
     @NSManaged public var firstMail: PersistentMail?
     @NSManaged public var pseudonym: String
     @NSManaged public var sentOwnPublicKey: Bool
+    @NSManaged public var signedMails: NSSet?
+    
     
     public var prefer_encryption: EncState{
         set {
@@ -75,5 +77,21 @@ extension PersistentKey {
 
     @objc(removeMailaddress:)
     @NSManaged public func removeFromMailaddress(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for mailaddress
+extension PersistentKey {
+    @objc(addsignedMailsObject:)
+    @NSManaged public func addSignedMails(_ value: PersistentMail)
+    
+    @objc(removeSignedMailsObject:)
+    @NSManaged public func removeSignedMails(_ value: PersistentMail)
+    
+    @objc(addSignedMails:)
+    @NSManaged public func addSignedMails(_ values: NSSet)
+    
+    @objc(removeSignedMails:)
+    @NSManaged public func removeSignedMails(_ values: NSSet)
 
 }
