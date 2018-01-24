@@ -330,6 +330,7 @@
 		A1C09FC61DF04D650006B783 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
+		A1C62E9A2018F716000E5273 /* OnboardingValueState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C62E992018F716000E5273 /* OnboardingValueState.swift */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
 		A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */; };
 		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
@@ -637,6 +638,7 @@
 		A1BE3FF91E96646A0040114B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-private.gpg"; path = "keys/alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
+		A1C62E992018F716000E5273 /* OnboardingValueState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingValueState.swift; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
 		A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListViewController.swift; sourceTree = "<group>"; };
 		A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListCell.swift; sourceTree = "<group>"; };
@@ -1199,6 +1201,7 @@
 				A1F2A5681E85586300320275 /* Providers.swift */,
 				A1083A531E8BFEA6003666B7 /* Onboarding.swift */,
 				A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */,
+				A1C62E992018F716000E5273 /* OnboardingValueState.swift */,
 			);
 			name = onboarding;
 			sourceTree = "<group>";
@@ -2102,6 +2105,7 @@
 				A1EB05881D956879008659C1 /* AddressHandler.swift in Sources */,
 				472F39701E14F75C009260FB /* DataHandler.swift in Sources */,
 				471BC9191F960B7C00D64416 /* PGPSignatureSubpacketHeader.m in Sources */,
+				A1C62E9A2018F716000E5273 /* OnboardingValueState.swift in Sources */,
 				471BC9321F960B7C00D64416 /* NSData+PGPUtils.m in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
 				471BC9171F960B7C00D64416 /* PGPSignatureSubpacket.m in Sources */,

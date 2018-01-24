@@ -64,8 +64,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func credentialCheck() {
         self.window?.rootViewController = Onboarding.checkConfigView()
-        Onboarding.setValues()
-        if !Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork) {
+        if Onboarding.setValues() != OnboardingValueState.fine {
+            credentialsFailed()
+            return
+        }
+        else if !Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork) {
             self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
             return
         }
@@ -73,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func credentialsFailed() {
         Onboarding.credentialFails += 1
-        if Onboarding.credentialFails >= 3 {
+        if Onboarding.credentialFails >= 2 {
             Onboarding.manualSet = true
             self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
         } else {
