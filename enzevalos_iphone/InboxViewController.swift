@@ -149,9 +149,9 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     func callSegueFromCell(_ mail: PersistentMail?) {
         if isFiltering(), Logger.logging {
             let categoryIndex = searchController.searchBar.selectedScopeButtonIndex
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "mail")
-            }
+//            }
         }
         performSegue(withIdentifier: "readMailSegue", sender: mail)
     }
@@ -159,9 +159,9 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     func callSegueFromCell2(_ contact: KeyRecord?) {
         if isFiltering(), Logger.logging {
             let categoryIndex = searchController.searchBar.selectedScopeButtonIndex
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "mailList")
-            }
+//            }
         }
         performSegue(withIdentifier: "mailListSegue", sender: contact)
     }
@@ -169,9 +169,9 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     func callSegueToContact(_ contact: KeyRecord?) {
         if isFiltering(), Logger.logging {
             let categoryIndex = searchController.searchBar.selectedScopeButtonIndex
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "contact")
-            }
+//            }
         }
         performSegue(withIdentifier: "contactSegue", sender: contact)
     }

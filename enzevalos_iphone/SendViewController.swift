@@ -543,9 +543,9 @@ class SendViewController: UIViewController {
             if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") {
                 alert.addAction(UIAlertAction(title: NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key"), style: .default, handler: {
                     (action: UIAlertAction) -> Void in
-                    Logger.queue.async(flags: .barrier) {
+//                    Logger.queue.async(flags: .barrier) {
                         Logger.log(close: url, mail: nil, action: "inviteSegue")
-                    }
+//                    }
                     self.performSegue(withIdentifier: "inviteSegue", sender: nil)
                 }))
             }
@@ -556,35 +556,35 @@ class SendViewController: UIViewController {
         if someoneWithKeyPresent {
             if sendEncryptedIfPossible {
                 alert.addAction(UIAlertAction(title: NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                    Logger.queue.async(flags: .barrier) {
+//                    Logger.queue.async(flags: .barrier) {
                         Logger.log(close: url, mail: nil, action: "sendInsecure")
-                    }
+//                    }
                     self.sendEncryptedIfPossible = false
                     DispatchQueue.main.async { self.animateIfNeeded() }
                 }))
             } else {
                 alert.addAction(UIAlertAction(title: NSLocalizedString("sendSecureIfPossible", comment: "This mail should be send securely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                    Logger.queue.async(flags: .barrier) {
+//                    Logger.queue.async(flags: .barrier) {
                         Logger.log(close: url, mail: nil, action: "sendSecureIfPossible")
-                    }
+//                    }
                     self.sendEncryptedIfPossible = true
                     DispatchQueue.main.async { self.animateIfNeeded() }
                 }))
             }
         }
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             Logger.log(open: url, mail: nil)
-        }
+//        }
         alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(close: url, mail: nil, action: "openURL")
-            }
+//            }
             UIApplication.shared.openURL(URL(string: url)!)
         }))
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action: UIAlertAction!) -> Void in
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(close: url, mail: nil, action: "OK")
-            }
+//            }
         }))
         DispatchQueue.main.async(execute: {
             self.present(alert, animated: true, completion: nil)

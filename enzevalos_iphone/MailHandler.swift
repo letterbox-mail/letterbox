@@ -323,7 +323,7 @@ class MailHandler {
             let cryptoObject = pgp.encrypt(plaintext: "\n" + msg, ids: keyIDs, myId:sk.keyID!)
             if let encData = cryptoObject.chiphertext{
                 sendData = encData
-                Logger.queue.async(flags: .barrier) {
+//                Logger.queue.async(flags: .barrier) {
                     if Logger.logging && !loggingMail {
                         let secureAddrsInString = encPGP.map{$0.mailbox}
                         var secureAddresses: [Mail_Address] = []
@@ -350,7 +350,7 @@ class MailHandler {
                         }
                         Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs)
                     }
-                }
+//                }
                 builder.textBody = "Dies ist verschlüsselt!"
                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
@@ -378,9 +378,9 @@ class MailHandler {
                 //TODO handle different callbacks
                 //TODO add logging call here for the case the full email is unencrypted
                 if unenc.count == allRec.count && !loggingMail {
-                    Logger.queue.async(flags: .barrier) {
+//                    Logger.queue.async(flags: .barrier) {
                         Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
-                    }
+//                    }
                 }
                 sendOperation.start(callback)
                 if !loggingMail {
@@ -779,11 +779,11 @@ class MailHandler {
                 for keyId in newKeyIds{
                     _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
                 }
-                Logger.queue.async(flags: .barrier) {
+//                Logger.queue.async(flags: .barrier) {
                     if let mail = mail {
                         Logger.log(received: mail)
                     }
-                }
+//                }
                 if newMailCallback != nil{
                     newMailCallback!(mail)
                 }

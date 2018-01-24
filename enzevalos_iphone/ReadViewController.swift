@@ -56,7 +56,7 @@ class ReadViewController: UITableViewController {
 
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 if Logger.logging, let mail = self.mail {
                     var message = "none"
                     if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
@@ -70,10 +70,10 @@ class ReadViewController: UITableViewController {
                     }
                     Logger.log(readDraft: mail, message: message)
                 }
-            }
+//            }
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 if Logger.logging, let mail = self.mail {
                     var message = "none"
                     if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
@@ -87,7 +87,7 @@ class ReadViewController: UITableViewController {
                     }
                     Logger.log(read: mail, message: message)
                 }
-            }
+//            }
         }
 
         VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: { [weak self] in self?.showContact($0) }, tableView: tableView)
@@ -243,9 +243,9 @@ class ReadViewController: UITableViewController {
     }
 
     @IBAction func showEmailButton(_ sender: UIButton) {
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             Logger.log(showBroken: self.mail)
-        }
+//        }
         
         mail?.showMessage = true
 
@@ -293,9 +293,9 @@ class ReadViewController: UITableViewController {
     @IBAction func archiveButton(_ sender: AnyObject) {
         if let mail = mail {
             let archiveFolder = UserManager.backendArchiveFolderPath
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(archive: mail)
-            }
+//            }
             AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
         }
         _ = navigationController?.popViewController(animated: true)
@@ -311,9 +311,9 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#secureMailAnswer"
                 alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                    Logger.queue.async(flags: .barrier) {
+//                    Logger.queue.async(flags: .barrier) {
                         Logger.log(close: url, mail: m, action: "exportKey")
-                    }
+//                    }
                     self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)
                 }))
             } else if m.isCorrectlySigned {
@@ -329,19 +329,19 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#collapsePostcard"
             }
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(open: url, mail: m)
-            }
+//            }
             alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                Logger.queue.async(flags: .barrier) {
+//                Logger.queue.async(flags: .barrier) {
                     Logger.log(close: url, mail: m, action: "openURL")
-                }
+//                }
                 UIApplication.shared.openURL(URL(string: url)!)
             }))
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action: UIAlertAction!) -> Void in
-                Logger.queue.async(flags: .barrier) {
+//                Logger.queue.async(flags: .barrier) {
                     Logger.log(close: url, mail: m, action: "OK")
-                }
+//                }
             }))
             DispatchQueue.main.async(execute: {
                 self.present(alert, animated: true, completion: nil)
