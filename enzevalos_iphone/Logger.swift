@@ -460,6 +460,7 @@ class Logger {
         event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
         event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
         event["communicationState"] = Logger.communicationState(subject: mail.subject ?? "")
+        event["specialMail"] = Logger.specialMail(subject: mail.subject ?? "")
         event["timeInHeader"] = mail.timeString
         event["bodyLength"] = (mail.body ?? "").count
         event["isEncrypted"] = mail.isEncrypted
