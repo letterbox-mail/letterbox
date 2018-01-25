@@ -28,15 +28,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
         
         if UIScreen.main.bounds.height < 700 {
-            kDefaultImageViewSize = 0
+            kDefaultImageViewSize = 20
+            kDefaultTitleFontSize = 33
+            kDefaultBodyFontSize = 23
         }
         
         resetApp()
         HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(startApp: true)
-            }
+//            }
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
@@ -45,9 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         } else {
             AddressHandler.updateCNContacts()
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(startApp: false)
-            }
+//            }
             presentInboxViewController()
         }
         NotificationCenter.default.addObserver(
@@ -148,9 +150,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             Logger.log(background: true)
-        }
+//        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -167,9 +169,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             Logger.log(background: false)
-        }
+//        }
         resetApp()
     }
 

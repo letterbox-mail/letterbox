@@ -83,8 +83,12 @@ class Onboarding: NSObject {
 
         intro1.iconHeight = 70
         intro1.iconWidth = 100
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: 100, height: 70), false, 0)
-        IconsStyleKit.drawLetter(frame: CGRect(x: 0, y: 0, width: 100, height: 70), fillBackground: true)
+        if kDefaultBodyFontSize < 28 {
+            intro1.iconHeight = 56
+            intro1.iconWidth = 80
+        }
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: intro1.iconWidth, height: intro1.iconHeight), false, 0)
+        IconsStyleKit.drawLetter(frame: CGRect(x: 0, y: 0, width: intro1.iconWidth, height: intro1.iconHeight), fillBackground: true)
         intro1.iconImageView.image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         intro1.bodyLabel.textAlignment = NSTextAlignment.left
@@ -93,8 +97,12 @@ class Onboarding: NSObject {
 
         intro2.iconHeight = 70
         intro2.iconWidth = 100
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: 100, height: 70), false, 0)
-        IconsStyleKit.drawPostcard(frame: CGRect(x: 0, y: 0, width: 100, height: 70), fillBackground: true)
+        if kDefaultBodyFontSize < 28 {
+            intro2.iconHeight = 56
+            intro2.iconWidth = 80
+        }
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: intro2.iconWidth, height: intro2.iconHeight), false, 0)
+        IconsStyleKit.drawPostcard(frame: CGRect(x: 0, y: 0, width: intro2.iconWidth, height: intro2.iconHeight), fillBackground: true)
         intro2.iconImageView.image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         intro2.bodyLabel.textAlignment = NSTextAlignment.left

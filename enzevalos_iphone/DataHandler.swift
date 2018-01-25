@@ -259,7 +259,7 @@ class DataHandler {
             fatalError("Error initializing mom from: \(modelURL)")
         }
         let psc = NSPersistentStoreCoordinator(managedObjectModel: mom)
-        self.managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        self.managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType) // This is why we have trouble with concurrency: https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/Concurrency.html
         self.managedObjectContext.persistentStoreCoordinator = psc
 
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -402,7 +402,7 @@ class DataHandler {
             }
             search.addToMailaddress(adr)
             pk = search
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 if Logger.logging {
                     var importChannel = "autocrypt"
                     if newGenerated {
@@ -412,7 +412,7 @@ class DataHandler {
                     }
                     Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: true)
                 }
-            }
+//            }
         } else {
             pk = NSEntityDescription.insertNewObject(forEntityName: "PersistentKey", into: managedObjectContext) as! PersistentKey
             pk.addToMailaddress(adr)

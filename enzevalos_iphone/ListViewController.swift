@@ -11,36 +11,36 @@ import Foundation
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l < r
+    case (nil, _?):
+        return true
+    default:
+        return false
+    }
 }
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l > r
+    default:
+        return rhs < lhs
+    }
 }
 
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l >= r
-  default:
-    return !(lhs < rhs)
-  }
+    switch (lhs, rhs) {
+    case let (l?, r?):
+        return l >= r
+    default:
+        return !(lhs < rhs)
+    }
 }
 
 
@@ -153,7 +153,7 @@ class ListViewController: UITableViewController {
             return filteredMails.count
         }
         if let count = contact?.mails.count {
-            return loading ? count + 1: count
+            return loading ? count + 1 : count
         } else {
             return loading ? 1 : 0
         }
@@ -190,6 +190,11 @@ class ListViewController: UITableViewController {
 
         if searchController.isActive && searchController.searchBar.text != "" {
             mail = filteredMails[indexPath.row]
+            if Logger.logging {
+//                Logger.queue.async(flags: .barrier) {
+                    Logger.log(search: self.filteredMails.count, category: self.searchController.searchBar.selectedScopeButtonIndex, opened: "searchedInMailList", keyRecordMailList: self.contact?.addresses)
+                }
+//            }
         } else if indexPath.row >= contact?.mails.count {
             tableView.deselectRow(at: indexPath, animated: true)
             return

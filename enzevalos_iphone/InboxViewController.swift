@@ -83,7 +83,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func addNewMail(mail: PersistentMail?) {
-        if let m = mail{
+        if let m = mail {
             folder.updateRecords(mail: m)
         }
         tableView.reloadData()
@@ -147,14 +147,32 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func callSegueFromCell(_ mail: PersistentMail?) {
+        if isFiltering(), Logger.logging {
+            let categoryIndex = searchController.searchBar.selectedScopeButtonIndex
+//            Logger.queue.async(flags: .barrier) {
+                Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "mail")
+//            }
+        }
         performSegue(withIdentifier: "readMailSegue", sender: mail)
     }
 
     func callSegueFromCell2(_ contact: KeyRecord?) {
+        if isFiltering(), Logger.logging {
+            let categoryIndex = searchController.searchBar.selectedScopeButtonIndex
+//            Logger.queue.async(flags: .barrier) {
+                Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "mailList")
+//            }
+        }
         performSegue(withIdentifier: "mailListSegue", sender: contact)
     }
 
     func callSegueToContact(_ contact: KeyRecord?) {
+        if isFiltering(), Logger.logging {
+            let categoryIndex = searchController.searchBar.selectedScopeButtonIndex
+//            Logger.queue.async(flags: .barrier) {
+                Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "contact")
+//            }
+        }
         performSegue(withIdentifier: "contactSegue", sender: contact)
     }
 
@@ -183,7 +201,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
                             $0.mailAddress == UserManager.loadUserValue(.userAddr) as? String ?? ""
                         })
                     })
-                    if let record = records.filter({$0.isSecure}).first {
+                    if let record = records.filter({ $0.isSecure }).first {
                         DestinationViewController.keyRecord = record
                     } else {
                         let keyID = UserManager.loadUserValue(Attribute.prefSecretKeyID) as! String
@@ -199,7 +217,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     func dismissView() {
         self.dismiss(animated: true, completion: nil)
     }
-    
+
     func searchBarIsEmpty() -> Bool {
         // Returns true if the text is empty or nil
         return searchController.searchBar.text?.isEmpty ?? true
