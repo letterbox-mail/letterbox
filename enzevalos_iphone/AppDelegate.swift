@@ -28,7 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
         
         if UIScreen.main.bounds.height < 700 {
-            kDefaultImageViewSize = 0
+            kDefaultImageViewSize = 20
+            kDefaultTitleFontSize = 33
+            kDefaultBodyFontSize = 23
         }
         
         resetApp()
