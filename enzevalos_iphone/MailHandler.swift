@@ -258,133 +258,134 @@ class MailHandler {
     //logMail should be false, if called from Logger, otherwise 
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false) {
 
-        let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
-        let session = createSMTPSession()
-        let builder = MCOMessageBuilder()
+        if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
+            let session = createSMTPSession()
+            let builder = MCOMessageBuilder()
 
-        createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
+            createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
 
-        var allRec: [String] = []
-        allRec.append(contentsOf: toEntrys)
-        allRec.append(contentsOf: ccEntrys)
-        allRec.append(contentsOf: bccEntrys)
+            var allRec: [String] = []
+            allRec.append(contentsOf: toEntrys)
+            allRec.append(contentsOf: ccEntrys)
+            allRec.append(contentsOf: bccEntrys)
         
-        let fromLogging: Mail_Address = DataHandler.handler.getMailAddress(useraddr, temporary: false) as! Mail_Address
-        var toLogging: [Mail_Address] = []
-        var ccLogging: [Mail_Address] = []
-        var bccLogging: [Mail_Address] = []
+            let fromLogging: Mail_Address = DataHandler.handler.getMailAddress(useraddr, temporary: false) as! Mail_Address
+            var toLogging: [Mail_Address] = []
+            var ccLogging: [Mail_Address] = []
+            var bccLogging: [Mail_Address] = []
         
-        for entry in toEntrys {
-            toLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
-        }
-        for entry in ccEntrys {
-            ccLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
-        }
-        for entry in bccEntrys {
-            bccLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
-        }
+            for entry in toEntrys {
+                toLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
+            }
+            for entry in ccEntrys {
+                ccLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
+            }
+            for entry in bccEntrys {
+                bccLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
+            }
         
-        let ordered = orderReceiver(receiver: allRec, sendEncryptedIfPossible: sendEncryptedIfPossible)
+            let ordered = orderReceiver(receiver: allRec, sendEncryptedIfPossible: sendEncryptedIfPossible)
 
-        let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
-        let sk = DataHandler.handler.prefSecretKey()
+            let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
+            let sk = DataHandler.handler.prefSecretKey()
 
-        var sendData: Data
-        var sendOperation: MCOSMTPSendOperation
-        let pgp = SwiftPGP()
+            var sendData: Data
+            var sendOperation: MCOSMTPSendOperation
+            let pgp = SwiftPGP()
 
-        if let encPGP = ordered[CryptoScheme.PGP], ordered[CryptoScheme.PGP]?.count > 0 {
-            var keyIDs = addKeys(adrs: encPGP)
-            //added own public key here, so we can decrypt our own message to read it in sent-folder
-            keyIDs.append(sk.keyID!)
+            if let encPGP = ordered[CryptoScheme.PGP], ordered[CryptoScheme.PGP]?.count > 0 {
+                var keyIDs = addKeys(adrs: encPGP)
+                //added own public key here, so we can decrypt our own message to read it in sent-folder
+                keyIDs.append(sk.keyID!)
             
-            /*
-             Attach own public key
-             */
-            var missingOwnPublic = false
-            for id in keyIDs{
-                if let key = DataHandler.handler.findKey(keyID: id){
-                    if !key.sentOwnPublicKey{
-                        missingOwnPublic = true
-                        key.sentOwnPublicKey = true
+                /*
+                Attach own public key
+                */
+                var missingOwnPublic = false
+                for id in keyIDs{
+                    if let key = DataHandler.handler.findKey(keyID: id){
+                        if !key.sentOwnPublicKey{
+                            missingOwnPublic = true
+                            key.sentOwnPublicKey = true
+                        }
                     }
                 }
-            }
             
-            var msg = message
-            if missingOwnPublic{
-                if let myPK = pgp.exportKey(id: sk.keyID!, isSecretkey: false, autocrypt: false){
-                    msg = msg + "\n" + myPK
-                }
-            }
-            /* ######## */
-            
-            
-            let cryptoObject = pgp.encrypt(plaintext: "\n" + msg, ids: keyIDs, myId:sk.keyID!)
-            if let encData = cryptoObject.chiphertext{
-                sendData = encData
-                Logger.queue.async(flags: .barrier) {
-                    if Logger.logging && !loggingMail {
-                        let secureAddrsInString = encPGP.map{$0.mailbox}
-                        var secureAddresses: [Mail_Address] = []
-                        for addr in toLogging {
-                            for sec in secureAddrsInString {
-                                if addr.address == sec {
-                                    secureAddresses.append(addr)
-                                }
-                            }
-                        }
-                        for addr in ccLogging {
-                            for sec in secureAddrsInString {
-                                if addr.address == sec {
-                                    secureAddresses.append(addr)
-                                }
-                            }
-                        }
-                        for addr in bccLogging {
-                            for sec in secureAddrsInString {
-                                if addr.address == sec {
-                                    secureAddresses.append(addr)
-                                }
-                            }
-                        }
-                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs)
+                var msg = message
+                if missingOwnPublic{
+                    if let myPK = pgp.exportKey(id: sk.keyID!, isSecretkey: false, autocrypt: false){
+                        msg = msg + "\n" + myPK
                     }
                 }
-                builder.textBody = "Dies ist verschlüsselt!"
-                sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
-                //TODO handle different callbacks
-
-                sendOperation.start(callback)
-                if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && !loggingMail {
-                    createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
-                }
-                if Logger.logging && loggingMail {
-                    createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
-                }
-                
-                builder.textBody = message
-            } else {
-                //TODO do it better
-                callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
-            }
-        }
-
-        if let unenc = ordered[CryptoScheme.UNKNOWN], !loggingMail {
-            if unenc.count > 0 {
-                builder.textBody = message
-                sendData = builder.data()
-                sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
-                //TODO handle different callbacks
-                //TODO add logging call here for the case the full email is unencrypted
-                if unenc.count == allRec.count && !loggingMail {
+                /* ######## */
+            
+            
+                let cryptoObject = pgp.encrypt(plaintext: "\n" + msg, ids: keyIDs, myId:sk.keyID!)
+                if let encData = cryptoObject.chiphertext{
+                    sendData = encData
                     Logger.queue.async(flags: .barrier) {
-                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
+                        if Logger.logging && !loggingMail {
+                            let secureAddrsInString = encPGP.map{$0.mailbox}
+                            var secureAddresses: [Mail_Address] = []
+                            for addr in toLogging {
+                                for sec in secureAddrsInString {
+                                    if addr.address == sec {
+                                        secureAddresses.append(addr)
+                                    }
+                                }
+                            }
+                            for addr in ccLogging {
+                                for sec in secureAddrsInString {
+                                    if addr.address == sec {
+                                        secureAddresses.append(addr)
+                                    }
+                                }
+                            }
+                            for addr in bccLogging {
+                                for sec in secureAddrsInString {
+                                    if addr.address == sec {
+                                        secureAddresses.append(addr)
+                                    }
+                                }
+                            }
+                            Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs)
+                        }
                     }
+                    builder.textBody = "Dies ist verschlüsselt!"
+                    sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
+                    //TODO handle different callbacks
+
+                    sendOperation.start(callback)
+                    if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && !loggingMail {
+                        createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
+                    }
+                    if Logger.logging && loggingMail {
+                        createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
+                    }
+                
+                    builder.textBody = message
+                } else {
+                    //TODO do it better
+                    callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
                 }
-                sendOperation.start(callback)
-                if !loggingMail {
-                    createSendCopy(sendData: sendData)
+            }
+
+            if let unenc = ordered[CryptoScheme.UNKNOWN], !loggingMail {
+                if unenc.count > 0 {
+                    builder.textBody = message
+                    sendData = builder.data()
+                    sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
+                    //TODO handle different callbacks
+                    //TODO add logging call here for the case the full email is unencrypted
+                    if unenc.count == allRec.count && !loggingMail {
+                        Logger.queue.async(flags: .barrier) {
+                            Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n"+message).count, isEncrypted: false, decryptedBodyLength: ("\n"+message).count,     decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [])
+                        }
+                    }
+                    sendOperation.start(callback)
+                    if !loggingMail {
+                        createSendCopy(sendData: sendData)
+                    }
                 }
             }
         }

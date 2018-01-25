@@ -485,7 +485,7 @@ class Onboarding: NSObject {
         fail()
     }
 
-    static func setValues() {
+    static func setValues() -> OnboardingValueState {
 
         if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), !manualSet && mailAddress != "" {
             let guessedUserName = mailAddress.components(separatedBy: "@")[0]
@@ -502,49 +502,18 @@ class Onboarding: NSObject {
                 else if mailAddress.contains("@aol.com") || mailAddress.contains("@games.com") || mailAddress.contains("@love.com") {
                     UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
-            setServerValues(mailaddress: mailAddress)
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
-        }
-        else{ //TODO: REMOVE BEFORE STUDY
+            //TODO: REMOVE BEFORE STUDY
             loadTestAcc()
-            return
+            return setServerValues(mailaddress: mailAddress)
         }
-        if let pw = password.text, pw != "" {
-            UserManager.storeUserValue(pw as AnyObject?, attribute: Attribute.userPW)
+        else{
+            setDefaultValues()
+            return OnboardingValueState.empty
         }
-        if manualSet { // TODO: @Jakob was ist manualSet und kann das weg?
-            if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) {
-                switch mailAddress {
-                case "ullimuelle@web.de":
-                    UserManager.storeUserValue("Ulli Müller" as AnyObject, attribute: Attribute.accountname)
-                case "bob2005@web.de":
-                    UserManager.storeUserValue("Bob" as AnyObject, attribute: Attribute.accountname)
-                case "nchr@enzevalos.de":
-                    UserManager.storeUserValue("NC Human Resources" as AnyObject, attribute: Attribute.accountname)
-                case "ncpayroll@enzevalos.de":
-                    UserManager.storeUserValue("NC Payroll" as AnyObject, attribute: Attribute.accountname)
-                case "idsolutions@enzevalos.de":
-                    UserManager.storeUserValue("Identity Solutions" as AnyObject, attribute: Attribute.accountname)
-                default: break
-                }
-            }
-            UserManager.storeUserValue(imapServer.text as AnyObject?, attribute: Attribute.imapHostname)
-            UserManager.storeUserValue(Int(imapPort.text!) as AnyObject?, attribute: Attribute.imapPort)
-            UserManager.storeUserValue(smtpServer.text as AnyObject?, attribute: Attribute.smtpHostname)
-            UserManager.storeUserValue(Int(smtpPort.text!) as AnyObject?, attribute: Attribute.smtpPort)
-            UserManager.storeUserValue(mailaddress.text as AnyObject?, attribute: Attribute.userAddr)
-            UserManager.storeUserValue(password.text! as AnyObject?, attribute: Attribute.userPW)
-            UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.userName)
-            UserManager.storeUserValue(username.text! as AnyObject?, attribute: Attribute.accountname)
-            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapConnectionType)
-            UserManager.storeUserValue(keyForValue(authenticationRows, value: imapAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapAuthType)
-            UserManager.storeUserValue(keyForValue(transportRows, value: smtpTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpConnectionType)
-            UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
-        }
-
     }
 
-    static func setServerValues(mailaddress: String) {
+    static func setServerValues(mailaddress: String) -> OnboardingValueState {
         let manager = MCOMailProvidersManager.shared()!
         let path = Bundle.main.path(forResource: "providers", ofType: "json")
         manager.registerProviders(withFilename: path)
@@ -643,11 +612,25 @@ class Onboarding: NSObject {
             if let archive = provider.allMailFolderPath() {
                 UserManager.storeUserValue(archive as AnyObject?, attribute: Attribute.archiveFolderPath)
             }
-            
+            return OnboardingValueState.fine
+        }
+        else {
+            setDefaultValues()
+            return OnboardingValueState.noJson
         }
     }
 
-   
+    static func setDefaultValues() {
+        UserManager.storeUserValue("imap.example.de" as AnyObject?, attribute: Attribute.imapHostname)
+        UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
+        UserManager.storeUserValue(993 as AnyObject?, attribute: Attribute.imapPort)
+        UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.imapAuthType)
+        UserManager.storeUserValue("smtp.example.de" as AnyObject?, attribute: Attribute.smtpHostname)
+        UserManager.storeUserValue(MCOConnectionType.startTLS.rawValue as AnyObject?, attribute: Attribute.smtpConnectionType)
+        UserManager.storeUserValue(587 as AnyObject?, attribute: Attribute.smtpPort)
+        UserManager.storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject?, attribute: Attribute.smtpAuthType)
+    }
+    
     static func iterateEnum<T: Hashable>(_: T.Type) -> AnyIterator<T> {
         var i = 0
         return AnyIterator {
