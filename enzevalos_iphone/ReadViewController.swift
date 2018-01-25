@@ -265,6 +265,9 @@ class ReadViewController: UITableViewController {
     @IBAction func reactButton(_ sender: Any) {
         performSegue(withIdentifier: "answerTo", sender: "reactButton")
         reactButton.isEnabled = false
+//      Logger.queue.async(flags: .barrier) {
+            Logger.log(reactTo: mail)
+//      }
     }
 
     @IBAction func markUnreadButton(_ sender: AnyObject) {

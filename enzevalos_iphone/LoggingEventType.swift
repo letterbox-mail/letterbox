@@ -35,5 +35,6 @@ enum LoggingEventType: String {
     indicatorButtonOpen = "indicatorButtonOpen",
     indicatorButtonClose = "indicatorButtonClose",
     showBrokenMail = "showBrokenMail",
+    reactButtonTapped = "reactButtonTapped",
     search = "search"
 }
