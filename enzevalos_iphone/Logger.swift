@@ -227,6 +227,7 @@ class Logger {
         event["cc"] = Logger.resolve(mailAddresses: cc)
         event["bcc"] = Logger.resolve(mailAddresses: bcc)
         event["communicationState"] = Logger.communicationState(subject: subject)
+        event["specialMail"] = Logger.specialMail(subject: subject)
         event["bodyLength"] = bodyLength
         event["isEncrypted"] = isEncrypted
         event["decryptedBodyLength"] = decryptedBodyLength
@@ -505,6 +506,13 @@ class Logger {
         }
 
         return newSubject
+    }
+    
+    static func specialMail(subject: String) -> String {
+        if subject.contains(NSLocalizedString("inviteSubject", comment: "subject of invitation email")) {
+            return "invitation"
+        }
+        return ""
     }
 
     //takes backendFolderPath
