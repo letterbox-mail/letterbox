@@ -550,8 +550,8 @@ class MailHandler {
 
     func addFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String?) {
         var folderName = INBOX
-        if folder != nil{
-            folderName = folder!
+        if let folder = folder{
+            folderName = folder
         }
         let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.set, flags: flags)
         op?.start { error -> Void in
