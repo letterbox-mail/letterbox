@@ -10,16 +10,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Invitation Dialog View Controller-->
+        <!--Dialog View Controller-->
         <scene sceneID="5AX-K0-gpJ">
             <objects>
-                <viewController id="mi4-xF-5qt" customClass="InvitationDialogViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mi4-xF-5qt" customClass="DialogViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oY6-Oy-6Uq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H9Q-Ab-s6V">
-                                <rect key="frame" x="42" y="160.5" width="290" height="346.5"/>
+                                <rect key="frame" x="42" y="133.5" width="290" height="400.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWO-wf-Sxa">
                                         <rect key="frame" x="0.0" y="0.5" width="290" height="100"/>
@@ -29,7 +29,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ypW-3y-x5z">
-                                        <rect key="frame" x="32" y="51.5" width="226" height="279"/>
+                                        <rect key="frame" x="32" y="51.5" width="226" height="333"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="izX-xq-ehN">
                                                 <rect key="frame" x="64" y="0.0" width="98" height="98"/>
@@ -57,7 +57,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label - Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ca6-Al-B4r">
-                                                <rect key="frame" x="-32" y="150.5" width="0.0" height="20.5"/>
+                                                <rect key="frame" x="113.5" y="150.5" width="0.0" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -74,8 +74,16 @@
                                                     <action selector="ctaButtonTappedWithSender:" destination="mi4-xF-5qt" eventType="touchUpInside" id="WHF-VT-cfj"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Al-eH-4wQ">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bs4-bw-EoQ">
                                                 <rect key="frame" x="70" y="241" width="86" height="38"/>
+                                                <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="additionalButtonTappedWithSender:" destination="mi4-xF-5qt" eventType="touchUpInside" id="b5l-Li-Rs6"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Al-eH-4wQ">
+                                                <rect key="frame" x="70" y="295" width="86" height="38"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
@@ -106,6 +114,7 @@
                         <viewLayoutGuide key="safeArea" id="QVB-pY-Cxl"/>
                     </view>
                     <connections>
+                        <outlet property="additionalButton" destination="bs4-bw-EoQ" id="gfI-J9-jzh"/>
                         <outlet property="ctaButton" destination="7HJ-Hs-FLY" id="W6i-R2-Spa"/>
                         <outlet property="dialogView" destination="H9Q-Ab-s6V" id="Hr9-Zc-dM4"/>
                         <outlet property="dismissButton" destination="1Al-eH-4wQ" id="KDz-rS-z94"/>
@@ -113,6 +122,7 @@
                         <outlet property="iconImageView" destination="DGr-j0-hTi" id="Z2G-IF-e7o"/>
                         <outlet property="messageLabel" destination="Ca6-Al-B4r" id="XLm-Sj-cLD"/>
                         <outlet property="titleLabel" destination="XvK-82-1UB" id="VBC-Xa-6e9"/>
+                        <outlet property="titleView" destination="jWO-wf-Sxa" id="BFH-Xs-TmO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZVk-cy-Kdt" userLabel="First Responder" sceneMemberID="firstResponder"/>

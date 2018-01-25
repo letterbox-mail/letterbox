@@ -1,5 +1,5 @@
 //
-//  InvitationDialogViewController.swift
+//  DialogViewController.swift
 //  enzevalos_iphone
 //
 //  Created by Konstantin Deichmann on 08.01.18.
@@ -8,11 +8,12 @@
 
 import UIKit
 
-class InvitationDialogViewController					: UIViewController {
+class DialogViewController								: UIViewController {
 
 	// MARK: - IBOutlet
 
 	@IBOutlet fileprivate weak var dialogView			: UIView?
+	@IBOutlet fileprivate weak var titleView			: UIView?
 
 	@IBOutlet fileprivate weak var iconImageView		: UIImageView?
 	@IBOutlet fileprivate weak var iconBackgroundView	: UIView?
@@ -20,7 +21,14 @@ class InvitationDialogViewController					: UIViewController {
 	@IBOutlet fileprivate weak var messageLabel			: UILabel?
 
 	@IBOutlet fileprivate weak var ctaButton			: UIButton?
+	@IBOutlet fileprivate weak var additionalButton		: UIButton?
 	@IBOutlet fileprivate weak var dismissButton		: UIButton?
+
+	// MARK: - Action
+
+	var ctaAction										: (() -> Void)?
+	var additionalAction								: (() -> Void)?
+	var dismissAction									: (() -> Void)?
 
 	// MARK: - Life Cycle
 
@@ -40,7 +48,7 @@ class InvitationDialogViewController					: UIViewController {
 
 // MARK: - Layout
 
-extension InvitationDialogViewController {
+extension DialogViewController {
 
 	fileprivate func layoutSubviews() {
 
@@ -56,11 +64,12 @@ extension InvitationDialogViewController {
 		self.ctaButton?.setTitleColor(.white, for: .normal)
 		self.ctaButton?.roundRect(5)
 		self.dismissButton?.setTitleColor(UIColor.Invitation.gray, for: .normal)
+		self.additionalButton?.setTitleColor(UIColor.Invitation.gray, for: .normal)
 		self.titleLabel?.textColor = UIColor.Invitation.gray
 		self.messageLabel?.textColor = UIColor.Invitation.gray
 	}
 
-	func layout(for option: InvitationOption) {
+	func layout(for option: DialogOption) {
 		self.titleLabel?.isHidden = (option.title == nil)
 		self.titleLabel?.text = option.title
 		self.messageLabel?.isHidden = (option.message == nil)
@@ -69,30 +78,37 @@ extension InvitationDialogViewController {
 		self.ctaButton?.setTitle(option.ctaButtonTitle, for: .normal)
 		self.dismissButton?.isHidden = (option.dismissButtonTitle == nil)
 		self.dismissButton?.setTitle(option.dismissButtonTitle, for: .normal)
+		self.additionalButton?.isHidden = (option.additionActionButtonTitle == nil)
+		self.additionalButton?.setTitle(option.additionActionButtonTitle, for: .normal)
+		self.titleView?.backgroundColor = option.color
+		self.iconImageView?.image = option.icon?.withRenderingMode(.alwaysTemplate)
+		self.ctaButton?.backgroundColor = option.color
 	}
 }
 
 // MARK: - Presentation
 
-extension InvitationDialogViewController {
+extension DialogViewController {
 
-	static func present(on viewController: UIViewController, animated: Bool) {
+	static func present(on viewController: UIViewController, with option: DialogOption) -> DialogViewController? {
 
-		guard let invitationViewController = UIStoryboard(name: "InvitationDialog", bundle: nil).instantiateInitialViewController() as? InvitationDialogViewController else {
-			return
+		guard let dialogViewController = UIStoryboard(name: "Dialog", bundle: nil).instantiateInitialViewController() as? DialogViewController else {
+			return nil
 		}
 
-		invitationViewController.view.isOpaque = false
-		invitationViewController.modalPresentationStyle = .overCurrentContext
-		invitationViewController.layout(for: .welcome)
+		dialogViewController.view.isOpaque = false
+		dialogViewController.modalPresentationStyle = .overCurrentContext
+		dialogViewController.layout(for: option)
 
-		viewController.present(invitationViewController, animated: false, completion: nil)
+		viewController.present(dialogViewController, animated: false, completion: nil)
+
+		return dialogViewController
 	}
 }
 
 // MARK: - Animation
 
-extension InvitationDialogViewController {
+extension DialogViewController {
 
 	func showDialog(_ animated: Bool) {
 
@@ -122,17 +138,32 @@ extension InvitationDialogViewController {
 
 // MARK: - IBAction
 
-extension InvitationDialogViewController {
+extension DialogViewController {
 
 	@IBAction private func ctaButtonTapped(sender: Any) {
+
 		self.hideDialog(true) { [weak self] in
-			self?.dismiss(animated: false, completion: nil)
+			self?.dismiss(animated: false, completion: { [weak self] in
+				self?.ctaAction?()
+			})
+		}
+	}
+
+	@IBAction private func additionalButtonTapped(sender: Any) {
+
+		self.hideDialog(true) { [weak self] in
+			self?.dismiss(animated: false, completion: { [weak self] in
+				self?.additionalAction?()
+			})
 		}
 	}
 
 	@IBAction private func dismissButtonTapped(sender: Any) {
+
 		self.hideDialog(true) { [weak self] in
-			self?.dismiss(animated: false, completion: nil)
+			self?.dismiss(animated: false, completion: { [weak self] in
+				self?.dismissAction?()
+			})
 		}
 	}
 }

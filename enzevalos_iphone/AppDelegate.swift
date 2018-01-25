@@ -26,7 +26,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
-
+        
+        if UIScreen.main.bounds.height < 700 {
+            kDefaultImageViewSize = 20
+            kDefaultTitleFontSize = 33
+            kDefaultBodyFontSize = 23
+        }
+        
         resetApp()
         HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
@@ -64,8 +70,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func credentialCheck() {
         self.window?.rootViewController = Onboarding.checkConfigView()
-        Onboarding.setValues()
-        if !Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork) {
+        if Onboarding.setValues() != OnboardingValueState.fine {
+            credentialsFailed()
+            return
+        }
+        else if !Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork) {
             self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
             return
         }
@@ -73,7 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func credentialsFailed() {
         Onboarding.credentialFails += 1
-        if Onboarding.credentialFails >= 3 {
+        if Onboarding.credentialFails >= 2 {
             Onboarding.manualSet = true
             self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
         } else {
