@@ -244,7 +244,7 @@ class MailHandler {
         builder.header.setExtraHeaderValue("v0", forName: SETUPMESSAGE)
         
         
-        builder.addAttachment(MCOAttachment.init(text: NSLocalizedString("This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices \n\n", comment: "Message when sending the secret key")))
+        builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices \n\n"))
         
         // See: https://autocrypt.org/level1.html#autocrypt-setup-message
         let keyAttachment = MCOAttachment.init(text: key)
@@ -351,7 +351,7 @@ class MailHandler {
                         Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs)
                     }
                 }
-                builder.textBody = "Dies ist verschlüsselt!"
+
                 sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                 //TODO handle different callbacks
 
