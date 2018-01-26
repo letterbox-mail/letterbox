@@ -145,6 +145,8 @@
 "answer" = "Antworten";
 "couldNotDecryptHeadline" = "Entschlüsseln nicht möglich";
 "couldNotDecryptText" = "Diese Nachricht konnte nicht entschlüsselt werden. Vielleicht hat der Absender den falschen Schlüssel verwendet. Falls du von diesem Absender eine Nachricht erwartest könntest du versuchen auf einem anderen Weg in Verbindung zu treten.\n";
+"newKeyHeadline" = "Neuer Schlüssel";
+"newKeyText" = "Diese Nachricht wurde mit einem neuen Schlüssel verbunden. Dies kann passieren wenn der Gesprächspartner ein neues Gerät hat oder wenn ein Dritter diese Nachricht gefälscht hat.";
 "inviteContacts" = "Unsichere Kontakte einladen";
 "inviteSubject" = "Lass uns unsere E-Mails verschlüsseln!";
 "inviteText" = "Hallo!\n\nEs gibt eine neue App die es super einfach macht verschlüsselt über E-Mail zu kommunizieren. Sie heißt Letterbox und wird aktuell in einer wissenschaftlichen Studie getestet.\n\nEs wäre toll wenn du sie mal ausprobieren würdest!\n\nGehe einfach auf https://userpage.fu-berlin.de/wieseoli/letterbox um mitzumachen.\n\nViele Grüße!";
