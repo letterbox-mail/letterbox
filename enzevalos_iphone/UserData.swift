@@ -171,7 +171,7 @@ struct UserManager {
         }
     }
 
-    static func loadImapAuthType() -> MCOAuthType {
+    static func loadImapAuthType() -> MCOAuthType{
         if let auth = UserManager.loadUserValue(Attribute.imapAuthType) as? Int, auth != 0 {
             return MCOAuthType.init(rawValue: auth)
         }
