@@ -23,11 +23,11 @@ class KeyViewController: UIViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
         openDate = Date()
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             if let record = self.record, let keyID = record.keyID {
                 Logger.log(keyViewOpen: keyID)
             }
-        }
+//        }
         copyButton.setTitle(NSLocalizedString("copyKey", comment: ""), for: .normal)
         copyButton.setTitle(NSLocalizedString("copied", comment: "the key has been copied to the clipboard"), for: .disabled)
     }
@@ -47,11 +47,11 @@ class KeyViewController: UIViewController {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             if let record = self.record, let keyID = record.keyID {
                 Logger.log(keyViewClose: keyID, secondsOpened: Int(Date().timeIntervalSince(self.openDate)))
             }
-        }
+//        }
         super.viewDidDisappear(animated)
     }
 }

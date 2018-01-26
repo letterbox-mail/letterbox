@@ -24,7 +24,7 @@ extension PersistentMail {
     public var flag: MCOMessageFlag{
         set {
             if newValue != flag{
-                AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid, flags: newValue, folder: nil)
+                AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid, flags: newValue, folder: folder.name)
                 self.willChangeValue(forKey: "flag")
                 self.setPrimitiveValue(newValue.rawValue, forKey: "flag")
                 self.didChangeValue(forKey: "flag")
@@ -47,12 +47,21 @@ extension PersistentMail {
     @NSManaged public var isEncrypted: Bool
     @NSManaged public var isSigned: Bool
     @NSManaged public var isCorrectlySigned: Bool
-    @NSManaged public var keyID: String?
     @NSManaged public var unableToDecrypt: Bool
     @NSManaged public var subject: String?
     @NSManaged public var folder: Folder
     @NSManaged public var firstKey: PersistentKey?
+    @NSManaged public var signedKey: PersistentKey?
 
+    public var keyID: String?{
+        get{
+            if let key = signedKey{
+                return key.keyID
+            }
+            return nil
+        }
+    }
+    
     public var trouble: Bool{
         set {
             self.willChangeValue(forKey: "trouble")
@@ -90,7 +99,6 @@ extension PersistentMail {
                 self.setValue(adr, forKey: "from" )
                 self.didChangeValue(forKey: "from")
             }
-            
         }
         get {
             self.willAccessValue(forKey: "from")

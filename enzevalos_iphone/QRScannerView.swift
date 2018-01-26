@@ -113,9 +113,9 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
     }
 
     @IBAction func close(_ sender: Any) {
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             Logger.log(verify: self.keyId ?? "noKeyID", open: false, success: false)
-        }
+//        }
         dismiss(animated: true, completion: nil)
     }
 

@@ -38,9 +38,9 @@ class BadgeCase: UICollectionViewController, UICollectionViewDelegateFlowLayout 
             self.badgeSelected()
         }
         let badges = GamificationData.sharedInstance.badges
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             Logger.log(badgeCaseViewOpen: badges)
-        }
+//        }
     }
 
 
@@ -181,9 +181,9 @@ class BadgeCase: UICollectionViewController, UICollectionViewDelegateFlowLayout 
 
     override func viewWillDisappear(_ animated: Bool) {
         let badges = GamificationData.sharedInstance.badges
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             Logger.log(badgeCaseViewClose: badges)
-        }
+//        }
         super.viewWillDisappear(animated)
     }
 

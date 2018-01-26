@@ -191,10 +191,10 @@ class ListViewController: UITableViewController {
         if searchController.isActive && searchController.searchBar.text != "" {
             mail = filteredMails[indexPath.row]
             if Logger.logging {
-                Logger.queue.async(flags: .barrier) {
+//                Logger.queue.async(flags: .barrier) {
                     Logger.log(search: self.filteredMails.count, category: self.searchController.searchBar.selectedScopeButtonIndex, opened: "searchedInMailList", keyRecordMailList: self.contact?.addresses)
                 }
-            }
+//            }
         } else if indexPath.row >= contact?.mails.count {
             tableView.deselectRow(at: indexPath, animated: true)
             return

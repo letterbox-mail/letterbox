@@ -21,6 +21,15 @@ public class Folder: NSManagedObject {
         }
     }
     
+    var counterMails: Int{
+        get{
+            if let mails = self.mails{
+                return mails.count
+            }
+            return 0
+        }
+    }
+    
     var frontendName: String {
         get {
             return UserManager.convertToFrontendFolderPath(from: name)
@@ -143,11 +152,7 @@ public class Folder: NSManagedObject {
                     }
                 }
                 storedRecords?.sort()
-                
             }
         }
-        
     }
-    
-    
 }

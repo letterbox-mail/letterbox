@@ -57,9 +57,9 @@ class ContactViewController: UIViewController {
             prepareContactSheet()
 
             otherRecords = con.ezContact.records.filter({ $0 != keyRecord })
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 Logger.log(contactViewOpen: self.keyRecord, otherRecords: self.otherRecords, isUser: self.isUser)
-            }
+//            }
         }
     }
 
@@ -72,9 +72,9 @@ class ContactViewController: UIViewController {
 
     func dismissView() {
         self.dismiss(animated: true, completion: nil)
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             Logger.log(contactViewClose: self.keyRecord, otherRecords: self.otherRecords, isUser: self.isUser)
-        }
+//        }
     }
 
     func prepareContactSheet() {
@@ -232,9 +232,9 @@ class ContactViewController: UIViewController {
                 DestinationViewController.fingerprint = sender as? String
                 DestinationViewController.callback = verifySuccessfull
                 DestinationViewController.keyId = self.keyRecord?.keyID //used for logging TODO @jakob: is this suficient? The keyID might also be in the MailAddress
-                Logger.queue.async(flags: .barrier) {
+//                Logger.queue.async(flags: .barrier) {
                     Logger.log(verify: self.keyRecord?.keyID ?? "noKeyID", open: true)
-                }
+//                }
             }
         }
     }
@@ -245,10 +245,10 @@ class ContactViewController: UIViewController {
         } else {
             addressWithKey?.Key?.verify()
         }
-        Logger.queue.async(flags: .barrier) {
+//        Logger.queue.async(flags: .barrier) {
             let keyId: String = self.keyRecord?.keyID ?? "noKeyID"
             Logger.log(verify: keyId, open: false, success: true)
-        }
+//        }
         tableView.reloadData()
     }
 }

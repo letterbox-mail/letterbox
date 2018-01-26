@@ -181,7 +181,8 @@ open class KeyRecord: Record {
 
     
     func mailsInFolder(folder: Folder?) -> [PersistentMail]{
-        return DataHandler.handler.allMailsInFolder(key: keyID, contact: ezContact, folder: folder, isSecure: isSecure)
+        let folderMails = DataHandler.handler.allMailsInFolder(key: keyID, contact: ezContact, folder: folder, isSecure: isSecure)
+        return folderMails
     }
 
    
