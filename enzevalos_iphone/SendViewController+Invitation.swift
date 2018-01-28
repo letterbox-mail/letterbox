@@ -12,13 +12,49 @@ import UIKit
 
 struct InvitationSelection {
 
-	var selectedWords = Set<NSRange>()
+	var selectedWords 	= Set<NSRange>()
+	var showsButton		= false
 }
 
 // MARK: - SendViewController Extension
 
 extension SendViewController {
 
+	fileprivate func hideMarkButton() {
+
+		guard (self.invitationSelection.showsButton == true) else {
+			return
+		}
+
+		self.invitationSelection.showsButton = false
+		self.scrollview.contentOffset.y -= 50
+	}
+
+	fileprivate func showMarkButton() {
+
+		guard (self.invitationSelection.showsButton == false) else {
+			return
+		}
+
+		self.invitationSelection.showsButton = true
+		self.scrollview.contentOffset.y += 50
+	}
+
+	func layoutInvitationButton() {
+		
+	}
+
+	func htmlMessage() -> String {
+
+		guard
+			let resource = Bundle.main.url(forResource: "invitationText", withExtension: "html"),
+			let data = try? Data(contentsOf: resource),
+			let htmlString = String(data: data, encoding: .utf8) else {
+				return self.textView.text
+		}
+
+		return String(format: htmlString, self.textView.text)
+	}
 }
 
 // MARK: - MarkHandler
@@ -31,6 +67,12 @@ extension SendViewController {
 	/// - Parameter textView: that changed it's selected Text
 	fileprivate func updateMarkedText(for textView: UITextView) {
 
+		guard (textView.selectedRange.length != 0) else {
+			self.hideMarkButton()
+			return
+		}
+
+		self.showMarkButton()
 	}
 
 	/// Whenever text changes are made, the invitation Selection needs to be updated.

@@ -38,6 +38,9 @@ class SendViewController: UIViewController {
     @IBOutlet weak var textViewLeading: NSLayoutConstraint!
     @IBOutlet weak var scrollViewBottom: NSLayoutConstraint!
     @IBOutlet var scrollviewRecognizer: UITapGestureRecognizer!
+
+	@IBOutlet weak var invitationEncryptButton	: UIButton?
+	@IBOutlet weak var invitationDecryptButton	: UIButton?
     
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
