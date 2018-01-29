@@ -227,6 +227,35 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
+    
+    static func log(sendViewClose mail: EphemeralMail?) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.sendViewClose.rawValue
+        if let mail = mail {
+            event = extract(from: mail, event: event)
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(createDraft to: [Mail_Address?], cc: [Mail_Address?], bcc: [Mail_Address?], subject: String, bodyLength: Int, isEncrypted: Bool, isSigned: Bool, myKeyID: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.createDraft.rawValue
+        
+        
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
 
     static func log(sent from: Mail_Address, to: [Mail_Address], cc: [Mail_Address], bcc: [Mail_Address], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [Mail_Address] = [], encryptedForKeyIDs: [String] = []) {
 

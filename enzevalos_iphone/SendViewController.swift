@@ -175,6 +175,13 @@ class SendViewController: UIViewController {
         updateNavigationBar()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(sendViewClose: prefilledMail)
+//        }
+        super.viewWillDisappear(animated)
+    }
+    
     override func willMove(toParentViewController parent: UIViewController?) {
         super.willMove(toParentViewController: parent)
 

@@ -351,7 +351,7 @@ class MailHandler {
                             Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs)
                         }
 //					  }
-                    builder.textBody = "Dies ist verschlüsselt!"
+
                     sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                     //TODO handle different callbacks
 
@@ -362,20 +362,6 @@ class MailHandler {
                     if Logger.logging && loggingMail {
                         createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                     }
-                }
-
-                sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
-                //TODO handle different callbacks
-
-                sendOperation.start(callback)
-                if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && !loggingMail {
-                    createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
-                }
-                if Logger.logging && loggingMail {
-                    createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
-                }
-                
-                    builder.textBody = message
                 } else {
                     //TODO do it better
                     callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
@@ -452,6 +438,25 @@ class MailHandler {
         if keys.count > 0 && allRec.reduce(true, {$0 && DataHandler.handler.hasKey(adr: $1)}) {
             let mykey = keys[0] //TODO: multiple privatekeys
             let receiverIds = [mykey.keyID] as! [String]
+            if Logger.logging {
+                var to: [Mail_Address?] = []
+                for addr in toEntrys {
+                    to.append(DataHandler.handler.findMailAddress(adr: addr))
+                }
+                
+                var cc: [Mail_Address?] = []
+                for addr in ccEntrys {
+                    cc.append(DataHandler.handler.findMailAddress(adr: addr))
+                }
+                
+                var bcc: [Mail_Address?] = []
+                for addr in bccEntrys {
+                    bcc.append(DataHandler.handler.findMailAddress(adr: addr))
+                }
+//                Logger.queue.async(flags: .barrier) {
+                Logger.log(createDraft: to, cc: cc, bcc: bcc, subject: subject, bodyLength: message.count, isEncrypted: true, isSigned: true, myKeyID: mykey.keyID ?? "")
+//                }
+            }
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: receiverIds, myId: mykey.keyID!)
             if let encData = cryptoObject.chiphertext {
                 sendData = builder.openPGPEncryptedMessageData(withEncryptedData: encData)
@@ -471,6 +476,25 @@ class MailHandler {
             }
         }
         else {
+            if Logger.logging {
+                var to: [Mail_Address?] = []
+                for addr in toEntrys {
+                    to.append(DataHandler.handler.findMailAddress(adr: addr))
+                }
+                
+                var cc: [Mail_Address?] = []
+                for addr in ccEntrys {
+                    cc.append(DataHandler.handler.findMailAddress(adr: addr))
+                }
+                
+                var bcc: [Mail_Address?] = []
+                for addr in bccEntrys {
+                    bcc.append(DataHandler.handler.findMailAddress(adr: addr))
+                }
+//                Logger.queue.async(flags: .barrier) {
+                Logger.log(createDraft: to, cc: cc, bcc: bcc, subject: subject, bodyLength: message.count, isEncrypted: false, isSigned: false, myKeyID: "")
+//                }
+            }
             builder.textBody = message
             sendData = builder.data()
             
