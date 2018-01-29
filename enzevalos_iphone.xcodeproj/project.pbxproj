@@ -276,6 +276,7 @@
 		476373C21E09BA88004D5EFE /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
 		47691A8A1ECB56D1004BCFC5 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
 		47691A8C1ECC3EC7004BCFC5 /* EphemeralMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */; };
+		47891F0D201B7CD4004CD1F0 /* LogInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47891F0C201B7CD4004CD1F0 /* LogInTests.swift */; };
 		47953AA91FD7000200D4631A /* bitcoinde.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47953AA81FD7000200D4631A /* bitcoinde.asc */; };
 		47953AAA1FD7000200D4631A /* bitcoinde.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47953AA81FD7000200D4631A /* bitcoinde.asc */; };
 		479BBDDA1EFEA17900A2107C /* bob_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD81EFEA17900A2107C /* bob_enzevalos_public.asc */; };
@@ -573,6 +574,7 @@
 		476373C11E09BA88004D5EFE /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		47691A891ECB56D1004BCFC5 /* Mail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
 		47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralMail.swift; sourceTree = "<group>"; };
+		47891F0C201B7CD4004CD1F0 /* LogInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInTests.swift; sourceTree = "<group>"; };
 		47953AA81FD7000200D4631A /* bitcoinde.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bitcoinde.asc; sourceTree = "<group>"; };
 		479BBDD81EFEA17900A2107C /* bob_enzevalos_public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bob_enzevalos_public.asc; path = keys/bob_enzevalos_public.asc; sourceTree = "<group>"; };
 		479BBDD91EFEA17900A2107C /* alice_enzevalos_public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = alice_enzevalos_public.asc; path = keys/alice_enzevalos_public.asc; sourceTree = "<group>"; };
@@ -1190,6 +1192,7 @@
 				A13526921D955BE000D3BFE1 /* Info.plist */,
 				F1E918D61FBDEECA00D60418 /* LoggerTests.swift */,
 				3EC35F2F2003838E008BDF95 /* InvitationTests.swift */,
+				47891F0C201B7CD4004CD1F0 /* LogInTests.swift */,
 			);
 			path = enzevalos_iphoneTests;
 			sourceTree = "<group>";
@@ -2149,6 +2152,7 @@
 				A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */,
 				8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */,
 				3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */,
+				47891F0D201B7CD4004CD1F0 /* LogInTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
