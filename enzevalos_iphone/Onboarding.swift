@@ -501,14 +501,14 @@ class Onboarding: NSObject {
             if mailAddress.contains("@gmail") || mailAddress.contains("@googlemail") {
                 UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
-                else if mailAddress.contains("@gmx") {
-                    UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            else if mailAddress.contains("@gmx") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
-                else if mailAddress.contains("@posteo") {
-                    UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            else if mailAddress.contains("@posteo") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
-                else if mailAddress.contains("@aol.com") || mailAddress.contains("@games.com") || mailAddress.contains("@love.com") {
-                    UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
+            else if mailAddress.contains("@aol.com") || mailAddress.contains("@games.com") || mailAddress.contains("@love.com") {
+                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
             //TODO: REMOVE BEFORE STUDY
