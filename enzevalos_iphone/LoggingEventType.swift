@@ -25,6 +25,8 @@ enum LoggingEventType: String {
     overviewGeneral = "overviewGeneral",
     keyViewOpen = "keyViewOpen",
     keyViewClose = "keyViewClose",
+    sendViewOpen = "sendViewOpen",
+    sendViewClose = "sendViewClose",
     contactViewOpen = "contactViewOpen",
     contactViewClose = "contactViewClose",
     badgeCaseViewOpen = "badgeCaseViewOpen",

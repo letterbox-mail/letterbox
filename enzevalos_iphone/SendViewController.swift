@@ -159,6 +159,10 @@ class SendViewController: UIViewController {
         updateNavigationBar()
 
         sendEncryptedIfPossible = currentSecurityState
+        
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(sendViewOpen: prefilledMail)
+//        }
     }
 
     deinit {

@@ -212,6 +212,21 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
+    
+    static func log(sendViewOpen mail: EphemeralMail?) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.sendViewOpen.rawValue
+        if let mail = mail {
+            event = extract(from: mail, event: event)
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
 
     static func log(sent from: Mail_Address, to: [Mail_Address], cc: [Mail_Address], bcc: [Mail_Address], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [Mail_Address] = [], encryptedForKeyIDs: [String] = []) {
 
@@ -495,6 +510,26 @@ class Logger {
         event["trouble"] = mail.trouble
         event["folder"] = Logger.resolve(folder: mail.folder)
 
+        return event
+    }
+    
+    static fileprivate func extract(from mail: EphemeralMail, event: [String: Any]) -> [String: Any] {
+        var event = event
+        event["to"] = Logger.resolve(mailAddresses: mail.to)
+        event["cc"] = Logger.resolve(mailAddresses: mail.cc ?? NSSet())
+        event["bcc"] = Logger.resolve(mailAddresses: mail.bcc ?? NSSet())
+        event["communicationState"] = Logger.communicationState(subject: mail.subject ?? "")
+        event["specialMail"] = Logger.specialMail(subject: mail.subject ?? "")
+        event["bodyLength"] = (mail.body ?? "").count
+        //TODO:
+        //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
+        //event["myKeyID"] = Logger.resolve(keyID: myKeyID)
+        
+        
+        
+        //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
+        //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        
         return event
     }
 
