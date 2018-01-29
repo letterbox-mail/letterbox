@@ -805,7 +805,7 @@ NS_ASSUME_NONNULL_BEGIN
             return nil;
         }
         
-        let compressedPacket = [[PGPCompressedPacket alloc] initWithData:literalPacketData type:PGPCompressionBZIP2];
+        let compressedPacket = [[PGPCompressedPacket alloc] initWithData:literalPacketData type:PGPCompressionZIP];
         content = [compressedPacket export:error];
         if (error && *error) {
             return nil;

@@ -643,9 +643,9 @@ class SendViewController: UIViewController {
         let toEntrys = toText.mailTokens
         let ccEntrys = ccText.mailTokens
         let subject = subjectText.inputText()!
-        let message = textView.text!
+		let message: String = (self.htmlMessage() ?? self.textView.text)
 
-        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend)
+		mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (self.htmlMessage() != nil))
     }
 }
 

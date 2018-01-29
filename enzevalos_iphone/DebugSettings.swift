@@ -25,7 +25,6 @@ func setupStudyPublicKeys(studyMode: Bool){
     }
 }
 
-
 func loadTestAcc(){
    //loadBobEnzevalos()
     loadAlice2005()

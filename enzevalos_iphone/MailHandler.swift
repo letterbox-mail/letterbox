@@ -256,7 +256,7 @@ class MailHandler {
     }
     
     //logMail should be false, if called from Logger, otherwise 
-    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false) {
+	func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, isHTMLContent: Bool = false) {
 
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
@@ -351,7 +351,7 @@ class MailHandler {
                             Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject,  bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n"+message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs)
                         }
 //					  }
-                    builder.textBody = "Dies ist verschlüsselt!"
+
                     sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
                     //TODO handle different callbacks
 
@@ -362,8 +362,12 @@ class MailHandler {
                     if Logger.logging && loggingMail {
                         createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                     }
-                
-                    builder.textBody = message
+
+					if (isHTMLContent == true) {
+						builder.htmlBody = message
+					} else {
+						builder.textBody = message
+					}
                 } else {
                     //TODO do it better
                     callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
@@ -372,7 +376,12 @@ class MailHandler {
 
             if let unenc = ordered[CryptoScheme.UNKNOWN], !loggingMail {
                 if unenc.count > 0 {
-                    builder.textBody = message
+					if (isHTMLContent == true) {
+						builder.htmlBody = message
+					} else {
+						builder.textBody = message
+					}
+
                     sendData = builder.data()
                     sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
                     //TODO handle different callbacks

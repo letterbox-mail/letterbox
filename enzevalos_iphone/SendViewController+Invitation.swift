@@ -44,7 +44,7 @@ extension SendViewController {
 		
 	}
 
-	func htmlMessage() -> String {
+	func htmlMessage() -> String? {
 
 		guard
 			let resource = Bundle.main.url(forResource: "invitationText", withExtension: "html"),
@@ -53,7 +53,7 @@ extension SendViewController {
 				return self.textView.text
 		}
 
-		return String(format: htmlString, self.textView.text)
+		return nil //String(format: htmlString, self.textView.text)
 	}
 }
 
