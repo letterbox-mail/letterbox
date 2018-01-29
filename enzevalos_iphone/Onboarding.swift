@@ -511,6 +511,10 @@ class Onboarding: NSObject {
                 UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
             }
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
+            if let pw = password.text{
+                print(pw)
+                UserManager.storeUserValue(pw as AnyObject, attribute: Attribute.userPW)
+            }
             //TODO: REMOVE BEFORE STUDY
             loadTestAcc()
             return setServerValues(mailaddress: mailAddress)
@@ -525,15 +529,6 @@ class Onboarding: NSObject {
         let manager = MCOMailProvidersManager.shared()!
         let path = Bundle.main.path(forResource: "providers", ofType: "json")
         manager.registerProviders(withFilename: path)
-
-        //------- DEBUG -------
-        /*if let provider = manager.provider(forEmail: mailaddress) {
-            if let imap = (provider.imapServices() as? [MCONetService]), let smtp = (provider.smtpServices() as? [MCONetService]) {
-                print(imap)
-                print(smtp)
-            }
-        }*/
-        //------- DEBUG -------
 
         if let provider = manager.provider(forEmail: mailaddress), let imap = (provider.imapServices() as? [MCONetService]), imap != [], let smtp = (provider.smtpServices() as? [MCONetService]), smtp != [] {
             let imapService = imap[0]
