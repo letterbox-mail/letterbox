@@ -495,34 +495,35 @@ class Onboarding: NSObject {
 
     static func setValues() -> OnboardingValueState {
 
-        if let mailAddress = mailaddress.text?.lowercased().trimmingCharacters(in: .whitespacesAndNewlines), !manualSet && mailAddress != "" {
-            let guessedUserName = mailAddress.components(separatedBy: "@")[0]
+        if !manualSet { //manualSet is true if vales were set by the detailOnboardingView
+            let mailAddress = (mailaddress.text ?? "").lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+            var guessedUserName = ""
+            if mailAddress.components(separatedBy: "@").count >= 1 {
+                guessedUserName = mailAddress.components(separatedBy: "@")[0]
+            }
             UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
-            if mailAddress.contains("@gmail") || mailAddress.contains("@googlemail") {
-                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
-            }
-            else if mailAddress.contains("@gmx") {
-                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
-            }
-            else if mailAddress.contains("@posteo") {
-                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
-            }
-            else if mailAddress.contains("@aol.com") || mailAddress.contains("@games.com") || mailAddress.contains("@love.com") {
-                UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userName)
-            }
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
-            if let pw = password.text{
-                print(pw)
-                UserManager.storeUserValue(pw as AnyObject, attribute: Attribute.userPW)
-            }
+            UserManager.storeUserValue((password.text ?? "") as AnyObject?, attribute: Attribute.userPW)
             //TODO: REMOVE BEFORE STUDY
             loadTestAcc()
             return setServerValues(mailaddress: mailAddress)
         }
-        else{
-            setDefaultValues()
-            return OnboardingValueState.empty
+        else {
+            UserManager.storeUserValue(imapServer.text as AnyObject?, attribute: Attribute.imapHostname)
+            UserManager.storeUserValue(Int(imapPort.text ?? "143") as AnyObject?, attribute: Attribute.imapPort)
+            UserManager.storeUserValue(smtpServer.text as AnyObject?, attribute: Attribute.smtpHostname)
+            UserManager.storeUserValue(Int(smtpPort.text ?? "587") as AnyObject?, attribute: Attribute.smtpPort)
+            UserManager.storeUserValue(mailaddress.text as AnyObject?, attribute: Attribute.userAddr)
+            UserManager.storeUserValue((password.text ?? "") as AnyObject?, attribute: Attribute.userPW)
+            UserManager.storeUserValue((username.text ?? "username") as AnyObject?, attribute: Attribute.userName)
+            UserManager.storeUserValue((username.text ?? "username") as AnyObject?, attribute: Attribute.accountname)
+            UserManager.storeUserValue(keyForValue(transportRows, value: imapTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapConnectionType)
+            UserManager.storeUserValue(keyForValue(authenticationRows, value: imapAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.imapAuthType)
+            UserManager.storeUserValue(keyForValue(transportRows, value: smtpTransDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpConnectionType)
+            UserManager.storeUserValue(keyForValue(authenticationRows, value: smtpAuthDataDelegate.pickedValue)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
+            return OnboardingValueState.fine
         }
+
     }
 
     static func setServerValues(mailaddress: String) -> OnboardingValueState {
