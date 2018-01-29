@@ -47,6 +47,19 @@ class ReadViewController: UITableViewController {
     var keyDiscoveryDate: Date? = nil
     
     var secretKeyPasswordField: UITextField? = nil
+    
+    var isNewPubKey: Bool? {
+        get {
+            guard let mail = mail, let signedKey = mail.signedKey else {
+                return nil
+            }
+            
+            if signedKey.counterSignedMails < 2 {
+                return true
+            }
+            return false
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +72,7 @@ class ReadViewController: UITableViewController {
 //            Logger.queue.async(flags: .barrier) {
                 if Logger.logging, let mail = self.mail {
                     var message = "none"
-                    if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+                    if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { // @ jakob: why is this important here?
                         if mail.trouble {
                             message = "corrupted"
                         } else if mail.isEncrypted && mail.unableToDecrypt {
@@ -121,7 +134,7 @@ class ReadViewController: UITableViewController {
         _ = mail?.from.contact?.records.flatMap { x in
             if x.hasKey && x.keyID != nil {
                 let keyWrapper = DataHandler.handler.findKey(keyID: x.keyID!)
-                keyDiscoveryDate = keyWrapper?.discoveryDate as Date?
+                self.keyDiscoveryDate = keyWrapper?.discoveryDate as Date?
             }
             return nil
         }
@@ -186,7 +199,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //if changed, change it for logging too. See around line 60 (in viewDidLoad)
+        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt || isNewPubKey ?? false, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //if changed, change it for logging too. See around line 60 (in viewDidLoad)
 
             return 3
         }
@@ -227,7 +240,7 @@ class ReadViewController: UITableViewController {
                     } else if indexPath.row == 1 {
                         return infoButtonCell
                     }
-                } else if mail.isEncrypted && mail.unableToDecrypt {
+                } else if mail.isEncrypted && mail.unableToDecrypt || isNewPubKey ?? false {
                     return infoCell
                 } else if mail.from.hasKey && !mail.isSecure && mail.date > (keyDiscoveryDate ?? Date()) {
                     if indexPath.row == 0 {
@@ -455,6 +468,12 @@ class ReadViewController: UITableViewController {
                 infoHeadline.text = NSLocalizedString("couldNotDecryptHeadline", comment: "Message could not be decrypted")
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("couldNotDecryptText", comment: "Message could not be decrypted")
+            } else if isNewPubKey ?? false {
+                infoSymbol.text = "!"
+                infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                infoHeadline.text = NSLocalizedString("newKeyHeadline", comment: "Message contained a new public key")
+                infoHeadline.textColor = UIColor.gray
+                infoText.text = NSLocalizedString("newKeyText", comment: "Message contained a new public key")
             } else if mail.from.hasKey && !mail.isSecure {
                 infoSymbol.text = "?"
                 infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
