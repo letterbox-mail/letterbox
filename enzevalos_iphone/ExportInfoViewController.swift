@@ -16,10 +16,6 @@ class ExportInfoViewController: UITableViewController {
         UIApplication.shared.openURL(URL(string: "https://"+url)!)
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 500
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = UITableViewAutomaticDimension
