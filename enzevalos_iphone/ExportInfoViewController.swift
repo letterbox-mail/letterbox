@@ -10,7 +10,7 @@ import UIKit
 
 class ExportInfoViewController: UITableViewController {
     //TODO: maybe change url; create website!
-    let url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices"
+    let url = "userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices"
     
     @IBAction func websiteButtonTouch(_ sender: Any) {
         UIApplication.shared.openURL(URL(string: "https://"+url)!)
