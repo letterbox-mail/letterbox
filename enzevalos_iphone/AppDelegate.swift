@@ -68,16 +68,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return self.orientationLock
     }
     
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        if url.absoluteURL.absoluteString.hasPrefix("com.googleusercontent.apps.459157836079-csn0a9p3r8p7q6216fn5u7a6vcum80gn") {
+            if let currentAuthorizationFlow = EmailHelper.singleton().currentAuthorizationFlow {
+                if currentAuthorizationFlow.resumeAuthorizationFlow(with: url) {
+                    EmailHelper.singleton().currentAuthorizationFlow = nil
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+    
     func credentialCheck() {
         self.window?.rootViewController = Onboarding.checkConfigView()
         if Onboarding.setValues() != OnboardingValueState.fine {
             credentialsFailed()
             return
         }
-        else if !Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork) {
-            self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
-            return
-        }
+        
+        Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork)
     }
 
     func credentialsFailed() {

@@ -551,10 +551,15 @@ class MailHandler {
 
     fileprivate func createSMTPSession() -> MCOSMTPSession {
         let session = MCOSMTPSession()
+        session.authType = UserManager.loadSmtpAuthType()
+        if UserManager.loadSmtpAuthType() == MCOAuthType.xoAuth2 {
+            session.oAuth2Token = EmailHelper.singleton().authorization?.authState.lastTokenResponse?.accessToken
+        } else {
+            session.password = UserManager.loadUserValue(Attribute.userPW) as! String
+        }
         session.hostname = UserManager.loadUserValue(Attribute.smtpHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
         session.username = UserManager.loadUserValue(Attribute.userAddr) as! String
-        session.password = UserManager.loadUserValue(Attribute.userPW) as! String
         session.authType = UserManager.loadSmtpAuthType()
         session.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
         return session

@@ -21,6 +21,7 @@ class Onboarding: NSObject {
     static var mailaddress = UITextField.init()
     static var username = UITextField.init()
     static var password = UITextField.init()
+    static var googleButton = UIBarButtonItem.init()
     static var credentials: UIView? = nil
     static var imapServer = UITextField.init()
     static var smtpServer = UITextField.init()
@@ -36,6 +37,8 @@ class Onboarding: NSObject {
     static var smtpTransDataDelegate = PickerDataDelegate.init(rows: ["a", "b", "c"])
     static var background = UIImage.init()
     static var manualSet = false
+    
+    static var loginViewController: UIViewController?
 
     static let font = UIFont.init(name: "Helvetica-Light", size: 28)
     static let padding: CGFloat = 30
@@ -148,9 +151,13 @@ class Onboarding: NSObject {
             keyboardToolbar.sizeToFit()
             keyboardToolbar.barTintColor = defaultColor
             keyboardToolbar.backgroundColor = defaultColor
+            let googleBarButton = UIBarButtonItem(title: "Login with Google", style: .plain, target: self, action: #selector(blah))
+            googleBarButton.isEnabled = false
+            googleBarButton.tintColor = defaultColor
+            googleButton = googleBarButton
             let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
             let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissKeyboard))
-            keyboardToolbar.items = [flexBarButton, doneBarButton]
+            keyboardToolbar.items = [googleBarButton, flexBarButton, doneBarButton]
             mailaddress.inputAccessoryView = keyboardToolbar
             password.inputAccessoryView = keyboardToolbar
 
@@ -203,12 +210,33 @@ class Onboarding: NSObject {
             })
         }
 
+        loginViewController = vc!
         return vc!
     }
 
+    static func blah() {
+        doWhenDone()
+    }
+    
     static func dismissKeyboard() {
         mailaddress.endEditing(true)
         password.endEditing(true)
+    }
+    
+    static func googleLogin() {
+        if let loginViewController = Onboarding.loginViewController, (Onboarding.mailaddress.text?.lowercased() ?? "").contains("gmail") || (Onboarding.mailaddress.text?.lowercased() ?? "").contains("google") {
+            EmailHelper.singleton().doEmailLoginIfRequired(onVC: loginViewController, completionBlock: {
+                guard EmailHelper.singleton().authorization?.authState.isAuthorized ?? false else {
+                    print("Google authetication failed")
+                    return
+                }
+                print("Google authetication successful")
+                print("User Email: \(String(describing: EmailHelper.singleton().authorization?.userEmail))")
+                print("User ID: \(String(describing: EmailHelper.singleton().authorization?.userID))")
+                print("User Email verified: \(String(describing: EmailHelper.singleton().authorization?.userEmailIsVerified))")
+                
+            })
+        }
     }
 
     //UI Definition
@@ -470,11 +498,10 @@ class Onboarding: NSObject {
         AppDelegate.getAppDelegate().requestForAccess(callback)
     }
 
-    static func checkConfig(_ fail: @escaping () -> (), work: @escaping () -> ()) -> Bool {
+    static func checkConfig(_ fail: @escaping () -> (), work: @escaping () -> ()) {
         self.work = work
         self.fail = fail
         AppDelegate.getAppDelegate().mailHandler.checkIMAP(imapCompletion)
-        return true
     }
 
     static func imapCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
@@ -657,7 +684,25 @@ class Onboarding: NSObject {
 
 class TextFieldDelegate: NSObject, UITextFieldDelegate {
 
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if (Onboarding.mailaddress.text?.lowercased() ?? "").contains("gmail") || (Onboarding.mailaddress.text?.lowercased() ?? "").contains("google") {
+            Onboarding.googleButton.isEnabled = true
+            Onboarding.googleButton.tintColor = Onboarding.textColor
+        } else {
+            Onboarding.googleButton.isEnabled = false
+            Onboarding.googleButton.tintColor = Onboarding.defaultColor
+        }
+        return true
+    }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        if (Onboarding.mailaddress.text?.lowercased() ?? "").contains("gmail") || (Onboarding.mailaddress.text?.lowercased() ?? "").contains("google") {
+            Onboarding.googleButton.isEnabled = true
+            Onboarding.googleButton.tintColor = Onboarding.textColor
+        } else {
+            Onboarding.googleButton.isEnabled = false
+            Onboarding.googleButton.tintColor = Onboarding.defaultColor
+        }
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
