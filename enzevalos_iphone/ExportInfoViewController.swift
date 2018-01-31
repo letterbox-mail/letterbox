@@ -24,6 +24,20 @@ class ExportInfoViewController: UITableViewController {
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Next", comment: "next step")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewOpen: 1)
+//        }
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewClose: 1)
+//        }
+        super.viewWillDisappear(animated)
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExportInfoCell") as! ExportInfoCell
         cell.infoTextLabel.text = NSLocalizedString("ExportInfoViewText", comment: "")

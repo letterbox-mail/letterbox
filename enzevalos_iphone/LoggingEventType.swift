@@ -39,5 +39,8 @@ enum LoggingEventType: String {
     showBrokenMail = "showBrokenMail",
     reactButtonTapped = "reactButtonTapped",
     createDraft = "createDraft",
+    exportKeyViewOpen = "exportKeyViewOpen",
+    exportKeyViewButtonTap = "exportKeyViewButtonTap",
+    exportKeyViewClose = "exportKeyViewClose",
     search = "search"
 }

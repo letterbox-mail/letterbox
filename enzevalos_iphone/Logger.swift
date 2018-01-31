@@ -213,6 +213,49 @@ class Logger {
         sendCheck()
     }
     
+    static func log(exportKeyViewOpen view: Int) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.exportKeyViewOpen.rawValue
+        event["view"] = view
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(exportKeyViewClose view: Int) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.exportKeyViewClose.rawValue
+        event["view"] = view
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(exportKeyViewButton send: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.exportKeyViewClose.rawValue
+        if send {
+            event["case"] = "sendMail"
+        } else {
+            event["case"] = "deletePasscode"
+        }
+            
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(sendViewOpen mail: EphemeralMail?) {
         if !logging {
             return

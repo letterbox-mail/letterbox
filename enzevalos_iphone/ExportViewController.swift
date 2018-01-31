@@ -13,7 +13,17 @@ class ExportViewController: UITableViewController {
     var sentToAddress = (UserManager.loadUserValue(Attribute.userAddr) as! String)
     var passcode = ""
     
+    override func viewWillDisappear(_ animated: Bool) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewClose: 2)
+//        }
+        super.viewWillDisappear(animated)
+    }
+    
     @IBAction func buttonTouched(_ sender: Any) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewButton: !alreadySent)
+//        }
         if !alreadySent {
             let handler = DataHandler.handler
             let ids = handler.findSecretKeys()
@@ -101,6 +111,9 @@ class ExportViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 140
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Done", comment: "")
+//        Logger.queue.async(flags: .barrier) {
+        Logger.log(exportKeyViewOpen: 2)
+//        }
     }
     
     func mailSend(_ error: Error?) {
