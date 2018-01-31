@@ -106,6 +106,8 @@ class Onboarding: NSObject {
         intro2.iconImageView.image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         intro2.bodyLabel.textAlignment = NSTextAlignment.left
+        intro2.bodyLabel.textColor = UIColor.black
+        intro2.titleLabel.textColor = UIColor.black
 
         let path = Bundle.main.path(forResource: "videoOnboarding2", ofType: "m4v")
         let url = URL.init(fileURLWithPath: path!)
