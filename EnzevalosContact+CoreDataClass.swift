@@ -29,6 +29,23 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 @objc(EnzevalosContact)
 open class EnzevalosContact: NSManagedObject, Contact, Comparable {
 
+    override open var debugDescription: String{
+        get{
+            var string = ""
+            string = string + "Name: \(name) #Keys: \(publicKeys.count) #Addr: \(addresses.count) \n Addresses: \n"
+            for addr in addresses{
+                if let a = addr as? Mail_Address{
+                    string = string + a.address + "\n"
+                }
+            }
+            string = string + "public Keys: \n"
+            for pk in publicKeys{
+                string = string + "\(pk.keyID) \n"
+            }
+            return string
+        }
+    }
+    
     open var name: String {
         if let name = nameOptional {
             return name
@@ -122,7 +139,6 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         get{
             var pks = Set<PersistentKey>()
             for adr in getMailAddresses(){
-                print("adr: \(adr.mailAddress) #keys: \(adr.keys.count)")
                 pks = pks.union(adr.keys)
             }
             return pks

@@ -739,9 +739,6 @@ class DataHandler {
 
     func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?) -> PersistentMail? {
         let myfolder = findFolder(with: folderPath) as Folder
-
-        let counterMails = myfolder.counterMails
-
         let finding = findNum("PersistentMail", type: "uid", search: uid)
         let mail: PersistentMail
         var mails: [PersistentMail] = []
@@ -792,7 +789,9 @@ class DataHandler {
                     mail.isEncrypted = true
                     mail.trouble = false
                     mail.unableToDecrypt = false
-                    mail.decryptedBody = body
+                    if let text = decData.decryptedText{
+                         mail.decryptedBody = text
+                    }
                 }
 
                 switch signState {

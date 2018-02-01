@@ -73,6 +73,7 @@ class CoraDataTests: XCTestCase {
         let sender = MCOAddress.init(displayName: senderName, mailbox: senderAdr)
         
         let user = MCOAddress.init(displayName: userName, mailbox: userAdr)
+        
         let folder = String.random()
         let numberOfMails = 100
         
@@ -102,39 +103,48 @@ class CoraDataTests: XCTestCase {
     }
     
     func testCreateEncMails(){
+        datahandler.reset()
+
         let pgp = SwiftPGP()
-        let senders = createSender(n: 1)
+        let senders = createSender(n: 10)
         let (user, userid) = createUser(adr: userAdr, name: userName)!
+        
+        UserManager.storeUserValue(userAdr as AnyObject, attribute: Attribute.userAddr)
+        UserManager.storeUserValue(userid as AnyObject, attribute: Attribute.prefSecretKeyID)
+        
         var mails = [MCOAddress:[PersistentMail]] ()
         
         
         for (sender, id) in senders{
             mails[sender] = [PersistentMail]()
-            for _ in 1...20{
-                let message = String.random(length: 1000)
-                let cryptoObj = pgp.encrypt(plaintext: message, ids: [userid], myId: id)
+            for _ in 1...30{
+               
+                let message = String.random(length:  10)
+                let chipher = pgp.encrypt(plaintext: message, ids: [userid], myId: id)
+                let plain = pgp.decrypt(data: chipher.chiphertext!, decryptionId: userid, verifyIds: [id], fromAdr: sender.mailbox)
                 
                 let folder = String.random()
-                if let mail = testMail(from: sender, to: [user], cc: [], bcc: [], flags: MCOMessageFlag.answered, folder: folder, date: Date(), cryptoObject: cryptoObj){
+                if let mail = testMail(from: sender, to: [user], cc: [], bcc: [], flags: MCOMessageFlag.answered, folder: folder, date: Date(), cryptoObject: plain, isSecure: true, message: message){
                     mails[sender]?.append(mail)
+                     datahandler.newPublicKey(keyID: id, cryptoType: .PGP, adr: sender.mailbox, autocrypt: false, firstMail: mail, newGenerated: false)
                 }
             }
-            //let enzContact = datahandler.getContactByAddress(sender.mailbox)
-            //let key = datahandler.findKey(keyID: id)
-            //XCTAssertNotNil(key?.mailaddress)
-            //if let addrs = key?.mailaddress{
-              //  XCTAssertEqual(addrs.count, 1)
-            //}
-            //XCTAssertEqual(enzContact.displayname, datahandler.getContact(keyID: id)?.displayname)
-            //XCTAssertTrue(enzContact.from.count == mails[sender]?.count)
-            //let records = enzContact.records
-            //XCTAssertLessThan(records.count, 2)
-            //XCTAssertGreaterThan(records.count, 0)
-            
-            
-            
-            
-            
+            let enzContact = datahandler.getContactByAddress(sender.mailbox)
+            let key = datahandler.findKey(keyID: id)
+            XCTAssertNotNil(key?.mailaddress)
+            if let addrs = key?.mailaddress{
+                XCTAssertEqual(addrs.count, 1)
+                for a in addrs{
+                    if let addr = a as? Mail_Address{
+                        XCTAssertEqual(addr.address, sender.mailbox)
+                        print(addr.address)
+                    }
+                }
+            }
+            XCTAssertEqual(enzContact, datahandler.getContact(keyID: id))
+            XCTAssertTrue(enzContact.from.count == mails[sender]?.count)
+            let records = enzContact.records
+            XCTAssertEqual(records.count, 2)
         }
         // Testen: #Mails, Zuordnung zu sicherem Kontakt. In einem Keyrecord? #Keyrecords pro Kontakt.
         
@@ -142,10 +152,10 @@ class CoraDataTests: XCTestCase {
         
     }
     
-    func createUser(adr: String, name: String) -> (MCOAddress, String)?{
+    func createUser(adr: String = String.random().lowercased(), name: String = String.random()) -> (MCOAddress, String)?{
         let id = pgp.generateKey(adr: adr.lowercased())
 
-        if let user = MCOAddress.init(displayName: adr.lowercased(), mailbox: name){
+        if let user = MCOAddress.init(displayName: name, mailbox: adr.lowercased()){
             return (user, id)
         }
         return nil
@@ -170,13 +180,18 @@ class CoraDataTests: XCTestCase {
    
     
     
-    func testMail(from: MCOAddress, to: [MCOAddress], cc: [MCOAddress], bcc: [MCOAddress], flags: MCOMessageFlag, folder: String , date: Date = Date(), cryptoObject: CryptoObject? = nil) -> PersistentMail?{
+    func testMail(from: MCOAddress, to: [MCOAddress], cc: [MCOAddress], bcc: [MCOAddress], flags: MCOMessageFlag, folder: String , date: Date = Date(), cryptoObject: CryptoObject? = nil, isSecure: Bool = false, message: String? = nil) -> PersistentMail?{
         let subject = String.random(length: 20)
-        let body = String.random(length: 1000)
+        
+        var body = String.random(length: 20)
+        if let m = message{
+            body = m
+        }
        
         let id = UInt64(arc4random())
         
-        let preMails = datahandler.allMailsInFolder(key: nil, contact: nil, folder: nil, isSecure: false)
+        
+        let preMails = datahandler.allMailsInFolder(key: nil, contact: nil, folder: nil, isSecure: isSecure)
         
         var mail: PersistentMail?
         if cryptoObject != nil{
@@ -187,13 +202,20 @@ class CoraDataTests: XCTestCase {
         }
         
         XCTAssertNotNil(mail)
-        let allMails = datahandler.allMailsInFolder(key: nil, contact: nil, folder: nil, isSecure: false)
+      
+        
+        let allMails = datahandler.allMailsInFolder(key: nil, contact: nil, folder: nil, isSecure: isSecure)
         XCTAssertEqual(allMails.count, preMails.count + 1)
         var found = false
         for m in allMails{
             if mail?.uid == m.uid{
                 found = true
-                XCTAssertEqual(m.body,body)
+                if isSecure{
+                    XCTAssertEqual(m.decryptedBody,body)
+                }
+                else{
+                    XCTAssertEqual(m.body, body)
+                }
                 XCTAssertEqual(m.subject, subject)
                 XCTAssertEqual(m.date, date)
                 break
