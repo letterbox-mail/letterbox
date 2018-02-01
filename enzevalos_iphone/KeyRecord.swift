@@ -19,16 +19,10 @@ open class KeyRecord: Record {
      */
 
     let keyID: String?
-    
     let cryptoscheme = CryptoScheme.PGP
-    
-    let folder: Folder
-    
+    let folder: Folder?
     open var isSecure: Bool = false
-    
-    
     open var ezContact: EnzevalosContact
-
     
     var pgpKey: Key?{
         get{
@@ -49,9 +43,7 @@ open class KeyRecord: Record {
         }
     
     }
-    
-    
-    
+
     public var isVerified: Bool{
         get{
             if let k = keyID{
@@ -61,14 +53,6 @@ open class KeyRecord: Record {
             }
             return false
             
-        }
-    }
-    
-    func verify(){
-        if let k = keyID{
-            if let pk = DataHandler.handler.findKey(keyID: k){
-                pk.verify()
-            }
         }
     }
     
@@ -92,12 +76,9 @@ open class KeyRecord: Record {
             return mailsInFolder(folder: folder)
         }
     }
-
+    
     open var addresses: [MailAddress] {
-        if let adr = ezContact.addresses{
-            return Array(adr) as! [MailAddress]
-        }
-        return []
+        return Array(ezContact.addresses) as! [MailAddress]
     }
     
     var addressNames:[String]{
@@ -110,7 +91,7 @@ open class KeyRecord: Record {
             return names
         }
     }
-
+    
     open var name: String {
         return ezContact.name
     }
@@ -119,20 +100,20 @@ open class KeyRecord: Record {
         return keyID != nil
     }
     
-
+    
     open var cnContact: CNContact? {
         return ezContact.cnContact
     }
-
+    
     open var image: UIImage {
         return ezContact.getImageOrDefault()
     }
     open var color: UIColor {
         return ezContact.getColor()
     }
-
-
-    public init(keyID: String?, contact: EnzevalosContact, folder: Folder) {
+    
+    
+    public init(keyID: String?, contact: EnzevalosContact, folder: Folder?) {
         self.keyID = keyID
         ezContact = contact
         self.folder = folder
@@ -141,17 +122,27 @@ open class KeyRecord: Record {
         }
     }
     
-    public init(contact: EnzevalosContact, folder: Folder){
+    public init(contact: EnzevalosContact, folder: Folder?){
         keyID = nil
         ezContact = contact
         self.folder = folder
         isSecure = false
     }
     
-    public init (keyID: String, folder: Folder){
+    public init (keyID: String, folder: Folder?){
         self.keyID = keyID
         self.folder = folder
         isSecure = true
+        if let contact = DataHandler.handler.getContact(keyID: keyID){
+            self.ezContact = contact
+        }
+        else{
+            //TODO create Contact?
+             ezContact = DataHandler.handler.getContact(name: "ERROR", address: "ERROR No adr to key", key: keyID, prefer_enc: false)
+        }
+        
+        
+        /*
         let mails = DataHandler.handler.allMailsInFolder(key: keyID, contact: nil, folder: folder, isSecure: isSecure)
         if mails.count > 0{
             if let c = mails[0].from.contact{
@@ -176,19 +167,21 @@ open class KeyRecord: Record {
                 ezContact = contact as! EnzevalosContact
             }
         }
+ */
     }
     
+    func verify(){
+        if let k = keyID{
+            if let pk = DataHandler.handler.findKey(keyID: k){
+                pk.verify()
+            }
+        }
+    }
 
-    
     func mailsInFolder(folder: Folder?) -> [PersistentMail]{
         let folderMails = DataHandler.handler.allMailsInFolder(key: keyID, contact: ezContact, folder: folder, isSecure: isSecure)
         return folderMails
     }
-
-   
-
-
-
     open func showInfos() {
         print("----------------- \n \n")
         print("Name: \(String(describing: ezContact.displayname)) | State: \(hasKey) | #Mails: \(mails.count)")
@@ -202,7 +195,7 @@ open class KeyRecord: Record {
     }
     
     func matchMail(mail: PersistentMail) -> Bool{
-        if self.isSecure == mail.isSecure && self.folder == mail.folder{
+        if self.isSecure == mail.isSecure && (self.folder == mail.folder || self.folder == nil){
             if isSecure && self.keyID == mail.keyID {
                 return true
             }

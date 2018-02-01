@@ -4,7 +4,7 @@
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="color" optional="YES" attributeType="Transformable" customClassName="UIColor" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
-        <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
+        <relationship name="addresses" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
     <entity name="Folder" representedClassName="Folder" syncable="YES">
         <attribute name="delimiter" optional="YES" attributeType="String" syncable="YES"/>

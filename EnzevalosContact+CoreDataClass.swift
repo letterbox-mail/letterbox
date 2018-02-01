@@ -63,12 +63,10 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
     open var to: [PersistentMail] {
         get {
             var mails = [PersistentMail]()
-            if let adrs = addresses {
-                for adr in adrs {
-                    if let a = adr as? Mail_Address, let to = a.to {
-                        for m in to {
-                            mails.append(m as! PersistentMail)
-                        }
+            for adr in addresses{
+                if let a = adr as? Mail_Address, let to = a.to {
+                    for m in to {
+                        mails.append(m as! PersistentMail)
                     }
                 }
             }
@@ -79,12 +77,10 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
     open var bcc: [PersistentMail] {
         get {
             var mails = [PersistentMail]()
-            if let adrs = addresses {
-                for adr in adrs {
-                    if let a = adr as? Mail_Address, let bcc = a.bcc {
-                        for m in bcc {
-                            mails.append(m as! PersistentMail)
-                        }
+            for adr in addresses {
+                if let a = adr as? Mail_Address, let bcc = a.bcc {
+                    for m in bcc {
+                        mails.append(m as! PersistentMail)
                     }
                 }
             }
@@ -97,12 +93,10 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
     open var cc: [PersistentMail] {
         get {
             var mails = [PersistentMail]()
-            if let adrs = addresses {
-                for adr in adrs {
-                    if let a = adr as? Mail_Address, let cc = a.cc {
-                        for m in cc {
-                            mails.append(m as! PersistentMail)
-                        }
+            for adr in addresses {
+                if let a = adr as? Mail_Address, let cc = a.cc {
+                    for m in cc {
+                        mails.append(m as! PersistentMail)
                     }
                 }
             }
@@ -113,57 +107,60 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
     open var from: [PersistentMail] {
         get {
             var mails = [PersistentMail]()
-            if let adrs = addresses {
-                for adr in adrs {
-                    if let a = adr as? Mail_Address, let from = a.from {
-                        for m in from {
-                            mails.append(m as! PersistentMail)
-                        }
+            for adr in addresses {
+                if let a = adr as? Mail_Address, let from = a.from {
+                    for m in from {
+                        mails.append(m as! PersistentMail)
                     }
                 }
             }
             return mails
         }
     }
+    
+    var publicKeys: Set<PersistentKey>{
+        get{
+            var pks = Set<PersistentKey>()
+            for adr in getMailAddresses(){
+                print("adr: \(adr.mailAddress) #keys: \(adr.keys.count)")
+                pks = pks.union(adr.keys)
+            }
+            return pks
+        }
+    }
 
     open var records: [KeyRecord] {
         get {
             var myrecords = [KeyRecord]()
-            for folder in DataHandler.handler.allFolders{
-                for r in DataHandler.handler.folderRecords(folderPath: folder.path) {
-                    if r.ezContact == self {
-                        myrecords.append(r)
-                    }
-                }
-            }
-            
-            if self.hasKey, let adrs = addresses{
-                let mykeys = DataHandler.handler.findSecretKeys()
-                let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
-                let myAdr = UserManager.loadUserValue(Attribute.userAddr) as! String
-                for item in adrs{
-                    if let adr = item as? Mail_Address{
-                        let adrField = adr.address
-                        if adrField == myAdr{ // owner's enzevalos-contact!
-                            for sk in mykeys{
-                                let secureRecord = KeyRecord(keyID: sk.keyID!, folder: folder)
-                                if !myrecords.contains(secureRecord){
-                                    myrecords.append(secureRecord)
-                                }
-                            }
+           
+            let insecureRecord = KeyRecord(contact: self, folder: nil)
+            myrecords.append(insecureRecord)
+           
+            if self.hasKey{
+                if self.isAddress(mailadr: UserManager.loadUserValue(Attribute.userAddr) as! String){
+                    // consider secret keys
+                    let userKeys = DataHandler.handler.findSecretKeys()
+                    for sk in userKeys{
+                        let secureRecord = KeyRecord(keyID: sk.keyID!, contact: self, folder:nil)
+                        if !myrecords.contains(secureRecord){
+                            myrecords.append(secureRecord)
                         }
                     }
                 }
+                for pk in publicKeys{
+                    let secureRecord = KeyRecord(keyID: pk.keyID, contact: self, folder: nil)
+                    if !myrecords.contains(secureRecord){
+                        myrecords.append(secureRecord)
+                    }
+                }
             }
-            
             return myrecords
-
         }
 
     }
     open var hasKey: Bool {
         get {
-            for item in addresses! {
+            for item in addresses{
                 let adr = item as! MailAddress
                 if adr.hasKey {
                     return true
@@ -203,21 +200,17 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
 
         let adr: Mail_Address
-        if let adrs = self.addresses {
-            adr = adrs.anyObject() as! Mail_Address
-            con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address as NSString))
-        }
+        adr = addresses.anyObject() as! Mail_Address
+        con.emailAddresses.append(CNLabeledValue(label: CNLabelOther, value: adr.address as NSString))
         return con
     }
 
     func getAddress(_ address: String) -> Mail_Address? {
         var addr: Mail_Address
-        if addresses != nil {
-            for obj in addresses! {
-                addr = obj as! Mail_Address
-                if(addr.address == address) {
-                    return addr
-                }
+        for obj in addresses {
+            addr = obj as! Mail_Address
+            if(addr.address == address) {
+                return addr
             }
         }
         return nil
@@ -232,13 +225,20 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
 
     open func getMailAddresses() -> [MailAddress] {
         var adr = [MailAddress] ()
-        if self.addresses != nil {
-            for a in addresses! {
-                let b = a as! Mail_Address
-                adr.append(b)
-            }
+        for a in addresses {
+            let b = a as! Mail_Address
+            adr.append(b)
         }
         return adr
+    }
+    
+    func isAddress(mailadr: String) -> Bool{
+        for adr in getMailAddresses(){
+            if mailadr.lowercased() == adr.mailAddress.lowercased(){
+                return true
+            }
+        }
+        return false
     }
 }
 

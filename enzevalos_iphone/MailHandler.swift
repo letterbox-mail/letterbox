@@ -226,7 +226,7 @@ class MailHandler {
     private func addKeys(adrs: [MCOAddress]) -> [String]{
         var ids = [String]()
         for a in adrs{
-            if let adr = DataHandler.handler.findMailAddress(adr: a.mailbox), let key = adr.Key?.keyID {
+            if let adr = DataHandler.handler.findMailAddress(adr: a.mailbox), let key = adr.primaryKey?.keyID {
                 ids.append(key)
             }
         }

@@ -336,17 +336,13 @@ class DataHandler {
 
 
     func reset() {
+        removeAll(entity: "PersistentMail")
         removeAll(entity: "Folder")
         removeAll(entity: "SecretKey")
         removeAll(entity: "PersistentKey")
         removeAll(entity: "EnzevalosContact")
         removeAll(entity: "Mail_Address")
-        removeAll(entity: "PersistentMail")
-
-        removeAll(entity: "PseudonymKey")
-        removeAll(entity: "PseudonymMailAddress")
-        removeAll(entity: "PseudonymSubject")
-        removeAll(entity: "PseudonymFolderPath")
+        save(during: "reset")
     }
 
     // Save, load, search
@@ -636,12 +632,10 @@ class DataHandler {
         if let contacts = findAll("EnzevalosContact") {
             for c in contacts {
                 if case let contact as EnzevalosContact = c {
-                    if let adrs = contact.addresses {
-                        for adr in adrs {
-                            if case let mailAdr as Mail_Address = adr {
-                                if mailAdr.address == address {
-                                    return contact
-                                }
+                    for adr in contact.addresses{
+                        if case let mailAdr as Mail_Address = adr {
+                            if mailAdr.address == address {
+                                return contact
                             }
                         }
                     }
@@ -689,6 +683,9 @@ class DataHandler {
         let contact = getContactByAddress(address)
         contact.displayname = name
         contact.getAddress(address)?.key?.adding(key)
+        if address == "ullimuelle@web.de"{
+            print("New Key: \(key) for ulli!")
+        }
         //TODO IOptimize: look for Mail_Address and than for contact!
         return contact
     }
@@ -721,18 +718,9 @@ class DataHandler {
             adr.contact = getContactByMCOAddress(address: sender)
         }
         if let contact = adr.contact {
-            if contact.addresses == nil {
-                contact.addToAddresses(adr)
-            }
-                else if !(contact.addresses?.contains(adr))! {
+            if !(contact.addresses.contains(adr)) {
                     contact.addToAddresses(adr)
             }
-            if contact.addresses == nil || contact.addresses?.count == 0 {
-                print("ERROR Contact has no addresses!")
-            }
-        }
-            else {
-                print("ERROR! No ENzContact!")
         }
         fromMail.from = adr
     }
