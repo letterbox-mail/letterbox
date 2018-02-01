@@ -16,12 +16,18 @@ class Logger {
 
     static let defaultFileName = "log.json"
     static let loggingInterval = 86400 //60*60*24 seconds
+    static let resendInterval = 5*60
     static let logReceiver = LOGGING_MAIL_ADR
 
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
 
     static fileprivate func sendCheck() {
         if nextDeadline <= Date() && AppDelegate.getAppDelegate().currentReachabilityStatus != .notReachable {
+            //Do not send duplicate mails
+            let tmpNextDeadline = Date(timeIntervalSinceNow: TimeInterval(resendInterval))
+            nextDeadline = tmpNextDeadline
+            UserManager.storeUserValue(nextDeadline as AnyObject?, attribute: Attribute.nextDeadline)
+            
             sendLog()
         }
     }
