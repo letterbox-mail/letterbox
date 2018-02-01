@@ -256,6 +256,53 @@ class Logger {
         sendCheck()
     }
     
+    static func log(importPrivateKeyPopupOpen mail: PersistentMail?) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.importPrivateKeyPopupOpen.rawValue
+        if let mail = mail {
+            event = extract(from: mail, event: event)
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(importPrivateKeyPopupClose mail: PersistentMail?, doImport: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.importPrivateKeyPopupClose.rawValue
+        event["doImport"] = doImport
+        if let mail = mail {
+            event = extract(from: mail, event: event)
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(importPrivateKey mail: PersistentMail?, success: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.importPrivateKey.rawValue
+        event["success"] = success
+        if let mail = mail {
+            event = extract(from: mail, event: event)
+        }
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(sendViewOpen mail: EphemeralMail?) {
         if !logging {
             return

@@ -42,5 +42,8 @@ enum LoggingEventType: String {
     exportKeyViewOpen = "exportKeyViewOpen",
     exportKeyViewButtonTap = "exportKeyViewButtonTap",
     exportKeyViewClose = "exportKeyViewClose",
+    importPrivateKeyPopupOpen = "importPrivateKeyPopupOpen",
+    importPrivateKeyPopupClose = "importPrivateKeyPopupClose",
+    importPrivateKey = "importPrivateKey",
     search = "search"
 }

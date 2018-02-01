@@ -570,12 +570,21 @@ class ReadViewController: UITableViewController {
     }
     
     func importSecretKey(alertAction: UIAlertAction!){
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(importPrivateKeyPopupClose: mail, doImport: true)
+//        }
         if let aAction = alertAction{
             if let pw = secretKeyPasswordField?.text{
                 do {
                     let suc = try mail?.processSecretKey(pw: pw)
+//                    Logger.queue.async(flags: .barrier) {
+                    Logger.log(importPrivateKey: mail, success: true)
+//                    }
                     print("Successful import: \(suc)")
                 }catch _ {
+//                    Logger.queue.async(flags: .barrier) {
+                    Logger.log(importPrivateKey: mail, success: false)
+//                    }
                     importSecretKeyDialog(first: false)
                 }
             }
@@ -583,12 +592,19 @@ class ReadViewController: UITableViewController {
     }
     
     private func importSecretKeyDialog(first: Bool){
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(importPrivateKeyPopupOpen: mail)
+//        }
         var message = NSLocalizedString("Please, enter the password to import the new secret.", comment: "NewSecretKeyMessage")
         if !first{
             message = NSLocalizedString("Wrong password! Please, enter the password to import the new secret again.", comment: "NewSecretKeyMessage")
         }
         let alert = UIAlertController(title: NSLocalizedString("New secret", comment: "NewSecretKeyTitle"), message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("No import", comment: "NoSecretKeyImport"), style: UIAlertActionStyle.destructive, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No import", comment: "NoSecretKeyImport"), style: UIAlertActionStyle.destructive, handler: { (_ :UIAlertAction) -> Void in
+//            Logger.queue.async(flags: .barrier) {
+                Logger.log(importPrivateKeyPopupClose: self.mail, doImport: false)
+//            }
+        }))
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Import secret Key"), style: UIAlertActionStyle.default, handler: importSecretKey))
         alert.addTextField(configurationHandler: newSecretkeyPassword(textField:))
