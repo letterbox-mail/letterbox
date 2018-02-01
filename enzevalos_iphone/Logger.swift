@@ -499,6 +499,7 @@ class Logger {
         } else {
             event["view"] = "sendView"
         }
+        event["action"] = action
 
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()

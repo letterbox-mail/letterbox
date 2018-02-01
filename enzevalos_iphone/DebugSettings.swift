@@ -12,11 +12,11 @@ private let pgp = SwiftPGP()
 private let datahandler = DataHandler.handler
 
 let SUPPORT_MAIL_ADR = "letterbox@inf.fu-berlin.de"
-let LOGGING_MAIL_ADR = "letterbox-reports@inf.fu-berlin.de"
+let LOGGING_MAIL_ADR = "jakob.bode@fu-berlin.de"//"letterbox-reports@inf.fu-berlin.de"
 
 func setupStudyPublicKeys(studyMode: Bool){
     if studyMode{
-        let logging_pk = "logging_pk"
+        let logging_pk = "JakobBode"//"logging_pk"
         let support_pk = "support_pk"
         let keys = ["noreply@bitcoin.de": "bitcoinde", "letterbox@zedat.fu-berlin.de": support_pk, SUPPORT_MAIL_ADR: support_pk, "letterbox-hilfe@inf.fu-berlin.de": support_pk, "enzevalos@inf.fu-berlin.de": support_pk, LOGGING_MAIL_ADR: logging_pk]
         importPublicKeyDic(keys: keys, type: "asc")
