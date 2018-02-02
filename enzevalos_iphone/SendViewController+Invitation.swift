@@ -22,6 +22,8 @@ extension SendViewController {
 	@IBAction
 	fileprivate func encryptSelectedText() {
 
+		self.invitationSelection.selectedWords.insert(self.textView.selectedRange)
+		self.layoutText()
 	}
 
 	@IBAction
@@ -47,6 +49,7 @@ extension SendViewController {
 
 	fileprivate func removeAllInvitationMarks() {
 		self.invitationSelection.selectedWords = Set<NSRange>()
+		self.layoutText()
 	}
 
 	fileprivate func menuControllerItems(for textView: UITextView) -> [UIMenuItem]? {
@@ -54,6 +57,26 @@ extension SendViewController {
 			UIMenuItem(title: "verschlüsseln", action: #selector(self.encryptSelectedText)),
 			UIMenuItem(title: "entschlüsseln", action: #selector(self.decryptSelectedText))
 		]
+	}
+
+	fileprivate func layoutText() {
+
+		guard self.invitationSelection.selectedWords.isEmpty == false else {
+			self.textView.text = self.textView.attributedText.string
+			return
+		}
+
+		let selectedRange = self.textView.selectedRange
+		let text: String = self.textView.text
+		let orangeColor = #colorLiteral(red: 1, green: 0.570499897, blue: 0, alpha: 1)
+		let attributedString = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: self.textView.font!])
+
+		for range in self.invitationSelection.selectedWords {
+			attributedString.addAttributes([NSBackgroundColorAttributeName : orangeColor], range: range)
+		}
+
+		self.textView.attributedText = attributedString
+		self.textView.selectedRange = NSRange(location: selectedRange.location, length: 0)
 	}
 }
 
