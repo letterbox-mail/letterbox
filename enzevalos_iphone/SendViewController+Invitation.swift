@@ -12,36 +12,25 @@ import UIKit
 
 struct InvitationSelection {
 
-	var selectedWords 	= Set<NSRange>()
-	var showsButton		= false
+	var selectedWords = Set<NSRange>()
 }
 
 // MARK: - SendViewController Extension
 
 extension SendViewController {
 
-	fileprivate func hideMarkButton() {
+	@IBAction
+	fileprivate func encryptSelectedText() {
 
-		guard (self.invitationSelection.showsButton == true) else {
-			return
-		}
-
-		self.invitationSelection.showsButton = false
-		self.scrollview.contentOffset.y -= 50
 	}
 
-	fileprivate func showMarkButton() {
+	@IBAction
+	fileprivate func decryptSelectedText() {
 
-		guard (self.invitationSelection.showsButton == false) else {
-			return
-		}
-
-		self.invitationSelection.showsButton = true
-		self.scrollview.contentOffset.y += 50
 	}
 
 	func layoutInvitationButton() {
-		
+
 	}
 
 	func htmlMessage() -> String? {
@@ -55,24 +44,34 @@ extension SendViewController {
 
 		return String(format: htmlString, self.textView.text, "google.com")
 	}
+
+	fileprivate func removeAllInvitationMarks() {
+		self.invitationSelection.selectedWords = Set<NSRange>()
+	}
+
+	fileprivate func menuControllerItems(for textView: UITextView) -> [UIMenuItem]? {
+		return [
+			UIMenuItem(title: "verschlüsseln", action: #selector(self.encryptSelectedText)),
+			UIMenuItem(title: "entschlüsseln", action: #selector(self.decryptSelectedText))
+		]
+	}
 }
 
 // MARK: - MarkHandler
 
 extension SendViewController {
 
-
 	/// Whenever the marked Text changed, the Buttons for "encrypting" or "decrypting" will change there visibility.
 	///
 	/// - Parameter textView: that changed it's selected Text
-	fileprivate func updateMarkedText(for textView: UITextView) {
+	func updateMarkedText(for textView: UITextView) {
 
-		guard (textView.selectedRange.length != 0) else {
-			self.hideMarkButton()
+		guard (self.isEligibleForInvitation() == true) else {
+			self.removeAllInvitationMarks()
 			return
 		}
 
-		self.showMarkButton()
+		UIMenuController.shared.menuItems = self.menuControllerItems(for: textView)
 	}
 
 	/// Whenever text changes are made, the invitation Selection needs to be updated.
@@ -105,6 +104,13 @@ extension SendViewController {
 	/// - Parameter textView
 	fileprivate func unmarkSelectedText(for textView: UITextView) {
 
+	}
+
+	/// Should return true, if the current recipients are insecure
+	///
+	/// - Returns: True if the current E-Mail is insecure
+	fileprivate func isEligibleForInvitation() -> Bool {
+		return (self.toSecure == false)
 	}
 }
 

@@ -46,7 +46,6 @@ class SendViewController: UIViewController {
     var keyboardY: CGFloat = 0
     var keyboardHeight: CGFloat = 0
     var UISecurityState = true
-    var toSecure = true
     var ccSecure = true
     var dataDelegate = VENDataDelegate()
     var mailHandler = AppDelegate.getAppDelegate().mailHandler
@@ -59,6 +58,12 @@ class SendViewController: UIViewController {
     var sendEncryptedIfPossible = true
 
 	var invitationSelection = InvitationSelection()
+
+	var toSecure = true {
+		didSet {
+			self.updateMarkedText(for: self.textView)
+		}
+	}
 
     override func viewDidLoad() {
         super.viewDidLoad()
