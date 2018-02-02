@@ -53,7 +53,7 @@ extension SendViewController {
 				return self.textView.text
 		}
 
-		return nil //String(format: htmlString, self.textView.text)
+		return String(format: htmlString, self.textView.text, "google.com")
 	}
 }
 
@@ -82,7 +82,13 @@ extension SendViewController {
 	///   - range: where the Text Changed
 	///   - replacedText: that replaced the range
 	fileprivate func textChanged(inRange range: NSRange, with replacedText: String) {
+		let text = self.textView.text as String
+		let words = text.words(inRange: range)
+		let replacedTextLength = replacedText.count
 
+		self.invitationSelection.selectedWords.forEach { (range) in
+
+		}
 	}
 
 	/// The Selected Text in the given TextView should be marked.
@@ -102,9 +108,9 @@ extension SendViewController {
 	}
 }
 
-// MARK: - TextViewDelegate
+// MARK: - UITextViewDelegate
 
-extension SendViewController {
+extension SendViewController: UITextViewDelegate {
 
 	func textViewDidChangeSelection(_ textView: UITextView) {
 		self.updateMarkedText(for: textView)

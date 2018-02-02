@@ -70,6 +70,7 @@ class SendViewController: UIViewController {
 
         textView.font = UIFont.systemFont(ofSize: 17)
         textView.text = ""
+		textView.delegate = self
 
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
 
