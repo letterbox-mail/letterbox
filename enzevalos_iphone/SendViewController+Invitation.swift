@@ -19,22 +19,6 @@ struct InvitationSelection {
 
 extension SendViewController {
 
-	@IBAction
-	fileprivate func encryptSelectedText() {
-
-		self.invitationSelection.selectedWords.insert(self.textView.selectedRange)
-		self.layoutText()
-	}
-
-	@IBAction
-	fileprivate func decryptSelectedText() {
-
-	}
-
-	func layoutInvitationButton() {
-
-	}
-
 	func htmlMessage() -> String? {
 
 		guard
@@ -53,22 +37,34 @@ extension SendViewController {
 	}
 
 	fileprivate func menuControllerItems(for textView: UITextView) -> [UIMenuItem]? {
-		return [
-			UIMenuItem(title: "verschlüsseln", action: #selector(self.encryptSelectedText)),
-			UIMenuItem(title: "entschlüsseln", action: #selector(self.decryptSelectedText))
-		]
+		let selectedRange = self.invitationSelection.selectedWords.first { (range) -> Bool in
+			return range.isInRange(of: self.textView.selectedRange)
+		}
+
+		guard selectedRange != nil else {
+			return [UIMenuItem(title: "verschlüsseln", action: #selector(self.markSelectedText))]
+		}
+
+		return [UIMenuItem(title: "entschlüsseln", action: #selector(self.unmarkSelectedText))]
 	}
 
 	fileprivate func layoutText() {
 
-		guard self.invitationSelection.selectedWords.isEmpty == false else {
-			self.textView.text = self.textView.attributedText.string
+		let selectedRange = self.textView.selectedTextRange
+
+		defer {
+			self.textView.selectedTextRange = selectedRange
+		}
+
+		guard self.invitationSelection.selectedWords.isEmpty == false && self.isEligibleForInvitation() == true else {
+			let attributedString = NSMutableAttributedString(attributedString: self.textView.attributedText)
+			attributedString.removeAttribute(NSBackgroundColorAttributeName, range: NSRange(location: 0, length: attributedString.string.count))
+			self.textView.attributedText = attributedString
 			return
 		}
 
-		let selectedRange = self.textView.selectedRange
 		let text: String = self.textView.text
-		let orangeColor = #colorLiteral(red: 1, green: 0.570499897, blue: 0, alpha: 1)
+		let orangeColor = UIColor.Invitation.orange
 		let attributedString = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: self.textView.font!])
 
 		for range in self.invitationSelection.selectedWords {
@@ -76,7 +72,34 @@ extension SendViewController {
 		}
 
 		self.textView.attributedText = attributedString
-		self.textView.selectedRange = NSRange(location: selectedRange.location, length: 0)
+	}
+
+	fileprivate func addRange(_ rangeToAdd: NSRange) {
+
+		let similarRange = self.invitationSelection.selectedWords.first { (range) -> Bool in
+			return rangeToAdd.isInRange(of: range)
+		}
+
+		guard let range = similarRange else {
+			self.invitationSelection.selectedWords.insert(rangeToAdd)
+			return
+		}
+
+		self.invitationSelection.selectedWords.remove(range)
+		self.invitationSelection.selectedWords.insert(range.union(rangeToAdd))
+	}
+
+	fileprivate func removeRange(_ rangeToRemove: NSRange) {
+
+		let similarRange = self.invitationSelection.selectedWords.first { (range) -> Bool in
+			return rangeToRemove.isInRange(of: range)
+		}
+
+		guard let range = similarRange else {
+			return
+		}
+
+		self.invitationSelection.selectedWords.remove(range)
 	}
 }
 
@@ -104,29 +127,58 @@ extension SendViewController {
 	///   - range: where the Text Changed
 	///   - replacedText: that replaced the range
 	fileprivate func textChanged(inRange range: NSRange, with replacedText: String) {
-		let text = self.textView.text as String
-		let words = text.words(inRange: range)
+
 		let replacedTextLength = replacedText.count
 
-		self.invitationSelection.selectedWords.forEach { (range) in
+		let selectedWords = self.invitationSelection.selectedWords
+			.map({ (selectedRange) -> NSRange? in
 
-		}
+				guard (selectedRange.location + selectedRange.length > range.location) else {
+					return selectedRange
+				}
+
+				guard (selectedRange.location <= range.location + range.length) else {
+					return NSRange(location: selectedRange.location - range.length + replacedTextLength, length: selectedRange.length)
+				}
+
+				return nil
+			}).flatMap { $0 }
+
+		self.invitationSelection.selectedWords = Set<NSRange>(selectedWords)
+	}
+
+	func textViewDidChange(_ textView: UITextView) {
+		self.layoutText()
 	}
 
 	/// The Selected Text in the given TextView should be marked.
 	/// Store starting Indexes in the Invitation Selection
 	///
 	/// - Parameter textView
-	fileprivate func markSelectedText(for textView: UITextView) {
+	@IBAction
+	fileprivate func markSelectedText() {
 
+		let wordsResult = self.textView.text.words(inRange: self.textView.selectedRange)
+
+		if let range = wordsResult?.extendedRange {
+			self.addRange(range)
+			self.layoutText()
+		}
 	}
 
 	/// The Selected Text in the given TextView should be unmarked.
 	/// remove starting Indexes in the Invitation Selection
 	///
 	/// - Parameter textView
-	fileprivate func unmarkSelectedText(for textView: UITextView) {
+	@IBAction
+	fileprivate func unmarkSelectedText() {
 
+		let wordsResult = self.textView.text.words(inRange: self.textView.selectedRange)
+
+		if let range = wordsResult?.extendedRange {
+			self.removeRange(range)
+			self.layoutText()
+		}
 	}
 
 	/// Should return true, if the current recipients are insecure
@@ -149,20 +201,5 @@ extension SendViewController: UITextViewDelegate {
 
 		self.textChanged(inRange: range, with: text)
 		return true
-	}
-}
-
-// MARK: - IBAction
-
-extension SendViewController {
-
-	@IBAction private func unmarkTapped(sender: Any?) {
-
-		self.unmarkSelectedText(for: self.textView)
-	}
-
-	@IBAction private func markTapped(sender: Any?) {
-
-		self.markSelectedText(for: self.textView)
 	}
 }

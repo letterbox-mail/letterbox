@@ -22,18 +22,12 @@ class InvitationTests: XCTestCase {
 		let secondResult = string.words(inRange: secondStringRange)
 
 		print(firstResult)
-		XCTAssertEqual(firstResult.count, 1)
-		XCTAssertEqual(firstResult.first?.word, "Diese")
-		XCTAssertEqual(firstResult.first?.index, 0)
+		XCTAssertEqual(firstResult?.words, "Diese")
+		XCTAssertEqual(firstResult?.extendedRange, firstStringRange)
 
 		print(secondResult)
-		XCTAssertEqual(secondResult.count, 3)
-		XCTAssertEqual(secondResult[0].word, "App")
-		XCTAssertEqual(secondResult[1].word, "hat")
-		XCTAssertEqual(secondResult[2].word, "viele")
-		XCTAssertEqual(secondResult[0].index, 6)
-		XCTAssertEqual(secondResult[1].index, 10)
-		XCTAssertEqual(secondResult[2].index, 14)
+		XCTAssertEqual(secondResult?.words, "App hat viele")
+		XCTAssertEqual(secondResult?.extendedRange, NSRange(location: 6, length: 13))
 	}
 
 	func testEncryptAndDecryptStrings() {

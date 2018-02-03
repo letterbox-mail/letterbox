@@ -10,11 +10,7 @@ import UIKit
 
 extension String {
 
-	/// Returns all Words (word is surrunded by whitespaces and newlines) within the given range
-	///
-	/// - Parameter range: range that includes all words that should be returned
-	/// - Returns: all single words within the Range
-	func words(inRange range: NSRange) -> [(word: String, index: Int)] {
+	func words(inRange range: NSRange) -> (words: String, extendedRange: NSRange)? {
 
 		let strings = self.components(separatedBy: .whitespacesAndNewlines)
 		var result = [(word: String, index: Int)]()
@@ -38,9 +34,27 @@ extension String {
 			index += (1 + string.count)
 		}
 
-		return result.filter({ (word: String, index: Int) -> Bool in
-			return (word.isEmpty == false)
-		})
+		let string = result
+			.map { (word, index) -> String in
+				return word
+			}.joined(separator: " ")
+
+		guard let startIndex = result.first?.index else {
+			return nil
+		}
+
+		let wordsRange = NSRange(location: startIndex, length: string.count)
+		let words = (self as NSString).substring(with: wordsRange)
+
+		return (words, wordsRange)
+	}
+}
+
+extension NSRange {
+
+	func isInRange(of range: NSRange) -> Bool {
+
+		return self.contains(range.location) || range.contains(self.location)
 	}
 }
 
