@@ -126,7 +126,7 @@ class SwiftPGP: Encryption{
     
     private func loadPassword(id: String) -> String?{
         do{
-            if let pw = try pwKeyChain.getString(id){
+            if let pw = try pwKeyChain.getString(id) {
                 return pw
             }
         } catch{
@@ -204,7 +204,7 @@ class SwiftPGP: Encryption{
         return ids
     }
     
-    func exportKey(id: String, isSecretkey isSecretKey: Bool, autocrypt: Bool) -> String?{
+    func exportKey(id: String, isSecretkey isSecretKey: Bool, autocrypt: Bool, newPasscode: Bool = false) -> String?{
         if let key = exportKeyData(id: id, isSecretkey: isSecretKey){
             if !isSecretKey && autocrypt{
                 return key.base64EncodedString()
@@ -221,8 +221,8 @@ class SwiftPGP: Encryption{
                 if isSecretKey && autocrypt{
                     // Create Autocrypt Setup-message
                     // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
-                    var passcode = loadPassword(id: id)
-                    if passcode == nil{
+                    var passcode = loadExportPasscode(id: id)
+                    if passcode == nil || newPasscode {
                         passcode = generatePW(size: PasscodeSize, splitInBlocks: true)
                     }
                     exportPwKeyChain[id] = passcode

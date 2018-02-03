@@ -16,7 +16,7 @@ public protocol Encryption{
     func importKeys(data: Data,  pw: String?, secret: Bool) throws-> [String]
     func importKeysFromFile(file: String,  pw: String?) throws -> [String]
     
-    func exportKey(id: String, isSecretkey: Bool, autocrypt: Bool) -> String?
+    func exportKey(id: String, isSecretkey: Bool, autocrypt: Bool, newPasscode: Bool) -> String?
     
     // operations on keys
     func encrypt(plaintext: String, ids: [String], myId: String) -> CryptoObject

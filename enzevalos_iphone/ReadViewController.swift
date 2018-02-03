@@ -615,9 +615,19 @@ class ReadViewController: UITableViewController {
 class ReadTextDelegate: NSObject, UITextViewDelegate {
     var callback: ((String) -> ())?
 
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
-        if URL.scheme == "mailto" {
-            callback?(URL.absoluteString.replacingOccurrences(of: "mailto:", with: ""))
+    @available(iOS, deprecated: 10.0)
+    func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange) -> Bool {
+        if url.scheme == "mailto" {
+            callback?(url.absoluteString.replacingOccurrences(of: "mailto:", with: ""))
+            return false
+        }
+        return true
+    }
+    
+    @available(iOS 10.0, *)
+    func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        if url.scheme == "mailto" {
+            callback?(url.absoluteString.replacingOccurrences(of: "mailto:", with: ""))
             return false
         }
         return true
