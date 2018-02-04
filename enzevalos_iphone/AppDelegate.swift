@@ -11,7 +11,7 @@ import Contacts
 import CoreData
 import Onboard
 import SystemConfiguration
-
+import QAKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -57,6 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             selector: #selector(addressBookDidChange),
             name: NSNotification.Name.CNContactStoreDidChange,
             object: nil)
+
+		if #available(iOS 11.0, *) {
+			QAKit.Fingertips.start()
+		}
+
         return true
     }
     

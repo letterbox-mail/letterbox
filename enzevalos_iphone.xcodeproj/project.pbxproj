@@ -1619,6 +1619,7 @@
 				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/Onboard/Onboard.framework",
+				"${BUILT_PRODUCTS_DIR}/QAKit/QAKit.framework",
 				"${BUILT_PRODUCTS_DIR}/VENTokenField/VENTokenField.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1627,6 +1628,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FrameAccessor.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Onboard.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QAKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VENTokenField.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1827,6 +1829,7 @@
 				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/Onboard/Onboard.framework",
+				"${BUILT_PRODUCTS_DIR}/QAKit/QAKit.framework",
 				"${BUILT_PRODUCTS_DIR}/VENTokenField/VENTokenField.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1835,6 +1838,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FrameAccessor.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Onboard.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QAKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VENTokenField.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
