@@ -31,7 +31,9 @@ extension SendViewController {
 		}
 
 		var text: String = self.textView.text
-		let textsToEncrypt = self.invitationSelection.selectedWords.map { (range) -> String in
+		let textsToEncrypt = self.invitationSelection.selectedWords.sorted { (lhs, rhs) -> Bool in
+			return lhs.location < rhs.location
+		}.map { (range) -> String in
 			return (text as NSString).substring(with: range)
 		}
 
@@ -48,7 +50,11 @@ extension SendViewController {
 
 		let link = "http://enzevalos.konstantindeichmann.de?text=\(urlTexts)&cipher=\(cipher)"
 
-		for (index, range) in self.invitationSelection.selectedWords.enumerated() {
+		let locations = self.invitationSelection.selectedWords.sorted { (lhs, rhs) -> Bool in
+			return rhs.location < lhs.location
+		}
+
+		for (index, range) in locations.enumerated() {
 			text = (text as NSString).replacingCharacters(in: range, with: "<a class=\"encrypted-text\">\(texts[index])</a>")
 		}
 
@@ -67,6 +73,11 @@ extension SendViewController {
 	}
 
 	fileprivate func menuControllerItems(for textView: UITextView) -> [UIMenuItem]? {
+
+		if (self.textView.selectedRange.location == 0 && self.textView.selectedRange.length == 0) {
+			return nil
+		}
+
 		let selectedRange = self.invitationSelection.selectedWords.first { (range) -> Bool in
 			return range.isInRange(of: self.textView.selectedRange)
 		}

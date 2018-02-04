@@ -366,7 +366,7 @@
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
-		F120A7D31F7937BB006D5BF1 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		F120A7D31F7937BB006D5BF1 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
 		F14D189C1ED880680080515D /* nchr-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18981ED880680080515D /* nchr-private.gpg */; };
 		F14D189D1ED880680080515D /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
@@ -723,7 +723,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F120A7D31F7937BB006D5BF1 /* BuildFile in Frameworks */,
+				F120A7D31F7937BB006D5BF1 /* (null) in Frameworks */,
 				472F396E1E14F384009260FB /* CoreData.framework in Frameworks */,
 				9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */,
 			);
@@ -1449,9 +1449,9 @@
 					};
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = VJ9C93G68Y;
+						DevelopmentTeam = JZ2H644EU7;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -1777,7 +1777,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2452,7 +2452,8 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = JZ2H644EU7;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
@@ -2485,8 +2486,8 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "3aaeb64f-5416-4e9e-a6ee-2cb191401818";
+				PROVISIONING_PROFILE_SPECIFIER = "SMF Enterprise Wildcard DEBUG";
 				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2504,7 +2505,8 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = JZ2H644EU7;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
@@ -2537,8 +2539,8 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "3aaeb64f-5416-4e9e-a6ee-2cb191401818";
+				PROVISIONING_PROFILE_SPECIFIER = "SMF Enterprise Wildcard DEBUG";
 				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[sdk=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
