@@ -69,7 +69,7 @@ extension String {
 	}
 
 	var urlString: String? {
-		return self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+		return self.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
 	}
 }
 

@@ -52,7 +52,10 @@ extension SendViewController {
 			text = (text as NSString).replacingCharacters(in: range, with: "<a class=\"encrypted-text\">\(texts[index])</a>")
 		}
 
-		self.invitationSelection.code = cipherText.password
+		if (self.invitationSelection.code == nil) {
+			self.invitationSelection.code = cipherText.password
+		}
+
 		return String(format: htmlString, text, link, link)
 	}
 
