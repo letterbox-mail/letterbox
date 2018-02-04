@@ -110,7 +110,7 @@ extension DialogViewController {
 
 extension DialogViewController {
 
-	func showDialog(_ animated: Bool) {
+	fileprivate func showDialog(_ animated: Bool) {
 
 		let animationInterval: TimeInterval = ((animated == true) ? 0.3 : 0)
 		self.dialogView?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
@@ -123,7 +123,7 @@ extension DialogViewController {
 		})
 	}
 
-	func hideDialog(_ animated: Bool, completion: (() -> Void)?) {
+	fileprivate func hideDialog(_ animated: Bool, completion: (() -> Void)?) {
 
 		let animationInterval: TimeInterval = ((animated == true) ? 0.3 : 0)
 
@@ -134,6 +134,14 @@ extension DialogViewController {
 			completion?()
 		}
 	}
+
+	public func hideDialog(completion: (() -> Void)?) {
+		self.hideDialog(true) { [weak self] in
+			self?.dismiss(animated: false, completion: {
+				completion?()
+			})
+		}
+	}
 }
 
 // MARK: - IBAction
@@ -142,11 +150,7 @@ extension DialogViewController {
 
 	@IBAction private func ctaButtonTapped(sender: Any) {
 
-		self.hideDialog(true) { [weak self] in
-			self?.dismiss(animated: false, completion: { [weak self] in
-				self?.ctaAction?()
-			})
-		}
+		self.ctaAction?()
 	}
 
 	@IBAction private func additionalButtonTapped(sender: Any) {
