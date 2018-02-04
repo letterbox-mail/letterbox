@@ -188,3 +188,5 @@
 "Invitation.Step.Message" = "Nachdem du die E-Mail gesendet hast, bekommst du von uns einen Code.\nMit diesem kann man deine Nachricht wieder lesen.";
 "Invitation.Step.CTA" = "Weiter machen";
 "Invitation.Step.Undo" = "Rückgängig machen";
+"Invitation.Encrypt" = "Verschlüsseln";
+"Invitation.Decrypt" = "Entschlüsseln";

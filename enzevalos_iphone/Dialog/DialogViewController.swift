@@ -8,27 +8,31 @@
 
 import UIKit
 
-class DialogViewController								: UIViewController {
+class DialogViewController									: UIViewController {
 
 	// MARK: - IBOutlet
 
-	@IBOutlet fileprivate weak var dialogView			: UIView?
-	@IBOutlet fileprivate weak var titleView			: UIView?
+	@IBOutlet fileprivate weak var dialogView				: UIView?
+	@IBOutlet fileprivate weak var titleView				: UIView?
 
-	@IBOutlet fileprivate weak var iconImageView		: UIImageView?
-	@IBOutlet fileprivate weak var iconBackgroundView	: UIView?
-	@IBOutlet fileprivate weak var titleLabel			: UILabel?
-	@IBOutlet fileprivate weak var messageLabel			: UILabel?
+	@IBOutlet fileprivate weak var iconImageView			: UIImageView?
+	@IBOutlet fileprivate weak var iconBackgroundView		: UIView?
+	@IBOutlet fileprivate weak var iconBackgroundImageView	: UIImageView?
+	@IBOutlet fileprivate weak var titleLabel				: UILabel?
+	@IBOutlet fileprivate weak var messageLabel				: UILabel?
 
-	@IBOutlet fileprivate weak var ctaButton			: UIButton?
-	@IBOutlet fileprivate weak var additionalButton		: UIButton?
-	@IBOutlet fileprivate weak var dismissButton		: UIButton?
+	@IBOutlet fileprivate weak var ctaButton				: UIButton?
+	@IBOutlet fileprivate weak var additionalButton			: UIButton?
+	@IBOutlet fileprivate weak var dismissButton			: UIButton?
+
+	@IBOutlet fileprivate var heightConstraint				: NSLayoutConstraint?
+	@IBOutlet fileprivate var spacingConstraint				: NSLayoutConstraint?
 
 	// MARK: - Action
 
-	var ctaAction										: (() -> Void)?
-	var additionalAction								: (() -> Void)?
-	var dismissAction									: (() -> Void)?
+	var ctaAction											: (() -> Void)?
+	var additionalAction									: (() -> Void)?
+	var dismissAction										: (() -> Void)?
 
 	// MARK: - Life Cycle
 
@@ -82,7 +86,13 @@ extension DialogViewController {
 		self.additionalButton?.setTitle(option.additionActionButtonTitle, for: .normal)
 		self.titleView?.backgroundColor = option.color
 		self.iconImageView?.image = option.icon?.withRenderingMode(.alwaysTemplate)
+		self.iconBackgroundView?.isHidden = option.icon == nil
+		self.iconBackgroundImageView?.image = option.titleImage
 		self.ctaButton?.backgroundColor = option.color
+
+		self.heightConstraint?.constant = ((option.titleImage != nil) ? 150 : 100)
+		self.spacingConstraint?.constant = ((option.icon == nil) ? 16 : -49)
+		self.dialogView?.layoutIfNeeded()
 	}
 }
 
@@ -90,7 +100,7 @@ extension DialogViewController {
 
 extension DialogViewController {
 
-	static func present(on viewController: UIViewController, with option: DialogOption) -> DialogViewController? {
+	static func present(on viewController: UIViewController, with option: DialogOption, completion: (() -> Void)? = nil) -> DialogViewController? {
 
 		guard let dialogViewController = UIStoryboard(name: "Dialog", bundle: nil).instantiateInitialViewController() as? DialogViewController else {
 			return nil
@@ -100,7 +110,7 @@ extension DialogViewController {
 		dialogViewController.modalPresentationStyle = .overCurrentContext
 		dialogViewController.layout(for: option)
 
-		viewController.present(dialogViewController, animated: false, completion: nil)
+		viewController.present(dialogViewController, animated: false, completion: completion)
 
 		return dialogViewController
 	}

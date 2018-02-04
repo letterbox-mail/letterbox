@@ -24,11 +24,20 @@ enum DialogOption {
 		}
 	}
 
+	var titleImage: UIImage? {
+		switch self {
+		case .postcard			: return nil
+		case .invitationCode	: return nil
+		case .invitationWelcome	: return UIImage(named: "bg_inviation")
+		case .invitationStep	: return nil
+		}
+	}
+
 	var icon: UIImage? {
 		switch self {
 		case .postcard			: return UIImage(named: "letter")
 		case .invitationCode	: return UIImage(named: "ic_secure_card")
-		case .invitationWelcome	: return UIImage(named: "ic_secure_card")
+		case .invitationWelcome	: return nil
 		case .invitationStep	: return UIImage(named: "ic_secure_card")
 		}
 	}

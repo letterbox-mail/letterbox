@@ -23,9 +23,18 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jWO-wf-Sxa">
                                         <rect key="frame" x="0.0" y="0.5" width="300" height="100"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GZo-gv-oMA">
+                                                <rect key="frame" x="0.0" y="0.0" width="300" height="100"/>
+                                            </imageView>
+                                        </subviews>
                                         <color key="backgroundColor" red="1" green="0.70588235294117641" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="GZo-gv-oMA" secondAttribute="trailing" id="Pkn-wX-xSw"/>
                                             <constraint firstAttribute="height" constant="100" id="Y1n-nl-JTu"/>
+                                            <constraint firstAttribute="bottom" secondItem="GZo-gv-oMA" secondAttribute="bottom" id="bKg-9e-sGO"/>
+                                            <constraint firstItem="GZo-gv-oMA" firstAttribute="leading" secondItem="jWO-wf-Sxa" secondAttribute="leading" id="ley-3o-b6R"/>
+                                            <constraint firstItem="GZo-gv-oMA" firstAttribute="top" secondItem="jWO-wf-Sxa" secondAttribute="top" id="pfD-V5-2tg"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ypW-3y-x5z">
@@ -57,7 +66,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label - Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ca6-Al-B4r">
-                                                <rect key="frame" x="142.5" y="150.5" width="0.0" height="20.5"/>
+                                                <rect key="frame" x="-8" y="150.5" width="0.0" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -118,9 +127,12 @@
                         <outlet property="ctaButton" destination="7HJ-Hs-FLY" id="W6i-R2-Spa"/>
                         <outlet property="dialogView" destination="H9Q-Ab-s6V" id="Hr9-Zc-dM4"/>
                         <outlet property="dismissButton" destination="1Al-eH-4wQ" id="KDz-rS-z94"/>
+                        <outlet property="heightConstraint" destination="Y1n-nl-JTu" id="SDU-CS-pPE"/>
+                        <outlet property="iconBackgroundImageView" destination="GZo-gv-oMA" id="HMG-0d-uIQ"/>
                         <outlet property="iconBackgroundView" destination="izX-xq-ehN" id="ndf-6d-4XL"/>
                         <outlet property="iconImageView" destination="DGr-j0-hTi" id="Z2G-IF-e7o"/>
                         <outlet property="messageLabel" destination="Ca6-Al-B4r" id="XLm-Sj-cLD"/>
+                        <outlet property="spacingConstraint" destination="h1x-bA-DYF" id="TGI-df-Qdy"/>
                         <outlet property="titleLabel" destination="XvK-82-1UB" id="VBC-Xa-6e9"/>
                         <outlet property="titleView" destination="jWO-wf-Sxa" id="BFH-Xs-TmO"/>
                     </connections>

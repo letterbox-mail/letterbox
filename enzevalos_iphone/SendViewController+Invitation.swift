@@ -53,7 +53,7 @@ extension SendViewController {
 		}
 
 		self.invitationSelection.code = cipherText.password
-		return String(format: htmlString, text, link)
+		return String(format: htmlString, text, link, link)
 	}
 
 	fileprivate func removeAllInvitationMarks() {
@@ -69,10 +69,10 @@ extension SendViewController {
 		}
 
 		guard selectedRange != nil else {
-			return [UIMenuItem(title: "verschlüsseln", action: #selector(self.markSelectedText))]
+			return [UIMenuItem(title: NSLocalizedString("Invitation.Encrypt", comment: ""), action: #selector(self.markSelectedText))]
 		}
 
-		return [UIMenuItem(title: "entschlüsseln", action: #selector(self.unmarkSelectedText))]
+		return [UIMenuItem(title: NSLocalizedString("Invitation.Decrypt", comment: ""), action: #selector(self.unmarkSelectedText))]
 	}
 
 	fileprivate func layoutText() {
@@ -138,7 +138,9 @@ extension SendViewController {
 		}
 
 		self.invitationSelection.didShowDialog = true
-		let controller = DialogViewController.present(on: self, with: .invitationWelcome)
+		let controller = DialogViewController.present(on: self, with: .invitationWelcome) { [weak self] in
+			self?.view.endEditing(true)
+		}
 		controller?.ctaAction = {
 			controller?.hideDialog(completion: nil)
 		}
@@ -154,6 +156,7 @@ extension SendViewController {
 			return
 		}
 
+		self.view.endEditing(true)
 		InvitationUserDefaults.shouldNotShowSecondDialog.set(true)
 		let controller = DialogViewController.present(on: self, with: .invitationStep)
 		controller?.ctaAction = {
