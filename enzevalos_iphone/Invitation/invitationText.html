@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
 	<style>
+		@import url('https://fonts.googleapis.com/css?family=VT323');
+
 		a {
 			color: #FF9800;
 		}
 
-		body {
-			color: #000;
-			background-color:#fff;
-			font:-apple-system-body;
-			white-space: pre-line;
-		}
+	body {
+		color: #000;
+		background-color:#fff;
+		font:-apple-system-body;
+		white-space: pre-line;
+		font-size: 15px;
+	}
 
-		hr {
-			margin-top: 15px;
-			margin-bottom: 5px;
-		}
-	</style>
+	hr {
+		margin-top: 15px;
+		margin-bottom: 5px;
+	}
+
+	.encrypted-text {
+		color: #FF9800;
+		font-family: 'VT323', monospace;
+	}
+
+		</style>
 	<body>
 		<div>
 			%@
 		</div>
-		<hr style="">
-
-		Teile deiner Nachricht wurden zu gunsten deiner Privatsphäre verborgen. Aber keine Angst du kannst diese jedenzeit <a href="%@">hier</a> abrufen.
+		<hr>
+		Teile dieser Nachricht wurden zu gunsten der Privatsphäre verschlüsselt. Aber keine Angst du kannst die verschlüsselten Wörter jederzeit <a href="%@">hier</a> abrufen.
 	</body>
 </html>
 

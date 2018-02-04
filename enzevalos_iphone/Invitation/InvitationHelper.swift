@@ -8,6 +8,25 @@
 
 import UIKit
 
+// MARK: - UserDefaults
+
+enum InvitationUserDefaults				: String {
+
+	case shouldNotShowFirstDialog		= "Invitation_shouldNotShowFirstDialog"
+	case shouldNotShowSecondDialog		= "Invitation_shouldNotShowSecondDialog"
+
+	var bool: Bool {
+		return UserDefaults.standard.bool(forKey: self.rawValue)
+	}
+
+	func set(_ value: Bool) {
+		UserDefaults.standard.set(value, forKey: self.rawValue)
+		UserDefaults.standard.synchronize()
+	}
+}
+
+// MARK: - Extensions
+
 extension String {
 
 	func words(inRange range: NSRange) -> (words: String, extendedRange: NSRange)? {
@@ -47,6 +66,10 @@ extension String {
 		let words = (self as NSString).substring(with: wordsRange)
 
 		return (words, wordsRange)
+	}
+
+	var urlString: String? {
+		return self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
 	}
 }
 

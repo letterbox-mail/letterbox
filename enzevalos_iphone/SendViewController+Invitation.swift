@@ -12,7 +12,9 @@ import UIKit
 
 struct InvitationSelection {
 
-	var selectedWords = Set<NSRange>()
+	var selectedWords 	= Set<NSRange>()
+	var code			: String?
+	var didShowDialog	= false
 }
 
 // MARK: - SendViewController Extension
@@ -24,16 +26,41 @@ extension SendViewController {
 		guard
 			let resource = Bundle.main.url(forResource: "invitationText", withExtension: "html"),
 			let data = try? Data(contentsOf: resource),
-			let htmlString = String(data: data, encoding: .utf8) else {
-				return self.textView.text
+			let htmlString = String(data: data, encoding: .utf8), (self.isEligibleForInvitation() == true && self.invitationSelection.selectedWords.isEmpty == false) else {
+				return nil
 		}
 
-		return String(format: htmlString, self.textView.text, "google.com")
+		var text: String = self.textView.text
+		let textsToEncrypt = self.invitationSelection.selectedWords.map { (range) -> String in
+			return (text as NSString).substring(with: range)
+		}
+
+		let cipherText = SwiftPGP().symmetricEncrypt(textToEncrypt: [textsToEncrypt.joined(separator: "\n")], armored: true)
+		let texts = textsToEncrypt.map { _ -> String in
+			return String.random(length: 10)
+		}
+
+		guard
+			let urlTexts = texts.joined(separator: ",").urlString,
+			let cipher = cipherText.chiphers.first?.urlString else {
+				return nil
+		}
+
+		let link = "http://enzevalos.konstantindeichmann.de?text=\(urlTexts)&cipher=\(cipher)"
+
+		for (index, range) in self.invitationSelection.selectedWords.enumerated() {
+			text = (text as NSString).replacingCharacters(in: range, with: "<a class=\"encrypted-text\">\(texts[index])</a>")
+		}
+
+		self.invitationSelection.code = cipherText.password
+		return String(format: htmlString, text, link)
 	}
 
 	fileprivate func removeAllInvitationMarks() {
-		self.invitationSelection.selectedWords = Set<NSRange>()
-		self.layoutText()
+		if (self.invitationSelection.selectedWords.isEmpty == false) {
+			self.invitationSelection.selectedWords = Set<NSRange>()
+			self.layoutText()
+		}
 	}
 
 	fileprivate func menuControllerItems(for textView: UITextView) -> [UIMenuItem]? {
@@ -57,8 +84,10 @@ extension SendViewController {
 		}
 
 		guard self.invitationSelection.selectedWords.isEmpty == false && self.isEligibleForInvitation() == true else {
-			let attributedString = NSMutableAttributedString(attributedString: self.textView.attributedText)
-			attributedString.removeAttribute(NSBackgroundColorAttributeName, range: NSRange(location: 0, length: attributedString.string.count))
+			let attributedString = NSMutableAttributedString(string: self.textView.text)
+			let fullRange = NSRange(location: 0, length: attributedString.string.count)
+			attributedString.addAttributes([NSFontAttributeName: self.textView.font], range: fullRange)
+			attributedString.removeAttribute(NSBackgroundColorAttributeName, range: fullRange)
 			self.textView.attributedText = attributedString
 			return
 		}
@@ -100,6 +129,41 @@ extension SendViewController {
 		}
 
 		self.invitationSelection.selectedWords.remove(range)
+	}
+
+	func showFirstDialogIfNeeded() {
+
+		guard (self.isEligibleForInvitation() == true && self.invitationSelection.didShowDialog == false && InvitationUserDefaults.shouldNotShowFirstDialog.bool == false) else {
+			return
+		}
+
+		self.invitationSelection.didShowDialog = true
+		let controller = DialogViewController.present(on: self, with: .invitationWelcome)
+		controller?.ctaAction = {
+			controller?.hideDialog(completion: nil)
+		}
+
+		controller?.dismissAction = {
+			InvitationUserDefaults.shouldNotShowFirstDialog.set(true)
+		}
+	}
+
+	func showStepDialog() {
+
+		guard (InvitationUserDefaults.shouldNotShowSecondDialog.bool == false) else {
+			return
+		}
+
+		InvitationUserDefaults.shouldNotShowSecondDialog.set(true)
+		let controller = DialogViewController.present(on: self, with: .invitationStep)
+		controller?.ctaAction = {
+			controller?.hideDialog(completion: nil)
+		}
+
+		controller?.dismissAction = { [weak self] in
+			self?.invitationSelection.selectedWords = Set<NSRange>()
+			self?.layoutText()
+		}
 	}
 }
 
@@ -161,6 +225,11 @@ extension SendViewController {
 		let wordsResult = self.textView.text.words(inRange: self.textView.selectedRange)
 
 		if let range = wordsResult?.extendedRange {
+
+			if (self.invitationSelection.selectedWords.isEmpty == true) {
+				self.showStepDialog()
+			}
+
 			self.addRange(range)
 			self.layoutText()
 		}

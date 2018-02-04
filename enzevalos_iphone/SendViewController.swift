@@ -62,6 +62,7 @@ class SendViewController: UIViewController {
 	var toSecure = true {
 		didSet {
 			self.updateMarkedText(for: self.textView)
+			self.showFirstDialogIfNeeded()
 		}
 	}
 
@@ -487,7 +488,20 @@ class SendViewController: UIViewController {
     }
 
     func sendCompleted() {
-        self.navigationController?.dismiss(animated: true, completion: nil)
+		guard let code = self.invitationSelection.code, self.htmlMessage() != nil else {
+			self.navigationController?.dismiss(animated: true, completion: nil)
+			return
+		}
+
+		let controller = DialogViewController.present(on: self, with: .invitationCode(code: code))
+		controller?.ctaAction = {
+			let activityController = UIActivityViewController(activityItems: [code], applicationActivities: nil)
+			controller?.present(activityController, animated: true, completion: nil)
+		}
+
+		controller?.dismissAction = { [weak self] in
+			self?.dismiss(animated: true, completion: nil)
+		}
     }
 
 
