@@ -104,7 +104,11 @@ extension PersistentMail {
             self.willAccessValue(forKey: "from")
             let text = (self.primitiveValue(forKey: "from") as? Mail_Address)
             self.didAccessValue(forKey: "from")
-            return text!
+            if let text = text {
+                return text
+            }
+            print("We have a nil")
+            return Mail_Address()
         }
     }
     public var containsSecretKey: Bool{

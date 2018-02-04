@@ -121,7 +121,7 @@ static EmailHelper *shared = nil;
         OIDAuthorizationRequest *request =
         [[OIDAuthorizationRequest alloc] initWithConfiguration:configuration
                                                       clientId:kClientID
-                                                        scopes:@[OIDScopeOpenID, OIDScopeProfile, @"https://mail.google.com/"]
+                                                        scopes:@[OIDScopeOpenID, OIDScopeProfile, OIDScopeEmail, @"https://mail.google.com/"]
                                                    redirectURL:redirectURI
                                                   responseType:OIDResponseTypeCode
                                           additionalParameters:nil];

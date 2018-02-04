@@ -37,6 +37,7 @@ class Onboarding: NSObject {
     static var smtpTransDataDelegate = PickerDataDelegate.init(rows: ["a", "b", "c"])
     static var background = UIImage.init()
     static var manualSet = false
+    static var googleAuth = false
     
     static var loginViewController: UIViewController?
 
@@ -217,28 +218,13 @@ class Onboarding: NSObject {
     }
 
     static func blah() {
+        googleAuth = true
         doWhenDone()
     }
     
     static func dismissKeyboard() {
         mailaddress.endEditing(true)
         password.endEditing(true)
-    }
-    
-    static func googleLogin() {
-        if let loginViewController = Onboarding.loginViewController, (Onboarding.mailaddress.text?.lowercased() ?? "").contains("gmail") || (Onboarding.mailaddress.text?.lowercased() ?? "").contains("google") {
-            EmailHelper.singleton().doEmailLoginIfRequired(onVC: loginViewController, completionBlock: {
-                guard EmailHelper.singleton().authorization?.authState.isAuthorized ?? false else {
-                    print("Google authetication failed")
-                    return
-                }
-                print("Google authetication successful")
-                print("User Email: \(String(describing: EmailHelper.singleton().authorization?.userEmail))")
-                print("User ID: \(String(describing: EmailHelper.singleton().authorization?.userID))")
-                print("User Email verified: \(String(describing: EmailHelper.singleton().authorization?.userEmailIsVerified))")
-                
-            })
-        }
     }
 
     //UI Definition
@@ -536,8 +522,7 @@ class Onboarding: NSObject {
             //TODO: REMOVE BEFORE STUDY
             loadTestAcc()
             return setServerValues(mailaddress: mailAddress)
-        }
-        else {
+        } else {
             UserManager.storeUserValue(imapServer.text as AnyObject?, attribute: Attribute.imapHostname)
             UserManager.storeUserValue(Int(imapPort.text ?? "143") as AnyObject?, attribute: Attribute.imapPort)
             UserManager.storeUserValue(smtpServer.text as AnyObject?, attribute: Attribute.smtpHostname)
@@ -562,9 +547,10 @@ class Onboarding: NSObject {
 
         if let provider = manager.provider(forEmail: mailaddress), let imap = (provider.imapServices() as? [MCONetService]), imap != [], let smtp = (provider.smtpServices() as? [MCONetService]), smtp != [] {
             let imapService = imap[0]
-            UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.web.de") as AnyObject?, attribute: Attribute.imapHostname)
+            UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.web.de") as AnyObject?, attribute: Attribute.imapHostname) //TODO @jakob: web.de?!?
             UserManager.storeUserValue((imapService.info()["port"] ?? 587) as AnyObject?, attribute: Attribute.imapPort)
-
+            
+            print(imapService.info())
             if let trans = imapService.info()["ssl"] as? Bool, trans {
                 UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
             } else if let trans = imapService.info()["starttls"] as? Bool, trans {

@@ -490,12 +490,15 @@ class MailHandler {
         if let username = UserManager.loadUserValue(Attribute.userAddr) as? String{
             imapsession.username = username
         }
-        if let pw = UserManager.loadUserValue(Attribute.userPW) as? String{
-            imapsession.password = pw
-        }
         //TODO: ERROR HANDLING!
         imapsession.authType = UserManager.loadImapAuthType()
         
+        if UserManager.loadImapAuthType() == MCOAuthType.xoAuth2 {
+            imapsession.oAuth2Token = EmailHelper.singleton().authorization?.authState.lastTokenResponse?.accessToken
+        } else if let pw = UserManager.loadUserValue(Attribute.userPW) as? String {
+            imapsession.password = pw
+        }
+
         if let connType = UserManager.loadUserValue(Attribute.imapConnectionType) as? Int{
             imapsession.connectionType = MCOConnectionType(rawValue: connType)
         }
@@ -503,10 +506,6 @@ class MailHandler {
         let y = imapsession.folderStatusOperation(INBOX)
         y?.start{(error, status) -> Void in
             print("Folder status: \(status.debugDescription)")
-        }
-        let x = imapsession.folderStatusOperation(INBOX)
-        x?.start{(e,info) -> Void in
-            print("Folder infos: \(info.debugDescription)")
         }
         
         return imapsession
@@ -915,7 +914,11 @@ class MailHandler {
         session.hostname = UserManager.loadUserValue(Attribute.smtpHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
         session.username = username
-        session.password = UserManager.loadUserValue(Attribute.userPW) as! String
+        if UserManager.loadSmtpAuthType() == MCOAuthType.xoAuth2 {
+            session.oAuth2Token = EmailHelper.singleton().authorization?.authState.lastTokenResponse?.accessToken
+        } else if let pw = UserManager.loadUserValue(Attribute.userPW) as? String {
+            session.password = pw
+        }
         session.authType = UserManager.loadSmtpAuthType()
         session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
 

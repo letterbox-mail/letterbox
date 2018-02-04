@@ -373,6 +373,7 @@
 		F14D18A21ED8811F0080515D /* ullimuelle-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */; };
 		F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */; };
 		F1866C86201F707200B72453 /* EmailHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F1866C85201F707200B72453 /* EmailHelper.m */; };
+		F1866CAB2023668F00B72453 /* GTMAppAuthDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1866CAA2023668F00B72453 /* GTMAppAuthDelegate.swift */; };
 		F189C17F1ED59FEF00BAE9B3 /* idsolutions-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */; };
 		F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */; };
 		F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445D1E7044B70080C041 /* FlipTransition.swift */; };
@@ -693,6 +694,7 @@
 		F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-public.gpg"; path = "keys/ullimuelle-public.gpg"; sourceTree = "<group>"; };
 		F1866C85201F707200B72453 /* EmailHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailHelper.m; sourceTree = "<group>"; };
 		F1866C87201F70B700B72453 /* EmailHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailHelper.h; sourceTree = "<group>"; };
+		F1866CAA2023668F00B72453 /* GTMAppAuthDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTMAppAuthDelegate.swift; sourceTree = "<group>"; };
 		F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-private.gpg"; path = "keys/idsolutions-private.gpg"; sourceTree = "<group>"; };
 		F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-public.gpg"; path = "keys/idsolutions-public.gpg"; sourceTree = "<group>"; };
 		F18B445D1E7044B70080C041 /* FlipTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipTransition.swift; sourceTree = "<group>"; };
@@ -1326,6 +1328,7 @@
 			children = (
 				F1866C85201F707200B72453 /* EmailHelper.m */,
 				F1866C87201F70B700B72453 /* EmailHelper.h */,
+				F1866CAA2023668F00B72453 /* GTMAppAuthDelegate.swift */,
 			);
 			path = OAuth;
 			sourceTree = "<group>";
@@ -2108,6 +2111,7 @@
 				A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */,
 				F18B44621E73286C0080C041 /* ReadVENDelegate.swift in Sources */,
 				471BC91E1F960B7C00D64416 /* PGPUserAttributePacket.m in Sources */,
+				F1866CAB2023668F00B72453 /* GTMAppAuthDelegate.swift in Sources */,
 				475B00421F7BB6D6006CDD41 /* PersistentKey+CoreDataClass.swift in Sources */,
 				471BC9161F960B7C00D64416 /* PGPSignaturePacket.m in Sources */,
 				3EC35F2420037651008BDF95 /* InvitationHelper.swift in Sources */,
