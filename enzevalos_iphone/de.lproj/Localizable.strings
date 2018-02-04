@@ -175,3 +175,16 @@
 "copyKey" = "Schlüssel in Zwischenablage kopieren";
 "NeverUpdated" = "Fehler bei Aktualisierung";
 
+"Invitation.Code.Title" = "Fast geschafft!";
+"Invitation.Code.Message" = "Deine Nachricht wurde versendet.\nUm sie lesen zu können, braucht man das untenstehende Passwort.\nMit dem \"Teilen\" Knopf kannst du es versenden oder kopieren.\n\n%@";
+"Invitation.Code.Share" = "Teilen";
+"Invitation.Code.Done" = "Fertig";
+"Invitation.Welcome.Title" = "Privatsphäre schützen";
+"Invitation.Welcome.Message" = "Du kannst pikanten oder sensiblen Texte markieren, um diese dann zu verschlüsseln. Schütze deine Privatsphäre jetzt.";
+"Invitation.Welcome.Try" = "Jetzt ausprobieren";
+"Invitation.Welcome.Later" = "Vielleicht später";
+"Invitation.Welcome.Dont.Ask" = "Nicht mehr anzeigen";
+"Invitation.Step.Title" = "Prima!";
+"Invitation.Step.Message" = "Nachdem du die E-Mail gesendet hast, bekommst du von uns einen Code.\nMit diesem kann man deine Nachricht wieder lesen.";
+"Invitation.Step.CTA" = "Weiter machen";
+"Invitation.Step.Undo" = "Rückgängig machen";
