@@ -7,9 +7,10 @@
 //
 
 #import "EmailHelper.h"
-//#import "enzevalos_iphone-Swift.h"
+#import "AuthStateDelegate.h"
 #import <GTMSessionFetcher/GTMSessionFetcherService.h>
 #import <GTMSessionFetcher/GTMSessionFetcher.h>
+//#import "enzevalos_iphone-Swift.h"
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
@@ -35,6 +36,8 @@ static NSString *const kRedirectURI =
  */
 static NSString *const kExampleAuthorizerKey = @"googleOAuthCodingKey";
 
+//static GTMAppAuthDelegate *delegate = [GTMAppAuthDelegate init];
+//static OIDAuthStateChangeDelegate * delegate = GTMAppAuthDelegate();
 
 @implementation EmailHelper
 
@@ -94,11 +97,18 @@ static EmailHelper *shared = nil;
     [GTMAppAuthFetcherAuthorization authorizationFromKeychainForName:kExampleAuthorizerKey];
     
     if (authorization.canAuthorize) {
+//        GTMAppAuthDelegate *delegate = [GTMAppAuthDelegate init];
+        AuthStateDelegate *delegate = [[AuthStateDelegate alloc] init];
+
         self.authorization = authorization;
+        self.authorization.authState.stateChangeDelegate = delegate;
+        self.authorization.authState.errorDelegate = delegate;
     } else {
         NSLog(@"EmailHelper: WARNING, loaded google authorization cannot authorize, discarding");
         [GTMAppAuthFetcherAuthorization removeAuthorizationFromKeychainForName:kExampleAuthorizerKey];
     }
+    
+    
 }
 
 - (void)doInitialAuthorizationWithVC:(UIViewController*)vc completionBlock:(dispatch_block_t)completionBlock {

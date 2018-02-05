@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37FE84A92028C40E001B7230 /* AuthStateDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FE84A82028C40E001B7230 /* AuthStateDelegate.m */; };
 		3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
 		3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
 		3E6B07DE2011246500E49609 /* invitationText.html in Resources */ = {isa = PBXBuildFile; fileRef = 3E6B07DD2011246500E49609 /* invitationText.html */; };
@@ -409,6 +410,8 @@
 
 /* Begin PBXFileReference section */
 		1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.release.xcconfig"; sourceTree = "<group>"; };
+		37FE84A82028C40E001B7230 /* AuthStateDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthStateDelegate.m; sourceTree = "<group>"; };
+		37FE84AA2028CA63001B7230 /* AuthStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthStateDelegate.h; sourceTree = "<group>"; };
 		3E048C041FAC9ABD00948524 /* HockeySDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HockeySDK.swift; sourceTree = "<group>"; };
 		3E6B07DD2011246500E49609 /* invitationText.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = invitationText.html; path = Invitation/invitationText.html; sourceTree = "<group>"; };
 		3E9708AD1FAC925D005825C9 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
@@ -1329,6 +1332,8 @@
 				F1866C85201F707200B72453 /* EmailHelper.m */,
 				F1866C87201F70B700B72453 /* EmailHelper.h */,
 				F1866CAA2023668F00B72453 /* GTMAppAuthDelegate.swift */,
+				37FE84AA2028CA63001B7230 /* AuthStateDelegate.h */,
+				37FE84A82028C40E001B7230 /* AuthStateDelegate.m */,
 			);
 			path = OAuth;
 			sourceTree = "<group>";
@@ -2125,6 +2130,7 @@
 				8428A85E1F436A05007649A5 /* CircleView.swift in Sources */,
 				F1C7AC821FED6473007629DB /* AboutViewController.swift in Sources */,
 				472F397C1E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift in Sources */,
+				37FE84A92028C40E001B7230 /* AuthStateDelegate.m in Sources */,
 				8428A85C1F436A05007649A5 /* ArrowView.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */,
