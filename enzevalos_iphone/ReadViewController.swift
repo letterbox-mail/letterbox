@@ -55,7 +55,8 @@ class ReadViewController: UITableViewController {
             }
             
             if signedKey.counterSignedMails < 2 {
-                return true
+                return false
+                //return true
             }
             return false
         }
