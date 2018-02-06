@@ -173,6 +173,7 @@ extension PersistentMail {
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var to: NSSet
+    @NSManaged public var attachments: NSSet?
 
 }
 
@@ -225,4 +226,21 @@ extension PersistentMail {
     @objc(removeTo:)
     @NSManaged public func removeFromTo(_ values: NSSet)
 
+}
+
+// MARK: Generated accessors for attachments
+extension PersistentMail {
+    
+    @objc(addAttachmentsObject:)
+    @NSManaged public func addToAttachments(_ value: Attachment)
+    
+    @objc(removeAttachmentsObject:)
+    @NSManaged public func removeFromAttachments(_ value: Attachment)
+    
+    @objc(addAttachments:)
+    @NSManaged public func addToAttachments(_ values: NSSet)
+    
+    @objc(removeAttachments:)
+    @NSManaged public func removeFromAttachments(_ values: NSSet)
+    
 }

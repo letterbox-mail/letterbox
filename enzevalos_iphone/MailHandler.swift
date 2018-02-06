@@ -679,14 +679,7 @@ class MailHandler {
         guard error == nil else {
             print("Error while fetching mail: \(String(describing: error))")
             return
-        }
-        
-
-        let a = MCOAttachment()
-    
-        
-        
-        
+        }        
         var rec: [MCOAddress] = []
         var cc: [MCOAddress] = []
         var autocrypt: AutocryptContact? = nil
