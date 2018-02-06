@@ -769,6 +769,7 @@ class DataHandler {
 
             mail.uid = uid
 
+            mail.folder = myfolder
             mail.flag = flags
 
             mail.isSigned = false
@@ -838,7 +839,6 @@ class DataHandler {
         else {
             return nil
         }
-        mail.folder = myfolder
         myfolder.addToMails(mail)
         if mail.uid > myfolder.maxID {
             myfolder.maxID = mail.uid

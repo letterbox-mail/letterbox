@@ -26,7 +26,7 @@
 "Content" = "Inhalt";
 "ContentNo" = "Kein Inhalt";
 "CreateAndManageKeys" = "Erstelle und verwalte Schlüssel";
-"DeleteCode" = "Code löschen";
+"DeleteCode" = "Code löschen und erneut senden";
 "Details" = "Key Details";
 "DiscoveryTime" = "Bekannt seit";
 "Done" = "Fertig";

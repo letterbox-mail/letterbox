@@ -24,7 +24,7 @@ extension PersistentMail {
     public var flag: MCOMessageFlag{
         set {
             if newValue != flag{
-                AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid, flags: newValue, folder: nil)
+                AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid, flags: newValue, folder: folder.name)
                 self.willChangeValue(forKey: "flag")
                 self.setPrimitiveValue(newValue.rawValue, forKey: "flag")
                 self.didChangeValue(forKey: "flag")
