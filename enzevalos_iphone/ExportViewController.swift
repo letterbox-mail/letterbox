@@ -37,17 +37,10 @@ class ExportViewController: UITableViewController {
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
                         mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
                     }
-                    else {
-                        if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: false){
-                        passcode = pgp.loadExportPasscode(id: keyId)!
-                        let mailHandler = AppDelegate.getAppDelegate().mailHandler
-                        mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
-                        }
-                        alreadySent = true
-                    }
+                }
+                alreadySent = true
                 }
             }
-        }
         else{
             // TODO: Error NO SECRET KEY!
         }
