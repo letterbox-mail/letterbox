@@ -13,14 +13,31 @@ import Contacts
 
 @objc(Mail_Address)
 open class Mail_Address: NSManagedObject, MailAddress {
+    
     public var primaryKey: PersistentKey?{
         get{
             if hasKey{
-                return self.key?.anyObject() as? PersistentKey
+                for key in publicKeys{
+                    if key.keyID == primaryKeyID {
+                        return key
+                    }
+                }
             }
             return nil
         }
     }
+    
+    open var publicKeys: Set<PersistentKey>{
+        get{
+            if let pks = keys{
+                if let publicKeys = pks as? Set<PersistentKey>{
+                    return publicKeys
+                }
+            }
+            return Set<PersistentKey>()
+        }
+    }
+       
     
 
     open var mailAddress: String {
@@ -38,20 +55,10 @@ open class Mail_Address: NSManagedObject, MailAddress {
         return CNLabeledValue.init(label: CNLabelOther, value: address as NSString)
     }
 
-    open var keys: Set<PersistentKey>{
-        get{
-            if self.key != nil{
-                if let mykeys = self.key as? Set<PersistentKey>{
-                    return mykeys
-                }
-            }
-            return Set<PersistentKey>()
-        }
-    }
 
     
     open var hasKey: Bool {
-        if key != nil && (key?.count)! > 0{
+        if publicKeys.count > 0{
             return true
         }
         return false

@@ -188,7 +188,7 @@ class DataHandler {
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         var predicates = [NSPredicate]()
         predicates.append(NSPredicate(format: "folder = %@", folder))
-        predicates.append(NSPredicate(format: "keyID != nil"))
+        predicates.append(NSPredicate(format: "keyID.length > 0"))
         let andPredicates = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
         fReq.predicate = andPredicates
@@ -207,7 +207,17 @@ class DataHandler {
             }
 
         }
-        return keys
+        var mykeys = Set<String>()
+        if let set = folder.mails{
+            if let mails = set as? Set<PersistentMail>{
+                for mail in mails{
+                    if let key = mail.keyID{
+                        mykeys.insert(key)
+                    }
+                }
+            }
+        }
+        return Array(mykeys)
     }
 
 
@@ -443,7 +453,7 @@ class DataHandler {
                 }
             }
         }
-        
+        adr.primaryKeyID = pk.keyID
         return pk
     }
     
@@ -682,11 +692,13 @@ class DataHandler {
     func getContact(name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
         let contact = getContactByAddress(address)
         contact.displayname = name
-        contact.getAddress(address)?.key?.adding(key)
+        if let mykey = findKey(keyID: key){
+            contact.getAddress(address)?.addToKeys(mykey)
+        }
         if address == "ullimuelle@web.de"{
             print("New Key: \(key) for ulli!")
         }
-        //TODO IOptimize: look for Mail_Address and than for contact!
+        //TODO Optimize: look for Mail_Address and than for contact!
         return contact
     }
 
@@ -808,7 +820,8 @@ class DataHandler {
                     mail.isCorrectlySigned = true
                     mail.isSigned = true
                     if let signedKey = findKey(keyID: decData.signKey!){
-                         mail.signedKey = signedKey
+                        mail.signedKey = signedKey
+                        mail.keyID = signedKey.keyID
                     }
                     else{
                         mail.signedKey = newPublicKey(keyID: decData.signKey!, cryptoType: decData.encType, adr: decData.signedAdrs.first!, autocrypt: false, firstMail: mail, newGenerated: false)
@@ -832,18 +845,6 @@ class DataHandler {
         }
         myfolder.updateRecords(mail: mail)
         save(during: "new mail")
-        
-        
-        if let mails = myfolder.mails{
-                for m in mails{
-                    if let x = m as? PersistentMail{
-                       // print("\(x.subject) from \(x.from.mailAddress) at \(x.date)")
-                        if x.subject == mail.subject && x.date == mail.date{
-                            print("Mail found in folder!")
-                        }
-                    }
-                }
-            }
         return mail
     }
     

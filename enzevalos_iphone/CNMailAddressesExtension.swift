@@ -12,7 +12,7 @@ import Contacts
 open class CNMailAddressExtension: MailAddress{
     public var primaryKey: PersistentKey?
     
-    public var keys: Set<PersistentKey>
+    public var publicKeys: Set<PersistentKey>
     
 
     open var mailAddress:String{
@@ -50,7 +50,7 @@ open class CNMailAddressExtension: MailAddress{
     
     init(addr: CNLabeledValue<NSString>){ //FIXME: NSString hier richtig?
         self.label = addr
-        self.keys = Set<PersistentKey>()
+        self.publicKeys = Set<PersistentKey>()
     }
     
     convenience init(addr: NSString){ //FIXME: manuell: String -> NSString

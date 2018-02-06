@@ -65,7 +65,8 @@ public class Folder: NSManagedObject {
                     let record = KeyRecord(contact: ec, folder: self)
                     if record.mails.count > 0{
                         records.append(record)
-                    }                }
+                    }
+                }
             }
            return records.sorted()
         //return records // TODO: Sorting makes function to slow!
@@ -152,6 +153,19 @@ public class Folder: NSManagedObject {
                     }
                 }
                 storedRecords?.sort()
+            }
+        }
+        else{
+            if mail.folder == self{
+                storedRecords = [KeyRecord]()
+                if mail.isSecure && mail.keyID != nil{
+                    let record = KeyRecord(keyID: mail.keyID!, folder: self)
+                    storedRecords?.append(record)
+                }
+                else{
+                    let record = KeyRecord(contact: mail.from.contact!, folder: self)
+                    storedRecords?.append(record)
+                }
             }
         }
     }

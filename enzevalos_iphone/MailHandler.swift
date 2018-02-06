@@ -503,10 +503,11 @@ class MailHandler {
         let y = imapsession.folderStatusOperation(INBOX)
         y?.start{(error, status) -> Void in
             print("Folder status: \(status.debugDescription)")
-        }
-        let x = imapsession.folderStatusOperation(INBOX)
-        x?.start{(e,info) -> Void in
-            print("Folder infos: \(info.debugDescription)")
+            // TODO: UIDValality check here!
+            let uidValidity = status?.uidValidity
+            let nextId = status?.uidNext
+            let unseencount = status?.unseenCount
+            
         }
         
         return imapsession
@@ -635,6 +636,7 @@ class MailHandler {
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
 
+        
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER, SETUPMESSAGE]
         if uids.count() == 0{
@@ -648,6 +650,7 @@ class MailHandler {
                 completionCallback(true)
                 return
             }
+            
             var calledMails = 0
             if let msgs = msg {
                 let dispatchGroup = DispatchGroup()
@@ -677,7 +680,13 @@ class MailHandler {
             print("Error while fetching mail: \(String(describing: error))")
             return
         }
+        
 
+        let a = MCOAttachment()
+    
+        
+        
+        
         var rec: [MCOAddress] = []
         var cc: [MCOAddress] = []
         var autocrypt: AutocryptContact? = nil
@@ -727,7 +736,6 @@ class MailHandler {
 
             for a in (msgParser?.attachments())! {
                 let at = a as! MCOAttachment
-                print("Attachment! \n type: \(at.mimeType) string: \(at.decodedString()) \n contentdesc: \(at.contentDescription) \n content ID: \(at.contentID)")
                 if at.mimeType == "application/pgp-encrypted" {
                     isEnc = true
                 }
@@ -819,7 +827,6 @@ class MailHandler {
     private func parsePublicKeys(attachment: MCOAttachment) -> [String]{
         var newKey = [String]()
         if let content = attachment.decodedString(){
-            print("Content: ####### \n \(content) \n ######")
             if content.contains("-----BEGIN PGP PUBLIC KEY BLOCK-----"){
                 if let start = content.range(of: "-----BEGIN PGP PUBLIC KEY BLOCK-----"){
                     if let end = content.range(of: "-----END PGP PUBLIC KEY BLOCK-----\n"){
@@ -872,15 +879,12 @@ class MailHandler {
             let pgp = SwiftPGP()
             var keyIds = [String]()
             if sender != nil, let adr = DataHandler.handler.findMailAddress(adr: sender!){
-                print(adr.address)
-                print(adr.key?.count)
-                if let keys = adr.key{
-                    for k in keys{
+                //if let keys = adr.keys{
+                    for k in adr.publicKeys{
                         let key = k as! PersistentKey
-                        print(key.keyID)
                         keyIds.append(key.keyID)
                     }
-                }
+                //}
             }
             if let a = autocrypt{
                 let key = try! pgp.importKeys(key: a.key, pw: nil, isSecretKey: false, autocrypt: true)
@@ -987,7 +991,6 @@ class MailHandler {
             loadMailsSinceDate(folder: inbox, since: date, maxLoad: 100, newMailCallback: newMailCallback, completionCallback: completionCallback)
         }
         else{
-            print("No date for init inbox!")
             initFolder(folder: inbox, newMailCallback: newMailCallback, completionCallback: completionCallback)
         }
         

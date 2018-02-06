@@ -139,7 +139,7 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         get{
             var pks = Set<PersistentKey>()
             for adr in getMailAddresses(){
-                pks = pks.union(adr.keys)
+                pks = pks.union(adr.publicKeys)
             }
             return pks
         }

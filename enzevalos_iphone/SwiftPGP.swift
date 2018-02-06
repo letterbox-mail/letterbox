@@ -240,7 +240,7 @@ class SwiftPGP: Encryption{
         return nil
     }
     private func exportKeyData(id: String, isSecretkey: Bool) -> Data?{
-        if var key = loadKey(id: id){
+        if let key = loadKey(id: id){
             if key.isSecret && isSecretkey{
                 if let keyData = try? key.export(keyType: PGPKeyType.secret){
                     return keyData
@@ -259,21 +259,16 @@ class SwiftPGP: Encryption{
         let keyring = Keyring()
         let signKey = loadKey(id: myId)
         if signKey != nil{
-            print("signing id: \(myId)")
             keyring.import(keys: [signKey!])
         }
         let signedAdr = vaildAddress(key: signKey)
         for id in ids{
             if let key = loadKey(id: id){
                 keyring.import(keys: [key])
-                print("ID to encrypt: \(id)")
             }
         }
         if let data = plaintext.data(using: String.Encoding.utf8){
             do{
-                for key in keyring.keys{
-                    print("Key: \(key.keyID.longIdentifier) is secret?: \(key.isSecret)")
-                }
                 let chipher = try ObjectivePGP.encrypt(data, addSignature: true, using: keyring.keys, passphraseForKey: loadPassword)
                 let armorChipherString = Armor.armored(chipher, as: .message)
                 let armorChipherData = armorChipherString.data(using: .utf8)

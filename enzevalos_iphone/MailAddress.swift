@@ -71,7 +71,7 @@ public protocol MailAddress {
     var hasKey: Bool{get}
     
     var primaryKey: PersistentKey?{get}
-    var keys: Set<PersistentKey>{get}
+    var publicKeys: Set<PersistentKey>{get}
     var contact: EnzevalosContact?{get}
 }
 

@@ -52,15 +52,32 @@ extension PersistentMail {
     @NSManaged public var folder: Folder
     @NSManaged public var firstKey: PersistentKey?
     @NSManaged public var signedKey: PersistentKey?
-
+ 
     public var keyID: String?{
-        get{
-            if let key = signedKey{
-                return key.keyID
+        set {
+            self.willChangeValue(forKey: "keyID")
+            self.setPrimitiveValue(newValue, forKey: "keyID")
+            self.didChangeValue(forKey: "keyID")
+        }
+        get {
+            var  signKeyID: String?
+            if let k = self.signedKey{
+                signKeyID = k.keyID
             }
-            return nil
+            self.willAccessValue(forKey: "keyID")
+            if let text = self.primitiveValue(forKey: "keyID"){
+                signKeyID = text as? String
+            }
+            else{
+                if let id = signKeyID{
+                    self.setPrimitiveValue(id, forKey: "keyID")
+                }
+            }
+            self.didAccessValue(forKey: "keyID")
+            return signKeyID
         }
     }
+    
     
     public var trouble: Bool{
         set {
