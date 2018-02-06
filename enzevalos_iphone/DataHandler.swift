@@ -441,7 +441,7 @@ class DataHandler {
                 }
             }
             save(during: "new pk")
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 if Logger.logging {
                     var importChannel = "autocrypt"
                     if newGenerated {
@@ -451,7 +451,7 @@ class DataHandler {
                     }
                     Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: false)
                 }
-            }
+//            }
         }
         adr.primaryKeyID = pk.keyID
         return pk
@@ -694,9 +694,6 @@ class DataHandler {
         contact.displayname = name
         if let mykey = findKey(keyID: key){
             contact.getAddress(address)?.addToKeys(mykey)
-        }
-        if address == "ullimuelle@web.de"{
-            print("New Key: \(key) for ulli!")
         }
         //TODO Optimize: look for Mail_Address and than for contact!
         return contact

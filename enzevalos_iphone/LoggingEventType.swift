@@ -25,6 +25,8 @@ enum LoggingEventType: String {
     overviewGeneral = "overviewGeneral",
     keyViewOpen = "keyViewOpen",
     keyViewClose = "keyViewClose",
+    sendViewOpen = "sendViewOpen",
+    sendViewClose = "sendViewClose",
     contactViewOpen = "contactViewOpen",
     contactViewClose = "contactViewClose",
     badgeCaseViewOpen = "badgeCaseViewOpen",
@@ -35,5 +37,13 @@ enum LoggingEventType: String {
     indicatorButtonOpen = "indicatorButtonOpen",
     indicatorButtonClose = "indicatorButtonClose",
     showBrokenMail = "showBrokenMail",
+    reactButtonTapped = "reactButtonTapped",
+    createDraft = "createDraft",
+    exportKeyViewOpen = "exportKeyViewOpen",
+    exportKeyViewButtonTap = "exportKeyViewButtonTap",
+    exportKeyViewClose = "exportKeyViewClose",
+    importPrivateKeyPopupOpen = "importPrivateKeyPopupOpen",
+    importPrivateKeyPopupClose = "importPrivateKeyPopupClose",
+    importPrivateKey = "importPrivateKey",
     search = "search"
 }
