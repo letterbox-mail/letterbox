@@ -186,6 +186,7 @@
 		3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2F2003838E008BDF95 /* InvitationTests.swift */; };
 		45262931B4C72A96C686C533 /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 		4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
+		4715F637202A0248001BFFD0 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4715F636202A0248001BFFD0 /* CoreDataTests.swift */; };
 		471BC9051F960B7C00D64416 /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8961F960B7C00D64416 /* PGPCryptoHash.m */; };
 		471BC9061F960B7C00D64416 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */; };
 		471BC9071F960B7C00D64416 /* PGPDSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89A1F960B7C00D64416 /* PGPDSA.m */; };
@@ -424,6 +425,7 @@
 		3EC35F2F2003838E008BDF95 /* InvitationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationTests.swift; sourceTree = "<group>"; };
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
+		4715F636202A0248001BFFD0 /* CoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		471BC8951F960B7C00D64416 /* PGPCryptoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoHash.h; sourceTree = "<group>"; };
 		471BC8961F960B7C00D64416 /* PGPCryptoHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoHash.m; sourceTree = "<group>"; };
 		471BC8971F960B7C00D64416 /* PGPCryptoUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoUtils.h; sourceTree = "<group>"; };
@@ -1188,6 +1190,7 @@
 		A135268F1D955BE000D3BFE1 /* enzevalos_iphoneTests */ = {
 			isa = PBXGroup;
 			children = (
+				4715F636202A0248001BFFD0 /* CoreDataTests.swift */,
 				A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */,
 				A13526921D955BE000D3BFE1 /* Info.plist */,
 				F1E918D61FBDEECA00D60418 /* LoggerTests.swift */,
@@ -2153,6 +2156,7 @@
 				8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */,
 				3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */,
 				47891F0D201B7CD4004CD1F0 /* LogInTests.swift in Sources */,
+				4715F637202A0248001BFFD0 /* CoreDataTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
