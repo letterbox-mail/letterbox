@@ -25,23 +25,30 @@ class ExportViewController: UITableViewController {
 //        Logger.queue.async(flags: .barrier) {
             Logger.log(exportKeyViewButton: !alreadySent)
 //        }
-        if !alreadySent {
-            let handler = DataHandler.handler
-            let ids = handler.findSecretKeys()
-            if ids.count > 0{
-                let id = ids[0]
-                let pgp = SwiftPGP()
-                if let keyId = id.keyID{
-                    if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true){
+        
+        let handler = DataHandler.handler
+        let ids = handler.findSecretKeys()
+        if ids.count > 0{
+            let id = ids[0]
+            let pgp = SwiftPGP()
+            if let keyId = id.keyID {
+                if alreadySent {
+                    if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: true) {
                         passcode = pgp.loadExportPasscode(id: keyId)!
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
                         mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
                     }
-                }
-                alreadySent = true
+                } else {
+                    if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: false){
+                        passcode = pgp.loadExportPasscode(id: keyId)!
+                        let mailHandler = AppDelegate.getAppDelegate().mailHandler
+                        mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
+                    }
+                    alreadySent = true
                 }
             }
-        else{
+        }
+        else {
             // TODO: Error NO SECRET KEY!
         }
         tableView.reloadData()
@@ -109,6 +116,18 @@ class ExportViewController: UITableViewController {
         tableView.estimatedRowHeight = 140
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Done", comment: "")
 
+        let handler = DataHandler.handler
+        let ids = handler.findSecretKeys()
+        if ids.count > 0 {
+            let id = ids[0]
+            let pgp = SwiftPGP()
+            if let keyId = id.keyID {
+                passcode = pgp.loadExportPasscode(id: keyId) ?? ""
+                alreadySent = passcode != ""
+            }
+        }
+
+        
 //        Logger.queue.async(flags: .barrier) {
         Logger.log(exportKeyViewOpen: 2)
 //        }
