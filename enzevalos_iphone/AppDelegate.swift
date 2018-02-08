@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             kDefaultTitleFontSize = 33
             kDefaultBodyFontSize = 23
         }
-        
+        InvitationUserDefaults.shouldNotShowSecondDialog.set(false)
         resetApp()
         HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {

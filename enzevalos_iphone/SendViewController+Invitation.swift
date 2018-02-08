@@ -271,7 +271,7 @@ extension SendViewController {
 	///
 	/// - Returns: True if the current E-Mail is insecure
 	fileprivate func isEligibleForInvitation() -> Bool {
-		return (self.toSecure == false)
+		return (self.toSecure == false && invitationEnabled == true)
 	}
 }
 
