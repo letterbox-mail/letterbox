@@ -323,6 +323,7 @@
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
+		A17FDFF3202C685800F7BA89 /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17FDFF2202C685800F7BA89 /* StudySettings.swift */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
@@ -632,6 +633,7 @@
 		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
+		A17FDFF2202C685800F7BA89 /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingEventType.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jabo.asc; path = keys/jabo.asc; sourceTree = "<group>"; };
@@ -1114,7 +1116,6 @@
 				475B00301F7B9565006CDD41 /* SwiftPGP.swift */,
 				475B00311F7B9565006CDD41 /* Cryptography.swift */,
 				475B00321F7B9565006CDD41 /* CryptoObject.swift */,
-				47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */,
 			);
 			name = Encryption;
 			sourceTree = "<group>";
@@ -1150,7 +1151,7 @@
 				F1C733331FEC1CAC005A497E /* About */,
 				471BC8931F960B7C00D64416 /* ObjectivePGP */,
 				8428A8511F436952007649A5 /* Gamification */,
-				A111F6AB1FA77AF80060AFDE /* Logging */,
+				A17FDFF1202C680A00F7BA89 /* debug and study */,
 				47B91AC11EC0C1FB000AE3EE /* data */,
 				A1C7FF8B1E895316000D1E92 /* keys */,
 				A11E733A1E019AB5006574DD /* init */,
@@ -1206,6 +1207,16 @@
 				A135269D1D955BE000D3BFE1 /* Info.plist */,
 			);
 			path = enzevalos_iphoneUITests;
+			sourceTree = "<group>";
+		};
+		A17FDFF1202C680A00F7BA89 /* debug and study */ = {
+			isa = PBXGroup;
+			children = (
+				A17FDFF2202C685800F7BA89 /* StudySettings.swift */,
+				47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */,
+				A111F6AB1FA77AF80060AFDE /* Logging */,
+			);
+			name = "debug and study";
 			sourceTree = "<group>";
 		};
 		A18C76851E8185ED00B21414 /* onboarding */ = {
@@ -2063,6 +2074,7 @@
 				8428A8711F436A1E007649A5 /* GamificationStatusViewController.swift in Sources */,
 				471BC90B1F960B7C00D64416 /* ObjectivePGPObject.m in Sources */,
 				471BC9241F960B7C00D64416 /* PGPFingerprint.m in Sources */,
+				A17FDFF3202C685800F7BA89 /* StudySettings.swift in Sources */,
 				471BC9221F960B7C00D64416 /* PGPBigNum.m in Sources */,
 				A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */,
 				473AC39720054D29006EB8A6 /* NSArray+PGPUtils.m in Sources */,
