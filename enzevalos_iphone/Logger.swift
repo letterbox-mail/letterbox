@@ -53,8 +53,20 @@ class Logger {
         }
     }
 
+    static func log(setupStudy hideWarnings: Bool, alreadyRegistered: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.setupStudy.rawValue
+        event["hideWarnings"] = hideWarnings
+        event["alreadyRegistered"] = alreadyRegistered
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
     static func log(startApp onboarding: Bool) {
-
         if !logging {
             return
         }
@@ -76,7 +88,6 @@ class Logger {
     }
 
     static func log(background goto: Bool) {
-
         if !logging {
             return
         }

@@ -11,6 +11,7 @@ import KeychainAccess
 
 class StudySettings {
     static var studyMode = true
+    static var presentFirstQuestionaireMail = false
     
     static func setupStudy() {
         if !studyMode {
@@ -19,11 +20,11 @@ class StudySettings {
         }
         Logger.logging = true
         
+        var warnings = true
         let keychain = Keychain(service: "Enzevalos/Study")
         if let state = keychain["hideWarnings"] {
-            UserDefaults.standard.set(Bool(state), forKey: "hideWarnings")
+            warnings = Bool(state)!
         } else {
-            var warnings = true
             var randomBytes = Data(count: 1)
             let result = randomBytes.withUnsafeMutableBytes {
                 SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, $0)
@@ -35,13 +36,11 @@ class StudySettings {
                 warnings = Int(arc4random_uniform(2)) == 0
             }
             keychain["hideWarnings"] = String(warnings)
-            UserDefaults.standard.set(warnings, forKey: "hideWarnings")
         }
-        
-        var alreadyParticipant = false
+        UserDefaults.standard.set(warnings, forKey: "hideWarnings")
         
         if let studyID = keychain["studyID"] {
-            alreadyParticipant = true
+            presentFirstQuestionaireMail = true
             UserDefaults.standard.set(studyID, forKey: "studyID")
             Logger.studyID = studyID
         } else {
@@ -49,6 +48,9 @@ class StudySettings {
             keychain["studyID"] = studyID
             UserDefaults.standard.set(studyID, forKey: "studyID")
         }
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(setupStudy: warnings, alreadyRegistered: presentFirstQuestionaireMail)
+//        }
         
     }
     //create local mail for first interview here

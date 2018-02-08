@@ -18,6 +18,7 @@ enum LoggingEventType: String {
     mailDeletedToTrash = "mailDeletedToTrash",
     mailArchived = "mailArchived",
     mailReceived = "mailReceived",
+    setupStudy = "setupStudy",
     appStart = "appStart",
     appTerminate = "appTerminate",
     appBackground = "appBackground",
