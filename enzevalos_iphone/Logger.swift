@@ -20,6 +20,8 @@ class Logger {
     static let logReceiver = LOGGING_MAIL_ADR
 
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
+    
+    static var studyID = "" //identifies the participant in the study
 
     static fileprivate func sendCheck() {
         if nextDeadline <= Date() && AppDelegate.getAppDelegate().currentReachabilityStatus != .notReachable {
@@ -831,7 +833,7 @@ class Logger {
             do {
                 let currentContent = try String(contentsOf: fileURL, encoding: .utf8)
                 if !currentContent.isEmpty {
-                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "[Enzevalos] Log", message: "[" + currentContent.dropLast() + "\n]", callback: sendCallback, loggingMail: true)
+                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "[Enzevalos] Log", message: "{\"studyID\":\""+studyID+"\",\"data\":" + "[" + currentContent.dropLast() + "\n]" + "}", callback: sendCallback, loggingMail: true)
                 }
             }
             catch {
