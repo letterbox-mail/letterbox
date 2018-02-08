@@ -10,7 +10,7 @@ import Foundation
 import KeychainAccess
 
 class StudySettings {
-    static var studyMode = true
+    static var studyMode = false
     static var presentFirstQuestionaireMail = false
     
     static func setupStudy() {
