@@ -11,7 +11,7 @@ import Foundation
 private let pgp = SwiftPGP()
 private let datahandler = DataHandler.handler
 
-let invitationEnabled = false
+let invitationEnabled = true
 
 let SUPPORT_MAIL_ADR = "letterbox@inf.fu-berlin.de"
 let LOGGING_MAIL_ADR = "letterbox-reports@inf.fu-berlin.de"
