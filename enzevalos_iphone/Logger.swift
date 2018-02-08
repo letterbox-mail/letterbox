@@ -15,7 +15,7 @@ class Logger {
     static let queue = DispatchQueue(label: "logging", qos: .background)
 
     static let defaultFileName = "log.json"
-    static let loggingInterval = 86400 //60*60*24 seconds
+    static let loggingInterval = 21600 //60*60*6 seconds
     static let resendInterval = 5*60
     static let logReceiver = LOGGING_MAIL_ADR
 
