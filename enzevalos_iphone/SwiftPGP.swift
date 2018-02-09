@@ -16,6 +16,17 @@ class SwiftPGP: Encryption{
     
     let PasscodeSize = 36
     
+    public func resetKeychains(){
+        do{
+            try keychain.removeAll()
+            try pwKeyChain.removeAll()
+            try exportPwKeyChain.removeAll()
+        }catch {
+            print("Can not reset keychains.")
+        }
+        
+    }
+    
     
     private func generatePW(size: Int, splitInBlocks: Bool) -> String{
         let file = open("/dev/urandom", O_RDONLY)
@@ -80,6 +91,23 @@ class SwiftPGP: Encryption{
         }
     }
     
+    
+    private var oldSecretKeys: [Key]{
+        get{
+            var myKeys = Set<Key>()
+            if let keys = try? keychain.getString("secretKeys"){
+                if let keyIDs = keys{
+                    for id in keyIDs.split(separator: ";"){
+                        if let key = loadKey(id: String(id)){
+                            myKeys.insert(key)
+                        }
+                    }
+                }
+            }
+            return Array(myKeys)
+        }
+    }
+    
     private func storeKey(key: Key) -> String{
         let keyring = Keyring()
         keyring.import(keys: [key])
@@ -94,6 +122,18 @@ class SwiftPGP: Encryption{
             if let data = try? k.export(){
                 keychain[data: id] = data
             }
+        }
+        if let keys = try? keychain.getString("secretKeys"){
+            if var ids = keys{
+                ids = ids + ";"+id
+                keychain["secretKeys"] = ids
+            }
+            else{
+                keychain["secretKeys"] = id
+            }
+        }
+        else{
+            keychain["secretKeys"] = id
         }
         return id
     }
@@ -143,8 +183,15 @@ class SwiftPGP: Encryption{
     }
     
     func generateKey(adr: String) -> String{
+        if oldSecretKeys.count > 0{
+            for key in oldSecretKeys{
+                if vaildAddress(key: key).contains(adr){
+                    return key.keyID.longIdentifier
+                }
+            }
+        }
         let gen = KeyGenerator()
-        let pw: String? = nil //generatePW(size: PasscodeSize)
+        let pw: String? = nil
         let key = gen.generate(for: "\(adr) <\(adr)>", passphrase: pw)
         if pw != nil{
             pwKeyChain[key.keyID.longIdentifier] = pw
