@@ -7,7 +7,6 @@
 //
 
 #import "EmailHelper.h"
-#import "AuthStateDelegate.h"
 #import <GTMSessionFetcher/GTMSessionFetcherService.h>
 #import <GTMSessionFetcher/GTMSessionFetcher.h>
 //#import "enzevalos_iphone-Swift.h"
@@ -36,8 +35,9 @@ static NSString *const kRedirectURI =
  */
 static NSString *const kExampleAuthorizerKey = @"googleOAuthCodingKey";
 
-//static GTMAppAuthDelegate *delegate = [GTMAppAuthDelegate init];
-//static OIDAuthStateChangeDelegate * delegate = GTMAppAuthDelegate();
+@interface EmailHelper ()   <OIDAuthStateChangeDelegate,
+                            OIDAuthStateErrorDelegate>
+@end
 
 @implementation EmailHelper
 
@@ -97,12 +97,9 @@ static EmailHelper *shared = nil;
     [GTMAppAuthFetcherAuthorization authorizationFromKeychainForName:kExampleAuthorizerKey];
     
     if (authorization.canAuthorize) {
-//        GTMAppAuthDelegate *delegate = [GTMAppAuthDelegate init];
-        AuthStateDelegate *delegate = [[AuthStateDelegate alloc] init];
-
         self.authorization = authorization;
-        self.authorization.authState.stateChangeDelegate = delegate;
-        self.authorization.authState.errorDelegate = delegate;
+        self.authorization.authState.stateChangeDelegate = self;
+        self.authorization.authState.errorDelegate = self;
     } else {
         NSLog(@"EmailHelper: WARNING, loaded google authorization cannot authorize, discarding");
         [GTMAppAuthFetcherAuthorization removeAuthorizationFromKeychainForName:kExampleAuthorizerKey];
@@ -187,6 +184,14 @@ static EmailHelper *shared = nil;
         if (completionBlock)
         completionBlock(YES);
     }];
+}
+
+- (void)didChangeState:(nonnull OIDAuthState *)state {
+    [self saveState];
+}
+
+- (void)authState:(nonnull OIDAuthState *)state didEncounterAuthorizationError:(nonnull NSError *)error {
+    NSLog(@"Received authorization error: %@", error);
 }
 
 @end

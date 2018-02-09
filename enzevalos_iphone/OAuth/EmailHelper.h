@@ -19,5 +19,6 @@
 @property(nonatomic, nullable) GTMAppAuthFetcherAuthorization *authorization;
 
 - (void)doEmailLoginIfRequiredOnVC:(UIViewController*)vc completionBlock:(dispatch_block_t)completionBlock;
+- (void)checkIfAuthorizationIsValid:(void (^)(BOOL authorized))completionBlock;
 
 @end

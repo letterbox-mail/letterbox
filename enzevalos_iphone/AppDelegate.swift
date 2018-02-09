@@ -90,8 +90,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     self.credentialsFailed()
                     return
                 }
-                print("Google authetication successful")
-                print("User Email: \(userEmail)")
                 UserManager.storeUserValue(userEmail as AnyObject, attribute: Attribute.userName)
                 UserManager.storeUserValue(userEmail as AnyObject, attribute: Attribute.userAddr)
                 UserManager.storeUserValue("imap.gmail.com" as AnyObject, attribute: Attribute.imapHostname)
