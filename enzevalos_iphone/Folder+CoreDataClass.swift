@@ -50,6 +50,20 @@ public class Folder: NSManagedObject {
     private var liveRecords: [KeyRecord]{
         get{
             var records = [KeyRecord]()
+            for mail in mailsOfFolder{
+                var found = false
+                for r in records{
+                    if r.matchMail(mail: mail){
+                        found = true
+                    }
+                }
+                if !found{
+                    let record = KeyRecord(keyID: mail.keyID, contact: mail.from.contact!, folder: self)
+                    records.append(record)
+                }
+            }
+            
+            /*
             // Get all Keys, get all adrs
             let keys = DataHandler.handler.allKeysInFolder(folder: self)
             let adrs = DataHandler.handler.allAddressesInFolder(folder: self, withoutSecure: true)
@@ -68,6 +82,7 @@ public class Folder: NSManagedObject {
                     }
                 }
             }
+ */
            return records.sorted()
         //return records // TODO: Sorting makes function to slow!
         }
@@ -112,7 +127,7 @@ public class Folder: NSManagedObject {
     
     
     //write value of liveRecords to records
-    private func updateRecords() {
+    public func updateRecords() {
        storedRecords = liveRecords
     }
     

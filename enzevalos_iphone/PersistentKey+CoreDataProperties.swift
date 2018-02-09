@@ -26,7 +26,7 @@ extension PersistentKey {
     @NSManaged public var pseudonym: String
     @NSManaged public var sentOwnPublicKey: Bool
     @NSManaged public var signedMails: NSSet?
-    
+   
     
     public var prefer_encryption: EncState{
         set {

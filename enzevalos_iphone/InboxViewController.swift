@@ -97,7 +97,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             rc.endRefreshing()
             lastUpdateText = lastUpdate != nil ? "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))" : NSLocalizedString("NeverUpdated", comment: "No internet connection since last launch")
 
-            //folder.updateRecords()
+            folder.updateRecords()
             self.tableView.reloadData()
         }
     }
@@ -131,6 +131,9 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         if isFiltering() {
             return filteredRecords.count
         }
+        let records = folder.records
+        
+        
         return folder.records.count
     }
 

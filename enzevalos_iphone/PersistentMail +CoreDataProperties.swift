@@ -52,6 +52,14 @@ extension PersistentMail {
     @NSManaged public var folder: Folder
     @NSManaged public var firstKey: PersistentKey?
     @NSManaged public var signedKey: PersistentKey?
+    
+    @NSManaged public var gmailMessageID: NSNumber
+    @NSManaged public var gmailThreadID: NSNumber
+    @NSManaged public var messageID: String?
+    @NSManaged public var notLoadedMessages: String?
+    
+    @NSManaged public var xMailer: String?
+
  
     public var keyID: String?{
         set {
@@ -174,6 +182,7 @@ extension PersistentMail {
     @NSManaged public var cc: NSSet?
     @NSManaged public var to: NSSet
     @NSManaged public var attachments: NSSet?
+    @NSManaged public var referenceMails: NSSet?
 
 }
 
@@ -242,5 +251,22 @@ extension PersistentMail {
     
     @objc(removeAttachments:)
     @NSManaged public func removeFromAttachments(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for attachments
+extension PersistentMail {
+    
+    @objc(addReferenceMailsObject:)
+    @NSManaged public func addToReferenceMails(_ value: PersistentMail)
+    
+    @objc(removeReferenceMailsObject:)
+    @NSManaged public func removeFromReferenceMails(_ value: PersistentMail)
+    
+    @objc(addReferenceMails:)
+    @NSManaged public func addToReferenceMails(_ values: NSSet)
+    
+    @objc(removeReferenceMails:)
+    @NSManaged public func removeFromReferenceMails(_ values: NSSet)
     
 }

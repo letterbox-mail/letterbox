@@ -741,12 +741,21 @@ class DataHandler {
     private func handleCCAddresses(_ cc: [MCOAddress], mail: PersistentMail) {
         mail.addToCc(NSSet(array: getMailAddressesByMCOAddresses(cc)))
     }
+    
+    private func findMail(msgID: String) -> PersistentMail?{
+        if let result = find("PersistentMail", type: "messageID", search: msgID) as?[PersistentMail]{
+            if result.count > 0{
+                return result[0]
+            }
+        }
+        return nil
+    }
 
     // TODO: handle BCC
 
     // -------- End handle to, cc, from addresses --------
 
-    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?) -> PersistentMail? {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?, references: [String] = [], mailagent: String? = nil, messageID: String? = nil) -> PersistentMail? {
         let myfolder = findFolder(with: folderPath) as Folder
         let finding = findNum("PersistentMail", type: "uid", search: uid)
         let mail: PersistentMail
@@ -773,6 +782,23 @@ class DataHandler {
             mail.isEncrypted = false
             mail.trouble = false
             mail.secretKey  = secretKey
+            
+            mail.messageID = messageID
+            mail.xMailer = mailagent
+            
+            var notStored = ""
+            
+            for reference in references{
+                if let ref = findMail(msgID: reference){
+                    mail.addToReferenceMails(ref)
+                }
+                else{
+                    notStored = notStored + " ; "+(reference)
+                }
+            }
+            if notStored != ""{
+                //mail.notLoadedMessages = notStored
+            }
 
             if sender != nil {
                 handleFromAddress(sender!, fromMail: mail, autocrypt: autocrypt)

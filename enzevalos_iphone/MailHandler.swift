@@ -724,6 +724,17 @@ class MailHandler {
         var secretKey: String? = nil
         let header = message.header
         
+        let msgID = header?.messageID
+        let userAgent = header?.userAgent
+        var references =  [String]()
+        if let refs = header?.references{
+            for ref in refs{
+                if let string = ref as? String{
+                    references.append(string)
+                }
+            }
+        }
+        
         if header?.from == nil {
             // Drops mails with no from field. Otherwise it becomes ugly with no ezcontact,fromadress etc.
             return
@@ -817,7 +828,7 @@ class MailHandler {
             }
             
             if let header = header, let from = header.from, let date = header.date {
-                let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath, secretKey: secretKey)
+                let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath, secretKey: secretKey, references: references, mailagent: userAgent, messageID: msgID)
                 
                 let pgp = SwiftPGP()
                 if let autoc = autocrypt{
