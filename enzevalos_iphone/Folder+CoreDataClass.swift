@@ -62,29 +62,7 @@ public class Folder: NSManagedObject {
                     records.append(record)
                 }
             }
-            
-            /*
-            // Get all Keys, get all adrs
-            let keys = DataHandler.handler.allKeysInFolder(folder: self)
-            let adrs = DataHandler.handler.allAddressesInFolder(folder: self, withoutSecure: true)
-           
-            for key in keys{
-                let record = KeyRecord(keyID: key, folder: self)
-                if record.mails.count > 0{
-                    records.append(record)
-                }
-            }
-            for adr in adrs{
-                if let ec = adr.contact{
-                    let record = KeyRecord(contact: ec, folder: self)
-                    if record.mails.count > 0{
-                        records.append(record)
-                    }
-                }
-            }
- */
            return records.sorted()
-        //return records // TODO: Sorting makes function to slow!
         }
     }
     
@@ -105,6 +83,9 @@ public class Folder: NSManagedObject {
         get{
             var ms = [PersistentMail]()
             if let mymails = mails{
+                if let m = mymails as? Set<PersistentMail>{
+                    return Array(m)
+                }
                 for case let m as PersistentMail in mymails{
                     ms.append(m)
                 }
