@@ -29,7 +29,7 @@ public class PersistentKey: NSManagedObject {
     }
     
     func verify(){
-        self.verifiedDate = Date.init() as NSDate
+        self.verifiedDate = Date.init()
     }
     
     func isVerified() -> Bool{

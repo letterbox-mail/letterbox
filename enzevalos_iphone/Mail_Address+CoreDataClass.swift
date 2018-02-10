@@ -18,6 +18,7 @@ open class Mail_Address: NSManagedObject, MailAddress {
         get{
             if hasKey{
                 for key in publicKeys{
+                    print(key.keyID)
                     if key.keyID == primaryKeyID {
                         return key
                     }

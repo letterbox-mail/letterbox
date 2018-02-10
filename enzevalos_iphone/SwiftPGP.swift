@@ -264,7 +264,6 @@ class SwiftPGP: Encryption{
                 else{
                      armoredKey = Armor.armored(key, as: PGPArmorType.publicKey)
                 }
-                print(armoredKey)
                 if isSecretKey && autocrypt{
                     // Create Autocrypt Setup-message
                     // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message

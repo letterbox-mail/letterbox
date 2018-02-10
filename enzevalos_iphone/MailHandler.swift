@@ -538,7 +538,6 @@ class MailHandler {
         
         let y = imapsession.folderStatusOperation(INBOX)
         y?.start{(error, status) -> Void in
-            print("Folder status: \(status.debugDescription)")
             // TODO: UIDValality check here!
             let uidValidity = status?.uidValidity
             let nextId = status?.uidNext
@@ -580,7 +579,6 @@ class MailHandler {
 
             if let c = capabilities {
                 self.IMAPIdleSupported = c.contains(UInt64(MCOIMAPCapability.idle.rawValue))
-                print("IMAP Idle is \(self.IMAPIdleSupported! ? "" : "not ")supported!")
                 self.startIMAPIdleIfSupported(addNewMail: addNewMail)
             }
         })
@@ -676,7 +674,6 @@ class MailHandler {
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER, SETUPMESSAGE]
         if uids.count() == 0{
-            print("NO UIDS to call!")
             completionCallback(false)
             return
         }
@@ -829,22 +826,20 @@ class MailHandler {
             
             if let header = header, let from = header.from, let date = header.date {
                 let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath, secretKey: secretKey, references: references, mailagent: userAgent, messageID: msgID)
-                
-                let pgp = SwiftPGP()
-                if let autoc = autocrypt{
-                    let publickeys = try! pgp.importKeys(key: autoc.key, pw: nil, isSecretKey: false, autocrypt: true)
-                    for pk in publickeys{
-                        _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
+                if let m = mail{
+                    let pgp = SwiftPGP()
+                    if let autoc = autocrypt{
+                        let publickeys = try! pgp.importKeys(key: autoc.key, pw: nil, isSecretKey: false, autocrypt: true)
+                        for pk in publickeys{
+                            _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
+                        }
                     }
-                }
-                for keyId in newKeyIds{
-                    _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
-                }
-//                Logger.queue.async(flags: .barrier) {
-                    if let mail = mail {
-                        Logger.log(received: mail)
+                    for keyId in newKeyIds{
+                        _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
                     }
-//                }
+                    //                Logger.queue.async(flags: .barrier) {
+                    Logger.log(received: m)
+                }
                 if newMailCallback != nil{
                     newMailCallback!(mail)
                 }

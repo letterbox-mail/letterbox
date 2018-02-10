@@ -17,10 +17,10 @@ extension PersistentKey {
     }
 
     @NSManaged public var keyID: String
-    @NSManaged public var verifiedDate: NSDate?
-    @NSManaged public var lastSeen: NSDate?
-    @NSManaged public var lastSeenAutocrypt: NSDate?
-    @NSManaged public var discoveryDate: NSDate?
+    @NSManaged public var verifiedDate: Date?
+    @NSManaged public var lastSeen: Date?
+    @NSManaged public var lastSeenAutocrypt: Date?
+    @NSManaged public var discoveryDate: Date?
     @NSManaged public var mailaddress: NSSet?
     @NSManaged public var firstMail: PersistentMail?
     @NSManaged public var pseudonym: String

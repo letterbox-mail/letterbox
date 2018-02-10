@@ -181,7 +181,6 @@ class FolderViewController: UITableViewController {
         refreshControl?.endRefreshing()
     }
     func newMails(mail: PersistentMail?) {
-        print("newMails")
     }
 
     func getImage(for path: String) -> UIImage {

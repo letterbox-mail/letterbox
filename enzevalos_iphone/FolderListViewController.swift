@@ -15,7 +15,6 @@ class FolderListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = folder.name
-        print("Hallo")
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

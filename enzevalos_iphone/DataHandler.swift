@@ -95,41 +95,9 @@ class DataHandler {
         return false
     }
 
-    func checkRecords(records: [KeyRecord]) {
-        for record in records {
-            if record.addresses.count == 0 {
-                print("Record has no addresses: \(record)")
-            }
-            if record.mails.count < record.mailsInFolder(folder: record.folder).count {
-                print("Wrong matching of mails: \(record)")
-            }
-            for mail in record.mails {
-                checkMail(mail: mail)
-            }
-            for mail in record.mailsInFolder(folder: record.folder) {
-                checkMail(mail: mail)
-            }
-        }
-    }
+    
 
-    func checkMail(mail: PersistentMail) {
-        if mail.to.count == 0 && mail.cc == nil {
-            print("Mail has no receiver: \(mail)")
-        }
-    }
-
-    func checkFolder(folderName: String) {
-        let folder = findFolder(with: folderName)
-        if let mails = folder.mails {
-            for m in mails {
-                let mail = m as! PersistentMail
-                checkMail(mail: mail)
-            }
-        }
-        let records = folder.records
-        checkRecords(records: records)
-        checkRecords(records: folder.records)
-    }
+    
 
 
 
@@ -397,13 +365,23 @@ class DataHandler {
     }
 
     func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil, newGenerated: Bool = false) -> PersistentKey {
-        let date = Date.init() as NSDate
+        var date = Date.init()
+        if let mail = firstMail{
+            print("Date: \(date) mail date: \(mail.date)")
+            if date.compare(mail.date).rawValue > 0{
+                date = mail.date
+            }
+        }
         let adr = getMailAddress(adr, temporary: false) as! Mail_Address
         var pk: PersistentKey
         if let search = findKey(keyID: keyID) {
-            search.lastSeen = date
+            if search.lastSeen < date{
+                search.lastSeen = date
+            }
             if autocrypt {
-                search.lastSeenAutocrypt = date
+                if search.lastSeenAutocrypt < date{
+                    search.lastSeenAutocrypt = date
+                }
                 search.sentOwnPublicKey = true
             }
             search.addToMailaddress(adr)
@@ -428,7 +406,7 @@ class DataHandler {
             pk.discoveryDate = date
             pk.firstMail = firstMail
             if autocrypt {
-                pk.lastSeenAutocrypt = date
+                pk.lastSeenAutocrypt = date 
                 pk.sentOwnPublicKey = true
             }
             var found = false
@@ -453,7 +431,15 @@ class DataHandler {
                 }
 //            }
         }
-        adr.primaryKeyID = pk.keyID
+        if let prim = adr.primaryKey, let last = prim.lastSeen, let currentLast = pk.lastSeen{
+            if last < currentLast {
+                adr.primaryKeyID = pk.keyID
+            }
+        }
+        else{
+            adr.primaryKeyID = keyID
+        }
+        save(during: "new PK")
         return pk
     }
     

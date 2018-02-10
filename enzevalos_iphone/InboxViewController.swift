@@ -288,7 +288,6 @@ extension InboxViewController {
 
         let reload_distance: CGFloat = 200
         if y > h + reload_distance && !loading {
-            print("loading new mail because we scrolled to the bottom")
             loading = true
 
             AppDelegate.getAppDelegate().mailHandler.loadMailsForInbox(newMailCallback: addNewMail, completionCallback: doneLoading)

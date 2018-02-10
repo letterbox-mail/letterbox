@@ -154,7 +154,6 @@ extension PersistentMail {
             if let range = (body.range(of: key)?.upperBound){
                 pw = body.substring(from: range)
                 if let split = pw?.components(separatedBy: CharacterSet.whitespacesAndNewlines){
-                    print(split)
                     if split.count > 0 && split[0].count > 0{
                         pw = split[0]
                     }
