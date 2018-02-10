@@ -27,7 +27,7 @@
 "ContentNo" = "Kein Inhalt";
 "CreateAndManageKeys" = "Erstelle und verwalte Schlüssel";
 "DeleteCode" = "Code löschen und erneut senden";
-"Details" = "Schlüssel Details";
+"Details" = "Schlüssel und Schloss Details";
 "DiscoveryTime" = "Bekannt seit";
 "Done" = "Fertig";
 "Drafts" = "Entwürfe";
@@ -57,8 +57,8 @@
 "InterestedInSecureMail" = "Schön, dass du dich für sichere E-Mail interessierst!";
 "Junk" = "Spam";
 "KeyAddresses" = "Mailadressen im Schlüssel";
-"KeyDetails" = "Key Details";
-"KeyID" = "KeyID";
+"KeyDetails" = "Schlüssel und Schloss Details";
+"KeyID" = "Identifier";
 "KeyIsRevoked" = "Der Schlüssel ist zurückgezogen. Zurückgezogen wurde er am ";
 "KeyIsVerified" = "Der Schlüssel ist verifiziert. Verifiziert wurde er am ";
 "KeyNotFound" = "Schlüssel konnte nicht gefunden werden. Dies ist ein Fehler, bitte wende dich an die Entwickler!";
@@ -171,7 +171,7 @@
 "ErrorText" = "Es gab einen Fehler. Besteht eine Verbindung zum Internet?";
 "about" = "Über uns";
 "YourBadges" = "Deine Abzeichen";
-"copied" = "Schlüssel wurde kopiert";
-"copyKey" = "Schlüssel in Zwischenablage kopieren";
+"copied" = "Schloss wurde kopiert";
+"copyKey" = "Schloss in Zwischenablage kopieren";
 "NeverUpdated" = "Fehler bei Aktualisierung";
 
