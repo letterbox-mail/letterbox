@@ -497,6 +497,7 @@ class SendViewController: UIViewController {
 		controller?.ctaAction = {
 			let activityController = UIActivityViewController(activityItems: [code], applicationActivities: nil)
 			controller?.present(activityController, animated: true, completion: nil)
+			controller?.markDismissButton(with: .invitationCode(code: code))
 		}
 
 		controller?.dismissAction = { [weak self] in

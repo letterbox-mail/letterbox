@@ -114,6 +114,15 @@ extension DialogViewController {
 
 		return dialogViewController
 	}
+
+	func markDismissButton(with option: DialogOption) {
+
+		self.ctaButton?.backgroundColor = .clear
+		self.ctaButton?.setTitleColor(UIColor.Invitation.gray, for: .normal)
+		self.dismissButton?.backgroundColor = option.color
+		self.dismissButton?.setTitleColor(.white, for: .normal)
+		self.dismissButton?.roundRect(5)
+	}
 }
 
 // MARK: - Animation
