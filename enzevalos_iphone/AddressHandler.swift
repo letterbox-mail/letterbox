@@ -21,7 +21,6 @@ class AddressHandler {
 
             try AppDelegate.getAppDelegate().contactStore.enumerateContacts(with: CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName), CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor]), usingBlock: {
                 ( c: CNContact, stop) -> Void in
-//                    print(c)
                 for email in c.emailAddresses {
                     let addr = email.value as String
                     var type: UIImage? = nil

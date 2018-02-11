@@ -52,15 +52,40 @@ extension PersistentMail {
     @NSManaged public var folder: Folder
     @NSManaged public var firstKey: PersistentKey?
     @NSManaged public var signedKey: PersistentKey?
+    
+    @NSManaged public var gmailMessageID: NSNumber
+    @NSManaged public var gmailThreadID: NSNumber
+    @NSManaged public var messageID: String?
+    @NSManaged public var notLoadedMessages: String?
+    
+    @NSManaged public var xMailer: String?
 
+ 
     public var keyID: String?{
-        get{
-            if let key = signedKey{
-                return key.keyID
+        set {
+            self.willChangeValue(forKey: "keyID")
+            self.setPrimitiveValue(newValue, forKey: "keyID")
+            self.didChangeValue(forKey: "keyID")
+        }
+        get {
+            var  signKeyID: String?
+            if let k = self.signedKey{
+                signKeyID = k.keyID
             }
-            return nil
+            self.willAccessValue(forKey: "keyID")
+            if let text = self.primitiveValue(forKey: "keyID"){
+                signKeyID = text as? String
+            }
+            else{
+                if let id = signKeyID{
+                    self.setPrimitiveValue(id, forKey: "keyID")
+                }
+            }
+            self.didAccessValue(forKey: "keyID")
+            return signKeyID
         }
     }
+    
     
     public var trouble: Bool{
         set {
@@ -129,7 +154,6 @@ extension PersistentMail {
             if let range = (body.range(of: key)?.upperBound){
                 pw = body.substring(from: range)
                 if let split = pw?.components(separatedBy: CharacterSet.whitespacesAndNewlines){
-                    print(split)
                     if split.count > 0 && split[0].count > 0{
                         pw = split[0]
                     }
@@ -156,6 +180,8 @@ extension PersistentMail {
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var to: NSSet
+    @NSManaged public var attachments: NSSet?
+    @NSManaged public var referenceMails: NSSet?
 
 }
 
@@ -208,4 +234,38 @@ extension PersistentMail {
     @objc(removeTo:)
     @NSManaged public func removeFromTo(_ values: NSSet)
 
+}
+
+// MARK: Generated accessors for attachments
+extension PersistentMail {
+    
+    @objc(addAttachmentsObject:)
+    @NSManaged public func addToAttachments(_ value: Attachment)
+    
+    @objc(removeAttachmentsObject:)
+    @NSManaged public func removeFromAttachments(_ value: Attachment)
+    
+    @objc(addAttachments:)
+    @NSManaged public func addToAttachments(_ values: NSSet)
+    
+    @objc(removeAttachments:)
+    @NSManaged public func removeFromAttachments(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for attachments
+extension PersistentMail {
+    
+    @objc(addReferenceMailsObject:)
+    @NSManaged public func addToReferenceMails(_ value: PersistentMail)
+    
+    @objc(removeReferenceMailsObject:)
+    @NSManaged public func removeFromReferenceMails(_ value: PersistentMail)
+    
+    @objc(addReferenceMails:)
+    @NSManaged public func addToReferenceMails(_ values: NSSet)
+    
+    @objc(removeReferenceMails:)
+    @NSManaged public func removeFromReferenceMails(_ values: NSSet)
+    
 }

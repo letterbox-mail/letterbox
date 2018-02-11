@@ -28,6 +28,7 @@ func setupStudyPublicKeys(studyMode: Bool){
 }
 
 func loadTestAcc(){
+    //loadAliceEnzevalos()
    //loadBobEnzevalos()
     //loadAlice2005()
     //loadCharlieEnzevalos()
@@ -66,6 +67,11 @@ func loadBobEnzevalos(){
 
 func loadCharlieEnzevalos(){
     let user = enzevalos(name: "charlie", pw: "tydpawdAwIdPyuc")
+    userdefaults(defaults: user)
+}
+
+func loadAliceEnzevalos(){
+    let user = enzevalos(name: "alice", pw: "egOavOpeecOntew")
     userdefaults(defaults: user)
 }
 
@@ -121,8 +127,7 @@ private func importPublicKey(file: String, type: String, adr: String){
         do{
             let ids = try pgp.importKeysFromFile(file: path, pw: nil)
             for id in ids{
-                let k = datahandler.newPublicKey(keyID: id, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false)
-                print("New public key of \(adr) with id \(k.keyID)")
+                _ = datahandler.newPublicKey(keyID: id, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false)
             }
         } catch _ {
             

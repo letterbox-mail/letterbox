@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         resetApp()
+        StudySettings.setupStudy()
         HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
 //            Logger.queue.async(flags: .barrier) {

@@ -16,6 +16,17 @@ class SwiftPGP: Encryption{
     
     let PasscodeSize = 36
     
+    public func resetKeychains(){
+        do{
+            try keychain.removeAll()
+            try pwKeyChain.removeAll()
+            try exportPwKeyChain.removeAll()
+        }catch {
+            print("Can not reset keychains.")
+        }
+        
+    }
+    
     
     private func generatePW(size: Int, splitInBlocks: Bool) -> String{
         let file = open("/dev/urandom", O_RDONLY)
@@ -80,6 +91,23 @@ class SwiftPGP: Encryption{
         }
     }
     
+    
+    private var oldSecretKeys: [Key]{
+        get{
+            var myKeys = Set<Key>()
+            if let keys = try? keychain.getString("secretKeys"){
+                if let keyIDs = keys{
+                    for id in keyIDs.split(separator: ";"){
+                        if let key = loadKey(id: String(id)){
+                            myKeys.insert(key)
+                        }
+                    }
+                }
+            }
+            return Array(myKeys)
+        }
+    }
+    
     private func storeKey(key: Key) -> String{
         let keyring = Keyring()
         keyring.import(keys: [key])
@@ -94,6 +122,18 @@ class SwiftPGP: Encryption{
             if let data = try? k.export(){
                 keychain[data: id] = data
             }
+        }
+        if let keys = try? keychain.getString("secretKeys"){
+            if var ids = keys{
+                ids = ids + ";"+id
+                keychain["secretKeys"] = ids
+            }
+            else{
+                keychain["secretKeys"] = id
+            }
+        }
+        else{
+            keychain["secretKeys"] = id
         }
         return id
     }
@@ -143,8 +183,15 @@ class SwiftPGP: Encryption{
     }
     
     func generateKey(adr: String) -> String{
+        if oldSecretKeys.count > 0{
+            for key in oldSecretKeys{
+                if vaildAddress(key: key).contains(adr){
+                    return key.keyID.longIdentifier
+                }
+            }
+        }
         let gen = KeyGenerator()
-        let pw: String? = nil //generatePW(size: PasscodeSize)
+        let pw: String? = nil
         let key = gen.generate(for: "\(adr) <\(adr)>", passphrase: pw)
         if pw != nil{
             pwKeyChain[key.keyID.longIdentifier] = pw
@@ -217,7 +264,6 @@ class SwiftPGP: Encryption{
                 else{
                      armoredKey = Armor.armored(key, as: PGPArmorType.publicKey)
                 }
-                print(armoredKey)
                 if isSecretKey && autocrypt{
                     // Create Autocrypt Setup-message
                     // See: https://autocrypt.readthedocs.io/en/latest/level1.html#autocrypt-setup-message
@@ -240,7 +286,7 @@ class SwiftPGP: Encryption{
         return nil
     }
     private func exportKeyData(id: String, isSecretkey: Bool) -> Data?{
-        if var key = loadKey(id: id){
+        if let key = loadKey(id: id){
             if key.isSecret && isSecretkey{
                 if let keyData = try? key.export(keyType: PGPKeyType.secret){
                     return keyData
@@ -259,21 +305,16 @@ class SwiftPGP: Encryption{
         let keyring = Keyring()
         let signKey = loadKey(id: myId)
         if signKey != nil{
-            print("signing id: \(myId)")
             keyring.import(keys: [signKey!])
         }
         let signedAdr = vaildAddress(key: signKey)
         for id in ids{
             if let key = loadKey(id: id){
                 keyring.import(keys: [key])
-                print("ID to encrypt: \(id)")
             }
         }
         if let data = plaintext.data(using: String.Encoding.utf8){
             do{
-                for key in keyring.keys{
-                    print("Key: \(key.keyID.longIdentifier) is secret?: \(key.isSecret)")
-                }
                 let chipher = try ObjectivePGP.encrypt(data, addSignature: true, using: keyring.keys, passphraseForKey: loadPassword)
                 let armorChipherString = Armor.armored(chipher, as: .message)
                 let armorChipherData = armorChipherString.data(using: .utf8)

@@ -20,23 +20,6 @@ class InitViewController : UIViewController {
         let manager = MCOMailProvidersManager.shared()!//.init() //sharedManager()
         let path = Bundle.main.path(forResource: "providers", ofType: "json")
         manager.registerProviders(withFilename: path)
-        print(manager.provider(forEmail: "alice2005@web.de") == nil)
-        print(manager.provider(forEmail: "alice2005@aol.com") == nil)   //x
-        print(manager.provider(forEmail: "aol.com") == nil)
-        print(manager.provider(forMX: "imap.aol.com") == nil)
-        print(manager.provider(forMX: "web") == nil)                    //x
-        print(manager.provider(forMX: "web.de") == nil)                 //x
-        print(manager.provider(forIdentifier: "web") == nil)            //x
-        print(manager.provider(forIdentifier: "web.de") == nil)
-        print(manager.provider(forIdentifier: "alice2005@aol.com") == nil)
-        print(manager.provider(forIdentifier: "aol") == nil)            //x
-        print(manager.provider(forIdentifier: "aol.com") == nil)
-        
-        print(manager.provider(forMX: "web.de").imapServices())
-        print(manager.provider(forMX: "web.de").smtpServices())
-        
-        let nService : MCONetService = (manager.provider(forMX: "web.de").smtpServices() as! [MCONetService])[0]
-        print(nService.info())
     }
     
 }

@@ -578,8 +578,8 @@
                                                         <constraint firstAttribute="width" constant="15" id="ons-Pp-k3n"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
-                                                    <rect key="frame" x="0.0" y="15" width="15" height="17.5"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sfv-2Q-95I">
+                                                    <rect key="frame" x="0.0" y="17.5" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="SmT-9e-ovi"/>
                                                         <constraint firstAttribute="width" constant="15" id="uKU-PK-flD"/>
@@ -1222,7 +1222,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
                             <rect key="frame" x="0.0" y="425.5" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
@@ -1391,31 +1391,31 @@
         <scene sceneID="V39-4m-XUG">
             <objects>
                 <tableViewController id="7Pd-d5-0wz" customClass="ExportInfoViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" sectionIndexMinimumDisplayRowCount="1" rowHeight="500" sectionHeaderHeight="18" sectionFooterHeight="18" id="2Uv-bd-pB1">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" sectionIndexMinimumDisplayRowCount="1" rowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="2Uv-bd-pB1">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ExportInfoCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="ExportInfoCell" id="5e8-xe-gcZ" customClass="ExportInfoCell" customModule="enzevalos_iphone" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.5" width="320" height="500"/>
+                                <rect key="frame" x="0.0" y="55.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5e8-xe-gcZ" id="Nmg-8g-rhx">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="499.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QmG-XY-YlD">
-                                            <rect key="frame" x="16" y="11" width="288" height="495"/>
+                                            <rect key="frame" x="16" y="11" width="288" height="645"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IEj-77-gTt">
-                                                    <rect key="frame" x="3" y="5" width="272" height="183"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IEj-77-gTt">
+                                                    <rect key="frame" x="3" y="5" width="272" height="243.5"/>
                                                     <string key="text">Damit deine sicheren E-Mails gelesen werden können, muss man ein Geheimnis kennen. Dieses befindet sich momentan auf deinem Smartphone.
 Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss das Geheimnis von diesem Gerät auf das andere übertragen werden. Wenn du das tun möchtest, öffne auf dem anderen Gerät die</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U8E-Bt-Gso">
-                                                    <rect key="frame" x="72.5" y="191" width="143" height="33"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U8E-Bt-Gso">
+                                                    <rect key="frame" x="72.5" y="251.5" width="143" height="33"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <state key="normal" title="Enzevalos Website"/>
                                                     <connections>
@@ -1423,19 +1423,16 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                                     </connections>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mE2-xJ-BwY" userLabel="qrCode">
-                                                    <rect key="frame" x="44" y="239" width="200" height="200"/>
+                                                    <rect key="frame" x="44" y="304.5" width="200" height="200"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="mE2-xJ-BwY" secondAttribute="height" multiplier="1:1" id="0dO-sh-eMF"/>
                                                         <constraint firstAttribute="width" constant="200" id="AKe-io-nZZ"/>
                                                         <constraint firstAttribute="height" constant="200" id="MVu-ar-vWo"/>
                                                     </constraints>
                                                 </imageView>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices" textAlignment="center" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xud-17-hsu">
-                                                    <rect key="frame" x="59" y="432" width="169" height="50"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" text="https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices" textAlignment="center" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xud-17-hsu">
+                                                    <rect key="frame" x="59" y="514.5" width="169" height="117.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="50" id="Gko-T8-Ln2"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
@@ -1452,7 +1449,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                                 <constraint firstItem="U8E-Bt-Gso" firstAttribute="top" secondItem="IEj-77-gTt" secondAttribute="bottom" constant="3" id="QIV-F5-OFx"/>
                                                 <constraint firstItem="U8E-Bt-Gso" firstAttribute="centerX" secondItem="QmG-XY-YlD" secondAttribute="centerX" id="ZMk-XP-cif"/>
                                                 <constraint firstItem="mE2-xJ-BwY" firstAttribute="width" secondItem="mE2-xJ-BwY" secondAttribute="height" multiplier="1:1" id="bMu-og-DUe"/>
-                                                <constraint firstItem="xud-17-hsu" firstAttribute="top" secondItem="mE2-xJ-BwY" secondAttribute="bottom" constant="-7" id="vFG-Pu-kpT"/>
+                                                <constraint firstItem="xud-17-hsu" firstAttribute="top" secondItem="mE2-xJ-BwY" secondAttribute="bottom" constant="10" id="vFG-Pu-kpT"/>
                                                 <constraint firstItem="mE2-xJ-BwY" firstAttribute="centerX" secondItem="QmG-XY-YlD" secondAttribute="centerX" id="vLG-dF-Wqu"/>
                                                 <constraint firstItem="mE2-xJ-BwY" firstAttribute="top" secondItem="U8E-Bt-Gso" secondAttribute="bottom" constant="20" id="w3R-8U-TgF"/>
                                             </constraints>
@@ -1461,7 +1458,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="QmG-XY-YlD" secondAttribute="trailing" id="0gy-oz-jId"/>
                                         <constraint firstItem="QmG-XY-YlD" firstAttribute="leading" secondItem="Nmg-8g-rhx" secondAttribute="leadingMargin" id="9lV-HP-ayG"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="QmG-XY-YlD" secondAttribute="bottom" constant="-17" id="ALw-qa-EEA"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="QmG-XY-YlD" secondAttribute="bottom" id="ALw-qa-EEA"/>
                                         <constraint firstItem="QmG-XY-YlD" firstAttribute="top" secondItem="Nmg-8g-rhx" secondAttribute="topMargin" id="DlP-xN-Itb"/>
                                     </constraints>
                                 </tableViewCellContentView>

@@ -62,7 +62,6 @@
 		3E9708E41FAC95F5005825C9 /* SwiftPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00301F7B9565006CDD41 /* SwiftPGP.swift */; };
 		3E9708E51FAC95F5005825C9 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */; };
 		3E9708E61FAC95F5005825C9 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
-		3E9708E71FAC95F5005825C9 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
 		3E9708E81FAC95F5005825C9 /* NSMutableData+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC9041F960B7C00D64416 /* NSMutableData+PGPUtils.m */; };
 		3E9708E91FAC95F5005825C9 /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
 		3E9708EA1FAC95F5005825C9 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AF938E1E2D04BA00755128 /* CustomCells.swift */; };
@@ -186,6 +185,7 @@
 		3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2F2003838E008BDF95 /* InvitationTests.swift */; };
 		45262931B4C72A96C686C533 /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
 		4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
+		4715F637202A0248001BFFD0 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4715F636202A0248001BFFD0 /* CoreDataTests.swift */; };
 		471BC9051F960B7C00D64416 /* PGPCryptoHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8961F960B7C00D64416 /* PGPCryptoHash.m */; };
 		471BC9061F960B7C00D64416 /* PGPCryptoUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8981F960B7C00D64416 /* PGPCryptoUtils.m */; };
 		471BC9071F960B7C00D64416 /* PGPDSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC89A1F960B7C00D64416 /* PGPDSA.m */; };
@@ -315,6 +315,7 @@
 		A111F6AD1FA77B170060AFDE /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
 		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
 		A114E4321FACB23000E40243 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E4311FACB23000E40243 /* StringExtension.swift */; };
+		A12FC23120221A1400196008 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12FC23020221A1400196008 /* ExportInfoViewController.swift */; };
 		A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
 		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
 		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
@@ -322,8 +323,8 @@
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
+		A17FDFF3202C685800F7BA89 /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17FDFF2202C685800F7BA89 /* StudySettings.swift */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
-		A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19028E31F853E700030EA98 /* ExportInfoViewController.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
@@ -424,6 +425,7 @@
 		3EC35F2F2003838E008BDF95 /* InvitationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationTests.swift; sourceTree = "<group>"; };
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
+		4715F636202A0248001BFFD0 /* CoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		471BC8951F960B7C00D64416 /* PGPCryptoHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoHash.h; sourceTree = "<group>"; };
 		471BC8961F960B7C00D64416 /* PGPCryptoHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPCryptoHash.m; sourceTree = "<group>"; };
 		471BC8971F960B7C00D64416 /* PGPCryptoUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPCryptoUtils.h; sourceTree = "<group>"; };
@@ -619,6 +621,7 @@
 		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A114E4311FACB23000E40243 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		A11E733B1E019AE3006574DD /* InitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitViewController.swift; sourceTree = "<group>"; };
+		A12FC23020221A1400196008 /* ExportInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportInfoViewController.swift; sourceTree = "<group>"; };
 		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A13526801D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = enzevalos_iphone.xcdatamodel; sourceTree = "<group>"; };
@@ -630,8 +633,8 @@
 		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
+		A17FDFF2202C685800F7BA89 /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingEventType.swift; sourceTree = "<group>"; };
-		A19028E31F853E700030EA98 /* ExportInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportInfoViewController.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jabo.asc; path = keys/jabo.asc; sourceTree = "<group>"; };
 		A1A9DE721F864B0500B808AA /* ExportCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportCells.swift; sourceTree = "<group>"; };
@@ -1113,7 +1116,6 @@
 				475B00301F7B9565006CDD41 /* SwiftPGP.swift */,
 				475B00311F7B9565006CDD41 /* Cryptography.swift */,
 				475B00321F7B9565006CDD41 /* CryptoObject.swift */,
-				47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */,
 			);
 			name = Encryption;
 			sourceTree = "<group>";
@@ -1149,7 +1151,7 @@
 				F1C733331FEC1CAC005A497E /* About */,
 				471BC8931F960B7C00D64416 /* ObjectivePGP */,
 				8428A8511F436952007649A5 /* Gamification */,
-				A111F6AB1FA77AF80060AFDE /* Logging */,
+				A17FDFF1202C680A00F7BA89 /* debug and study */,
 				47B91AC11EC0C1FB000AE3EE /* data */,
 				A1C7FF8B1E895316000D1E92 /* keys */,
 				A11E733A1E019AB5006574DD /* init */,
@@ -1188,6 +1190,7 @@
 		A135268F1D955BE000D3BFE1 /* enzevalos_iphoneTests */ = {
 			isa = PBXGroup;
 			children = (
+				4715F636202A0248001BFFD0 /* CoreDataTests.swift */,
 				A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */,
 				A13526921D955BE000D3BFE1 /* Info.plist */,
 				F1E918D61FBDEECA00D60418 /* LoggerTests.swift */,
@@ -1206,6 +1209,16 @@
 			path = enzevalos_iphoneUITests;
 			sourceTree = "<group>";
 		};
+		A17FDFF1202C680A00F7BA89 /* debug and study */ = {
+			isa = PBXGroup;
+			children = (
+				A17FDFF2202C685800F7BA89 /* StudySettings.swift */,
+				47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */,
+				A111F6AB1FA77AF80060AFDE /* Logging */,
+			);
+			name = "debug and study";
+			sourceTree = "<group>";
+		};
 		A18C76851E8185ED00B21414 /* onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -1220,7 +1233,7 @@
 		A19028E01F852D730030EA98 /* exportKey */ = {
 			isa = PBXGroup;
 			children = (
-				A19028E31F853E700030EA98 /* ExportInfoViewController.swift */,
+				A12FC23020221A1400196008 /* ExportInfoViewController.swift */,
 				4707096C1F8F9F4900657F41 /* ExportViewController.swift */,
 				A1A9DE721F864B0500B808AA /* ExportCells.swift */,
 			);
@@ -1910,7 +1923,6 @@
 				3E9708E41FAC95F5005825C9 /* SwiftPGP.swift in Sources */,
 				3E9708E51FAC95F5005825C9 /* PGPCryptoUtils.m in Sources */,
 				3E9708E61FAC95F5005825C9 /* QRCodeGenerator.swift in Sources */,
-				3E9708E71FAC95F5005825C9 /* ExportInfoViewController.swift in Sources */,
 				473AC3A220054DDA006EB8A6 /* PGPPacketHeader.m in Sources */,
 				3E9708E81FAC95F5005825C9 /* NSMutableData+PGPUtils.m in Sources */,
 				3E9708E91FAC95F5005825C9 /* EnzevalosContact+CoreDataClass.swift in Sources */,
@@ -2059,7 +2071,6 @@
 				471BC9061F960B7C00D64416 /* PGPCryptoUtils.m in Sources */,
 				3EB4FAA420120096001D0625 /* DialogOption.swift in Sources */,
 				F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */,
-				A19028E41F853E710030EA98 /* ExportInfoViewController.swift in Sources */,
 				471BC9341F960B7C00D64416 /* NSMutableData+PGPUtils.m in Sources */,
 				472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */,
 				F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */,
@@ -2067,6 +2078,7 @@
 				8428A8711F436A1E007649A5 /* GamificationStatusViewController.swift in Sources */,
 				471BC90B1F960B7C00D64416 /* ObjectivePGPObject.m in Sources */,
 				471BC9241F960B7C00D64416 /* PGPFingerprint.m in Sources */,
+				A17FDFF3202C685800F7BA89 /* StudySettings.swift in Sources */,
 				471BC9221F960B7C00D64416 /* PGPBigNum.m in Sources */,
 				A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */,
 				473AC39720054D29006EB8A6 /* NSArray+PGPUtils.m in Sources */,
@@ -2076,6 +2088,7 @@
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
 				471BC9151F960B7C00D64416 /* PGPSecretSubKeyPacket.m in Sources */,
 				471BC9201F960B7C00D64416 /* PGPUserIDPacket.m in Sources */,
+				A12FC23120221A1400196008 /* ExportInfoViewController.swift in Sources */,
 				475DF47A1F0D54C9009D807F /* Folder+CoreDataProperties.swift in Sources */,
 				472F392C1E1277D2009260FB /* PersistentMail +CoreDataClass.swift in Sources */,
 				471BC91D1F960B7C00D64416 /* PGPTrustPacket.m in Sources */,
@@ -2157,6 +2170,7 @@
 				8428A8831F436AC9007649A5 /* GamificationDataUnitTest.swift in Sources */,
 				3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */,
 				47891F0D201B7CD4004CD1F0 /* LogInTests.swift in Sources */,
+				4715F637202A0248001BFFD0 /* CoreDataTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

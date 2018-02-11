@@ -13,7 +13,19 @@ class ExportViewController: UITableViewController {
     var sentToAddress = (UserManager.loadUserValue(Attribute.userAddr) as! String)
     var passcode = ""
     
+    override func viewWillDisappear(_ animated: Bool) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewClose: 2)
+//        }
+        super.viewWillDisappear(animated)
+    }
+    
     @IBAction func buttonTouched(_ sender: Any) {
+
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewButton: !alreadySent)
+//        }
+        
         let handler = DataHandler.handler
         let ids = handler.findSecretKeys()
         if ids.count > 0{
@@ -36,7 +48,7 @@ class ExportViewController: UITableViewController {
                 }
             }
         }
-        else{
+        else {
             // TODO: Error NO SECRET KEY!
         }
         tableView.reloadData()
@@ -103,7 +115,7 @@ class ExportViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 140
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Done", comment: "")
-        
+
         let handler = DataHandler.handler
         let ids = handler.findSecretKeys()
         if ids.count > 0 {
@@ -114,6 +126,11 @@ class ExportViewController: UITableViewController {
                 alreadySent = passcode != ""
             }
         }
+
+        
+//        Logger.queue.async(flags: .barrier) {
+        Logger.log(exportKeyViewOpen: 2)
+//        }
     }
     
     func mailSend(_ error: Error?) {

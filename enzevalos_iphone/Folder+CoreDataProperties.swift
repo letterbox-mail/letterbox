@@ -22,6 +22,9 @@ extension Folder {
     @NSManaged public var path: String
     @NSManaged public var lastUpdate: Date?
     @NSManaged public var pseudonym: String
+    @NSManaged public var icon: String
+    @NSManaged public var uivalidity: Int32
+
 
     @NSManaged public var delimiter: String
     public var flags: MCOIMAPFolderFlag{
@@ -58,7 +61,6 @@ extension Folder {
             if text == nil{
                 return 1
             }
-            
             return text!
         }
     }

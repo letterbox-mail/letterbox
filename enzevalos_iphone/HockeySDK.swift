@@ -27,7 +27,6 @@ struct HockeySDK {
 
 	static func setup() {
 
-		print(self.isDebugBuild)
 		guard let _identifierKey = Bundle.main.object(forInfoDictionaryKey: identifierKey) as? String else {
 			print("Info: You have to set the `\(identifierKey)` key in the info plist.")
 			return
