@@ -98,7 +98,7 @@ class ReadViewController: UITableViewController {
                             message = "encryptedBefore"
                         }
                     }
-                    Logger.log(read: mail, message: message)
+                    Logger.log(read: mail, message: message, open: true)
                 }
 //            }
         }
@@ -141,6 +141,21 @@ class ReadViewController: UITableViewController {
     }
 
     deinit {
+//        Logger.queue.async(flags: .barrier) {
+            if Logger.logging, let mail = self.mail {
+                var message = "none"
+                if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+                    if mail.trouble {
+                        message = "corrupted"
+                    } else if mail.isEncrypted && mail.unableToDecrypt {
+                        message = "couldNotDecrypt"
+                    } else if mail.from.hasKey && !mail.isSecure {
+                        message = "encryptedBefore"
+                    }
+                }
+                Logger.log(read: mail, message: message, open: false)
+            }
+//        }
         print("===============|| ReadViewController deinitialized ||===============")
     }
 
