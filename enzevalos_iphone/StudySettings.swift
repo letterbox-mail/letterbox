@@ -24,7 +24,21 @@ class StudySettings {
             return "https://userpage.fu-berlin.de/wieseoli/letterbox/presurvey.html?id=\(studyID)"
         }
     }
-
+    static var bitcoinMails: Bool { //do we recived a mail from bitcoin.de
+        get {
+            return UserDefaults.standard.bool(forKey: "bitcoin")
+        }
+        set(newBool) {
+            if !UserDefaults.standard.bool(forKey: "bitcoin") && newBool {
+                let keychain = Keychain(service: "Enzevalos/Study")
+                keychain["bitcoin"] = "true"
+                UserDefaults.standard.set(true, forKey: "bitcoin")
+//                Logger.queue.async(flags: .barrier) {
+                    Logger.log(bitcoinMail: true)
+//                }
+            }
+        }
+    }
     
     static func setupStudy() {
         if !studyMode {
@@ -61,8 +75,16 @@ class StudySettings {
             keychain["studyID"] = studyID
             UserDefaults.standard.set(studyID, forKey: "studyID")
         }
+        
+        if let bitcoin = keychain["bitcoin"] { //do we received a mail from bitcoin.de?
+            UserDefaults.standard.set(Bool(bitcoin) ?? false, forKey: "bitcoin")
+        } else {
+            keychain["bitcoin"] = "false"
+            UserDefaults.standard.set(false, forKey: "bitcoin")
+        }
+        
 //        Logger.queue.async(flags: .barrier) {
-            Logger.log(setupStudy: warnings, alreadyRegistered: presentFirstQuestionaireMail)
+        Logger.log(setupStudy: warnings, alreadyRegistered: !presentFirstQuestionaireMail, bitcoin: bitcoinMails)
 //        }
         
     }

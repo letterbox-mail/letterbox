@@ -53,7 +53,7 @@ class Logger {
         }
     }
 
-    static func log(setupStudy hideWarnings: Bool, alreadyRegistered: Bool) {
+    static func log(setupStudy hideWarnings: Bool, alreadyRegistered: Bool, bitcoin: Bool) {
         if !logging {
             return
         }
@@ -62,6 +62,7 @@ class Logger {
         event["type"] = LoggingEventType.setupStudy.rawValue
         event["hideWarnings"] = hideWarnings
         event["alreadyRegistered"] = alreadyRegistered
+        event["bitcoinMailReceived"] = bitcoin
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
@@ -437,6 +438,19 @@ class Logger {
         event["type"] = LoggingEventType.mailReceived.rawValue
         event = extract(from: mail, event: event)
 
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(bitcoinMail gotIt: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.gotBitcoinMail.rawValue
+        
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
