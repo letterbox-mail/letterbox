@@ -56,11 +56,11 @@ class StudySettings {
         UserDefaults.standard.set(warnings, forKey: "hideWarnings")
         
         if let studyID = keychain["studyID"] {
-            presentFirstQuestionaireMail = true
             UserDefaults.standard.set(studyID, forKey: "studyID")
             Logger.studyID = studyID
         } else {
             let studyID = String.random(length: 30)
+            presentFirstQuestionaireMail = true
             keychain["studyID"] = studyID
             UserDefaults.standard.set(studyID, forKey: "studyID")
         }
@@ -70,7 +70,10 @@ class StudySettings {
         
     }
     //create local mail for first interview here
-    static func firstMail() -> PersistentMail?{
+    static func firstMail() {
+        if !studyMode || !presentFirstQuestionaireMail {
+            return
+        }
         let subject = "Herzlichen Willkommen in Letterbox"
         let body =
         """
@@ -94,10 +97,13 @@ class StudySettings {
         
         PS: Diese Nachricht wurde automatisch auf in Ihrer Letterbox erzeugt und ist nur dort gespeichert.
         """
-        return StudySettings.mailToParticipat(subject: subject, body: body)
+        mailToParticipat(subject: subject, body: body)
     }
     
-    static func givecards() -> PersistentMail?{
+    static func givecards() {
+        if !studyMode || !presentFirstQuestionaireMail {
+            return
+        }
         let subject = "Teilnahmeentschädigung: Verlosung von Amazon-Gutscheinen"
         let body =
         """
@@ -119,19 +125,24 @@ class StudySettings {
         PS: Diese Nachricht wurde automatisch auf in Ihrer Letterbox erzeugt und ist nur dort gespeichert.
         """
         
-        return mailToParticipat(subject: subject, body: body)
+        mailToParticipat(subject: subject, body: body)
     }
     
     
-    private static func mailToParticipat(subject: String, body: String) -> PersistentMail?{
+    private static func mailToParticipat(subject: String, body: String){
         let senderAdr = SUPPORT_MAIL_ADR
         let sender = MCOAddress.init(displayName: "Letterbox-Team", mailbox: senderAdr)
         let signKey = "F3ADDC8B81F82CCEB534CFC766BA7478AD254666"//DataHandler.handler.findKey(keyID: senderAdr)
         
         let cryptoObject = CryptoObject(chiphertext: nil, plaintext: body, decryptedData: body.data(using: .utf8), sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: signKey, encType: CryptoScheme.PGP, signedAdrs: [senderAdr])
         
-        return DataHandler.handler.createMail(0, sender: sender, receivers: [], cc: [], time: Date(), received: false, subject: subject, body: body, flags: MCOMessageFlag.init(rawValue: 0), record: nil, autocrypt: nil, decryptedData: cryptoObject, folderPath: UserManager.backendInboxFolderPath, secretKey: nil)
+        _ = DataHandler.handler.createMail(0, sender: sender, receivers: [], cc: [], time: Date(), received: false, subject: subject, body: body, flags: MCOMessageFlag.init(rawValue: 0), record: nil, autocrypt: nil, decryptedData: cryptoObject, folderPath: UserManager.backendInboxFolderPath, secretKey: nil)
     }
     
+    public static func setupStudyKeys() {
+        if studyMode || Logger.logging {
+            setupStudyPublicKeys()
+        }
+    }
     
 }
