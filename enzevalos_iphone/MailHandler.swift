@@ -573,6 +573,11 @@ class MailHandler {
                 let op = IMAPIdleSession!.idleOperation(withFolder: INBOX, lastKnownUID: UInt32(DataHandler.handler.findFolder(with: INBOX).maxID))
                 op?.start({ error in
                     guard error == nil else {
+                        if self.shouldTryRefreshOAUTH {
+                            self.retryWithRefreshedOAuth {
+                                self.startIMAPIdleIfSupported(addNewMail: addNewMail)
+                            }
+                        }
                         print("An error occured with the idle operation: \(String(describing: error))")
                         return
                     }

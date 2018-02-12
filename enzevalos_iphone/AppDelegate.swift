@@ -154,7 +154,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Option removed from Settings app, but this might still be usefull in the future
     func resetApp() {
-        // TODO: remove after testing
+//         TODO: remove after testing
 //        GTMKeychain.removePasswordFromKeychain(forName: "googleOAuthCodingKey")
         
         if UserDefaults.standard.bool(forKey: "reset") {
@@ -163,7 +163,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Onboarding.credentialFails = 0
             Onboarding.manualSet = false
             UserManager.resetUserValues()
-           
             
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
