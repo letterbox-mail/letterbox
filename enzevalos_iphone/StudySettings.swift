@@ -10,7 +10,7 @@ import Foundation
 import KeychainAccess
 
 class StudySettings {
-    static var studyMode = true
+    static var studyMode = false//true
     static var presentFirstQuestionaireMail = false
     
     static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
