@@ -21,7 +21,7 @@ class Logger {
 
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
     
-    static var studyID = "" //identifies the participant in the study
+    static var studyID = StudySettings.studyID //identifies the participant in the study
 
     static fileprivate func sendCheck() {
         if nextDeadline <= Date() && AppDelegate.getAppDelegate().currentReachabilityStatus != .notReachable {
