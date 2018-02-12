@@ -113,9 +113,7 @@ extension PersistentMail {
             self.didAccessValue(forKey: "uid")
             return text!
         }
-    }
-    
-    
+    }    
     public var from: MailAddress{
         set {
             if newValue is Mail_Address{
