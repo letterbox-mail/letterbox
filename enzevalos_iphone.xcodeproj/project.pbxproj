@@ -323,7 +323,6 @@
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A17A18F91DDCCF370058D934 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
-		A17FDFF3202C685800F7BA89 /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17FDFF2202C685800F7BA89 /* StudySettings.swift */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
@@ -374,6 +373,7 @@
 		F14D189F1ED880680080515D /* ncpayroll-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189B1ED880680080515D /* ncpayroll-public.gpg */; };
 		F14D18A21ED8811F0080515D /* ullimuelle-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */; };
 		F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */; };
+		F1737ACB2031D7D70000312B /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17FDFF2202C685800F7BA89 /* StudySettings.swift */; };
 		F1866C86201F707200B72453 /* EmailHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F1866C85201F707200B72453 /* EmailHelper.m */; };
 		F1866CAB2023668F00B72453 /* GTMAppAuthDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1866CAA2023668F00B72453 /* GTMAppAuthDelegate.swift */; };
 		F189C17F1ED59FEF00BAE9B3 /* idsolutions-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */; };
@@ -2074,6 +2074,7 @@
 				471BC9131F960B7C00D64416 /* PGPPublicSubKeyPacket.m in Sources */,
 				F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */,
 				471BC9261F960B7C00D64416 /* PGPKey.m in Sources */,
+				F1737ACB2031D7D70000312B /* StudySettings.swift in Sources */,
 				8428A8691F436A11007649A5 /* UserNameGamificationTableViewCell.swift in Sources */,
 				A114E4321FACB23000E40243 /* StringExtension.swift in Sources */,
 				472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */,
