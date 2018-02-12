@@ -10,16 +10,13 @@ import Foundation
 import KeychainAccess
 
 class StudySettings {
-    static var studyMode = false
+    static var studyMode = true
     static var presentFirstQuestionaireMail = false
     
     static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
     static let raffleURL = ""
-    static var studyID: String{
-        get{
-            //TODO: Jakob
-            return ""
-        }
+    static var studyID: String {
+        return UserDefaults.standard.string(forKey: "studyID") ?? ""
     }
     
     static var entrySurveyURL: String{
