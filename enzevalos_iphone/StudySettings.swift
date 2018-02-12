@@ -45,6 +45,9 @@ class StudySettings {
             //Logger.logging = false
             return
         }
+        if UserDefaults.standard.string(forKey: "studyID") != nil && UserDefaults.standard.string(forKey: "hideWarnings") != nil { //no need to refill this fields, they are already loaded
+            return
+        }
         Logger.logging = true
         
         var warnings = true
