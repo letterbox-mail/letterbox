@@ -380,6 +380,24 @@ class SwiftPGP: Encryption{
             }
         }
         
+        if sigState == SignatureState.ValidSignature && sigKeyID == nil{
+            for id in decryptionIDs{
+                if let key = loadKey(id: id){
+                    keyring.import(keys: [key])
+                    let currentState = verifyMessage(data: data, keys: keyring.keys)
+                    if currentState == SignatureState.ValidSignature{
+                        sigState = currentState
+                        sigKeyID = id
+                        signedAdr = vaildAddress(key: key)
+                        break
+                    }
+                    if currentState == SignatureState.InvalidSignature{
+                        sigState = currentState
+                    }
+                }
+            }
+        }
+        
         if encState == EncryptionState.UnableToDecrypt{
             sigState = SignatureState.NoSignature
         }
