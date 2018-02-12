@@ -154,12 +154,12 @@ class Onboarding: NSObject {
             keyboardToolbar.sizeToFit()
             keyboardToolbar.barTintColor = defaultColor
             keyboardToolbar.backgroundColor = defaultColor
-            let googleBarButton = UIBarButtonItem(title: "Login with Google", style: .plain, target: self, action: #selector(blah))
-            googleBarButton.isEnabled = false
-            googleBarButton.tintColor = defaultColor
+            let googleBarButton = UIBarButtonItem(title: "Login with Google", style: .plain, target: self, action: #selector(oauth))
+            googleBarButton.tintColor = .orange
             googleButton = googleBarButton
             let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
             let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissKeyboard))
+            doneBarButton.tintColor = .orange
             keyboardToolbar.items = [googleBarButton, flexBarButton, doneBarButton]
             mailaddress.inputAccessoryView = keyboardToolbar
             password.inputAccessoryView = keyboardToolbar
@@ -217,7 +217,7 @@ class Onboarding: NSObject {
         return vc!
     }
 
-    static func blah() {
+    static func oauth() {
         googleAuth = true
         doWhenDone()
     }
@@ -672,27 +672,6 @@ class Onboarding: NSObject {
 }
 
 class TextFieldDelegate: NSObject, UITextFieldDelegate {
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if (Onboarding.mailaddress.text?.lowercased() ?? "").contains("gmail") || (Onboarding.mailaddress.text?.lowercased() ?? "").contains("google") {
-            Onboarding.googleButton.isEnabled = true
-            Onboarding.googleButton.tintColor = Onboarding.textColor
-        } else {
-            Onboarding.googleButton.isEnabled = false
-            Onboarding.googleButton.tintColor = Onboarding.defaultColor
-        }
-        return true
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if (Onboarding.mailaddress.text?.lowercased() ?? "").contains("gmail") || (Onboarding.mailaddress.text?.lowercased() ?? "").contains("google") {
-            Onboarding.googleButton.isEnabled = true
-            Onboarding.googleButton.tintColor = Onboarding.textColor
-        } else {
-            Onboarding.googleButton.isEnabled = false
-            Onboarding.googleButton.tintColor = Onboarding.defaultColor
-        }
-    }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == Onboarding.mailaddress {
