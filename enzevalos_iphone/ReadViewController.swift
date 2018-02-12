@@ -81,7 +81,7 @@ class ReadViewController: UITableViewController {
                             message = "encryptedBefore"
                         }
                     }
-                    Logger.log(readDraft: mail, message: message)
+                    Logger.log(readDraft: mail, message: message, open: true)
                 }
 //            }
         } else {
@@ -153,7 +153,11 @@ class ReadViewController: UITableViewController {
                         message = "encryptedBefore"
                     }
                 }
-                Logger.log(read: mail, message: message, open: false)
+                if isDraft {
+                    Logger.log(readDraft: mail, message: message, open: false)
+                } else {
+                    Logger.log(read: mail, message: message, open: false)
+                }
             }
 //        }
         print("===============|| ReadViewController deinitialized ||===============")

@@ -413,7 +413,7 @@ class Logger {
         sendCheck()
     }
 
-    static func log(readDraft mail: PersistentMail, message: String) {
+    static func log(readDraft mail: PersistentMail, message: String, open: Bool) {
         if !logging {
             return
         }
@@ -423,6 +423,7 @@ class Logger {
         event["type"] = LoggingEventType.mailDraftRead.rawValue
         event = extract(from: mail, event: event)
         event["messagePresented"] = message
+        event["open"] = open
 
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
