@@ -35,6 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         resetApp()
+        StudySettings.setupStudy()
+        StudySettings.firstMail()
         HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
 //            Logger.queue.async(flags: .barrier) {
@@ -181,6 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let handler = DataHandler.init()
         _ = handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
         setupStudyPublicKeys(studyMode: STUDYMODE)
+        StudySettings.firstMail()
     }
 
     func onboardingDone() {

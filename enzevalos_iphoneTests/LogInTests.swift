@@ -165,7 +165,7 @@ class LogInTests: XCTestCase {
         let texts = ["Kontonummer", "DE 12345 625636 23", "Alice und Bob", "@~> ™", "12207", "🤨", "🤨 ABC123"]
         let pgp = SwiftPGP()
         
-        let encryption = pgp.symmetricEncrypt(textToEncrypt: texts)
+        let encryption = pgp.symmetricEncrypt(textToEncrypt: texts, armored: true)
         
         XCTAssertEqual(encryption.chiphers.count, texts.count)
         XCTAssertEqual(encryption.password.count, 9)

@@ -95,41 +95,9 @@ class DataHandler {
         return false
     }
 
-    func checkRecords(records: [KeyRecord]) {
-        for record in records {
-            if record.addresses.count == 0 {
-                print("Record has no addresses: \(record)")
-            }
-            if record.mails.count < record.mailsInFolder(folder: record.folder).count {
-                print("Wrong matching of mails: \(record)")
-            }
-            for mail in record.mails {
-                checkMail(mail: mail)
-            }
-            for mail in record.mailsInFolder(folder: record.folder) {
-                checkMail(mail: mail)
-            }
-        }
-    }
+    
 
-    func checkMail(mail: PersistentMail) {
-        if mail.to.count == 0 && mail.cc == nil {
-            print("Mail has no receiver: \(mail)")
-        }
-    }
-
-    func checkFolder(folderName: String) {
-        let folder = findFolder(with: folderName)
-        if let mails = folder.mails {
-            for m in mails {
-                let mail = m as! PersistentMail
-                checkMail(mail: mail)
-            }
-        }
-        let records = folder.records
-        checkRecords(records: records)
-        checkRecords(records: folder.records)
-    }
+    
 
 
 
@@ -188,7 +156,7 @@ class DataHandler {
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
         var predicates = [NSPredicate]()
         predicates.append(NSPredicate(format: "folder = %@", folder))
-        predicates.append(NSPredicate(format: "keyID != nil"))
+        predicates.append(NSPredicate(format: "keyID.length > 0"))
         let andPredicates = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
 
         fReq.predicate = andPredicates
@@ -207,7 +175,17 @@ class DataHandler {
             }
 
         }
-        return keys
+        var mykeys = Set<String>()
+        if let set = folder.mails{
+            if let mails = set as? Set<PersistentMail>{
+                for mail in mails{
+                    if let key = mail.keyID{
+                        mykeys.insert(key)
+                    }
+                }
+            }
+        }
+        return Array(mykeys)
     }
 
 
@@ -336,17 +314,13 @@ class DataHandler {
 
 
     func reset() {
+        removeAll(entity: "PersistentMail")
         removeAll(entity: "Folder")
         removeAll(entity: "SecretKey")
         removeAll(entity: "PersistentKey")
         removeAll(entity: "EnzevalosContact")
         removeAll(entity: "Mail_Address")
-        removeAll(entity: "PersistentMail")
-
-        removeAll(entity: "PseudonymKey")
-        removeAll(entity: "PseudonymMailAddress")
-        removeAll(entity: "PseudonymSubject")
-        removeAll(entity: "PseudonymFolderPath")
+        save(during: "reset")
     }
 
     // Save, load, search
@@ -391,13 +365,23 @@ class DataHandler {
     }
 
     func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil, newGenerated: Bool = false) -> PersistentKey {
-        let date = Date.init() as NSDate
+        var date = Date.init()
+        if let mail = firstMail{
+            print("Date: \(date) mail date: \(mail.date)")
+            if date.compare(mail.date).rawValue > 0{
+                date = mail.date
+            }
+        }
         let adr = getMailAddress(adr, temporary: false) as! Mail_Address
         var pk: PersistentKey
         if let search = findKey(keyID: keyID) {
-            search.lastSeen = date
+            if search.lastSeen < date{
+                search.lastSeen = date
+            }
             if autocrypt {
-                search.lastSeenAutocrypt = date
+                if search.lastSeenAutocrypt < date{
+                    search.lastSeenAutocrypt = date
+                }
                 search.sentOwnPublicKey = true
             }
             search.addToMailaddress(adr)
@@ -422,7 +406,7 @@ class DataHandler {
             pk.discoveryDate = date
             pk.firstMail = firstMail
             if autocrypt {
-                pk.lastSeenAutocrypt = date
+                pk.lastSeenAutocrypt = date 
                 pk.sentOwnPublicKey = true
             }
             var found = false
@@ -435,7 +419,7 @@ class DataHandler {
                 }
             }
             save(during: "new pk")
-            Logger.queue.async(flags: .barrier) {
+//            Logger.queue.async(flags: .barrier) {
                 if Logger.logging {
                     var importChannel = "autocrypt"
                     if newGenerated {
@@ -445,9 +429,17 @@ class DataHandler {
                     }
                     Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: false)
                 }
+//            }
+        }
+        if let prim = adr.primaryKey, let last = prim.lastSeen, let currentLast = pk.lastSeen{
+            if last < currentLast {
+                adr.primaryKeyID = pk.keyID
             }
         }
-        
+        else{
+            adr.primaryKeyID = keyID
+        }
+        save(during: "new PK")
         return pk
     }
     
@@ -636,12 +628,10 @@ class DataHandler {
         if let contacts = findAll("EnzevalosContact") {
             for c in contacts {
                 if case let contact as EnzevalosContact = c {
-                    if let adrs = contact.addresses {
-                        for adr in adrs {
-                            if case let mailAdr as Mail_Address = adr {
-                                if mailAdr.address == address {
-                                    return contact
-                                }
+                    for adr in contact.addresses{
+                        if case let mailAdr as Mail_Address = adr {
+                            if mailAdr.address == address {
+                                return contact
                             }
                         }
                     }
@@ -688,8 +678,10 @@ class DataHandler {
     func getContact(name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
         let contact = getContactByAddress(address)
         contact.displayname = name
-        contact.getAddress(address)?.key?.adding(key)
-        //TODO IOptimize: look for Mail_Address and than for contact!
+        if let mykey = findKey(keyID: key){
+            contact.getAddress(address)?.addToKeys(mykey)
+        }
+        //TODO Optimize: look for Mail_Address and than for contact!
         return contact
     }
 
@@ -721,18 +713,9 @@ class DataHandler {
             adr.contact = getContactByMCOAddress(address: sender)
         }
         if let contact = adr.contact {
-            if contact.addresses == nil {
-                contact.addToAddresses(adr)
-            }
-                else if !(contact.addresses?.contains(adr))! {
+            if !(contact.addresses.contains(adr)) {
                     contact.addToAddresses(adr)
             }
-            if contact.addresses == nil || contact.addresses?.count == 0 {
-                print("ERROR Contact has no addresses!")
-            }
-        }
-            else {
-                print("ERROR! No ENzContact!")
         }
         fromMail.from = adr
     }
@@ -744,16 +727,22 @@ class DataHandler {
     private func handleCCAddresses(_ cc: [MCOAddress], mail: PersistentMail) {
         mail.addToCc(NSSet(array: getMailAddressesByMCOAddresses(cc)))
     }
+    
+    private func findMail(msgID: String) -> PersistentMail?{
+        if let result = find("PersistentMail", type: "messageID", search: msgID) as?[PersistentMail]{
+            if result.count > 0{
+                return result[0]
+            }
+        }
+        return nil
+    }
 
     // TODO: handle BCC
 
     // -------- End handle to, cc, from addresses --------
 
-    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?) -> PersistentMail? {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?, references: [String] = [], mailagent: String? = nil, messageID: String? = nil) -> PersistentMail? {
         let myfolder = findFolder(with: folderPath) as Folder
-
-        let counterMails = myfolder.counterMails
-
         let finding = findNum("PersistentMail", type: "uid", search: uid)
         let mail: PersistentMail
         var mails: [PersistentMail] = []
@@ -779,6 +768,23 @@ class DataHandler {
             mail.isEncrypted = false
             mail.trouble = false
             mail.secretKey  = secretKey
+            
+            mail.messageID = messageID
+            mail.xMailer = mailagent
+            
+            var notStored = ""
+            
+            for reference in references{
+                if let ref = findMail(msgID: reference){
+                    mail.addToReferenceMails(ref)
+                }
+                else{
+                    notStored = notStored + " ; "+(reference)
+                }
+            }
+            if notStored != ""{
+                //mail.notLoadedMessages = notStored
+            }
 
             if sender != nil {
                 handleFromAddress(sender!, fromMail: mail, autocrypt: autocrypt)
@@ -805,7 +811,9 @@ class DataHandler {
                     mail.isEncrypted = true
                     mail.trouble = false
                     mail.unableToDecrypt = false
-                    mail.decryptedBody = body
+                    if let text = decData.decryptedText{
+                         mail.decryptedBody = text
+                    }
                 }
 
                 switch signState {
@@ -822,7 +830,8 @@ class DataHandler {
                     mail.isCorrectlySigned = true
                     mail.isSigned = true
                     if let signedKey = findKey(keyID: decData.signKey!){
-                         mail.signedKey = signedKey
+                        mail.signedKey = signedKey
+                        mail.keyID = signedKey.keyID
                     }
                     else{
                         mail.signedKey = newPublicKey(keyID: decData.signKey!, cryptoType: decData.encType, adr: decData.signedAdrs.first!, autocrypt: false, firstMail: mail, newGenerated: false)
@@ -845,18 +854,6 @@ class DataHandler {
         }
         myfolder.updateRecords(mail: mail)
         save(during: "new mail")
-        
-        
-        if let mails = myfolder.mails{
-                for m in mails{
-                    if let x = m as? PersistentMail{
-                       // print("\(x.subject) from \(x.from.mailAddress) at \(x.date)")
-                        if x.subject == mail.subject && x.date == mail.date{
-                            print("Mail found in folder!")
-                        }
-                    }
-                }
-            }
         return mail
     }
     

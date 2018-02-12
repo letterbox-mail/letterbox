@@ -35,12 +35,10 @@ class ContactViewController: UIViewController {
 
         self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor
         if let con = keyRecord {
-            if let adrs = con.ezContact.addresses {
-                for adr in adrs {
-                    let a = adr as! MailAddress
-                    if a.hasKey {
-                        addressWithKey = a
-                    }
+            for adr in con.ezContact.addresses {
+                let a = adr as! MailAddress
+                if a.hasKey {
+                    addressWithKey = a
                 }
             }
 
@@ -183,7 +181,7 @@ class ContactViewController: UIViewController {
             if let keyRecordFingerprint = keyRecord?.fingerprint {
                 fingerprint = keyRecordFingerprint
             } else {
-                if let keyID = addressWithKey?.Key?.keyID {
+                if let keyID = addressWithKey?.primaryKey?.keyID {
                     let swiftPGP = SwiftPGP()
                     if let key = swiftPGP.loadKey(id: keyID) {
                         fingerprint = key.keyID.longIdentifier
@@ -243,7 +241,7 @@ class ContactViewController: UIViewController {
         if keyRecord?.keyID != nil {
             keyRecord?.verify()
         } else {
-            addressWithKey?.Key?.verify()
+            addressWithKey?.primaryKey?.verify()
         }
 //        Logger.queue.async(flags: .barrier) {
             let keyId: String = self.keyRecord?.keyID ?? "noKeyID"
@@ -301,7 +299,7 @@ extension ContactViewController: UITableViewDataSource {
                             actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
                         } else if (otherRecords?.filter({ $0.hasKey }).count ?? 0) > 0 {
                             actionCell.Button.setTitle(NSLocalizedString("toEncrypted", comment: "switch to encrypted"), for: UIControlState())
-                        } else if addressWithKey?.hasKey ?? false && !(addressWithKey?.Key?.isVerified() ?? false) {
+                        } else if addressWithKey?.hasKey ?? false && !(addressWithKey?.primaryKey?.isVerified() ?? false) {
                             actionCell.Button.setTitle(NSLocalizedString("verifyNow", comment: "Verify now"), for: UIControlState())
                         } else {
                             actionCell.Button.setTitle(NSLocalizedString("invite", comment: "Invide contact to use encryption"), for: UIControlState())
@@ -420,7 +418,7 @@ extension ContactViewController: UITableViewDataSource {
             switch section {
             case 0:
                 var counter = 1
-                if !record.isVerified || !(addressWithKey?.Key?.isVerified() ?? false) {
+                if !record.isVerified || !(addressWithKey?.primaryKey?.isVerified() ?? false) {
                     counter += 1
                 }
                 if isUser && record.hasKey {

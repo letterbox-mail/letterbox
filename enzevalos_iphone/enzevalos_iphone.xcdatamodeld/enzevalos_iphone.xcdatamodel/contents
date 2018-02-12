@@ -1,35 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13241" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="16G1212" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Account" representedClassName="Account" syncable="YES" codeGenerationType="class">
+        <attribute name="archiveFolderPath" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" attributeType="String" syncable="YES"/>
+        <attribute name="draftFolderPath" attributeType="String" syncable="YES"/>
+        <attribute name="inboxFolderPath" attributeType="String" syncable="YES"/>
+        <attribute name="loginName" attributeType="String" syncable="YES"/>
+        <attribute name="prefEnc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="prefMailAdr" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="prefSecretKeyID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sentFolderPath" attributeType="String" syncable="YES"/>
+        <attribute name="trashFolderPath" attributeType="String" syncable="YES"/>
+        <relationship name="aliase" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="account" inverseEntity="Mail_Address" syncable="YES"/>
+        <relationship name="imap" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Server" inverseName="imap" inverseEntity="Server" syncable="YES"/>
+        <relationship name="keys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SecretKey" inverseName="account" inverseEntity="SecretKey" syncable="YES"/>
+        <relationship name="smtp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Server" inverseName="smtp" inverseEntity="Server" syncable="YES"/>
+    </entity>
+    <entity name="Attachment" representedClassName="Attachment" syncable="YES" codeGenerationType="class">
+        <attribute name="contentID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="data" attributeType="Binary" syncable="YES"/>
+        <attribute name="encryptionState" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isExplicitAttachment" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mcoPartType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mimeType" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="signatureState" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="mail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="attachments" inverseEntity="PersistentMail" syncable="YES"/>
+        <relationship name="parentOf" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attachment" inverseName="partOf" inverseEntity="Attachment" syncable="YES"/>
+        <relationship name="partOf" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Attachment" inverseName="parentOf" inverseEntity="Attachment" syncable="YES"/>
+    </entity>
     <entity name="EnzevalosContact" representedClassName="EnzevalosContact" syncable="YES">
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="color" optional="YES" attributeType="Transformable" customClassName="UIColor" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
-        <relationship name="addresses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
+        <relationship name="addresses" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
     </entity>
     <entity name="Folder" representedClassName="Folder" syncable="YES">
         <attribute name="delimiter" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="maxID" optional="YES" attributeType="Decimal" defaultValueString="1" syncable="YES"/>
         <attribute name="path" attributeType="String" syncable="YES"/>
         <attribute name="pseudonym" attributeType="String" syncable="YES"/>
+        <attribute name="uidvalidity" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="folder" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="subfolder" inverseEntity="Folder" syncable="YES"/>
         <relationship name="subfolder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder" syncable="YES"/>
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
+        <attribute name="primaryKeyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pseudonym" attributeType="String" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="aliase" inverseEntity="Account" syncable="YES"/>
         <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="bcc" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="cc" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" inverseName="addresses" inverseEntity="EnzevalosContact" syncable="YES"/>
         <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="from" inverseEntity="PersistentMail" syncable="YES"/>
-        <relationship name="key" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="mailaddress" inverseEntity="PersistentKey" syncable="YES"/>
+        <relationship name="keys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="mailaddress" inverseEntity="PersistentKey" syncable="YES"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="to" inverseEntity="PersistentMail" syncable="YES"/>
     </entity>
     <entity name="PersistentKey" representedClassName="PersistentKey" syncable="YES">
+        <attribute name="autocryptGossip" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="discoveryDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="encryptionType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="gossip_timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="keyID" attributeType="String" syncable="YES"/>
         <attribute name="lastSeen" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lastSeenAutocrypt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -37,30 +72,40 @@
         <attribute name="pseudonym" attributeType="String" syncable="YES"/>
         <attribute name="sentOwnPublicKey" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="verifiedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="firstMail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="firstKey" inverseEntity="PersistentMail" syncable="YES"/>
-        <relationship name="mailaddress" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="key" inverseEntity="Mail_Address" syncable="YES"/>
+        <relationship name="firstMail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="attachedKeys" inverseEntity="PersistentMail" syncable="YES"/>
+        <relationship name="mailaddress" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="keys" inverseEntity="Mail_Address" syncable="YES"/>
         <relationship name="signedMails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="signedKey" inverseEntity="PersistentMail" syncable="YES"/>
     </entity>
     <entity name="PersistentMail" representedClassName="PersistentMail" syncable="YES">
         <attribute name="body" attributeType="String" syncable="YES"/>
         <attribute name="date" attributeType="Date" defaultDateTimeInterval="-31582140" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="decryptedBody" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="decrytionCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flag" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="gmailMessageID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="gmailThreadID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isCorrectlySigned" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isSigned" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="keyID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="modSeqValue" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="notLoadedMessageIDs" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="secretKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subject" attributeType="String" syncable="YES"/>
         <attribute name="trouble" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uid" attributeType="Decimal" defaultValueString="0" syncable="YES"/>
         <attribute name="unableToDecrypt" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="visibleBody" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="xMailer" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="attachedKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="firstMail" inverseEntity="PersistentKey" syncable="YES"/>
+        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attachment" inverseName="mail" inverseEntity="Attachment" syncable="YES"/>
         <relationship name="bcc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="bcc" inverseEntity="Mail_Address" syncable="YES"/>
         <relationship name="cc" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="cc" inverseEntity="Mail_Address" syncable="YES"/>
-        <relationship name="firstKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="firstMail" inverseEntity="PersistentKey" syncable="YES"/>
+        <relationship name="decryptedKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SecretKey" inverseName="decryptedMails" inverseEntity="SecretKey" syncable="YES"/>
         <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="mails" inverseEntity="Folder" syncable="YES"/>
         <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="from" inverseEntity="Mail_Address" syncable="YES"/>
+        <relationship name="referenceMails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="referenceMails" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="signedKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="signedMails" inverseEntity="PersistentKey" syncable="YES"/>
         <relationship name="to" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="to" inverseEntity="Mail_Address" syncable="YES"/>
         <fetchIndex name="byDateIndex">
@@ -72,15 +117,28 @@
         <attribute name="importedDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="keyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="obsolete" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="keys" inverseEntity="Account" syncable="YES"/>
+        <relationship name="decryptedMails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="decryptedKey" inverseEntity="PersistentMail" syncable="YES"/>
+    </entity>
+    <entity name="Server" representedClassName="Server" syncable="YES" codeGenerationType="class">
+        <attribute name="authType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="connectionType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hostname" attributeType="String" syncable="YES"/>
+        <attribute name="port" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="imap" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="imap" inverseEntity="Account" syncable="YES"/>
+        <relationship name="smtp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="smtp" inverseEntity="Account" syncable="YES"/>
     </entity>
     <fetchRequest name="getFolder" entity="Folder" predicateString="name == &quot;$folder&quot;"/>
     <fetchRequest name="getMailAddress" entity="Mail_Address" predicateString="address == &quot;$adr&quot;"/>
     <elements>
+        <element name="Account" positionX="-315" positionY="-36" width="128" height="255"/>
+        <element name="Attachment" positionX="-315" positionY="-36" width="128" height="210"/>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="105"/>
-        <element name="Folder" positionX="-297" positionY="-18" width="128" height="180"/>
-        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="165"/>
-        <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="225"/>
-        <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="360"/>
-        <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="105"/>
+        <element name="Folder" positionX="-297" positionY="-18" width="128" height="210"/>
+        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="195"/>
+        <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="255"/>
+        <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="510"/>
+        <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="135"/>
+        <element name="Server" positionX="-306" positionY="-27" width="128" height="135"/>
     </elements>
 </model>

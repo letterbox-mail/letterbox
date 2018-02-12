@@ -10,14 +10,10 @@ import UIKit
 
 class ExportInfoViewController: UITableViewController {
     //TODO: maybe change url; create website!
-    let url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices"
+    let url = "userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices"
     
     @IBAction func websiteButtonTouch(_ sender: Any) {
         UIApplication.shared.openURL(URL(string: "https://"+url)!)
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 500
     }
     
     override func viewDidLoad() {
@@ -26,6 +22,20 @@ class ExportInfoViewController: UITableViewController {
         tableView.estimatedRowHeight = 140
         navigationItem.setRightBarButton(navigationItem.rightBarButtonItem, animated: false)
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Next", comment: "next step")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewOpen: 1)
+//        }
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewClose: 1)
+//        }
+        super.viewWillDisappear(animated)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

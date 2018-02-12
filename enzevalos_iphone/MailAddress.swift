@@ -70,7 +70,8 @@ public protocol MailAddress {
    // var prefEnc: EncState{get set}
     var hasKey: Bool{get}
     
-    var Key: PersistentKey?{get}
+    var primaryKey: PersistentKey?{get}
+    var publicKeys: Set<PersistentKey>{get}
     var contact: EnzevalosContact?{get}
 }
 

@@ -13,30 +13,44 @@ class ExportViewController: UITableViewController {
     var sentToAddress = (UserManager.loadUserValue(Attribute.userAddr) as! String)
     var passcode = ""
     
+    override func viewWillDisappear(_ animated: Bool) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewClose: 2)
+//        }
+        super.viewWillDisappear(animated)
+    }
+    
     @IBAction func buttonTouched(_ sender: Any) {
-        if !alreadySent {
-            let handler = DataHandler.handler
-            let ids = handler.findSecretKeys()
-            if ids.count > 0{
-                let id = ids[0]
-                let pgp = SwiftPGP()
-                if let keyId = id.keyID{
-                    if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true){
+
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(exportKeyViewButton: !alreadySent)
+//        }
+        
+        let handler = DataHandler.handler
+        let ids = handler.findSecretKeys()
+        if ids.count > 0{
+            let id = ids[0]
+            let pgp = SwiftPGP()
+            if let keyId = id.keyID {
+                if alreadySent {
+                    if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: true) {
                         passcode = pgp.loadExportPasscode(id: keyId)!
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
                         mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
                     }
+                } else {
+                    if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: false){
+                        passcode = pgp.loadExportPasscode(id: keyId)!
+                        let mailHandler = AppDelegate.getAppDelegate().mailHandler
+                        mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
+                    }
+                    alreadySent = true
                 }
             }
-            else{
-                // TODO: Error NO SECRET KEY!
-            }
-
-            
         }
-        
-        alreadySent = !alreadySent
-        //TODO: Save states like alreadySent, secret and address the mail were sent to
+        else {
+            // TODO: Error NO SECRET KEY!
+        }
         tableView.reloadData()
     }
     
@@ -101,6 +115,22 @@ class ExportViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 140
         navigationItem.rightBarButtonItem?.title = NSLocalizedString("Done", comment: "")
+
+        let handler = DataHandler.handler
+        let ids = handler.findSecretKeys()
+        if ids.count > 0 {
+            let id = ids[0]
+            let pgp = SwiftPGP()
+            if let keyId = id.keyID {
+                passcode = pgp.loadExportPasscode(id: keyId) ?? ""
+                alreadySent = passcode != ""
+            }
+        }
+
+        
+//        Logger.queue.async(flags: .barrier) {
+        Logger.log(exportKeyViewOpen: 2)
+//        }
     }
     
     func mailSend(_ error: Error?) {

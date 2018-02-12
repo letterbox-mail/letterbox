@@ -214,7 +214,6 @@ class ListViewController: UITableViewController {
 
         let reload_distance: CGFloat = 50
         if y > h + reload_distance && !loading {
-            print("loading new mail because we scrolled to the bottom")
             loading = true
             AppDelegate.getAppDelegate().mailHandler.loadMailsForRecord(contact!, folderPath: UserManager.backendInboxFolderPath, newMailCallback: addNewMail, completionCallback: doneLoading)
             tableView.reloadData()
