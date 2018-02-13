@@ -754,29 +754,29 @@ class DataHandler {
         if finding == nil || finding!.count == 0 || mails.filter( { $0.folder.path == folderPath }).count == 0 {
             // create new mail object
             mail = NSEntityDescription.insertNewObject(forEntityName: "PersistentMail", into: managedObjectContext) as! PersistentMail
-
-            mail.body = body
+            
             mail.date = time
             mail.subject = subject
-
-            mail.uid = uid
+            mail.body = body
+            mail.secretKey  = secretKey
 
             mail.folder = myfolder
-            mail.flag = flags
-
-            mail.isSigned = false
-            mail.isEncrypted = false
-            mail.trouble = false
-            mail.secretKey  = secretKey
-            
+            mail.uidvalidity = myfolder.uidvalidity
+            mail.uid = uid
             mail.messageID = messageID
             mail.xMailer = mailagent
             
+            mail.flag = flags
+            // Default values
+            mail.isSigned = false
+            mail.isEncrypted = false
+            mail.trouble = false
+            mail.unableToDecrypt = false
+           
             var notStored = ""
-            
             for reference in references{
                 if let ref = findMail(msgID: reference){
-                    mail.addToReferenceMails(ref)
+                   // mail.addToReferenceMails(ref)
                 }
                 else{
                     notStored = notStored + " ; "+(reference)
@@ -792,7 +792,6 @@ class DataHandler {
             handleToAddresses(receivers, mail: mail)
             handleCCAddresses(cc, mail: mail)
 
-            mail.unableToDecrypt = false
 
             if let decData = decryptedData {
                 let encState: EncryptionState = decData.encryptionState

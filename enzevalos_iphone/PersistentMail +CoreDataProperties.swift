@@ -53,8 +53,8 @@ extension PersistentMail {
     @NSManaged public var firstKey: PersistentKey?
     @NSManaged public var signedKey: PersistentKey?
     
-    @NSManaged public var gmailMessageID: NSNumber
-    @NSManaged public var gmailThreadID: NSNumber
+    @NSManaged public var gmailMessageID: NSNumber?
+    @NSManaged public var gmailThreadID: NSNumber?
     @NSManaged public var messageID: String?
     @NSManaged public var notLoadedMessages: String?
     
@@ -113,7 +113,22 @@ extension PersistentMail {
             self.didAccessValue(forKey: "uid")
             return text!
         }
-    }    
+    }
+    public var uidvalidity: UInt32?{
+        set {
+            if let num = newValue{
+                self.willChangeValue(forKey: "uidvalidity")
+                self.setPrimitiveValue(NSDecimalNumber.init(value: num as UInt32), forKey: "uidvalidity")
+                self.didChangeValue(forKey: "uidvalidity")
+            }
+        }
+        get {
+            self.willAccessValue(forKey: "uidvalidity")
+            let text = (self.primitiveValue(forKey: "uidvalidity") as? NSDecimalNumber)?.uint32Value
+            self.didAccessValue(forKey: "uidvalidity")
+            return text
+        }
+    }
     public var from: MailAddress{
         set {
             if newValue is Mail_Address{

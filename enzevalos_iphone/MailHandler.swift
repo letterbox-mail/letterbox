@@ -556,13 +556,6 @@ class MailHandler {
         if let connType = UserManager.loadUserValue(Attribute.imapConnectionType) as? Int{
             imapsession.connectionType = MCOConnectionType(rawValue: connType)
         }
-
-        //TODO @Olli: was this for debug purposes or is there a use for this in production
-//        let y = imapsession.folderStatusOperation(INBOX)
-//        y?.start{(error, status) -> Void in
-//            print("Folder status: \(status.debugDescription)")
-//        }
-        
         return imapsession
     }
 
@@ -637,17 +630,30 @@ class MailHandler {
         if let folder = folder{
             folderName = folder
         }
-        let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.set, flags: flags)
-        op?.start { error -> Void in
-            if let err = error {
-                print("Error while updating flags: \(err)")
-            } else {
-                if flags.contains(MCOMessageFlag.deleted) {
-                    let operation = self.IMAPSession.expungeOperation(folderName)
-                    operation?.start({err in
-                        if err == nil {
-                            DataHandler.handler.deleteMail(with: uid)
-                        }})
+        
+        let f = DataHandler.handler.findFolder(with: folderName)
+        let folderstatus = IMAPSession.folderStatusOperation(folderName)
+        folderstatus?.start{(error, status) -> Void in
+            guard error == nil else {
+                return
+            }
+            if let status = status{
+                let uidValidity = status.uidValidity
+                if uidValidity == f.uidvalidity{
+                    let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.set, flags: flags)
+                    op?.start { error -> Void in
+                        if let err = error {
+                            print("Error while updating flags: \(err)")
+                        } else {
+                            if flags.contains(MCOMessageFlag.deleted) {
+                                let operation = self.IMAPSession.expungeOperation(folderName)
+                                operation?.start({err in
+                                    if err == nil {
+                                        DataHandler.handler.deleteMail(with: uid)
+                                    }})
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -658,16 +664,28 @@ class MailHandler {
         if folder != nil{
             folderName = folder!
         }
-        let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.remove, flags: flags)
+        let f = DataHandler.handler.findFolder(with: folderName)
+        let folderstatus = IMAPSession.folderStatusOperation(folderName)
+        folderstatus?.start{(error, status) -> Void in
+            guard error == nil else {
+                return
+            }
+            if let status = status{
+                let uidValidity = status.uidValidity
+                if uidValidity == f.uidvalidity{
+                    let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.remove, flags: flags)
 
-        op?.start { error -> Void in
-            if let err = error {
-                if self.shouldTryRefreshOAUTH {
-                    self.retryWithRefreshedOAuth {
-                        self.removeFlag(uid, flags: flags, folder: folder)
+                    op?.start { error -> Void in
+                        if let err = error {
+                            if self.shouldTryRefreshOAUTH {
+                                self.retryWithRefreshedOAuth {
+                                    self.removeFlag(uid, flags: flags, folder: folder)
+                                }
+                            } else {
+                                print("Error while updating flags: \(err)")
+                            }
+                        }
                     }
-                } else {
-                    print("Error while updating flags: \(err)")
                 }
             }
         }
@@ -677,35 +695,48 @@ class MailHandler {
 
     func loadMailsForRecord(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         //TODO: Init update/old
-        let addresses: [MailAddress]
-        addresses = record.addresses
+        let folder = DataHandler.handler.findFolder(with: folderPath)
+        let folderstatus = IMAPSession.folderStatusOperation(folderPath)
+        folderstatus?.start{(error, status) -> Void in
+            guard error == nil else {
+                completionCallback(true)
+                return
+            }
+            if let status = status{
+                let uidValidity = status.uidValidity
+        
+                folder.uidvalidity = uidValidity
+                let addresses: [MailAddress]
+                addresses = record.addresses
 
-        for adr in addresses {
-            let searchExpr: MCOIMAPSearchExpression = MCOIMAPSearchExpression.search(from: adr.mailAddress)
-            let searchOperation: MCOIMAPSearchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExpr)
+                for adr in addresses {
+                    let searchExpr: MCOIMAPSearchExpression = MCOIMAPSearchExpression.search(from: adr.mailAddress)
+                    let searchOperation: MCOIMAPSearchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExpr)
 
-            searchOperation.start { (err, indices) -> Void in
-                guard err == nil else {
-                    if self.shouldTryRefreshOAUTH {
-                        self.retryWithRefreshedOAuth {
-                            self.loadMailsForRecord(record, folderPath: folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    searchOperation.start { (err, indices) -> Void in
+                        guard err == nil else {
+                            if self.shouldTryRefreshOAUTH {
+                                self.retryWithRefreshedOAuth {
+                                    self.loadMailsForRecord(record, folderPath: folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                                }
+                                return
+                            }
+                            completionCallback(true)
+                            return
                         }
-                        return
-                    }
-                    completionCallback(true)
-                    return
-                }
 
-                let ids = indices as MCOIndexSet?
-                if let setOfIndices = ids {
-                    for mail in record.mails {
-                        setOfIndices.remove(mail.uid)
+                        let ids = indices as MCOIndexSet?
+                        if let setOfIndices = ids {
+                            for mail in record.mails {
+                                setOfIndices.remove(mail.uid)
+                            }
+                            if setOfIndices.count() == 0 {
+                                completionCallback(false)
+                                return
+                            }
+                            self.loadMessagesFromServer(setOfIndices, folderPath: folderPath, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                        }
                     }
-                    if setOfIndices.count() == 0 {
-                        completionCallback(false)
-                        return
-                    }
-                    self.loadMessagesFromServer(setOfIndices, folderPath: folderPath, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
                 }
             }
         }
@@ -713,7 +744,22 @@ class MailHandler {
     
     func loadMailsForInbox(newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let folder = DataHandler.handler.findFolder(with: INBOX)
-        olderMails(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
+        let folderstatus = IMAPSession.folderStatusOperation(folder.name)
+        folderstatus?.start{(error, status) -> Void in
+            guard error == nil else {
+                completionCallback(true)
+                return
+            }
+            if let status = status{
+                let uidValidity = status.uidValidity
+                if folder.uidvalidity != uidValidity{
+                    print("new Uidvaliditly!")
+                    
+                }
+                folder.uidvalidity = uidValidity
+                self.olderMails(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
+            }
+        }
     }
 
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS,record: KeyRecord?, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
@@ -973,8 +1019,7 @@ class MailHandler {
             var keyIds = [String]()
             if sender != nil, let adr = DataHandler.handler.findMailAddress(adr: sender!){
                 for k in adr.publicKeys{
-                    let key = k as! PersistentKey
-                    keyIds.append(key.keyID)
+                    keyIds.append(k.keyID)
                 }
             }
             if let a = autocrypt{
@@ -1023,22 +1068,45 @@ class MailHandler {
 
     func move(mails: [PersistentMail], from: String, to: String, folderCreated: Bool = false) {
         let uids = MCOIndexSet()
+        
         if !DataHandler.handler.existsFolder(with: to) && !folderCreated {
             let op = IMAPSession.createFolderOperation(to)
             op?.start({ _ in self.move(mails: mails, from: from, to: to, folderCreated: true)})
         }
         else {
-            for mail in mails {
-                uids.add(mail.uid)
-                mail.folder.removeFromMails(mail)
-                DataHandler.handler.delete(mail: mail)
-            }
-            let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
-            op?.start{
-                (err, vanished) -> Void in
-                guard err == nil else {
-                    print("Error while moving mails: \(String(describing: err))")
+            let folderstatusFrom = IMAPSession.folderStatusOperation(from)
+            folderstatusFrom?.start{(error, status) -> Void in
+                guard error == nil else {
                     return
+                }
+                if let statusFrom = status{
+                    let uidValidity = statusFrom.uidValidity
+                    let f = DataHandler.handler.findFolder(with: from)
+                    if uidValidity == f.uidvalidity{
+                        for mail in mails {
+                            uids.add(mail.uid)
+                            mail.folder.removeFromMails(mail)
+                            DataHandler.handler.delete(mail: mail)
+                        }
+                        let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
+                        op?.start{
+                            (err, vanished) -> Void in
+                            guard err == nil else {
+                                print("Error while moving mails: \(String(describing: err))")
+                                return
+                            }
+                            print("Delete!")
+                        }
+                    }
+                    else{
+                        f.uidvalidity = uidValidity
+                        let toFolder = DataHandler.handler.findFolder(with: to)
+                        // new uivalidity -> move only local
+                        for mail in mails{
+                            mail.folder = toFolder
+                            mail.uidvalidity = nil
+                        }
+                    }
                 }
             }
         }
@@ -1092,20 +1160,36 @@ class MailHandler {
     }
     
     func updateFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()),completionCallback: @escaping ((Bool) -> ())){
-        if let date = folder.lastUpdate{
-            loadMailsSinceDate(folder: folder, since: date, newMailCallback: newMailCallback, completionCallback: completionCallback)
-        }
-        else{
-            if folder.path == UserManager.backendInboxFolderPath || folder.path == "INBOX" || folder.path == "Inbox"{
-                initInbox(inbox: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
+        let folderstatus = IMAPSession.folderStatusOperation(folder.name)
+        folderstatus?.start{(error, status) -> Void in
+            guard error == nil else {
+                completionCallback(true)
+                return
             }
-            else{
-                initFolder(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
+            if let status = status{
+                let uidValidity = status.uidValidity
+                if folder.uidvalidity != uidValidity{
+                    print("New UIDValidity!")
+                }
+                folder.uidvalidity = uidValidity
+                
+                
+                if let date = folder.lastUpdate{
+                    self.loadMailsSinceDate(folder: folder, since: date, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                }
+                else{
+                    if folder.path == UserManager.backendInboxFolderPath || folder.path == "INBOX" || folder.path == "Inbox"{
+                        self.initInbox(inbox: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    }
+                    else{
+                        self.initFolder(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    }
+                }
             }
         }
     }
     
-    func olderMails(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()),completionCallback: @escaping ((Bool) -> ())){
+    private func olderMails(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()),completionCallback: @escaping ((Bool) -> ())){
         let folderPath = UserManager.convertToBackendFolderPath(from: folder.path)
         if let mails = folder.mails{
             var oldestDate:Date?

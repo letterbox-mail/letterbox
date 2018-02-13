@@ -404,8 +404,11 @@ class Logger {
 
         var event = plainLogDict()
 
+        // TODO TO not extract if closing a mail!
         event["type"] = LoggingEventType.mailRead.rawValue
-        event = extract(from: mail, event: event)
+        if !open{
+            event = extract(from: mail, event: event)
+        }
         event["messagePresented"] = message
         event["open"] = open
 
@@ -455,6 +458,7 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
+    
 
     static func log(delete mail: PersistentMail, toTrash: Bool) {
         if !logging {
@@ -467,7 +471,8 @@ class Logger {
         } else {
             event["type"] = LoggingEventType.mailDeletedPersistent.rawValue
         }
-        event = extract(from: mail, event: event)
+       // event = extract(from: mail, event: event)
+        event["operation"] = "DeleteMail"
 
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()

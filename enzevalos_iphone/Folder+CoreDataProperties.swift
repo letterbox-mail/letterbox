@@ -23,8 +23,26 @@ extension Folder {
     @NSManaged public var lastUpdate: Date?
     @NSManaged public var pseudonym: String
     @NSManaged public var icon: String
-    @NSManaged public var uivalidity: Int32
 
+    public var uidvalidity:UInt32?{
+        set {
+            if let num = newValue{
+                self.willChangeValue(forKey: "uidvalidity")
+                self.setPrimitiveValue(NSDecimalNumber.init(value: num as UInt32), forKey: "uidvalidity")
+                self.didChangeValue(forKey: "uidvalidity")
+            }
+        }
+        get {
+            self.willAccessValue(forKey: "uidvalidity")
+            let text = (self.primitiveValue(forKey: "uidvalidity") as? NSDecimalNumber)?.uint32Value
+            self.didAccessValue(forKey: "uidvalidity")
+            if let num = text{
+                return num
+            }
+            return nil
+        }
+    }
+    
 
     @NSManaged public var delimiter: String
     public var flags: MCOIMAPFolderFlag{

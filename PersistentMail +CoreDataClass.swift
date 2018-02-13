@@ -21,7 +21,6 @@ open class PersistentMail: NSManagedObject, Mail {
     var isSecure: Bool {
         return isEncrypted && isSigned && isCorrectlySigned && !unableToDecrypt && !trouble &&  keyID != nil
     }
-
     var isRead: Bool {
         get {
             let value = flag.contains(MCOMessageFlag.seen)
