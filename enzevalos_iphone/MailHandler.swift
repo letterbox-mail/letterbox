@@ -972,12 +972,10 @@ class MailHandler {
             let pgp = SwiftPGP()
             var keyIds = [String]()
             if sender != nil, let adr = DataHandler.handler.findMailAddress(adr: sender!){
-                //if let keys = adr.keys{
-                    for k in adr.publicKeys{
-                        let key = k as! PersistentKey
-                        keyIds.append(key.keyID)
-                    }
-                //}
+                for k in adr.publicKeys{
+                    let key = k as! PersistentKey
+                    keyIds.append(key.keyID)
+                }
             }
             if let a = autocrypt{
                 let key = try! pgp.importKeys(key: a.key, pw: nil, isSecretKey: false, autocrypt: true)
