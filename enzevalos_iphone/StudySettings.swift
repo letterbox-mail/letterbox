@@ -21,7 +21,7 @@ class StudySettings {
     
     static var entrySurveyURL: String{
         get{
-            return "https://userpage.fu-berlin.de/wieseoli/letterbox/presurvey.html?id=\(studyID)"
+            return "https://userpage.fu-berlin.de/wieseoli/letterbox/entrysurvey.html?id=\(studyID)"
         }
     }
     static var bitcoinMails: Bool { //do we recived a mail from bitcoin.de
@@ -85,6 +85,7 @@ class StudySettings {
             keychain["bitcoin"] = "false"
             UserDefaults.standard.set(false, forKey: "bitcoin")
         }
+        
         
 //        Logger.queue.async(flags: .barrier) {
         Logger.log(setupStudy: warnings, alreadyRegistered: !presentFirstQuestionaireMail, bitcoin: bitcoinMails)
@@ -154,9 +155,13 @@ class StudySettings {
     private static func mailToParticipat(subject: String, body: String){
         let senderAdr = SUPPORT_MAIL_ADR
         let sender = MCOAddress.init(displayName: "Letterbox-Team", mailbox: senderAdr)
-        let signKey = "F3ADDC8B81F82CCEB534CFC766BA7478AD254666"//DataHandler.handler.findKey(keyID: senderAdr)
-        
-        let cryptoObject = CryptoObject(chiphertext: nil, plaintext: body, decryptedData: body.data(using: .utf8), sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: signKey, encType: CryptoScheme.PGP, signedAdrs: [senderAdr])
+        var keyID: String?
+        if let addr = DataHandler.handler.findMailAddress(adr: senderAdr){
+            if let pk = addr.primaryKey{
+                keyID = pk.keyID
+            }
+        }
+        let cryptoObject = CryptoObject(chiphertext: nil, plaintext: body, decryptedData: body.data(using: .utf8), sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: keyID, encType: CryptoScheme.PGP, signedAdrs: [senderAdr])
         
         _ = DataHandler.handler.createMail(0, sender: sender, receivers: [], cc: [], time: Date(), received: false, subject: subject, body: body, flags: MCOMessageFlag.init(rawValue: 0), record: nil, autocrypt: nil, decryptedData: cryptoObject, folderPath: UserManager.backendInboxFolderPath, secretKey: nil)
     }

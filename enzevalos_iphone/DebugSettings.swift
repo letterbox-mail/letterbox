@@ -17,9 +17,8 @@ let LOGGING_MAIL_ADR = "letterbox-reports@inf.fu-berlin.de"
 func setupStudyPublicKeys(){
     let logging_pk = "logging_pk"
     let support_pk = "support_pk"
-    let keys = ["noreply@bitcoin.de": "bitcoinde", "letterbox@zedat.fu-berlin.de": support_pk, SUPPORT_MAIL_ADR: support_pk, "letterbox-hilfe@inf.fu-berlin.de": support_pk, "enzevalos@inf.fu-berlin.de": support_pk, LOGGING_MAIL_ADR: logging_pk]
+    let keys = ["noreply@bitcoin.de": "bitcoinde", "letterbox@zedat.fu-berlin.de": support_pk,"letterbox-hilfe@inf.fu-berlin.de": support_pk, "enzevalos@inf.fu-berlin.de": support_pk, SUPPORT_MAIL_ADR: support_pk, LOGGING_MAIL_ADR: logging_pk]
     importPublicKeyDic(keys: keys, type: "asc")
-    let l = datahandler.getContact(name: "Letterbox", address: SUPPORT_MAIL_ADR, key: "F3ADDC8B81F82CCEB534CFC766BA7478AD254666", prefer_enc: true)
     datahandler.save(during: "init study keys")
 }
 
