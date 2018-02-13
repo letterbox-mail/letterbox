@@ -472,6 +472,11 @@ class SendViewController: UIViewController {
 
     func mailSend(_ error: Error?) {
         if (error != nil) {
+            if AppDelegate.getAppDelegate().mailHandler.shouldTryRefreshOAUTH {
+                AppDelegate.getAppDelegate().mailHandler.retryWithRefreshedOAuth { [weak self] in
+                    self?.pressSend(nil)
+                }
+            }
             NSLog("Error sending email: \(String(describing: error))")
             //            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil) @jakob: wofür ist dieses showMessage aus AppDelegate gut?
             let alert = UIAlertController(title: NSLocalizedString("ReceiveError", comment: "There was an error"), message: NSLocalizedString("ErrorText", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
@@ -647,7 +652,7 @@ class SendViewController: UIViewController {
         }
     }
 
-    @IBAction func pressSend(_ sender: AnyObject) {
+    @IBAction func pressSend(_ sender: AnyObject?) {
         let toEntrys = toText.mailTokens
         let ccEntrys = ccText.mailTokens
         let subject = subjectText.inputText()!

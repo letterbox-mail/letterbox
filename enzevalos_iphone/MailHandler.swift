@@ -155,6 +155,13 @@ class MailHandler {
 
     var IMAPIdleSession: MCOIMAPSession?
     var IMAPIdleSupported: Bool?
+    
+    var shouldTryRefreshOAUTH: Bool {
+        get {
+            return (UserManager.loadImapAuthType() == MCOAuthType.xoAuth2 || UserManager.loadSmtpAuthType() == MCOAuthType.xoAuth2) &&
+                !(EmailHelper.singleton().authorization?.authState.isTokenFresh() ?? false)
+        }
+    }
 
     func addAutocryptHeader(_ builder: MCOMessageBuilder) {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
@@ -251,7 +258,16 @@ class MailHandler {
         builder.addAttachment(keyAttachment)
       
         let sendOperation = session.sendOperation(with: builder.data() , from: userID, recipients: [userID])
-        sendOperation?.start(callback)
+        sendOperation?.start({ error in
+            guard error == nil else {
+                self.retryWithRefreshedOAuth {
+                    self.sendSecretKey(key: key, passcode: passcode, callback: callback)
+                }
+                return
+            }
+            
+            callback(nil)
+        })
         //createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
     }
     
@@ -389,6 +405,7 @@ class MailHandler {
         }
     }
 
+    // TODO: add OAuth refresh
     fileprivate func createSendCopy(sendData: Data) {
         let sentFolder = UserManager.backendSentFolderPath
         if !DataHandler.handler.existsFolder(with: sentFolder) {
@@ -404,6 +421,7 @@ class MailHandler {
         }
     }
     
+    // TODO: add OAuth refresh
     fileprivate func createLoggingSendCopy(sendData: Data) {
         let sentFolder = UserManager.loadUserValue(.loggingFolderPath) as! String
         if !DataHandler.handler.existsFolder(with: sentFolder) {
@@ -526,24 +544,24 @@ class MailHandler {
         if let username = UserManager.loadUserValue(Attribute.userAddr) as? String{
             imapsession.username = username
         }
-        if let pw = UserManager.loadUserValue(Attribute.userPW) as? String{
-            imapsession.password = pw
-        }
         //TODO: ERROR HANDLING!
         imapsession.authType = UserManager.loadImapAuthType()
         
+        if UserManager.loadImapAuthType() == MCOAuthType.xoAuth2 {
+            imapsession.oAuth2Token = EmailHelper.singleton().authorization?.authState.lastTokenResponse?.accessToken
+        } else if let pw = UserManager.loadUserValue(Attribute.userPW) as? String {
+            imapsession.password = pw
+        }
+
         if let connType = UserManager.loadUserValue(Attribute.imapConnectionType) as? Int{
             imapsession.connectionType = MCOConnectionType(rawValue: connType)
         }
-        
-        let y = imapsession.folderStatusOperation(INBOX)
-        y?.start{(error, status) -> Void in
-            // TODO: UIDValality check here!
-            let uidValidity = status?.uidValidity
-            let nextId = status?.uidNext
-            let unseencount = status?.unseenCount
-            
-        }
+
+        //TODO @Olli: was this for debug purposes or is there a use for this in production
+//        let y = imapsession.folderStatusOperation(INBOX)
+//        y?.start{(error, status) -> Void in
+//            print("Folder status: \(status.debugDescription)")
+//        }
         
         return imapsession
     }
@@ -555,6 +573,11 @@ class MailHandler {
                 let op = IMAPIdleSession!.idleOperation(withFolder: INBOX, lastKnownUID: UInt32(DataHandler.handler.findFolder(with: INBOX).maxID))
                 op?.start({ error in
                     guard error == nil else {
+                        if self.shouldTryRefreshOAUTH {
+                            self.retryWithRefreshedOAuth {
+                                self.startIMAPIdleIfSupported(addNewMail: addNewMail)
+                            }
+                        }
                         print("An error occured with the idle operation: \(String(describing: error))")
                         return
                     }
@@ -573,6 +596,12 @@ class MailHandler {
         let op = setupIMAPSession().capabilityOperation()
         op?.start({ (error, capabilities) in
             guard error == nil else {
+                if self.shouldTryRefreshOAUTH {
+                    self.retryWithRefreshedOAuth {
+                        self.checkIdleSupport(addNewMail: addNewMail)
+                    }
+                    return
+                }
                 print("Error checking IMAP Idle capabilities: \(String(describing: error))")
                 return
             }
@@ -586,15 +615,23 @@ class MailHandler {
 
     fileprivate func createSMTPSession() -> MCOSMTPSession {
         let session = MCOSMTPSession()
+        session.authType = UserManager.loadSmtpAuthType()
+        if UserManager.loadSmtpAuthType() == MCOAuthType.xoAuth2 {
+            if let lastToken = EmailHelper.singleton().authorization?.authState.lastTokenResponse {
+                session.oAuth2Token = lastToken.accessToken
+            }
+        } else {
+            session.password = UserManager.loadUserValue(Attribute.userPW) as! String
+        }
         session.hostname = UserManager.loadUserValue(Attribute.smtpHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
         session.username = UserManager.loadUserValue(Attribute.userAddr) as! String
-        session.password = UserManager.loadUserValue(Attribute.userPW) as! String
         session.authType = UserManager.loadSmtpAuthType()
         session.connectionType = MCOConnectionType(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
         return session
     }
 
+    // TODO: add OAuth refresh
     func addFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String?) {
         var folderName = INBOX
         if let folder = folder{
@@ -625,7 +662,13 @@ class MailHandler {
 
         op?.start { error -> Void in
             if let err = error {
-                print("Error while updating flags: \(err)")
+                if self.shouldTryRefreshOAUTH {
+                    self.retryWithRefreshedOAuth {
+                        self.removeFlag(uid, flags: flags, folder: folder)
+                    }
+                } else {
+                    print("Error while updating flags: \(err)")
+                }
             }
         }
     }
@@ -643,6 +686,12 @@ class MailHandler {
 
             searchOperation.start { (err, indices) -> Void in
                 guard err == nil else {
+                    if self.shouldTryRefreshOAUTH {
+                        self.retryWithRefreshedOAuth {
+                            self.loadMailsForRecord(record, folderPath: folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                        }
+                        return
+                    }
                     completionCallback(true)
                     return
                 }
@@ -679,6 +728,12 @@ class MailHandler {
         }
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
+                if self.shouldTryRefreshOAUTH {
+                    self.retryWithRefreshedOAuth {
+                        self.loadMessagesFromServer(uids, folderPath: folderPath, maxLoad: maxLoad, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    }
+                    return
+                }
                 print("Error while fetching inbox: \(String(describing: err))")
                 completionCallback(true)
                 return
@@ -952,7 +1007,11 @@ class MailHandler {
         session.hostname = UserManager.loadUserValue(Attribute.smtpHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
         session.username = username
-        session.password = UserManager.loadUserValue(Attribute.userPW) as! String
+        if UserManager.loadSmtpAuthType() == MCOAuthType.xoAuth2 {
+            session.oAuth2Token = EmailHelper.singleton().authorization?.authState.lastTokenResponse?.accessToken
+        } else if let pw = UserManager.loadUserValue(Attribute.userPW) as? String {
+            session.password = pw
+        }
         session.authType = UserManager.loadSmtpAuthType()
         session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
 
@@ -1096,6 +1155,12 @@ class MailHandler {
         
         searchOperation?.start{(err, uids)-> Void in
             guard err == nil else{
+                if self.shouldTryRefreshOAUTH {
+                    self.retryWithRefreshedOAuth {
+                        self.loadMailsSinceDate(folder: folder, since: since, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    }
+                    return
+                }
                 completionCallback(true)
                 return
             }
@@ -1108,5 +1173,19 @@ class MailHandler {
             }
         }
 
+    }
+    
+    func retryWithRefreshedOAuth(completion: @escaping () -> ()) {
+        guard shouldTryRefreshOAUTH else {
+            print("Please only call retryWithRefreshedOAuth after checking shouldTryRefreshOAUTH or your request might be lost.")
+            return
+        }
+        
+        EmailHelper.singleton().checkIfAuthorizationIsValid({authorized in
+            if authorized {
+                self.IMAPSes = nil
+            }
+            completion()
+        })
     }
 }

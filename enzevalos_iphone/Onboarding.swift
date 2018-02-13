@@ -21,6 +21,7 @@ class Onboarding: NSObject {
     static var mailaddress = UITextField.init()
     static var username = UITextField.init()
     static var password = UITextField.init()
+    static var googleButton = UIBarButtonItem.init()
     static var credentials: UIView? = nil
     static var imapServer = UITextField.init()
     static var smtpServer = UITextField.init()
@@ -36,6 +37,9 @@ class Onboarding: NSObject {
     static var smtpTransDataDelegate = PickerDataDelegate.init(rows: ["a", "b", "c"])
     static var background = UIImage.init()
     static var manualSet = false
+    static var googleAuth = false
+    
+    static var loginViewController: UIViewController?
 
     static let font = UIFont.init(name: "Helvetica-Light", size: 28)
     static let padding: CGFloat = 30
@@ -150,9 +154,13 @@ class Onboarding: NSObject {
             keyboardToolbar.sizeToFit()
             keyboardToolbar.barTintColor = defaultColor
             keyboardToolbar.backgroundColor = defaultColor
+            let googleBarButton = UIBarButtonItem(title: "Login with Google", style: .plain, target: self, action: #selector(oauth))
+            googleBarButton.tintColor = .orange
+            googleButton = googleBarButton
             let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
             let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.dismissKeyboard))
-            keyboardToolbar.items = [flexBarButton, doneBarButton]
+            doneBarButton.tintColor = .orange
+            keyboardToolbar.items = [googleBarButton, flexBarButton, doneBarButton]
             mailaddress.inputAccessoryView = keyboardToolbar
             password.inputAccessoryView = keyboardToolbar
 
@@ -205,9 +213,15 @@ class Onboarding: NSObject {
             })
         }
 
+        loginViewController = vc!
         return vc!
     }
 
+    static func oauth() {
+        googleAuth = true
+        doWhenDone()
+    }
+    
     static func dismissKeyboard() {
         mailaddress.endEditing(true)
         password.endEditing(true)
@@ -472,11 +486,10 @@ class Onboarding: NSObject {
         AppDelegate.getAppDelegate().requestForAccess(callback)
     }
 
-    static func checkConfig(_ fail: @escaping () -> (), work: @escaping () -> ()) -> Bool {
+    static func checkConfig(_ fail: @escaping () -> (), work: @escaping () -> ()) {
         self.work = work
         self.fail = fail
         AppDelegate.getAppDelegate().mailHandler.checkIMAP(imapCompletion)
-        return true
     }
 
     static func imapCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
@@ -509,8 +522,7 @@ class Onboarding: NSObject {
             //TODO: REMOVE BEFORE STUDY
             loadTestAcc()
             return setServerValues(mailaddress: mailAddress)
-        }
-        else {
+        } else {
             UserManager.storeUserValue(imapServer.text as AnyObject?, attribute: Attribute.imapHostname)
             UserManager.storeUserValue(Int(imapPort.text ?? "143") as AnyObject?, attribute: Attribute.imapPort)
             UserManager.storeUserValue(smtpServer.text as AnyObject?, attribute: Attribute.smtpHostname)
@@ -535,9 +547,10 @@ class Onboarding: NSObject {
 
         if let provider = manager.provider(forEmail: mailaddress), let imap = (provider.imapServices() as? [MCONetService]), imap != [], let smtp = (provider.smtpServices() as? [MCONetService]), smtp != [] {
             let imapService = imap[0]
-            UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.web.de") as AnyObject?, attribute: Attribute.imapHostname)
+            UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.web.de") as AnyObject?, attribute: Attribute.imapHostname) //TODO @jakob: web.de?!?
             UserManager.storeUserValue((imapService.info()["port"] ?? 587) as AnyObject?, attribute: Attribute.imapPort)
-
+            
+            print(imapService.info())
             if let trans = imapService.info()["ssl"] as? Bool, trans {
                 UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
             } else if let trans = imapService.info()["starttls"] as? Bool, trans {
@@ -659,9 +672,6 @@ class Onboarding: NSObject {
 }
 
 class TextFieldDelegate: NSObject, UITextFieldDelegate {
-
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-    }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == Onboarding.mailaddress {
