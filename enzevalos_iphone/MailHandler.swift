@@ -1100,12 +1100,6 @@ class MailHandler {
                     }
                     else{
                         f.uidvalidity = uidValidity
-                        let toFolder = DataHandler.handler.findFolder(with: to)
-                        // new uivalidity -> move only local
-                        for mail in mails{
-                            mail.folder = toFolder
-                            mail.uidvalidity = nil
-                        }
                     }
                 }
             }

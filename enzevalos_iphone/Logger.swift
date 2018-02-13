@@ -404,9 +404,8 @@ class Logger {
 
         var event = plainLogDict()
 
-        // TODO TO not extract if closing a mail!
         event["type"] = LoggingEventType.mailRead.rawValue
-        if !open{
+        if open{
             event = extract(from: mail, event: event)
         }
         event["messagePresented"] = message
