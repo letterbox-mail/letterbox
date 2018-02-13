@@ -10,8 +10,8 @@ import Foundation
 import KeychainAccess
 
 class StudySettings {
-    static var studyMode = false//true
-    static var presentFirstQuestionaireMail = false
+    static var studyMode = true
+    static var presentFirstQuestionaireMail = true
     
     static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
     static let raffleURL = ""
@@ -102,7 +102,7 @@ class StudySettings {
         Liebe Teilnehmerin, lieber Teilnehmer,
         
         Herzlichen Glückwunsch Sie haben Letterbox erfolgreich installiert!
-        Bitte nehmen Sie an einem Fragebogen mit maximal 10 Fragen über Ihre bisherigen Erfahrungen mit E-Mail-Verschlüsselung teil.
+        Bitte nehmen Sie an dem Eingangsfragebogen mit maximal 10 Fragen über Ihre bisherigen Erfahrungen mit E-Mail-Verschlüsselung teil.
         Dazu folgen Sie bitte diesem Link:
         \(entrySurveyURL)
         
@@ -112,7 +112,7 @@ class StudySettings {
         Dort finden Sie auch Videos zum Thema Ende-Zu-Ende-Verschlüsselung.
         Falls Sie Fragen haben oder uns ein Feedback geben möchten, freuen wir uns auf Ihre E-Mail!
         
-        Sie können einen ersten Brief verfassen in dem Sie auf diese E-Mail antworten.
+        Sie können einen ersten Brief verfassen und auf diese E-Mail antworten. Sie können uns Ihre Erfahrungen, Fragen oder Kommentare zum Einführung  mitteilen. Was ist unklar geblieben? Was war neu für Sie? Was hätten Sie sich sonst noch gewünscht?
         
         Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen
         Ihr Letterbox-Team

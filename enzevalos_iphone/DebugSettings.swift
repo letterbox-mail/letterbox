@@ -36,49 +36,43 @@ func loadTestAcc(){
 }
 
 func loadUlli(){
-    let user =  web(name: "ullimuelle", pw: "dun3bate")
+    let user =  web(name: "ullimuelle", pw: "")
     userdefaults(defaults: user)
     importSecretKey(file: "ullimuelle-private", type: "gpg")
   
 }
 
 func loadBob2005(){
-    let user = web(name: "bob2005", pw: "WJ$CE:EtUo3E$")
+    let user = web(name: "bob2005", pw: "")
     userdefaults(defaults: user)
     importSecretKey(file: "bob2005-private", type: "gpg")
 }
 
 func loadAlice2005(){
-    let user = web(name: "alice2005", pw: "WJ$CE:EtUo3E$")
+    let user = web(name: "alice2005", pw: "")
     userdefaults(defaults: user)
     importSecretKey(file: "alice2005-private", type: "gpg")
   
 }
 
 func loadBobEnzevalos(){
-    let user = enzevalos(name: "bob", pw: "VagotOshaicceov")
+    let user = enzevalos(name: "bob", pw: "")
     userdefaults(defaults: user)
     importSecretKey(file: "bob_enzvalos_private", type: "asc")
 }
 
 
 func loadCharlieEnzevalos(){
-    let user = enzevalos(name: "charlie", pw: "tydpawdAwIdPyuc")
+    let user = enzevalos(name: "charlie", pw: "")
     userdefaults(defaults: user)
 }
 
 func loadAliceEnzevalos(){
-    let user = enzevalos(name: "alice", pw: "egOavOpeecOntew")
+    let user = enzevalos(name: "alice", pw: "")
     userdefaults(defaults: user)
 }
 
-// Enzevalos!
-// static let name = "bob"
-// static let pw = "VagotOshaicceov"
-// static let name = "alice"
-//static let pw = "egOavOpeecOntew"
-//static let name = "charlie"
-//static let pw = "tydpawdAwIdPyuc"
+
 
 private func userdefaults(defaults: [Attribute: AnyObject?]){
     for (att, value) in defaults{
