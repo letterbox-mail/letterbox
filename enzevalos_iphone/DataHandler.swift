@@ -745,7 +745,7 @@ class DataHandler {
             mails = tmpMails
         }
 
-        if finding == nil || finding!.count == 0 || mails.filter( { $0.folder.path == folderPath }).count == 0 {
+        if finding == nil || finding!.count == 0 || mails.filter( {$0.folder.path == folderPath && $0.uidvalidity == myfolder.uidvalidity}).count == 0 {
             // create new mail object
             mail = NSEntityDescription.insertNewObject(forEntityName: "PersistentMail", into: managedObjectContext) as! PersistentMail
             
