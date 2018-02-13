@@ -412,12 +412,12 @@ class MailHandler {
             let op = IMAPSession.createFolderOperation(sentFolder)
             op?.start({ error in
                 let op = self.IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
-                op?.start({_,_ in print("done")}) // TODO: @jakob: is this necessary?
+                op?.start({_,_ in return})
             })
         }
         else {
             let op = IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
-            op?.start({_,_ in print("done")})
+            op?.start({_,_ in return})
         }
     }
     
@@ -752,10 +752,6 @@ class MailHandler {
             }
             if let status = status{
                 let uidValidity = status.uidValidity
-                if folder.uidvalidity != uidValidity{
-                    print("new Uidvaliditly!")
-                    
-                }
                 folder.uidvalidity = uidValidity
                 self.olderMails(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
             }
@@ -1095,7 +1091,6 @@ class MailHandler {
                                 print("Error while moving mails: \(String(describing: err))")
                                 return
                             }
-                            print("Delete!")
                         }
                     }
                     else{
@@ -1162,9 +1157,6 @@ class MailHandler {
             }
             if let status = status{
                 let uidValidity = status.uidValidity
-                if folder.uidvalidity != uidValidity{
-                    print("New UIDValidity!")
-                }
                 folder.uidvalidity = uidValidity
                 
                 

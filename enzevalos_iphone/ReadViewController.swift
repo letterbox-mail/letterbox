@@ -160,7 +160,6 @@ class ReadViewController: UITableViewController {
                 }
             }
 //        }
-        print("===============|| ReadViewController deinitialized ||===============")
     }
 
     override func viewWillAppear(_ animated: Bool) {

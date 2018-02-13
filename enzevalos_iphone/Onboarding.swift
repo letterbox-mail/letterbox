@@ -550,7 +550,6 @@ class Onboarding: NSObject {
             UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.web.de") as AnyObject?, attribute: Attribute.imapHostname) //TODO @jakob: web.de?!?
             UserManager.storeUserValue((imapService.info()["port"] ?? 587) as AnyObject?, attribute: Attribute.imapPort)
             
-            print(imapService.info())
             if let trans = imapService.info()["ssl"] as? Bool, trans {
                 UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject?, attribute: Attribute.imapConnectionType)
             } else if let trans = imapService.info()["starttls"] as? Bool, trans {

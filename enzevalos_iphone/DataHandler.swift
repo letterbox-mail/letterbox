@@ -95,11 +95,6 @@ class DataHandler {
         return false
     }
 
-    
-
-    
-
-
 
     func callForFolders(done: @escaping ((_ error: Bool) -> ())) { // Maybe call back? Look for new Folder?
         AppDelegate.getAppDelegate().mailHandler.allFolders { (err, array) -> Void in
@@ -367,7 +362,6 @@ class DataHandler {
     func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil, newGenerated: Bool = false) -> PersistentKey {
         var date = Date.init()
         if let mail = firstMail{
-            print("Date: \(date) mail date: \(mail.date)")
             if date.compare(mail.date).rawValue > 0{
                 date = mail.date
             }
@@ -868,7 +862,7 @@ class DataHandler {
         return mails
     }
 
-    private func getAddresses() -> [MailAddress] {
+    func getAddresses() -> [MailAddress] {
         var adrs = [MailAddress]()
         let result = findAll("Mail_Address")
         if result != nil {

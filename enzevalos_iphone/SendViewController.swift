@@ -54,6 +54,7 @@ class SendViewController: UIViewController {
     var prefilledMail: EphemeralMail? = nil
     var toField: String? = nil
     var sendEncryptedIfPossible = true
+    var invite:Bool = false
 
 	var invitationSelection = InvitationSelection()
 
@@ -166,7 +167,7 @@ class SendViewController: UIViewController {
     }
 
     deinit {
-        print("===============|| SendViewController deinitialized ||===============")
+        return
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -253,6 +254,7 @@ class SendViewController: UIViewController {
         } else if segue.identifier == "inviteSegue" {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController {
+                controller.invite = true
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
@@ -658,6 +660,19 @@ class SendViewController: UIViewController {
         let subject = subjectText.inputText()!
         let message = textView.text!
 
+        if invite{
+            for addr in toEntrys{
+                if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String){
+                    mailAddr.invitations = mailAddr.invitations + 1
+                }
+            }
+            for addr in ccEntrys{
+                if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String){
+                    mailAddr.invitations = mailAddr.invitations + 1
+                }
+            }
+            DataHandler.handler.save(during: "invite")
+        }
         mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend)
     }
 }

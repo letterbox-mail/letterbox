@@ -10,7 +10,7 @@ import Foundation
 
 class GTMAppAuthDelegate: NSObject, OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate {
     func didChange(_ state: OIDAuthState) {
-        print("State: \(state)")
+        return
     }
     
     func authState(_ state: OIDAuthState, didEncounterAuthorizationError error: Error) {

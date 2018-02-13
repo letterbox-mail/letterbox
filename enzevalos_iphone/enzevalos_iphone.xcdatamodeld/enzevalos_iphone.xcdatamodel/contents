@@ -50,6 +50,7 @@
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
+        <attribute name="invitations" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="primaryKeyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pseudonym" attributeType="String" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="aliase" inverseEntity="Account" syncable="YES"/>
@@ -136,7 +137,7 @@
         <element name="Attachment" positionX="-315" positionY="-36" width="128" height="210"/>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="105"/>
         <element name="Folder" positionX="-297" positionY="-18" width="128" height="210"/>
-        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="195"/>
+        <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="210"/>
         <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="255"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="525"/>
         <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="135"/>

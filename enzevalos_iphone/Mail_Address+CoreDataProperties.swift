@@ -25,6 +25,8 @@ extension Mail_Address {
     @NSManaged public var pseudonym: String
     @NSManaged public var primaryKeyID: String
     @NSManaged public var keys: NSSet?
+    @NSManaged public var invitations: Int16
+
 
 
 }
