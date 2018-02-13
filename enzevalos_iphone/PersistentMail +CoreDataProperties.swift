@@ -130,7 +130,6 @@ extension PersistentMail {
             if let text = text {
                 return text
             }
-            print("We have a nil")
             return Mail_Address()
         }
     }

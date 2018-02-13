@@ -330,7 +330,6 @@ class SwiftPGP: Encryption{
                 return CryptoObject(chiphertext: armorChipherData, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
             } catch {
                 print("Encryption error!")
-                print(error)
             }
         }
         

@@ -503,8 +503,6 @@ class ReadViewController: UITableViewController {
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
             }
-
-            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure), trouble: \(mail.trouble), showMessage: \(mail.showMessage)")
         }
     }
 
@@ -618,7 +616,6 @@ class ReadViewController: UITableViewController {
 //                    Logger.queue.async(flags: .barrier) {
                     Logger.log(importPrivateKey: mail, success: true)
 //                    }
-                    print("Successful import: \(suc)")
                 }catch _ {
 //                    Logger.queue.async(flags: .barrier) {
                     Logger.log(importPrivateKey: mail, success: false)
