@@ -34,6 +34,7 @@
         <attribute name="color" optional="YES" attributeType="Transformable" customClassName="UIColor" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <relationship name="addresses" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
+        <relationship name="keyrecords" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="KeyRecord" inverseName="contact" inverseEntity="KeyRecord" syncable="YES"/>
     </entity>
     <entity name="Folder" representedClassName="Folder" syncable="YES">
         <attribute name="delimiter" optional="YES" attributeType="String" syncable="YES"/>
@@ -46,7 +47,13 @@
         <attribute name="uidvalidity" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
         <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="folder" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="subfolder" inverseEntity="Folder" syncable="YES"/>
+        <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="KeyRecord" inverseName="folder" inverseEntity="KeyRecord" syncable="YES"/>
         <relationship name="subfolder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder" syncable="YES"/>
+    </entity>
+    <entity name="KeyRecord" representedClassName="KeyRecord" syncable="YES" codeGenerationType="class">
+        <relationship name="contact" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" inverseName="keyrecords" inverseEntity="EnzevalosContact" syncable="YES"/>
+        <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="records" inverseEntity="Folder" syncable="YES"/>
+        <relationship name="key" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="records" inverseEntity="PersistentKey" syncable="YES"/>
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
@@ -75,6 +82,7 @@
         <attribute name="verifiedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="firstMail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="attachedKeys" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="mailaddress" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="keys" inverseEntity="Mail_Address" syncable="YES"/>
+        <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="KeyRecord" inverseName="key" inverseEntity="KeyRecord" syncable="YES"/>
         <relationship name="signedMails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="signedKey" inverseEntity="PersistentMail" syncable="YES"/>
     </entity>
     <entity name="PersistentMail" representedClassName="PersistentMail" syncable="YES">
@@ -135,12 +143,13 @@
     <elements>
         <element name="Account" positionX="-315" positionY="-36" width="128" height="255"/>
         <element name="Attachment" positionX="-315" positionY="-36" width="128" height="210"/>
-        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="105"/>
-        <element name="Folder" positionX="-297" positionY="-18" width="128" height="210"/>
+        <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="120"/>
+        <element name="Folder" positionX="-297" positionY="-18" width="128" height="225"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="210"/>
-        <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="255"/>
+        <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="270"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="525"/>
         <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="135"/>
         <element name="Server" positionX="-306" positionY="-27" width="128" height="135"/>
+        <element name="KeyRecord" positionX="-315" positionY="-36" width="128" height="90"/>
     </elements>
 </model>
