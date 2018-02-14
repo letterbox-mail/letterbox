@@ -479,6 +479,7 @@ class SendViewController: UIViewController {
                 AppDelegate.getAppDelegate().mailHandler.retryWithRefreshedOAuth { [weak self] in
                     self?.pressSend(nil)
                 }
+                return
             }
             NSLog("Error sending email: \(String(describing: error))")
             //            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil) @jakob: wofür ist dieses showMessage aus AppDelegate gut?
