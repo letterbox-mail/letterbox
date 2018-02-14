@@ -33,7 +33,8 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var messageCell: MessageBodyTableViewCell!
 
     @IBOutlet weak var iconButton: UIButton!
-
+    @IBOutlet weak var deleteButton: UIBarButtonItem!
+    
     @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
 
     var VENDelegate: ReadVENDelegate?
@@ -126,6 +127,10 @@ class ReadViewController: UITableViewController {
 
         setUItoMail()
 
+        if let mail = mail, mail.folder.uidvalidity != mail.uidvalidity || !mail.received {
+            deleteButton.isEnabled = false
+        }
+        
         textDelegate = ReadTextDelegate()
         textDelegate?.callback = newMailCallback
 
