@@ -52,10 +52,9 @@ class DataHandler {
     static let handler: DataHandler = DataHandler()
 
     private var managedObjectContext: NSManagedObjectContext
-
     private let MaxRecords = 50
     private let MaxMailsPerRecord = 100
-
+    
     var allFolders: [Folder] {
         get {
             var folders = [Folder]()

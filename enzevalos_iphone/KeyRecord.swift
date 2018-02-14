@@ -142,7 +142,6 @@ open class KeyRecord: Record {
              ezContact = DataHandler.handler.getContact(name: "ERROR", address: "ERROR No adr to key", key: keyID, prefer_enc: false)
         }
         
-        
         /*
         let mails = DataHandler.handler.allMailsInFolder(key: keyID, contact: nil, folder: folder, isSecure: isSecure)
         if mails.count > 0{

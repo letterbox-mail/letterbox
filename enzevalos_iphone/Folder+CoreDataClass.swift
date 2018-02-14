@@ -106,7 +106,6 @@ public class Folder: NSManagedObject {
         }
     }
     
-    
     //write value of liveRecords to records
     public func updateRecords() {
        storedRecords = liveRecords
