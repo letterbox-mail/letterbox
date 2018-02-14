@@ -804,9 +804,7 @@ class DataHandler {
                     mail.isEncrypted = true
                     mail.trouble = false
                     mail.unableToDecrypt = false
-                    if let text = decData.decryptedText{
-                         mail.decryptedBody = text
-                    }
+                    mail.decryptedBody = body
                 }
 
                 switch signState {

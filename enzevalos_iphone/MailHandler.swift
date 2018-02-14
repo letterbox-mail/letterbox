@@ -863,7 +863,7 @@ class MailHandler {
         if let data = parser?.data() {
             var msgParser = MCOMessageParser(data: data)
             var isEnc = false
-            let html: String
+            var html: String
             var body: String
             var lineArray: [String]
             var dec: CryptoObject? = nil
@@ -883,16 +883,20 @@ class MailHandler {
                 
             }
             if isEnc {
-                html = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
-
+                html = msgParser!.plainTextRendering()//plainTextBodyRenderingAndStripWhitespace(false)
                 lineArray = html.components(separatedBy: "\n")
+                lineArray.removeFirst(4)
                 body = lineArray.joined(separator: "\n")
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                 body.append("\n")
                 dec = decryptText(body: body, from: message.header.from, autocrypt: autocrypt)
                 if (dec?.plaintext != nil) {
                     msgParser = MCOMessageParser(data: dec?.decryptedData)
-                    body = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
+                    html = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
+                    lineArray = html.components(separatedBy: "\n")
+                    body = lineArray.joined(separator: "\n")
+                    body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                    body.append("\n")
                     for a in (msgParser?.attachments())!{
                         let at = a as! MCOAttachment
                         newKeyIds.append(contentsOf: parsePublicKeys(attachment: at))
