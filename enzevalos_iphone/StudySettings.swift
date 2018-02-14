@@ -102,9 +102,9 @@ class StudySettings {
         """
         Liebe Teilnehmerin, lieber Teilnehmer,
         
-        Herzlichen Glückwunsch Sie haben Letterbox erfolgreich installiert!
-        Bitte nehmen Sie an dem Eingangsfragebogen mit maximal 10 Fragen über Ihre bisherigen Erfahrungen mit E-Mail-Verschlüsselung teil.
-        Dazu folgen Sie bitte diesem Link:
+        Herzlichen Glückwunsch! Sie haben Letterbox erfolgreich installiert.
+        Es gibt einen Eingangsfragebogen mit maximal 10 Fragen über Ihre bisherigen Erfahrungen mit E-Mail-Verschlüsselung und wir bitten Sie an diesem zu beantworten.
+        Dazu folgen Sie bitte folgendem Link:
         \(entrySurveyURL)
         
         Wenn Sie Fragen zur App oder Verschlüsselung haben, besuchen Sie doch unsere Hilfeseite:
@@ -113,7 +113,7 @@ class StudySettings {
         Dort finden Sie auch Videos zum Thema Ende-Zu-Ende-Verschlüsselung.
         Falls Sie Fragen haben oder uns ein Feedback geben möchten, freuen wir uns auf Ihre E-Mail!
         
-        Sie können einen ersten Brief verfassen und auf diese E-Mail antworten. Sie können uns Ihre Erfahrungen, Fragen oder Kommentare zum Einführung  mitteilen. Was ist unklar geblieben? Was war neu für Sie? Was hätten Sie sich sonst noch gewünscht?
+        Sie können einen ersten Brief verfassen und auf diese E-Mail antworten. Sie können uns Ihre Erfahrungen, Fragen oder Kommentare zum Einführung  mitteilen. Was ist unklar geblieben? Was war neu? Was hätten Sie sich sonst noch gewünscht?
         
         Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen
         Ihr Letterbox-Team
