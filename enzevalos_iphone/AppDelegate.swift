@@ -82,6 +82,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func googleLogin(vc: UIViewController) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "oAuth")
+//        }
         EmailHelper.singleton().doEmailLoginIfRequired(onVC: vc, completionBlock: {
             guard let userEmail = EmailHelper.singleton().authorization?.userEmail, EmailHelper.singleton().authorization?.canAuthorize() ?? false else {
                 print("Google authetication failed")
