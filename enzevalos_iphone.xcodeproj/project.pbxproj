@@ -249,8 +249,6 @@
 		472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398B1E2519C8009260FB /* CNContactExtension.swift */; };
 		472F398E1E251B8D009260FB /* MailAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398D1E251B8D009260FB /* MailAddress.swift */; };
 		472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398F1E252470009260FB /* CNMailAddressesExtension.swift */; };
-		4739019520348BCB00DF25F4 /* Record+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4739019320348BCB00DF25F4 /* Record+CoreDataClass.swift */; };
-		4739019620348BCB00DF25F4 /* Record+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4739019420348BCB00DF25F4 /* Record+CoreDataProperties.swift */; };
 		473AC39320054D07006EB8A6 /* PGPUserAttributeImageSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39120054D06006EB8A6 /* PGPUserAttributeImageSubpacket.m */; };
 		473AC39420054D07006EB8A6 /* PGPUserAttributeImageSubpacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39120054D06006EB8A6 /* PGPUserAttributeImageSubpacket.m */; };
 		473AC39720054D29006EB8A6 /* NSArray+PGPUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC39620054D29006EB8A6 /* NSArray+PGPUtils.m */; };
@@ -288,6 +286,8 @@
 		47CD5AAB2012368D00E771A1 /* bitcoinde.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AA92012368D00E771A1 /* bitcoinde.asc */; };
 		47CD5AAD2012369400E771A1 /* support_pk.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AAC2012369300E771A1 /* support_pk.asc */; };
 		47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */; };
+		47F79240203492E3005E7DB6 /* KeyRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F7923E203492E3005E7DB6 /* KeyRecord+CoreDataClass.swift */; };
+		47F79241203492E3005E7DB6 /* KeyRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F7923F203492E3005E7DB6 /* KeyRecord+CoreDataProperties.swift */; };
 		5DC190F2042BE7D956F796BE /* Pods_enzevalos_iphone_AdHoc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F4458FC892EBE555836F55 /* Pods_enzevalos_iphone_AdHoc.framework */; };
 		8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
 		8428A8551F4369CF007649A5 /* GamificationElements.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8541F4369CF007649A5 /* GamificationElements.xcassets */; };
@@ -543,8 +543,6 @@
 		472F398B1E2519C8009260FB /* CNContactExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CNContactExtension.swift; sourceTree = "<group>"; };
 		472F398D1E251B8D009260FB /* MailAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailAddress.swift; sourceTree = "<group>"; };
 		472F398F1E252470009260FB /* CNMailAddressesExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CNMailAddressesExtension.swift; sourceTree = "<group>"; };
-		4739019320348BCB00DF25F4 /* Record+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Record+CoreDataClass.swift"; sourceTree = "<group>"; };
-		4739019420348BCB00DF25F4 /* Record+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Record+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		473AC39120054D06006EB8A6 /* PGPUserAttributeImageSubpacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPUserAttributeImageSubpacket.m; sourceTree = "<group>"; };
 		473AC39220054D07006EB8A6 /* PGPUserAttributeImageSubpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPUserAttributeImageSubpacket.h; sourceTree = "<group>"; };
 		473AC39520054D29006EB8A6 /* NSArray+PGPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PGPUtils.h"; sourceTree = "<group>"; };
@@ -586,6 +584,8 @@
 		47CD5AA92012368D00E771A1 /* bitcoinde.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bitcoinde.asc; path = keys/bitcoinde.asc; sourceTree = "<group>"; };
 		47CD5AAC2012369300E771A1 /* support_pk.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = support_pk.asc; path = keys/support_pk.asc; sourceTree = "<group>"; };
 		47D1302A1F7CEE6D007B14DF /* DebugSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugSettings.swift; sourceTree = "<group>"; };
+		47F7923E203492E3005E7DB6 /* KeyRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
+		47F7923F203492E3005E7DB6 /* KeyRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		48FB10FF406523D174F4202A /* Pods_enzevalos_iphoneUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphoneUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AE42F42E91A1BFBF1D5BF6A /* Pods_enzevalos_iphone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		66E758F271CD65AB3E5FE7A7 /* Pods-enzevalos_iphoneUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneUITests.debug.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -984,8 +984,8 @@
 		47B91AC01EC0C1CF000AE3EE /* coredata */ = {
 			isa = PBXGroup;
 			children = (
-				4739019320348BCB00DF25F4 /* Record+CoreDataClass.swift */,
-				4739019420348BCB00DF25F4 /* Record+CoreDataProperties.swift */,
+				47F7923E203492E3005E7DB6 /* KeyRecord+CoreDataClass.swift */,
+				47F7923F203492E3005E7DB6 /* KeyRecord+CoreDataProperties.swift */,
 				475B00401F7BB6D6006CDD41 /* PersistentKey+CoreDataClass.swift */,
 				475B00411F7BB6D6006CDD41 /* PersistentKey+CoreDataProperties.swift */,
 				472F39781E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift */,
@@ -2020,7 +2020,6 @@
 				472F39861E1FA34E009260FB /* Record.swift in Sources */,
 				471BC9101F960B7C00D64416 /* PGPPacket.m in Sources */,
 				471BC9281F960B7C00D64416 /* PGPKeyID.m in Sources */,
-				4739019620348BCB00DF25F4 /* Record+CoreDataProperties.swift in Sources */,
 				471BC9311F960B7C00D64416 /* NSData+compression.m in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				471BC91A1F960B7C00D64416 /* PGPSymmetricallyEncryptedDataPacket.m in Sources */,
@@ -2081,6 +2080,7 @@
 				471BC9241F960B7C00D64416 /* PGPFingerprint.m in Sources */,
 				F1866C86201F707200B72453 /* EmailHelper.m in Sources */,
 				471BC9221F960B7C00D64416 /* PGPBigNum.m in Sources */,
+				47F79241203492E3005E7DB6 /* KeyRecord+CoreDataProperties.swift in Sources */,
 				A10DE4201EFAA2CE005E8189 /* FolderViewController.swift in Sources */,
 				473AC39720054D29006EB8A6 /* NSArray+PGPUtils.m in Sources */,
 				3EB4FA9F2012007C001D0625 /* DialogViewController.swift in Sources */,
@@ -2123,7 +2123,7 @@
 				37FE84A92028C40E001B7230 /* AuthStateDelegate.m in Sources */,
 				8428A85C1F436A05007649A5 /* ArrowView.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
-				4739019520348BCB00DF25F4 /* Record+CoreDataClass.swift in Sources */,
+				47F79240203492E3005E7DB6 /* KeyRecord+CoreDataClass.swift in Sources */,
 				A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */,
 				A111F6AD1FA77B170060AFDE /* Logger.swift in Sources */,
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,

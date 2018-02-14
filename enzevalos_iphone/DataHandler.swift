@@ -549,6 +549,46 @@ class DataHandler {
         }
         return false
     }
+    
+    func getKeyRecord(addr: String, keyID: String?) -> KeyRecord{
+        if let id = keyID{
+            if let key = findKey(keyID: id){
+                if let record = key.record{
+                    return record
+                }
+                // Create KeyRecord
+                let record = NSEntityDescription.insertNewObject(forEntityName: "KeyRecord", into: managedObjectContext) as! KeyRecord
+                record.key = key
+                if let contact = getContact(keyID: id){
+                    record.contact = contact
+                }
+                else{
+                    record.contact = getContactByAddress(addr)
+                }
+                save(during: "create keyRecord with key")
+                return record
+            }
+        }
+        
+        if let address = findMailAddress(adr: addr){
+            if let contact = address.contact{
+                for record in contact.records{
+                    if !record.hasKey{
+                        for a in record.addresses{
+                            if a.mailAddress == addr{
+                                return record
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // create KeyRecord
+        let record = NSEntityDescription.insertNewObject(forEntityName: "KeyRecord", into: managedObjectContext) as! KeyRecord
+        record.contact = getContactByAddress(addr)
+        save(during: "create keyRecord without key")
+        return record
+    }
 
     // -------- Handle mail addresses ---------
     func getMailAddress(_ address: String, temporary: Bool) -> MailAddress {
@@ -842,10 +882,16 @@ class DataHandler {
         if mail.uid > myfolder.maxID {
             myfolder.maxID = mail.uid
         }
-        myfolder.updateRecords(mail: mail)
+        var record = getKeyRecord(addr: mail.from.mailAddress, keyID: nil)
+        if let signedID = mail.signedKey?.keyID{
+            record = getKeyRecord(addr: mail.from.mailAddress, keyID: signedID)
+        }
+        record.addToPersistentMails(mail)
+        mail.folder.addToKeyRecords(record)
         save(during: "new mail")
         return mail
     }
+    
     
     private func readMails() -> [PersistentMail] {
         var mails = [PersistentMail]()
@@ -858,6 +904,7 @@ class DataHandler {
         }
         return mails
     }
+    
 
     func getAddresses() -> [MailAddress] {
         var adrs = [MailAddress]()

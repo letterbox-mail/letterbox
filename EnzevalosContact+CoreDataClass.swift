@@ -147,30 +147,10 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
 
     open var records: [KeyRecord] {
         get {
-            var myrecords = [KeyRecord]()
-           
-            let insecureRecord = KeyRecord(contact: self, folder: nil)
-            myrecords.append(insecureRecord)
-           
-            if self.hasKey{
-                if self.isAddress(mailadr: UserManager.loadUserValue(Attribute.userAddr) as! String){
-                    // consider secret keys
-                    let userKeys = DataHandler.handler.findSecretKeys()
-                    for sk in userKeys{
-                        let secureRecord = KeyRecord(keyID: sk.keyID!, contact: self, folder:nil)
-                        if !myrecords.contains(secureRecord){
-                            myrecords.append(secureRecord)
-                        }
-                    }
-                }
-                for pk in publicKeys{
-                    let secureRecord = KeyRecord(keyID: pk.keyID, contact: self, folder: nil)
-                    if !myrecords.contains(secureRecord){
-                        myrecords.append(secureRecord)
-                    }
-                }
-            }
-            return myrecords
+            if let krecords = self.keyrecords as? Set<KeyRecord>{
+                return Array(krecords)
+            }        
+            return []
         }
 
     }

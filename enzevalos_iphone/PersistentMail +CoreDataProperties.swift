@@ -21,6 +21,8 @@ extension PersistentMail {
     @NSManaged public var decryptedBody: String?
     @NSManaged public var date: Date
     @NSManaged public var secretKey: String?
+    @NSManaged public var record: KeyRecord?
+
     public var flag: MCOMessageFlag{
         set {
             if newValue != flag{

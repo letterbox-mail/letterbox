@@ -34,7 +34,7 @@
         <attribute name="color" optional="YES" attributeType="Transformable" customClassName="UIColor" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
         <relationship name="addresses" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
-        <relationship name="keyrecords" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Record" inverseName="contact" inverseEntity="Record" syncable="YES"/>
+        <relationship name="keyrecords" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="KeyRecord" inverseName="contact" inverseEntity="KeyRecord" syncable="YES"/>
     </entity>
     <entity name="Folder" representedClassName="Folder" syncable="YES">
         <attribute name="delimiter" optional="YES" attributeType="String" syncable="YES"/>
@@ -45,10 +45,16 @@
         <attribute name="path" attributeType="String" syncable="YES"/>
         <attribute name="pseudonym" attributeType="String" syncable="YES"/>
         <attribute name="uidvalidity" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="keyRecords" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="KeyRecord" inverseName="folder" inverseEntity="KeyRecord" syncable="YES"/>
         <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="folder" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="subfolder" inverseEntity="Folder" syncable="YES"/>
-        <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Record" inverseName="folder" inverseEntity="Record" syncable="YES"/>
         <relationship name="subfolder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder" syncable="YES"/>
+    </entity>
+    <entity name="KeyRecord" representedClassName="KeyRecord" syncable="YES">
+        <relationship name="contact" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" inverseName="keyrecords" inverseEntity="EnzevalosContact" syncable="YES"/>
+        <relationship name="folder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="keyRecords" inverseEntity="Folder" syncable="YES"/>
+        <relationship name="key" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="record" inverseEntity="PersistentKey" syncable="YES"/>
+        <relationship name="persistentMails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="record" inverseEntity="PersistentMail" syncable="YES"/>
     </entity>
     <entity name="Mail_Address" representedClassName="Mail_Address" syncable="YES">
         <attribute name="address" attributeType="String" defaultValueString="&quot;&quot;" syncable="YES"/>
@@ -77,7 +83,7 @@
         <attribute name="verifiedDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="firstMail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="attachedKeys" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="mailaddress" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="keys" inverseEntity="Mail_Address" syncable="YES"/>
-        <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Record" inverseName="key" inverseEntity="Record" syncable="YES"/>
+        <relationship name="record" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="KeyRecord" inverseName="key" inverseEntity="KeyRecord" syncable="YES"/>
         <relationship name="signedMails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="signedKey" inverseEntity="PersistentMail" syncable="YES"/>
     </entity>
     <entity name="PersistentMail" representedClassName="PersistentMail" syncable="YES">
@@ -110,19 +116,13 @@
         <relationship name="decryptedKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SecretKey" inverseName="decryptedMails" inverseEntity="SecretKey" syncable="YES"/>
         <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="mails" inverseEntity="Folder" syncable="YES"/>
         <relationship name="from" maxCount="1" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="from" inverseEntity="Mail_Address" syncable="YES"/>
-        <relationship name="record" maxCount="1" deletionRule="Nullify" destinationEntity="Record" inverseName="mails" inverseEntity="Record" syncable="YES"/>
+        <relationship name="record" maxCount="1" deletionRule="Nullify" destinationEntity="KeyRecord" inverseName="persistentMails" inverseEntity="KeyRecord" syncable="YES"/>
         <relationship name="referenceMails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="referenceMails" inverseEntity="PersistentMail" syncable="YES"/>
         <relationship name="signedKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="signedMails" inverseEntity="PersistentKey" syncable="YES"/>
         <relationship name="to" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="to" inverseEntity="Mail_Address" syncable="YES"/>
         <fetchIndex name="byDateIndex">
             <fetchIndexElement property="date" type="Binary" order="ascending"/>
         </fetchIndex>
-    </entity>
-    <entity name="Record" representedClassName="Record" syncable="YES" codeGenerationType="class">
-        <relationship name="contact" maxCount="1" deletionRule="Nullify" destinationEntity="EnzevalosContact" inverseName="keyrecords" inverseEntity="EnzevalosContact" syncable="YES"/>
-        <relationship name="folder" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="records" inverseEntity="Folder" syncable="YES"/>
-        <relationship name="key" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PersistentKey" inverseName="records" inverseEntity="PersistentKey" syncable="YES"/>
-        <relationship name="mails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PersistentMail" inverseName="record" inverseEntity="PersistentMail" syncable="YES"/>
     </entity>
     <entity name="SecretKey" representedClassName="SecretKey" syncable="YES" codeGenerationType="class">
         <attribute name="exported" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -150,8 +150,8 @@
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="210"/>
         <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="270"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="540"/>
+        <element name="KeyRecord" positionX="-315" positionY="-36" width="128" height="105"/>
         <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="135"/>
         <element name="Server" positionX="-306" positionY="-27" width="128" height="135"/>
-        <element name="Record" positionX="-315" positionY="-36" width="128" height="105"/>
     </elements>
 </model>

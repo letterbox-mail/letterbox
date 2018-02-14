@@ -1086,6 +1086,12 @@ class MailHandler {
                         for mail in mails {
                             uids.add(mail.uid)
                             mail.folder.removeFromMails(mail)
+                            if let record = mail.record{
+                                record.removeFromPersistentMails(mail)
+                                if record.mailsInFolder(folder: f).count == 0{
+                                    f.removeFromKeyRecords(record)
+                                }
+                            }
                             DataHandler.handler.delete(mail: mail)
                         }
                         let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)

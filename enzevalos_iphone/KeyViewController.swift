@@ -118,7 +118,7 @@ extension KeyViewController: UITableViewDataSource {
                 formatter.locale = Locale.current
                 formatter.dateStyle = .medium
                 formatter.timeStyle = .medium
-                if let discoveryDate = record?.storedKey?.discoveryDate{
+                if let discoveryDate = record?.key?.discoveryDate{
                     cell.detailTextLabel?.text = formatter.string(from:  discoveryDate as Date)
                 }
                 
@@ -131,7 +131,7 @@ extension KeyViewController: UITableViewDataSource {
             }
             else if toRowType(indexPath) == .verified {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "VerifiedCell")!
-                cell.textLabel?.text = NSLocalizedString("KeyIsVerified", comment: "The Key is verified. The time when the Key was verified") + "\(String(describing: record?.storedKey?.verifiedDate))"
+                cell.textLabel?.text = NSLocalizedString("KeyIsVerified", comment: "The Key is verified. The time when the Key was verified") + "\(String(describing: record?.key?.verifiedDate))"
                 return cell
             }
             else if toRowType(indexPath) == .revoked {
@@ -167,7 +167,7 @@ extension KeyViewController: UITableViewDataSource {
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        if let key = record?.storedKey {
+        if let key = record?.key {
             var sections = 1
             if key.mailaddress != nil{
                 sections += 1
@@ -203,7 +203,7 @@ extension KeyViewController: UITableViewDataSource {
     func toSectionType(_ sectionNumber: Int) -> KeyViewSectionType {
         var returnValue: KeyViewSectionType = .noKey
 
-        if record?.storedKey != nil {
+        if record?.key != nil {
             returnValue = .keyDetails//.KeyID
             //addresses
             if sectionNumber != 0 {
@@ -216,7 +216,7 @@ extension KeyViewController: UITableViewDataSource {
     func toRowType(_ index: IndexPath) -> KeyViewRowType {
         var returnValue: KeyViewRowType = .noKey
         var row = index.row
-        if let key = record?.storedKey, toSectionType(index.section) == .keyDetails {
+        if let key = record?.key, toSectionType(index.section) == .keyDetails {
             returnValue = .keyID
             //Fingerprint
             if row != 0 {

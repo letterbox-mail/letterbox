@@ -19,6 +19,7 @@ extension Folder {
     @NSManaged public var parent: Folder?
     @NSManaged public var subfolder: NSSet?
     @NSManaged public var mails: NSSet?
+    @NSManaged public var keyRecords: NSSet?
     @NSManaged public var path: String
     @NSManaged public var lastUpdate: Date?
     @NSManaged public var pseudonym: String
@@ -98,6 +99,12 @@ extension Folder {
     
     @objc(removeSubfolderObject:)
     @NSManaged public func removeFromSubfolder(_ value: Folder)
+    
+    @objc(addKeyRecordsObject:)
+    @NSManaged public func addToKeyRecords(_ value: KeyRecord)
+    
+    @objc(removeKeyRecordsObject:)
+    @NSManaged public func removeFromKeyRecords(_ value: KeyRecord)
 
     @objc(addMails:)
     @NSManaged public func addToMails(_ values: NSSet)
@@ -110,6 +117,12 @@ extension Folder {
     
     @objc(removeSubfolder:)
     @NSManaged public func removeFromSubfolder(_ values: NSSet)
+    
+    @objc(addKeyRecords:)
+    @NSManaged public func addToKeyRecords(_ values: NSSet)
+    
+    @objc(removeKeyRecords:)
+    @NSManaged public func removeFromKeyRecords(_ values: NSSet)
 
 }
 
