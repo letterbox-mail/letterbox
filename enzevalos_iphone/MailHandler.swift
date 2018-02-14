@@ -639,7 +639,7 @@ class MailHandler {
             }
             if let status = status{
                 let uidValidity = status.uidValidity
-                if uidValidity == f.uidvalidity{
+                if uidValidity == f.uidvalidity {
                     let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.set, flags: flags)
                     op?.start { error -> Void in
                         if let err = error {
@@ -1084,9 +1084,11 @@ class MailHandler {
                     let f = DataHandler.handler.findFolder(with: from)
                     if uidValidity == f.uidvalidity{
                         for mail in mails {
-                            uids.add(mail.uid)
-                            mail.folder.removeFromMails(mail)
-                            DataHandler.handler.delete(mail: mail)
+                            if mail.uidvalidity == uidValidity {
+                                uids.add(mail.uid)
+                                mail.folder.removeFromMails(mail)
+                                DataHandler.handler.delete(mail: mail)
+                            }
                         }
                         let op = self.IMAPSession.moveMessagesOperation(withFolder: from, uids: uids, destFolder: to)
                         op?.start{
