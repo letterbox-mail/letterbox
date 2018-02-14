@@ -97,6 +97,7 @@
 "Send" = "Send";
 "SendError" = "An error occured"; //mehr spezifizieren?
 "SendInsecureInfo" = "This Mail would be send insecurely to all orange contacts. So everybody could read and manipulate it. You could invite them to use Enzevalos to communicate securely.";
+"SendInsecureInfoAll" = "This Mail would be send insecurely to all contacts. So everybody could read and manipulate it. You could invite them to use Enzevalos to communicate securely.";
 "SendSecureInfo" = "Congratulations! This Mail would be send securely. It is impossible for anybody to read or manipulate it.";
 "SendSuccess" = "Sent successfully";
 "Sent" = "Sent";
@@ -152,8 +153,10 @@
 "thisIsYou" = "Emails you sent yourself are collected here";
 "didYouSendThis" = "Hey, did you send me this email?\nI'm just asking because it was sent insecurely.\n\n";
 "reactButton" = "Request Confirmation";
-"sendSecureIfPossible" = "Send secure";
-"sendInsecure" = "Send insecure";
+"sendSecureIfPossible" = "Send as letter when possible";
+"sendInsecure" = "Send as postcard";
+"sendInsecureAll" = "Send as postcard to everyone";
+"sendSecure" = "Send as letter";
 "verifyContact" = "Verify Contact";
 "scanQRCode" = "Scan the QR Code of the Contact";
 "wrongQRCode" = "Incompatible QR Code found";

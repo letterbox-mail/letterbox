@@ -98,6 +98,7 @@
 "Send" = "Senden";
 "SendError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
 "SendInsecureInfo" = "Diese Nachricht würde unsicher an alle orange eingefärbten Kontakte gesendet werden. Somit kann sie unterwegs von anderen gelesen oder manipuliert werden. Du könntest die orangen Kontakte einladen Enzavalos zu verwenden, um sicher mit ihnen zu kommunizieren."; //anstatt unterwegs: auf ihrem Weg
+"SendInsecureInfoAll" = "Diese Nachricht würde unsicher an alle Kontakte gesendet werden. Somit kann sie unterwegs von anderen gelesen oder manipuliert werden. Du könntest die orangen Kontakte einladen Enzavalos zu verwenden, um sicher mit ihnen zu kommunizieren."; //anstatt unterwegs: auf ihrem Weg
 "SendSecureInfo" = "Super! Diese Nachricht würde sicher versendet werden. Somit ist ihr Inhalt vor neugierigen Augen geschützt und kann nicht manipuliert werden.";
 "SendSuccess" = "Erfolgreich gesendet";
 "Sent" = "Gesendet";
@@ -155,8 +156,10 @@
 "thisIsYou" = "Hier werden E-Mails, die du dir selber schickst, gesammelt";
 "didYouSendThis" = "Hallo, haben Sie mir diese E-Mail geschickt?\nIch frage nur, weil die E-Mail unsicher versendet wurde.\n\n";
 "reactButton" = "Bestätigung erfragen";
-"sendSecureIfPossible" = "Als Brief senden";
+"sendSecureIfPossible" = "Wenn möglich als Brief senden";
 "sendInsecure" = "Als Postkarte senden";
+"sendInsecureAll" = "An alle als Postkarte senden";
+"sendSecure" = "Als Brief senden";
 "verifyContact" = "Kontakt verifizieren";
 "scanQRCode" = "Scanne den QR Code des Kontaktes";
 "wrongQRCode" = "Kein passender QR Code gefunden";
@@ -174,5 +177,3 @@
 "copied" = "Schloss wurde kopiert";
 "copyKey" = "Schloss in Zwischenablage kopieren";
 "NeverUpdated" = "Fehler bei Aktualisierung";
-
-

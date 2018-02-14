@@ -507,9 +507,14 @@ class SendViewController: UIViewController {
     //Navigationbar
 
     var currentSecurityState: Bool {
-        toSecure = toText.dataSource!.isSecure!(toText) //TODO: Add pref enc field.
-        ccSecure = ccText.dataSource!.isSecure!(ccText)
-        return toSecure && ccSecure
+        guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
+            return true
+        }
+        
+        let toKey = toSource.allSecure(toText)
+        let ccKey = ccSource.allSecure(ccText)
+        
+        return toKey && ccKey
     }
 
     var someoneWithKeyPresent: Bool {
@@ -520,6 +525,17 @@ class SendViewController: UIViewController {
         let toKey = toSource.someSecure(toText)
         let ccKey = ccSource.someSecure(ccText)
 
+        return toKey || ccKey
+    }
+
+    var someoneWithoutKeyPresent: Bool {
+        guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
+            return true
+        }
+        
+        let toKey = toSource.someInsecure(toText)
+        let ccKey = ccSource.someInsecure(ccText)
+        
         return toKey || ccKey
     }
 
@@ -560,9 +576,9 @@ class SendViewController: UIViewController {
         let alert: UIAlertController
         let url: String
         if !UISecurityState {
-            alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
-            url = "https://enzevalos.org/infos/postcard"
-            if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") {
+            alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: sendEncryptedIfPossible ? NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext") : NSLocalizedString("SendInsecureInfoAll", comment: "Postcard infotext"), preferredStyle: .alert)
+            url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#headingPostcard"
+            if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") && !currentSecurityState {
                 alert.addAction(UIAlertAction(title: NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key"), style: .default, handler: {
                     (action: UIAlertAction) -> Void in
 //                    Logger.queue.async(flags: .barrier) {
@@ -573,11 +589,11 @@ class SendViewController: UIViewController {
             }
         } else {
             alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
-            url = "https://enzevalos.org/infos/letter"
+            url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#secureMail"
         }
         if someoneWithKeyPresent {
             if sendEncryptedIfPossible {
-                alert.addAction(UIAlertAction(title: NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                alert.addAction(UIAlertAction(title: someoneWithoutKeyPresent ? NSLocalizedString("sendInsecureAll", comment: "This mail should be send insecurely to everyone, including contacts with keys") : NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
 //                    Logger.queue.async(flags: .barrier) {
                         Logger.log(close: url, mail: nil, action: "sendInsecure")
 //                    }
@@ -585,7 +601,7 @@ class SendViewController: UIViewController {
                     DispatchQueue.main.async { self.animateIfNeeded() }
                 }))
             } else {
-                alert.addAction(UIAlertAction(title: NSLocalizedString("sendSecureIfPossible", comment: "This mail should be send securely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                alert.addAction(UIAlertAction(title: someoneWithoutKeyPresent ? NSLocalizedString("sendSecureIfPossible", comment: "This mail should be send securely to people with keys") : NSLocalizedString("sendSecure", comment: "This mail should be send securely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
 //                    Logger.queue.async(flags: .barrier) {
                         Logger.log(close: url, mail: nil, action: "sendSecureIfPossible")
 //                    }
@@ -699,15 +715,35 @@ extension SendViewController: UIGestureRecognizerDelegate {
 
 extension VENTokenFieldDataSource {
     func someSecure(_ tokenField: VENTokenField) -> Bool {
-        var secure = false
         for entry in tokenField.mailTokens {
-            var hasKey = false
-            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String) {
-                hasKey = madr.hasKey
+            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String), madr.hasKey {
+                return true
             }
-            secure = secure || hasKey
         }
 
-        return secure
+        return false
+    }
+    
+    func someInsecure(_ tokenField: VENTokenField) -> Bool {
+        for entry in tokenField.mailTokens {
+            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String), !madr.hasKey {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    /**
+     Returns a bool showing whether all contacts in the field have a key. Returns true if no contacts are present.
+     */
+    func allSecure(_ tokenField: VENTokenField) -> Bool {
+        for entry in tokenField.mailTokens {
+            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String), !madr.hasKey {
+                return false
+            }
+        }
+        
+        return true
     }
 }
