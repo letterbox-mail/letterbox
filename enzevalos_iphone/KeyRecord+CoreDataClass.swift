@@ -173,7 +173,11 @@ public class KeyRecord: NSManagedObject, Record {
     
     public func mailsInFolder(folder: Folder) -> [PersistentMail]{
         let folderMails = DataHandler.handler.allMailsInFolder(key: keyID, contact: ezContact, folder: folder, isSecure: isSecure)
-        return folderMails.sorted()
+        if folderMails.count == 0{
+            folder.removeFromKeyRecords(self)
+        }
+        let set = Set<PersistentMail>(folderMails)
+        return Array(set).sorted()
     }
     
     

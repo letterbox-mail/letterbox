@@ -76,9 +76,10 @@ class InboxTableViewCell: UITableViewCell {
     var enzContact: KeyRecord? {
         didSet {
             if let con = enzContact {
-                firstMail = con.mails.first
-                if con.mails.count > 1 {
-                    secondMail = con.mails[1]
+                let mails = con.inboxMails
+                firstMail = mails.first
+                if mails.count > 1 {
+                    secondMail = mails[1]
                     secondButton.isEnabled = true
                 } else {
                     secondDateLabel.text = ""
