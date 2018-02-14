@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		37FE84A92028C40E001B7230 /* AuthStateDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FE84A82028C40E001B7230 /* AuthStateDelegate.m */; };
 		3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
 		3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
 		3E6B07DE2011246500E49609 /* invitationText.html in Resources */ = {isa = PBXBuildFile; fileRef = 3E6B07DD2011246500E49609 /* invitationText.html */; };
@@ -367,7 +366,6 @@
 		F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */; };
 		F1737ACB2031D7D70000312B /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17FDFF2202C685800F7BA89 /* StudySettings.swift */; };
 		F1866C86201F707200B72453 /* EmailHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F1866C85201F707200B72453 /* EmailHelper.m */; };
-		F1866CAB2023668F00B72453 /* GTMAppAuthDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1866CAA2023668F00B72453 /* GTMAppAuthDelegate.swift */; };
 		F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */; };
 		F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445D1E7044B70080C041 /* FlipTransition.swift */; };
 		F18B44601E704C550080C041 /* ReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445F1E704C550080C041 /* ReplaceSegue.swift */; };
@@ -402,8 +400,6 @@
 
 /* Begin PBXFileReference section */
 		1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.release.xcconfig"; sourceTree = "<group>"; };
-		37FE84A82028C40E001B7230 /* AuthStateDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AuthStateDelegate.m; sourceTree = "<group>"; };
-		37FE84AA2028CA63001B7230 /* AuthStateDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthStateDelegate.h; sourceTree = "<group>"; };
 		3E048C041FAC9ABD00948524 /* HockeySDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HockeySDK.swift; sourceTree = "<group>"; };
 		3E6B07DD2011246500E49609 /* invitationText.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = invitationText.html; path = Invitation/invitationText.html; sourceTree = "<group>"; };
 		3E9708AD1FAC925D005825C9 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
@@ -691,7 +687,6 @@
 		F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-public.gpg"; path = "keys/ullimuelle-public.gpg"; sourceTree = "<group>"; };
 		F1866C85201F707200B72453 /* EmailHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailHelper.m; sourceTree = "<group>"; };
 		F1866C87201F70B700B72453 /* EmailHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailHelper.h; sourceTree = "<group>"; };
-		F1866CAA2023668F00B72453 /* GTMAppAuthDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GTMAppAuthDelegate.swift; sourceTree = "<group>"; };
 		F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-private.gpg"; path = "keys/idsolutions-private.gpg"; sourceTree = "<group>"; };
 		F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-public.gpg"; path = "keys/idsolutions-public.gpg"; sourceTree = "<group>"; };
 		F18B445D1E7044B70080C041 /* FlipTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipTransition.swift; sourceTree = "<group>"; };
@@ -1335,9 +1330,6 @@
 			children = (
 				F1866C85201F707200B72453 /* EmailHelper.m */,
 				F1866C87201F70B700B72453 /* EmailHelper.h */,
-				F1866CAA2023668F00B72453 /* GTMAppAuthDelegate.swift */,
-				37FE84AA2028CA63001B7230 /* AuthStateDelegate.h */,
-				37FE84A82028C40E001B7230 /* AuthStateDelegate.m */,
 			);
 			path = OAuth;
 			sourceTree = "<group>";
@@ -2099,7 +2091,6 @@
 				A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */,
 				F18B44621E73286C0080C041 /* ReadVENDelegate.swift in Sources */,
 				471BC91E1F960B7C00D64416 /* PGPUserAttributePacket.m in Sources */,
-				F1866CAB2023668F00B72453 /* GTMAppAuthDelegate.swift in Sources */,
 				475B00421F7BB6D6006CDD41 /* PersistentKey+CoreDataClass.swift in Sources */,
 				471BC9161F960B7C00D64416 /* PGPSignaturePacket.m in Sources */,
 				3EC35F2420037651008BDF95 /* InvitationHelper.swift in Sources */,
@@ -2113,7 +2104,6 @@
 				8428A85E1F436A05007649A5 /* CircleView.swift in Sources */,
 				F1C7AC821FED6473007629DB /* AboutViewController.swift in Sources */,
 				472F397C1E1D0B0B009260FB /* PersistentMail +CoreDataProperties.swift in Sources */,
-				37FE84A92028C40E001B7230 /* AuthStateDelegate.m in Sources */,
 				8428A85C1F436A05007649A5 /* ArrowView.swift in Sources */,
 				A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */,
 				A1083A541E8BFEA6003666B7 /* Onboarding.swift in Sources */,
