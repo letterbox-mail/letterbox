@@ -82,27 +82,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func googleLogin(vc: UIViewController) {
-        if (Onboarding.mailaddress.text?.lowercased() ?? "").contains("gmail") || (Onboarding.mailaddress.text?.lowercased() ?? "").contains("google") {
-            EmailHelper.singleton().doEmailLoginIfRequired(onVC: vc, completionBlock: {
-                guard let userEmail = EmailHelper.singleton().authorization?.userEmail, EmailHelper.singleton().authorization?.canAuthorize() ?? false else {
-                    print("Google authetication failed")
-                    self.credentialsFailed()
-                    return
-                }
-                UserManager.storeUserValue(userEmail as AnyObject, attribute: Attribute.userName)
-                UserManager.storeUserValue(userEmail as AnyObject, attribute: Attribute.userAddr)
-                UserManager.storeUserValue("imap.gmail.com" as AnyObject, attribute: Attribute.imapHostname)
-                UserManager.storeUserValue(993 as AnyObject, attribute: Attribute.imapPort)
-                UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject, attribute: Attribute.imapConnectionType)
-                UserManager.storeUserValue(MCOAuthType.xoAuth2.rawValue as AnyObject, attribute: Attribute.imapAuthType)
-                UserManager.storeUserValue("smtp.gmail.com" as AnyObject, attribute: Attribute.smtpHostname)
-                UserManager.storeUserValue(587 as AnyObject, attribute: Attribute.smtpPort)
-                UserManager.storeUserValue(MCOConnectionType.startTLS.rawValue as AnyObject, attribute: Attribute.smtpConnectionType)
-                UserManager.storeUserValue(MCOAuthType.xoAuth2.rawValue as AnyObject, attribute: Attribute.smtpAuthType)
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "oAuth")
+//        }
+        EmailHelper.singleton().doEmailLoginIfRequired(onVC: vc, completionBlock: {
+            guard let userEmail = EmailHelper.singleton().authorization?.userEmail, EmailHelper.singleton().authorization?.canAuthorize() ?? false else {
+                print("Google authetication failed")
+                self.credentialsFailed()
+                return
+            }
+            UserManager.storeUserValue(userEmail as AnyObject, attribute: Attribute.userName)
+            UserManager.storeUserValue(userEmail as AnyObject, attribute: Attribute.userAddr)
+            UserManager.storeUserValue("imap.gmail.com" as AnyObject, attribute: Attribute.imapHostname)
+            UserManager.storeUserValue(993 as AnyObject, attribute: Attribute.imapPort)
+            UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject, attribute: Attribute.imapConnectionType)
+            UserManager.storeUserValue(MCOAuthType.xoAuth2.rawValue as AnyObject, attribute: Attribute.imapAuthType)
+            UserManager.storeUserValue("smtp.gmail.com" as AnyObject, attribute: Attribute.smtpHostname)
+            UserManager.storeUserValue(587 as AnyObject, attribute: Attribute.smtpPort)
+            UserManager.storeUserValue(MCOConnectionType.startTLS.rawValue as AnyObject, attribute: Attribute.smtpConnectionType)
+            UserManager.storeUserValue(MCOAuthType.xoAuth2.rawValue as AnyObject, attribute: Attribute.smtpAuthType)
 
-                Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork)
-            })
-        }
+            Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork)
+        })
     }
     
     func credentialCheck() {
@@ -186,6 +187,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func onboardingDone() {
         /*self.window?.rootViewController = Onboarding.keyHandlingView()
         Onboarding.keyHandling()*/
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "done")
+//        }
         UserDefaults.standard.set(true, forKey: "launchedBefore")
         self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         presentInboxViewController()

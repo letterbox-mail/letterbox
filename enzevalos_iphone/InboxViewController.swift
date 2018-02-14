@@ -131,8 +131,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         if isFiltering() {
             return filteredRecords.count
         }
-        let records = folder.records
-        
         
         return folder.records.count
     }

@@ -103,22 +103,23 @@ class StudySettings {
         Liebe Teilnehmerin, lieber Teilnehmer,
         
         Herzlichen Glückwunsch! Sie haben Letterbox erfolgreich installiert.
-        Es gibt einen Eingangsfragebogen mit maximal 10 Fragen über Ihre bisherigen Erfahrungen mit E-Mail-Verschlüsselung und wir bitten Sie an diesem zu beantworten.
+        
+        Wir haben einen Eingangsfragebogen mit maximal 10 Fragen über Ihre bisherigen Erfahrungen mit E-Mail-Verschlüsselung vorbereitet und würden Sie bitten diesen auszufüllen.
         Dazu folgen Sie bitte folgendem Link:
         \(entrySurveyURL)
         
         Wenn Sie Fragen zur App oder Verschlüsselung haben, besuchen Sie doch unsere Hilfeseite:
         \(faqURL)
         
-        Dort finden Sie auch Videos zum Thema Ende-Zu-Ende-Verschlüsselung.
-        Falls Sie Fragen haben oder uns ein Feedback geben möchten, freuen wir uns auf Ihre E-Mail!
+        Dort finden Sie auch Videos zum Thema Ende-zu-Ende-Verschlüsselung.
+        Falls Sie Fragen haben oder uns Feedback geben möchten, freuen wir uns auf Ihre E-Mail!
         
-        Sie können einen ersten Brief verfassen und auf diese E-Mail antworten. Sie können uns Ihre Erfahrungen, Fragen oder Kommentare zum Einführung  mitteilen. Was ist unklar geblieben? Was war neu? Was hätten Sie sich sonst noch gewünscht?
+        Verfassen Sie doch einen ersten Brief indem Sie auf diese E-Mail antworten und uns Ihre Erfahrungen, Fragen oder Kommentare mitteilen. Ist etwas unklar geblieben? Was war Ihnen neu? Hätten Sie sich sonst noch etwas gewünscht?
         
-        Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen
-        Ihr Letterbox-Team
+        Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen,
+        D Letterbox-Team
         
-        PS: Diese Nachricht wurde automatisch auf in Ihrer Letterbox erzeugt und ist nur dort gespeichert.
+        PS: Diese Nachricht wurde automatisch in Letterbox erzeugt und ist nur hier gespeichert.
         """
         mailToParticipat(subject: subject, body: body)
     }
@@ -134,18 +135,18 @@ class StudySettings {
 
         unter den teilnehmenden Personen werden 20 Amazon-Gutscheine im Wert von jeweils 50 Euro verlost.
 
-        Um an der Verlosung teilnehmen zu können, müssen Sie bitte Ihren Namen und die postalische Adresse angeben.
-        Falls Sie einen Gutschein gewinnen, wird dieser Ihnen per Post zu gesendet. Außerdem wird Ihr Name und Ihre Adresse für den Nachweis der ordnungsgemäßen Verwendung der Gelder gespeichert.
+        Um an der Verlosung teilnehmen zu können, müssen Sie uns Ihren Namen und die postalische Adresse mitteilen.
+        Falls Sie einen Gutschein gewinnen, wird dieser Ihnen per Post zugesendet. Außerdem werden Ihr Name und Ihre Adresse für den Nachweis der ordnungsgemäßen Verwendung der Gelder gespeichert, andernfalls werden sie gelöscht.
         
         Ihre Name und Ihre Adresse werden nicht mit anderen erhobenen Daten verknüpft und getrennt von diesen gespeichert.
 
         Wenn Sie an der Verlosung teilnehmen möchten, melden Sie sich bitte auf folgenden Link an:
         \(raffleURL)
         
-        Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen#imageLiteral(resourceName: "onboardingOff")
+        Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen,
         Ihr Letterbox-Team
 
-        PS: Diese Nachricht wurde automatisch auf in Ihrer Letterbox erzeugt und ist nur dort gespeichert.
+        PS: Diese Nachricht wurde automatisch in Letterbox erzeugt und ist nur hier gespeichert.
         """
         
         mailToParticipat(subject: subject, body: body)

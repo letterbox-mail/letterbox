@@ -54,6 +54,7 @@ extension PersistentMail {
     @NSManaged public var folder: Folder
     @NSManaged public var firstKey: PersistentKey?
     @NSManaged public var signedKey: PersistentKey?
+    @NSManaged public var received: Bool
     
     @NSManaged public var gmailMessageID: NSNumber?
     @NSManaged public var gmailThreadID: NSNumber?

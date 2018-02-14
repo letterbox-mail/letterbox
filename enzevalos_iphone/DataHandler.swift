@@ -805,6 +805,7 @@ class DataHandler {
             mail.isEncrypted = false
             mail.trouble = false
             mail.unableToDecrypt = false
+            mail.received = received
            
             var notStored = ""
             for reference in references{

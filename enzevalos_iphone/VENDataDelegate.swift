@@ -124,7 +124,8 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         }
         endFunc(tokenF)
     }
-    
+
+    // TODO: Remove this function, not needed anymore
     func isSecure(_ tokenField: VENTokenField) -> Bool {
         var secure = true
         for entry in tokenField.mailTokens{
