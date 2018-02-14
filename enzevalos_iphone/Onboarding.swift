@@ -214,6 +214,14 @@ class Onboarding: NSObject {
         }
 
         loginViewController = vc!
+        vc?.pageChanged = {(oldPage:Int, newPage: Int) -> () in
+//            Logger.queue.async(flags: .barrier) {
+                Logger.log(onboardingPageTransition: oldPage, to: newPage, onboardingSection: "intro")
+//            }
+        }
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "intro")
+//        }
         return vc!
     }
 
@@ -240,6 +248,9 @@ class Onboarding: NSObject {
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])!
         vc.pageControl = UIPageControl.init()
         vc.view.backgroundColor = defaultColor
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "checkConfig")
+//        }
         return vc
     }
 
@@ -254,6 +265,9 @@ class Onboarding: NSObject {
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])
         vc?.pageControl = UIPageControl.init()
         vc?.view.backgroundColor = defaultColor
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "keyHandling")
+//        }
         return vc!
     }
 
@@ -465,6 +479,14 @@ class Onboarding: NSObject {
 
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, imap1, imap2, smtp1, smtp2, last])
         vc?.view.backgroundColor = defaultColor
+        vc?.pageChanged = {(oldPage:Int, newPage: Int) -> () in
+//            Logger.queue.async(flags: .barrier) {
+                Logger.log(onboardingPageTransition: oldPage, to: newPage, onboardingSection: "detail")
+//            }
+        }
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "detail")
+//        }
         return vc!
     }
 
@@ -479,6 +501,9 @@ class Onboarding: NSObject {
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])!
         vc.pageControl = UIPageControl.init()
         vc.view.backgroundColor = defaultColor
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "contact")
+//        }
         return vc
     }
 
@@ -682,7 +707,7 @@ class TextFieldDelegate: NSObject, UITextFieldDelegate {
             Onboarding.doWhenDone()
             return true
         }
-            else {
+        else {
                 textField.resignFirstResponder()
         }
         return true

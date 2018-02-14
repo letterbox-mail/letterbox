@@ -186,6 +186,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func onboardingDone() {
         /*self.window?.rootViewController = Onboarding.keyHandlingView()
         Onboarding.keyHandling()*/
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "done")
+//        }
         UserDefaults.standard.set(true, forKey: "launchedBefore")
         self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         presentInboxViewController()

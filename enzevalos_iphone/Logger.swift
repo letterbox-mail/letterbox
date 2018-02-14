@@ -99,6 +99,32 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
+    
+    static func log(onboardingState onboardingSection: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.onboardingState.rawValue
+        event["onboardingSection"] = onboardingSection
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(onboardingPageTransition from: Int, to: Int, onboardingSection: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.onboardingPageTransition.rawValue
+        event["from"] = from
+        event["to"] = to
+        event["onboardingSection"] = onboardingSection
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
 
     static func log(contactViewOpen keyRecord: KeyRecord?, otherRecords: [KeyRecord]?, isUser: Bool) {
         if !logging {

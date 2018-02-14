@@ -47,5 +47,7 @@ enum LoggingEventType: String {
     importPrivateKeyPopupClose = "importPrivateKeyPopupClose",
     importPrivateKey = "importPrivateKey",
     search = "search",
-    gotBitcoinMail = "gotBitcoinMail"
+    gotBitcoinMail = "gotBitcoinMail",
+    onboardingPageTransition = "onboardingPageTransition",
+    onboardingState = "onboardingState"
 }
