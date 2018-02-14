@@ -70,39 +70,24 @@ class ReadViewController: UITableViewController {
 
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
-//            Logger.queue.async(flags: .barrier) {
-                if Logger.logging, let mail = self.mail {
-                    var message = "none"
-                    if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { // @ jakob: why is this important here?
-                        if mail.trouble {
-                            message = "corrupted"
-                        } else if mail.isEncrypted && mail.unableToDecrypt {
-                            message = "couldNotDecrypt"
-                        } else if mail.from.hasKey && !mail.isSecure {
-                            message = "encryptedBefore"
-                        }
-                    }
-                    Logger.log(readDraft: mail, message: message, open: true)
-                }
-//            }
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
-//            Logger.queue.async(flags: .barrier) {
-                if Logger.logging, let mail = self.mail {
-                    var message = "none"
-                    if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
-                        if mail.trouble {
-                            message = "corrupted"
-                        } else if mail.isEncrypted && mail.unableToDecrypt {
-                            message = "couldNotDecrypt"
-                        } else if mail.from.hasKey && !mail.isSecure {
-                            message = "encryptedBefore"
-                        }
-                    }
-                    Logger.log(read: mail, message: message, open: true)
-                }
-//            }
         }
+//        Logger.queue.async(flags: .barrier) {
+        if Logger.logging, let mail = self.mail {
+            var message = "none"
+            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { // @ jakob: why is this important here?
+                if mail.trouble {
+                    message = "corrupted"
+                } else if mail.isEncrypted && mail.unableToDecrypt {
+                    message = "couldNotDecrypt"
+                } else if mail.from.hasKey && !mail.isSecure {
+                    message = "encryptedBefore"
+                }
+            }
+            Logger.log(readViewOpen: mail, message: message, draft: isDraft)
+        }
+//        }
 
         VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: { [weak self] in self?.showContact($0) }, tableView: tableView)
 
@@ -158,11 +143,7 @@ class ReadViewController: UITableViewController {
                         message = "encryptedBefore"
                     }
                 }
-                if isDraft {
-                    Logger.log(readDraft: mail, message: message, open: false)
-                } else {
-                    Logger.log(read: mail, message: message, open: false)
-                }
+                Logger.log(readViewClose: message, draft: isDraft)
             }
 //        }
     }

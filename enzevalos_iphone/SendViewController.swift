@@ -38,6 +38,7 @@ class SendViewController: UIViewController {
     @IBOutlet weak var textViewLeading: NSLayoutConstraint!
     @IBOutlet weak var scrollViewBottom: NSLayoutConstraint!
     @IBOutlet var scrollviewRecognizer: UITapGestureRecognizer!
+    @IBOutlet weak var sendButton: UIBarButtonItem!
     
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
@@ -484,6 +485,7 @@ class SendViewController: UIViewController {
             let alert = UIAlertController(title: NSLocalizedString("ReceiveError", comment: "There was an error"), message: NSLocalizedString("ErrorText", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
+            sendButton.isEnabled = true
         } else {
             NSLog("Send successful!")
             if (self.prefilledMail != nil) {
@@ -491,6 +493,7 @@ class SendViewController: UIViewController {
                     self.prefilledMail?.predecessor?.isAnwered = true
                 }
             }
+            sendButton.isEnabled = true
             self.sendCompleted()
         }
     }
@@ -674,6 +677,7 @@ class SendViewController: UIViewController {
             DataHandler.handler.save(during: "invite")
         }
         mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend)
+        sendButton.isEnabled = false
     }
 }
 

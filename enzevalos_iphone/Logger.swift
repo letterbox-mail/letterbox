@@ -396,37 +396,34 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-
-    static func log(read mail: PersistentMail, message: String, open: Bool) {
+    
+    static func log(readViewOpen mail: PersistentMail, message: String, draft: Bool = false) {
         if !logging {
             return
         }
-
+        
         var event = plainLogDict()
-
-        event["type"] = LoggingEventType.mailRead.rawValue
-        if open{
-            event = extract(from: mail, event: event)
-        }
+        
+        event["type"] = LoggingEventType.readViewOpen.rawValue
+        event = extract(from: mail, event: event)
         event["messagePresented"] = message
-        event["open"] = open
-
+        event["draft"] = draft
+        
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
 
-    static func log(readDraft mail: PersistentMail, message: String, open: Bool) {
+    static func log(readViewClose message: String, draft: Bool = false) {
         if !logging {
             return
         }
-
+        
         var event = plainLogDict()
-
-        event["type"] = LoggingEventType.mailDraftRead.rawValue
-        event = extract(from: mail, event: event)
+        
+        event["type"] = LoggingEventType.readViewClose.rawValue
         event["messagePresented"] = message
-        event["open"] = open
-
+        event["draft"] = draft
+        
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }

@@ -11,8 +11,6 @@ import Foundation
 enum LoggingEventType: String {
     case
     unknown = "unknown",
-    mailRead = "mailRead",
-    mailDraftRead = "mailDraftRead",
     mailSent = "mailSent",
     mailDeletedPersistent = "mailDeletedPersistent",
     mailDeletedToTrash = "mailDeletedToTrash",
@@ -24,6 +22,8 @@ enum LoggingEventType: String {
     appBackground = "appBackground",
     overviewInbox = "overviewInbox",
     overviewGeneral = "overviewGeneral",
+    readViewOpen = "readViewOpen",
+    readViewClose = "readViewClose",
     keyViewOpen = "keyViewOpen",
     keyViewClose = "keyViewClose",
     sendViewOpen = "sendViewOpen",
