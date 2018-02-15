@@ -39,7 +39,7 @@ class ReadViewController: UITableViewController {
 
     var VENDelegate: ReadVENDelegate?
 
-    weak var textDelegate: ReadTextDelegate?
+    var textDelegate: ReadTextDelegate?
 
     var mail: PersistentMail? = nil
 
