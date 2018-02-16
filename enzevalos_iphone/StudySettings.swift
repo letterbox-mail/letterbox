@@ -11,7 +11,7 @@ import KeychainAccess
 
 class StudySettings {
     static var studyMode = true
-    static var presentFirstQuestionaireMail = true
+    static var presentFirstQuestionaireMail = false
     
     static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
     static let raffleURL = ""
@@ -117,7 +117,7 @@ class StudySettings {
         Verfassen Sie doch einen ersten Brief indem Sie auf diese E-Mail antworten und uns Ihre Erfahrungen, Fragen oder Kommentare mitteilen. Ist etwas unklar geblieben? Was war Ihnen neu? Hätten Sie sich sonst noch etwas gewünscht?
         
         Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen,
-        D Letterbox-Team
+        Ihr Letterbox-Team
         
         PS: Diese Nachricht wurde automatisch in Letterbox erzeugt und ist nur hier gespeichert.
         """
