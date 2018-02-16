@@ -11,7 +11,7 @@ import KeychainAccess
 
 class StudySettings {
     static var studyMode = true
-    static var presentFirstQuestionaireMail = true
+    static var presentFirstQuestionaireMail = false
     
     static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
     static let raffleURL = ""

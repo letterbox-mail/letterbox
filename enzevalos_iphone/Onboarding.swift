@@ -530,6 +530,7 @@ class Onboarding: NSObject {
             work()
             return
         }
+        print(error)
         fail()
     }
 

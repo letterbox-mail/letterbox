@@ -1044,12 +1044,11 @@ class MailHandler {
 
     func checkSMTP(_ completion: @escaping (Error?) -> Void) {
         let useraddr = UserManager.loadUserValue(Attribute.userAddr) as! String
-        let username = UserManager.loadUserValue(Attribute.userName) as! String
 
         let session = MCOSMTPSession()
         session.hostname = UserManager.loadUserValue(Attribute.smtpHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
-        session.username = username
+        session.username = useraddr
         if UserManager.loadSmtpAuthType() == MCOAuthType.xoAuth2 {
             session.oAuth2Token = EmailHelper.singleton().authorization?.authState.lastTokenResponse?.accessToken
         } else if let pw = UserManager.loadUserValue(Attribute.userPW) as? String {
@@ -1058,6 +1057,7 @@ class MailHandler {
         session.authType = UserManager.loadSmtpAuthType()
         session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
 
+        session.connectionType = MCOConnectionType.startTLS
         session.checkAccountOperationWith(from: MCOAddress.init(mailbox: useraddr)).start(completion)
 
     }
