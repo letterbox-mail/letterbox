@@ -624,7 +624,6 @@ class MailHandler {
         return session
     }
 
-    // TODO: add OAuth refresh
     func addFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String?) {
         var folderName = INBOX
         if let folder = folder{
@@ -635,6 +634,11 @@ class MailHandler {
         let folderstatus = IMAPSession.folderStatusOperation(folderName)
         folderstatus?.start{(error, status) -> Void in
             guard error == nil else {
+                if self.shouldTryRefreshOAUTH {
+                    self.retryWithRefreshedOAuth {
+                        self.addFlag(uid, flags: flags, folder: folder)
+                    }
+                }
                 return
             }
             if let status = status{
@@ -661,13 +665,18 @@ class MailHandler {
 
     func removeFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String?) {
         var folderName = INBOX
-        if folder != nil{
-            folderName = folder!
+        if let folder = folder {
+            folderName = folder
         }
         let f = DataHandler.handler.findFolder(with: folderName)
         let folderstatus = IMAPSession.folderStatusOperation(folderName)
         folderstatus?.start{(error, status) -> Void in
             guard error == nil else {
+                if self.shouldTryRefreshOAUTH {
+                    self.retryWithRefreshedOAuth {
+                        self.removeFlag(uid, flags: flags, folder: folder)
+                    }
+                }
                 return
             }
             if let status = status{
@@ -699,6 +708,12 @@ class MailHandler {
         let folderstatus = IMAPSession.folderStatusOperation(folderPath)
         folderstatus?.start{(error, status) -> Void in
             guard error == nil else {
+                if self.shouldTryRefreshOAUTH {
+                    self.retryWithRefreshedOAuth {
+                        self.loadMailsForRecord(record, folderPath: folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    }
+                    return
+                }
                 completionCallback(true)
                 return
             }
@@ -747,6 +762,12 @@ class MailHandler {
         let folderstatus = IMAPSession.folderStatusOperation(folder.name)
         folderstatus?.start{(error, status) -> Void in
             guard error == nil else {
+                if self.shouldTryRefreshOAUTH {
+                    self.retryWithRefreshedOAuth {
+                        self.loadMailsForInbox(newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    }
+                    return
+                }
                 completionCallback(true)
                 return
             }
