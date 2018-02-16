@@ -97,7 +97,7 @@ class StudySettings {
         if !studyMode || !presentFirstQuestionaireMail {
             return
         }
-        let subject = "Herzlichen Willkommen in Letterbox"
+        let subject = "Herzlich Willkommen in Letterbox"
         let body =
         """
         Liebe Teilnehmerin, lieber Teilnehmer,
@@ -114,10 +114,10 @@ class StudySettings {
         Dort finden Sie auch Videos zum Thema Ende-zu-Ende-Verschlüsselung.
         Falls Sie Fragen haben oder uns Feedback geben möchten, freuen wir uns auf Ihre E-Mail!
         
-        Verfassen Sie doch einen ersten Brief indem Sie auf diese E-Mail antworten und uns Ihre Erfahrungen, Fragen oder Kommentare mitteilen. Ist etwas unklar geblieben? Was war Ihnen neu? Hätten Sie sich sonst noch etwas gewünscht?
+        Verfassen Sie doch einen ersten Brief, indem Sie auf diese E-Mail antworten und uns Ihre Erfahrungen, Fragen oder Kommentare mitteilen. Ist etwas unklar geblieben? Was war Ihnen neu? Hätten Sie sich sonst noch etwas gewünscht?
         
         Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen,
-        D Letterbox-Team
+        Ihr Letterbox-Team
         
         PS: Diese Nachricht wurde automatisch in Letterbox erzeugt und ist nur hier gespeichert.
         """
