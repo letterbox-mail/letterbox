@@ -1164,6 +1164,12 @@ class MailHandler {
         let folderstatus = IMAPSession.folderStatusOperation(folder.name)
         folderstatus?.start{(error, status) -> Void in
             guard error == nil else {
+                if self.shouldTryRefreshOAUTH {
+                    self.retryWithRefreshedOAuth {
+                        self.updateFolder(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
+                    }
+                    return
+                }
                 completionCallback(true)
                 return
             }
