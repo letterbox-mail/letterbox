@@ -39,6 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            Logger.queue.async(flags: .barrier) {
                 Logger.log(startApp: true)
 //            }
+            // Remove Google Auth token from keychain
+            GTMKeychain.removePasswordFromKeychain(forName: "googleOAuthCodingKey")
+            
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
@@ -153,9 +156,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // Option removed from Settings app, but this might still be usefull in the future
     func resetApp() {
-//         TODO: remove after testing
-//        GTMKeychain.removePasswordFromKeychain(forName: "googleOAuthCodingKey")
-        
         if UserDefaults.standard.bool(forKey: "reset") {
             DataHandler.handler.reset()
             Onboarding.credentials = nil
