@@ -79,7 +79,7 @@
 "Plaintext" = "Klartext";
 "Postcard" = "Postkarte";
 "PostcardDescription" = "• Eine Postkarte ist eine E-Mail, wie du sie bisher kennst\n• Weder vertraulich, noch steht fest, ob sie gefälscht wurde\n• Von jedem lesbar und veränderbar";
-"Re" = "AW";
+"Re" = "Re";
 "ReadFollowingPages" = "Wir wollen sichere E-Mail einfach nutzbar machen.\nDafür lies dir bitte die kommenden drei Seiten durch.";
 "ReadMailOnOtherDevice" = "Auf anderem Gerät lesen";
 "ReadOnOtherDevices" = "Briefe auf anderen Geräten lesen!";
