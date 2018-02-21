@@ -21,6 +21,8 @@ extension PersistentMail {
     @NSManaged public var decryptedBody: String?
     @NSManaged public var date: Date
     @NSManaged public var secretKey: String?
+    @NSManaged public var record: KeyRecord?
+
     public var flag: MCOMessageFlag{
         set {
             if newValue != flag{
@@ -52,9 +54,10 @@ extension PersistentMail {
     @NSManaged public var folder: Folder
     @NSManaged public var firstKey: PersistentKey?
     @NSManaged public var signedKey: PersistentKey?
+    @NSManaged public var received: Bool
     
-    @NSManaged public var gmailMessageID: NSNumber
-    @NSManaged public var gmailThreadID: NSNumber
+    @NSManaged public var gmailMessageID: NSNumber?
+    @NSManaged public var gmailThreadID: NSNumber?
     @NSManaged public var messageID: String?
     @NSManaged public var notLoadedMessages: String?
     
@@ -114,8 +117,21 @@ extension PersistentMail {
             return text!
         }
     }
-    
-    
+    public var uidvalidity: UInt32?{
+        set {
+            if let num = newValue{
+                self.willChangeValue(forKey: "uidvalidity")
+                self.setPrimitiveValue(NSDecimalNumber.init(value: num as UInt32), forKey: "uidvalidity")
+                self.didChangeValue(forKey: "uidvalidity")
+            }
+        }
+        get {
+            self.willAccessValue(forKey: "uidvalidity")
+            let text = (self.primitiveValue(forKey: "uidvalidity") as? NSDecimalNumber)?.uint32Value
+            self.didAccessValue(forKey: "uidvalidity")
+            return text
+        }
+    }
     public var from: MailAddress{
         set {
             if newValue is Mail_Address{
@@ -129,7 +145,10 @@ extension PersistentMail {
             self.willAccessValue(forKey: "from")
             let text = (self.primitiveValue(forKey: "from") as? Mail_Address)
             self.didAccessValue(forKey: "from")
-            return text!
+            if let text = text {
+                return text
+            }
+            return Mail_Address()
         }
     }
     public var containsSecretKey: Bool{

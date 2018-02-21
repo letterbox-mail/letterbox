@@ -19,12 +19,31 @@ extension Folder {
     @NSManaged public var parent: Folder?
     @NSManaged public var subfolder: NSSet?
     @NSManaged public var mails: NSSet?
+    @NSManaged public var keyRecords: NSSet?
     @NSManaged public var path: String
     @NSManaged public var lastUpdate: Date?
     @NSManaged public var pseudonym: String
     @NSManaged public var icon: String
-    @NSManaged public var uivalidity: Int32
 
+    public var uidvalidity:UInt32?{
+        set {
+            if let num = newValue{
+                self.willChangeValue(forKey: "uidvalidity")
+                self.setPrimitiveValue(NSDecimalNumber.init(value: num as UInt32), forKey: "uidvalidity")
+                self.didChangeValue(forKey: "uidvalidity")
+            }
+        }
+        get {
+            self.willAccessValue(forKey: "uidvalidity")
+            let text = (self.primitiveValue(forKey: "uidvalidity") as? NSDecimalNumber)?.uint32Value
+            self.didAccessValue(forKey: "uidvalidity")
+            if let num = text{
+                return num
+            }
+            return nil
+        }
+    }
+    
 
     @NSManaged public var delimiter: String
     public var flags: MCOIMAPFolderFlag{
@@ -80,6 +99,12 @@ extension Folder {
     
     @objc(removeSubfolderObject:)
     @NSManaged public func removeFromSubfolder(_ value: Folder)
+    
+    @objc(addKeyRecordsObject:)
+    @NSManaged public func addToKeyRecords(_ value: KeyRecord)
+    
+    @objc(removeKeyRecordsObject:)
+    @NSManaged public func removeFromKeyRecords(_ value: KeyRecord)
 
     @objc(addMails:)
     @NSManaged public func addToMails(_ values: NSSet)
@@ -92,6 +117,12 @@ extension Folder {
     
     @objc(removeSubfolder:)
     @NSManaged public func removeFromSubfolder(_ values: NSSet)
+    
+    @objc(addKeyRecords:)
+    @NSManaged public func addToKeyRecords(_ values: NSSet)
+    
+    @objc(removeKeyRecords:)
+    @NSManaged public func removeFromKeyRecords(_ values: NSSet)
 
 }
 

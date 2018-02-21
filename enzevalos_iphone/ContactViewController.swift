@@ -109,6 +109,10 @@ class ContactViewController: UIViewController {
             addButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
         }
+        if let name = keyRecord?.name {
+            self.title = name
+        }
+        tableView.reloadData()
     }
 
     func drawStatusCircle() -> UIImage? {
@@ -370,7 +374,7 @@ extension ContactViewController: UITableViewDataSource {
                 return cell
             case 4 where !keyRecord.hasKey:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "KeyCell", for: indexPath)
-                cell.textLabel?.text = "abc" // @jakob: ??
+                cell.textLabel?.text = ""
                 return cell
             case 4 where keyRecord.hasKey:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RecordCell", for: indexPath) as! RecordCell

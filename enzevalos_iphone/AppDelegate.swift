@@ -12,12 +12,10 @@ import CoreData
 import Onboard
 import SystemConfiguration
 import QAKit
+import GTMAppAuth
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    let STUDYMODE = true
-    
     var window: UIWindow?
     var contactStore = CNContactStore()
     var mailHandler = MailHandler()
@@ -35,11 +33,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         resetApp()
         StudySettings.setupStudy()
+       // StudySettings.firstMail()
         HockeySDK.setup()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
 //            Logger.queue.async(flags: .barrier) {
                 Logger.log(startApp: true)
 //            }
+            // Remove Google Auth token from keychain
+            GTMKeychain.removePasswordFromKeychain(forName: "googleOAuthCodingKey")
+            
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
             self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
@@ -74,16 +76,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return self.orientationLock
     }
     
+    func application(_ application: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        if url.absoluteURL.absoluteString.hasPrefix("com.googleusercontent.apps.459157836079-csn0a9p3r8p7q6216fn5u7a6vcum80gn") {
+            if let currentAuthorizationFlow = EmailHelper.singleton().currentAuthorizationFlow {
+                if currentAuthorizationFlow.resumeAuthorizationFlow(with: url) {
+                    EmailHelper.singleton().currentAuthorizationFlow = nil
+                    return true
+                }
+            }
+        }
+        
+        return false
+    }
+    
+    func googleLogin(vc: UIViewController) {
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "oAuth")
+//        }
+        EmailHelper.singleton().doEmailLoginIfRequired(onVC: vc, completionBlock: {
+            guard let userEmail = EmailHelper.singleton().authorization?.userEmail, EmailHelper.singleton().authorization?.canAuthorize() ?? false else {
+                print("Google authetication failed")
+                self.credentialsFailed()
+                return
+            }
+            UserManager.storeUserValue(userEmail as AnyObject, attribute: Attribute.userName)
+            UserManager.storeUserValue(userEmail as AnyObject, attribute: Attribute.userAddr)
+            UserManager.storeUserValue("imap.gmail.com" as AnyObject, attribute: Attribute.imapHostname)
+            UserManager.storeUserValue(993 as AnyObject, attribute: Attribute.imapPort)
+            UserManager.storeUserValue(MCOConnectionType.TLS.rawValue as AnyObject, attribute: Attribute.imapConnectionType)
+            UserManager.storeUserValue(MCOAuthType.xoAuth2.rawValue as AnyObject, attribute: Attribute.imapAuthType)
+            UserManager.storeUserValue("smtp.gmail.com" as AnyObject, attribute: Attribute.smtpHostname)
+            UserManager.storeUserValue(587 as AnyObject, attribute: Attribute.smtpPort)
+            UserManager.storeUserValue(MCOConnectionType.startTLS.rawValue as AnyObject, attribute: Attribute.smtpConnectionType)
+            UserManager.storeUserValue(MCOAuthType.xoAuth2.rawValue as AnyObject, attribute: Attribute.smtpAuthType)
+
+            Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork)
+        })
+    }
+    
     func credentialCheck() {
         self.window?.rootViewController = Onboarding.checkConfigView()
+        if Onboarding.googleAuth {
+            Onboarding.googleAuth = false
+            googleLogin(vc: self.window!.rootViewController!)
+            return
+        }
         if Onboarding.setValues() != OnboardingValueState.fine {
             credentialsFailed()
             return
         }
-        else if !Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork) {
-            self.window?.rootViewController = Onboarding.detailOnboarding(self.credentialCheck)
-            return
-        }
+        
+        Onboarding.checkConfig(self.credentialsFailed, work: self.credentialsWork)
     }
 
     func credentialsFailed() {
@@ -124,7 +167,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Onboarding.credentialFails = 0
             Onboarding.manualSet = false
             UserManager.resetUserValues()
-           
             
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
@@ -142,12 +184,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         });
         let handler = DataHandler.init()
         _ = handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
-        setupStudyPublicKeys(studyMode: STUDYMODE)
+        StudySettings.setupStudyKeys()
+        StudySettings.firstMail()
+
     }
 
     func onboardingDone() {
         /*self.window?.rootViewController = Onboarding.keyHandlingView()
         Onboarding.keyHandling()*/
+//        Logger.queue.async(flags: .barrier) {
+            Logger.log(onboardingState: "done")
+//        }
         UserDefaults.standard.set(true, forKey: "launchedBefore")
         self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         presentInboxViewController()

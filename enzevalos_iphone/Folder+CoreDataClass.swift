@@ -47,33 +47,14 @@ public class Folder: NSManagedObject {
         }
     }
     
-    private var liveRecords: [KeyRecord]{
-        get{
-            var records = [KeyRecord]()
-            for mail in mailsOfFolder{
-                var found = false
-                for r in records{
-                    if r.matchMail(mail: mail){
-                        found = true
-                    }
-                }
-                if !found{
-                    let record = KeyRecord(keyID: mail.keyID, contact: mail.from.contact!, folder: self)
-                    records.append(record)
-                }
-            }
-           return records.sorted()
-        }
-    }
-    
-    private var storedRecords: [KeyRecord]? = nil
-    
+   
+
     var records: [KeyRecord]{
         get{
-            if storedRecords == nil{
-                updateRecords()
+            if var keyRecords = keyRecords as? Set<KeyRecord>{
+                return Array(keyRecords).sorted()
             }
-            return storedRecords!
+            return []
         }
     
     }
@@ -106,12 +87,7 @@ public class Folder: NSManagedObject {
         }
     }
     
-    
-    //write value of liveRecords to records
-    public func updateRecords() {
-       storedRecords = liveRecords
-    }
-    
+    /*
     func updateRecords(mail: PersistentMail){
         if let reccords = storedRecords{
             if reccords.count <= 2{
@@ -121,7 +97,7 @@ public class Folder: NSManagedObject {
             var founded = false
             for i in 1..<reccords.count {
                 let r = reccords[i]
-                if r.matchMail(mail: mail){
+                if r.match(mail: mail){
                     founded = true
                     if r.mailsInFolder(folder: self).first == mail {
                         if reccords[i-1] > r {
@@ -165,4 +141,5 @@ public class Folder: NSManagedObject {
             }
         }
     }
+ */
 }

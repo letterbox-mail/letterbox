@@ -21,7 +21,7 @@ class Logger {
 
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
     
-    static var studyID = "" //identifies the participant in the study
+    static var studyID = StudySettings.studyID //identifies the participant in the study
 
     static fileprivate func sendCheck() {
         if nextDeadline <= Date() && AppDelegate.getAppDelegate().currentReachabilityStatus != .notReachable {
@@ -53,7 +53,7 @@ class Logger {
         }
     }
 
-    static func log(setupStudy hideWarnings: Bool, alreadyRegistered: Bool) {
+    static func log(setupStudy hideWarnings: Bool, alreadyRegistered: Bool, bitcoin: Bool) {
         if !logging {
             return
         }
@@ -62,6 +62,7 @@ class Logger {
         event["type"] = LoggingEventType.setupStudy.rawValue
         event["hideWarnings"] = hideWarnings
         event["alreadyRegistered"] = alreadyRegistered
+        event["bitcoinMailReceived"] = bitcoin
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
@@ -95,6 +96,32 @@ class Logger {
         var event = plainLogDict()
         event["type"] = LoggingEventType.appBackground.rawValue
         event["going to"] = goto //true -> goto background; false -> comming from background
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(onboardingState onboardingSection: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.onboardingState.rawValue
+        event["onboardingSection"] = onboardingSection
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
+    static func log(onboardingPageTransition from: Int, to: Int, onboardingSection: String) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.onboardingPageTransition.rawValue
+        event["from"] = from
+        event["to"] = to
+        event["onboardingSection"] = onboardingSection
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
@@ -395,48 +422,34 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-
-    static func log(show mail: PersistentMail, message: String) {
+    
+    static func log(readViewOpen mail: PersistentMail, message: String, draft: Bool = false) {
         if !logging {
             return
         }
-
+        
         var event = plainLogDict()
-
-        event["type"] = LoggingEventType.mailRead.rawValue
+        
+        event["type"] = LoggingEventType.readViewOpen.rawValue
         event = extract(from: mail, event: event)
         event["messagePresented"] = message
-
+        event["draft"] = draft
+        
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
 
-    static func log(read mail: PersistentMail, message: String) {
+    static func log(readViewClose message: String, draft: Bool = false) {
         if !logging {
             return
         }
-
+        
         var event = plainLogDict()
-
-        event["type"] = LoggingEventType.mailRead.rawValue
-        event = extract(from: mail, event: event)
+        
+        event["type"] = LoggingEventType.readViewClose.rawValue
         event["messagePresented"] = message
-
-        saveToDisk(json: dictToJSON(fields: event))
-        sendCheck()
-    }
-
-    static func log(readDraft mail: PersistentMail, message: String) {
-        if !logging {
-            return
-        }
-
-        var event = plainLogDict()
-
-        event["type"] = LoggingEventType.mailDraftRead.rawValue
-        event = extract(from: mail, event: event)
-        event["messagePresented"] = message
-
+        event["draft"] = draft
+        
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
@@ -454,6 +467,20 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
+    
+    static func log(bitcoinMail gotIt: Bool) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        
+        event["type"] = LoggingEventType.gotBitcoinMail.rawValue
+        
+        saveToDisk(json: dictToJSON(fields: event))
+        sendCheck()
+    }
+    
 
     static func log(delete mail: PersistentMail, toTrash: Bool) {
         if !logging {
@@ -466,7 +493,8 @@ class Logger {
         } else {
             event["type"] = LoggingEventType.mailDeletedPersistent.rawValue
         }
-        event = extract(from: mail, event: event)
+       // event = extract(from: mail, event: event)
+        event["operation"] = "DeleteMail"
 
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
@@ -637,6 +665,7 @@ class Logger {
         event["decryptedWithOldPrivateKey"] = mail.decryptedWithOldPrivateKey
         event["isSigned"] = mail.isSigned
         event["isCorrectlySigned"] = mail.isCorrectlySigned
+        event["x-Mailer"] = mail.xMailer
         //TODO:
         //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
         //event["myKeyID"] = Logger.resolve(keyID: myKeyID)

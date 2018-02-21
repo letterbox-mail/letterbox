@@ -33,12 +33,13 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var messageCell: MessageBodyTableViewCell!
 
     @IBOutlet weak var iconButton: UIButton!
-
+    @IBOutlet weak var deleteButton: UIBarButtonItem!
+    
     @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
 
     var VENDelegate: ReadVENDelegate?
 
-    weak var textDelegate: ReadTextDelegate?
+    var textDelegate: ReadTextDelegate?
 
     var mail: PersistentMail? = nil
 
@@ -69,39 +70,24 @@ class ReadViewController: UITableViewController {
 
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
-//            Logger.queue.async(flags: .barrier) {
-                if Logger.logging, let mail = self.mail {
-                    var message = "none"
-                    if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { // @ jakob: why is this important here?
-                        if mail.trouble {
-                            message = "corrupted"
-                        } else if mail.isEncrypted && mail.unableToDecrypt {
-                            message = "couldNotDecrypt"
-                        } else if mail.from.hasKey && !mail.isSecure {
-                            message = "encryptedBefore"
-                        }
-                    }
-                    Logger.log(readDraft: mail, message: message)
-                }
-//            }
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
-//            Logger.queue.async(flags: .barrier) {
-                if Logger.logging, let mail = self.mail {
-                    var message = "none"
-                    if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
-                        if mail.trouble {
-                            message = "corrupted"
-                        } else if mail.isEncrypted && mail.unableToDecrypt {
-                            message = "couldNotDecrypt"
-                        } else if mail.from.hasKey && !mail.isSecure {
-                            message = "encryptedBefore"
-                        }
-                    }
-                    Logger.log(read: mail, message: message)
-                }
-//            }
         }
+//        Logger.queue.async(flags: .barrier) {
+        if Logger.logging, let mail = self.mail {
+            var message = "none"
+            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { // @ jakob: why is this important here?
+                if mail.trouble {
+                    message = "corrupted"
+                } else if mail.isEncrypted && mail.unableToDecrypt {
+                    message = "couldNotDecrypt"
+                } else if mail.from.hasKey && !mail.isSecure {
+                    message = "encryptedBefore"
+                }
+            }
+            Logger.log(readViewOpen: mail, message: message, draft: isDraft)
+        }
+//        }
 
         VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: { [weak self] in self?.showContact($0) }, tableView: tableView)
 
@@ -126,6 +112,10 @@ class ReadViewController: UITableViewController {
 
         setUItoMail()
 
+        if let mail = mail, mail.folder.uidvalidity != mail.uidvalidity || !mail.received {
+            deleteButton.isEnabled = false
+        }
+        
         textDelegate = ReadTextDelegate()
         textDelegate?.callback = newMailCallback
 
@@ -141,7 +131,21 @@ class ReadViewController: UITableViewController {
     }
 
     deinit {
-        print("===============|| ReadViewController deinitialized ||===============")
+//        Logger.queue.async(flags: .barrier) {
+            if Logger.logging, let mail = self.mail {
+                var message = "none"
+                if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+                    if mail.trouble {
+                        message = "corrupted"
+                    } else if mail.isEncrypted && mail.unableToDecrypt {
+                        message = "couldNotDecrypt"
+                    } else if mail.from.hasKey && !mail.isSecure {
+                        message = "encryptedBefore"
+                    }
+                }
+                Logger.log(readViewClose: message, draft: isDraft)
+            }
+//        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -484,8 +488,6 @@ class ReadViewController: UITableViewController {
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
             }
-
-            print("enc: ", mail.isEncrypted, ", unableDec: ", mail.unableToDecrypt, ", signed: ", mail.isSigned, ", correctlySig: ", mail.isCorrectlySigned, ", oldPrivK: ", mail.decryptedWithOldPrivateKey, " is secure: \(mail.isSecure), trouble: \(mail.trouble), showMessage: \(mail.showMessage)")
         }
     }
 
@@ -599,7 +601,6 @@ class ReadViewController: UITableViewController {
 //                    Logger.queue.async(flags: .barrier) {
                     Logger.log(importPrivateKey: mail, success: true)
 //                    }
-                    print("Successful import: \(suc)")
                 }catch _ {
 //                    Logger.queue.async(flags: .barrier) {
                     Logger.log(importPrivateKey: mail, success: false)

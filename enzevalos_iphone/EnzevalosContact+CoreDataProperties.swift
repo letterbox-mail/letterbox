@@ -20,6 +20,7 @@ extension EnzevalosContact {
     @NSManaged public var cnidentifier: String?
     @NSManaged public var color: UIColor?
     @NSManaged public var addresses: NSSet
+    @NSManaged public var keyrecords: NSSet?
 
 }
 
@@ -38,6 +39,23 @@ extension EnzevalosContact {
     
     @objc(removeAddresses:)
     @NSManaged public func removeFromAddresses(_ values: NSSet)
+    
+}
+
+// MARK: Generated accessors for mailaddress
+extension EnzevalosContact {
+    
+    @objc(addKeyrecordsObject:)
+    @NSManaged public func addToKeyrecords(_ value: KeyRecord)
+    
+    @objc(removeKeyrecordsObject:)
+    @NSManaged public func removeFromKeyrecords(_ value: KeyRecord)
+    
+    @objc(addKeyrecords:)
+    @NSManaged public func addToKeyrecords(_ values: NSSet)
+    
+    @objc(removeKeyrecords:)
+    @NSManaged public func removeFromKeyrecords(_ values: NSSet)
     
 }
 

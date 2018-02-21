@@ -99,7 +99,9 @@ class SwiftPGP: Encryption{
                 if let keyIDs = keys{
                     for id in keyIDs.split(separator: ";"){
                         if let key = loadKey(id: String(id)){
-                            myKeys.insert(key)
+                            if key.isSecret{
+                                myKeys.insert(key)
+                            }
                         }
                     }
                 }
@@ -123,17 +125,19 @@ class SwiftPGP: Encryption{
                 keychain[data: id] = data
             }
         }
-        if let keys = try? keychain.getString("secretKeys"){
-            if var ids = keys{
-                ids = ids + ";"+id
-                keychain["secretKeys"] = ids
+        if key.isSecret{
+            if let keys = try? keychain.getString("secretKeys"){
+                if var ids = keys{
+                    ids = ids + ";"+id
+                    keychain["secretKeys"] = ids
+                }
+                else{
+                    keychain["secretKeys"] = id
+                }
             }
             else{
                 keychain["secretKeys"] = id
             }
-        }
-        else{
-            keychain["secretKeys"] = id
         }
         return id
     }
@@ -184,10 +188,15 @@ class SwiftPGP: Encryption{
     
     func generateKey(adr: String) -> String{
         if oldSecretKeys.count > 0{
+            var primkey: Key?
             for key in oldSecretKeys{
                 if vaildAddress(key: key).contains(adr){
-                    return key.keyID.longIdentifier
+                    _ = storeKey(key: key)
+                    primkey = key
                 }
+            }
+            if let key = primkey{
+                return key.keyID.longIdentifier
             }
         }
         let gen = KeyGenerator()
@@ -321,7 +330,6 @@ class SwiftPGP: Encryption{
                 return CryptoObject(chiphertext: armorChipherData, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
             } catch {
                 print("Encryption error!")
-                print(error)
             }
         }
         
@@ -380,6 +388,24 @@ class SwiftPGP: Encryption{
             }
         }
         
+        if sigState == SignatureState.ValidSignature && sigKeyID == nil{
+            for id in decryptionIDs{
+                if let key = loadKey(id: id){
+                    keyring.import(keys: [key])
+                    let currentState = verifyMessage(data: data, keys: keyring.keys)
+                    if currentState == SignatureState.ValidSignature{
+                        sigState = currentState
+                        sigKeyID = id
+                        signedAdr = vaildAddress(key: key)
+                        break
+                    }
+                    if currentState == SignatureState.InvalidSignature{
+                        sigState = currentState
+                    }
+                }
+            }
+        }
+        
         if encState == EncryptionState.UnableToDecrypt{
             sigState = SignatureState.NoSignature
         }
@@ -422,7 +448,6 @@ class SwiftPGP: Encryption{
                 return SignatureState.ValidSignature
             } catch {
                 let nsError = error as NSError
-                print(error)
                 switch nsError.code {
                 case 7: // no public key
                     return SignatureState.NoPublicKey

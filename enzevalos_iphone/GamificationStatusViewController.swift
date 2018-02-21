@@ -208,10 +208,6 @@ class GamificationStatusViewController: UIViewController, UITableViewDelegate, U
             return
         }
         if identifier == "badge" {
-//            guard let source = segue.source as? GamificationStatusViewController else {
-//                print("GamificationStatusViewController Failure")
-//                return
-//            }
             guard let destination = segue.destination as? BadgeCase else {
                 print("BadgeCase Failure (in: gamificationStatusView)")
                 return

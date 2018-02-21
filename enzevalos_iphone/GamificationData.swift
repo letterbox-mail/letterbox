@@ -247,9 +247,9 @@ class GamificationData: NSObject {
             switch which {
             case .Firstkey: return false
             case .OneFriendInvited:
-                return secureContactsCount > 0
+                return invitations > 0
             case .FiveFriendsInvited:
-                return secureContactsCount > 5
+                return invitations >= 5
             case .Mails1:
                 return mailsCount > 1
             case .Mails10:
@@ -328,6 +328,21 @@ class GamificationData: NSObject {
         let a = contacts.count == 0 ? 0 : Float(secureContactsCount) / Float(contacts.count)
         let b = totalMails == 0 ? 0 : Float(secureMailsCount) / Float(totalMails)
         return ( a, b )
+    }
+    
+    private var invitations: Int{
+        get{
+            var result = 0
+            for adr in DataHandler.handler.getAddresses(){
+                if let addr = adr as? Mail_Address{
+                    if addr.invitations > 0{
+                        result = result + 1
+                    }
+                }
+            }
+            return result
+            
+        }
     }
 
 }

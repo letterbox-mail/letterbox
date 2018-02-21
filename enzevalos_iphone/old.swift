@@ -9,7 +9,7 @@
 import Foundation
 import Contacts
 import UIKit
-
+/*
 open class KeyRecord: Record {
 
     /*
@@ -141,34 +141,6 @@ open class KeyRecord: Record {
             //TODO create Contact?
              ezContact = DataHandler.handler.getContact(name: "ERROR", address: "ERROR No adr to key", key: keyID, prefer_enc: false)
         }
-        
-        
-        /*
-        let mails = DataHandler.handler.allMailsInFolder(key: keyID, contact: nil, folder: folder, isSecure: isSecure)
-        if mails.count > 0{
-            if let c = mails[0].from.contact{
-                ezContact = c
-            }
-            else{
-                let contact = DataHandler.handler.getContact(keyID: keyID)
-                if contact ==  nil{
-                    ezContact = DataHandler.handler.getContact(name: "", address: "", key: keyID, prefer_enc: false)
-                }
-                else{
-                    ezContact = contact as! EnzevalosContact
-                }
-            }
-        }
-        else{
-            let contact = DataHandler.handler.getContact(keyID: keyID)
-            if contact ==  nil{
-                ezContact = DataHandler.handler.getContact(name: "", address: "", key: keyID, prefer_enc: false)
-            }
-            else{
-                ezContact = contact as! EnzevalosContact
-            }
-        }
- */
     }
     
     func verify(){
@@ -243,3 +215,4 @@ public func < (lhs: KeyRecord, rhs: KeyRecord) -> Bool {
     }
     return lhs.mails.first!.date > rhs.mails.first!.date
 }
+ */

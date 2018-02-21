@@ -319,6 +319,7 @@
                     <connections>
                         <outlet property="SeperatorConstraint" destination="AX9-BE-lhT" id="vUm-gH-8hO"/>
                         <outlet property="answerButton" destination="gd7-4L-kZs" id="UNS-5A-0e0"/>
+                        <outlet property="deleteButton" destination="Mac-KZ-4YQ" id="9W5-c8-aYx"/>
                         <outlet property="iconButton" destination="bcV-Tv-Mmh" id="dF9-8X-MI7"/>
                         <outlet property="infoButtonCell" destination="sfU-SD-QZO" id="D1b-xZ-hPj"/>
                         <outlet property="infoCell" destination="hiO-mC-dXs" id="f6G-Lb-g8H"/>
@@ -705,14 +706,14 @@
                                             <rect key="frame" x="21" y="38.5" width="15" height="24"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="imI-nB-es5">
-                                                    <rect key="frame" x="0.0" y="0.0" width="15" height="9.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="15" height="9"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="NJi-27-Up8"/>
                                                         <constraint firstAttribute="width" constant="15" id="auJ-Nm-E8J"/>
                                                     </constraints>
                                                 </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C7X-Yt-kz2">
-                                                    <rect key="frame" x="0.0" y="9.5" width="15" height="14.5"/>
+                                                    <rect key="frame" x="0.0" y="9" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="15" id="Sjh-9U-pfX"/>
                                                         <constraint firstAttribute="height" constant="15" id="sLj-Te-fV3"/>
@@ -868,20 +869,20 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Bg-PX-E3I">
-                                            <rect key="frame" x="16" y="12" width="70" height="71"/>
+                                            <rect key="frame" x="16" y="12" width="70" height="70"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="70" id="gnb-41-pGe"/>
                                                 <constraint firstAttribute="height" constant="70" id="rA5-yY-3E9"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Kontakt ist noch nicht verifiziert" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lXU-0n-bPI">
-                                            <rect key="frame" x="94" y="36.5" width="132" height="20.5"/>
+                                            <rect key="frame" x="94" y="36" width="132" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rho-9E-ThM">
-                                            <rect key="frame" x="234" y="12" width="70" height="71"/>
+                                            <rect key="frame" x="234" y="12" width="70" height="70"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="70" id="VNV-xT-RnK"/>
                                                 <constraint firstAttribute="height" constant="70" id="o5U-rr-dNn"/>
@@ -1901,6 +1902,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                         <outlet property="scrollViewBottom" destination="7Yr-li-b6Z" id="4Sl-VE-EKg"/>
                         <outlet property="scrollview" destination="sij-Oe-ann" id="8k5-VA-Nfk"/>
                         <outlet property="scrollviewRecognizer" destination="cFD-MN-1kg" id="TVN-cD-zhw"/>
+                        <outlet property="sendButton" destination="2IZ-1g-KCZ" id="rgH-pm-Yyq"/>
                         <outlet property="seperator1Height" destination="veB-dJ-Aq3" id="3zW-z5-ATB"/>
                         <outlet property="seperator1Leading" destination="6Vg-lw-tja" id="kBF-2U-K8X"/>
                         <outlet property="seperator2Height" destination="ojt-b3-hEs" id="eRT-pm-Xjk"/>

@@ -73,6 +73,10 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         tableView.register(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
 
         AppDelegate.getAppDelegate().mailHandler.startIMAPIdleIfSupported(addNewMail: addNewMail)
+        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave, object: nil, queue: nil, using: {
+            [weak self] notification in
+            self?.tableView.reloadData()
+        })
     }
 
     func refresh(_ refreshControl: UIRefreshControl) {
@@ -83,10 +87,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func addNewMail(mail: PersistentMail?) {
-        if let m = mail {
-            folder.updateRecords(mail: m)
-        }
-        tableView.reloadData()
+        //tableView.reloadData()
     }
 
     func getMailCompleted(_ error: Bool) {
@@ -97,8 +98,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             rc.endRefreshing()
             lastUpdateText = lastUpdate != nil ? "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))" : NSLocalizedString("NeverUpdated", comment: "No internet connection since last launch")
 
-            folder.updateRecords()
-            self.tableView.reloadData()
+           // self.tableView.reloadData()
         }
     }
 
@@ -131,8 +131,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         if isFiltering() {
             return filteredRecords.count
         }
-        let records = folder.records
-        
         
         return folder.records.count
     }
@@ -208,9 +206,10 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
                         DestinationViewController.keyRecord = record
                     } else {
                         let keyID = UserManager.loadUserValue(Attribute.prefSecretKeyID) as! String
-                        let folderName = UserManager.backendInboxFolderPath
-                        let folder = DataHandler.handler.findFolder(with: folderName)
-                        DestinationViewController.keyRecord = KeyRecord(keyID: keyID, folder: folder)
+                        let addr = UserManager.loadUserValue(Attribute.userAddr) as! String
+                        //let folderName = UserManager.backendInboxFolderPath
+                        //let folder = DataHandler.handler.findFolder(with: folderName)
+                        DestinationViewController.keyRecord = DataHandler.handler.getKeyRecord(addr: addr, keyID: keyID)
                     }
                 }
             }
@@ -240,14 +239,16 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         }
         if scope == 1 || scope == 3 {
             records += folder.records.filter({ ( record: KeyRecord) -> Bool in
-                return record.mails.filter({ (mail: PersistentMail) -> Bool in
+                let mails = record.inboxMails
+                return mails.filter({ (mail: PersistentMail) -> Bool in
                     mail.subject?.lowercased().contains(searchText.lowercased()) ?? false
                 }).count > 0
             })
         }
         if scope == 2 || scope == 3 {
             records += folder.records.filter({ ( record: KeyRecord) -> Bool in
-                return record.mails.filter({ (mail: PersistentMail) -> Bool in
+                let mails = record.inboxMails
+                return mails.filter({ (mail: PersistentMail) -> Bool in
                     if let decryptedBody = mail.decryptedBody {
                         return decryptedBody.lowercased().contains(searchText.lowercased())
                     } else if !mail.isEncrypted {
