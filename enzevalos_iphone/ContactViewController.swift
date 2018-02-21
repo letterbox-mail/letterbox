@@ -109,6 +109,10 @@ class ContactViewController: UIViewController {
             addButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
         }
+        if let name = keyRecord?.name {
+            self.title = name
+        }
+        tableView.reloadData()
     }
 
     func drawStatusCircle() -> UIImage? {

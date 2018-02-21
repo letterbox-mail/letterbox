@@ -665,6 +665,7 @@ class Logger {
         event["decryptedWithOldPrivateKey"] = mail.decryptedWithOldPrivateKey
         event["isSigned"] = mail.isSigned
         event["isCorrectlySigned"] = mail.isCorrectlySigned
+        event["x-Mailer"] = mail.xMailer
         //TODO:
         //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
         //event["myKeyID"] = Logger.resolve(keyID: myKeyID)

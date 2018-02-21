@@ -9,7 +9,7 @@
 import Foundation
 
 class AboutViewController: UIViewController {
-    weak var textDelegate: AboutTextDelegate?
+    var textDelegate: AboutTextDelegate?
     @IBOutlet weak var aboutText: UITextView!
 
     override func viewDidLoad() {
