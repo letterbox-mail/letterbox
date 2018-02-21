@@ -532,10 +532,10 @@ class SendViewController: UIViewController {
             return true
         }
         
-        let toKey = toSource.allSecure(toText)
-        let ccKey = ccSource.allSecure(ccText)
+        toSecure = toSource.allSecure(toText)
+        ccSecure = ccSource.allSecure(ccText)
         
-        return toKey && ccKey
+        return toSecure && ccSecure
     }
 
     var someoneWithKeyPresent: Bool {
