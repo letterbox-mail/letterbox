@@ -285,7 +285,11 @@ class SendViewController: UIViewController {
                     scrollview.isScrollEnabled = false
                     scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
                     tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
-                    tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                    if #available(iOS 11.0, *) {
+                        tableviewHeight.constant = keyboardY - tableviewBegin.constant
+                    } else {
+                        tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                    }
                 } else if !scrollview.isScrollEnabled {
                     scrollview.isScrollEnabled = true
                     tableviewHeight.constant = 0
@@ -404,9 +408,11 @@ class SendViewController: UIViewController {
             let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
             let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
             
+            self.keyboardY = keyboardFrameInView.minY
+            
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
                 self.additionalSafeAreaInsets.bottom = intersection.height
-                let desiredOffset = CGPoint(x: 0, y: -self.keyboardY)
+                let desiredOffset = CGPoint(x: 0, y: 0)
                 self.scrollview.setContentOffset(desiredOffset, animated: false)
                 self.view.layoutIfNeeded()
             }, completion: nil)
@@ -452,6 +458,8 @@ class SendViewController: UIViewController {
             let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
             let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.bottom)
             let intersection = safeAreaFrame.intersection(keyboardFrameInView)
+            
+            self.keyboardY = 0
             
             let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
