@@ -15,3 +15,8 @@
 #import <GTMAppAuth/GTMAppAuth.h>
 #import <GTMSessionFetcher/GTMSessionFetcher.h>
 #import "OAuth/EmailHelper.h"
+
+// Making this funcion accessible 
+@interface OIDAuthState (Auth)
+- (BOOL)isTokenFresh;
+@end
