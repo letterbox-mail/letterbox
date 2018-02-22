@@ -175,7 +175,7 @@ class SendViewController: UIViewController {
     }
 
     deinit {
-        return
+        print("===============|| SendViewController deinitialized ||===============")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -737,7 +737,7 @@ extension SendViewController: UIGestureRecognizerDelegate {
 extension VENTokenFieldDataSource {
     func someSecure(_ tokenField: VENTokenField) -> Bool {
         for entry in tokenField.mailTokens {
-            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String), madr.hasKey {
+            if DataHandler.handler.hasKey(adr: entry as! String) {
                 return true
             }
         }
@@ -747,7 +747,7 @@ extension VENTokenFieldDataSource {
     
     func someInsecure(_ tokenField: VENTokenField) -> Bool {
         for entry in tokenField.mailTokens {
-            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String), !madr.hasKey {
+            if !DataHandler.handler.hasKey(adr: entry as! String) {
                 return true
             }
         }
@@ -760,7 +760,7 @@ extension VENTokenFieldDataSource {
      */
     func allSecure(_ tokenField: VENTokenField) -> Bool {
         for entry in tokenField.mailTokens {
-            if let madr = DataHandler.handler.findMailAddress(adr: entry as! String), !madr.hasKey {
+            if !DataHandler.handler.hasKey(adr: entry as! String) {
                 return false
             }
         }
