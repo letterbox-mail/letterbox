@@ -192,7 +192,55 @@ class AddressHandler {
 
     /*          [insertedEmail] -> [(contactImage, name, address, emailLabelImage, backgroundcolor)] */
     static func frequentAddresses (_ inserted: [String]) -> [(UIImage, String, String, UIImage?, UIColor)] {
-        return freqAlgorithm2(inserted)
+        let cons = DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath)
+        var list: [(UIImage, String, String, UIImage?, UIColor)] = []
+        var localInserted = inserted
+        
+        for con: KeyRecord in cons {
+            if list.count >= CollectionDataDelegate.maxFrequent {
+                break
+            }
+            var insertedEntry = false
+            var address = con.ezContact.getMailAddresses()[0]
+            for addr in con.ezContact.getMailAddresses() {
+                if localInserted.contains(addr.mailAddress) {
+                    insertedEntry = true
+                }
+                if addr.hasKey {
+                    address = addr
+                }
+            }
+            if !insertedEntry {
+                var addrType: UIImage? = nil
+                
+                if address.label.label == "_$!<Work>!$_" {
+                    addrType = UIImage(named: "work2_white")!
+                }
+                if address.label.label == "_$!<Home>!$_" {
+                    addrType = UIImage(named: "home2_white")!
+                }
+                if let cn = con.cnContact {
+                    
+                    
+                    var color = cn.getColor()
+                    if cn.thumbnailImageData != nil {
+                        color = UIColor.gray //blackColor()
+                    }
+                    
+                    let entry = (cn.getImageOrDefault(), con.ezContact.displayname!, address.mailAddress, addrType, color)
+                    
+                    list.append(entry)
+                    localInserted.append(address.mailAddress)
+                } else {
+                    let entry = (con.ezContact.getImageOrDefault(), con.ezContact.displayname ?? address.mailAddress, address.mailAddress, addrType, con.ezContact.getColor())
+                    list.append(entry)
+                    localInserted.append(address.mailAddress)
+                }
+            }
+        }
+        
+        
+        return list
     }
 
     static func findContact(_ econtact: EnzevalosContact) -> [CNContact] {
