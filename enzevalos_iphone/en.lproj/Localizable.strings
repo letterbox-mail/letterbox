@@ -156,7 +156,7 @@
 "didYouSendThis" = "Hallo, haben Sie mir diese E-Mail geschickt?\nIch frage nur, weil die E-Mail unsicher versendet wurde.\n\n";
 "reactButton" = "Bestätigung erfragen";
 "sendSecureIfPossible" = "Als Brief senden";
-"sendInsecure" = "Als Postkarte senden";
+"sendInsecure" = "Als Postkarte verfassen";
 "verifyContact" = "Kontakt verifizieren";
 "scanQRCode" = "Scanne den QR Code des Kontaktes";
 "wrongQRCode" = "Kein passender QR Code gefunden";
