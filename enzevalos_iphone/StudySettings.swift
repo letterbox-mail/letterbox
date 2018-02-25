@@ -9,16 +9,65 @@
 import Foundation
 import KeychainAccess
 
+enum StudyParamter: Int {
+    case Warning = 0
+    case Invitation = 1
+    
+    var name: String{
+        get{
+            switch self {
+            case .Warning:
+                return "warning"
+            case .Invitation:
+                    return "invitation"
+            }
+        }
+    }
+    
+    var fileDir: String {
+        get{
+            switch  self {
+            case .Warning:
+                return "hideWarnings"
+            case .Invitation:
+                return "invitation mode"
+            }
+        }
+    }
+    var variables: Int {
+        get{
+            switch self {
+            case .Warning:
+                return 2
+            case .Invitation:
+                return 4
+            }
+        }
+    }
+}
+
+enum InvitationMode: Int {
+    case FreeText = 0
+    case InviteMail = 1
+    case PasswordEnc = 2
+    case Censorship = 3
+}
+
 class StudySettings {
     static var studyMode = true
     static var presentFirstQuestionaireMail = false
+    static let parameters = [StudyParamter.Invitation]
     
+    public static var invitationEnabled: Bool{
+        get{
+            return invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc
+        }
+    }
     static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
     static let raffleURL = ""
     static var studyID: String {
         return UserDefaults.standard.string(forKey: "studyID") ?? ""
     }
-    
     static var entrySurveyURL: String{
         get{
             return "https://userpage.fu-berlin.de/wieseoli/letterbox/entrysurvey.html?id=\(studyID)"
@@ -40,6 +89,47 @@ class StudySettings {
         }
     }
     
+    static var invitationsmode: InvitationMode{
+        get{
+            return InvitationMode.Censorship
+            let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.fileDir)
+            if let mode = InvitationMode.init(rawValue: value){
+                return mode
+            }
+            return InvitationMode.InviteMail
+        }
+    }
+    
+    
+    private static var studyParameters: [StudyParamter:Int]{
+        get{
+            let keychain = Keychain(service: "Enzevalos/Study")
+            var studyParamters = [StudyParamter: Int]()
+            for parameter in parameters{
+                var value: Int?
+                if let state = keychain[parameter.fileDir], let num = Int(state) {
+                    value = num
+                }
+                else {
+                    value = Int(arc4random_uniform(UInt32(parameter.variables)))
+                    if let value = value{
+                        keychain[parameter.fileDir] = String(value)
+                    }
+                }
+                if parameter == StudyParamter.Invitation{
+                    //TODO: Remove @Olli
+                    value = InvitationMode.Censorship.rawValue
+                }
+                if let v = value{
+                    UserDefaults.standard.set(v, forKey: parameter.fileDir)
+                    studyParamters[parameter] = v
+                }
+            }
+            return studyParamters
+        }
+    }
+    
+    
     static func setupStudy() {
         if !studyMode {
             //Logger.logging = false
@@ -49,26 +139,7 @@ class StudySettings {
             return
         }
         Logger.logging = true
-        
-        var warnings = true
         let keychain = Keychain(service: "Enzevalos/Study")
-        if let state = keychain["hideWarnings"] {
-            warnings = Bool(state)!
-        } else {
-            var randomBytes = Data(count: 1)
-            let result = randomBytes.withUnsafeMutableBytes {
-                SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, $0)
-            }
-            if result == errSecSuccess {
-                warnings = randomBytes[0] >= 128
-            } else {
-                print("Problem generating random bytes")
-                warnings = Int(arc4random_uniform(2)) == 0
-            }
-            keychain["hideWarnings"] = String(warnings)
-        }
-        UserDefaults.standard.set(warnings, forKey: "hideWarnings")
-        
         if let studyID = keychain["studyID"] {
             UserDefaults.standard.set(studyID, forKey: "studyID")
             Logger.studyID = studyID
@@ -85,10 +156,11 @@ class StudySettings {
             keychain["bitcoin"] = "false"
             UserDefaults.standard.set(false, forKey: "bitcoin")
         }
+        let parameters = studyParameters
         
         
 //        Logger.queue.async(flags: .barrier) {
-        Logger.log(setupStudy: warnings, alreadyRegistered: !presentFirstQuestionaireMail, bitcoin: bitcoinMails)
+        Logger.log(setupStudy: parameters, alreadyRegistered: !presentFirstQuestionaireMail, bitcoin: bitcoinMails)
 //        }
         
     }
@@ -166,6 +238,8 @@ class StudySettings {
         
         _ = DataHandler.handler.createMail(0, sender: sender, receivers: [], cc: [], time: Date(), received: false, subject: subject, body: body, flags: MCOMessageFlag.init(rawValue: 0), record: nil, autocrypt: nil, decryptedData: cryptoObject, folderPath: UserManager.backendInboxFolderPath, secretKey: nil)
     }
+    
+  
     
     public static func setupStudyKeys() {
         if studyMode || Logger.logging {

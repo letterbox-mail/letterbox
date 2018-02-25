@@ -53,14 +53,15 @@ class Logger {
         }
     }
 
-    static func log(setupStudy hideWarnings: Bool, alreadyRegistered: Bool, bitcoin: Bool) {
+    static func log(setupStudy studypara: [StudyParamter:Int], alreadyRegistered: Bool, bitcoin: Bool) {
         if !logging {
             return
         }
-        
         var event = plainLogDict()
         event["type"] = LoggingEventType.setupStudy.rawValue
-        event["hideWarnings"] = hideWarnings
+        for (para,value) in studypara{
+            event[para.name] = value
+        }
         event["alreadyRegistered"] = alreadyRegistered
         event["bitcoinMailReceived"] = bitcoin
         saveToDisk(json: dictToJSON(fields: event))

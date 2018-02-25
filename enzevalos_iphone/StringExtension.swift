@@ -21,6 +21,5 @@ extension String {
             print("Problem generating random bytes")
             return ""
         }
-        
     }
 }

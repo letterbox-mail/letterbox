@@ -262,6 +262,7 @@
 		473AC3AB20054E25006EB8A6 /* twofish.c in Sources */ = {isa = PBXBuildFile; fileRef = 473AC3A820054E25006EB8A6 /* twofish.c */; };
 		473AC3AE20054EAA006EB8A6 /* PGPKeyring.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC3AC20054EAA006EB8A6 /* PGPKeyring.m */; };
 		473AC3AF20054EAA006EB8A6 /* PGPKeyring.m in Sources */ = {isa = PBXBuildFile; fileRef = 473AC3AC20054EAA006EB8A6 /* PGPKeyring.m */; };
+		4756DE0E20402F8E00452288 /* invitationTextCensor.html in Resources */ = {isa = PBXBuildFile; fileRef = 4756DE0D20402F8E00452288 /* invitationTextCensor.html */; };
 		475B00331F7B9565006CDD41 /* SwiftPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00301F7B9565006CDD41 /* SwiftPGP.swift */; };
 		475B00341F7B9565006CDD41 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00311F7B9565006CDD41 /* Cryptography.swift */; };
 		475B00351F7B9565006CDD41 /* CryptoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00321F7B9565006CDD41 /* CryptoObject.swift */; };
@@ -361,7 +362,7 @@
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
-		F120A7D31F7937BB006D5BF1 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		F120A7D31F7937BB006D5BF1 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
 		F14D189D1ED880680080515D /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
 		F14D189F1ED880680080515D /* ncpayroll-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189B1ED880680080515D /* ncpayroll-public.gpg */; };
@@ -556,6 +557,7 @@
 		473AC3AC20054EAA006EB8A6 /* PGPKeyring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGPKeyring.m; sourceTree = "<group>"; };
 		473AC3AD20054EAA006EB8A6 /* PGPKeyring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGPKeyring.h; sourceTree = "<group>"; };
 		473AC3B020054EB2006EB8A6 /* PGPKeyring+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PGPKeyring+Private.h"; sourceTree = "<group>"; };
+		4756DE0D20402F8E00452288 /* invitationTextCensor.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = invitationTextCensor.html; path = Invitation/invitationTextCensor.html; sourceTree = "<group>"; };
 		475B00301F7B9565006CDD41 /* SwiftPGP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftPGP.swift; sourceTree = "<group>"; };
 		475B00311F7B9565006CDD41 /* Cryptography.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; };
 		475B00321F7B9565006CDD41 /* CryptoObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoObject.swift; sourceTree = "<group>"; };
@@ -721,7 +723,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F120A7D31F7937BB006D5BF1 /* BuildFile in Frameworks */,
+				F120A7D31F7937BB006D5BF1 /* (null) in Frameworks */,
 				472F396E1E14F384009260FB /* CoreData.framework in Frameworks */,
 				9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */,
 			);
@@ -799,6 +801,7 @@
 			children = (
 				3EC35F2320037651008BDF95 /* InvitationHelper.swift */,
 				3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */,
+				4756DE0D20402F8E00452288 /* invitationTextCensor.html */,
 				3E6B07DD2011246500E49609 /* invitationText.html */,
 			);
 			name = Invitation;
@@ -1468,7 +1471,7 @@
 					};
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = JZ2H644EU7;
+						DevelopmentTeam = VJ9C93G68Y;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
@@ -1594,6 +1597,7 @@
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
 				47CD5AAA2012368D00E771A1 /* logging_pk.asc in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
+				4756DE0E20402F8E00452288 /* invitationTextCensor.html in Resources */,
 				A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
 				A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */,
@@ -1793,7 +1797,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (

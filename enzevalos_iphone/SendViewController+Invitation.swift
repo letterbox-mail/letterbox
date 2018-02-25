@@ -10,6 +10,15 @@ import UIKit
 
 // MARK: - InvitationSelection
 
+
+/*
+ TODO:
+ Code Berechnung und Darstellung optional
+ Code speichern (pro Kontakt)
+ Erklärung was genau passiert?
+ Text überarbeiten
+ Text Onboarding popup (Verschlüsseln-> verbergen)
+*/
 struct InvitationSelection {
 
     var selectedWords = Set<NSRange>()
@@ -21,6 +30,12 @@ struct InvitationSelection {
 
 extension SendViewController {
 
+    var isCensored: Bool{
+        get{
+            return StudySettings.invitationsmode == InvitationMode.Censorship
+        }
+    }
+    
     func htmlMessage() -> String? {
 
         guard
@@ -39,6 +54,10 @@ extension SendViewController {
 
         let cipherText = SwiftPGP().symmetricEncrypt(textToEncrypt: [textsToEncrypt.joined(separator: "\n")], armored: true)
         let texts = textsToEncrypt.map { _ -> String in
+            // Change text in mail body
+            if isCensored{
+                return String(repeating: "*", count: (Int(arc4random_uniform(10)+3)))
+            }
             return String.random(length: 10)
         }
 
@@ -48,20 +67,35 @@ extension SendViewController {
                 return nil
         }
 
-        let link = "http://enzevalos.konstantindeichmann.de?text=\(urlTexts)&cipher=\(cipher)"
+        var link = "http://enzevalos.konstantindeichmann.de?text=\(urlTexts)&cipher=\(cipher)"
+        if isCensored{
+            link = "https://userpage.fu-berlin.de/wieseoli/letterbox/"
+        }
 
         let locations = self.invitationSelection.selectedWords.sorted { (lhs, rhs) -> Bool in
             return rhs.location < lhs.location
         }
 
         for (index, range) in locations.enumerated() {
-            text = (text as NSString).replacingCharacters(in: range, with: "<a class=\"encrypted-text\">\(texts[index])</a>")
+            if isCensored{
+                let t = text as NSString
+                text = t.replacingCharacters(in: range, with: texts[index])
+                text = text + NSLocalizedString("Invitation.CensorFooter", comment: "")
+            }
+            else{
+                text = (text as NSString).replacingCharacters(in: range, with: "<a class=\"encrypted-text\">\(texts[index])</a>")
+                
+            }
         }
+        print(text)
 
         if (self.invitationSelection.code == nil) {
             self.invitationSelection.code = cipherText.password
         }
-
+        if StudySettings.invitationsmode == InvitationMode.Censorship{
+            return text
+            
+        }
         return String(format: htmlString, text, link, link)
     }
 
@@ -275,7 +309,7 @@ extension SendViewController {
     ///
     /// - Returns: True if the current E-Mail is insecure
     fileprivate func isEligibleForInvitation() -> Bool {
-        return (self.toSecure == false && invitationEnabled == true)
+        return (self.toSecure == false && StudySettings.invitationEnabled == true)
     }
 }
 
