@@ -63,6 +63,8 @@ class StudySettings {
             return invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc
         }
     }
+    static var freeTextInvitationTitle = NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key")
+    static var freeTextInvitationCode: (() -> (String)) = {Void in return "inviteSegueStudy"/*use "inviteSegue" if there is no study present*/ } //return segue id to perform
     static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
     static let raffleURL = ""
     static var studyID: String {
@@ -158,6 +160,7 @@ class StudySettings {
         }
         let parameters = studyParameters
         
+        //TODO: @Olli set entry "hideFreeTextInvitation" in UserDefaults to true if needed
         
 //        Logger.queue.async(flags: .barrier) {
         Logger.log(setupStudy: parameters, alreadyRegistered: !presentFirstQuestionaireMail, bitcoin: bitcoinMails)

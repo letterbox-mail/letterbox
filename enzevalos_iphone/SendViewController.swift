@@ -54,6 +54,8 @@ class SendViewController: UIViewController {
     var prefilledMail: EphemeralMail? = nil
     var toField: String? = nil
     var sendEncryptedIfPossible = true
+    var freeTextInviationTitle = StudySettings.freeTextInvitationTitle
+    var freeTextInvitationCall: (() -> (String)) = StudySettings.freeTextInvitationCode
     var invite:Bool = false
 
 	var invitationSelection = InvitationSelection()
@@ -280,6 +282,33 @@ class SendViewController: UIViewController {
 
 
                 controller.prefilledMail = mail
+            }
+        } else if segue.identifier == "inviteSegueStudy" {
+            let navigationController = segue.destination as? UINavigationController
+            if let controller = navigationController?.topViewController as? SendViewController {
+                controller.invite = true
+                var to = [MailAddress]()
+                var cc = [MailAddress]()
+                for mail in toText.mailTokens {
+                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                        to.append(DataHandler.handler.getMailAddress(mail, temporary: false))
+                    }
+                }
+                for mail in ccText.mailTokens {
+                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                        cc.append(DataHandler.handler.getMailAddress(mail, temporary: false))
+                    }
+                }
+                
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: "", uid: 0, predecessor: nil)
+                
+                
+                controller.prefilledMail = mail
+                let alert = UIAlertController(title: "abc", message: "xyz", preferredStyle: .alert) //TODO: @Olli add your Text here
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+                DispatchQueue.main.async(execute: {
+                    controller.present(alert, animated: true, completion: nil)
+                })
             }
         }
     }
@@ -607,11 +636,12 @@ class SendViewController: UIViewController {
         if !UISecurityState {
             alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: sendEncryptedIfPossible ? NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext") : NSLocalizedString("SendInsecureInfoAll", comment: "Postcard infotext"), preferredStyle: .alert)
             url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#headingPostcard"
-            if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") && !currentSecurityState {
-                alert.addAction(UIAlertAction(title: NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key"), style: .default, handler: {
+            if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") && !currentSecurityState && !UserDefaults.standard.bool(forKey: "hideFreeTextInvitation") {
+                alert.addAction(UIAlertAction(title: freeTextInviationTitle, style: .default, handler: {
                     (action: UIAlertAction) -> Void in
+                    let segue = self.freeTextInvitationCall()
 //                    Logger.queue.async(flags: .barrier) {
-                        Logger.log(close: url, mail: nil, action: "inviteSegue")
+                        Logger.log(close: url, mail: nil, action: segue)
 //                    }
                     self.performSegue(withIdentifier: "inviteSegue", sender: nil)
                 }))
@@ -722,7 +752,7 @@ class SendViewController: UIViewController {
             }
             DataHandler.handler.save(during: "invite")
         }
-        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (self.htmlMessage() != nil))
+        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (self.htmlMessage() != nil), inviteMail: true)
         sendButton.isEnabled = false
     }
 }

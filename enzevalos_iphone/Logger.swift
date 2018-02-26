@@ -394,7 +394,7 @@ class Logger {
         sendCheck()
     }
 
-    static func log(sent from: Mail_Address, to: [Mail_Address], cc: [Mail_Address], bcc: [Mail_Address], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [Mail_Address] = [], encryptedForKeyIDs: [String] = []) {
+    static func log(sent from: Mail_Address, to: [Mail_Address], cc: [Mail_Address], bcc: [Mail_Address], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [Mail_Address] = [], encryptedForKeyIDs: [String] = [], inviteMailContent: String?) {
 
         if !logging {
             return
@@ -419,6 +419,9 @@ class Logger {
         event["myKeyID"] = Logger.resolve(keyID: myKeyID)
         event["secureAddresses"] = Logger.resolve(mailAddresses: secureAddresses) //means the addresses, which received a secure mail
         event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
+        if let content = inviteMailContent {
+            event["inviteMailContent"] = content
+        }
 
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()

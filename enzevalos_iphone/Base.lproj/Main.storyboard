@@ -705,15 +705,15 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="OlN-1g-hBJ">
                                             <rect key="frame" x="21" y="38.5" width="15" height="24"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="imI-nB-es5">
-                                                    <rect key="frame" x="0.0" y="0.0" width="15" height="9"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="imI-nB-es5">
+                                                    <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="NJi-27-Up8"/>
                                                         <constraint firstAttribute="width" constant="15" id="auJ-Nm-E8J"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C7X-Yt-kz2">
-                                                    <rect key="frame" x="0.0" y="9" width="15" height="15"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C7X-Yt-kz2">
+                                                    <rect key="frame" x="0.0" y="15" width="15" height="9"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="15" id="Sjh-9U-pfX"/>
                                                         <constraint firstAttribute="height" constant="15" id="sLj-Te-fV3"/>
@@ -1223,7 +1223,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
                             <rect key="frame" x="0.0" y="425.5" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
@@ -1393,7 +1393,7 @@
             <objects>
                 <tableViewController id="7Pd-d5-0wz" customClass="ExportInfoViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" sectionIndexMinimumDisplayRowCount="1" rowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="2Uv-bd-pB1">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -1921,6 +1921,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
                         <outlet property="toText" destination="zgt-Nh-yna" id="VXM-m0-UCm"/>
                         <segue destination="8Di-x2-cWQ" kind="show" identifier="showContact" id="DcR-GX-scc"/>
                         <segue destination="olx-gF-WdV" kind="presentation" identifier="inviteSegue" id="QXm-7K-984"/>
+                        <segue destination="olx-gF-WdV" kind="presentation" identifier="inviteSegueStudy" id="Sm1-yp-Umv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lv5-U9-uUg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1961,7 +1962,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="QXm-7K-984"/>
+        <segue reference="Sm1-yp-Umv"/>
         <segue reference="td8-VW-Wrt"/>
         <segue reference="DcR-GX-scc"/>
         <segue reference="TgN-rB-esa"/>
