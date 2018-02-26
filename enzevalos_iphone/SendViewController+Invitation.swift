@@ -18,6 +18,8 @@ import UIKit
  Erklärung was genau passiert?
  Text überarbeiten
  Text Onboarding popup (Verschlüsseln-> verbergen)
+ InviteMode == Enc || InviteMode == Censor -> Was dann mit Einladebutton?
+ FreiText -> Popup -> leere E-Mail
 */
 struct InvitationSelection {
 
@@ -51,7 +53,6 @@ extension SendViewController {
         }.map { (range) -> String in
             return (text as NSString).substring(with: range)
         }
-
         let cipherText = SwiftPGP().symmetricEncrypt(textToEncrypt: [textsToEncrypt.joined(separator: "\n")], armored: true)
         let texts = textsToEncrypt.map { _ -> String in
             // Change text in mail body
@@ -89,7 +90,7 @@ extension SendViewController {
         }
         print(text)
 
-        if (self.invitationSelection.code == nil) {
+        if (self.invitationSelection.code == nil && StudySettings.invitationsmode == InvitationMode.PasswordEnc) {
             self.invitationSelection.code = cipherText.password
         }
         if StudySettings.invitationsmode == InvitationMode.Censorship{
@@ -117,10 +118,17 @@ extension SendViewController {
         }
 
         guard selectedRange != nil else {
-            return [UIMenuItem(title: NSLocalizedString("Invitation.Encrypt", comment: ""), action: #selector(self.markSelectedText))]
+            var labelTitel = NSLocalizedString("Invitation.Encrypt", comment: "")
+            if StudySettings.invitationsmode == InvitationMode.Censorship{
+                labelTitel = NSLocalizedString("Invitation.Encrypt.Censor", comment: "")
+            }
+            return [UIMenuItem(title: labelTitel, action: #selector(self.markSelectedText))]
         }
-
-        return [UIMenuItem(title: NSLocalizedString("Invitation.Decrypt", comment: ""), action: #selector(self.unmarkSelectedText))]
+        var labelTitel = NSLocalizedString("Invitation.Decrypt", comment: "")
+        if StudySettings.invitationsmode == InvitationMode.Censorship{
+            labelTitel = NSLocalizedString("Invitation.Decrypt.Censor", comment: "")
+        }
+        return [UIMenuItem(title: labelTitel, action: #selector(self.unmarkSelectedText))]
     }
 
     fileprivate func layoutText() {

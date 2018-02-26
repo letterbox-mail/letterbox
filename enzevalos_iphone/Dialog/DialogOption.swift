@@ -28,7 +28,19 @@ enum DialogOption {
 		switch self {
 		case .postcard			: return nil
 		case .invitationCode	: return nil
-		case .invitationWelcome	: return UIImage(named: "bg_inviation")
+		case .invitationWelcome	:
+            if StudySettings.invitationsmode == InvitationMode.Censorship {
+                if let ani = UIImage.animatedImageNamed("bg_invitation_censor", duration: 4){
+                    return ani
+                }
+                var images = [UIImage]()
+                images.append(UIImage(named: "letter_open")!)
+                images.append(UIImage(named: "letter_corrupted")!)
+
+                let ani = UIImage.animatedImage(with: images, duration: 10)
+                return 
+            }
+            return UIImage(named: "bg_inviation")
 		case .invitationStep	: return nil
 		}
 	}
@@ -54,9 +66,16 @@ enum DialogOption {
 	var message: String? {
 		switch self {
 		case .postcard			: return "Message\nMultiline and long texts are allowed, btw second button is hidden"
-		case .invitationWelcome	: return NSLocalizedString("Invitation.Welcome.Message", comment: "")
+		case .invitationWelcome	:
+            if StudySettings.invitationsmode == InvitationMode.Censorship{
+                return NSLocalizedString("Invitation.Welcome.Message.Censor", comment: "")
+            }
+            return NSLocalizedString("Invitation.Welcome.Message", comment: "")
 		case .invitationStep	: return NSLocalizedString("Invitation.Step.Message", comment: "")
 		case .invitationCode(let code)	:
+            if StudySettings.invitationsmode == InvitationMode.Censorship{
+                return ""
+            }
 			return String(format: NSLocalizedString("Invitation.Code.Message", comment: ""), code)
 		}
 	}

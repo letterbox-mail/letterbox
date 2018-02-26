@@ -193,5 +193,7 @@
 "Invitation.Step.CTA" = "Weiter machen";
 "Invitation.Step.Undo" = "Rückgängig machen";
 "Invitation.Encrypt" = "Verschlüsseln";
+"Invitation.Encrypt.Censor" = "Verbergen";
 "Invitation.Decrypt" = "Entschlüsseln";
+"Invitation.Decrypt.Censor" = "Offenlegen";
 "Invitation.CensorFooter" = "\nWarum ist nicht alles lesbar?\nEine unverschlüsselte E-Mail ist wie eine Postkarte, auch der E-Mail-Provider und vielleicht Andere können mitlesen. Einige Teile der Nachricht sind privat oder pikant, sollten darum verborgen bleiben und wurden darum geschwärzt.\nDein Gegenüber nutzt bereits mit Letterbox ein Programm umdie Kommunikation vor den neugierigen Augen von Anderen zu schützen. Wenn Du auch mitmachst, erreicht ihr beide gemeinsam das Ziel.\nFür mehr Informationen finden sich auf https://userpage.fu-berlin.de/wieseoli/letterbox   ";

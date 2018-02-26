@@ -189,4 +189,7 @@
 "Invitation.Step.CTA" = "Weiter machen";
 "Invitation.Step.Undo" = "Rückgängig machen";
 "Invitation.Encrypt" = "Verschlüsseln";
+"Invitation.Encrypt.Censor" = "Verbergen";
 "Invitation.Decrypt" = "Entschlüsseln";
+"Invitation.Decrypt.Censor" = "Offenlegen";
+
