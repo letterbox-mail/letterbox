@@ -88,7 +88,7 @@ extension DialogViewController {
 		self.iconImageView?.image = option.icon?.withRenderingMode(.alwaysTemplate)
 		self.iconBackgroundView?.isHidden = option.icon == nil
 		self.iconBackgroundImageView?.image = option.titleImage
-        if (self.iconBackgroundImageView?.isAnimating)! {
+        if let animated = self.iconBackgroundImageView?.isAnimating, animated == true {
             self.iconBackgroundImageView?.animationRepeatCount = -1
         }
 		self.ctaButton?.backgroundColor = option.color

@@ -13,12 +13,9 @@ import UIKit
 
 /*
  TODO:
- Code Berechnung und Darstellung optional
  Code speichern (pro Kontakt)
  Erklärung was genau passiert?
- Text überarbeiten
- Text Onboarding popup (Verschlüsseln-> verbergen)
- InviteMode == Enc || InviteMode == Censor -> Was dann mit Einladebutton?
+ InviteMode == Enc || InviteMode == Censor -> Einladebutton wird zu Infobutton
  FreiText -> Popup -> leere E-Mail
 */
 struct InvitationSelection {
@@ -53,7 +50,7 @@ extension SendViewController {
         }.map { (range) -> String in
             return (text as NSString).substring(with: range)
         }
-        let cipherText = SwiftPGP().symmetricEncrypt(textToEncrypt: [textsToEncrypt.joined(separator: "\n")], armored: true)
+        let cipherText = SwiftPGP().symmetricEncrypt(textToEncrypt: [textsToEncrypt.joined(separator: "\n")], armored: true, password: nil)
         let texts = textsToEncrypt.map { _ -> String in
             // Change text in mail body
             if isCensored{
@@ -88,8 +85,6 @@ extension SendViewController {
                 
             }
         }
-        print(text)
-
         if (self.invitationSelection.code == nil && StudySettings.invitationsmode == InvitationMode.PasswordEnc) {
             self.invitationSelection.code = cipherText.password
         }

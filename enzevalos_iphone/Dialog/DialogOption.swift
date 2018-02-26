@@ -30,15 +30,13 @@ enum DialogOption {
 		case .invitationCode	: return nil
 		case .invitationWelcome	:
             if StudySettings.invitationsmode == InvitationMode.Censorship {
-                if let ani = UIImage.animatedImageNamed("bg_invitation_censor", duration: 4){
-                    return ani
-                }
                 var images = [UIImage]()
-                images.append(UIImage(named: "letter_open")!)
-                images.append(UIImage(named: "letter_corrupted")!)
-
-                let ani = UIImage.animatedImage(with: images, duration: 10)
-                return 
+                if let sender = UIImage(named: "bg_inviation_censor_sender"), let receiver = UIImage(named: "bg_inviation_censor_receiver") {
+                    images.append(sender)
+                    images.append(receiver)
+                    return UIImage.animatedImage(with: images, duration: 3)
+                }
+                
             }
             return UIImage(named: "bg_inviation")
 		case .invitationStep	: return nil
