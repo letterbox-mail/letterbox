@@ -183,8 +183,8 @@
 "Invitation.Code.Share" = "Teilen";
 "Invitation.Code.Done" = "Fertig";
 "Invitation.Welcome.Title" = "Vertraulich kommunizieren";
-"Invitation.Welcome.Message" = "Du kannst pikanten oder sensiblen Texte markieren, um diese dann zu verschlüsseln. Zeige deinen Kontakten, dass man auch vertraulich kommunizieren kann.";
-"Invitation.Welcome.Message.Censor" = "Du kannst pikanten oder sensiblen Texte markieren, um diese dann zu verbergen. Zeige deinen Kontakten, dass du lieber einige Informationen vertraulich mitteilen willst.";
+"Invitation.Welcome.Message" = "Du kannst pikante oder sensible Textstellen markieren, um diese dann zu verschlüsseln. Zeige deinen Kontakten, dass man auch vertraulich kommunizieren kann.";
+"Invitation.Welcome.Message.Censor" = "Du kannst pikante oder sensible Textstellen markieren, um diese zu verbergen. Zeige deinen Kontakten, dass du einige Informationen lieber vertraulich mitteilen willst.";
 "Invitation.Welcome.Try" = "Jetzt ausprobieren";
 "Invitation.Welcome.Later" = "Vielleicht später";
 "Invitation.Welcome.Dont.Ask" = "Nicht mehr anzeigen";
@@ -196,4 +196,4 @@
 "Invitation.Encrypt.Censor" = "Verbergen";
 "Invitation.Decrypt" = "Entschlüsseln";
 "Invitation.Decrypt.Censor" = "Offenlegen";
-"Invitation.CensorFooter" = "\nWarum ist nicht alles lesbar?\nEine unverschlüsselte E-Mail ist wie eine Postkarte, auch der E-Mail-Provider und vielleicht Andere können mitlesen. Einige Teile der Nachricht sind privat oder pikant, sollten darum verborgen bleiben und wurden darum geschwärzt.\nDein Gegenüber nutzt bereits mit Letterbox ein Programm umdie Kommunikation vor den neugierigen Augen von Anderen zu schützen. Wenn Du auch mitmachst, erreicht ihr beide gemeinsam das Ziel.\nFür mehr Informationen finden sich auf https://userpage.fu-berlin.de/wieseoli/letterbox   ";
+"Invitation.CensorFooter" = "\n\n____________________________\nWarum ist nicht alles lesbar?\nEine unverschlüsselte E-Mail ist wie eine Postkarte; der E-Mail-Provider und möglicherweise auch Andere können mitlesen. Einige Teile dieser Nachricht sind privat oder pikant. Sie sollen vor Mitlesern verborgen bleiben und wurden darum geschwärzt.\nDein Gegenüber nutzt mit Letterbox bereits ein Programm um die Kommunikation vor den neugierigen Augen Anderer zu schützen. Wenn Du auch mitmachst, erreicht ihr beide gemeinsam das Ziel.\nFür mehr Informationen finden sich auf https://userpage.fu-berlin.de/wieseoli/letterbox ";
