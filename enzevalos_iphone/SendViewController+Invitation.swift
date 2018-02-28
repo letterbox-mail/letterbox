@@ -192,6 +192,7 @@ extension SendViewController {
         let controller = DialogViewController.present(on: self, with: .invitationWelcome) { [weak self] in
             self?.view.endEditing(true)
         }
+
         controller?.ctaAction = {
             controller?.hideDialog(completion: nil)
         }
@@ -210,6 +211,7 @@ extension SendViewController {
         self.view.endEditing(true)
         InvitationUserDefaults.shouldNotShowSecondDialog.set(true)
         let controller = DialogViewController.present(on: self, with: .invitationStep)
+
         controller?.ctaAction = {
             controller?.hideDialog(completion: nil)
         }
@@ -217,6 +219,14 @@ extension SendViewController {
         controller?.dismissAction = { [weak self] in
             self?.invitationSelection.selectedWords = Set<NSRange>()
             self?.layoutText()
+        }
+    }
+
+    func showHelpDialog() {
+        let controller = DialogViewController.present(on: self, with: .invitationHelp)
+
+        controller?.ctaAction = {
+            controller?.hideDialog(completion: nil)
         }
     }
 }
