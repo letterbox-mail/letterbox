@@ -50,7 +50,6 @@
 		3E9708D91FAC95F5005825C9 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C3841F30D06800E7F1D6 /* QRScannerView.swift */; };
 		3E9708DA1FAC95F5005825C9 /* PGPCryptoCFB.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8DB1F960B7C00D64416 /* PGPCryptoCFB.m */; };
 		3E9708DB1FAC95F5005825C9 /* ReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445F1E704C550080C041 /* ReplaceSegue.swift */; };
-		3E9708DC1FAC95F5005825C9 /* old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39871E1FA377009260FB /* old.swift */; };
 		3E9708DD1FAC95F5005825C9 /* ArrowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8611F436A11007649A5 /* ArrowTableViewCell.swift */; };
 		3E9708DE1FAC95F5005825C9 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
 		3E9708DF1FAC95F5005825C9 /* CryptoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00321F7B9565006CDD41 /* CryptoObject.swift */; };
@@ -243,7 +242,6 @@
 		472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */; };
 		472F39821E1E5347009260FB /* Mail_Address+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */; };
 		472F39861E1FA34E009260FB /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39851E1FA34E009260FB /* Record.swift */; };
-		472F39881E1FA377009260FB /* old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39871E1FA377009260FB /* old.swift */; };
 		472F398A1E251787009260FB /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39891E251787009260FB /* Contact.swift */; };
 		472F398C1E2519C8009260FB /* CNContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398B1E2519C8009260FB /* CNContactExtension.swift */; };
 		472F398E1E251B8D009260FB /* MailAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398D1E251B8D009260FB /* MailAddress.swift */; };
@@ -535,7 +533,6 @@
 		472F397F1E1E5347009260FB /* Mail_Address+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mail_Address+CoreDataClass.swift"; sourceTree = "<group>"; };
 		472F39801E1E5347009260FB /* Mail_Address+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mail_Address+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		472F39851E1FA34E009260FB /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
-		472F39871E1FA377009260FB /* old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = old.swift; sourceTree = "<group>"; };
 		472F39891E251787009260FB /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		472F398B1E2519C8009260FB /* CNContactExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CNContactExtension.swift; sourceTree = "<group>"; };
 		472F398D1E251B8D009260FB /* MailAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailAddress.swift; sourceTree = "<group>"; };
@@ -1006,7 +1003,6 @@
 				A114E4311FACB23000E40243 /* StringExtension.swift */,
 				47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */,
 				472F398B1E2519C8009260FB /* CNContactExtension.swift */,
-				472F39871E1FA377009260FB /* old.swift */,
 				472F398F1E252470009260FB /* CNMailAddressesExtension.swift */,
 				A1EB05871D956879008659C1 /* AddressHandler.swift */,
 				47B91AC01EC0C1CF000AE3EE /* coredata */,
@@ -1922,7 +1918,6 @@
 				473AC3A620054DFB006EB8A6 /* PGPSignatureSubpacketEmbeddedSignature.m in Sources */,
 				3E9708DA1FAC95F5005825C9 /* PGPCryptoCFB.m in Sources */,
 				3E9708DB1FAC95F5005825C9 /* ReplaceSegue.swift in Sources */,
-				3E9708DC1FAC95F5005825C9 /* old.swift in Sources */,
 				3E9708DD1FAC95F5005825C9 /* ArrowTableViewCell.swift in Sources */,
 				3E9708DE1FAC95F5005825C9 /* ContactViewController.swift in Sources */,
 				3E9708DF1FAC95F5005825C9 /* CryptoObject.swift in Sources */,
@@ -2071,7 +2066,6 @@
 				471BC9231F960B7C00D64416 /* PGPCryptoCFB.m in Sources */,
 				473AC39320054D07006EB8A6 /* PGPUserAttributeImageSubpacket.m in Sources */,
 				F18B44601E704C550080C041 /* ReplaceSegue.swift in Sources */,
-				472F39881E1FA377009260FB /* old.swift in Sources */,
 				8428A8661F436A11007649A5 /* ArrowTableViewCell.swift in Sources */,
 				F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */,
 				475B00351F7B9565006CDD41 /* CryptoObject.swift in Sources */,

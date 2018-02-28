@@ -264,17 +264,6 @@ class DataHandler {
         }
     }
 
-    private func delete(_ entityName: String, type: String, search: String) {
-        let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fReq.predicate = NSPredicate(format: "\(type) LIKE [cd] ", search) //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können... https://stackoverflow.com/questions/3076894/how-to-prevent-sql-injection-in-core-data#3078076
-        if let result = (try? self.managedObjectContext.fetch(fReq)) as? [NSManagedObject] {
-            for object in result {
-                self.managedObjectContext.delete(object)
-            }
-            save(during: "deleting")
-        }
-    }
-
     private func deleteNum(_ entityName: String, type: String, search: UInt64) {
         let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fReq.predicate = NSPredicate(format: "\(type) = %D ", search)
@@ -282,7 +271,7 @@ class DataHandler {
             for object in result {
                 self.managedObjectContext.delete(object)
             }
-            save(during: "Delte num")
+            save(during: "delete num")
         }
     }
 
