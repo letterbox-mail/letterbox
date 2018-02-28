@@ -39,7 +39,7 @@ class SendViewController: UIViewController {
     @IBOutlet weak var scrollViewBottom: NSLayoutConstraint!
     @IBOutlet var scrollviewRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var sendButton: UIBarButtonItem!
-    
+
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
     var keyboardHeight: CGFloat = 0
@@ -56,20 +56,20 @@ class SendViewController: UIViewController {
     var sendEncryptedIfPossible = true
     var freeTextInviationTitle = StudySettings.freeTextInvitationTitle
     var freeTextInvitationCall: (() -> (String)) = StudySettings.freeTextInvitationCode
-    var invite:Bool = false
+    var invite: Bool = false
 
-	var invitationSelection = InvitationSelection()
+    var invitationSelection = InvitationSelection()
 
-	var toSecure = true {
-		didSet {
-			self.updateMarkedText(for: self.textView)
-			self.showFirstDialogIfNeeded()
-		}
-	}
+    var toSecure = true {
+        didSet {
+            self.updateMarkedText(for: self.textView)
+            self.showFirstDialogIfNeeded()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, beginFunc: self.beginEditing, endFunc: self.endEditing, deleteFunc: { () -> Void in return })
         tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
         collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
@@ -77,7 +77,7 @@ class SendViewController: UIViewController {
 
         textView.font = UIFont.systemFont(ofSize: 17)
         textView.text = ""
-		textView.delegate = self
+        textView.delegate = self
 
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
 
@@ -150,7 +150,7 @@ class SendViewController: UIViewController {
         tableview.dataSource = tableDataDelegate
         tableview.register(UINib(nibName: "ContactCell", bundle: nil), forCellReuseIdentifier: "contacts")
         tableviewHeight.constant = 0
-        
+
         let indexPath = IndexPath()
         tableview.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
 
@@ -170,9 +170,9 @@ class SendViewController: UIViewController {
         updateNavigationBar()
 
         sendEncryptedIfPossible = currentSecurityState
-        
+
 //        Logger.queue.async(flags: .barrier) {
-            Logger.log(sendViewOpen: prefilledMail)
+        Logger.log(sendViewOpen: prefilledMail)
 //        }
     }
 
@@ -181,18 +181,18 @@ class SendViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
+        super.viewWillAppear(animated)
 
         updateNavigationBar()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
 //        Logger.queue.async(flags: .barrier) {
-            Logger.log(sendViewClose: prefilledMail)
+        Logger.log(sendViewClose: prefilledMail)
 //        }
         super.viewWillDisappear(animated)
     }
-    
+
     override func willMove(toParentViewController parent: UIViewController?) {
         super.willMove(toParentViewController: parent)
 
@@ -215,10 +215,9 @@ class SendViewController: UIViewController {
                     self.ccCollectionview.reloadData()
                     self.ccCollectionviewHeight.constant = 100
                     self.ccCollectionview.isHidden = false
-                }
-                    else {
-                        self.ccCollectionviewHeight.constant = 1
-                        self.ccCollectionview.isHidden = true
+                } else {
+                    self.ccCollectionviewHeight.constant = 1
+                    self.ccCollectionview.isHidden = true
                 }
             }
             if self.toText.isFirstResponder {
@@ -226,16 +225,14 @@ class SendViewController: UIViewController {
                     self.toCollectionview.reloadData()
                     self.toCollectionviewHeight.constant = 100
                     self.toCollectionview.isHidden = false
-                }
-                    else {
-                        self.toCollectionviewHeight.constant = 1
-                        self.toCollectionview.isHidden = true
+                } else {
+                    self.toCollectionviewHeight.constant = 1
+                    self.toCollectionview.isHidden = true
                 }
             }
-            
+
             self.toCollectionview.reloadData()
             self.ccCollectionview.reloadData()
-            
         }
     }
 
@@ -299,16 +296,17 @@ class SendViewController: UIViewController {
                         cc.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
-                
-                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: "", uid: 0, predecessor: nil)
-                
-                
+
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: "\n\nMehr Informationen unter https://userpage.fu-berlin.de/wieseoli/letterbox/", uid: 0, predecessor: nil)
+
+
                 controller.prefilledMail = mail
-                let alert = UIAlertController(title: "abc", message: "xyz", preferredStyle: .alert) //TODO: @Olli add your Text here
-                alert.addAction(UIAlertAction(title: "OK", style: .cancel))
-                DispatchQueue.main.async(execute: {
-                    controller.present(alert, animated: true, completion: nil)
-                })
+
+//                let alert = UIAlertController(title: "abc", message: "xyz", preferredStyle: .alert) //TODO: @Olli add your Text here
+//                alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+//                DispatchQueue.main.async(execute: {
+//                    controller.present(alert, animated: true, completion: nil)
+//                })
             }
         }
     }
@@ -339,40 +337,38 @@ class SendViewController: UIViewController {
 
     func beginEditing(_ tokenField: VENTokenField) {
         UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(rawValue: 7), animations: {
-        if tokenField == self.toText {
-            if self.collectionDataDelegate.collectionView(self.toCollectionview, numberOfItemsInSection: 0) > 0 {
-                self.toCollectionview.reloadData()
-                self.toCollectionviewHeight.constant = 100
-                self.toCollectionview.isHidden = false
-            }
-                else {
+            if tokenField == self.toText {
+                if self.collectionDataDelegate.collectionView(self.toCollectionview, numberOfItemsInSection: 0) > 0 {
+                    self.toCollectionview.reloadData()
+                    self.toCollectionviewHeight.constant = 100
+                    self.toCollectionview.isHidden = false
+                } else {
                     self.toCollectionviewHeight.constant = 1
                     self.toCollectionview.isHidden = true
-            }
-        } else if tokenField == self.ccText {
-            if self.collectionDataDelegate.collectionView(self.ccCollectionview, numberOfItemsInSection: 0) > 0 {
-                self.ccCollectionview.reloadData()
-                self.ccCollectionviewHeight.constant = 100
-                self.ccCollectionview.isHidden = false
-            }
-                else {
+                }
+            } else if tokenField == self.ccText {
+                if self.collectionDataDelegate.collectionView(self.ccCollectionview, numberOfItemsInSection: 0) > 0 {
+                    self.ccCollectionview.reloadData()
+                    self.ccCollectionviewHeight.constant = 100
+                    self.ccCollectionview.isHidden = false
+                } else {
                     self.ccCollectionviewHeight.constant = 1
                     self.ccCollectionview.isHidden = true
+                }
             }
-        }
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
 
     func endEditing(_ tokenField: VENTokenField) {
         UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(rawValue: 7), animations: {
-        if tokenField == self.toText {
-            self.toCollectionviewHeight.constant = 1
-            self.toCollectionview.isHidden = true
-        } else if tokenField == self.ccText {
-            self.ccCollectionviewHeight.constant = 1
-            self.ccCollectionview.isHidden = true
-        }
+            if tokenField == self.toText {
+                self.toCollectionviewHeight.constant = 1
+                self.toCollectionview.isHidden = true
+            } else if tokenField == self.ccText {
+                self.ccCollectionviewHeight.constant = 1
+                self.ccCollectionview.isHidden = true
+            }
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -427,39 +423,38 @@ class SendViewController: UIViewController {
         let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
         let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
         let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
-        
+
         if #available(iOS 11.0, *) {
-            
+
             guard let userInfo = notification.userInfo,
                 let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
                     return
             }
-            
+
             let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
             let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.bottom)
             let intersection = safeAreaFrame.intersection(keyboardFrameInView)
-            
+
             let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
             let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
             let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            
+
             self.keyboardY = keyboardFrameInView.minY
-            
+
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
                 self.additionalSafeAreaInsets.bottom = intersection.height
                 let desiredOffset = CGPoint(x: 0, y: 0)
                 self.scrollview.setContentOffset(desiredOffset, animated: false)
                 self.view.layoutIfNeeded()
             }, completion: nil)
-        }
-        else {
+        } else {
             var info = notification.userInfo!
             let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
             keyboardY = keyboardFrame.origin.y
             if keyboardHeight == 0 {
                 keyboardHeight = keyboardFrame.height
-            
+
                 UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
                     self.scrollViewBottom.constant -= self.keyboardHeight
                     let desiredOffset = CGPoint(x: 0, y: -self.keyboardHeight)
@@ -468,8 +463,8 @@ class SendViewController: UIViewController {
                 }, completion: nil)
             } else {
                 UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
-                    self.scrollViewBottom.constant += (self.keyboardHeight-keyboardFrame.height)
-                    let desiredOffset = CGPoint(x: 0, y: +(self.keyboardHeight-keyboardFrame.height))
+                    self.scrollViewBottom.constant += (self.keyboardHeight - keyboardFrame.height)
+                    let desiredOffset = CGPoint(x: 0, y: +(self.keyboardHeight - keyboardFrame.height))
                     self.keyboardHeight = keyboardFrame.height
                     self.scrollview.setContentOffset(desiredOffset, animated: false)
                     self.view.layoutIfNeeded()
@@ -477,37 +472,36 @@ class SendViewController: UIViewController {
             }
         }
     }
-    
+
     func keyboardClose(_ notification: Notification) {
         let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
         let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
         let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
-        
+
         if #available(iOS 11.0, *) {
-            
+
             guard let userInfo = notification.userInfo,
                 let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
                     return
             }
-            
+
             let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
             let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.bottom)
             let intersection = safeAreaFrame.intersection(keyboardFrameInView)
-            
+
             self.keyboardY = 0
-            
+
             let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
             let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
             let animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            
+
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
                 self.additionalSafeAreaInsets.bottom = intersection.height
                 self.view.layoutIfNeeded()
             }, completion: nil)
-        }
-        else {
+        } else {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
                 self.scrollViewBottom.constant += self.keyboardHeight
                 self.keyboardY = 0
@@ -544,21 +538,21 @@ class SendViewController: UIViewController {
     }
 
     func sendCompleted() {
-		guard let code = self.invitationSelection.code, self.htmlMessage() != nil else {
-			self.navigationController?.dismiss(animated: true, completion: nil)
-			return
-		}
+        guard let code = self.invitationSelection.code, self.htmlMessage() != nil else {
+            self.navigationController?.dismiss(animated: true, completion: nil)
+            return
+        }
 
-		let controller = DialogViewController.present(on: self, with: .invitationCode(code: code))
-		controller?.ctaAction = {
-			let activityController = UIActivityViewController(activityItems: [code], applicationActivities: nil)
-			controller?.present(activityController, animated: true, completion: nil)
-			controller?.markDismissButton(with: .invitationCode(code: code))
-		}
+        let controller = DialogViewController.present(on: self, with: .invitationCode(code: code))
+        controller?.ctaAction = {
+            let activityController = UIActivityViewController(activityItems: [code], applicationActivities: nil)
+            controller?.present(activityController, animated: true, completion: nil)
+            controller?.markDismissButton(with: .invitationCode(code: code))
+        }
 
-		controller?.dismissAction = { [weak self] in
-			self?.dismiss(animated: true, completion: nil)
-		}
+        controller?.dismissAction = { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+        }
     }
 
 
@@ -568,10 +562,10 @@ class SendViewController: UIViewController {
         guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
             return true
         }
-        
+
         toSecure = toSource.allSecure(toText)
         ccSecure = ccSource.allSecure(ccText)
-        
+
         return toSecure && ccSecure
     }
 
@@ -590,10 +584,10 @@ class SendViewController: UIViewController {
         guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
             return true
         }
-        
+
         let toKey = toSource.someInsecure(toText)
         let ccKey = ccSource.someInsecure(ccText)
-        
+
         return toKey || ccKey
     }
 
@@ -639,11 +633,20 @@ class SendViewController: UIViewController {
             if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") && !currentSecurityState && !UserDefaults.standard.bool(forKey: "hideFreeTextInvitation") {
                 alert.addAction(UIAlertAction(title: freeTextInviationTitle, style: .default, handler: {
                     (action: UIAlertAction) -> Void in
-                    let segue = self.freeTextInvitationCall()
-//                    Logger.queue.async(flags: .barrier) {
-                        Logger.log(close: url, mail: nil, action: segue)
-//                    }
-                    self.performSegue(withIdentifier: "inviteSegue", sender: nil)
+                    switch StudySettings.invitationsmode {
+                    case .InviteMail:
+                        self.performSegue(withIdentifier: "inviteSegue", sender: nil)
+                    case .FreeText:
+                        self.performSegue(withIdentifier: "inviteSegueStudy", sender: nil)
+                    case .Censorship, .PasswordEnc:
+                        DispatchQueue.main.async {
+                            self.showHelpDialog()
+                        }
+                    }
+//                    TODO: add logging
+//                    let segue = self.freeTextInvitationCall()
+//                    Logger.log(close: url, mail: nil, action: segue)
+//                    self.performSegue(withIdentifier: "inviteSegue", sender: nil)
                 }))
             }
         } else {
@@ -653,35 +656,25 @@ class SendViewController: UIViewController {
         if someoneWithKeyPresent {
             if sendEncryptedIfPossible {
                 alert.addAction(UIAlertAction(title: someoneWithoutKeyPresent ? NSLocalizedString("sendInsecureAll", comment: "This mail should be send insecurely to everyone, including contacts with keys") : NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-//                    Logger.queue.async(flags: .barrier) {
-                        Logger.log(close: url, mail: nil, action: "sendInsecure")
-//                    }
+                    Logger.log(close: url, mail: nil, action: "sendInsecure")
                     self.sendEncryptedIfPossible = false
                     DispatchQueue.main.async { self.animateIfNeeded() }
                 }))
             } else {
                 alert.addAction(UIAlertAction(title: someoneWithoutKeyPresent ? NSLocalizedString("sendSecureIfPossible", comment: "This mail should be send securely to people with keys") : NSLocalizedString("sendSecure", comment: "This mail should be send securely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-//                    Logger.queue.async(flags: .barrier) {
-                        Logger.log(close: url, mail: nil, action: "sendSecureIfPossible")
-//                    }
+                    Logger.log(close: url, mail: nil, action: "sendSecureIfPossible")
                     self.sendEncryptedIfPossible = true
                     DispatchQueue.main.async { self.animateIfNeeded() }
                 }))
             }
         }
-//        Logger.queue.async(flags: .barrier) {
-            Logger.log(open: url, mail: nil)
-//        }
+        Logger.log(open: url, mail: nil)
         alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(close: url, mail: nil, action: "openURL")
-//            }
+            Logger.log(close: url, mail: nil, action: "openURL")
             UIApplication.shared.openURL(URL(string: url)!)
         }))
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action: UIAlertAction!) -> Void in
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(close: url, mail: nil, action: "OK")
-//            }
+            Logger.log(close: url, mail: nil, action: "OK")
         }))
         DispatchQueue.main.async(execute: {
             self.present(alert, animated: true, completion: nil)
@@ -737,16 +730,16 @@ class SendViewController: UIViewController {
         let toEntrys = toText.mailTokens
         let ccEntrys = ccText.mailTokens
         let subject = subjectText.inputText()!
-		let message: String = (self.htmlMessage() ?? self.textView.text)
+        let message: String = (self.htmlMessage() ?? self.textView.text)
 
-        if invite{
-            for addr in toEntrys{
-                if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String){
+        if invite {
+            for addr in toEntrys {
+                if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String) {
                     mailAddr.invitations = mailAddr.invitations + 1
                 }
             }
-            for addr in ccEntrys{
-                if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String){
+            for addr in ccEntrys {
+                if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String) {
                     mailAddr.invitations = mailAddr.invitations + 1
                 }
             }
@@ -764,7 +757,7 @@ extension SendViewController: UIGestureRecognizerDelegate {
         }
         return false
     }
-    
+
     @IBAction func tapped(_ sender: UITapGestureRecognizer) {
         if let view = sender.view, view == scrollview, sender.location(in: view).y >= textView.frame.minY {
             textView.becomeFirstResponder()
@@ -782,17 +775,17 @@ extension VENTokenFieldDataSource {
 
         return false
     }
-    
+
     func someInsecure(_ tokenField: VENTokenField) -> Bool {
         for entry in tokenField.mailTokens {
             if !DataHandler.handler.hasKey(adr: entry as! String) {
                 return true
             }
         }
-        
+
         return false
     }
-    
+
     /**
      Returns a bool showing whether all contacts in the field have a key. Returns true if no contacts are present.
      */
@@ -802,7 +795,7 @@ extension VENTokenFieldDataSource {
                 return false
             }
         }
-        
+
         return true
     }
 }

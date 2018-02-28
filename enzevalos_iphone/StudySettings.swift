@@ -19,7 +19,7 @@ enum StudyParamter: Int {
             case .Warning:
                 return "warning"
             case .Invitation:
-                    return "invitation"
+                return "invitation"
             }
         }
     }
