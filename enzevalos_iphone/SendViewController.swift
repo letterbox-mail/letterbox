@@ -464,7 +464,7 @@ class SendViewController: UIViewController {
             } else {
                 UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve, animations: {
                     self.scrollViewBottom.constant += (self.keyboardHeight - keyboardFrame.height)
-                    let desiredOffset = CGPoint(x: 0, y: + (self.keyboardHeight - keyboardFrame.height))
+                    let desiredOffset = CGPoint(x: 0, y: +(self.keyboardHeight - keyboardFrame.height))
                     self.keyboardHeight = keyboardFrame.height
                     self.scrollview.setContentOffset(desiredOffset, animated: false)
                     self.view.layoutIfNeeded()
