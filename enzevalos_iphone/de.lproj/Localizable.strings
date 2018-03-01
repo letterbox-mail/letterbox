@@ -199,4 +199,4 @@
 "Invitation.Decrypt" = "Entschlüsseln";
 "Invitation.Decrypt.Censor" = "Offenlegen";
 "Invitation.CensorFooter" = "\n\nWarum ist nicht alles lesbar?\n\nEine unverschlüsselte E-Mail ist wie eine Postkarte, auch der E-Mail-Provider und vielleicht Andere können mitlesen. Einige Teile der Nachricht sind privat oder pikant, sollten darum verborgen bleiben und wurden darum geschwärzt.\n\nDein Gegenüber nutzt bereits mit Letterbox ein Programm umdie Kommunikation vor den neugierigen Augen von Anderen zu schützen. Wenn Du auch mitmachst, erreicht ihr beide gemeinsam das Ziel.\n\nFür mehr Informationen finden sich auf https://userpage.fu-berlin.de/wieseoli/letterbox   ";
-"Invitation.ComposeMail" = "Die E-Mail kannst du nach deinen Wünschen anpassen. Zur wissenschaftlichen Untersuchung wird der Inhalt dieser E-Mail auch mitgeloggt."
+"Invitation.ComposeMail" = "Die E-Mail kannst du nach deinen Wünschen anpassen. Zur wissenschaftlichen Untersuchung wird der Inhalt dieser E-Mail auch mitgeloggt.";
