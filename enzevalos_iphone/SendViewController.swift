@@ -658,10 +658,8 @@ class SendViewController: UIViewController {
                             self.showHelpDialog()
                         }
                     }
-//                    TODO: add logging
-//                    let segue = self.freeTextInvitationCall()
-//                    Logger.log(close: url, mail: nil, action: segue)
-//                    self.performSegue(withIdentifier: "inviteSegue", sender: nil)
+
+                    Logger.log(close: url, mail: nil, action: "invitationButton in mode \(StudySettings.invitationsmode)")
                 }))
             }
         } else {
