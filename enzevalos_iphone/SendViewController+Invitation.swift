@@ -58,6 +58,10 @@ extension SendViewController {
             }
             return String.random(length: 10)
         }
+        
+        if texts.count > 0 {
+            isInvitationMail = true
+        }
 
         guard
             let urlTexts = texts.joined(separator: ",").urlString,
@@ -113,15 +117,21 @@ extension SendViewController {
         }
 
         guard selectedRange != nil else {
-            var labelTitel = NSLocalizedString("Invitation.Encrypt", comment: "")
-            if StudySettings.invitationsmode == InvitationMode.Censorship{
-                labelTitel = NSLocalizedString("Invitation.Encrypt.Censor", comment: "")
+            let labelTitel: String
+            switch StudySettings.invitationsmode {
+                case .Censorship    : labelTitel = NSLocalizedString("Invitation.Encrypt.Censor", comment: "")
+                case .PasswordEnc   : labelTitel = NSLocalizedString("Invitation.Encrypt", comment: "")
+                case .FreeText,
+                     .InviteMail    : return nil
             }
             return [UIMenuItem(title: labelTitel, action: #selector(self.markSelectedText))]
         }
-        var labelTitel = NSLocalizedString("Invitation.Decrypt", comment: "")
-        if StudySettings.invitationsmode == InvitationMode.Censorship{
-            labelTitel = NSLocalizedString("Invitation.Decrypt.Censor", comment: "")
+        let labelTitel: String
+        switch StudySettings.invitationsmode {
+        case .Censorship    : labelTitel = NSLocalizedString("Invitation.Decrypt.Censor", comment: "")
+        case .PasswordEnc   : labelTitel = NSLocalizedString("Invitation.Decrypt", comment: "")
+        case .FreeText,
+             .InviteMail    : return nil
         }
         return [UIMenuItem(title: labelTitel, action: #selector(self.unmarkSelectedText))]
     }
@@ -195,6 +205,14 @@ extension SendViewController {
 
         controller?.ctaAction = {
             controller?.hideDialog(completion: nil)
+            //TODO: Olli Add here censorfooter
+            switch StudySettings.invitationsmode {
+                case .FreeText, .InviteMail:
+                // create new empty Mail to invite one -> See SendViewController 278
+                return
+            case .Censorship, .PasswordEnc:
+                return
+            }
         }
 
         controller?.dismissAction = {

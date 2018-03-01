@@ -31,16 +31,21 @@ enum DialogOption {
 		case .postcard			: return nil
 		case .invitationCode	: return nil
 		case .invitationWelcome, .invitationHelp :
-            if StudySettings.invitationsmode == InvitationMode.Censorship {
-                var images = [UIImage]()
-                if let sender = UIImage(named: "bg_inviation_censor_sender"), let receiver = UIImage(named: "bg_inviation_censor_receiver") {
-                    images.append(sender)
-                    images.append(receiver)
-                    return UIImage.animatedImage(with: images, duration: 3)
-                }
-                
+            switch StudySettings.invitationsmode {
+                case InvitationMode.Censorship:
+                    var images = [UIImage]()
+                    if let sender = UIImage(named: "bg_inviation_censor_sender"), let receiver = UIImage(named: "bg_inviation_censor_receiver") {
+                        images.append(sender)
+                        images.append(receiver)
+                        return UIImage.animatedImage(with: images, duration: 4)
+                    }
+                    return nil
+                case .PasswordEnc:
+                    return UIImage(named: "bg_inviation")
+                case .FreeText,
+                     .InviteMail:
+                    return UIImage(named: "postcard")
             }
-            return UIImage(named: "bg_inviation")
 		case .invitationStep	: return nil
 		}
 	}
@@ -70,11 +75,17 @@ enum DialogOption {
 		case .postcard			: return "Message\nMultiline and long texts are allowed, btw second button is hidden"
 		case .invitationWelcome,
              .invitationHelp    :
-            if StudySettings.invitationsmode == InvitationMode.Censorship{
-                return NSLocalizedString("Invitation.Welcome.Message.Censor", comment: "")
+            switch StudySettings.invitationsmode {
+                case .Censorship    : return NSLocalizedString("Invitation.Welcome.Message.Censor", comment: "")
+                case .FreeText,
+                     .InviteMail    : return NSLocalizedString("Invitation.Welcome.Message.InvitationMail", comment: "")
+                case .PasswordEnc   : return NSLocalizedString("Invitation.Welcome.Message", comment: "")
             }
-            return NSLocalizedString("Invitation.Welcome.Message", comment: "")
-		case .invitationStep	: return NSLocalizedString("Invitation.Step.Message", comment: "")
+		case .invitationStep	:
+            if StudySettings.invitationsmode == InvitationMode.Censorship{
+                return NSLocalizedString("Invitation.Step.Message.Censor", comment: "")
+            }
+            return NSLocalizedString("Invitation.Step.Message", comment: "")
 		case .invitationCode(let code)	:
             if StudySettings.invitationsmode == InvitationMode.Censorship{
                 return ""
@@ -87,7 +98,13 @@ enum DialogOption {
 		switch self {
 		case .postcard			: return "Freunde einladen"
 		case .invitationCode	: return NSLocalizedString("Invitation.Code.Share", comment: "")
-		case .invitationWelcome	: return NSLocalizedString("Invitation.Welcome.Try", comment: "")
+		case .invitationWelcome	:
+            switch StudySettings.invitationsmode {
+                case .FreeText,
+                     .InviteMail    : return NSLocalizedString("Invitation.Welcome.Try.InvitationMail", comment: "")
+                case .Censorship,
+                     .PasswordEnc   : return NSLocalizedString("Invitation.Welcome.Try", comment: "")
+            }
 		case .invitationStep	: return NSLocalizedString("Invitation.Step.CTA", comment: "")
         case .invitationHelp    : return NSLocalizedString("Done", comment: "")
 		}

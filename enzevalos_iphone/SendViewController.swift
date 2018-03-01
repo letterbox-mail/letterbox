@@ -57,6 +57,11 @@ class SendViewController: UIViewController {
     var freeTextInviationTitle = StudySettings.freeTextInvitationTitle
     var freeTextInvitationCall: (() -> (String)) = StudySettings.freeTextInvitationCode
     var invite: Bool = false
+    
+    var isInvitationMail: Bool = false
+    
+    
+    
 
     var invitationSelection = InvitationSelection()
 
@@ -262,6 +267,7 @@ class SendViewController: UIViewController {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController {
                 controller.invite = true
+                controller.isInvitationMail = true
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
@@ -284,6 +290,8 @@ class SendViewController: UIViewController {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController {
                 controller.invite = true
+                controller.isInvitationMail = true
+
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
@@ -532,6 +540,13 @@ class SendViewController: UIViewController {
                     self.prefilledMail?.predecessor?.isAnwered = true
                 }
             }
+            if isInvitationMail {
+                let informAlert = UIAlertController(title: NSLocalizedString("ReceiveError", comment: "There was an error"), message: NSLocalizedString("ErrorText", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
+                informAlert.addAction(UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: UIAlertActionStyle.default, handler: nil))
+                self.present(informAlert, animated: true, completion: nil)
+                sendButton.isEnabled = true
+            }
+            
             sendButton.isEnabled = true
             self.sendCompleted()
         }

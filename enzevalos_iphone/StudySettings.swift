@@ -24,7 +24,7 @@ enum StudyParamter: Int {
         }
     }
     
-    var fileDir: String {
+    var keyName: String {
         get{
             switch  self {
             case .Warning:
@@ -34,7 +34,7 @@ enum StudyParamter: Int {
             }
         }
     }
-    var variables: Int {
+    var numberOfTreatments: Int {
         get{
             switch self {
             case .Warning:
@@ -60,7 +60,7 @@ class StudySettings {
     
     public static var invitationEnabled: Bool{
         get{
-            return invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc
+            return true //invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc
         }
     }
     static var freeTextInvitationTitle = NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key")
@@ -93,8 +93,8 @@ class StudySettings {
     
     static var invitationsmode: InvitationMode{
         get{
-            return InvitationMode.Censorship
-            let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.fileDir)
+            return InvitationMode.FreeText
+            let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.keyName)
             if let mode = InvitationMode.init(rawValue: value){
                 return mode
             }
@@ -109,13 +109,13 @@ class StudySettings {
             var studyParamters = [StudyParamter: Int]()
             for parameter in parameters{
                 var value: Int?
-                if let state = keychain[parameter.fileDir], let num = Int(state) {
+                if let state = keychain[parameter.keyName], let num = Int(state) {
                     value = num
                 }
                 else {
-                    value = Int(arc4random_uniform(UInt32(parameter.variables)))
+                    value = Int(arc4random_uniform(UInt32(parameter.numberOfTreatments)))
                     if let value = value{
-                        keychain[parameter.fileDir] = String(value)
+                        keychain[parameter.keyName] = String(value)
                     }
                 }
                 if parameter == StudyParamter.Invitation{
@@ -123,7 +123,7 @@ class StudySettings {
                     value = InvitationMode.Censorship.rawValue
                 }
                 if let v = value{
-                    UserDefaults.standard.set(v, forKey: parameter.fileDir)
+                    UserDefaults.standard.set(v, forKey: parameter.keyName)
                     studyParamters[parameter] = v
                 }
             }
