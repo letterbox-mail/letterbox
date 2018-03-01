@@ -184,7 +184,7 @@
 "Invitation.Welcome.Title" = "Vertraulich kommunizieren";
 "Invitation.Welcome.Message" = "Du kannst pikante oder sensible Textstellen markieren, um diese dann zu verschlüsseln. Zeige deinen Kontakten, dass man auch vertraulich kommunizieren kann.";
 "Invitation.Welcome.Message.Censor" = "Du kannst pikante oder sensible Textstellen markieren, um diese zu verberen. Zeige deinen Kontakten, dass du lieber einige Informationen vertraulich mitteilen willst.";
-"Invitation.Welcome.Message.InvitationMail" = "Mit dieser Person kannst du keine Briefe austauschen. Du kannst Sie bitten mitzumachen. Nachdem die andere Person per Brief geantwortet hat, kann an diese auch ein Brief versendet werden.";
+"Invitation.Welcome.Message.InvitationMail" = "Mit dieser Person kannst du keine Briefe austauschen. Du kannst Sie bitten mitzumachen. Nachdem die andere Person per Brief geantwortet hat, kann diese auch ein Briefe empfangen";
 "Invitation.Welcome.Try" = "Jetzt ausprobieren";
 "Invitation.Welcome.Try.InvitationMail" = "Kontakt einladen";
 "Invitation.Welcome.Later" = "Vielleicht später";
