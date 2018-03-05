@@ -540,13 +540,7 @@ class SendViewController: UIViewController {
                     self.prefilledMail?.predecessor?.isAnwered = true
                 }
             }
-            if isInvitationMail {
-                let informAlert = UIAlertController(title: NSLocalizedString("ReceiveError", comment: "There was an error"), message: NSLocalizedString("ErrorText", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
-                informAlert.addAction(UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: UIAlertActionStyle.default, handler: nil))
-                self.present(informAlert, animated: true, completion: nil)
-                sendButton.isEnabled = true
-            }
-            
+
             sendButton.isEnabled = true
             self.sendCompleted()
         }
