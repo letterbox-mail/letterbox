@@ -54,13 +54,18 @@ extension SendViewController {
         let texts = textsToEncrypt.map { _ -> String in
             // Change text in mail body
             if isCensored{
-                return String(repeating: "*", count: (Int(arc4random_uniform(10)+3)))
+                return String(repeating: "█" as String as String, count: (Int(arc4random_uniform(7)+3)))
             }
             return String.random(length: 10)
         }
         
         if texts.count > 0 {
-            isInvitationMail = true
+            if isCensored {
+                isCensoredMail = true
+            }
+            else{
+                isPartialEncryptedMail = true
+            }
         }
 
         guard
@@ -194,7 +199,7 @@ extension SendViewController {
 
     func showFirstDialogIfNeeded() {
 
-        guard (self.isEligibleForInvitation() == true && self.invitationSelection.didShowDialog == false && InvitationUserDefaults.shouldNotShowFirstDialog.bool == false) else {
+        guard (self.isEligibleForInvitation() == true && self.invitationSelection.didShowDialog == false && InvitationUserDefaults.shouldNotShowFirstDialog.bool == false && invite == false) else {
             return
         }
 
@@ -205,11 +210,13 @@ extension SendViewController {
 
         controller?.ctaAction = {
             controller?.hideDialog(completion: nil)
-            //TODO: Olli Add here censorfooter
             switch StudySettings.invitationsmode {
-                case .FreeText, .InviteMail:
-                // create new empty Mail to invite one -> See SendViewController 278
-                return
+                case .FreeText:
+                    self.performSegue(withIdentifier: "inviteSegueStudy", sender: nil)
+                    return
+                case .InviteMail:
+                    self.performSegue(withIdentifier: "inviteSegue", sender: nil)
+                    return
             case .Censorship, .PasswordEnc:
                 return
             }

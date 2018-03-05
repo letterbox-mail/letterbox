@@ -149,6 +149,7 @@
 "newKeyHeadline" = "Neues Schloss";
 "newKeyText" = "Diese Nachricht wurde mit einem neuem Schloss verbunden. Dies kann passieren wenn der Gesprächspartner ein neues Gerät hat oder wenn ein Dritter diese Nachricht gefälscht hat.";
 "inviteContacts" = "Unsichere Kontakte einladen";
+"inviteContacts.Censor" = "Unsichere Kontakte einladen";
 "inviteSubject" = "Lass uns unsere E-Mails verschlüsseln!";
 "inviteText" = "Hallo, \n\nbisher waren unsere E-Mails immer wie Postkarten und die E-Mail-Provider konnten immer mitlesen. Davor schützt Ende-Zu-Ende-Verschlüsselung. Ich probiere gerade Letterbox aus, aber es gibt auch andere Programme. Letterbox ist besonders einfach und unkompliziert. Wollen wir es mal gemeinsam ausprobieren? \n\n Eine Übersicht über andere Programme und weitere Erklärungen finden sich hier: \n\nLETTERBOX:ORG \n\nViele Grüße!";//"Hallo!\n\nEs gibt eine neue App die es super einfach macht verschlüsselt über E-Mail zu kommunizieren. Sie heißt Letterbox und wird aktuell in einer wissenschaftlichen Studie getestet.\n\nEs wäre toll wenn du sie mal ausprobieren würdest!\n\nGehe einfach auf https://userpage.fu-berlin.de/wieseoli/letterbox um mitzumachen.\n\nViele Grüße!";
 "noName" = "OHNE NAME";
@@ -182,6 +183,7 @@
 "Invitation.Code.Share" = "Teilen";
 "Invitation.Code.Done" = "Fertig";
 "Invitation.Welcome.Title" = "Vertraulich kommunizieren";
+"Invitation.Welcome.Title.InvitationMail" = "Bitte um Teilnahme";
 "Invitation.Welcome.Message" = "Du kannst pikante oder sensible Textstellen markieren, um diese dann zu verschlüsseln. Zeige deinen Kontakten, dass man auch vertraulich kommunizieren kann.";
 "Invitation.Welcome.Message.Censor" = "Du kannst pikante oder sensible Textstellen markieren, um diese zu verberen. Zeige deinen Kontakten, dass du lieber einige Informationen vertraulich mitteilen willst.";
 "Invitation.Welcome.Message.InvitationMail" = "Mit dieser Person kannst du keine Briefe austauschen. Du kannst Sie bitten mitzumachen. Nachdem die andere Person per Brief geantwortet hat, kann diese auch ein Briefe empfangen";

@@ -57,8 +57,8 @@ class SendViewController: UIViewController {
     var freeTextInviationTitle = StudySettings.freeTextInvitationTitle
     var freeTextInvitationCall: (() -> (String)) = StudySettings.freeTextInvitationCode
     var invite: Bool = false
-    
-    var isInvitationMail: Bool = false
+    var isCensoredMail: Bool = false
+    var isPartialEncryptedMail: Bool = false
     
     
     
@@ -267,7 +267,6 @@ class SendViewController: UIViewController {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController {
                 controller.invite = true
-                controller.isInvitationMail = true
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
@@ -290,7 +289,6 @@ class SendViewController: UIViewController {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController {
                 controller.invite = true
-                controller.isInvitationMail = true
 
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
@@ -539,14 +537,7 @@ class SendViewController: UIViewController {
                 if self.prefilledMail?.predecessor != nil {
                     self.prefilledMail?.predecessor?.isAnwered = true
                 }
-            }
-            if isInvitationMail {
-                let informAlert = UIAlertController(title: NSLocalizedString("ReceiveError", comment: "There was an error"), message: NSLocalizedString("ErrorText", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
-                informAlert.addAction(UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: UIAlertActionStyle.default, handler: nil))
-                self.present(informAlert, animated: true, completion: nil)
-                sendButton.isEnabled = true
-            }
-            
+            }            
             sendButton.isEnabled = true
             self.sendCompleted()
         }
@@ -760,7 +751,7 @@ class SendViewController: UIViewController {
             }
             DataHandler.handler.save(during: "invite")
         }
-        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (self.htmlMessage() != nil), inviteMail: true)
+        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (self.htmlMessage() != nil && StudySettings.invitationsmode == InvitationMode.InviteMail), inviteMail: true)
         sendButton.isEnabled = false
     }
 }

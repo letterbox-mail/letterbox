@@ -63,7 +63,14 @@ class StudySettings {
             return true //invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc
         }
     }
-    static var freeTextInvitationTitle = NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key")
+    static var freeTextInvitationTitle: String {
+        get{
+            if invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc {
+                return NSLocalizedString("inviteContacts.Censor", comment: "Allows users to invite contacts without encryption key")
+            }
+            return NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key")
+        }
+    }
     static var freeTextInvitationCode: (() -> (String)) = {Void in return "inviteSegueStudy"/*use "inviteSegue" if there is no study present*/ } //return segue id to perform
     static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
     static let raffleURL = ""
@@ -93,7 +100,7 @@ class StudySettings {
     
     static var invitationsmode: InvitationMode{
         get{
-            return InvitationMode.FreeText
+            return InvitationMode.PasswordEnc
             let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.keyName)
             if let mode = InvitationMode.init(rawValue: value){
                 return mode
