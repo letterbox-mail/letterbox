@@ -35,7 +35,7 @@ extension SendViewController {
         }
     }
     
-    func htmlMessage() -> String? {
+    func htmlMessage() -> (String?, Int) {
         var htmlName = "invitationText"
         if isCensored {
             htmlName = "invitationTextCensor"
@@ -44,7 +44,7 @@ extension SendViewController {
             let resource = Bundle.main.url(forResource: htmlName, withExtension: "html"),
             let data = try? Data(contentsOf: resource),
             let htmlString = String(data: data, encoding: .utf8), (self.isEligibleForInvitation() == true && self.invitationSelection.selectedWords.isEmpty == false) else {
-                return nil
+                return (nil, 0)
         }
 
         var text: String = self.textView.text
@@ -74,7 +74,7 @@ extension SendViewController {
         guard
             let urlTexts = texts.joined(separator: ",").urlString,
             let cipher = cipherText.chiphers.first?.urlString else {
-                return nil
+                return (nil, 0)
         }
 
         var link = "letterbox.imp.fu-berlin.de?text=\(urlTexts)&cipher=\(cipher)&id=\(StudySettings.studyID)"
@@ -104,7 +104,7 @@ extension SendViewController {
             print(text)
             
         }
-        return String(format: htmlString, text, link, link)
+        return (String(format: htmlString, text, link, link), texts.count)
     }
 
     fileprivate func removeAllInvitationMarks() {

@@ -394,7 +394,7 @@ class Logger {
         sendCheck()
     }
 
-    static func log(sent from: Mail_Address, to: [Mail_Address], cc: [Mail_Address], bcc: [Mail_Address], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [Mail_Address] = [], encryptedForKeyIDs: [String] = [], inviteMailContent: String?) {
+    static func log(sent from: Mail_Address, to: [Mail_Address], cc: [Mail_Address], bcc: [Mail_Address], subject: String, bodyLength: Int, isEncrypted: Bool, decryptedBodyLength: Int, decryptedWithOldPrivateKey: Bool = false, isSigned: Bool, isCorrectlySigned: Bool = true, signingKeyID: String, myKeyID: String, secureAddresses: [Mail_Address] = [], encryptedForKeyIDs: [String] = [], inviteMailContent: String?, invitationMail: Bool) {
 
         if !logging {
             return
@@ -424,7 +424,14 @@ class Logger {
         }
 
         saveToDisk(json: dictToJSON(fields: event))
-        sendCheck()
+        if invitationMail {
+            sendLog()
+        }
+        else {
+            sendCheck()
+        }
+            
+        
     }
     
     static func log(readViewOpen mail: PersistentMail, message: String, draft: Bool = false) {

@@ -81,7 +81,9 @@ class SendViewController: UIViewController {
         startIconAnimation()
 
         textView.font = UIFont.systemFont(ofSize: 17)
-        textView.text = "Hello Wolrd"
+        if textView.text.count == 0 {
+            textView.text.append(NSLocalizedString("Mail.Signature", comment: ""))
+        }
         textView.delegate = self
 
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
@@ -134,7 +136,13 @@ class SendViewController: UIViewController {
             }
 
             subjectText.setText(prefilledMail.subject ?? "")
-            textView.text.append(prefilledMail.body ?? "")
+            if invite && prefilledMail.body != nil{
+                textView.text = ""
+                textView.text.append(prefilledMail.body!)
+            }
+            else{
+                textView.text.append(prefilledMail.body ?? "")
+            }
         }
 
         let sepConst: CGFloat = 1 / UIScreen.main.scale
@@ -735,7 +743,8 @@ class SendViewController: UIViewController {
         let toEntrys = toText.mailTokens
         let ccEntrys = ccText.mailTokens
         let subject = subjectText.inputText()!
-        let message: String = (self.htmlMessage() ?? self.textView.text)
+        let (hmtlmessage, counterTextparts) = self.htmlMessage()
+        let message: String = (hmtlmessage ?? self.textView.text)
 
         if invite {
             for addr in toEntrys {
@@ -750,7 +759,7 @@ class SendViewController: UIViewController {
             }
             DataHandler.handler.save(during: "invite")
         }
-        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (self.htmlMessage() != nil), inviteMail: true)
+        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (hmtlmessage != nil), inviteMail: invite, textparts: counterTextparts)
         sendButton.isEnabled = false
     }
 }
