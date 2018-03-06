@@ -100,7 +100,6 @@ class StudySettings {
     
     static var invitationsmode: InvitationMode{
         get{
-            return InvitationMode.PasswordEnc
             let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.keyName)
             if let mode = InvitationMode.init(rawValue: value){
                 return mode

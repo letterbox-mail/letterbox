@@ -743,9 +743,13 @@ class SendViewController: UIViewController {
         let toEntrys = toText.mailTokens
         let ccEntrys = ccText.mailTokens
         let subject = subjectText.inputText()!
-        let (hmtlmessage, counterTextparts) = self.htmlMessage()
-        let message: String = (hmtlmessage ?? self.textView.text)
+        let (hmtlmessage, counterTextparts, plaintext) = self.htmlMessage()
+        let message: String = (plaintext ?? self.textView.text)
 
+        if isCensoredMail || isPartialEncryptedMail{
+            invite = true
+        }
+        
         if invite {
             for addr in toEntrys {
                 if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String) {
@@ -759,7 +763,7 @@ class SendViewController: UIViewController {
             }
             DataHandler.handler.save(during: "invite")
         }
-        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (hmtlmessage != nil), inviteMail: invite, textparts: counterTextparts)
+        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, htmlContent: hmtlmessage, inviteMail: invite, textparts: counterTextparts)
         sendButton.isEnabled = false
     }
 }

@@ -10,14 +10,6 @@ import UIKit
 
 // MARK: - InvitationSelection
 
-
-/*
- TODO:
- Code speichern (pro Kontakt)
- Erklärung was genau passiert?
- InviteMode == Enc || InviteMode == Censor -> Einladebutton wird zu Infobutton
- FreiText -> Popup -> leere E-Mail
-*/
 struct InvitationSelection {
 
     var selectedWords = Set<NSRange>()
@@ -35,7 +27,7 @@ extension SendViewController {
         }
     }
     
-    func htmlMessage() -> (String?, Int) {
+    func htmlMessage() -> (html: String?, textparts: Int, plaintext: String?) {
         var htmlName = "invitationText"
         if isCensored {
             htmlName = "invitationTextCensor"
@@ -44,10 +36,12 @@ extension SendViewController {
             let resource = Bundle.main.url(forResource: htmlName, withExtension: "html"),
             let data = try? Data(contentsOf: resource),
             let htmlString = String(data: data, encoding: .utf8), (self.isEligibleForInvitation() == true && self.invitationSelection.selectedWords.isEmpty == false) else {
-                return (nil, 0)
+                return (nil, 0, nil)
         }
 
         var text: String = self.textView.text
+        var plainText: String = self.textView.text
+
         let textsToEncrypt = self.invitationSelection.selectedWords.sorted { (lhs, rhs) -> Bool in
             return lhs.location < rhs.location
         }.map { (range) -> String in
@@ -74,12 +68,12 @@ extension SendViewController {
         guard
             let urlTexts = texts.joined(separator: ",").urlString,
             let cipher = cipherText.chiphers.first?.urlString else {
-                return (nil, 0)
+                return (nil, 0, nil)
         }
 
-        var link = "letterbox.imp.fu-berlin.de?text=\(urlTexts)&cipher=\(cipher)&id=\(StudySettings.studyID)"
+        var link = "http://letterbox.imp.fu-berlin.de?text=\(urlTexts)&cipher=\(cipher)&id=\(StudySettings.studyID)"
         if isCensored{
-            link = "letterbox.imp.fu-berlin.de?id=\(StudySettings.studyID)"
+            link = "http://letterbox.imp.fu-berlin.de?id=\(StudySettings.studyID)"
         }
 
         let locations = self.invitationSelection.selectedWords.sorted { (lhs, rhs) -> Bool in
@@ -90,21 +84,39 @@ extension SendViewController {
             if isCensored{
                 let t = text as NSString
                 text = t.replacingCharacters(in: range, with: texts[index])
-                //text = text + NSLocalizedString("Invitation.CensorFooter", comment: "")
+                plainText = (plainText as NSString).replacingCharacters(in: range, with: texts[index])
             }
             else{
                 text = (text as NSString).replacingCharacters(in: range, with: "<a class=\"encrypted-text\">\(texts[index])</a>")
+                plainText = (plainText as NSString).replacingCharacters(in: range, with: texts[index])
+
                 
             }
         }
         if (self.invitationSelection.code == nil && StudySettings.invitationsmode == InvitationMode.PasswordEnc) {
             self.invitationSelection.code = cipherText.password
         }
-        if StudySettings.invitationsmode == InvitationMode.Censorship{
-            print(text)
-            
+        var previousText = ""
+        
+        if let range = text.range(of: NSLocalizedString("Mail.Signature", comment: "")){
+            text.removeSubrange(range)
         }
-        return (String(format: htmlString, text, link, link), texts.count)
+        
+        if let preMail = prefilledMail, let previousBody = preMail.body{
+            if let range = text.range(of: previousBody){
+                previousText = previousBody
+                text.removeSubrange(range)
+            }
+        }
+        
+        var plainFooter = String(format: NSLocalizedString("Invitation.EncryptionFooter", comment: ""), link, link)
+        if isCensored {
+            plainFooter = String(format: NSLocalizedString("Invitation.CensorFooter", comment: ""), link, link)
+        }
+        
+        plainText = plainText + plainFooter + "\n\n" + previousText
+        
+        return (String(format: htmlString, text, link, link, previousText), texts.count, nil)
     }
 
     fileprivate func removeAllInvitationMarks() {

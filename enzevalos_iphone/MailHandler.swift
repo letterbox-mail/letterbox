@@ -268,7 +268,7 @@ class MailHandler {
     }
 
     //logMail should be false, if called from Logger, otherwise 
-    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, isHTMLContent: Bool = false, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
+    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
         
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
@@ -379,11 +379,12 @@ class MailHandler {
                         createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                     }
 
-					if (isHTMLContent == true) {
-						builder.htmlBody = message
-					} else {
-						builder.textBody = message
-					}
+					if let html = htmlContent {
+						builder.htmlBody = html
+                    } else {
+                        builder.textBody = message
+                    }
+    
                 } else {
                     //TODO do it better
                     callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
@@ -392,11 +393,11 @@ class MailHandler {
 
             if let unenc = ordered[CryptoScheme.UNKNOWN], !loggingMail {
                 if unenc.count > 0 {
-					if (isHTMLContent == true) {
-						builder.htmlBody = message
-					} else {
-						builder.textBody = message
-					}
+					if let html = htmlContent {
+						builder.htmlBody = html
+                    } else {
+                        builder.textBody = message
+                    }
 
                     sendData = builder.data()
                     sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
