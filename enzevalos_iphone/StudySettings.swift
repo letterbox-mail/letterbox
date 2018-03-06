@@ -34,7 +34,7 @@ enum StudyParamter: Int {
             }
         }
     }
-    var numberOfTreatments: Int {
+    var numberOfTreatments: UInt32 {
         get{
             switch self {
             case .Warning:
@@ -59,12 +59,12 @@ class StudySettings {
     static let parameters = [StudyParamter.Invitation]
     
     public static var invitationEnabled: Bool{
-        get{
+        get {
             return true //invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc
         }
     }
     static var freeTextInvitationTitle: String {
-        get{
+        get {
             if invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc {
                 return NSLocalizedString("inviteContacts.Censor", comment: "Allows users to invite contacts without encryption key")
             }
@@ -72,14 +72,14 @@ class StudySettings {
         }
     }
     static var freeTextInvitationCode: (() -> (String)) = {Void in return "inviteSegueStudy"/*use "inviteSegue" if there is no study present*/ } //return segue id to perform
-    static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
+    static let faqURL = "https://userpage.fu-berlin.de/letterbox/faq.html"
     static let raffleURL = ""
     static var studyID: String {
         return UserDefaults.standard.string(forKey: "studyID") ?? ""
     }
-    static var entrySurveyURL: String{
-        get{
-            return "https://userpage.fu-berlin.de/wieseoli/letterbox/entrysurvey.html?id=\(studyID)"
+    static var entrySurveyURL: String {
+        get {
+            return "https://userpage.fu-berlin.de/letterbox/entrysurvey.html?id=\(studyID)"
         }
     }
     static var bitcoinMails: Bool { //do we recived a mail from bitcoin.de
@@ -100,7 +100,7 @@ class StudySettings {
     
     static var invitationsmode: InvitationMode{
         get{
-            return InvitationMode.PasswordEnc
+            return InvitationMode.InviteMail
             let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.keyName)
             if let mode = InvitationMode.init(rawValue: value){
                 return mode
@@ -120,14 +120,10 @@ class StudySettings {
                     value = num
                 }
                 else {
-                    value = Int(arc4random_uniform(UInt32(parameter.numberOfTreatments)))
+                    value = Int(arc4random_uniform(parameter.numberOfTreatments))
                     if let value = value{
                         keychain[parameter.keyName] = String(value)
                     }
-                }
-                if parameter == StudyParamter.Invitation{
-                    //TODO: Remove @Olli
-                    value = InvitationMode.Censorship.rawValue
                 }
                 if let v = value{
                     UserDefaults.standard.set(v, forKey: parameter.keyName)
@@ -167,7 +163,6 @@ class StudySettings {
         }
         let parameters = studyParameters
         
-        //TODO: @Olli set entry "hideFreeTextInvitation" in UserDefaults to true if needed
         
 //        Logger.queue.async(flags: .barrier) {
         Logger.log(setupStudy: parameters, alreadyRegistered: !presentFirstQuestionaireMail, bitcoin: bitcoinMails)
@@ -182,26 +177,7 @@ class StudySettings {
         let subject = "Herzlich Willkommen in Letterbox"
         let body =
         """
-        Liebe Teilnehmerin, lieber Teilnehmer,
-        
-        Herzlichen Glückwunsch! Sie haben Letterbox erfolgreich installiert.
-        
-        Wir haben einen Eingangsfragebogen mit maximal 10 Fragen über Ihre bisherigen Erfahrungen mit E-Mail-Verschlüsselung vorbereitet und würden Sie bitten diesen auszufüllen.
-        Dazu folgen Sie bitte folgendem Link:
-        \(entrySurveyURL)
-        
-        Wenn Sie Fragen zur App oder Verschlüsselung haben, besuchen Sie doch unsere Hilfeseite:
-        \(faqURL)
-        
-        Dort finden Sie auch Videos zum Thema Ende-zu-Ende-Verschlüsselung.
-        Falls Sie Fragen haben oder uns Feedback geben möchten, freuen wir uns auf Ihre E-Mail!
-        
-        Verfassen Sie doch einen ersten Brief, indem Sie auf diese E-Mail antworten und uns Ihre Erfahrungen, Fragen oder Kommentare mitteilen. Ist etwas unklar geblieben? Was war Ihnen neu? Hätten Sie sich sonst noch etwas gewünscht?
-        
-        Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen,
-        Ihr Letterbox-Team
-        
-        PS: Diese Nachricht wurde automatisch in Letterbox erzeugt und ist nur hier gespeichert.
+        Sie können auch gerne Fragen zur Einführung stellen.
         """
         mailToParticipat(subject: subject, body: body)
     }

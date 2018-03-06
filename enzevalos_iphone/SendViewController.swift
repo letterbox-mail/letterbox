@@ -81,7 +81,7 @@ class SendViewController: UIViewController {
         startIconAnimation()
 
         textView.font = UIFont.systemFont(ofSize: 17)
-        textView.text = ""
+        textView.text = "Hello Wolrd"
         textView.delegate = self
 
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
@@ -280,7 +280,8 @@ class SendViewController: UIViewController {
                     }
                 }
 
-                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: NSLocalizedString("inviteText", comment: "Body for the invitation mail"), uid: 0, predecessor: nil)
+                let body = String(format: NSLocalizedString("inviteText", comment: "Body for the invitation mail"),StudySettings.studyID)
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: body, uid: 0, predecessor: nil)
 
 
                 controller.prefilledMail = mail
@@ -303,7 +304,7 @@ class SendViewController: UIViewController {
                     }
                 }
 
-                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: "\n\nMehr Informationen unter https://userpage.fu-berlin.de/wieseoli/letterbox/", uid: 0, predecessor: nil)
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: "\n\nMehr Informationen unter https://userpage.fu-berlin.de/letterbox/", uid: 0, predecessor: nil)
 
 
                 controller.prefilledMail = mail
@@ -635,7 +636,7 @@ class SendViewController: UIViewController {
         let url: String
         if !UISecurityState {
             alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: sendEncryptedIfPossible ? NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext") : NSLocalizedString("SendInsecureInfoAll", comment: "Postcard infotext"), preferredStyle: .alert)
-            url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#headingPostcard"
+            url = "https://userpage.fu-berlin.de/letterbox/faq.html#headingPostcard"
             if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") && !currentSecurityState && !UserDefaults.standard.bool(forKey: "hideFreeTextInvitation") {
                 alert.addAction(UIAlertAction(title: freeTextInviationTitle, style: .default, handler: {
                     (action: UIAlertAction) -> Void in
@@ -655,7 +656,7 @@ class SendViewController: UIViewController {
             }
         } else {
             alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
-            url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#secureMail"
+            url = "https://userpage.fu-berlin.de/letterbox/faq.html#secureMail"
         }
         if someoneWithKeyPresent {
             if sendEncryptedIfPossible {
@@ -749,7 +750,7 @@ class SendViewController: UIViewController {
             }
             DataHandler.handler.save(during: "invite")
         }
-        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (self.htmlMessage() != nil && StudySettings.invitationsmode == InvitationMode.InviteMail), inviteMail: true)
+        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, isHTMLContent: (self.htmlMessage() != nil), inviteMail: true)
         sendButton.isEnabled = false
     }
 }

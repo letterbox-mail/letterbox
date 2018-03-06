@@ -326,10 +326,10 @@ class ReadViewController: UITableViewController {
             let url: String
             if m.trouble {
                 alert = UIAlertController(title: NSLocalizedString("LetterDamaged", comment: "Modified email received")/*"Angerissener Brief"*/, message: NSLocalizedString("ReceiveDamagedInfo", comment: "Modefied email infotext"), preferredStyle: .alert)
-                url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#collapseTorn"
+                url = "https://userpage.fu-berlin.de/letterbox/faq.html#collapseTorn"
             } else if m.isSecure {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
-                url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#secureMailAnswer"
+                url = "https://userpage.fu-berlin.de/letterbox/faq.html#secureMailAnswer"
                 alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in
 //                    Logger.queue.async(flags: .barrier) {
                         Logger.log(close: url, mail: m, action: "exportKey")
@@ -338,16 +338,16 @@ class ReadViewController: UITableViewController {
                 }))
             } else if m.isCorrectlySigned {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .alert)
-                url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#collapsePostcard"
+                url = "https://userpage.fu-berlin.de/letterbox/faq.html#collapsePostcard"
             } else if m.isEncrypted && !m.unableToDecrypt {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoEncrypted", comment: "Postcard infotext"), preferredStyle: .alert)
-                url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#collapsePostcard"
+                url = "https://userpage.fu-berlin.de/letterbox/faq.html#collapsePostcard"
             } else if m.isEncrypted && m.unableToDecrypt {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoDecryptionFailed", comment: "Postcard infotext"), preferredStyle: .alert)
-                url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#collapseBeginPGP"
+                url = "https://userpage.fu-berlin.de/letterbox/faq.html#collapseBeginPGP"
             } else {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
-                url = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#collapsePostcard"
+                url = "https://userpage.fu-berlin.de/letterbox/faq.html#collapsePostcard"
             }
 //            Logger.queue.async(flags: .barrier) {
                 Logger.log(open: url, mail: m)

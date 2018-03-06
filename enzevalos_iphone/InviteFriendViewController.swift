@@ -221,7 +221,7 @@ class InviteFriendViewController: UIViewController, UITableViewDataSource, UITab
             if let controller = navigationController?.topViewController as? SendViewController, self.selectedContact != nil {
                 let sendTo = selectedContact!.getMailAddresses()
 
-                let body = NSLocalizedString("inviteText", comment: "Body for the invitation mail")
+                let body = String(format: NSLocalizedString("inviteText", comment: "Body for the invitation mail"), StudySettings.studyID)
                 let time = DateFormatter.init()
                 time.dateStyle = .short
                 time.timeStyle = .short

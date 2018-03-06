@@ -247,7 +247,7 @@ class MailHandler {
         builder.header.setExtraHeaderValue("v0", forName: SETUPMESSAGE)
 
 
-        builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices \n\n"))
+        builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/letterbox/faq.html#otherDevices \n\n"))
 
         // See: https://autocrypt.org/level1.html#autocrypt-setup-message
         let keyAttachment = MCOAttachment.init(text: key)

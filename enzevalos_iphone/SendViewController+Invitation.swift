@@ -36,9 +36,12 @@ extension SendViewController {
     }
     
     func htmlMessage() -> String? {
-
+        var htmlName = "invitationText"
+        if isCensored {
+            htmlName = "invitationTextCensor"
+        }
         guard
-            let resource = Bundle.main.url(forResource: "invitationText", withExtension: "html"),
+            let resource = Bundle.main.url(forResource: htmlName, withExtension: "html"),
             let data = try? Data(contentsOf: resource),
             let htmlString = String(data: data, encoding: .utf8), (self.isEligibleForInvitation() == true && self.invitationSelection.selectedWords.isEmpty == false) else {
                 return nil
@@ -74,9 +77,9 @@ extension SendViewController {
                 return nil
         }
 
-        var link = "http://enzevalos.konstantindeichmann.de?text=\(urlTexts)&cipher=\(cipher)"
+        var link = "letterbox.imp.fu-berlin.de?text=\(urlTexts)&cipher=\(cipher)&id=\(StudySettings.studyID)"
         if isCensored{
-            link = "https://userpage.fu-berlin.de/wieseoli/letterbox/"
+            link = "letterbox.imp.fu-berlin.de?id=\(StudySettings.studyID)"
         }
 
         let locations = self.invitationSelection.selectedWords.sorted { (lhs, rhs) -> Bool in
@@ -87,7 +90,7 @@ extension SendViewController {
             if isCensored{
                 let t = text as NSString
                 text = t.replacingCharacters(in: range, with: texts[index])
-                text = text + NSLocalizedString("Invitation.CensorFooter", comment: "")
+                //text = text + NSLocalizedString("Invitation.CensorFooter", comment: "")
             }
             else{
                 text = (text as NSString).replacingCharacters(in: range, with: "<a class=\"encrypted-text\">\(texts[index])</a>")
@@ -98,7 +101,7 @@ extension SendViewController {
             self.invitationSelection.code = cipherText.password
         }
         if StudySettings.invitationsmode == InvitationMode.Censorship{
-            return text
+            print(text)
             
         }
         return String(format: htmlString, text, link, link)
