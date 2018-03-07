@@ -967,9 +967,10 @@ class MailHandler {
                 if let m = mail {
                     let pgp = SwiftPGP()
                     if let autoc = autocrypt {
-                        let publickeys = try! pgp.importKeys(key: autoc.key, pw: nil, isSecretKey: false, autocrypt: true)
-                        for pk in publickeys {
-                            _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
+                        if let publickeys = try? pgp.importKeys(key: autoc.key, pw: nil, isSecretKey: false, autocrypt: true) {
+                            for pk in publickeys {
+                                _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
+                            }
                         }
                     }
                     for keyId in newKeyIds {
@@ -1007,19 +1008,22 @@ class MailHandler {
                         let e = end.upperBound
                         let pk = content[s..<e]
                         let pgp = SwiftPGP()
-                        let keyId = try! pgp.importKeys(key: pk, pw: nil, isSecretKey: false, autocrypt: false)
-                        newKey.append(contentsOf: keyId)
+                        if let keyId = try? pgp.importKeys(key: pk, pw: nil, isSecretKey: false, autocrypt: false) {
+                            newKey.append(contentsOf: keyId)
+                        }
                     }
                 }
             }
         } else if attachment.mimeType == "application/octet-stream", let content = String(data: attachment.data, encoding: String.Encoding.utf8), content.hasPrefix("-----BEGIN PGP PUBLIC KEY BLOCK-----") && (content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----") || content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----\n")) {
             let pgp = SwiftPGP()
-            let keyId = try! pgp.importKeys(key: content, pw: nil, isSecretKey: false, autocrypt: false)
-            newKey.append(contentsOf: keyId)
+            if let keyId = try? pgp.importKeys(key: content, pw: nil, isSecretKey: false, autocrypt: false) {
+                newKey.append(contentsOf: keyId)
+            }
         } else if attachment.mimeType == "application/pgp-keys" {
             let pgp = SwiftPGP()
-            let keyIds = try! pgp.importKeys(data: attachment.data, pw: nil, secret: false)
-            newKey.append(contentsOf: keyIds)
+            if let keyIds = try? pgp.importKeys(data: attachment.data, pw: nil, secret: false) {
+                newKey.append(contentsOf: keyIds)
+            }
         }
         return newKey
     }
@@ -1055,8 +1059,9 @@ class MailHandler {
                 }
             }
             if let a = autocrypt {
-                let key = try! pgp.importKeys(key: a.key, pw: nil, isSecretKey: false, autocrypt: true)
-                keyIds.append(contentsOf: key)
+                if let key = try? pgp.importKeys(key: a.key, pw: nil, isSecretKey: false, autocrypt: true) {
+                    keyIds.append(contentsOf: key)
+                }
             }
             let secretkeys = DataHandler.handler.findSecretKeys()
             var decIds = [String]()

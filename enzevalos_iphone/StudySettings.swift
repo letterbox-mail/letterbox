@@ -40,17 +40,17 @@ enum StudyParamter: Int {
             case .Warning:
                 return 2
             case .Invitation:
-                return 4
+                return 3
             }
         }
     }
 }
 
 enum InvitationMode: Int {
-    case FreeText = 0
-    case InviteMail = 1
-    case PasswordEnc = 2
-    case Censorship = 3
+    case InviteMail
+    case PasswordEnc
+    case Censorship
+    case FreeText
 }
 
 class StudySettings {
