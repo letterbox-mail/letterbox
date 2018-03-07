@@ -464,7 +464,6 @@ class MailHandler {
         //TODO add support for different Encryptions here
         var sendData: Data
 
-        //TODO: Consider pref enc = false
         let pgp = SwiftPGP()
         let keys = DataHandler.handler.findSecretKeys()
         if keys.count > 0 && allRec.reduce(true, { $0 && DataHandler.handler.hasKey(adr: $1) }) {
