@@ -62,13 +62,14 @@ class SendViewController: UIViewController {
     
     var sendInProgress: Bool = false {
         didSet {
+            if sendInProgress {
+                self.view.endEditing(true)
+            }
             sendButton.isEnabled = !sendInProgress
             textView.isEditable = !sendInProgress
             subjectText.isEnabled = !sendInProgress
             toText.isEnabled = !sendInProgress
             ccText.isEnabled = !sendInProgress
-            toText.resignFirstResponder()
-            ccText.resignFirstResponder()
         }
     }
 
@@ -748,6 +749,8 @@ class SendViewController: UIViewController {
     }
 
     @IBAction func pressSend(_ sender: AnyObject?) {
+        sendInProgress = true
+
         let toEntrys = toText.mailTokens
         let ccEntrys = ccText.mailTokens
         let subject = subjectText.inputText()!
@@ -772,7 +775,6 @@ class SendViewController: UIViewController {
             DataHandler.handler.save(during: "invite")
         }
         mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, htmlContent: hmtlmessage, inviteMail: invite, textparts: counterTextparts)
-        sendInProgress = true
     }
 }
 
