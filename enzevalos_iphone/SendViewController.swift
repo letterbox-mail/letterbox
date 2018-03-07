@@ -60,8 +60,17 @@ class SendViewController: UIViewController {
     var isCensoredMail: Bool = false
     var isPartialEncryptedMail: Bool = false
     
-    
-    
+    var sendInProgress: Bool = false {
+        didSet {
+            sendButton.isEnabled = !sendInProgress
+            textView.isEditable = !sendInProgress
+            subjectText.isEnabled = !sendInProgress
+            toText.isEnabled = !sendInProgress
+            ccText.isEnabled = !sendInProgress
+            toText.resignFirstResponder()
+            ccText.resignFirstResponder()
+        }
+    }
 
     var invitationSelection = InvitationSelection()
 
@@ -139,8 +148,7 @@ class SendViewController: UIViewController {
             if invite && prefilledMail.body != nil{
                 textView.text = ""
                 textView.text.append(prefilledMail.body!)
-            }
-            else{
+            } else {
                 textView.text.append(prefilledMail.body ?? "")
             }
         }
@@ -539,15 +547,15 @@ class SendViewController: UIViewController {
             let alert = UIAlertController(title: NSLocalizedString("ReceiveError", comment: "There was an error"), message: NSLocalizedString("ErrorText", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
-            sendButton.isEnabled = true
+            sendInProgress = false
         } else {
             NSLog("Send successful!")
             if (self.prefilledMail != nil) {
                 if self.prefilledMail?.predecessor != nil {
                     self.prefilledMail?.predecessor?.isAnwered = true
                 }
-            }            
-            sendButton.isEnabled = true
+            }
+            sendInProgress = false
             self.sendCompleted()
         }
     }
@@ -764,7 +772,7 @@ class SendViewController: UIViewController {
             DataHandler.handler.save(during: "invite")
         }
         mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, htmlContent: hmtlmessage, inviteMail: invite, textparts: counterTextparts)
-        sendButton.isEnabled = false
+        sendInProgress = true
     }
 }
 

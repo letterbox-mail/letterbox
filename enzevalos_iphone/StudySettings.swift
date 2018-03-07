@@ -65,10 +65,12 @@ class StudySettings {
     }
     static var freeTextInvitationTitle: String {
         get {
-            if invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc {
+            switch self.invitationsmode {
+            case .FreeText, .InviteMail:
+                return NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key")
+            case .Censorship, .PasswordEnc:
                 return NSLocalizedString("inviteContacts.Censor", comment: "Allows users to invite contacts without encryption key")
             }
-            return NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key")
         }
     }
     static var freeTextInvitationCode: (() -> (String)) = {Void in return "inviteSegueStudy"/*use "inviteSegue" if there is no study present*/ } //return segue id to perform
@@ -117,8 +119,7 @@ class StudySettings {
                 var value: Int?
                 if let state = keychain[parameter.keyName], let num = Int(state) {
                     value = num
-                }
-                else {
+                } else {
                     value = Int(arc4random_uniform(parameter.numberOfTreatments))
                     if let value = value{
                         keychain[parameter.keyName] = String(value)
