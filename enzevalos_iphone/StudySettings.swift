@@ -176,7 +176,26 @@ class StudySettings {
         let subject = "Herzlich Willkommen in Letterbox"
         let body =
         """
-        Sie können auch gerne Fragen zur Einführung stellen.
+        Liebe Teilnehmerin, lieber Teilnehmer,
+        
+        Herzlichen Glückwunsch! Sie haben Letterbox erfolgreich installiert.
+        
+        Wenn Sie Fragen zur App oder Verschlüsselung haben, besuchen Sie doch unsere Hilfeseite:
+        \(faqURL)
+        
+        Dort finden Sie auch Videos zum Thema Ende-zu-Ende-Verschlüsselung.
+        Falls Sie Fragen haben oder uns Feedback geben möchten, freuen wir uns auf Ihre E-Mail!
+        
+        Die Studie umfasst drei Aufgaben und kann jederzeit abgebrochen werden. Für Fragen schreiben Sie uns bitte eine E-Mail und benutzen Sie bitte nach Möglichkeit die Letterbox dafür.
+        
+        In der ersten Aufgabe verfassen Sie bitte einen ersten Brief, indem Sie auf diese E-Mail antworten. Bitte teilen Sie uns Ihre Meinung mit. Ist etwas unklar geblieben? Was war neu für Sie? Was fanden Sie besonders interessant; was uninteressant? Hätten Sie sich noch weitere Informationen gewünscht? Sie können auch gerne Fragen zur Einführung stellen.
+        
+        Nach Beantwortung dieser E-Mail senden wir Ihnen zu einem späteren Zeitpunkt eine zweite E-Mail mit der nächsten kurzen Aufgabe zu.
+        
+        Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen,
+        Ihr Letterbox-Team
+        
+        PS: Diese Nachricht wurde automatisch in Letterbox erzeugt und ist nur hier gespeichert.
         """
         mailToParticipat(subject: subject, body: body)
     }

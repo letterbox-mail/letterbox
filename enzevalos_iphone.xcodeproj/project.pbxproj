@@ -1469,7 +1469,7 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = VJ9C93G68Y;
 						LastSwiftMigration = 0820;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -2474,8 +2474,9 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				DEVELOPMENT_TEAM = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
@@ -2508,8 +2509,8 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3aaeb64f-5416-4e9e-a6ee-2cb191401818";
-				PROVISIONING_PROFILE_SPECIFIER = "SMF Enterprise Wildcard DEBUG";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2527,8 +2528,9 @@
 				CODE_SIGN_ENTITLEMENTS = enzevalos_iphone/PLists/enzevalos_iphone.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
-				DEVELOPMENT_TEAM = VJ9C93G68Y;
+				DEVELOPMENT_TEAM = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "enzevalos_iphone/PLists/enzevalos-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
@@ -2561,8 +2563,8 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3aaeb64f-5416-4e9e-a6ee-2cb191401818";
-				PROVISIONING_PROFILE_SPECIFIER = "SMF Enterprise Wildcard DEBUG";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "enzevalos_iphone-Bridging-Header.h";
 				"SWIFT_OBJC_BRIDGING_HEADER[sdk=*]" = "enzevalos_iphone/enzevalos_iphone-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

@@ -772,7 +772,7 @@ class MailHandler {
 
     func loadMailsForInbox(newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let folder = DataHandler.handler.findFolder(with: INBOX)
-        let folderstatus = IMAPSession.folderStatusOperation(folder.name)
+        let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
                 if self.shouldTryRefreshOAUTH {
@@ -1187,7 +1187,7 @@ class MailHandler {
     }
 
     func updateFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
-        let folderstatus = IMAPSession.folderStatusOperation(folder.name)
+        let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
                 if self.shouldTryRefreshOAUTH {
@@ -1207,7 +1207,7 @@ class MailHandler {
                 if let date = folder.lastUpdate {
                     self.loadMailsSinceDate(folder: folder, since: date, newMailCallback: newMailCallback, completionCallback: completionCallback)
                 } else {
-                    if folder.path == UserManager.backendInboxFolderPath || folder.path == "INBOX" || folder.path == "Inbox" {
+                    if folder.path == UserManager.backendInboxFolderPath || folder.path.lowercased() == "INBOX".lowercased() {
                         self.initInbox(inbox: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
                     } else {
                         self.initFolder(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
