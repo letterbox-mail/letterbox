@@ -63,10 +63,7 @@ class SendViewController: UIViewController {
     var sendInProgress: Bool = false {
         didSet {
             if sendInProgress {
-                textView.resignFirstResponder()
-                subjectText.resignFirstResponder()
-                toText.resignFirstResponder()
-                ccText.resignFirstResponder()
+                self.view.endEditing(true)
             }
             sendButton.isEnabled = !sendInProgress
             textView.isEditable = !sendInProgress
