@@ -71,9 +71,9 @@ extension SendViewController {
                 return (nil, 0, nil)
         }
 
-        var link = "http://letterbox.imp.fu-berlin.de?text=\(urlTexts)&cipher=\(cipher)&id=\(StudySettings.studyID)&censor=0"
+        var link = "http://letterbox.imp.fu-berlin.de?text=\(urlTexts)&cipher=\(cipher)&id=\(StudySettings.studyID)&invitation=Enc"
         if isCensored{
-            link = "http://letterbox.imp.fu-berlin.de?id=\(StudySettings.studyID)&censor=1"
+            link = "http://letterbox.imp.fu-berlin.de?id=\(StudySettings.studyID)&invitation=Censor"
         }
 
         let locations = self.invitationSelection.selectedWords.sorted { (lhs, rhs) -> Bool in
