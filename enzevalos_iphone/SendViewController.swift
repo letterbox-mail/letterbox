@@ -561,7 +561,7 @@ class SendViewController: UIViewController {
     }
 
     func sendCompleted() {
-        guard let code = self.invitationSelection.code, self.htmlMessage() != nil else {
+        guard let code = self.invitationSelection.code, isPartialEncryptedMail else {
             self.navigationController?.dismiss(animated: true, completion: nil)
             return
         }
