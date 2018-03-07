@@ -172,7 +172,11 @@ extension DialogViewController {
 
 	@IBAction private func ctaButtonTapped(sender: Any) {
 
-		self.ctaAction?()
+        self.hideDialog(true) { [weak self] in
+            self?.dismiss(animated: false, completion: { [weak self] in
+                self?.ctaAction?()
+            })
+        }
 	}
 
 	@IBAction private func additionalButtonTapped(sender: Any) {

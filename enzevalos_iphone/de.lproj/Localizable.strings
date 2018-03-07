@@ -85,7 +85,7 @@
 "ReadOnOtherDevices" = "Briefe auf anderen Geräten lesen!";
 "Receive" = "Empfangen";
 "ReceiveError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
-"ReceiveDamagedInfo" = "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromitiert oder manipuliert sein.";
+"ReceiveDamagedInfo" = "Mit dieser Nachricht stimmt was nicht. Der Inhalt könnte kompromittiert oder manipuliert sein.";
 "ReceiveSecureInfo" = "Diese Nachricht war ordnungsgemäß verschlossen. Sie kann nicht von Dritten gelesen werden. Die Identität des Absenders wurde bestätigt";
 "ReceiveInsecureInfo" = "Diese Nachricht wurde unverschlüsselt gesendet und konnte somit von Allen auf dem Weg mitgelesen werden. Die Identität des Absenders konnte nicht bestätigt werden und der Inhalt könnte manipuliert sein.";
 "ReceiveInsecureInfoVerified" = "Diese Nachricht wurde unverschlüsselt gesendet und konnte somit von Allen auf dem Weg mitgelesen werden. Die Identität des Absenders wurde bestätigt und die Nachricht wurde nicht verändert.";
@@ -97,8 +97,8 @@
 "Secure" = "Sicher";
 "Send" = "Senden";
 "SendError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
-"SendInsecureInfo" = "Diese Nachricht würde unsicher an alle orange eingefärbten Kontakte gesendet werden. Somit kann sie unterwegs von anderen gelesen oder manipuliert werden. Du könntest die orangen Kontakte einladen Enzavalos zu verwenden, um sicher mit ihnen zu kommunizieren."; //anstatt unterwegs: auf ihrem Weg
-"SendInsecureInfoAll" = "Diese Nachricht würde unsicher an alle Kontakte gesendet werden. Somit kann sie unterwegs von anderen gelesen oder manipuliert werden. Du könntest die orangen Kontakte einladen Enzavalos zu verwenden, um sicher mit ihnen zu kommunizieren."; //anstatt unterwegs: auf ihrem Weg
+"SendInsecureInfo" = "Diese Nachricht würde unsicher an alle orange eingefärbten Kontakte gesendet werden. Somit kann sie unterwegs von anderen gelesen oder manipuliert werden. Du könntest die orangen Kontakte einladen Letterbox zu verwenden, um sicher mit ihnen zu kommunizieren."; //anstatt unterwegs: auf ihrem Weg
+"SendInsecureInfoAll" = "Diese Nachricht würde unsicher an alle Kontakte gesendet werden. Somit kann sie unterwegs von anderen gelesen oder manipuliert werden. Du könntest die orangen Kontakte einladen Letterbox zu verwenden, um sicher mit ihnen zu kommunizieren."; //anstatt unterwegs: auf ihrem Weg
 "SendSecureInfo" = "Super! Diese Nachricht würde sicher versendet werden. Somit ist ihr Inhalt vor neugierigen Augen geschützt und kann nicht manipuliert werden.";
 "SendSuccess" = "Erfolgreich gesendet";
 "Sent" = "Gesendet";
@@ -149,8 +149,9 @@
 "newKeyHeadline" = "Neues Schloss";
 "newKeyText" = "Diese Nachricht wurde mit einem neuem Schloss verbunden. Dies kann passieren wenn der Gesprächspartner ein neues Gerät hat oder wenn ein Dritter diese Nachricht gefälscht hat.";
 "inviteContacts" = "Unsichere Kontakte einladen";
+"inviteContacts.Censor" = "Erklärungsdialog anzeigen";
 "inviteSubject" = "Lass uns unsere E-Mails verschlüsseln!";
-"inviteText" = "Hallo, \n\nbisher waren unsere E-Mails immer wie Postkarten und die E-Mail-Provider konnten immer mitlesen. Davor schützt Ende-Zu-Ende-Verschlüsselung. Ich probiere gerade Letterbox aus, aber es gibt auch andere Programme. Letterbox ist besonders einfach und unkompliziert. Wollen wir es mal gemeinsam ausprobieren? \n\n Eine Übersicht über andere Programme und weitere Erklärungen finden sich hier: \n\nLETTERBOX:ORG \n\nViele Grüße!";//"Hallo!\n\nEs gibt eine neue App die es super einfach macht verschlüsselt über E-Mail zu kommunizieren. Sie heißt Letterbox und wird aktuell in einer wissenschaftlichen Studie getestet.\n\nEs wäre toll wenn du sie mal ausprobieren würdest!\n\nGehe einfach auf https://userpage.fu-berlin.de/wieseoli/letterbox um mitzumachen.\n\nViele Grüße!";
+"inviteText" = "Hallo, \n\nbisher waren unsere E-Mails immer wie Postkarten und die E-Mail-Provider konnten immer mitlesen. Davor schützt Ende-Zu-Ende-Verschlüsselung. Ich probiere gerade Letterbox aus, aber es gibt auch andere Programme. Letterbox ist besonders einfach und unkompliziert. Wollen wir es mal gemeinsam ausprobieren? \n\n Eine Übersicht über andere Programme und weitere Erklärungen finden sich hier: \n\n http://letterbox.imp.fu-berlin.de?id=%@ \n\nViele Grüße!";//"Hallo!\n\nEs gibt eine neue App die es super einfach macht verschlüsselt über E-Mail zu kommunizieren. Sie heißt Letterbox und wird aktuell in einer wissenschaftlichen Studie getestet.\n\nEs wäre toll wenn du sie mal ausprobieren würdest!\n\nGehe einfach auf https://userpage.fu-berlin.de/letterbox um mitzumachen.\n\nViele Grüße!";
 "noName" = "OHNE NAME";
 "you" = "Deine Ablage";
 "thisIsYou" = "Hier werden E-Mails, die du dir selber schickst, gesammelt";
@@ -178,13 +179,14 @@
 "copyKey" = "Schloss in Zwischenablage kopieren";
 "NeverUpdated" = "Fehler bei Aktualisierung";
 "Invitation.Code.Title" = "Fast geschafft!";
-"Invitation.Code.Message" = "Deine Nachricht wurde versendet.\nUm sie lesen zu können, braucht man den untenstehenden Code.\nDu kannst den Code per SMS oder Messenger teilen\n\nCode: %@";
+"Invitation.Code.Message" = "Deine Nachricht wurde versendet.\nUm sie lesen zu können, braucht man den unterstehenden Code.\nDu kannst den Code per SMS oder Messenger teilen\n\nCode: %@";
 "Invitation.Code.Share" = "Teilen";
 "Invitation.Code.Done" = "Fertig";
 "Invitation.Welcome.Title" = "Vertraulich kommunizieren";
+"Invitation.Welcome.Title.InvitationMail" = "Bitte um Teilnahme";
 "Invitation.Welcome.Message" = "Du kannst pikante oder sensible Textstellen markieren, um diese dann zu verschlüsseln. Zeige deinen Kontakten, dass man auch vertraulich kommunizieren kann.";
 "Invitation.Welcome.Message.Censor" = "Du kannst pikante oder sensible Textstellen markieren, um diese zu verberen. Zeige deinen Kontakten, dass du lieber einige Informationen vertraulich mitteilen willst.";
-"Invitation.Welcome.Message.InvitationMail" = "Mit dieser Person kannst du keine Briefe austauschen. Du kannst Sie bitten mitzumachen. Nachdem die andere Person per Brief geantwortet hat, kann diese auch ein Briefe empfangen";
+"Invitation.Welcome.Message.InvitationMail" = "Mit dieser Person kannst du noch keine Briefe austauschen. Du kannst Sie bitten mitzumachen. Nachdem die andere Person per Brief geantwortet hat, kann diese auch Briefe empfangen.";
 "Invitation.Welcome.Try" = "Jetzt ausprobieren";
 "Invitation.Welcome.Try.InvitationMail" = "Kontakt einladen";
 "Invitation.Welcome.Later" = "Vielleicht später";
@@ -198,5 +200,7 @@
 "Invitation.Encrypt.Censor" = "Verbergen";
 "Invitation.Decrypt" = "Entschlüsseln";
 "Invitation.Decrypt.Censor" = "Offenlegen";
-"Invitation.CensorFooter" = "\n\n____________________________\nWarum ist nicht alles lesbar?\nEine unverschlüsselte E-Mail ist wie eine Postkarte; der E-Mail-Provider und möglicherweise auch Andere können mitlesen. Einige Teile dieser Nachricht sind privat oder pikant. Sie sollen vor Mitlesern verborgen bleiben und wurden darum geschwärzt.\nDein Gegenüber nutzt mit Letterbox bereits ein Programm um die Kommunikation vor den neugierigen Augen Anderer zu schützen. Wenn Du auch mitmachst, erreicht ihr beide gemeinsam das Ziel.\nFür mehr Informationen finden sich auf https://userpage.fu-berlin.de/wieseoli/letterbox ";
-"Invitation.ComposeMail" = "Die E-Mail kannst du nach deinen Wünschen anpassen. Zur wissenschaftlichen Untersuchung wird der Inhalt dieser E-Mail auch mitgeloggt.";
+"Invitation.CensorFooter" = "\n\n____________________________\n\nWarum ist nicht alles lesbar?\n\nEine unverschlüsselte E-Mail ist wie eine Postkarte; der E-Mail-Provider und möglicherweise auch Andere können mitlesen. Einige Teile dieser Nachricht sind privat oder pikant. Sie sollen vor Mitlesern verborgen bleiben und wurden darum geschwärzt.\n\nDein Gegenüber nutzt mit Letterbox bereits ein Programm um die Kommunikation vor den neugierigen Augen Anderer zu schützen. Wenn Du auch mitmachst, erreicht ihr beide gemeinsam das Ziel.\n\nMehr Informationen finden sich unter: %@\n\n";
+"Invitation.EncryptionFooter" = "\n\n____________________________\n\nTeile dieser E-Mail sind verschlüsselt!\n\nEine unverschlüsselte E-Mail ist wie eine Postkarte; der E-Mail-Provider und möglicherweise auch Andere können mitlesen. Einige Teile dieser Nachricht sind privat oder pikant. Sie sollen vor Mitlesern verborgen bleiben und wurden darum geschwärzt.\n\nDein Gegenüber nutzt mit Letterbox bereits ein Programm um die Kommunikation vor den neugierigen Augen Anderer zu schützen. Wenn Du auch mitmachst, erreicht ihr beide gemeinsam das Ziel.\n\nDu kannst die verschlüsselten Wörter jederzeit unter %@ entschlüsseln.\n\n";
+"Invitation.ComposeMail" = "Die E-Mail kannst du nach deinen Wünschen anpassen. Zur wissenschaftlichen Untersuchung wird der Inhalt dieser E-Mail auch gespeichert.";
+"Mail.Signature" = "\n\n____________________________\n\nVerfasst mit Letterbox. Mehr Informationen: http://letterbox.imp.fu-berlin.de\n\n";

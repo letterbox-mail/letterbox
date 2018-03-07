@@ -10,14 +10,6 @@ import UIKit
 
 // MARK: - InvitationSelection
 
-
-/*
- TODO:
- Code speichern (pro Kontakt)
- Erklärung was genau passiert?
- InviteMode == Enc || InviteMode == Censor -> Einladebutton wird zu Infobutton
- FreiText -> Popup -> leere E-Mail
-*/
 struct InvitationSelection {
 
     var selectedWords = Set<NSRange>()
@@ -35,16 +27,21 @@ extension SendViewController {
         }
     }
     
-    func htmlMessage() -> String? {
-
+    func htmlMessage() -> (html: String?, textparts: Int, plaintext: String?) {
+        var htmlName = "invitationText"
+        if isCensored {
+            htmlName = "invitationTextCensor"
+        }
         guard
-            let resource = Bundle.main.url(forResource: "invitationText", withExtension: "html"),
+            let resource = Bundle.main.url(forResource: htmlName, withExtension: "html"),
             let data = try? Data(contentsOf: resource),
             let htmlString = String(data: data, encoding: .utf8), (self.isEligibleForInvitation() == true && self.invitationSelection.selectedWords.isEmpty == false) else {
-                return nil
+                return (nil, 0, nil)
         }
 
         var text: String = self.textView.text
+        var plainText: String = self.textView.text
+
         let textsToEncrypt = self.invitationSelection.selectedWords.sorted { (lhs, rhs) -> Bool in
             return lhs.location < rhs.location
         }.map { (range) -> String in
@@ -54,24 +51,29 @@ extension SendViewController {
         let texts = textsToEncrypt.map { _ -> String in
             // Change text in mail body
             if isCensored{
-                return String(repeating: "*", count: (Int(arc4random_uniform(10)+3)))
+                return String(repeating: "█" as String as String, count: (Int(arc4random_uniform(7)+3)))
             }
             return String.random(length: 10)
         }
         
         if texts.count > 0 {
-            isInvitationMail = true
+            if isCensored {
+                isCensoredMail = true
+            }
+            else{
+                isPartialEncryptedMail = true
+            }
         }
 
         guard
             let urlTexts = texts.joined(separator: ",").urlString,
             let cipher = cipherText.chiphers.first?.urlString else {
-                return nil
+                return (nil, 0, nil)
         }
 
-        var link = "http://enzevalos.konstantindeichmann.de?text=\(urlTexts)&cipher=\(cipher)"
+        var link = "http://letterbox.imp.fu-berlin.de?text=\(urlTexts)&cipher=\(cipher)&id=\(StudySettings.studyID)"
         if isCensored{
-            link = "https://userpage.fu-berlin.de/wieseoli/letterbox/"
+            link = "http://letterbox.imp.fu-berlin.de?id=\(StudySettings.studyID)"
         }
 
         let locations = self.invitationSelection.selectedWords.sorted { (lhs, rhs) -> Bool in
@@ -82,21 +84,39 @@ extension SendViewController {
             if isCensored{
                 let t = text as NSString
                 text = t.replacingCharacters(in: range, with: texts[index])
-                text = text + NSLocalizedString("Invitation.CensorFooter", comment: "")
+                plainText = (plainText as NSString).replacingCharacters(in: range, with: texts[index])
             }
             else{
                 text = (text as NSString).replacingCharacters(in: range, with: "<a class=\"encrypted-text\">\(texts[index])</a>")
+                plainText = (plainText as NSString).replacingCharacters(in: range, with: texts[index])
+
                 
             }
         }
         if (self.invitationSelection.code == nil && StudySettings.invitationsmode == InvitationMode.PasswordEnc) {
             self.invitationSelection.code = cipherText.password
         }
-        if StudySettings.invitationsmode == InvitationMode.Censorship{
-            return text
-            
+        var previousText = ""
+        
+        if let range = text.range(of: NSLocalizedString("Mail.Signature", comment: "")){
+            text.removeSubrange(range)
         }
-        return String(format: htmlString, text, link, link)
+        
+        if let preMail = prefilledMail, let previousBody = preMail.body{
+            if let range = text.range(of: previousBody){
+                previousText = previousBody
+                text.removeSubrange(range)
+            }
+        }
+        
+        var plainFooter = String(format: NSLocalizedString("Invitation.EncryptionFooter", comment: ""), link, link)
+        if isCensored {
+            plainFooter = String(format: NSLocalizedString("Invitation.CensorFooter", comment: ""), link, link)
+        }
+        
+        plainText = plainText + plainFooter + "\n\n" + previousText
+        
+        return (String(format: htmlString, text, link, link, previousText), texts.count, nil)
     }
 
     fileprivate func removeAllInvitationMarks() {
@@ -194,7 +214,7 @@ extension SendViewController {
 
     func showFirstDialogIfNeeded() {
 
-        guard (self.isEligibleForInvitation() == true && self.invitationSelection.didShowDialog == false && InvitationUserDefaults.shouldNotShowFirstDialog.bool == false) else {
+        guard (self.isEligibleForInvitation() == true && self.invitationSelection.didShowDialog == false && InvitationUserDefaults.shouldNotShowFirstDialog.bool == false && invite == false) else {
             return
         }
 
@@ -205,11 +225,13 @@ extension SendViewController {
 
         controller?.ctaAction = {
             controller?.hideDialog(completion: nil)
-            //TODO: Olli Add here censorfooter
             switch StudySettings.invitationsmode {
-                case .FreeText, .InviteMail:
-                // create new empty Mail to invite one -> See SendViewController 278
-                return
+                case .FreeText:
+                    self.performSegue(withIdentifier: "inviteSegueStudy", sender: nil)
+                    return
+                case .InviteMail:
+                    self.performSegue(withIdentifier: "inviteSegue", sender: nil)
+                    return
             case .Censorship, .PasswordEnc:
                 return
             }

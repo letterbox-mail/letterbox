@@ -247,7 +247,7 @@ class MailHandler {
         builder.header.setExtraHeaderValue("v0", forName: SETUPMESSAGE)
 
 
-        builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices \n\n"))
+        builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/letterbox/faq.html#otherDevices \n\n"))
 
         // See: https://autocrypt.org/level1.html#autocrypt-setup-message
         let keyAttachment = MCOAttachment.init(text: key)
@@ -268,8 +268,8 @@ class MailHandler {
     }
 
     //logMail should be false, if called from Logger, otherwise 
-    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, isHTMLContent: Bool = false, warningReact: Bool = false, inviteMail: Bool = false) {
-
+    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
+        
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
             let builder = MCOMessageBuilder()
@@ -362,9 +362,9 @@ class MailHandler {
                         }
                         var inviteMailContent: String? = nil
                         if inviteMail {
-                            inviteMailContent = message
+                            inviteMailContent = textparts.description
                         }
-                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs, inviteMailContent: inviteMailContent)
+                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs, inviteMailContent: inviteMailContent, invitationMail: inviteMail)
                     }
 //					  }
 
@@ -379,11 +379,12 @@ class MailHandler {
                         createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                     }
 
-					if (isHTMLContent == true) {
-						builder.htmlBody = message
-					} else {
-						builder.textBody = message
-					}
+					if let html = htmlContent {
+						builder.htmlBody = html
+                    } else {
+                        builder.textBody = message
+                    }
+    
                 } else {
                     //TODO do it better
                     callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
@@ -392,11 +393,11 @@ class MailHandler {
 
             if let unenc = ordered[CryptoScheme.UNKNOWN], !loggingMail {
                 if unenc.count > 0 {
-					if (isHTMLContent == true) {
-						builder.htmlBody = message
-					} else {
-						builder.textBody = message
-					}
+					if let html = htmlContent {
+						builder.htmlBody = html
+                    } else {
+                        builder.textBody = message
+                    }
 
                     sendData = builder.data()
                     sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
@@ -406,9 +407,9 @@ class MailHandler {
 //                        Logger.queue.async(flags: .barrier) {
                         var inviteMailContent: String? = nil
                         if inviteMail {
-                            inviteMailContent = message
+                            inviteMailContent = textparts.description
                         }
-                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n" + message).count, isEncrypted: false, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [], inviteMailContent: inviteMailContent)
+                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n" + message).count, isEncrypted: false, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [], inviteMailContent: inviteMailContent, invitationMail: inviteMail)
 //                        }
                     }
                     sendOperation.start(callback)
@@ -1087,7 +1088,6 @@ class MailHandler {
         session.authType = UserManager.loadSmtpAuthType()
         session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
 
-        session.connectionType = MCOConnectionType.startTLS
         session.checkAccountOperationWith(from: MCOAddress.init(mailbox: useraddr)).start(completion)
 
     }

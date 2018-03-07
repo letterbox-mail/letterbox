@@ -166,7 +166,7 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
                             let alert = UIAlertController(title: NSLocalizedString("fingerprintMissmatchShort", comment: "Found fingerprint does not match"), message: NSLocalizedString("fingerprintMissmatchText", comment: "Found fingerprint does not match"), preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information"), style: .default, handler: {
                                 (action: UIAlertAction!) -> Void in
-                                UIApplication.shared.openURL(URL(string: "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#headingWrongFingerprint")!)
+                                UIApplication.shared.openURL(URL(string: "https://userpage.fu-berlin.de/letterbox/faq.html#headingWrongFingerprint")!)
                                 self.dismiss(animated: false, completion: nil)
                             }))
                             alert.addAction(UIAlertAction(title: NSLocalizedString("scanDifferentCode", comment: ""), style: .default, handler: {
