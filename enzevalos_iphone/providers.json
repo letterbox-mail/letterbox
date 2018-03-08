@@ -168,38 +168,6 @@
                      "gmail"
                      ]
     },
-    "arcor":{
-        "servers":{
-            "imap":[
-                    {
-                    "port":993,
-                    "hostname":"imap.gmail.com",
-                    "ssl":true,
-                    "auth":"saslPlain"
-                    }
-                    ],
-            "smtp":[
-                    {
-                    "port":587,
-                    "hostname":"smtp.gmail.com",
-                    "starttls":true,
-                    "auth":"saslPlain"
-                    }
-                    ]
-        },
-        "domain-match":[
-                        "googlemail.com",
-                        "googlemail",
-                        "gmail.com",
-                        "gmail"
-                        ],
-        "mx-match": [
-                     "googlemail.com",
-                     "googlemail",
-                     "gmail.com",
-                     "gmail"
-                     ]
-    },
     "gmx":{
         "servers":{
             "imap":[
