@@ -497,9 +497,8 @@ class MailHandler {
                 if !DataHandler.handler.existsFolder(with: drafts) {
                     let op = IMAPSession.createFolderOperation(drafts)
                     op?.start({ _ in self.saveDraft(data: sendData, callback: callback) })
-                }
-                    else {
-                        saveDraft(data: sendData, callback: callback)
+                } else {
+                    saveDraft(data: sendData, callback: callback)
                 }
             } else {
                 //TODO do it better
