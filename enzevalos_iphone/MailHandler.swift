@@ -1261,7 +1261,7 @@ class MailHandler {
 
 
     private func loadMailsSinceDate(folder: Folder, since: Date, maxLoad: Int = MailHandler.MAXMAILS, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
-        let folderPath = UserManager.convertToBackendFolderPath(from: folder.path)
+        let folderPath = folder.path
         let searchExp = MCOIMAPSearchExpression.search(since: since)
         let searchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExp)
 
