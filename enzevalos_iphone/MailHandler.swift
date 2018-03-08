@@ -464,7 +464,6 @@ class MailHandler {
         //TODO add support for different Encryptions here
         var sendData: Data
 
-        //TODO: Consider pref enc = false
         let pgp = SwiftPGP()
         let keys = DataHandler.handler.findSecretKeys()
         if keys.count > 0 && allRec.reduce(true, { $0 && DataHandler.handler.hasKey(adr: $1) }) {
@@ -1260,7 +1259,7 @@ class MailHandler {
 
 
     private func loadMailsSinceDate(folder: Folder, since: Date, maxLoad: Int = MailHandler.MAXMAILS, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
-        let folderPath = UserManager.convertToBackendFolderPath(from: folder.path)
+        let folderPath = folder.path
         let searchExp = MCOIMAPSearchExpression.search(since: since)
         let searchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExp)
 
