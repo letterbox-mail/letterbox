@@ -643,7 +643,7 @@ class SendViewController: UIViewController {
 //                    Logger.queue.async(flags: .barrier) {
                         Logger.log(close: url, mail: nil, action: segue)
 //                    }
-                    self.performSegue(withIdentifier: "inviteSegue", sender: nil)
+                    self.performSegue(withIdentifier: segue, sender: nil)
                 }))
             }
         } else {
