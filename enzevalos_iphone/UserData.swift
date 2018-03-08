@@ -19,19 +19,19 @@ enum Attribute: Int {
             return "mutal" as AnyObject?
         case .autocryptType:
             return "1" as AnyObject? // only openpgp
-        case .sentFolderPath:
-            return NSLocalizedString("Sent", comment: "Default name for the sentFolder") as AnyObject?
-        case .draftFolderPath:
-            return NSLocalizedString("Drafts", comment: "Default name for the draftFolder") as AnyObject?
-        case .trashFolderPath:
-            return NSLocalizedString("Trash", comment: "Default name for the trashFolder") as AnyObject?
-        case .inboxFolderPath:
-            return NSLocalizedString("INBOX", comment: "Default name for the inboxFolder") as AnyObject?
-        case .archiveFolderPath:
-            return NSLocalizedString("Archive", comment: "Default name for the archiveFolder") as AnyObject?
-        case .nextDeadline:
+        case .sentFolderPath: //save backendFolderPath here
+            return NSLocalizedString("Sent", comment: "Default name for the sentFolder; in UTF-7 as used in the backend") as AnyObject?
+        case .draftFolderPath: //save backendFolderPath here
+            return NSLocalizedString("Drafts", comment: "Default name for the draftFolder; in UTF-7 as used in the backend") as AnyObject?
+        case .trashFolderPath: //save backendFolderPath here
+            return NSLocalizedString("Trash", comment: "Default name for the trashFolder; in UTF-7 as used in the backend") as AnyObject?
+        case .inboxFolderPath: //save backendFolderPath here
+            return NSLocalizedString("INBOX", comment: "Default name for the inboxFolder; in UTF-7 as used in the backend") as AnyObject?
+        case .archiveFolderPath: //save backendFolderPath here
+            return NSLocalizedString("Archive", comment: "Default name for the archiveFolder; in UTF-7 as used in the backend") as AnyObject?
+        case .nextDeadline: //save backendFolderPath here
             return Date(timeIntervalSinceNow: TimeInterval(Logger.loggingInterval)) as AnyObject?
-        case .loggingFolderPath:
+        case .loggingFolderPath: //save backendFolderPath here
             return "letterbox-study" as AnyObject?
         default:
             return nil
@@ -54,61 +54,61 @@ struct UserManager {
     //The backend uses because of the definition of IMAP UTF-7 String-Encoding
     static var frontendDraftFolderPath: String {
         get {
-            return loadUserValue(Attribute.draftFolderPath) as? String ?? NSLocalizedString("Drafts", comment: "")
+            return convertToFrontendFolderPath(from: backendDraftFolderPath)
         }
     }
 
     static var frontendInboxFolderPath: String {
         get {
-            return loadUserValue(Attribute.inboxFolderPath) as? String ?? NSLocalizedString("INBOX", comment: "")
+            return convertToFrontendFolderPath(from: backendInboxFolderPath)
         }
     }
 
     static var frontendSentFolderPath: String {
         get {
-            return loadUserValue(Attribute.sentFolderPath) as? String ?? NSLocalizedString("Sent", comment: "")
+            return convertToFrontendFolderPath(from: backendSentFolderPath)
         }
     }
 
     static var frontendArchiveFolderPath: String {
         get {
-            return loadUserValue(Attribute.archiveFolderPath) as? String ?? NSLocalizedString("Archive", comment: "")
+            return convertToFrontendFolderPath(from: backendArchiveFolderPath)
         }
     }
 
     static var frontendTrashFolderPath: String {
         get {
-            return loadUserValue(Attribute.trashFolderPath) as? String ?? NSLocalizedString("Trash", comment: "")
+            return convertToFrontendFolderPath(from: backendTrashFolderPath)
         }
     }
 
     static var backendDraftFolderPath: String {
         get {
-            return convertToBackendFolderPath(from: frontendDraftFolderPath)
+            return loadUserValue(.draftFolderPath) as? String ?? NSLocalizedString("Drafts", comment: "Default name for the draftFolder; in UTF-7 as used in the backend")
         }
     }
 
     static var backendSentFolderPath: String {
         get {
-            return convertToBackendFolderPath(from: frontendSentFolderPath)
+            return loadUserValue(.sentFolderPath) as? String ?? NSLocalizedString("Sent", comment: "Default name for the sentFolder; in UTF-7 as used in the backend")
         }
     }
 
     static var backendArchiveFolderPath: String {
         get {
-            return convertToBackendFolderPath(from: frontendArchiveFolderPath)
+            return loadUserValue(.archiveFolderPath) as? String ?? NSLocalizedString("Archive", comment: "Default name for the archiveFolder; in UTF-7 as used in the backend")
         }
     }
 
     static var backendTrashFolderPath: String {
         get {
-            return convertToBackendFolderPath(from: frontendTrashFolderPath)
+            return loadUserValue(.trashFolderPath) as? String ?? NSLocalizedString("Trash", comment: "Default name for the trashFolder; in UTF-7 as used in the backend")
         }
     }
 
     static var backendInboxFolderPath: String {
         get {
-            return convertToBackendFolderPath(from: frontendInboxFolderPath)
+            return loadUserValue(.inboxFolderPath) as? String ?? NSLocalizedString("INBOX", comment: "Default name for the inboxFolder; in UTF-7 as used in the backend")
         }
     }
 

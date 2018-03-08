@@ -19,7 +19,7 @@
                     ]
         },
         "mailboxes": {
-            "drafts": "Entwürfe",
+            "drafts": "Entwurf",
             "allmail": "Archive",
             "spam": "Spam",
             "sentmail": "Gesendet",
@@ -154,6 +154,13 @@
                     "auth":"saslPlain"
                     }
                     ]
+        },
+        "mailboxes": {
+            "drafts": "[Gmail]/Entw&APw-rfe",
+            "allmail": "[Gmail]/Archive",
+            "spam": "[Gmail]/Spam",
+            "sentmail": "[Gmail]/Gesendet",
+            "trash": "[Gmail]/Papierkorb"
         },
         "domain-match":[
                         "googlemail.com",

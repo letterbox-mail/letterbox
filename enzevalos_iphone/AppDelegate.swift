@@ -179,14 +179,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func setupKeys() {
         self.window?.rootViewController = Onboarding.keyHandlingView()
-        DispatchQueue.main.async(execute: {
-            self.onboardingDone()
-        });
         let handler = DataHandler.init()
         _ = handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
         StudySettings.setupStudyKeys()
         StudySettings.firstMail()
-
+        DataHandler.handler.callForFolders(done: { err in
+            for f in DataHandler.handler.allFolders {
+            if f.flags.contains(MCOIMAPFolderFlag.drafts) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.draftFolderPath)
+            }
+            if f.flags.contains(MCOIMAPFolderFlag.sentMail) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.sentFolderPath)
+            }
+            if f.flags.contains(MCOIMAPFolderFlag.trash) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.trashFolderPath)
+            }
+            if f.flags.contains(MCOIMAPFolderFlag.archive) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.archiveFolderPath)
+            }
+            if f.flags.contains(MCOIMAPFolderFlag.inbox) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.inboxFolderPath)
+            }
+            }
+            DispatchQueue.main.async(execute: {
+                self.onboardingDone()
+            });})
     }
 
     func onboardingDone() {

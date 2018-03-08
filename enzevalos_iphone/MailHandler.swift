@@ -1222,7 +1222,7 @@ class MailHandler {
     }
 
     private func olderMails(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
-        let folderPath = UserManager.convertToBackendFolderPath(from: folder.path)
+        let folderPath = folder.path//UserManager.convertToBackendFolderPath(from: folder.path)
         if let mails = folder.mails {
             var oldestDate: Date?
             for m in mails {
