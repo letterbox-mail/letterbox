@@ -728,7 +728,7 @@ class SendViewController: UIViewController {
             alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { (action: UIAlertAction!) -> Void in
                 self.navigationController?.dismiss(animated: true, completion: nil)
             }))
-            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveToDrafts", comment: "save the written E-Mail as draft"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveAsDraft", comment: "save the written E-Mail as draft"), style: .default, handler: { (action: UIAlertAction!) -> Void in
                 self.mailHandler.createDraft(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: { (error: Error?) -> Void in
                     if let error = error {
                         print(error)
