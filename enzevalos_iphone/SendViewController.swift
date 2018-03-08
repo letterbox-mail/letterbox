@@ -91,9 +91,6 @@ class SendViewController: UIViewController {
         startIconAnimation()
 
         textView.font = UIFont.systemFont(ofSize: 17)
-        if textView.text.count == 0 {
-            textView.text.append(NSLocalizedString("Mail.Signature", comment: ""))
-        }
         textView.delegate = self
 
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
@@ -127,6 +124,10 @@ class SendViewController: UIViewController {
         toText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
         ccText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
 
+        if prefilledMail == nil {
+            textView.text.append(NSLocalizedString("Mail.Signature", comment: "Signature"))
+        }
+
         if let to = toField {
             let ezCon = DataHandler.handler.getContactByAddress(to)
             toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
@@ -146,12 +147,7 @@ class SendViewController: UIViewController {
             }
 
             subjectText.setText(prefilledMail.subject ?? "")
-            if invite && prefilledMail.body != nil{
-                textView.text = ""
-                textView.text.append(prefilledMail.body!)
-            } else {
-                textView.text.append(prefilledMail.body ?? "")
-            }
+            textView.text.append(prefilledMail.body ?? "")
         }
 
         let sepConst: CGFloat = 1 / UIScreen.main.scale
