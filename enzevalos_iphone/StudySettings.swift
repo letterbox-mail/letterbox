@@ -19,12 +19,12 @@ enum StudyParamter: Int {
             case .Warning:
                 return "warning"
             case .Invitation:
-                    return "invitation"
+                return "invitation"
             }
         }
     }
     
-    var fileDir: String {
+    var keyName: String {
         get{
             switch  self {
             case .Warning:
@@ -34,23 +34,23 @@ enum StudyParamter: Int {
             }
         }
     }
-    var variables: Int {
+    var numberOfTreatments: UInt32 {
         get{
             switch self {
             case .Warning:
                 return 2
             case .Invitation:
-                return 4
+                return 3
             }
         }
     }
 }
 
 enum InvitationMode: Int {
-    case FreeText = 0
-    case InviteMail = 1
-    case PasswordEnc = 2
-    case Censorship = 3
+    case InviteMail
+    case PasswordEnc
+    case Censorship
+    case FreeText
 }
 
 class StudySettings {
@@ -59,20 +59,29 @@ class StudySettings {
     static let parameters = [StudyParamter.Invitation]
     
     public static var invitationEnabled: Bool{
-        get{
-            return invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc
+        get {
+            return true //invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc
         }
     }
-    static var freeTextInvitationTitle = NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key")
+    static var freeTextInvitationTitle: String {
+        get {
+            switch self.invitationsmode {
+            case .FreeText, .InviteMail:
+                return NSLocalizedString("inviteContacts", comment: "Allows users to invite contacts without encryption key")
+            case .Censorship, .PasswordEnc:
+                return NSLocalizedString("inviteContacts.Censor", comment: "Allows users to invite contacts without encryption key")
+            }
+        }
+    }
     static var freeTextInvitationCode: (() -> (String)) = {Void in return "inviteSegueStudy"/*use "inviteSegue" if there is no study present*/ } //return segue id to perform
-    static let faqURL = "https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html"
+    static let faqURL = "https://userpage.fu-berlin.de/letterbox/faq.html"
     static let raffleURL = ""
     static var studyID: String {
         return UserDefaults.standard.string(forKey: "studyID") ?? ""
     }
-    static var entrySurveyURL: String{
-        get{
-            return "https://userpage.fu-berlin.de/wieseoli/letterbox/entrysurvey.html?id=\(studyID)"
+    static var entrySurveyURL: String {
+        get {
+            return "https://userpage.fu-berlin.de/letterbox/entrysurvey.html?id=\(studyID)"
         }
     }
     static var bitcoinMails: Bool { //do we recived a mail from bitcoin.de
@@ -93,8 +102,7 @@ class StudySettings {
     
     static var invitationsmode: InvitationMode{
         get{
-            return InvitationMode.Censorship
-            let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.fileDir)
+            let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.keyName)
             if let mode = InvitationMode.init(rawValue: value){
                 return mode
             }
@@ -109,21 +117,16 @@ class StudySettings {
             var studyParamters = [StudyParamter: Int]()
             for parameter in parameters{
                 var value: Int?
-                if let state = keychain[parameter.fileDir], let num = Int(state) {
+                if let state = keychain[parameter.keyName], let num = Int(state) {
                     value = num
-                }
-                else {
-                    value = Int(arc4random_uniform(UInt32(parameter.variables)))
+                } else {
+                    value = Int(arc4random_uniform(parameter.numberOfTreatments))
                     if let value = value{
-                        keychain[parameter.fileDir] = String(value)
+                        keychain[parameter.keyName] = String(value)
                     }
                 }
-                if parameter == StudyParamter.Invitation{
-                    //TODO: Remove @Olli
-                    value = InvitationMode.Censorship.rawValue
-                }
                 if let v = value{
-                    UserDefaults.standard.set(v, forKey: parameter.fileDir)
+                    UserDefaults.standard.set(v, forKey: parameter.keyName)
                     studyParamters[parameter] = v
                 }
             }
@@ -160,7 +163,6 @@ class StudySettings {
         }
         let parameters = studyParameters
         
-        //TODO: @Olli set entry "hideFreeTextInvitation" in UserDefaults to true if needed
         
 //        Logger.queue.async(flags: .barrier) {
         Logger.log(setupStudy: parameters, alreadyRegistered: !presentFirstQuestionaireMail, bitcoin: bitcoinMails)
@@ -179,17 +181,17 @@ class StudySettings {
         
         Herzlichen Glückwunsch! Sie haben Letterbox erfolgreich installiert.
         
-        Wir haben einen Eingangsfragebogen mit maximal 10 Fragen über Ihre bisherigen Erfahrungen mit E-Mail-Verschlüsselung vorbereitet und würden Sie bitten diesen auszufüllen.
-        Dazu folgen Sie bitte folgendem Link:
-        \(entrySurveyURL)
-        
         Wenn Sie Fragen zur App oder Verschlüsselung haben, besuchen Sie doch unsere Hilfeseite:
         \(faqURL)
         
         Dort finden Sie auch Videos zum Thema Ende-zu-Ende-Verschlüsselung.
         Falls Sie Fragen haben oder uns Feedback geben möchten, freuen wir uns auf Ihre E-Mail!
         
-        Verfassen Sie doch einen ersten Brief, indem Sie auf diese E-Mail antworten und uns Ihre Erfahrungen, Fragen oder Kommentare mitteilen. Ist etwas unklar geblieben? Was war Ihnen neu? Hätten Sie sich sonst noch etwas gewünscht?
+        Die Studie umfasst drei Aufgaben und kann jederzeit abgebrochen werden. Für Fragen schreiben Sie uns bitte eine E-Mail und benutzen Sie bitte nach Möglichkeit die Letterbox dafür.
+        
+        In der ersten Aufgabe verfassen Sie bitte einen ersten Brief, indem Sie auf diese E-Mail antworten. Bitte teilen Sie uns Ihre Meinung mit. Ist etwas unklar geblieben? Was war neu für Sie? Was fanden Sie besonders interessant; was uninteressant? Hätten Sie sich noch weitere Informationen gewünscht? Sie können auch gerne Fragen zur Einführung stellen.
+        
+        Nach Beantwortung dieser E-Mail senden wir Ihnen zu einem späteren Zeitpunkt eine zweite E-Mail mit der nächsten kurzen Aufgabe zu.
         
         Vielen Dank für Ihre Teilnahme und mit freundlichen Grüßen,
         Ihr Letterbox-Team

@@ -247,7 +247,7 @@ class MailHandler {
         builder.header.setExtraHeaderValue("v0", forName: SETUPMESSAGE)
 
 
-        builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/wieseoli/letterbox/faq.html#otherDevices \n\n"))
+        builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/letterbox/faq.html#otherDevices \n\n"))
 
         // See: https://autocrypt.org/level1.html#autocrypt-setup-message
         let keyAttachment = MCOAttachment.init(text: key)
@@ -268,8 +268,8 @@ class MailHandler {
     }
 
     //logMail should be false, if called from Logger, otherwise 
-    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, isHTMLContent: Bool = false, warningReact: Bool = false, inviteMail: Bool = false) {
-
+    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
+        
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
             let builder = MCOMessageBuilder()
@@ -362,9 +362,9 @@ class MailHandler {
                         }
                         var inviteMailContent: String? = nil
                         if inviteMail {
-                            inviteMailContent = message
+                            inviteMailContent = textparts.description
                         }
-                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs, inviteMailContent: inviteMailContent)
+                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs, inviteMailContent: inviteMailContent, invitationMail: inviteMail)
                     }
 //					  }
 
@@ -379,11 +379,12 @@ class MailHandler {
                         createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                     }
 
-					if (isHTMLContent == true) {
-						builder.htmlBody = message
-					} else {
-						builder.textBody = message
-					}
+					if let html = htmlContent {
+						builder.htmlBody = html
+                    } else {
+                        builder.textBody = message
+                    }
+    
                 } else {
                     //TODO do it better
                     callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
@@ -392,11 +393,11 @@ class MailHandler {
 
             if let unenc = ordered[CryptoScheme.UNKNOWN], !loggingMail {
                 if unenc.count > 0 {
-					if (isHTMLContent == true) {
-						builder.htmlBody = message
-					} else {
-						builder.textBody = message
-					}
+					if let html = htmlContent {
+						builder.htmlBody = html
+                    } else {
+                        builder.textBody = message
+                    }
 
                     sendData = builder.data()
                     sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
@@ -406,9 +407,9 @@ class MailHandler {
 //                        Logger.queue.async(flags: .barrier) {
                         var inviteMailContent: String? = nil
                         if inviteMail {
-                            inviteMailContent = message
+                            inviteMailContent = textparts.description
                         }
-                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n" + message).count, isEncrypted: false, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [], inviteMailContent: inviteMailContent)
+                        Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n" + message).count, isEncrypted: false, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [], inviteMailContent: inviteMailContent, invitationMail: inviteMail)
 //                        }
                     }
                     sendOperation.start(callback)
@@ -771,7 +772,7 @@ class MailHandler {
 
     func loadMailsForInbox(newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
         let folder = DataHandler.handler.findFolder(with: INBOX)
-        let folderstatus = IMAPSession.folderStatusOperation(folder.name)
+        let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
                 if self.shouldTryRefreshOAUTH {
@@ -966,9 +967,10 @@ class MailHandler {
                 if let m = mail {
                     let pgp = SwiftPGP()
                     if let autoc = autocrypt {
-                        let publickeys = try! pgp.importKeys(key: autoc.key, pw: nil, isSecretKey: false, autocrypt: true)
-                        for pk in publickeys {
-                            _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
+                        if let publickeys = try? pgp.importKeys(key: autoc.key, pw: nil, isSecretKey: false, autocrypt: true) {
+                            for pk in publickeys {
+                                _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
+                            }
                         }
                     }
                     for keyId in newKeyIds {
@@ -1006,19 +1008,22 @@ class MailHandler {
                         let e = end.upperBound
                         let pk = content[s..<e]
                         let pgp = SwiftPGP()
-                        let keyId = try! pgp.importKeys(key: pk, pw: nil, isSecretKey: false, autocrypt: false)
-                        newKey.append(contentsOf: keyId)
+                        if let keyId = try? pgp.importKeys(key: pk, pw: nil, isSecretKey: false, autocrypt: false) {
+                            newKey.append(contentsOf: keyId)
+                        }
                     }
                 }
             }
         } else if attachment.mimeType == "application/octet-stream", let content = String(data: attachment.data, encoding: String.Encoding.utf8), content.hasPrefix("-----BEGIN PGP PUBLIC KEY BLOCK-----") && (content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----") || content.hasSuffix("-----END PGP PUBLIC KEY BLOCK-----\n")) {
             let pgp = SwiftPGP()
-            let keyId = try! pgp.importKeys(key: content, pw: nil, isSecretKey: false, autocrypt: false)
-            newKey.append(contentsOf: keyId)
+            if let keyId = try? pgp.importKeys(key: content, pw: nil, isSecretKey: false, autocrypt: false) {
+                newKey.append(contentsOf: keyId)
+            }
         } else if attachment.mimeType == "application/pgp-keys" {
             let pgp = SwiftPGP()
-            let keyIds = try! pgp.importKeys(data: attachment.data, pw: nil, secret: false)
-            newKey.append(contentsOf: keyIds)
+            if let keyIds = try? pgp.importKeys(data: attachment.data, pw: nil, secret: false) {
+                newKey.append(contentsOf: keyIds)
+            }
         }
         return newKey
     }
@@ -1054,8 +1059,9 @@ class MailHandler {
                 }
             }
             if let a = autocrypt {
-                let key = try! pgp.importKeys(key: a.key, pw: nil, isSecretKey: false, autocrypt: true)
-                keyIds.append(contentsOf: key)
+                if let key = try? pgp.importKeys(key: a.key, pw: nil, isSecretKey: false, autocrypt: true) {
+                    keyIds.append(contentsOf: key)
+                }
             }
             let secretkeys = DataHandler.handler.findSecretKeys()
             var decIds = [String]()
@@ -1087,7 +1093,6 @@ class MailHandler {
         session.authType = UserManager.loadSmtpAuthType()
         session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
 
-        session.connectionType = MCOConnectionType.startTLS
         session.checkAccountOperationWith(from: MCOAddress.init(mailbox: useraddr)).start(completion)
 
     }
@@ -1187,7 +1192,7 @@ class MailHandler {
     }
 
     func updateFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
-        let folderstatus = IMAPSession.folderStatusOperation(folder.name)
+        let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
                 if self.shouldTryRefreshOAUTH {
@@ -1207,7 +1212,7 @@ class MailHandler {
                 if let date = folder.lastUpdate {
                     self.loadMailsSinceDate(folder: folder, since: date, newMailCallback: newMailCallback, completionCallback: completionCallback)
                 } else {
-                    if folder.path == UserManager.backendInboxFolderPath || folder.path == "INBOX" || folder.path == "Inbox" {
+                    if folder.path == UserManager.backendInboxFolderPath || folder.path.lowercased() == "INBOX".lowercased() {
                         self.initInbox(inbox: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
                     } else {
                         self.initFolder(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
