@@ -1147,7 +1147,6 @@ class MailHandler {
 
 
     func allFolders(_ completion: @escaping (Error?, [Any]?) -> Void) {
-
         let op = IMAPSession.fetchAllFoldersOperation()
         op?.start(completion)
     }

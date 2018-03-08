@@ -144,15 +144,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func credentialsWork() {
         self.window?.rootViewController = Onboarding.contactView(self.requestForAccess)
-        //self.onboardingDone()
-        
     }
 
     func contactCheck(_ accessGranted: Bool) {
         if accessGranted {
             setupKeys()
         } else {
-            //self.onboardingDone()
             DispatchQueue.main.async(execute: {
                 self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.setupKeys)
             });

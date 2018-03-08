@@ -517,7 +517,7 @@ class Onboarding: NSObject {
         AppDelegate.getAppDelegate().mailHandler.checkIMAP(imapCompletion)
     }
 
-    static func imapCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
+    static func imapCompletion(_ error: Error?) {
         if error == nil {
             AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)
             return
@@ -525,7 +525,7 @@ class Onboarding: NSObject {
         fail()
     }
 
-    static func smtpCompletion(_ error: Error?) { //FIXME: vorher NSError? Mit Error? immer noch gültig?
+    static func smtpCompletion(_ error: Error?) {
         if error == nil {
             work()
             return
