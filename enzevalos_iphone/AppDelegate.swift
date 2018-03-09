@@ -204,8 +204,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func onboardingDone() {
-        /*self.window?.rootViewController = Onboarding.keyHandlingView()
-        Onboarding.keyHandling()*/
 //        Logger.queue.async(flags: .barrier) {
             Logger.log(onboardingState: "done")
 //        }

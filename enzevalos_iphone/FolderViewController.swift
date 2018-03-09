@@ -100,8 +100,16 @@ class FolderViewController: UITableViewController {
                     cell.body.font = UIFont.boldSystemFont(ofSize: cell.body.font.pointSize)
                     cell.subject.font = UIFont.boldSystemFont(ofSize: cell.subject.font.pointSize)
                 }
+                else {
+                    cell.markImageView.image = nil
+                    cell.body.font = UIFont.systemFont(ofSize: cell.body.font.pointSize)
+                    cell.subject.font = UIFont.systemFont(ofSize: cell.subject.font.pointSize)
+                }
                 if mail.isAnwered {
                     cell.replyImageView.image = "↩️".image()
+                }
+                else {
+                    cell.replyImageView.image = nil
                 }
 
                 if let markImageView = cell.markImageView {
@@ -153,12 +161,7 @@ class FolderViewController: UITableViewController {
                     destinationVC.isDraft = true
                 }
             }
-        } else if segue.identifier == "showFolderListSegue" {
-            let destinationVC = segue.destination as! FolderListViewController
-            if let folder = sender as? Folder {
-                destinationVC.folder = folder
-            }
-        }
+        } 
     }
 
     func refresh() {
@@ -213,4 +216,20 @@ class FolderViewController: UITableViewController {
 
 enum FolderViewSectionType: Int {
     case inbox = 0, folders, mails
+}
+
+//inspired by https://stackoverflow.com/questions/38809425/convert-apple-emoji-string-to-uiimage
+extension String {
+    func image() -> UIImage {
+        let size = CGSize(width: 30, height: 35)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0);
+        UIColor.white.set()
+        let rect = CGRect(origin: CGPoint.zero, size: size)
+        UIRectFill(CGRect(origin: CGPoint.zero, size: size))
+        (self as NSString).draw(in: rect, withAttributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 30)])
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
+    
 }
