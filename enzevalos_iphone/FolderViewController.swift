@@ -100,8 +100,16 @@ class FolderViewController: UITableViewController {
                     cell.body.font = UIFont.boldSystemFont(ofSize: cell.body.font.pointSize)
                     cell.subject.font = UIFont.boldSystemFont(ofSize: cell.subject.font.pointSize)
                 }
+                else {
+                    cell.markImageView.image = nil
+                    cell.body.font = UIFont.systemFont(ofSize: cell.body.font.pointSize)
+                    cell.subject.font = UIFont.systemFont(ofSize: cell.subject.font.pointSize)
+                }
                 if mail.isAnwered {
                     cell.replyImageView.image = "↩️".image()
+                }
+                else {
+                    cell.replyImageView.image = nil
                 }
 
                 if let markImageView = cell.markImageView {
