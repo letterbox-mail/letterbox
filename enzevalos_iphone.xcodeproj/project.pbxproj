@@ -94,7 +94,6 @@
 		3E9709091FAC95F5005825C9 /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
 		3E97090A1FAC95F5005825C9 /* PGPSignatureSubpacketCreationTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 471BC8C41F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.m */; };
 		3E97090B1FAC95F5005825C9 /* CNMailAddressesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398F1E252470009260FB /* CNMailAddressesExtension.swift */; };
-		3E97090C1FAC95F5005825C9 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */; };
 		3E97090D1FAC95F5005825C9 /* ViewControllerPannable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C38A1F3344C200E7F1D6 /* ViewControllerPannable.swift */; };
 		3E97090E1FAC95F5005825C9 /* TableViewDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */; };
 		3E97090F1FAC95F5005825C9 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A85A1F436A05007649A5 /* CircleView.swift */; };
@@ -328,7 +327,6 @@
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1C62E9A2018F716000E5273 /* OnboardingValueState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C62E992018F716000E5273 /* OnboardingValueState.swift */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
-		A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */; };
 		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
 		A1E5960E1FCC871F003791E9 /* researchteam.asc in Resources */ = {isa = PBXBuildFile; fileRef = A1E5960D1FCC871E003791E9 /* researchteam.asc */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
@@ -638,7 +636,6 @@
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1C62E992018F716000E5273 /* OnboardingValueState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingValueState.swift; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
-		A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListViewController.swift; sourceTree = "<group>"; };
 		A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListCell.swift; sourceTree = "<group>"; };
 		A1E5960D1FCC871E003791E9 /* researchteam.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = researchteam.asc; path = keys/researchteam.asc; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
@@ -1084,7 +1081,6 @@
 				A10DE41F1EFAA2CE005E8189 /* FolderViewController.swift */,
 				A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */,
 				A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */,
-				A1E2324B1F0FA13F00DC9D40 /* FolderListViewController.swift */,
 			);
 			name = folders;
 			sourceTree = "<group>";
@@ -1970,7 +1966,6 @@
 				3E9709091FAC95F5005825C9 /* ExportCells.swift in Sources */,
 				3E97090A1FAC95F5005825C9 /* PGPSignatureSubpacketCreationTime.m in Sources */,
 				3E97090B1FAC95F5005825C9 /* CNMailAddressesExtension.swift in Sources */,
-				3E97090C1FAC95F5005825C9 /* FolderListViewController.swift in Sources */,
 				3E97090D1FAC95F5005825C9 /* ViewControllerPannable.swift in Sources */,
 				3E97090E1FAC95F5005825C9 /* TableViewDataDelegate.swift in Sources */,
 				3E97090F1FAC95F5005825C9 /* CircleView.swift in Sources */,
@@ -2119,7 +2114,6 @@
 				A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */,
 				471BC9181F960B7C00D64416 /* PGPSignatureSubpacketCreationTime.m in Sources */,
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
-				A1E2324C1F0FA13F00DC9D40 /* FolderListViewController.swift in Sources */,
 				F113C38B1F3344C200E7F1D6 /* ViewControllerPannable.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,
 				8428A85E1F436A05007649A5 /* CircleView.swift in Sources */,
