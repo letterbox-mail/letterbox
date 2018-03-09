@@ -9,7 +9,7 @@
 #import <MailCore/MailCore.h>
 #import <Onboard/OnboardingViewController.h>
 #import <Onboard/OnboardingContentViewController.h>
-#import "ObjectivePGP/ObjectivePGP.h"
+#import <ObjectivePGP/ObjectivePGP.h>
 #import <CommonCrypto/CommonHMAC.h>
 #import <AppAuth/AppAuth.h>
 #import <GTMAppAuth/GTMAppAuth.h>
