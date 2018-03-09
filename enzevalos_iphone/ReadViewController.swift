@@ -19,9 +19,12 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var infoHeadline: UILabel!
     @IBOutlet weak var infoText: UILabel!
     @IBOutlet weak var infoSymbol: UILabel!
-    @IBOutlet weak var answerButton: UIBarButtonItem!
     @IBOutlet weak var reactButton: UIButton!
+    @IBOutlet weak var answerButton: UIBarButtonItem!
     @IBOutlet weak var messageBody: UITextView!
+    @IBOutlet weak var iconButton: UIButton!
+    @IBOutlet weak var deleteButton: UIBarButtonItem!
+    @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
 
     // Cells
     @IBOutlet weak var senderCell: UITableViewCell!
@@ -32,13 +35,7 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var infoReactButtonCell: UITableViewCell!
     @IBOutlet weak var messageCell: MessageBodyTableViewCell!
 
-    @IBOutlet weak var iconButton: UIButton!
-    @IBOutlet weak var deleteButton: UIBarButtonItem!
-    
-    @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
-
     var VENDelegate: ReadVENDelegate?
-
     var textDelegate: ReadTextDelegate?
 
     var mail: PersistentMail? = nil
@@ -46,20 +43,18 @@ class ReadViewController: UITableViewController {
     var isDraft = false
 
     var keyDiscoveryDate: Date? = nil
-    
+
     var secretKeyPasswordField: UITextField? = nil
-    
+
     var isNewPubKey: Bool? {
-        get {
-            guard let mail = mail, let signedKey = mail.signedKey else {
-                return nil
-            }
-            
-            if signedKey.counterSignedMails < 2 && mail.from.publicKeys.count > 1 {
-                return true
-            }
-            return false
+        guard let mail = mail, let signedKey = mail.signedKey else {
+            return nil
         }
+
+        if signedKey.counterSignedMails < 2 && mail.from.publicKeys.count > 1 {
+            return true
+        }
+        return false
     }
 
     override func viewDidLoad() {
@@ -73,7 +68,7 @@ class ReadViewController: UITableViewController {
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
         }
-//        Logger.queue.async(flags: .barrier) {
+
         if Logger.logging, let mail = self.mail {
             var message = "none"
             if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { // @ jakob: why is this important here?
@@ -87,7 +82,6 @@ class ReadViewController: UITableViewController {
             }
             Logger.log(readViewOpen: mail, message: message, draft: isDraft)
         }
-//        }
 
         VENDelegate = ReadVENDelegate(tappedWhenSelectedFunc: { [weak self] in self?.showContact($0) }, tableView: tableView)
 
@@ -115,7 +109,7 @@ class ReadViewController: UITableViewController {
         if let mail = mail, mail.folder.uidvalidity != mail.uidvalidity || !mail.received {
             deleteButton.isEnabled = false
         }
-        
+
         textDelegate = ReadTextDelegate()
         textDelegate?.callback = newMailCallback
 
@@ -131,21 +125,21 @@ class ReadViewController: UITableViewController {
     }
 
     deinit {
-//        Logger.queue.async(flags: .barrier) {
-            if Logger.logging, let mail = self.mail {
-                var message = "none"
-                if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
-                    if mail.trouble {
-                        message = "corrupted"
-                    } else if mail.isEncrypted && mail.unableToDecrypt {
-                        message = "couldNotDecrypt"
-                    } else if mail.from.hasKey && !mail.isSecure {
-                        message = "encryptedBefore"
-                    }
+        print("===============|| ReadViewController deinitialized ||===============")
+
+        if Logger.logging, let mail = self.mail {
+            var message = "none"
+            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+                if mail.trouble {
+                    message = "corrupted"
+                } else if mail.isEncrypted && mail.unableToDecrypt {
+                    message = "couldNotDecrypt"
+                } else if mail.from.hasKey && !mail.isSecure {
+                    message = "encryptedBefore"
                 }
-                Logger.log(readViewClose: message, draft: isDraft)
             }
-//        }
+            Logger.log(readViewClose: message, draft: isDraft)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -260,10 +254,8 @@ class ReadViewController: UITableViewController {
     }
 
     @IBAction func showEmailButton(_ sender: UIButton) {
-//        Logger.queue.async(flags: .barrier) {
-            Logger.log(showBroken: self.mail)
-//        }
-        
+        Logger.log(showBroken: self.mail)
+
         mail?.showMessage = true
 
         self.tableView.beginUpdates()
@@ -282,9 +274,7 @@ class ReadViewController: UITableViewController {
     @IBAction func reactButton(_ sender: Any) {
         performSegue(withIdentifier: "answerTo", sender: "reactButton")
         reactButton.isEnabled = false
-//      Logger.queue.async(flags: .barrier) {
-            Logger.log(reactTo: mail)
-//      }
+        Logger.log(reactTo: mail)
     }
 
     @IBAction func markUnreadButton(_ sender: AnyObject) {
@@ -296,14 +286,10 @@ class ReadViewController: UITableViewController {
         if let mail = mail {
             let trashFolder = UserManager.backendTrashFolderPath
             if mail.folder.path == trashFolder {
-//                Logger.queue.async(flags: .barrier) {
-                    Logger.log(delete: mail, toTrash: false)
-//                }
+                Logger.log(delete: mail, toTrash: false)
                 AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
             } else {
-//                Logger.queue.async(flags: .barrier) {
-                    Logger.log(delete: mail, toTrash: true)
-//                }
+                Logger.log(delete: mail, toTrash: true)
                 AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: trashFolder)
             }
         }
@@ -313,13 +299,12 @@ class ReadViewController: UITableViewController {
     @IBAction func archiveButton(_ sender: AnyObject) {
         if let mail = mail {
             let archiveFolder = UserManager.backendArchiveFolderPath
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(archive: mail)
-//            }
+            Logger.log(archive: mail)
             AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
         }
         navigationController?.popViewController(animated: true)
     }
+
     @IBAction func iconButton(_ sender: AnyObject) {
         if let m = mail {
             let alert: UIAlertController
@@ -331,9 +316,7 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://userpage.fu-berlin.de/letterbox/faq.html#secureMailAnswer"
                 alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-//                    Logger.queue.async(flags: .barrier) {
-                        Logger.log(close: url, mail: m, action: "exportKey")
-//                    }
+                    Logger.log(close: url, mail: m, action: "exportKey")
                     self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)
                 }))
             } else if m.isCorrectlySigned {
@@ -349,19 +332,13 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://userpage.fu-berlin.de/letterbox/faq.html#collapsePostcard"
             }
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(open: url, mail: m)
-//            }
+            Logger.log(open: url, mail: m)
             alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-//                Logger.queue.async(flags: .barrier) {
-                    Logger.log(close: url, mail: m, action: "openURL")
-//                }
+                Logger.log(close: url, mail: m, action: "openURL")
                 UIApplication.shared.openURL(URL(string: url)!)
             }))
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action: UIAlertAction!) -> Void in
-//                Logger.queue.async(flags: .barrier) {
-                    Logger.log(close: url, mail: m, action: "OK")
-//                }
+                Logger.log(close: url, mail: m, action: "OK")
             }))
             DispatchQueue.main.async(execute: {
                 self.present(alert, animated: true, completion: nil)
@@ -371,10 +348,8 @@ class ReadViewController: UITableViewController {
 
     func setUItoMail() {
         if let mail = mail {
-
-
-            if mail.containsSecretKey{
-               importSecretKeyDialog(first: true)
+            if mail.containsSecretKey {
+                importSecretKeyDialog(first: true)
             }
 
             // mark mail as read if viewcontroller is open for more than 1.5 sec
@@ -422,7 +397,7 @@ class ReadViewController: UITableViewController {
             if senderTokenField.frame.height > 60 {
                 senderTokenField.collapse()
             }
-            
+
             if toTokenField.frame.height > 60 {
                 toTokenField.collapse()
             }
@@ -500,7 +475,7 @@ class ReadViewController: UITableViewController {
                     controller.prefilledMail = prefillMail
                     return
                 }
-                let reaction = (sender as? String ?? "noReaction") == "reactButton"
+                let askForConfirmation = (sender as? String ?? "noReaction") == "reactButton"
 
                 var answerTo = [mail.from]
                 var answerCC = [Mail_Address]()
@@ -516,7 +491,7 @@ class ReadViewController: UITableViewController {
                 if mail.to.count > 0 {
                     for case let mail as Mail_Address in mail.to {
                         body.append("\(mail.address), ")
-                        if mail.address != myAddress && !reaction {
+                        if mail.address != myAddress && !askForConfirmation {
                             answerTo.append(mail)
                         }
                     }
@@ -525,7 +500,7 @@ class ReadViewController: UITableViewController {
                     body.append("\n\(NSLocalizedString("Cc", comment: "")): ")
                     for case let mail as Mail_Address in mail.cc! {
                         body.append("\(mail.address), ")
-                        if mail.address != myAddress && !reaction {
+                        if mail.address != myAddress && !askForConfirmation {
                             answerCC.append(mail)
                         }
                     }
@@ -539,7 +514,7 @@ class ReadViewController: UITableViewController {
                     return "> " + line
                 }.reduce("", { $0 + "\n" + $1 })
 
-                if reaction {
+                if askForConfirmation {
                     body = NSLocalizedString("didYouSendThis", comment: "") + body
                 } else {
                     body = "\n\n\(NSLocalizedString("Mail.Signature", comment: "Signature"))" + body
@@ -580,51 +555,40 @@ class ReadViewController: UITableViewController {
     func newMailCallback(Address: String) {
         performSegue(withIdentifier: "answerTo", sender: Address)
     }
-   
-    func newSecretkeyPassword(textField: UITextField!){
+
+    func newSecretkeyPassword(textField: UITextField!) {
         if let tField = textField {
             tField.isSecureTextEntry = true
             secretKeyPasswordField = tField
         }
-        
     }
-    
-    func importSecretKey(alertAction: UIAlertAction!){
-//        Logger.queue.async(flags: .barrier) {
-            Logger.log(importPrivateKeyPopupClose: mail, doImport: true)
-//        }
-        if let aAction = alertAction{
-            if let pw = secretKeyPasswordField?.text{
+
+    func importSecretKey(alertAction: UIAlertAction!) {
+        Logger.log(importPrivateKeyPopupClose: mail, doImport: true)
+        if let aAction = alertAction {
+            if let pw = secretKeyPasswordField?.text {
                 do {
                     let suc = try mail?.processSecretKey(pw: pw)
-//                    Logger.queue.async(flags: .barrier) {
                     Logger.log(importPrivateKey: mail, success: true)
-//                    }
-                }catch _ {
-//                    Logger.queue.async(flags: .barrier) {
+                } catch _ {
                     Logger.log(importPrivateKey: mail, success: false)
-//                    }
                     importSecretKeyDialog(first: false)
                 }
             }
         }
     }
-    
-    private func importSecretKeyDialog(first: Bool){
-//        Logger.queue.async(flags: .barrier) {
-            Logger.log(importPrivateKeyPopupOpen: mail)
-//        }
+
+    private func importSecretKeyDialog(first: Bool) {
+        Logger.log(importPrivateKeyPopupOpen: mail)
         var message = NSLocalizedString("Please, enter the password to import the new secret.", comment: "NewSecretKeyMessage")
-        if !first{
+        if !first {
             message = NSLocalizedString("Wrong password! Please, enter the password to import the new secret again.", comment: "NewSecretKeyMessage")
         }
         let alert = UIAlertController(title: NSLocalizedString("New secret", comment: "NewSecretKeyTitle"), message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("No import", comment: "NoSecretKeyImport"), style: UIAlertActionStyle.destructive, handler: { (_ :UIAlertAction) -> Void in
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(importPrivateKeyPopupClose: self.mail, doImport: false)
-//            }
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No import", comment: "NoSecretKeyImport"), style: UIAlertActionStyle.destructive, handler: { (_: UIAlertAction) -> Void in
+            Logger.log(importPrivateKeyPopupClose: self.mail, doImport: false)
         }))
-        
+
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Import secret Key"), style: UIAlertActionStyle.default, handler: importSecretKey))
         alert.addTextField(configurationHandler: newSecretkeyPassword(textField:))
         self.present(alert, animated: true, completion: nil)
@@ -642,7 +606,7 @@ class ReadTextDelegate: NSObject, UITextViewDelegate {
         }
         return true
     }
-    
+
     @available(iOS 10.0, *)
     func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         if url.scheme == "mailto" {
