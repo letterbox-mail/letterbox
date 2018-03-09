@@ -276,7 +276,7 @@ class ReadViewController: UITableViewController {
     }
 
     @IBAction func ignoreEmailButton(_ sender: AnyObject) {
-        _ = navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
     @IBAction func reactButton(_ sender: Any) {
@@ -289,7 +289,7 @@ class ReadViewController: UITableViewController {
 
     @IBAction func markUnreadButton(_ sender: AnyObject) {
         mail?.isRead = false
-        _ = navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
     @IBAction func deleteButton(_ sender: AnyObject) {
@@ -307,7 +307,7 @@ class ReadViewController: UITableViewController {
                 AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: trashFolder)
             }
         }
-        _ = navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
     @IBAction func archiveButton(_ sender: AnyObject) {
@@ -318,7 +318,7 @@ class ReadViewController: UITableViewController {
 //            }
             AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
         }
-        _ = navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     @IBAction func iconButton(_ sender: AnyObject) {
         if let m = mail {
@@ -538,12 +538,11 @@ class ReadViewController: UITableViewController {
                     }
                     return "> " + line
                 }.reduce("", { $0 + "\n" + $1 })
-                //body = TextFormatter.insertBeforeEveryLine("> ", text: body)
 
                 if reaction {
                     body = NSLocalizedString("didYouSendThis", comment: "") + body
                 } else {
-                    body = "\n\n" + body
+                    body = "\n\n\(NSLocalizedString("Mail.Signature", comment: "Signature"))" + body
                 }
 
                 var subject = NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + NSLocalizedString("SubjectNo", comment: "there is no subject")

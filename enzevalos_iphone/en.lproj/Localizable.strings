@@ -93,7 +93,7 @@
 "ReceiveInsecureInfoDecryptionFailed" = "Diese Nachricht wurde verschlüsselt, konnte aber nicht entschlüsselt werden. Möglicherweise wurde ein alter Schlüssel verwendet oder etwas seltsames ist passiert.";
 "Refresh" = "Erneut laden";
 "Reply" = "Antworten";
-"SaveToDrafts" = "Speichern in Entwürfen";
+"SaveAsDraft" = "Als Entwurf speichern";
 "Secure" = "Sicher";
 "Send" = "Senden";
 "SendError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?

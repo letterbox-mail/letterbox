@@ -19,7 +19,7 @@
                     ]
         },
         "mailboxes": {
-            "drafts": "Entwürfe",
+            "drafts": "Entwurf",
             "allmail": "Archive",
             "spam": "Spam",
             "sentmail": "Gesendet",
@@ -155,37 +155,12 @@
                     }
                     ]
         },
-        "domain-match":[
-                        "googlemail.com",
-                        "googlemail",
-                        "gmail.com",
-                        "gmail"
-                        ],
-        "mx-match": [
-                     "googlemail.com",
-                     "googlemail",
-                     "gmail.com",
-                     "gmail"
-                     ]
-    },
-    "arcor":{
-        "servers":{
-            "imap":[
-                    {
-                    "port":993,
-                    "hostname":"imap.gmail.com",
-                    "ssl":true,
-                    "auth":"saslPlain"
-                    }
-                    ],
-            "smtp":[
-                    {
-                    "port":587,
-                    "hostname":"smtp.gmail.com",
-                    "starttls":true,
-                    "auth":"saslPlain"
-                    }
-                    ]
+        "mailboxes": {
+            "drafts": "[Gmail]/Entw&APw-rfe",
+            "allmail": "[Gmail]/Archive",
+            "spam": "[Gmail]/Spam",
+            "sentmail": "[Gmail]/Gesendet",
+            "trash": "[Gmail]/Papierkorb"
         },
         "domain-match":[
                         "googlemail.com",

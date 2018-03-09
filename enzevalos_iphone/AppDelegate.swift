@@ -144,15 +144,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func credentialsWork() {
         self.window?.rootViewController = Onboarding.contactView(self.requestForAccess)
-        //self.onboardingDone()
-        
     }
 
     func contactCheck(_ accessGranted: Bool) {
         if accessGranted {
             setupKeys()
         } else {
-            //self.onboardingDone()
             DispatchQueue.main.async(execute: {
                 self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.setupKeys)
             });
@@ -179,19 +176,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func setupKeys() {
         self.window?.rootViewController = Onboarding.keyHandlingView()
-        DispatchQueue.main.async(execute: {
-            self.onboardingDone()
-        });
         let handler = DataHandler.init()
         _ = handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
         StudySettings.setupStudyKeys()
         StudySettings.firstMail()
-
+        DataHandler.handler.callForFolders(done: { err in
+            for f in DataHandler.handler.allFolders {
+            if f.flags.contains(MCOIMAPFolderFlag.drafts) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.draftFolderPath)
+            }
+            if f.flags.contains(MCOIMAPFolderFlag.sentMail) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.sentFolderPath)
+            }
+            if f.flags.contains(MCOIMAPFolderFlag.trash) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.trashFolderPath)
+            }
+            if f.flags.contains(MCOIMAPFolderFlag.archive) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.archiveFolderPath)
+            }
+            if f.flags.contains(MCOIMAPFolderFlag.inbox) {
+                UserManager.storeUserValue(f.path as AnyObject?, attribute: Attribute.inboxFolderPath)
+            }
+            }
+            DispatchQueue.main.async(execute: {
+                self.onboardingDone()
+            });})
     }
 
     func onboardingDone() {
-        /*self.window?.rootViewController = Onboarding.keyHandlingView()
-        Onboarding.keyHandling()*/
 //        Logger.queue.async(flags: .barrier) {
             Logger.log(onboardingState: "done")
 //        }

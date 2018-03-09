@@ -91,9 +91,6 @@ class SendViewController: UIViewController {
         startIconAnimation()
 
         textView.font = UIFont.systemFont(ofSize: 17)
-        if textView.text.count == 0 {
-            textView.text.append(NSLocalizedString("Mail.Signature", comment: ""))
-        }
         textView.delegate = self
 
         subjectText.toLabelText = NSLocalizedString("Subject", comment: "subject label") + ": "
@@ -127,6 +124,10 @@ class SendViewController: UIViewController {
         toText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
         ccText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
 
+        if prefilledMail == nil {
+            textView.text.append(NSLocalizedString("Mail.Signature", comment: "Signature"))
+        }
+
         if let to = toField {
             let ezCon = DataHandler.handler.getContactByAddress(to)
             toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
@@ -146,12 +147,7 @@ class SendViewController: UIViewController {
             }
 
             subjectText.setText(prefilledMail.subject ?? "")
-            if invite && prefilledMail.body != nil{
-                textView.text = ""
-                textView.text.append(prefilledMail.body!)
-            } else {
-                textView.text.append(prefilledMail.body ?? "")
-            }
+            textView.text.append(prefilledMail.body ?? "")
         }
 
         let sepConst: CGFloat = 1 / UIScreen.main.scale
@@ -728,7 +724,7 @@ class SendViewController: UIViewController {
             alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { (action: UIAlertAction!) -> Void in
                 self.navigationController?.dismiss(animated: true, completion: nil)
             }))
-            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveToDrafts", comment: "save the written E-Mail as draft"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveAsDraft", comment: "save the written E-Mail as draft"), style: .default, handler: { (action: UIAlertAction!) -> Void in
                 self.mailHandler.createDraft(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: { (error: Error?) -> Void in
                     if let error = error {
                         print(error)

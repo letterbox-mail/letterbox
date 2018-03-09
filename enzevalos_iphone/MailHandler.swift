@@ -497,9 +497,8 @@ class MailHandler {
                 if !DataHandler.handler.existsFolder(with: drafts) {
                     let op = IMAPSession.createFolderOperation(drafts)
                     op?.start({ _ in self.saveDraft(data: sendData, callback: callback) })
-                }
-                    else {
-                        saveDraft(data: sendData, callback: callback)
+                } else {
+                    saveDraft(data: sendData, callback: callback)
                 }
             } else {
                 //TODO do it better
@@ -1147,7 +1146,6 @@ class MailHandler {
 
 
     func allFolders(_ completion: @escaping (Error?, [Any]?) -> Void) {
-
         let op = IMAPSession.fetchAllFoldersOperation()
         op?.start(completion)
     }
@@ -1222,7 +1220,7 @@ class MailHandler {
     }
 
     private func olderMails(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
-        let folderPath = UserManager.convertToBackendFolderPath(from: folder.path)
+        let folderPath = folder.path//UserManager.convertToBackendFolderPath(from: folder.path)
         if let mails = folder.mails {
             var oldestDate: Date?
             for m in mails {
@@ -1260,7 +1258,7 @@ class MailHandler {
 
 
     private func loadMailsSinceDate(folder: Folder, since: Date, maxLoad: Int = MailHandler.MAXMAILS, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
-        let folderPath = UserManager.convertToBackendFolderPath(from: folder.path)
+        let folderPath = folder.path
         let searchExp = MCOIMAPSearchExpression.search(since: since)
         let searchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExp)
 

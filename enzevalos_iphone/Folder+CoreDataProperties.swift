@@ -20,7 +20,7 @@ extension Folder {
     @NSManaged public var subfolder: NSSet?
     @NSManaged public var mails: NSSet?
     @NSManaged public var keyRecords: NSSet?
-    @NSManaged public var path: String
+    @NSManaged public var path: String //backendFolderPath
     @NSManaged public var lastUpdate: Date?
     @NSManaged public var pseudonym: String
     @NSManaged public var icon: String
