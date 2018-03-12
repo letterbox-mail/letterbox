@@ -61,9 +61,12 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.scopeButtonTitles = [NSLocalizedString("Sender", comment: ""), NSLocalizedString("Subject", comment: ""), NSLocalizedString("Body", comment: ""), NSLocalizedString("All", comment: "")]
         searchController.searchBar.delegate = self
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+        } else {
+            tableView.tableHeaderView = searchController.searchBar
+        }
         definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
-
         dateFormatter.locale = Locale.current
         dateFormatter.timeStyle = .medium
 
@@ -101,7 +104,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
 
-        if lastUpdate == nil || Date().timeIntervalSince(lastUpdate!) > 30 {
+        if lastUpdate == nil || Date().timeIntervalSince(lastUpdate!) > 50 {
             self.refreshControl?.beginRefreshingManually()
         }
     }
