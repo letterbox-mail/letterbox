@@ -211,7 +211,7 @@ class ReadViewController: UITableViewController {
         }
 
         if let mail = mail {
-            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate ?? Date() && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
+            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate ?? Date() && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) && !mail.unableToDecrypt {
                 return 2
             }
         }
