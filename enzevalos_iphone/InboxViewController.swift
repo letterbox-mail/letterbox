@@ -48,7 +48,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         tableView.sectionFooterHeight = 0
 
         self.refreshControl?.addTarget(self, action: #selector(InboxViewController.refresh(_:)), for: UIControlEvents.valueChanged)
-        self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("PullToRefresh", comment: "Pull to refresh"))
 
         lastUpdateLabel.sizeToFit()
         lastUpdateLabel.backgroundColor = UIColor.clear
@@ -79,11 +79,10 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         })
     }
 
-    func refresh(_ refreshControl: UIRefreshControl) {
+    func refresh(_ refreshControl: UIRefreshControl?) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
         AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: getMailCompleted)
-
     }
 
     // TODO @Olli: Remove this function when MailHandler is cleaned up
@@ -105,7 +104,8 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         tableView.reloadData()
 
         if lastUpdate == nil || Date().timeIntervalSince(lastUpdate!) > 50 {
-            self.refreshControl?.beginRefreshingManually()
+//            self.refreshControl?.beginRefreshingManually()
+            refresh(nil)
         }
     }
 
