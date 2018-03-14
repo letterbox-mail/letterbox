@@ -48,7 +48,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         tableView.sectionFooterHeight = 0
 
         self.refreshControl?.addTarget(self, action: #selector(InboxViewController.refresh(_:)), for: UIControlEvents.valueChanged)
-        self.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("PullToRefresh", comment: "Pull to refresh"))
 
         lastUpdateLabel.sizeToFit()
         lastUpdateLabel.backgroundColor = UIColor.clear
@@ -61,12 +61,12 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.scopeButtonTitles = [NSLocalizedString("Sender", comment: ""), NSLocalizedString("Subject", comment: ""), NSLocalizedString("Body", comment: ""), NSLocalizedString("All", comment: "")]
         searchController.searchBar.delegate = self
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+        } else {
+            tableView.tableHeaderView = searchController.searchBar
+        }
         definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
-//        tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.height)
-
-        //AppDelegate.getAppDelegate().mailHandler.delegate = self
-
         dateFormatter.locale = Locale.current
         dateFormatter.timeStyle = .medium
 
@@ -74,18 +74,18 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
         AppDelegate.getAppDelegate().mailHandler.startIMAPIdleIfSupported(addNewMail: addNewMail)
         NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave, object: nil, queue: nil, using: {
-            [weak self] notification in
+            [weak self] _ in
             self?.tableView.reloadData()
         })
     }
 
-    func refresh(_ refreshControl: UIRefreshControl) {
+    func refresh(_ refreshControl: UIRefreshControl?) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
         AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: getMailCompleted)
-
     }
 
+    // TODO @Olli: Remove this function when MailHandler is cleaned up
     func addNewMail(mail: PersistentMail?) {
         //tableView.reloadData()
     }
@@ -97,16 +97,15 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             }
             rc.endRefreshing()
             lastUpdateText = lastUpdate != nil ? "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))" : NSLocalizedString("NeverUpdated", comment: "No internet connection since last launch")
-
-           // self.tableView.reloadData()
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
 
-        if lastUpdate == nil || Date().timeIntervalSince(lastUpdate!) > 30 {
-            self.refreshControl?.beginRefreshingManually()
+        if lastUpdate == nil || Date().timeIntervalSince(lastUpdate!) > 50 {
+//            self.refreshControl?.beginRefreshingManually()
+            refresh(nil)
         }
     }
 
@@ -118,7 +117,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         let cell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as! InboxTableViewCell
 
         cell.delegate = self
-        if isFiltering() {
+        if isFiltering {
             cell.enzContact = filteredRecords[indexPath.section]
         } else {
             cell.enzContact = folder.records[indexPath.section]
@@ -128,10 +127,10 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if isFiltering() {
+        if isFiltering {
             return filteredRecords.count
         }
-        
+
         return folder.records.count
     }
 
@@ -148,31 +147,25 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     }
 
     func callSegueFromCell(_ mail: PersistentMail?) {
-        if isFiltering(), Logger.logging {
+        if isFiltering, Logger.logging {
             let categoryIndex = searchController.searchBar.selectedScopeButtonIndex
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "mail")
-//            }
+            Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "mail")
         }
         performSegue(withIdentifier: "readMailSegue", sender: mail)
     }
 
     func callSegueFromCell2(_ contact: KeyRecord?) {
-        if isFiltering(), Logger.logging {
+        if isFiltering, Logger.logging {
             let categoryIndex = searchController.searchBar.selectedScopeButtonIndex
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "mailList")
-//            }
+            Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "mailList")
         }
         performSegue(withIdentifier: "mailListSegue", sender: contact)
     }
 
     func callSegueToContact(_ contact: KeyRecord?) {
-        if isFiltering(), Logger.logging {
+        if isFiltering, Logger.logging {
             let categoryIndex = searchController.searchBar.selectedScopeButtonIndex
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "contact")
-//            }
+            Logger.log(search: self.filteredRecords.count, category: categoryIndex, opened: "contact")
         }
         performSegue(withIdentifier: "contactSegue", sender: contact)
     }
@@ -207,8 +200,6 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
                     } else {
                         let keyID = UserManager.loadUserValue(Attribute.prefSecretKeyID) as! String
                         let addr = UserManager.loadUserValue(Attribute.userAddr) as! String
-                        //let folderName = UserManager.backendInboxFolderPath
-                        //let folder = DataHandler.handler.findFolder(with: folderName)
                         DestinationViewController.keyRecord = DataHandler.handler.getKeyRecord(addr: addr, keyID: keyID)
                     }
                 }
@@ -220,17 +211,16 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         self.dismiss(animated: true, completion: nil)
     }
 
-    func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
+    /// Is true if the text is empty or nil
+    var searchBarIsEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
 
-    func isFiltering() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
+    var isFiltering: Bool {
+        return searchController.isActive && !searchBarIsEmpty
     }
 
     func filterContentForSearchText(_ searchText: String, scope: Int = 0) {
-        // folder.updateRecords()
         var records = [KeyRecord]()
         if scope == 0 || scope == 3 {
             records += folder.records.filter({ ( record: KeyRecord) -> Bool in
@@ -315,4 +305,3 @@ extension Array where Element: Equatable {
         return uniqueValues
     }
 }
-
