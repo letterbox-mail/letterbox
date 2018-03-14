@@ -565,7 +565,7 @@ class Onboarding: NSObject {
 
         if let provider = manager.provider(forEmail: mailaddress), let imap = (provider.imapServices() as? [MCONetService]), imap != [], let smtp = (provider.smtpServices() as? [MCONetService]), smtp != [] {
             let imapService = imap[0]
-            UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.web.de") as AnyObject?, attribute: Attribute.imapHostname) //TODO @jakob: web.de?!?
+            UserManager.storeUserValue((imapService.info()["hostname"] ?? "imap.example.com") as AnyObject?, attribute: Attribute.imapHostname)
             UserManager.storeUserValue((imapService.info()["port"] ?? 587) as AnyObject?, attribute: Attribute.imapPort)
             
             if let trans = imapService.info()["ssl"] as? Bool, trans {
@@ -601,7 +601,7 @@ class Onboarding: NSObject {
             }
 
             let smtpService = smtp[0]
-            UserManager.storeUserValue((smtpService.info()["hostname"] ?? "smtp.web.de") as AnyObject?, attribute: Attribute.smtpHostname)
+            UserManager.storeUserValue((smtpService.info()["hostname"] ?? "smtp.example.com") as AnyObject?, attribute: Attribute.smtpHostname)
             UserManager.storeUserValue((smtpService.info()["port"] ?? 993) as AnyObject?, attribute: Attribute.smtpPort)
 
             if let trans = smtpService.info()["ssl"] as? Bool, trans {
