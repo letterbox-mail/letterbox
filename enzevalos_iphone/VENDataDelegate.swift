@@ -61,12 +61,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     func tokenField(_ tokenField: VENTokenField, didEnterText text: String) {
         let text = text.lowercased()
         tokenField.textTokens.add(text)
-        if AddressHandler.inContacts(text) {
-            //TODO Mailadresse aus Kontakt holen
-        }
-        else {
-            tokenField.mailTokens.add(text)
-        }
+        tokenField.mailTokens.add(text)
         tokenField.reloadData()
         changeFunc(tokenField)
         tokenField.sendActions(for: UIControlEvents.editingDidEnd)
