@@ -319,6 +319,7 @@
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
+		A198D2292056B384004CC838 /* SendViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A198D2282056B384004CC838 /* SendViewDelegate.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
@@ -627,6 +628,7 @@
 		A17FDFF2202C685800F7BA89 /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingEventType.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
+		A198D2282056B384004CC838 /* SendViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewDelegate.swift; sourceTree = "<group>"; };
 		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jabo.asc; path = keys/jabo.asc; sourceTree = "<group>"; };
 		A1A9DE721F864B0500B808AA /* ExportCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportCells.swift; sourceTree = "<group>"; };
 		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-2.gpg"; path = "keys/alice2005-2.gpg"; sourceTree = "<group>"; };
@@ -1286,6 +1288,7 @@
 				A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */,
 				A1EB05891D956890008659C1 /* ContactCell.xib */,
 				A1EB058B1D9568AB008659C1 /* FrequentCell.xib */,
+				A198D2282056B384004CC838 /* SendViewDelegate.swift */,
 			);
 			name = send;
 			sourceTree = "<group>";
@@ -2141,6 +2144,7 @@
 				471BC9171F960B7C00D64416 /* PGPSignatureSubpacket.m in Sources */,
 				A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */,
 				472F398E1E251B8D009260FB /* MailAddress.swift in Sources */,
+				A198D2292056B384004CC838 /* SendViewDelegate.swift in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
 				471BC9251F960B7C00D64416 /* PGPFoundation.m in Sources */,
 				471BC90D1F960B7C00D64416 /* PGPLiteralPacket.m in Sources */,

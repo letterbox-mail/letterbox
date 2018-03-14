@@ -81,6 +81,8 @@ class SendViewController: UIViewController {
             self.showFirstDialogIfNeeded()
         }
     }
+    
+    var sendViewDelegate: SendViewDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -552,6 +554,9 @@ class SendViewController: UIViewController {
                     self.prefilledMail?.predecessor?.isAnwered = true
                 }
             }
+            if let delegate = sendViewDelegate {
+                delegate.compositionSent()
+            }
             sendInProgress = false
             self.sendCompleted()
         }
@@ -722,6 +727,9 @@ class SendViewController: UIViewController {
 
             alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { (action: UIAlertAction!) -> Void in
+                if let delegate = self.sendViewDelegate {
+                    delegate.compositionDiscarded()
+                }
                 self.navigationController?.dismiss(animated: true, completion: nil)
             }))
             alert.addAction(UIAlertAction(title: NSLocalizedString("SaveAsDraft", comment: "save the written E-Mail as draft"), style: .default, handler: { (action: UIAlertAction!) -> Void in
@@ -729,10 +737,12 @@ class SendViewController: UIViewController {
                     if let error = error {
                         print(error)
                     } else {
+                        if let delegate = self.sendViewDelegate {
+                            delegate.compositionSavedAsDraft()
+                        }
                         self.navigationController?.dismiss(animated: true, completion: nil)
                     }
                 })
-                self.navigationController?.dismiss(animated: true, completion: nil)
             }))
             alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "cancel"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in
                 firstResponder?.becomeFirstResponder()
