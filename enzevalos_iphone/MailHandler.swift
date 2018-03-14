@@ -304,7 +304,7 @@ class MailHandler {
             var sendOperation: MCOSMTPSendOperation
             let pgp = SwiftPGP()
 
-            if let encPGP = ordered[CryptoScheme.PGP], ordered[CryptoScheme.PGP]?.count > 0 {
+            if let encPGP = ordered[CryptoScheme.PGP], encPGP.count > 0 {
                 var keyIDs = addKeys(adrs: encPGP)
                 //added own public key here, so we can decrypt our own message to read it in sent-folder
                 keyIDs.append(sk.keyID!)
@@ -414,6 +414,16 @@ class MailHandler {
                     }
                 }
             }
+            
+            if let encPGP = ordered[CryptoScheme.PGP], encPGP.count > 0 {
+            } else if let unenc = ordered[CryptoScheme.UNKNOWN], unenc.count > 0, !loggingMail {
+            } else {
+                let error = NSError.init(domain: MCOErrorDomain, code: MCOErrorCode.sendMessage.rawValue, userInfo: nil) as Error
+                callback(error)
+            }
+        } else {
+            let error = NSError.init(domain: MCOErrorDomain, code: MCOErrorCode.sendMessage.rawValue, userInfo: nil) as Error
+            callback(error)
         }
     }
 
