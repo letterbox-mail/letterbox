@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
-		3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E048C041FAC9ABD00948524 /* HockeySDK.swift */; };
 		3E6B07DE2011246500E49609 /* invitationText.html in Resources */ = {isa = PBXBuildFile; fileRef = 3E6B07DD2011246500E49609 /* invitationText.html */; };
 		3E6B07DF2011246500E49609 /* invitationText.html in Resources */ = {isa = PBXBuildFile; fileRef = 3E6B07DD2011246500E49609 /* invitationText.html */; };
 		3E9708B41FAC95F5005825C9 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
@@ -311,7 +309,6 @@
 
 /* Begin PBXFileReference section */
 		1D4A9E60565DECF52C011BC0 /* Pods-enzevalos_iphone-AdHoc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone-AdHoc.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc.release.xcconfig"; sourceTree = "<group>"; };
-		3E048C041FAC9ABD00948524 /* HockeySDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HockeySDK.swift; sourceTree = "<group>"; };
 		3E6B07DD2011246500E49609 /* invitationText.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = invitationText.html; path = Invitation/invitationText.html; sourceTree = "<group>"; };
 		3E9708AD1FAC925D005825C9 /* enzevalos_iphone.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = enzevalos_iphone.entitlements; sourceTree = "<group>"; };
 		3E9708AE1FAC925D005825C9 /* enzevalos-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "enzevalos-Info.plist"; sourceTree = "<group>"; };
@@ -558,14 +555,6 @@
 				9B3D62838C729BAC6832270A /* Pods-enzevalos_iphone-AdHoc.debug.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		3E048C031FAC9AA300948524 /* HockeyApp */ = {
-			isa = PBXGroup;
-			children = (
-				3E048C041FAC9ABD00948524 /* HockeySDK.swift */,
-			);
-			name = HockeyApp;
 			sourceTree = "<group>";
 		};
 		3E9708AC1FAC925D005825C9 /* PLists */ = {
@@ -816,7 +805,6 @@
 				476142091E082F9C00FD5E4F /* Settings.bundle */,
 				A1BE3FF81E9664660040114B /* InfoPlist.strings */,
 				A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */,
-				3E048C031FAC9AA300948524 /* HockeyApp */,
 				3E9708AC1FAC925D005825C9 /* PLists */,
 			);
 			path = enzevalos_iphone;
@@ -1605,7 +1593,6 @@
 				3E9709231FAC95F5005825C9 /* MailAddress.swift in Sources */,
 				3E9709241FAC95F5005825C9 /* MailHandlerDelegator.swift in Sources */,
 				3E97092A1FAC95F5005825C9 /* LabelStyleKit.swift in Sources */,
-				3E048C061FAC9ABD00948524 /* HockeySDK.swift in Sources */,
 				3E97092C1FAC95F5005825C9 /* SubBadgeTableViewCell.swift in Sources */,
 				3E97092D1FAC95F5005825C9 /* FrequentCell.swift in Sources */,
 				3E97092E1FAC95F5005825C9 /* ListViewController.swift in Sources */,
@@ -1706,7 +1693,6 @@
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
 				A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */,
 				F1984D741E1E92B300804E1E /* LabelStyleKit.swift in Sources */,
-				3E048C051FAC9ABD00948524 /* HockeySDK.swift in Sources */,
 				8428A8681F436A11007649A5 /* SubBadgeTableViewCell.swift in Sources */,
 				A1EB05861D956872008659C1 /* FrequentCell.swift in Sources */,
 				F12041FB1DA3FBF7002E4940 /* ListViewController.swift in Sources */,
