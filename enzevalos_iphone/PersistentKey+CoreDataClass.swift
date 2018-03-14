@@ -37,7 +37,6 @@ public class PersistentKey: NSManagedObject {
     }
     
     func isExpired()-> Bool{
-        // TODO: Consider different cryptotypes!
         let pgp = SwiftPGP()
         if let key = pgp.loadKey(id: self.keyID){
             if let expire = key.expirationDate{

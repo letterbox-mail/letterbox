@@ -263,7 +263,7 @@ class SwiftPGP: Encryption{
     func exportKey(id: String, isSecretkey isSecretKey: Bool, autocrypt: Bool, newPasscode: Bool = false) -> String?{
         if let key = exportKeyData(id: id, isSecretkey: isSecretKey){
             if !isSecretKey && autocrypt{
-                return key.base64EncodedString()
+                return key.base64EncodedString(options:  .lineLength64Characters)
             }
             else{
                 var armoredKey : String

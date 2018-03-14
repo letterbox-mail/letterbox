@@ -111,10 +111,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         }
     }
     
-    //new
-    
-    
-    
     func tokenFieldDidEndEditing(_ tokenF: VENTokenField){
         editing = false
         if let last = tokenF.inputText() {
@@ -125,15 +121,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         endFunc(tokenF)
     }
 
-    // TODO: Remove this function, not needed anymore
-    func isSecure(_ tokenField: VENTokenField) -> Bool {
-        var secure = true
-        for entry in tokenField.mailTokens{
-            secure = secure && DataHandler.handler.hasKey(adr: entry as! String)
-        }
-        return secure
-    }
-    
     func tokenField(_ tokenField: VENTokenField, didTappedTokenTwice index: UInt){
         if let fun = tappedWhenSelectedFunc {
             fun(tokenField.mailTokens[Int(index)] as! String)

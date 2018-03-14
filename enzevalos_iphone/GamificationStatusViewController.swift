@@ -9,8 +9,6 @@
 import UIKit
 
 class GamificationStatusViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    //TODO: kein rand, schrift anpassen. Farbe anpassen
-// design pattern
 
     @IBOutlet weak var secureContactsProgress: UIProgressView!
     @IBOutlet weak var secureCommunicationProgress: UIProgressView!
