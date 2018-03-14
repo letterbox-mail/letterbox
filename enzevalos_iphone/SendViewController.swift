@@ -320,15 +320,7 @@ class SendViewController: UIViewController {
                 }
 
                 let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: "\n\nMehr Informationen unter https://userpage.fu-berlin.de/letterbox/", uid: 0, predecessor: nil)
-
-
                 controller.prefilledMail = mail
-
-//                let alert = UIAlertController(title: "abc", message: "xyz", preferredStyle: .alert) //TODO: @Olli add your Text here
-//                alert.addAction(UIAlertAction(title: "OK", style: .cancel))
-//                DispatchQueue.main.async(execute: {
-//                    controller.present(alert, animated: true, completion: nil)
-//                })
             }
         }
     }

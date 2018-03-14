@@ -53,7 +53,6 @@ class AutocryptContact {
 
     init(addr: String, type: String, prefer_encryption: String, key: String) {
         self.addr = addr
-        // TODO: Other crypto schemes?
         _ = setPrefer_encryption(prefer_encryption)
         self.key = key
     }
@@ -173,7 +172,7 @@ class MailHandler {
                 if enc == "yes" {
                     //string = string + "; \(ENC)=mutal"
                 }
-                string = string + "; \(KEY)=" + key
+                string = string + "; \(KEY)= \n" + key
                 builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
             }
         }
@@ -402,15 +401,12 @@ class MailHandler {
                     sendData = builder.data()
                     sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
                     //TODO handle different callbacks
-                    //TODO add logging call here for the case the full email is unencrypted
                     if unenc.count == allRec.count && !loggingMail {
-//                        Logger.queue.async(flags: .barrier) {
                         var inviteMailContent: String? = nil
                         if inviteMail {
                             inviteMailContent = textparts.description
                         }
                         Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n" + message).count, isEncrypted: false, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [], inviteMailContent: inviteMailContent, invitationMail: inviteMail)
-//                        }
                     }
                     sendOperation.start(callback)
                     if !loggingMail {

@@ -178,6 +178,7 @@
 "copied" = "Schloss wurde kopiert";
 "copyKey" = "Schloss in Zwischenablage kopieren";
 "NeverUpdated" = "Fehler bei Aktualisierung";
+"PullToRefresh" = "Aktualisieren";
 "Invitation.Code.Title" = "Fast geschafft!";
 "Invitation.Code.Message" = "Deine Nachricht wurde versendet.\nUm sie lesen zu können, braucht man den unterstehenden Code.\nDu kannst den Code per SMS oder Messenger teilen\n\nCode: %@";
 "Invitation.Code.Share" = "Teilen";

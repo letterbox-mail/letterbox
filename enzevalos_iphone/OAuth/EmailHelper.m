@@ -62,7 +62,7 @@ static EmailHelper *shared = nil;
 - (void)doEmailLoginIfRequiredOnVC:(UIViewController*)vc completionBlock:(dispatch_block_t)completionBlock {
     // Optional: if no internet connectivity, do nothing
 //    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if (true) { // TODO: we nee to check for internet conectivity here
+    if (true) { // TODO: we need to check for internet conectivity here
         dispatch_async(dispatch_get_main_queue(), ^{
             
             // first see if we already have authorization

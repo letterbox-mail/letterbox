@@ -117,9 +117,7 @@ class Badges: NSObject {
             image = UIImage.init(named: offName)
         }
         guard let unpackedImage = image else {
-            //TODO: more elegant, maybe with error Image. Should be prevented with unit tests
             fatalError("Badge Image not found. Please Check Image Names. names tried: \(onName) and \(offName)\n")
-
         }
 
         return unpackedImage

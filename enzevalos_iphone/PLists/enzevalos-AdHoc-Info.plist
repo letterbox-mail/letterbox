@@ -22,8 +22,6 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>0.5.4</string>
-	<key>HockeyAppId</key>
-	<string>3c5abb2acef4445eb82062c870b05b7e</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

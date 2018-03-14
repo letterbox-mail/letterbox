@@ -703,7 +703,6 @@ class DataHandler {
         if let mykey = findKey(keyID: key){
             contact.getAddress(address)?.addToKeys(mykey)
         }
-        //TODO Optimize: look for Mail_Address and than for contact!
         return contact
     }
 

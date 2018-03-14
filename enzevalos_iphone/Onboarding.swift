@@ -480,13 +480,9 @@ class Onboarding: NSObject {
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [start, email, user, imap1, imap2, smtp1, smtp2, last])
         vc?.view.backgroundColor = defaultColor
         vc?.pageChanged = {(oldPage:Int, newPage: Int) -> () in
-//            Logger.queue.async(flags: .barrier) {
                 Logger.log(onboardingPageTransition: oldPage, to: newPage, onboardingSection: "detail")
-//            }
         }
-//        Logger.queue.async(flags: .barrier) {
             Logger.log(onboardingState: "detail")
-//        }
         return vc!
     }
 
@@ -501,9 +497,7 @@ class Onboarding: NSObject {
         let vc = Onboard.OnboardingViewController(backgroundImage: background, contents: [page1])!
         vc.pageControl = UIPageControl.init()
         vc.view.backgroundColor = defaultColor
-//        Logger.queue.async(flags: .barrier) {
             Logger.log(onboardingState: "contact")
-//        }
         return vc
     }
 
@@ -530,7 +524,6 @@ class Onboarding: NSObject {
             work()
             return
         }
-        print(error)
         fail()
     }
 
@@ -545,7 +538,6 @@ class Onboarding: NSObject {
             UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
             UserManager.storeUserValue((password.text ?? "") as AnyObject?, attribute: Attribute.userPW)
-            //TODO: REMOVE BEFORE STUDY
             loadTestAcc()
             return setServerValues(mailaddress: mailAddress)
         } else {
