@@ -215,6 +215,7 @@
 		A13526911D955BE000D3BFE1 /* enzevalos_iphoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526901D955BE000D3BFE1 /* enzevalos_iphoneTests.swift */; };
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
+		A1735DFA205AB88500B336DB /* SendViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1735DF9205AB88500B336DB /* SendViewState.swift */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		A198D2292056B384004CC838 /* SendViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A198D2282056B384004CC838 /* SendViewDelegate.swift */; };
 		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
@@ -416,6 +417,7 @@
 		A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enzevalos_iphoneUITests.swift; sourceTree = "<group>"; };
 		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
+		A1735DF9205AB88500B336DB /* SendViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewState.swift; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
 		A17FDFF2202C685800F7BA89 /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingEventType.swift; sourceTree = "<group>"; };
@@ -919,6 +921,7 @@
 				A1EB05891D956890008659C1 /* ContactCell.xib */,
 				A1EB058B1D9568AB008659C1 /* FrequentCell.xib */,
 				A198D2282056B384004CC838 /* SendViewDelegate.swift */,
+				A1735DF9205AB88500B336DB /* SendViewState.swift */,
 			);
 			name = send;
 			sourceTree = "<group>";
@@ -1098,7 +1101,7 @@
 					};
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = VJ9C93G68Y;
+						DevelopmentTeam = 4377G946WP;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1640,6 +1643,7 @@
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
+				A1735DFA205AB88500B336DB /* SendViewState.swift in Sources */,
 				475B00331F7B9565006CDD41 /* SwiftPGP.swift in Sources */,
 				3EB4FAA420120096001D0625 /* DialogOption.swift in Sources */,
 				F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */,
@@ -2012,7 +2016,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4377G946WP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/enzevalos_iphone",
@@ -2048,7 +2052,7 @@
 					"\"VENTokenField\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2071,7 +2075,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4377G946WP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/enzevalos_iphone",
@@ -2107,7 +2111,7 @@
 					"\"VENTokenField\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
