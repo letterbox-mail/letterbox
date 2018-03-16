@@ -90,10 +90,12 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         //tableView.reloadData()
     }
 
-    func getMailCompleted(_ error: Bool) {
+    func getMailCompleted(_ error: Error?) {
         if let rc = self.refreshControl {
-            if !error {
+            if error == nil {
                 lastUpdate = Date()
+            } else {
+                lastUpdateText = NSLocalizedString("NeverUpdated", comment: "Error while loading mailscomment")
             }
             rc.endRefreshing()
             lastUpdateText = lastUpdate != nil ? "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))" : NSLocalizedString("NeverUpdated", comment: "No internet connection since last launch")
@@ -285,9 +287,10 @@ extension InboxViewController {
         }
     }
 
-    func doneLoading(_ error: Bool) {
-        if error {
-            // TODO: maybe we should do something about this? maybe not?
+    func doneLoading(_ error: Error?) {
+        if error != nil {
+            lastUpdateText = NSLocalizedString("NeverUpdated", comment: "Error while loading mailscomment")
+            print(String(describing: error))
         }
 
         loading = false

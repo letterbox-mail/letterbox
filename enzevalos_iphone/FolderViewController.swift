@@ -99,16 +99,14 @@ class FolderViewController: UITableViewController {
                     cell.markImageView.image = "🔵".image()
                     cell.body.font = UIFont.boldSystemFont(ofSize: cell.body.font.pointSize)
                     cell.subject.font = UIFont.boldSystemFont(ofSize: cell.subject.font.pointSize)
-                }
-                else {
+                } else {
                     cell.markImageView.image = nil
                     cell.body.font = UIFont.systemFont(ofSize: cell.body.font.pointSize)
                     cell.subject.font = UIFont.systemFont(ofSize: cell.subject.font.pointSize)
                 }
                 if mail.isAnwered {
                     cell.replyImageView.image = "↩️".image()
-                }
-                else {
+                } else {
                     cell.replyImageView.image = nil
                 }
 
@@ -161,7 +159,7 @@ class FolderViewController: UITableViewController {
                     destinationVC.isDraft = true
                 }
             }
-        } 
+        }
     }
 
     func refresh() {
@@ -172,7 +170,7 @@ class FolderViewController: UITableViewController {
             DataHandler.handler.callForFolders(done: endRefreshing)
         }
     }
-    func endRefreshing(_ error: Bool) {
+    func endRefreshing(_ error: Error?) {
         if let thisFolder = presentedFolder {
             folders = thisFolder.subfolders.sorted()
             presentedFolder = thisFolder
@@ -231,5 +229,4 @@ extension String {
         UIGraphicsEndImageContext()
         return image!
     }
-    
 }
