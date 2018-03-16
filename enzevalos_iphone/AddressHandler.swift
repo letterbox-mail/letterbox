@@ -127,30 +127,6 @@ class AddressHandler {
         return list
     }
     
-  
-
-    static func inContacts(_ name: String) -> Bool {
-        AppDelegate.getAppDelegate().requestForAccess({ access in })
-        let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
-        if authorizationStatus == CNAuthorizationStatus.authorized {
-            do {
-                let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContacts(matching: CNContact.predicateForContacts(matchingName: name), keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor])
-                for con in conList {
-                    if (con.givenName + con.familyName).replacingOccurrences(of: " ", with: "") == name.replacingOccurrences(of: " ", with: "") {
-                        return true
-                    }
-                }
-            }
-            catch {
-                print("exception in contact IN")
-            }
-        } else {
-            print("no Access!")
-        }
-        return false
-    }
-
-
     static func getContact(_ name: String) -> [CNContact] {
         if name == "" {
             return []
@@ -170,7 +146,6 @@ class AddressHandler {
         }
         return []
     }
-
 
     static func getContactByID(_ identifier: String) -> [CNContact] {
         AppDelegate.getAppDelegate().requestForAccess({ access in })

@@ -53,7 +53,6 @@ class AutocryptContact {
 
     init(addr: String, type: String, prefer_encryption: String, key: String) {
         self.addr = addr
-        // TODO: Other crypto schemes?
         _ = setPrefer_encryption(prefer_encryption)
         self.key = key
     }
@@ -173,7 +172,7 @@ class MailHandler {
                 if enc == "yes" {
                     //string = string + "; \(ENC)=mutal"
                 }
-                string = string + "; \(KEY)=" + key
+                string = string + "; \(KEY)= \n" + key
                 builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
             }
         }
@@ -305,7 +304,7 @@ class MailHandler {
             var sendOperation: MCOSMTPSendOperation
             let pgp = SwiftPGP()
 
-            if let encPGP = ordered[CryptoScheme.PGP], ordered[CryptoScheme.PGP]?.count > 0 {
+            if let encPGP = ordered[CryptoScheme.PGP], encPGP.count > 0 {
                 var keyIDs = addKeys(adrs: encPGP)
                 //added own public key here, so we can decrypt our own message to read it in sent-folder
                 keyIDs.append(sk.keyID!)
@@ -402,15 +401,12 @@ class MailHandler {
                     sendData = builder.data()
                     sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
                     //TODO handle different callbacks
-                    //TODO add logging call here for the case the full email is unencrypted
                     if unenc.count == allRec.count && !loggingMail {
-//                        Logger.queue.async(flags: .barrier) {
                         var inviteMailContent: String? = nil
                         if inviteMail {
                             inviteMailContent = textparts.description
                         }
                         Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: ("\n" + message).count, isEncrypted: false, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: false, isCorrectlySigned: false, signingKeyID: "", myKeyID: "", secureAddresses: [], encryptedForKeyIDs: [], inviteMailContent: inviteMailContent, invitationMail: inviteMail)
-//                        }
                     }
                     sendOperation.start(callback)
                     if !loggingMail {
@@ -418,6 +414,16 @@ class MailHandler {
                     }
                 }
             }
+            
+            if let encPGP = ordered[CryptoScheme.PGP], encPGP.count > 0 {
+            } else if let unenc = ordered[CryptoScheme.UNKNOWN], unenc.count > 0, !loggingMail {
+            } else {
+                let error = NSError.init(domain: MCOErrorDomain, code: MCOErrorCode.sendMessage.rawValue, userInfo: nil) as Error
+                callback(error)
+            }
+        } else {
+            let error = NSError.init(domain: MCOErrorDomain, code: MCOErrorCode.sendMessage.rawValue, userInfo: nil) as Error
+            callback(error)
         }
     }
 

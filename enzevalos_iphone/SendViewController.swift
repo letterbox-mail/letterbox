@@ -81,6 +81,8 @@ class SendViewController: UIViewController {
             self.showFirstDialogIfNeeded()
         }
     }
+    
+    var sendViewDelegate: SendViewDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -318,15 +320,7 @@ class SendViewController: UIViewController {
                 }
 
                 let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: "\n\nMehr Informationen unter https://userpage.fu-berlin.de/letterbox/", uid: 0, predecessor: nil)
-
-
                 controller.prefilledMail = mail
-
-//                let alert = UIAlertController(title: "abc", message: "xyz", preferredStyle: .alert) //TODO: @Olli add your Text here
-//                alert.addAction(UIAlertAction(title: "OK", style: .cancel))
-//                DispatchQueue.main.async(execute: {
-//                    controller.present(alert, animated: true, completion: nil)
-//                })
             }
         }
     }
@@ -552,6 +546,9 @@ class SendViewController: UIViewController {
                     self.prefilledMail?.predecessor?.isAnwered = true
                 }
             }
+            if let delegate = sendViewDelegate {
+                delegate.compositionSent()
+            }
             sendInProgress = false
             self.sendCompleted()
         }
@@ -722,6 +719,9 @@ class SendViewController: UIViewController {
 
             alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { (action: UIAlertAction!) -> Void in
+                if let delegate = self.sendViewDelegate {
+                    delegate.compositionDiscarded()
+                }
                 self.navigationController?.dismiss(animated: true, completion: nil)
             }))
             alert.addAction(UIAlertAction(title: NSLocalizedString("SaveAsDraft", comment: "save the written E-Mail as draft"), style: .default, handler: { (action: UIAlertAction!) -> Void in
@@ -729,10 +729,12 @@ class SendViewController: UIViewController {
                     if let error = error {
                         print(error)
                     } else {
+                        if let delegate = self.sendViewDelegate {
+                            delegate.compositionSavedAsDraft()
+                        }
                         self.navigationController?.dismiss(animated: true, completion: nil)
                     }
                 })
-                self.navigationController?.dismiss(animated: true, completion: nil)
             }))
             alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "cancel"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in
                 firstResponder?.becomeFirstResponder()

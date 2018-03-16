@@ -86,7 +86,7 @@ extension KeyViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "FingerprintCell")!
                 cell.detailTextLabel?.numberOfLines = 0
                 var result: String = ""
-                let characters = Array((record?.fingerprint ?? "").characters)
+                let characters = Array((record?.fingerprint ?? ""))
                 var i = 0
                 stride(from: 0, to: characters.count, by: 4).forEach {
                     result += String(characters[$0..<min($0+4, characters.count)])
@@ -136,7 +136,8 @@ extension KeyViewController: UITableViewDataSource {
             }
             else if toRowType(indexPath) == .revoked {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "RevokedCell")!
-                cell.textLabel?.text = NSLocalizedString("KeyIsRevoked", comment: "The Key is revoked. The time when the Key was revoked") + "NOt SUPPORTED" //TODO Revoke keys
+                cell.textLabel?.text = NSLocalizedString("KeyIsRevoked", comment: "The Key is revoked. The time when the Key was revoked") + "NOt SUPPORTED"
+                //TODO Revoke keys
                 return cell
             }
         }

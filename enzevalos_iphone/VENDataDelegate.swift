@@ -61,12 +61,7 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
     func tokenField(_ tokenField: VENTokenField, didEnterText text: String) {
         let text = text.lowercased()
         tokenField.textTokens.add(text)
-        if AddressHandler.inContacts(text) {
-            //TODO Mailadresse aus Kontakt holen
-        }
-        else {
-            tokenField.mailTokens.add(text)
-        }
+        tokenField.mailTokens.add(text)
         tokenField.reloadData()
         changeFunc(tokenField)
         tokenField.sendActions(for: UIControlEvents.editingDidEnd)
@@ -111,10 +106,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         }
     }
     
-    //new
-    
-    
-    
     func tokenFieldDidEndEditing(_ tokenF: VENTokenField){
         editing = false
         if let last = tokenF.inputText() {
@@ -125,15 +116,6 @@ class VENDataDelegate : NSObject, VENTokenFieldDataSource , VENTokenFieldDelegat
         endFunc(tokenF)
     }
 
-    // TODO: Remove this function, not needed anymore
-    func isSecure(_ tokenField: VENTokenField) -> Bool {
-        var secure = true
-        for entry in tokenField.mailTokens{
-            secure = secure && DataHandler.handler.hasKey(adr: entry as! String)
-        }
-        return secure
-    }
-    
     func tokenField(_ tokenField: VENTokenField, didTappedTokenTwice index: UInt){
         if let fun = tappedWhenSelectedFunc {
             fun(tokenField.mailTokens[Int(index)] as! String)
