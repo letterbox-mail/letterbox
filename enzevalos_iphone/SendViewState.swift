@@ -23,7 +23,7 @@ struct SendViewOptions: OptionSet {
     static let sendInProgress = SendViewOptions(rawValue: 1 << 5)
 }
 
-class SendViewState: Comparable {
+class SendViewState: Equatable {
     
     static let Postcard = SendViewState(options: SendViewOptions(rawValue: 0))
     static let DowngradedPostcard = SendViewState(options: .isDowngraded)
@@ -102,6 +102,25 @@ class SendViewState: Comparable {
         }
     }
     
+    var isCensored: Bool {
+        get {
+            return SendViewOptions(rawValue: self.rawValue).contains(SendViewOptions.isCensored)
+        }
+        set(value) {
+            var state = SendViewOptions(rawValue: self.rawValue)
+            if state.contains(SendViewOptions.isCensored) == value {
+                return
+            }
+            if state.contains(SendViewOptions.isCensored) {
+                state.remove(SendViewOptions.isCensored)
+            }
+            if value {
+                state = state.union(SendViewOptions.isCensored)
+            }
+            self.rawValue = state.rawValue
+        }
+    }
+    
     var hideInviteButton: Bool {
         get {
             return SendViewOptions(rawValue: self.rawValue).contains(SendViewOptions.hideInviteButton)
@@ -140,12 +159,8 @@ class SendViewState: Comparable {
         }
     }
     
-    static func <(lhs: SendViewState, rhs: SendViewState) -> Bool { //hier ggf. nur auf securtiy states achten
-        return lhs.rawValue < rhs.rawValue
-    }
-    
     static func ==(lhs: SendViewState, rhs: SendViewState) -> Bool { //hier ggf. nur auf securtiy states achten
-        return lhs.rawValue == rhs.rawValue
+        return (lhs.isLetter == rhs.isLetter) && (lhs.isDowngraded == rhs.isDowngraded) && (lhs.isPartiallyEncrypted == rhs.isPartiallyEncrypted) && (lhs.isCensored == rhs.isCensored)
     }
     
 }
