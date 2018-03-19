@@ -8,45 +8,51 @@
 
 import Foundation
 
-protocol SendViewStateObserver {
-    func stateChanged()
+protocol SendViewSecurityStateObserver {
+    var recipientSecurityState: SendViewContactSecurityState { get }
+    
+    func securityStateChanged()
 }
 
 struct SendViewOptions: OptionSet {
     let rawValue: UInt8
     
     static let isLetter = SendViewOptions(rawValue: 1 << 0)
-    static let isDowngraded = SendViewOptions(rawValue: 1 << 1)
+    static let enforcePostcard = SendViewOptions(rawValue: 1 << 1)
     static let isPartiallyEncrypted = SendViewOptions(rawValue: 1 << 2)
     static let isCensored = SendViewOptions(rawValue: 1 << 3)
-    static let hideInviteButton = SendViewOptions(rawValue: 1 << 4)
-    static let sendInProgress = SendViewOptions(rawValue: 1 << 5)
 }
 
-class SendViewState: Equatable {
+class SendViewSecurityState: Equatable {
     
-    static let Postcard = SendViewState(options: SendViewOptions(rawValue: 0))
-    static let DowngradedPostcard = SendViewState(options: .isDowngraded)
-    static let PartiallyEncryptedPostcard = SendViewState(options: .isPartiallyEncrypted)
-    static let CensoredPostcard = SendViewState(options: .isCensored)
-    static let Letter = SendViewState(options: .isLetter)
-    static let DowngradedLetter = SendViewState(options: [.isLetter, .isDowngraded])
+    static let Postcard = SendViewSecurityState(options: SendViewOptions(rawValue: 0))
+    static let EnforcedPostcard = SendViewSecurityState(options: .enforcePostcard)
+    static let PartiallyEncryptedPostcard = SendViewSecurityState(options: .isPartiallyEncrypted)
+    static let CensoredPostcard = SendViewSecurityState(options: .isCensored)
+    static let Letter = SendViewSecurityState(options: .isLetter)
+    static let LetterEnforcedAsPostcard = SendViewSecurityState(options: [.isLetter, .enforcePostcard])
     
     var rawValue: UInt8 {
         didSet {
             if let observer = observer {
-                observer.stateChanged()
+                observer.securityStateChanged()
             }
         }
     }
-    var observer: SendViewStateObserver?
+    var observer: SendViewSecurityStateObserver?
     
     init(options: SendViewOptions) {
         self.rawValue = options.rawValue
     }
     
-    var isLetter: Bool {
+    var isLetter: Bool {  //Wie mit Zustandsänderung umgehen? (passiert jetzt nicht automatisiert, sondern erst auf anfrage, oder...?)
         get {
+            if !enforcePostcard && (observer?.recipientSecurityState == .allSecure || observer?.recipientSecurityState == .none) {
+                return true
+            }
+            return false
+        }
+        /*get {
             return SendViewOptions(rawValue: self.rawValue).contains(SendViewOptions.isLetter)
         }
         set(value) {
@@ -61,23 +67,23 @@ class SendViewState: Equatable {
                 state = state.union(SendViewOptions.isLetter)
             }
             self.rawValue = state.rawValue
-        }
+        }*/
     }
     
-    var isDowngraded: Bool {
+    var enforcePostcard: Bool {
         get {
-            return SendViewOptions(rawValue: self.rawValue).contains(SendViewOptions.isDowngraded)
+            return SendViewOptions(rawValue: self.rawValue).contains(SendViewOptions.enforcePostcard)
         }
         set(value) {
             var state = SendViewOptions(rawValue: self.rawValue)
-            if state.contains(SendViewOptions.isDowngraded) == value {
+            if state.contains(SendViewOptions.enforcePostcard) == value {
                 return
             }
-            if state.contains(SendViewOptions.isDowngraded) {
-                state.remove(SendViewOptions.isDowngraded)
+            if state.contains(SendViewOptions.enforcePostcard) {
+                state.remove(SendViewOptions.enforcePostcard)
             }
             if value {
-                state = state.union(SendViewOptions.isDowngraded)
+                state = state.union(SendViewOptions.enforcePostcard)
             }
             self.rawValue = state.rawValue
         }
@@ -121,46 +127,21 @@ class SendViewState: Equatable {
         }
     }
     
-    var hideInviteButton: Bool {
-        get {
-            return SendViewOptions(rawValue: self.rawValue).contains(SendViewOptions.hideInviteButton)
-        }
-        set(value) {
-            var state = SendViewOptions(rawValue: self.rawValue)
-            if state.contains(SendViewOptions.hideInviteButton) == value {
-                return
-            }
-            if state.contains(SendViewOptions.hideInviteButton) {
-                state.remove(SendViewOptions.hideInviteButton)
-            }
-            if value {
-                state = state.union(SendViewOptions.hideInviteButton)
-            }
-            self.rawValue = state.rawValue
-        }
+    static func ==(lhs: SendViewSecurityState, rhs: SendViewSecurityState) -> Bool {
+        return lhs.rawValue == rhs.rawValue
     }
     
-    var sendInProgress: Bool {
-        get {
-            return SendViewOptions(rawValue: self.rawValue).contains(SendViewOptions.sendInProgress)
-        }
-        set(value) {
-            var state = SendViewOptions(rawValue: self.rawValue)
-            if state.contains(SendViewOptions.sendInProgress) == value {
-                return
-            }
-            if state.contains(SendViewOptions.sendInProgress) {
-                state.remove(SendViewOptions.sendInProgress)
-            }
-            if value {
-                state = state.union(SendViewOptions.sendInProgress)
-            }
-            self.rawValue = state.rawValue
-        }
-    }
-    
-    static func ==(lhs: SendViewState, rhs: SendViewState) -> Bool { //hier ggf. nur auf securtiy states achten
-        return (lhs.isLetter == rhs.isLetter) && (lhs.isDowngraded == rhs.isDowngraded) && (lhs.isPartiallyEncrypted == rhs.isPartiallyEncrypted) && (lhs.isCensored == rhs.isCensored)
-    }
-    
+}
+
+
+enum SendViewContactSecurityState {
+    case none, allSecure, allInsecure, mixed
+}
+
+enum SendViewMailSecurityState {
+    case letter, postcard, extendedPostcard(SendViewSpecialMailState)
+}
+
+enum SendViewSpecialMailState {
+    case partiallyEncrypted, censored
 }

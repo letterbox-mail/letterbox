@@ -791,6 +791,25 @@ extension SendViewController: UIGestureRecognizerDelegate {
     }
 }
 
+extension SendViewController: SendViewSecurityStateObserver {
+    var recipientSecurityState: SendViewContactSecurityState {
+        if dataDelegate.numberOfTokens(in: toText) + dataDelegate.numberOfTokens(in: ccText) == 0{
+            return .none
+        }
+        if dataDelegate.allSecure(toText) && dataDelegate.allSecure(ccText) {
+            return .allSecure
+        }
+        if dataDelegate.allInsecure(toText) && dataDelegate.allInsecure(ccText) {
+            return .allInsecure
+        }
+        return .mixed
+    }
+    
+    func securityStateChanged() {
+        animateIfNeeded()
+    }
+}
+
 extension VENTokenFieldDataSource {
     func someSecure(_ tokenField: VENTokenField) -> Bool {
         for entry in tokenField.mailTokens {
@@ -822,6 +841,19 @@ extension VENTokenFieldDataSource {
             }
         }
 
+        return true
+    }
+    
+    /**
+     Returns a bool showing whether all contacts in the field have a key. Returns true if no contacts are present.
+     */
+    func allInsecure(_ tokenField: VENTokenField) -> Bool {
+        for entry in tokenField.mailTokens {
+            if DataHandler.handler.hasKey(adr: entry as! String) {
+                return false
+            }
+        }
+        
         return true
     }
 }
