@@ -647,7 +647,7 @@ class SendViewController: UIViewController {
         if !UISecurityState {
             alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: sendEncryptedIfPossible ? NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext") : NSLocalizedString("SendInsecureInfoAll", comment: "Postcard infotext"), preferredStyle: .alert)
             url = "https://userpage.fu-berlin.de/letterbox/faq.html#headingPostcard"
-            if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") && !currentSecurityState && !UserDefaults.standard.bool(forKey: "hideFreeTextInvitation") {
+            if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") && !UserDefaults.standard.bool(forKey: "hideFreeTextInvitation") {
                 alert.addAction(UIAlertAction(title: freeTextInviationTitle, style: .default, handler: {
                     (action: UIAlertAction) -> Void in
                     switch StudySettings.invitationsmode {

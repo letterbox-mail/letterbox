@@ -74,8 +74,8 @@ class ListViewController: UITableViewController {
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: false)
     }
 
-    func doneLoading(_ error: Bool) {
-        if error {
+    func doneLoading(_ error: Error?) {
+        if error != nil {
             // TODO: maybe we should do something about this? maybe not?
         }
 
@@ -192,8 +192,8 @@ class ListViewController: UITableViewController {
             mail = filteredMails[indexPath.row]
             if Logger.logging {
 //                Logger.queue.async(flags: .barrier) {
-                    Logger.log(search: self.filteredMails.count, category: self.searchController.searchBar.selectedScopeButtonIndex, opened: "searchedInMailList", keyRecordMailList: self.contact?.addresses)
-                }
+                Logger.log(search: self.filteredMails.count, category: self.searchController.searchBar.selectedScopeButtonIndex, opened: "searchedInMailList", keyRecordMailList: self.contact?.addresses)
+            }
 //            }
         } else if indexPath.row >= contact?.mails.count {
             tableView.deselectRow(at: indexPath, animated: true)

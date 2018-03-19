@@ -9,7 +9,6 @@
 #import "EmailHelper.h"
 #import <GTMSessionFetcher/GTMSessionFetcherService.h>
 #import <GTMSessionFetcher/GTMSessionFetcher.h>
-//#import "enzevalos_iphone-Swift.h"
 
 /*! @brief The OIDC issuer from which the configuration will be discovered.
  */
@@ -60,23 +59,19 @@ static EmailHelper *shared = nil;
 
 // CALL THIS TO START
 - (void)doEmailLoginIfRequiredOnVC:(UIViewController*)vc completionBlock:(dispatch_block_t)completionBlock {
-    // Optional: if no internet connectivity, do nothing
-//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if (true) { // TODO: we need to check for internet conectivity here
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            // first see if we already have authorization
-            [self checkIfAuthorizationIsValid:^(BOOL authorized) {
-                NSAssert([NSThread currentThread].isMainThread, @"ERROR MAIN THREAD NEEDED");
-                if (authorized) {
-                    if (completionBlock)
-                    completionBlock();
-                } else {
-                    [self doInitialAuthorizationWithVC:vc completionBlock:completionBlock];
-                }
-            }];
-        });
-    };
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        // first see if we already have authorization
+        [self checkIfAuthorizationIsValid:^(BOOL authorized) {
+            NSAssert([NSThread currentThread].isMainThread, @"ERROR MAIN THREAD NEEDED");
+            if (authorized) {
+                if (completionBlock)
+                completionBlock();
+            } else {
+                [self doInitialAuthorizationWithVC:vc completionBlock:completionBlock];
+            }
+        }];
+    });
 }
 
 /*! @brief Saves the @c GTMAppAuthFetcherAuthorization to @c NSUSerDefaults.

@@ -266,9 +266,8 @@ class MailHandler {
         //createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
     }
 
-    //logMail should be false, if called from Logger, otherwise 
+    //logMail should be false, if called from Logger, otherwise
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
-        
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
             let builder = MCOMessageBuilder()
@@ -378,12 +377,11 @@ class MailHandler {
                         createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
                     }
 
-					if let html = htmlContent {
-						builder.htmlBody = html
+                    if let html = htmlContent {
+                        builder.htmlBody = html
                     } else {
                         builder.textBody = message
                     }
-    
                 } else {
                     //TODO do it better
                     callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
@@ -392,8 +390,8 @@ class MailHandler {
 
             if let unenc = ordered[CryptoScheme.UNKNOWN], !loggingMail {
                 if unenc.count > 0 {
-					if let html = htmlContent {
-						builder.htmlBody = html
+                    if let html = htmlContent {
+                        builder.htmlBody = html
                     } else {
                         builder.textBody = message
                     }
@@ -414,7 +412,7 @@ class MailHandler {
                     }
                 }
             }
-            
+
             if let encPGP = ordered[CryptoScheme.PGP], encPGP.count > 0 {
             } else if let unenc = ordered[CryptoScheme.UNKNOWN], unenc.count > 0, !loggingMail {
             } else {
@@ -719,7 +717,7 @@ class MailHandler {
 
 
 
-    func loadMailsForRecord(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMailsForRecord(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Error?) -> ())) {
         //TODO: Init update/old
         let folder = DataHandler.handler.findFolder(with: folderPath)
         let folderstatus = IMAPSession.folderStatusOperation(folderPath)
@@ -731,7 +729,7 @@ class MailHandler {
                     }
                     return
                 }
-                completionCallback(true)
+                completionCallback(error)
                 return
             }
             if let status = status {
@@ -753,7 +751,7 @@ class MailHandler {
                                 }
                                 return
                             }
-                            completionCallback(true)
+                            completionCallback(err)
                             return
                         }
 
@@ -763,7 +761,7 @@ class MailHandler {
                                 setOfIndices.remove(mail.uid)
                             }
                             if setOfIndices.count() == 0 {
-                                completionCallback(false)
+                                completionCallback(nil)
                                 return
                             }
                             self.loadMessagesFromServer(setOfIndices, folderPath: folderPath, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
@@ -774,7 +772,7 @@ class MailHandler {
         }
     }
 
-    func loadMailsForInbox(newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    func loadMailsForInbox(newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Error?) -> ())) {
         let folder = DataHandler.handler.findFolder(with: INBOX)
         let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         folderstatus?.start { (error, status) -> Void in
@@ -785,7 +783,7 @@ class MailHandler {
                     }
                     return
                 }
-                completionCallback(true)
+                completionCallback(error)
                 return
             }
             if let status = status {
@@ -796,14 +794,14 @@ class MailHandler {
         }
     }
 
-    private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS, record: KeyRecord?, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Bool) -> ())) {
+    private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS, record: KeyRecord?, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Error?) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
 
 
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER, SETUPMESSAGE]
         if uids.count() == 0 {
-            completionCallback(false)
+            completionCallback(nil)
             return
         }
         fetchOperation.start { (err, msg, vanished) -> Void in
@@ -815,7 +813,7 @@ class MailHandler {
                     return
                 }
                 print("Error while fetching inbox: \(String(describing: err))")
-                completionCallback(true)
+                completionCallback(err)
                 return
             }
 
@@ -837,7 +835,7 @@ class MailHandler {
                 }
                 dispatchGroup.notify(queue: DispatchQueue.main) {
                     self.IMAPSession.disconnectOperation().start({ _ in })
-                    completionCallback(false)
+                    completionCallback(nil)
                 }
             }
         }
@@ -1157,7 +1155,7 @@ class MailHandler {
     }
 
 
-    func initFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
+    func initFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
         let folderPath = folder.path
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)
         let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
@@ -1168,7 +1166,7 @@ class MailHandler {
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
                 print("Error while fetching \(folderPath): \(String(describing: err))")
-                completionCallback(true)
+                completionCallback(err)
                 return
             }
             if let msgs = msg {
@@ -1180,12 +1178,12 @@ class MailHandler {
                 }
                 self.loadMessagesFromServer(toFetchIDs, folderPath: folderPath, maxLoad: 50, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
             } else {
-                completionCallback(true)
+                completionCallback(nil)
             }
         }
     }
 
-    func initInbox(inbox: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
+    func initInbox(inbox: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
         if let date = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
             loadMailsSinceDate(folder: inbox, since: date, maxLoad: 100, newMailCallback: newMailCallback, completionCallback: completionCallback)
         } else {
@@ -1194,7 +1192,7 @@ class MailHandler {
 
     }
 
-    func updateFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
+    func updateFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
         let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
@@ -1204,7 +1202,7 @@ class MailHandler {
                     }
                     return
                 }
-                completionCallback(true)
+                completionCallback(error)
                 return
             }
             if let status = status {
@@ -1225,7 +1223,7 @@ class MailHandler {
         }
     }
 
-    private func olderMails(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
+    private func olderMails(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
         let folderPath = folder.path//UserManager.convertToBackendFolderPath(from: folder.path)
         if let mails = folder.mails {
             var oldestDate: Date?
@@ -1243,14 +1241,14 @@ class MailHandler {
                 searchOperation?.start { (err, uids) -> Void in
                     guard err == nil else {
                         print("Error while searching inbox: \(String(describing: err))")
-                        completionCallback(true)
+                        completionCallback(err)
                         return
                     }
                     if let ids = uids {
                         folder.lastUpdate = Date()
                         self.loadMessagesFromServer(ids, folderPath: folderPath, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
                     } else {
-                        completionCallback(true)
+                        completionCallback(nil)
                     }
                 }
             } else {
@@ -1263,7 +1261,7 @@ class MailHandler {
     }
 
 
-    private func loadMailsSinceDate(folder: Folder, since: Date, maxLoad: Int = MailHandler.MAXMAILS, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Bool) -> ())) {
+    private func loadMailsSinceDate(folder: Folder, since: Date, maxLoad: Int = MailHandler.MAXMAILS, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
         let folderPath = folder.path
         let searchExp = MCOIMAPSearchExpression.search(since: since)
         let searchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExp)
@@ -1276,14 +1274,14 @@ class MailHandler {
                     }
                     return
                 }
-                completionCallback(true)
+                completionCallback(err)
                 return
             }
             if let ids = uids {
                 folder.lastUpdate = Date()
                 self.loadMessagesFromServer(ids, folderPath: folderPath, maxLoad: maxLoad, record: nil, newMailCallback: newMailCallback, completionCallback: completionCallback)
             } else {
-                completionCallback(true)
+                completionCallback(nil)
             }
         }
 

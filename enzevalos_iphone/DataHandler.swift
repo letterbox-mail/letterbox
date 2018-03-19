@@ -95,24 +95,24 @@ class DataHandler {
     }
 
 
-    func callForFolders(done: @escaping ((_ error: Bool) -> ())) { // Maybe call back? Look for new Folder?
+    func callForFolders(done: @escaping ((_ error: Error?) -> ())) { // Maybe call back? Look for new Folder?
         AppDelegate.getAppDelegate().mailHandler.allFolders { (err, array) -> Void in
             guard err == nil else {
                 print("Error while fetching all folders: \(String(describing: err))")
-                done(true)
+                done(err)
                 return
             }
 
             if let newFolders = array {
                 for new in newFolders {
                     if case let folder as MCOIMAPFolder = new {
-                        let f = self.findFolder(with: folder.path) //FIXME: this should take the full path instead of the name
+                        let f = self.findFolder(with: folder.path)
                         f.delimiter = String(Character(UnicodeScalar(UInt8(folder.delimiter))))
                         f.flags = folder.flags
                     }
                 }
             }
-            done(false)
+            done(nil)
         }
     }
 
