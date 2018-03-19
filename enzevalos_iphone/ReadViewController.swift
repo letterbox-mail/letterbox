@@ -517,7 +517,7 @@ class ReadViewController: UITableViewController {
                 if askForConfirmation {
                     body = NSLocalizedString("didYouSendThis", comment: "") + body
                 } else {
-                    body = "\n\n\(NSLocalizedString("Mail.Signature", comment: "Signature"))" + body
+                    body = UserManager.loadUserSignature() + body
                 }
 
                 var subject = NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + NSLocalizedString("SubjectNo", comment: "there is no subject")

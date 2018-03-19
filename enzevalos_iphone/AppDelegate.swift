@@ -40,6 +40,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            }
             // Remove Google Auth token from keychain
             GTMKeychain.removePasswordFromKeychain(forName: "googleOAuthCodingKey")
+
+            // Register defaults for signature handling
+            UserDefaults.standard.register(defaults: ["Signature.Switch": true])
+            UserDefaults.standard.register(defaults: ["Signature.Text": "Verfasst mit Letterbox. Mehr Informationen: http://letterbox.imp.fu-berlin.de?invitation=0"])
             
             self.window = UIWindow(frame: UIScreen.main.bounds)
             //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")

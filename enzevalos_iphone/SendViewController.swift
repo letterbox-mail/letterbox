@@ -127,7 +127,7 @@ class SendViewController: UIViewController {
         ccText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
 
         if prefilledMail == nil {
-            textView.text.append(NSLocalizedString("Mail.Signature", comment: "Signature"))
+            textView.text.append(UserManager.loadUserSignature())
         }
 
         if let to = toField {
@@ -709,7 +709,7 @@ class SendViewController: UIViewController {
                 firstResponder = view
             }
         }
-        if textView.text == "" && toText.mailTokens.count == 0 && ccText.mailTokens.count == 0 && subjectText.inputText() == "" {
+        if (textView.text.trimmed() == "" || textView.text.trimmed() == UserManager.loadUserSignature().trimmed()) && toText.mailTokens.count == 0 && ccText.mailTokens.count == 0 && subjectText.inputText()?.trimmed() == "" {
             self.navigationController?.dismiss(animated: true, completion: nil)
         } else {
             let toEntrys = toText.mailTokens
@@ -823,5 +823,11 @@ extension VENTokenFieldDataSource {
         }
 
         return true
+    }
+}
+
+extension String {
+    func trimmed() -> String {
+        return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
