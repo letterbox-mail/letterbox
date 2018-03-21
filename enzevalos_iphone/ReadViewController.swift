@@ -197,7 +197,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt || isNewPubKey ?? false, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //if changed, change it for logging too. See around line 60 (in viewDidLoad)
+        if let mail = mail, (mail.trouble && mail.showMessage) || (!mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() && !isDraft) || (!mail.trouble && mail.isEncrypted && mail.unableToDecrypt) || isNewPubKey ?? false, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //if changed, change it for logging too. See around line 60 (in viewDidLoad)
 
             return 3
         }
@@ -211,7 +211,7 @@ class ReadViewController: UITableViewController {
         }
 
         if let mail = mail {
-            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate ?? Date() && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) && !mail.unableToDecrypt {
+            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate ?? Date() && !mail.showMessage && !isDraft) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) && !mail.unableToDecrypt {
                 return 2
             }
         }
@@ -240,7 +240,7 @@ class ReadViewController: UITableViewController {
                     }
                 } else if mail.isEncrypted && mail.unableToDecrypt || isNewPubKey ?? false {
                     return infoCell
-                } else if mail.from.hasKey && !mail.isSecure && mail.date > (keyDiscoveryDate ?? Date()) {
+                } else if mail.from.hasKey && !mail.isSecure && mail.date > (keyDiscoveryDate ?? Date()) && !isDraft {
                     if indexPath.row == 0 {
                         return infoCell
                     } else if indexPath.row == 1 {
