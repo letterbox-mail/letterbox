@@ -24,6 +24,7 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var messageBody: UITextView!
     @IBOutlet weak var iconButton: UIButton!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
+    @IBOutlet weak var archiveButton: UIBarButtonItem!
     @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
 
     // Cells
@@ -65,6 +66,7 @@ class ReadViewController: UITableViewController {
 
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
+            archiveButton.isEnabled = false
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
         }
