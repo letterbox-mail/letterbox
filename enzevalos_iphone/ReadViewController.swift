@@ -472,6 +472,7 @@ class ReadViewController: UITableViewController {
         if segue.identifier == "answerTo" && (sender is UIBarButtonItem || (sender as? String ?? "noReaction") == "reactButton") {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController, let mail = mail {
+                controller.sendViewDelegate = self
                 if isDraft {
                     let prefillMail = EphemeralMail.init(to: mail.to, cc: mail.cc ?? NSSet.init(), bcc: mail.bcc ?? NSSet.init(), date: Date.init(), subject: mail.subject, body: mail.body, uid: mail.uid, predecessor: mail.predecessor)
                     controller.prefilledMail = prefillMail
@@ -543,6 +544,7 @@ class ReadViewController: UITableViewController {
 
                 let answerMail = EphemeralMail(to: NSSet.init(array: [answerTo]), cc: NSSet.init(array: []), bcc: [], date: Date(), subject: "", body: "", uid: 0, predecessor: nil) // TODO: are these the best values?
 
+                controller.sendViewDelegate = self
                 controller.prefilledMail = answerMail
             }
         } else if segue.identifier == "showContact" {
@@ -594,6 +596,25 @@ class ReadViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Import secret Key"), style: UIAlertActionStyle.default, handler: importSecretKey))
         alert.addTextField(configurationHandler: newSecretkeyPassword(textField:))
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension ReadViewController: SendViewDelegate {
+    func compositionDiscarded() {
+
+    }
+
+    func compositionSavedAsDraft() {
+        compositionSent()
+    }
+
+    func compositionSent() {
+        if isDraft {
+            if let mail = mail {
+                AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
+            }
+            self.navigationController?.viewControllers.removeLast()
+        }
     }
 }
 

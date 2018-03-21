@@ -812,9 +812,7 @@ extension VENTokenFieldDataSource {
         return false
     }
 
-    /**
-     Returns a bool showing whether all contacts in the field have a key. Returns true if no contacts are present.
-     */
+    /// Returns a bool showing whether all contacts in the field have a key. Returns true if no contacts are present.
     func allSecure(_ tokenField: VENTokenField) -> Bool {
         for entry in tokenField.mailTokens {
             if !DataHandler.handler.hasKey(adr: entry as! String) {
