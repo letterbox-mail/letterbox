@@ -275,7 +275,6 @@ class ReadViewController: UITableViewController {
 
     @IBAction func reactButton(_ sender: Any) {
         performSegue(withIdentifier: "answerTo", sender: "reactButton")
-        reactButton.isEnabled = false
         Logger.log(reactTo: mail)
     }
 
@@ -609,6 +608,7 @@ extension ReadViewController: SendViewDelegate {
     }
 
     func compositionSent() {
+        reactButton.isEnabled = false
         if isDraft {
             if let mail = mail {
                 AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
