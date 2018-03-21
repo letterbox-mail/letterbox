@@ -43,8 +43,6 @@ class SendViewController: UIViewController {
     var keyboardOpened = false
     var keyboardY: CGFloat = 0
     var keyboardHeight: CGFloat = 0
-    var UISecurityState = true
-    var ccSecure = true
     var dataDelegate = VENDataDelegate()
     var mailHandler = AppDelegate.getAppDelegate().mailHandler
     var tableDataDelegate = TableViewDataDelegate(insertCallback: { (name: String, address: String) -> Void in return })
@@ -53,12 +51,37 @@ class SendViewController: UIViewController {
 
     var prefilledMail: EphemeralMail? = nil
     var toField: String? = nil
-    var sendEncryptedIfPossible = true
     var freeTextInviationTitle = StudySettings.freeTextInvitationTitle
     var freeTextInvitationCall: (() -> (String)) = StudySettings.freeTextInvitationCode
     var invite: Bool = false
-    var isCensoredMail: Bool = false
-    var isPartialEncryptedMail: Bool = false
+    var enforcePostcard: Bool = false
+    
+    
+    var recipientSecurityState: SendViewContactSecurityState {
+        if dataDelegate.numberOfTokens(in: toText) + dataDelegate.numberOfTokens(in: ccText) == 0{
+            return .none
+        }
+        if dataDelegate.allSecure(toText) && dataDelegate.allSecure(ccText) {
+            return .allSecure
+        }
+        if dataDelegate.allInsecure(toText) && dataDelegate.allInsecure(ccText) {
+            return .allInsecure
+        }
+        return .mixed
+    }
+    
+    var mailSecurityState: SendViewMailSecurityState {
+        if enforcePostcard || (recipientSecurityState == .allInsecure || recipientSecurityState == .mixed) {
+            if invitationSelection.selectedWords.count == 0 {
+                return .postcard
+            }
+            if StudySettings.invitationsmode == .Censorship {
+                return .extendedPostcard(.censored)
+            }
+            return .extendedPostcard(.partiallyEncrypted)
+        }
+        return .letter
+    }
     
     var sendInProgress: Bool = false {
         didSet {
@@ -74,15 +97,6 @@ class SendViewController: UIViewController {
     }
 
     var invitationSelection = InvitationSelection()
-
-    var toSecure = true {
-        didSet {
-            self.updateMarkedText(for: self.textView)
-            self.showFirstDialogIfNeeded()
-        }
-    }
-    
-    var sendViewDelegate: SendViewDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -189,8 +203,6 @@ class SendViewController: UIViewController {
 
         updateNavigationBar()
 
-        sendEncryptedIfPossible = currentSecurityState
-
 //        Logger.queue.async(flags: .barrier) {
         Logger.log(sendViewOpen: prefilledMail)
 //        }
@@ -200,6 +212,12 @@ class SendViewController: UIViewController {
         print("===============|| SendViewController deinitialized ||===============")
     }
 
+    func updateSecurityUI() {
+        animateIfNeeded()
+        self.updateMarkedText(for: self.textView)
+        self.showFirstDialogIfNeeded()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -428,7 +446,7 @@ class SendViewController: UIViewController {
     }
 
     func newInput(_ tokenField: VENTokenField) {
-        animateIfNeeded()
+        updateSecurityUI()
         reloadCollectionViews()
     }
 
@@ -546,6 +564,25 @@ class SendViewController: UIViewController {
                     self.prefilledMail?.predecessor?.isAnwered = true
                 }
             }
+            let inviteMail = invite || mailSecurityState == .extendedPostcard(.censored) || mailSecurityState == .extendedPostcard(.partiallyEncrypted)
+            
+            if inviteMail {
+                for addr in toText.mailTokens {
+                    if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String) {
+                        if enforcePostcard || !mailAddr.hasKey {
+                            mailAddr.invitations = mailAddr.invitations + 1
+                        }
+                    }
+                }
+                for addr in ccText.mailTokens {
+                    if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String) {
+                        if enforcePostcard || !mailAddr.hasKey {
+                            mailAddr.invitations = mailAddr.invitations + 1
+                        }
+                    }
+                }
+                DataHandler.handler.save(during: "invite")
+            }
             if let delegate = sendViewDelegate {
                 delegate.compositionSent()
             }
@@ -555,36 +592,26 @@ class SendViewController: UIViewController {
     }
 
     func sendCompleted() {
-        guard let code = self.invitationSelection.code, isPartialEncryptedMail else {
+        if let code = self.invitationSelection.code, mailSecurityState == SendViewMailSecurityState.extendedPostcard(.partiallyEncrypted) {
+            let controller = DialogViewController.present(on: self, with: .invitationCode(code: code))
+            controller?.ctaAction = {
+                let activityController = UIActivityViewController(activityItems: [code], applicationActivities: nil)
+                controller?.present(activityController, animated: true, completion: nil)
+                controller?.markDismissButton(with: .invitationCode(code: code))
+            }
+
+            controller?.dismissAction = { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
+            }
+        }
+        else {
             self.navigationController?.dismiss(animated: true, completion: nil)
             return
-        }
-
-        let controller = DialogViewController.present(on: self, with: .invitationCode(code: code))
-        controller?.ctaAction = {
-            let activityController = UIActivityViewController(activityItems: [code], applicationActivities: nil)
-            controller?.present(activityController, animated: true, completion: nil)
-            controller?.markDismissButton(with: .invitationCode(code: code))
-        }
-
-        controller?.dismissAction = { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
         }
     }
 
 
     //Navigationbar
-
-    var currentSecurityState: Bool {
-        guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
-            return true
-        }
-
-        toSecure = toSource.allSecure(toText)
-        ccSecure = ccSource.allSecure(ccText)
-
-        return toSecure && ccSecure
-    }
 
     var someoneWithKeyPresent: Bool {
         guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
@@ -609,7 +636,7 @@ class SendViewController: UIViewController {
     }
 
     func updateNavigationBar() {
-        if currentSecurityState {
+        if mailSecurityState == .letter {
             self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
         } else {
             self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
@@ -617,22 +644,27 @@ class SendViewController: UIViewController {
     }
 
     func animateIfNeeded() {
-        let currentState = currentSecurityState && sendEncryptedIfPossible
-        if (currentState != self.UISecurityState) && ThemeManager.animation() {
-            startIconAnimation()
-            if currentState {
+        var uiSecurityState: SendViewMailSecurityState = .letter
+        
+        if let view = iconButton.subviews.first as? AnimatedSendIcon, view.isPostcardOnTop {
+            uiSecurityState = .postcard
+        }
+        
+        if ThemeManager.animation() {
+            if mailSecurityState == .letter && uiSecurityState == .postcard {
+                startIconAnimation()
                 UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
                     self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
                     self.navigationController?.navigationBar.layoutIfNeeded() //https://stackoverflow.com/questions/39515313/animate-navigation-bar-bartintcolor-change-in-ios10-not-working
                 }, completion: nil)
-            } else {
+            } else if mailSecurityState != .letter && uiSecurityState == .letter {
+                startIconAnimation()
                 UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
                     self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
                     self.navigationController?.navigationBar.layoutIfNeeded()
                 }, completion: nil)
             }
         }
-        self.UISecurityState = currentState
     }
 
     func startIconAnimation() {
@@ -644,8 +676,8 @@ class SendViewController: UIViewController {
     func iconButton(_ sender: AnyObject) {
         let alert: UIAlertController
         let url: String
-        if !UISecurityState {
-            alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: sendEncryptedIfPossible ? NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext") : NSLocalizedString("SendInsecureInfoAll", comment: "Postcard infotext"), preferredStyle: .alert)
+        if mailSecurityState != .letter {
+            alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "Postcard label"), message: enforcePostcard ? NSLocalizedString("SendInsecureInfoAll", comment: "Postcard infotext") : NSLocalizedString("SendInsecureInfo", comment: "Postcard infotext"), preferredStyle: .alert)
             url = "https://userpage.fu-berlin.de/letterbox/faq.html#headingPostcard"
             if subjectText.inputText() != NSLocalizedString("inviteSubject", comment: "") && !UserDefaults.standard.bool(forKey: "hideFreeTextInvitation") {
                 alert.addAction(UIAlertAction(title: freeTextInviationTitle, style: .default, handler: {
@@ -668,18 +700,18 @@ class SendViewController: UIViewController {
             alert = UIAlertController(title: NSLocalizedString("Letter", comment: "Letter label"), message: NSLocalizedString("SendSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
             url = "https://userpage.fu-berlin.de/letterbox/faq.html#secureMail"
         }
-        if someoneWithKeyPresent {
-            if sendEncryptedIfPossible {
-                alert.addAction(UIAlertAction(title: someoneWithoutKeyPresent ? NSLocalizedString("sendInsecureAll", comment: "This mail should be send insecurely to everyone, including contacts with keys") : NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                    Logger.log(close: url, mail: nil, action: "sendInsecure")
-                    self.sendEncryptedIfPossible = false
-                    DispatchQueue.main.async { self.animateIfNeeded() }
-                }))
-            } else {
+        if recipientSecurityState != .allInsecure {
+            if enforcePostcard {
                 alert.addAction(UIAlertAction(title: someoneWithoutKeyPresent ? NSLocalizedString("sendSecureIfPossible", comment: "This mail should be send securely to people with keys") : NSLocalizedString("sendSecure", comment: "This mail should be send securely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
                     Logger.log(close: url, mail: nil, action: "sendSecureIfPossible")
-                    self.sendEncryptedIfPossible = true
-                    DispatchQueue.main.async { self.animateIfNeeded() }
+                    self.enforcePostcard = false
+                    DispatchQueue.main.async { self.updateSecurityUI() }
+                }))
+            } else {
+                alert.addAction(UIAlertAction(title: someoneWithoutKeyPresent ? NSLocalizedString("sendInsecureAll", comment: "This mail should be send insecurely to everyone, including contacts with keys") : NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                    Logger.log(close: url, mail: nil, action: "sendInsecure")
+                    self.enforcePostcard = true
+                    DispatchQueue.main.async { self.updateSecurityUI() }
                 }))
             }
         }
@@ -754,25 +786,9 @@ class SendViewController: UIViewController {
         let subject = subjectText.inputText()!
         let (hmtlmessage, counterTextparts, plaintext) = self.htmlMessage()
         let message: String = (plaintext ?? self.textView.text)
-
-        if isCensoredMail || isPartialEncryptedMail{
-            invite = true
-        }
+        let inviteMail = invite || mailSecurityState == .extendedPostcard(.censored) || mailSecurityState == .extendedPostcard(.partiallyEncrypted)
         
-        if invite {
-            for addr in toEntrys {
-                if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String) {
-                    mailAddr.invitations = mailAddr.invitations + 1
-                }
-            }
-            for addr in ccEntrys {
-                if let mailAddr = DataHandler.handler.findMailAddress(adr: addr as! String) {
-                    mailAddr.invitations = mailAddr.invitations + 1
-                }
-            }
-            DataHandler.handler.save(during: "invite")
-        }
-        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: sendEncryptedIfPossible, callback: self.mailSend, htmlContent: hmtlmessage, inviteMail: invite, textparts: counterTextparts)
+        mailHandler.send(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, sendEncryptedIfPossible: !enforcePostcard, callback: self.mailSend, htmlContent: hmtlmessage, inviteMail: inviteMail, textparts: counterTextparts)
     }
 }
 
@@ -788,25 +804,6 @@ extension SendViewController: UIGestureRecognizerDelegate {
         if let view = sender.view, view == scrollview, sender.location(in: view).y >= textView.frame.minY {
             textView.becomeFirstResponder()
         }
-    }
-}
-
-extension SendViewController: SendViewSecurityStateObserver {
-    var recipientSecurityState: SendViewContactSecurityState {
-        if dataDelegate.numberOfTokens(in: toText) + dataDelegate.numberOfTokens(in: ccText) == 0{
-            return .none
-        }
-        if dataDelegate.allSecure(toText) && dataDelegate.allSecure(ccText) {
-            return .allSecure
-        }
-        if dataDelegate.allInsecure(toText) && dataDelegate.allInsecure(ccText) {
-            return .allInsecure
-        }
-        return .mixed
-    }
-    
-    func securityStateChanged() {
-        animateIfNeeded()
     }
 }
 
