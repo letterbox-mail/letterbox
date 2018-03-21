@@ -1101,7 +1101,7 @@
 					};
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 4377G946WP;
+                        DevelopmentTeam = VJ9C93G68Y;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -2016,7 +2016,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
-				DEVELOPMENT_TEAM = 4377G946WP;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/enzevalos_iphone",
@@ -2052,7 +2052,7 @@
 					"\"VENTokenField\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone1";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2075,7 +2075,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = NO;
-				DEVELOPMENT_TEAM = 4377G946WP;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/enzevalos_iphone",
@@ -2111,7 +2111,7 @@
 					"\"VENTokenField\"",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone1";
+				PRODUCT_BUNDLE_IDENTIFIER = "fu-berlin.enzevalos-iphone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
