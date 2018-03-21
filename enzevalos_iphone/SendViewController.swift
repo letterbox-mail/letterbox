@@ -52,7 +52,7 @@ class SendViewController: UIViewController {
     var prefilledMail: EphemeralMail? = nil
     var toField: String? = nil
     var freeTextInviationTitle = StudySettings.freeTextInvitationTitle
-    var freeTextInvitationCall: (() -> (String)) = StudySettings.freeTextInvitationCode
+    var sendViewDelegate: SendViewDelegate?
     var invite: Bool = false
     var enforcePostcard: Bool = false
     

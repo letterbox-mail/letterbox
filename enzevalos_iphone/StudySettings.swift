@@ -73,7 +73,6 @@ class StudySettings {
             }
         }
     }
-    static var freeTextInvitationCode: (() -> (String)) = {Void in return "inviteSegueStudy"/*use "inviteSegue" if there is no study present*/ } //return segue id to perform
     static let faqURL = "https://userpage.fu-berlin.de/letterbox/faq.html"
     static let raffleURL = ""
     static var studyID: String {
