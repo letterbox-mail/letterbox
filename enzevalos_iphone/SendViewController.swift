@@ -49,9 +49,11 @@ class SendViewController: UIViewController {
     var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: { (name: String, address: String) -> Void in return })
     var recognizer: UIGestureRecognizer = UIGestureRecognizer.init()
 
-    var prefilledMail: EphemeralMail? = nil
     var toField: String? = nil
     var freeTextInviationTitle = StudySettings.freeTextInvitationTitle
+    
+    //These attributes may be interesting to set in a segue to SendViewController
+    var prefilledMail: EphemeralMail? = nil
     var sendViewDelegate: SendViewDelegate?
     var invite: Bool = false
     var enforcePostcard: Bool = false
