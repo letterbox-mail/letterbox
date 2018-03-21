@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 class AnimatedSendIcon: UIView {
-    var isOnTop = false
+    var isPostcardOnTop = false
     var square = UIImageView(image:IconsStyleKit.imageOfLetterBG)
     var square2 = UIImageView(image:IconsStyleKit.imageOfPostcardBG)
     let width = 100.0
@@ -62,12 +62,12 @@ class AnimatedSendIcon: UIView {
     
     func switchIcons() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.001 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-            self.square.layer.zPosition = self.isOnTop ? 1 : 0
-            self.square2.layer.zPosition = self.isOnTop ? 0 : 1
-            self.isOnTop = !self.isOnTop
+            self.square.layer.zPosition = self.isPostcardOnTop ? 1 : 0
+            self.square2.layer.zPosition = self.isPostcardOnTop ? 0 : 1
+            self.isPostcardOnTop = !self.isPostcardOnTop
         })
         
-        if !isOnTop {
+        if !isPostcardOnTop {
             UIView.animateKeyframes(withDuration: 0.75, delay: 0, options: [.calculationModeCubicPaced, .allowUserInteraction], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.25, animations: {
                     self.square.frame = CGRect(x: 10, y: 20, width: self.width*0.95, height: self.height*0.95)
