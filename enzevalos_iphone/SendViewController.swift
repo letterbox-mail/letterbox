@@ -612,29 +612,7 @@ class SendViewController: UIViewController {
 
 
     //Navigationbar
-
-    var someoneWithKeyPresent: Bool {
-        guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
-            return true
-        }
-
-        let toKey = toSource.someSecure(toText)
-        let ccKey = ccSource.someSecure(ccText)
-
-        return toKey || ccKey
-    }
-
-    var someoneWithoutKeyPresent: Bool {
-        guard let toSource = toText.dataSource, let ccSource = ccText.dataSource else {
-            return true
-        }
-
-        let toKey = toSource.someInsecure(toText)
-        let ccKey = ccSource.someInsecure(ccText)
-
-        return toKey || ccKey
-    }
-
+    
     func updateNavigationBar() {
         if mailSecurityState == .letter {
             self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
@@ -702,13 +680,13 @@ class SendViewController: UIViewController {
         }
         if recipientSecurityState != .allInsecure {
             if enforcePostcard {
-                alert.addAction(UIAlertAction(title: someoneWithoutKeyPresent ? NSLocalizedString("sendSecureIfPossible", comment: "This mail should be send securely to people with keys") : NSLocalizedString("sendSecure", comment: "This mail should be send securely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                alert.addAction(UIAlertAction(title: recipientSecurityState == .allInsecure || recipientSecurityState == .mixed ? NSLocalizedString("sendSecureIfPossible", comment: "This mail should be send securely to people with keys") : NSLocalizedString("sendSecure", comment: "This mail should be send securely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
                     Logger.log(close: url, mail: nil, action: "sendSecureIfPossible")
                     self.enforcePostcard = false
                     DispatchQueue.main.async { self.updateSecurityUI() }
                 }))
             } else {
-                alert.addAction(UIAlertAction(title: someoneWithoutKeyPresent ? NSLocalizedString("sendInsecureAll", comment: "This mail should be send insecurely to everyone, including contacts with keys") : NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                alert.addAction(UIAlertAction(title: recipientSecurityState == .allInsecure || recipientSecurityState == .mixed ? NSLocalizedString("sendInsecureAll", comment: "This mail should be send insecurely to everyone, including contacts with keys") : NSLocalizedString("sendInsecure", comment: "This mail should be send insecurely"), style: .default, handler: { (action: UIAlertAction!) -> Void in
                     Logger.log(close: url, mail: nil, action: "sendInsecure")
                     self.enforcePostcard = true
                     DispatchQueue.main.async { self.updateSecurityUI() }
