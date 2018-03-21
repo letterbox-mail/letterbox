@@ -843,7 +843,7 @@ class DataHandler {
                     mail.isCorrectlySigned = false
                 case SignatureState.InvalidSignature:
                     mail.isSigned = true
-                    mail.isCorrectlySigned = true
+                    mail.isCorrectlySigned = false
                     mail.trouble = true
                 case SignatureState.ValidSignature:
                     mail.isCorrectlySigned = true
