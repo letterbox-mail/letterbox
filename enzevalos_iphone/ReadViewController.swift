@@ -473,7 +473,7 @@ class ReadViewController: UITableViewController {
             if let controller = navigationController?.topViewController as? SendViewController, let mail = mail {
                 controller.sendViewDelegate = self
                 if isDraft {
-                    let prefillMail = EphemeralMail.init(to: mail.to, cc: mail.cc ?? NSSet.init(), bcc: mail.bcc ?? NSSet.init(), date: Date.init(), subject: mail.subject, body: mail.body, uid: mail.uid, predecessor: mail.predecessor)
+                    let prefillMail = EphemeralMail.init(to: mail.to, cc: mail.cc ?? NSSet.init(), bcc: mail.bcc ?? NSSet.init(), subject: mail.subject, body: mail.body, uid: mail.uid, predecessor: mail.predecessor)
                     controller.prefilledMail = prefillMail
                     return
                 }

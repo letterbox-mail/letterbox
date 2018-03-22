@@ -292,7 +292,7 @@ class SendViewController: UIViewController {
                 }
 
                 let body = String(format: NSLocalizedString("inviteText", comment: "Body for the invitation mail"),StudySettings.studyID)
-                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: body, uid: 0, predecessor: nil)
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: body)
 
 
                 controller.prefilledMail = mail
