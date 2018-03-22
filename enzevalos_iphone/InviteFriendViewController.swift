@@ -231,7 +231,7 @@ class InviteFriendViewController: UIViewController, UITableViewDataSource, UITab
             
                 let subject = NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail")
 
-                let answerMail = EphemeralMail(to: NSSet.init(array: sendTo), cc: [], bcc: [], date: Date(), subject: subject, body: body, uid: 0, predecessor: nil)
+                let answerMail = EphemeralMail(to: NSSet.init(array: sendTo), subject: subject, body: body)
 
                 controller.prefilledMail = answerMail
             }

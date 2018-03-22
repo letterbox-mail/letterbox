@@ -177,7 +177,7 @@ class ContactViewController: UIViewController {
             tableView.selectRow(at: myPath, animated: false, scrollPosition: .none)
             performSegue(withIdentifier: "otherRecord", sender: nil)
         } else if sender.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
-            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: String(format: NSLocalizedString("inviteText", comment: ""),StudySettings.studyID), uid: 0, predecessor: nil)
+            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), subject: NSLocalizedString("inviteSubject", comment: ""), body: String(format: NSLocalizedString("inviteText", comment: ""),StudySettings.studyID))
             performSegue(withIdentifier: "newMail", sender: mail)
         } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") {
             AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
@@ -208,7 +208,8 @@ class ContactViewController: UIViewController {
                 } else {
                     let indexPath = tableView.indexPathForSelectedRow
                     if indexPath!.row < keyRecord!.ezContact.getMailAddresses().count {
-                        controller.toField = keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                        let prefilledMail = EphemeralMail(to: [keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress])
+                        controller.prefilledMail = prefilledMail
                     }
                 }
             }

@@ -11,7 +11,6 @@ import UIKit
 // MARK: - InvitationSelection
 
 struct InvitationSelection {
-
     var selectedWords = Set<NSRange>()
     var code: String?
     var didShowDialog = false
@@ -54,15 +53,6 @@ extension SendViewController {
                 return String(repeating: "█" as String as String, count: (Int(arc4random_uniform(7)+3)))
             }
             return String.random(length: 10)
-        }
-        
-        if texts.count > 0 {
-            if isCensored {
-                isCensoredMail = true
-            }
-            else{
-                isPartialEncryptedMail = true
-            }
         }
 
         guard
@@ -362,7 +352,7 @@ extension SendViewController {
     ///
     /// - Returns: True if the current E-Mail is insecure
     fileprivate func isEligibleForInvitation() -> Bool {
-        return (self.toSecure == false && StudySettings.invitationEnabled == true)
+        return (mailSecurityState != .letter && StudySettings.invitationEnabled)
     }
 }
 
