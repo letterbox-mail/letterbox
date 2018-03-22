@@ -67,7 +67,11 @@ class ListViewController: UITableViewController {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+        } else {
+            tableView.tableHeaderView = searchController.searchBar
+        }
         searchController.searchBar.scopeButtonTitles = [NSLocalizedString("Subject", comment: ""), NSLocalizedString("Body", comment: ""), NSLocalizedString("CC", comment: ""), NSLocalizedString("All", comment: "")]
         searchController.searchBar.delegate = self
 
