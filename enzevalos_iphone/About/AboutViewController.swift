@@ -34,7 +34,7 @@ class AboutViewController: UIViewController {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController {
 
-                let answerTo = sender as? String ?? "" // TODO: Convert String into MailAddress(?)
+                let answerTo = sender as? String ?? ""
 
                 let answerMail = EphemeralMail(to: [answerTo])
 

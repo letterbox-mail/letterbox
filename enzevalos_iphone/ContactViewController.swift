@@ -55,9 +55,7 @@ class ContactViewController: UIViewController {
             prepareContactSheet()
 
             otherRecords = con.ezContact.records.filter({ $0 != keyRecord })
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(contactViewOpen: self.keyRecord, otherRecords: self.otherRecords, isUser: self.isUser)
-//            }
+            Logger.log(contactViewOpen: self.keyRecord, otherRecords: self.otherRecords, isUser: self.isUser)
         }
     }
 
@@ -70,9 +68,7 @@ class ContactViewController: UIViewController {
 
     func dismissView() {
         self.dismiss(animated: true, completion: nil)
-//        Logger.queue.async(flags: .barrier) {
-            Logger.log(contactViewClose: self.keyRecord, otherRecords: self.otherRecords, isUser: self.isUser)
-//        }
+        Logger.log(contactViewClose: self.keyRecord, otherRecords: self.otherRecords, isUser: self.isUser)
     }
 
     func prepareContactSheet() {
@@ -98,13 +94,11 @@ class ContactViewController: UIViewController {
         if let conUI = uiContact {
             let infoButton = UIButton(type: .infoLight)
             vc = CNContactViewController(for: conUI)
-//            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
             infoButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: infoButton)
         } else {
             let addButton = UIButton(type: .contactAdd)
             vc = CNContactViewController(forNewContact: keyRecord!.ezContact.newCnContact)
-//            vc!.contactStore = AppDelegate.getAppDelegate().contactStore // nötig?
             vc!.delegate = self
             addButton.addTarget(self, action: #selector(ContactViewController.showContact), for: .touchUpInside)
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
@@ -116,9 +110,10 @@ class ContactViewController: UIViewController {
     }
 
     func drawStatusCircle() -> UIImage? {
-        guard keyRecord != nil else {
+        guard let keyRecord = keyRecord else {
             return nil
         }
+
         var myBounds = CGRect()
         myBounds.size.width = 70
         myBounds.size.height = 70
@@ -133,9 +128,9 @@ class ContactViewController: UIViewController {
 
         // Fill background of context
         var bgColor: CGColor = ThemeManager.defaultColor.cgColor
-        if keyRecord!.isVerified {
+        if keyRecord.isVerified {
             bgColor = Theme.very_strong_security_indicator.encryptedVerifiedMessageColor.cgColor
-        } else if !keyRecord!.hasKey {
+        } else if !keyRecord.hasKey {
             bgColor = Theme.very_strong_security_indicator.unencryptedMessageColor.cgColor
         }
         context!.setFillColor(bgColor)
@@ -144,9 +139,9 @@ class ContactViewController: UIViewController {
         let iconSize = CGFloat(50)
         let frame = CGRect(x: myBounds.size.width / 2 - iconSize / 2, y: myBounds.size.height / 2 - iconSize / 2, width: iconSize, height: iconSize)
 
-        if keyRecord!.hasKey {
+        if keyRecord.hasKey {
             IconsStyleKit.drawLetter(frame: frame, fillBackground: true)
-        } else if keyRecord!.isVerified {
+        } else if keyRecord.isVerified {
             IconsStyleKit.drawLetter(frame: frame, color: UIColor.white)
         } else {
             IconsStyleKit.drawPostcard(frame: frame, resizing: .aspectFit, color: UIColor.white)
@@ -177,7 +172,7 @@ class ContactViewController: UIViewController {
             tableView.selectRow(at: myPath, animated: false, scrollPosition: .none)
             performSegue(withIdentifier: "otherRecord", sender: nil)
         } else if sender.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
-            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), subject: NSLocalizedString("inviteSubject", comment: ""), body: String(format: NSLocalizedString("inviteText", comment: ""),StudySettings.studyID))
+            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), subject: NSLocalizedString("inviteSubject", comment: ""), body: String(format: NSLocalizedString("inviteText", comment: ""), StudySettings.studyID))
             performSegue(withIdentifier: "newMail", sender: mail)
         } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") {
             AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
@@ -235,9 +230,7 @@ class ContactViewController: UIViewController {
                 DestinationViewController.fingerprint = sender as? String
                 DestinationViewController.callback = verifySuccessfull
                 DestinationViewController.keyId = self.keyRecord?.keyID //used for logging TODO @jakob: is this suficient? The keyID might also be in the MailAddress
-//                Logger.queue.async(flags: .barrier) {
-                    Logger.log(verify: self.keyRecord?.keyID ?? "noKeyID", open: true)
-//                }
+                Logger.log(verify: self.keyRecord?.keyID ?? "noKeyID", open: true)
             }
         }
     }
@@ -248,10 +241,8 @@ class ContactViewController: UIViewController {
         } else {
             addressWithKey?.primaryKey?.verify()
         }
-//        Logger.queue.async(flags: .barrier) {
-            let keyId: String = self.keyRecord?.keyID ?? "noKeyID"
-            Logger.log(verify: keyId, open: false, success: true)
-//        }
+        let keyId: String = self.keyRecord?.keyID ?? "noKeyID"
+        Logger.log(verify: keyId, open: false, success: true)
         tableView.reloadData()
     }
 }

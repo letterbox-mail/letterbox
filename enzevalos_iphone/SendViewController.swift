@@ -150,7 +150,7 @@ class SendViewController: UIViewController {
                     toText.delegate?.tokenField!(toText, didEnterText: mail.mailAddress)
                 }
             }
-            for case let mail as String in prefilledMail.to { //TODO: remove once adresses can be created
+            for case let mail as String in prefilledMail.to {
                 toText.delegate?.tokenField!(toText, didEnterText: mail)
             }
             for case let mail as MailAddress in prefilledMail.cc ?? [] {
