@@ -23,7 +23,7 @@ enum Theme: Int{
    case no_security_indicator, weak_security_indicator, strong_security_indicator, very_strong_security_indicator
     
     
-    var uncryptedMessageColor: UIColor{
+    var unencryptedMessageColor: UIColor{
         switch  self {
         case .no_security_indicator:
             return defaultColor
@@ -87,8 +87,8 @@ struct ThemeManager{
         }
     }
     
-    static func uncryptedMessageColor() -> UIColor{
-        return currentTheme().uncryptedMessageColor
+    static func unencryptedMessageColor() -> UIColor{
+        return currentTheme().unencryptedMessageColor
     
     }
     static func encryptedMessageColor() -> UIColor{

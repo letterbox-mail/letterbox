@@ -48,8 +48,6 @@ class SendViewController: UIViewController {
     var tableDataDelegate = TableViewDataDelegate(insertCallback: { (name: String, address: String) -> Void in return })
     var collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: { (name: String, address: String) -> Void in return })
     var recognizer: UIGestureRecognizer = UIGestureRecognizer.init()
-
-    var toField: String? = nil
     var freeTextInviationTitle = StudySettings.freeTextInvitationTitle
     
     //These attributes may be interesting to set in a segue to SendViewController
@@ -143,13 +141,10 @@ class SendViewController: UIViewController {
         ccText.addTarget(self, action: #selector(self.newInput(_:)), for: UIControlEvents.editingDidEnd)
 
         if prefilledMail == nil {
-            textView.text.append(NSLocalizedString("Mail.Signature", comment: "Signature"))
+            textView.text.append(UserManager.loadUserSignature())
         }
 
-        if let to = toField {
-            let ezCon = DataHandler.handler.getContactByAddress(to)
-            toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
-        } else if let prefilledMail = prefilledMail {
+        if let prefilledMail = prefilledMail {
             for case let mail as MailAddress in prefilledMail.to {
                 if mail.mailAddress != UserManager.loadUserValue(Attribute.userAddr) as! String {
                     toText.delegate?.tokenField!(toText, didEnterText: mail.mailAddress)
@@ -316,7 +311,7 @@ class SendViewController: UIViewController {
                 }
 
                 let body = String(format: NSLocalizedString("inviteText", comment: "Body for the invitation mail"),StudySettings.studyID)
-                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: body, uid: 0, predecessor: nil)
+                let mail = EphemeralMail(to: NSSet.init(array: to), cc: NSSet.init(array: cc), subject: NSLocalizedString("inviteSubject", comment: "Subject for the invitation mail"), body: body)
 
 
                 controller.prefilledMail = mail
@@ -619,7 +614,7 @@ class SendViewController: UIViewController {
         if mailSecurityState == .letter {
             self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
         } else {
-            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+            self.navigationController?.navigationBar.barTintColor = ThemeManager.unencryptedMessageColor()
         }
     }
 
@@ -640,7 +635,7 @@ class SendViewController: UIViewController {
             } else if mailSecurityState != .letter && uiSecurityState == .letter {
                 startIconAnimation()
                 UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
-                    self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+                    self.navigationController?.navigationBar.barTintColor = ThemeManager.unencryptedMessageColor()
                     self.navigationController?.navigationBar.layoutIfNeeded()
                 }, completion: nil)
             }
@@ -721,7 +716,7 @@ class SendViewController: UIViewController {
                 firstResponder = view
             }
         }
-        if textView.text == "" && toText.mailTokens.count == 0 && ccText.mailTokens.count == 0 && subjectText.inputText() == "" {
+        if (textView.text.trimmed() == "" || textView.text.trimmed() == UserManager.loadUserSignature().trimmed()) && toText.mailTokens.count == 0 && ccText.mailTokens.count == 0 && subjectText.inputText()?.trimmed() == "" {
             self.navigationController?.dismiss(animated: true, completion: nil)
         } else {
             let toEntrys = toText.mailTokens
@@ -808,9 +803,7 @@ extension VENTokenFieldDataSource {
         return false
     }
 
-    /**
-     Returns a bool showing whether all contacts in the field have a key. Returns true if no contacts are present.
-     */
+    /// Returns a bool showing whether all contacts in the field have a key. Returns true if no contacts are present.
     func allSecure(_ tokenField: VENTokenField) -> Bool {
         for entry in tokenField.mailTokens {
             if !DataHandler.handler.hasKey(adr: entry as! String) {
@@ -832,5 +825,11 @@ extension VENTokenFieldDataSource {
         }
         
         return true
+    }
+}
+
+extension String {
+    func trimmed() -> String {
+        return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

@@ -136,7 +136,7 @@ class ContactViewController: UIViewController {
         if keyRecord!.isVerified {
             bgColor = Theme.very_strong_security_indicator.encryptedVerifiedMessageColor.cgColor
         } else if !keyRecord!.hasKey {
-            bgColor = Theme.very_strong_security_indicator.uncryptedMessageColor.cgColor
+            bgColor = Theme.very_strong_security_indicator.unencryptedMessageColor.cgColor
         }
         context!.setFillColor(bgColor)
         context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
@@ -177,7 +177,7 @@ class ContactViewController: UIViewController {
             tableView.selectRow(at: myPath, animated: false, scrollPosition: .none)
             performSegue(withIdentifier: "otherRecord", sender: nil)
         } else if sender.titleLabel?.text == NSLocalizedString("invite", comment: "invite contact") {
-            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), cc: NSSet.init(), bcc: NSSet.init(), date: Date(), subject: NSLocalizedString("inviteSubject", comment: ""), body: String(format: NSLocalizedString("inviteText", comment: ""),StudySettings.studyID), uid: 0, predecessor: nil)
+            let mail = EphemeralMail(to: NSSet.init(array: keyRecord!.addresses), subject: NSLocalizedString("inviteSubject", comment: ""), body: String(format: NSLocalizedString("inviteText", comment: ""),StudySettings.studyID))
             performSegue(withIdentifier: "newMail", sender: mail)
         } else if sender.titleLabel?.text == NSLocalizedString("verifyNow", comment: "Verify now") {
             AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
@@ -208,7 +208,8 @@ class ContactViewController: UIViewController {
                 } else {
                     let indexPath = tableView.indexPathForSelectedRow
                     if indexPath!.row < keyRecord!.ezContact.getMailAddresses().count {
-                        controller.toField = keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                        let prefilledMail = EphemeralMail(to: [keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress])
+                        controller.prefilledMail = prefilledMail
                     }
                 }
             }

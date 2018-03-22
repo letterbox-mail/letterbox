@@ -319,6 +319,7 @@
                     <connections>
                         <outlet property="SeperatorConstraint" destination="AX9-BE-lhT" id="vUm-gH-8hO"/>
                         <outlet property="answerButton" destination="gd7-4L-kZs" id="UNS-5A-0e0"/>
+                        <outlet property="archiveButton" destination="tGx-Pm-eAc" id="LeZ-ke-qnq"/>
                         <outlet property="deleteButton" destination="Mac-KZ-4YQ" id="9W5-c8-aYx"/>
                         <outlet property="iconButton" destination="bcV-Tv-Mmh" id="dF9-8X-MI7"/>
                         <outlet property="infoButtonCell" destination="sfU-SD-QZO" id="D1b-xZ-hPj"/>
@@ -656,7 +657,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="UITableViewController-ooe-0X-glz" id="ooe-0X-glz" customClass="ListViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ipK-4X-lVA">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -742,7 +743,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="UITableViewController-8Di-x2-cWQ" id="8Di-x2-cWQ" customClass="ContactViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="lK7-ug-OyQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -1105,7 +1106,7 @@
             <objects>
                 <viewController id="jYD-fk-aIP" customClass="KeyViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ZAH-bZ-S6n">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KaX-Vg-m5j">
@@ -1278,7 +1279,7 @@
             <objects>
                 <tableViewController id="7Pd-d5-0wz" customClass="ExportInfoViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" sectionIndexMinimumDisplayRowCount="1" rowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="2Uv-bd-pB1">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -1379,7 +1380,7 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
             <objects>
                 <tableViewController id="Dxf-zr-T68" customClass="ExportViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="1" sectionHeaderHeight="18" sectionFooterHeight="18" id="h3p-jv-yUQ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -1847,9 +1848,9 @@ Um deine sicheren E-Mails auch auf einem anderen Gerät lesen zu können, muss d
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Sm1-yp-Umv"/>
-        <segue reference="td8-VW-Wrt"/>
-        <segue reference="DcR-GX-scc"/>
+        <segue reference="rhW-cI-4c4"/>
+        <segue reference="hSn-Um-hji"/>
+        <segue reference="btx-4o-o0r"/>
         <segue reference="TgN-rB-esa"/>
         <segue reference="6Ug-AV-lba"/>
     </inferredMetricsTieBreakers>

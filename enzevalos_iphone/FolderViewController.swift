@@ -152,12 +152,8 @@ class FolderViewController: UITableViewController {
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "readFolderMailSegue" {
-            let destinationVC = segue.destination as! ReadViewController
-            if let mail = sender as? PersistentMail {
+            if let destinationVC = segue.destination as? ReadViewController, let mail = sender as? PersistentMail {
                 destinationVC.mail = mail
-                if let presFolder = presentedFolder, presFolder.path.hasPrefix(UserManager.backendDraftFolderPath) {
-                    destinationVC.isDraft = true
-                }
             }
         }
     }

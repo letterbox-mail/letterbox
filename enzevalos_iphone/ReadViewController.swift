@@ -24,6 +24,7 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var messageBody: UITextView!
     @IBOutlet weak var iconButton: UIButton!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
+    @IBOutlet weak var archiveButton: UIBarButtonItem!
     @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
 
     // Cells
@@ -41,6 +42,9 @@ class ReadViewController: UITableViewController {
     var mail: PersistentMail? = nil
 
     var isDraft = false
+    var isInSentFolder = false
+    var isInArchiveFolder = false
+    var isTrash = false
 
     var keyDiscoveryDate: Date? = nil
 
@@ -63,15 +67,31 @@ class ReadViewController: UITableViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 44.0
 
+        if let folder = mail?.folder {
+            if folder.path.hasPrefix(UserManager.backendDraftFolderPath) {
+                isDraft = true
+            } else if folder.path.hasPrefix(UserManager.backendSentFolderPath) {
+                isInSentFolder = true
+            } else if folder.path.hasPrefix(UserManager.backendArchiveFolderPath) {
+                isInArchiveFolder = true
+            } else if folder.path.hasPrefix(UserManager.backendTrashFolderPath) {
+                isTrash = true
+            }
+        }
+
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
         }
 
+        if isDraft || isInArchiveFolder || isTrash {
+            archiveButton.isEnabled = false
+        }
+
         if Logger.logging, let mail = self.mail {
             var message = "none"
-            if mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > self.keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { // @ jakob: why is this important here?
+            if showInfoSection(mail: mail) {
                 if mail.trouble {
                     message = "corrupted"
                 } else if mail.isEncrypted && mail.unableToDecrypt {
@@ -153,7 +173,7 @@ class ReadViewController: UITableViewController {
             } else if mail.isSecure {
                 self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
             } else {
-                self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+                self.navigationController?.navigationBar.barTintColor = ThemeManager.unencryptedMessageColor()
             }
         }
     }
@@ -178,6 +198,15 @@ class ReadViewController: UITableViewController {
         }
     }
 
+    /// Bool indicating whether a info section is shown with the exception of trouble mails where the message is not shown (because we need only 2 sections in that case)
+    func showInfoSection(mail: PersistentMail) -> Bool {
+        return (mail.trouble && mail.showMessage) || (!mail.trouble && !mail.isSecure && mail.from.hasKey && mail.date > keyDiscoveryDate ?? Date() && !isDraft && !isInSentFolder) || (!mail.trouble && mail.isEncrypted && mail.unableToDecrypt) || isNewPubKey ?? false && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false)
+    }
+
+    func showInfoButton(mail: PersistentMail) -> Bool {
+        return (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate ?? Date() && !mail.showMessage && !isDraft && !isInSentFolder) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) && !mail.unableToDecrypt
+    }
+
     // set top seperator height
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
@@ -197,8 +226,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt || isNewPubKey ?? false, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //if changed, change it for logging too. See around line 60 (in viewDidLoad)
-
+        if let mail = mail, showInfoSection(mail: mail) {
             return 3
         }
 
@@ -210,10 +238,8 @@ class ReadViewController: UITableViewController {
             return 3
         }
 
-        if let mail = mail {
-            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate ?? Date() && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) && !mail.unableToDecrypt {
-                return 2
-            }
+        if section == 1, let mail = mail, showInfoButton(mail: mail) {
+            return 2
         }
 
         return 1
@@ -230,22 +256,14 @@ class ReadViewController: UITableViewController {
                 return subjectCell
             }
         }
-        if indexPath.section == 1 && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) {
-            if let mail = mail {
-                if mail.trouble {
-                    if indexPath.row == 0 {
-                        return infoCell
-                    } else if indexPath.row == 1 {
-                        return infoButtonCell
-                    }
-                } else if mail.isEncrypted && mail.unableToDecrypt || isNewPubKey ?? false {
-                    return infoCell
-                } else if mail.from.hasKey && !mail.isSecure && mail.date > (keyDiscoveryDate ?? Date()) {
-                    if indexPath.row == 0 {
-                        return infoCell
-                    } else if indexPath.row == 1 {
-                        return infoReactButtonCell
-                    }
+        if let mail = mail, indexPath.section == 1 && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) && showInfoSection(mail: mail) {
+            if indexPath.row == 0 {
+                return infoCell
+            } else if indexPath.row == 1 {
+                if mail.trouble { // Show info reaction cell with one button
+                    return infoButtonCell
+                } else if mail.from.hasKey && !mail.isSecure && mail.date > (keyDiscoveryDate ?? Date()) && !isDraft { // Show info reaction cell with two buttons
+                    return infoReactButtonCell
                 }
             }
         }
@@ -273,7 +291,6 @@ class ReadViewController: UITableViewController {
 
     @IBAction func reactButton(_ sender: Any) {
         performSegue(withIdentifier: "answerTo", sender: "reactButton")
-        reactButton.isEnabled = false
         Logger.log(reactTo: mail)
     }
 
@@ -284,13 +301,12 @@ class ReadViewController: UITableViewController {
 
     @IBAction func deleteButton(_ sender: AnyObject) {
         if let mail = mail {
-            let trashFolder = UserManager.backendTrashFolderPath
-            if mail.folder.path == trashFolder {
+            if isTrash {
                 Logger.log(delete: mail, toTrash: false)
                 AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
             } else {
                 Logger.log(delete: mail, toTrash: true)
-                AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: trashFolder)
+                AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: UserManager.backendTrashFolderPath)
             }
         }
         navigationController?.popViewController(animated: true)
@@ -298,9 +314,8 @@ class ReadViewController: UITableViewController {
 
     @IBAction func archiveButton(_ sender: AnyObject) {
         if let mail = mail {
-            let archiveFolder = UserManager.backendArchiveFolderPath
             Logger.log(archive: mail)
-            AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: archiveFolder)
+            AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: UserManager.backendArchiveFolderPath)
         }
         navigationController?.popViewController(animated: true)
     }
@@ -316,9 +331,9 @@ class ReadViewController: UITableViewController {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://userpage.fu-berlin.de/letterbox/faq.html#secureMailAnswer"
                 alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                    Logger.log(close: url, mail: m, action: "exportKey")
-                    self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)
-                }))
+                        Logger.log(close: url, mail: m, action: "exportKey")
+                        self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)
+                    }))
             } else if m.isCorrectlySigned {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .alert)
                 url = "https://userpage.fu-berlin.de/letterbox/faq.html#collapsePostcard"
@@ -334,9 +349,9 @@ class ReadViewController: UITableViewController {
             }
             Logger.log(open: url, mail: m)
             alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information label"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                Logger.log(close: url, mail: m, action: "openURL")
-                UIApplication.shared.openURL(URL(string: url)!)
-            }))
+                    Logger.log(close: url, mail: m, action: "openURL")
+                    UIApplication.shared.openURL(URL(string: url)!)
+                }))
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action: UIAlertAction!) -> Void in
                 Logger.log(close: url, mail: m, action: "OK")
             }))
@@ -446,19 +461,19 @@ class ReadViewController: UITableViewController {
                 infoCell.translatesAutoresizingMaskIntoConstraints = true
             } else if mail.isEncrypted && mail.unableToDecrypt {
                 infoSymbol.text = "?"
-                infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                infoSymbol.textColor = ThemeManager.unencryptedMessageColor()
                 infoHeadline.text = NSLocalizedString("couldNotDecryptHeadline", comment: "Message could not be decrypted")
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("couldNotDecryptText", comment: "Message could not be decrypted")
             } else if isNewPubKey ?? false {
                 infoSymbol.text = "!"
-                infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                infoSymbol.textColor = ThemeManager.unencryptedMessageColor()
                 infoHeadline.text = NSLocalizedString("newKeyHeadline", comment: "Message contained a new public key")
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("newKeyText", comment: "Message contained a new public key")
             } else if mail.from.hasKey && !mail.isSecure {
                 infoSymbol.text = "?"
-                infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                infoSymbol.textColor = ThemeManager.unencryptedMessageColor()
                 infoHeadline.text = NSLocalizedString("encryptedBeforeHeadline", comment: "The sender has encrypted before")
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
@@ -470,8 +485,9 @@ class ReadViewController: UITableViewController {
         if segue.identifier == "answerTo" && (sender is UIBarButtonItem || (sender as? String ?? "noReaction") == "reactButton") {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController, let mail = mail {
+                controller.sendViewDelegate = self
                 if isDraft {
-                    let prefillMail = EphemeralMail.init(to: mail.to, cc: mail.cc ?? NSSet.init(), bcc: mail.bcc ?? NSSet.init(), date: Date.init(), subject: mail.subject, body: mail.body, uid: mail.uid, predecessor: mail.predecessor)
+                    let prefillMail = EphemeralMail.init(to: mail.to, cc: mail.cc ?? NSSet.init(), bcc: mail.bcc ?? NSSet.init(), subject: mail.subject, body: mail.body, uid: mail.uid, predecessor: mail.predecessor)
                     controller.prefilledMail = prefillMail
                     return
                 }
@@ -517,7 +533,7 @@ class ReadViewController: UITableViewController {
                 if askForConfirmation {
                     body = NSLocalizedString("didYouSendThis", comment: "") + body
                 } else {
-                    body = "\n\n\(NSLocalizedString("Mail.Signature", comment: "Signature"))" + body
+                    body = UserManager.loadUserSignature() + body
                 }
 
                 var subject = NSLocalizedString("Re", comment: "prefix for subjects of answered mails") + ": " + NSLocalizedString("SubjectNo", comment: "there is no subject")
@@ -541,6 +557,7 @@ class ReadViewController: UITableViewController {
 
                 let answerMail = EphemeralMail(to: NSSet.init(array: [answerTo]), cc: NSSet.init(array: []), bcc: [], date: Date(), subject: "", body: "", uid: 0, predecessor: nil) // TODO: are these the best values?
 
+                controller.sendViewDelegate = self
                 controller.prefilledMail = answerMail
             }
         } else if segue.identifier == "showContact" {
@@ -586,12 +603,32 @@ class ReadViewController: UITableViewController {
         }
         let alert = UIAlertController(title: NSLocalizedString("New secret", comment: "NewSecretKeyTitle"), message: message, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("No import", comment: "NoSecretKeyImport"), style: UIAlertActionStyle.destructive, handler: { (_: UIAlertAction) -> Void in
-            Logger.log(importPrivateKeyPopupClose: self.mail, doImport: false)
-        }))
+                Logger.log(importPrivateKeyPopupClose: self.mail, doImport: false)
+            }))
 
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Import secret Key"), style: UIAlertActionStyle.default, handler: importSecretKey))
         alert.addTextField(configurationHandler: newSecretkeyPassword(textField:))
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension ReadViewController: SendViewDelegate {
+    func compositionDiscarded() {
+
+    }
+
+    func compositionSavedAsDraft() {
+        compositionSent()
+    }
+
+    func compositionSent() {
+        reactButton.isEnabled = false
+        if isDraft {
+            if let mail = mail {
+                AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
+            }
+            self.navigationController?.viewControllers.removeLast()
+        }
     }
 }
 
