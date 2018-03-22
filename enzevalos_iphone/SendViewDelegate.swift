@@ -9,9 +9,6 @@
 import UIKit
 
 protocol SendViewDelegate {
-    //called before composition
-    func getPrefilledMail() -> EphemeralMail
-    
     //called after composition
     func compositionDiscarded()
     func compositionSavedAsDraft()

@@ -24,6 +24,7 @@ class ReadViewController: UITableViewController {
     @IBOutlet weak var messageBody: UITextView!
     @IBOutlet weak var iconButton: UIButton!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
+    @IBOutlet weak var archiveButton: UIBarButtonItem!
     @IBOutlet weak var SeperatorConstraint: NSLayoutConstraint!
 
     // Cells
@@ -65,6 +66,7 @@ class ReadViewController: UITableViewController {
 
         if isDraft {
             answerButton.title = NSLocalizedString("edit", comment: "")
+            archiveButton.isEnabled = false
         } else {
             answerButton.title = NSLocalizedString("answer", comment: "")
         }
@@ -197,7 +199,7 @@ class ReadViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if let mail = mail, mail.trouble && mail.showMessage || !mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() || !mail.trouble && mail.isEncrypted && mail.unableToDecrypt || isNewPubKey ?? false, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //if changed, change it for logging too. See around line 60 (in viewDidLoad)
+        if let mail = mail, (mail.trouble && mail.showMessage) || (!mail.trouble && !mail.isSecure && mail.from.contact!.hasKey && mail.date > keyDiscoveryDate ?? Date() && !isDraft) || (!mail.trouble && mail.isEncrypted && mail.unableToDecrypt) || isNewPubKey ?? false, !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) { //if changed, change it for logging too. See around line 60 (in viewDidLoad)
 
             return 3
         }
@@ -211,7 +213,7 @@ class ReadViewController: UITableViewController {
         }
 
         if let mail = mail {
-            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate ?? Date() && !mail.showMessage) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) && !mail.unableToDecrypt {
+            if section == 1 && (mail.trouble && !mail.showMessage || mail.from.hasKey && !mail.isSecure && mail.date > keyDiscoveryDate ?? Date() && !mail.showMessage && !isDraft) && !(UserDefaults.standard.value(forKey: "hideWarnings") as? Bool ?? false) && !mail.unableToDecrypt {
                 return 2
             }
         }
@@ -240,7 +242,7 @@ class ReadViewController: UITableViewController {
                     }
                 } else if mail.isEncrypted && mail.unableToDecrypt || isNewPubKey ?? false {
                     return infoCell
-                } else if mail.from.hasKey && !mail.isSecure && mail.date > (keyDiscoveryDate ?? Date()) {
+                } else if mail.from.hasKey && !mail.isSecure && mail.date > (keyDiscoveryDate ?? Date()) && !isDraft {
                     if indexPath.row == 0 {
                         return infoCell
                     } else if indexPath.row == 1 {
@@ -273,7 +275,6 @@ class ReadViewController: UITableViewController {
 
     @IBAction func reactButton(_ sender: Any) {
         performSegue(withIdentifier: "answerTo", sender: "reactButton")
-        reactButton.isEnabled = false
         Logger.log(reactTo: mail)
     }
 
@@ -470,6 +471,7 @@ class ReadViewController: UITableViewController {
         if segue.identifier == "answerTo" && (sender is UIBarButtonItem || (sender as? String ?? "noReaction") == "reactButton") {
             let navigationController = segue.destination as? UINavigationController
             if let controller = navigationController?.topViewController as? SendViewController, let mail = mail {
+                controller.sendViewDelegate = self
                 if isDraft {
                     let prefillMail = EphemeralMail.init(to: mail.to, cc: mail.cc ?? NSSet.init(), bcc: mail.bcc ?? NSSet.init(), date: Date.init(), subject: mail.subject, body: mail.body, uid: mail.uid, predecessor: mail.predecessor)
                     controller.prefilledMail = prefillMail
@@ -541,6 +543,7 @@ class ReadViewController: UITableViewController {
 
                 let answerMail = EphemeralMail(to: NSSet.init(array: [answerTo]), cc: NSSet.init(array: []), bcc: [], date: Date(), subject: "", body: "", uid: 0, predecessor: nil) // TODO: are these the best values?
 
+                controller.sendViewDelegate = self
                 controller.prefilledMail = answerMail
             }
         } else if segue.identifier == "showContact" {
@@ -592,6 +595,26 @@ class ReadViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Import secret Key"), style: UIAlertActionStyle.default, handler: importSecretKey))
         alert.addTextField(configurationHandler: newSecretkeyPassword(textField:))
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension ReadViewController: SendViewDelegate {
+    func compositionDiscarded() {
+
+    }
+
+    func compositionSavedAsDraft() {
+        compositionSent()
+    }
+
+    func compositionSent() {
+        reactButton.isEnabled = false
+        if isDraft {
+            if let mail = mail {
+                AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
+            }
+            self.navigationController?.viewControllers.removeLast()
+        }
     }
 }
 
