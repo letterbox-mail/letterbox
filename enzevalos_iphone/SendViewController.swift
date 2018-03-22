@@ -612,7 +612,7 @@ class SendViewController: UIViewController {
         if currentSecurityState {
             self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
         } else {
-            self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+            self.navigationController?.navigationBar.barTintColor = ThemeManager.unencryptedMessageColor()
         }
     }
 
@@ -627,7 +627,7 @@ class SendViewController: UIViewController {
                 }, completion: nil)
             } else {
                 UIView.animate(withDuration: 0.5, delay: 0, options: [UIViewAnimationOptions.curveEaseIn, UIViewAnimationOptions.allowUserInteraction], animations: {
-                    self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+                    self.navigationController?.navigationBar.barTintColor = ThemeManager.unencryptedMessageColor()
                     self.navigationController?.navigationBar.layoutIfNeeded()
                 }, completion: nil)
             }

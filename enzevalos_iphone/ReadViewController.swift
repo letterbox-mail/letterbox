@@ -153,7 +153,7 @@ class ReadViewController: UITableViewController {
             } else if mail.isSecure {
                 self.navigationController?.navigationBar.barTintColor = ThemeManager.encryptedMessageColor()
             } else {
-                self.navigationController?.navigationBar.barTintColor = ThemeManager.uncryptedMessageColor()
+                self.navigationController?.navigationBar.barTintColor = ThemeManager.unencryptedMessageColor()
             }
         }
     }
@@ -446,19 +446,19 @@ class ReadViewController: UITableViewController {
                 infoCell.translatesAutoresizingMaskIntoConstraints = true
             } else if mail.isEncrypted && mail.unableToDecrypt {
                 infoSymbol.text = "?"
-                infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                infoSymbol.textColor = ThemeManager.unencryptedMessageColor()
                 infoHeadline.text = NSLocalizedString("couldNotDecryptHeadline", comment: "Message could not be decrypted")
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("couldNotDecryptText", comment: "Message could not be decrypted")
             } else if isNewPubKey ?? false {
                 infoSymbol.text = "!"
-                infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                infoSymbol.textColor = ThemeManager.unencryptedMessageColor()
                 infoHeadline.text = NSLocalizedString("newKeyHeadline", comment: "Message contained a new public key")
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("newKeyText", comment: "Message contained a new public key")
             } else if mail.from.hasKey && !mail.isSecure {
                 infoSymbol.text = "?"
-                infoSymbol.textColor = ThemeManager.uncryptedMessageColor()
+                infoSymbol.textColor = ThemeManager.unencryptedMessageColor()
                 infoHeadline.text = NSLocalizedString("encryptedBeforeHeadline", comment: "The sender has encrypted before")
                 infoHeadline.textColor = UIColor.gray
                 infoText.text = NSLocalizedString("encryptedBeforeText", comment: "The sender has encrypted before")
