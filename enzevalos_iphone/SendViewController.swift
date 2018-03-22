@@ -52,7 +52,6 @@ class SendViewController: UIViewController {
     var recognizer: UIGestureRecognizer = UIGestureRecognizer.init()
 
     var prefilledMail: EphemeralMail? = nil
-    var toField: String? = nil
     var sendEncryptedIfPossible = true
     var freeTextInviationTitle = StudySettings.freeTextInvitationTitle
     var freeTextInvitationCall: (() -> (String)) = StudySettings.freeTextInvitationCode
@@ -130,10 +129,7 @@ class SendViewController: UIViewController {
             textView.text.append(UserManager.loadUserSignature())
         }
 
-        if let to = toField {
-            let ezCon = DataHandler.handler.getContactByAddress(to)
-            toText.delegate?.tokenField!(toText, didEnterText: ezCon.name, mail: to)
-        } else if let prefilledMail = prefilledMail {
+        if let prefilledMail = prefilledMail {
             for case let mail as MailAddress in prefilledMail.to {
                 if mail.mailAddress != UserManager.loadUserValue(Attribute.userAddr) as! String {
                     toText.delegate?.tokenField!(toText, didEnterText: mail.mailAddress)

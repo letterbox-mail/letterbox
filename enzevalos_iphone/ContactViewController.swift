@@ -208,7 +208,8 @@ class ContactViewController: UIViewController {
                 } else {
                     let indexPath = tableView.indexPathForSelectedRow
                     if indexPath!.row < keyRecord!.ezContact.getMailAddresses().count {
-                        controller.toField = keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress
+                        let prefilledMail = EphemeralMail(to: [keyRecord!.ezContact.getMailAddresses()[indexPath!.row].mailAddress], cc: [], bcc: [], date: Date(), subject: nil, body: UserManager.loadUserSignature(), uid: 0, predecessor: nil)
+                        controller.prefilledMail = prefilledMail
                     }
                 }
             }
