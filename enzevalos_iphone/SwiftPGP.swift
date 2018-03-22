@@ -425,18 +425,30 @@ class SwiftPGP: Encryption{
     
     
     private func decryptMessage(data: Data, keys: [Key], encForCurrentSK: Bool) -> (Data?, EncryptionState){
-        if let dataString = String(data: data, encoding: .utf8), let unarmored = try? Armor.readArmored(dataString){
-            if let plain = try? ObjectivePGP.decrypt(unarmored, andVerifySignature: true, using: keys, passphraseForKey: loadPassword){
-                if encForCurrentSK{
-                    return (plain, EncryptionState.ValidedEncryptedWithCurrentKey)
+        if let dataString = String(data: data, encoding: .utf8) {
+            do {
+                let unarmored = try Armor.readArmored(dataString)
+                if let plain = try? ObjectivePGP.decrypt(unarmored, andVerifySignature: true, using: keys, passphraseForKey: loadPassword){
+                    if encForCurrentSK{
+                        return (plain, EncryptionState.ValidedEncryptedWithCurrentKey)
+                    }
+                    else{
+                        return(plain, EncryptionState.ValidEncryptedWithOldKey)
+                    }
                 }
                 else{
-                    return(plain, EncryptionState.ValidEncryptedWithOldKey)
+                    return (nil, EncryptionState.UnableToDecrypt)
+                }
+            } catch {
+                let nsError = error as NSError
+                switch nsError.localizedDescription {
+                case "Invalid header":
+                    return (nil, EncryptionState.NoEncryption)
+                default:
+                    return (nil, EncryptionState.UnableToDecrypt)
                 }
             }
-            else{
-                return (nil, EncryptionState.UnableToDecrypt)
-            }
+           
         }
         return (nil, EncryptionState.NoEncryption)
     }
