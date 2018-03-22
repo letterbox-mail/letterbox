@@ -136,7 +136,7 @@ class ContactViewController: UIViewController {
         if keyRecord!.isVerified {
             bgColor = Theme.very_strong_security_indicator.encryptedVerifiedMessageColor.cgColor
         } else if !keyRecord!.hasKey {
-            bgColor = Theme.very_strong_security_indicator.uncryptedMessageColor.cgColor
+            bgColor = Theme.very_strong_security_indicator.unencryptedMessageColor.cgColor
         }
         context!.setFillColor(bgColor)
         context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));

@@ -74,7 +74,7 @@ class Onboarding: NSObject {
         myBounds.size.height = 70
         UIGraphicsBeginImageContextWithOptions(myBounds.size, true, 0)
         context = UIGraphicsGetCurrentContext()
-        context!.setFillColor(ThemeManager.uncryptedMessageColor().cgColor)
+        context!.setFillColor(ThemeManager.unencryptedMessageColor().cgColor)
         context!.fill(CGRect(x: 0, y: 0, width: myBounds.size.width, height: myBounds.size.height));
         UIGraphicsEndImageContext();
 
@@ -189,7 +189,7 @@ class Onboarding: NSObject {
 
         intro2.viewWillAppearBlock = {
             UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                vc?.view.backgroundColor = ThemeManager.uncryptedMessageColor()
+                vc?.view.backgroundColor = ThemeManager.unencryptedMessageColor()
                 vc?.view.setNeedsDisplay()
             })
         }
@@ -206,7 +206,7 @@ class Onboarding: NSObject {
         }
         intro1.viewWillDisappearBlock = {
             UIView.animate(withDuration: duration, delay: 0.05, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                if (vc?.view.backgroundColor != ThemeManager.uncryptedMessageColor()) {
+                if (vc?.view.backgroundColor != ThemeManager.unencryptedMessageColor()) {
                     vc?.view.backgroundColor = defaultColor
                     vc?.view.setNeedsDisplay()
                 }
