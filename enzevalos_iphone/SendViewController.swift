@@ -37,7 +37,7 @@ class SendViewController: UIViewController {
     @IBOutlet weak var seperator3Leading: NSLayoutConstraint!
     @IBOutlet weak var textViewLeading: NSLayoutConstraint!
     @IBOutlet weak var scrollViewBottom: NSLayoutConstraint!
-    @IBOutlet var scrollviewRecognizer: UITapGestureRecognizer!
+    @IBOutlet weak var scrollviewRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var sendButton: UIBarButtonItem!
 
     var keyboardOpened = false
@@ -101,9 +101,13 @@ class SendViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, beginFunc: self.beginEditing, endFunc: self.endEditing, deleteFunc: { () -> Void in return })
-        tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
-        collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
+        dataDelegate = VENDataDelegate(changeFunc: {[weak self] (tokenField: VENTokenField) in self?.editName(tokenField)},
+                                       tappedWhenSelectedFunc: {[weak self] (email: String) in self?.showContact(email)},
+                                       beginFunc: {[weak self] (tokenField: VENTokenField) in self?.beginEditing(tokenField)},
+                                       endFunc: {[weak self] (tokenField: VENTokenField) in self?.endEditing(tokenField)},
+                                       deleteFunc: { () -> Void in return })
+        tableDataDelegate = TableViewDataDelegate(insertCallback: {[weak self] (name: String, address: String) in self?.insertName(name, address: address)})
+        collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: {[weak self] (name: String, address: String) in self?.insertName(name, address: address)})
         startIconAnimation()
 
         textView.font = UIFont.systemFont(ofSize: 17)
@@ -349,9 +353,17 @@ class SendViewController: UIViewController {
                     scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
                     tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
                     if #available(iOS 11.0, *) {
-                        tableviewHeight.constant = keyboardY - tableviewBegin.constant
+                        if keyboardY > 0 {
+                            tableviewHeight.constant = keyboardY - tableviewBegin.constant
+                        } else {
+                            tableviewHeight.constant = view.safeAreaLayoutGuide.layoutFrame.size.height - tableviewBegin.constant
+                        }
                     } else {
-                        tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                        if keyboardY > 0 {
+                            tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                        } else {
+                            tableviewHeight.constant = view.bounds.size.height - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                        }
                     }
                 } else if !scrollview.isScrollEnabled {
                     scrollview.isScrollEnabled = true
