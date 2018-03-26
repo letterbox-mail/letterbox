@@ -52,7 +52,7 @@ class SendViewController: UIViewController {
     
     //These attributes may be interesting to set in a segue to SendViewController
     var prefilledMail: EphemeralMail? = nil
-    var sendViewDelegate: SendViewDelegate?
+    weak var sendViewDelegate: SendViewDelegate?
     var invite: Bool = false
     var enforcePostcard: Bool = false
     

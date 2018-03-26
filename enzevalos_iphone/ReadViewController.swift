@@ -182,7 +182,7 @@ class ReadViewController: UITableViewController {
         super.willMove(toParentViewController: parent)
 
         if parent == nil {
-            UIView.animate(withDuration: 0.3, animations: { self.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor })
+            UIView.animate(withDuration: 0.3, animations: { [weak self] in self?.navigationController?.navigationBar.barTintColor = ThemeManager.defaultColor })
         }
     }
 
@@ -330,9 +330,9 @@ class ReadViewController: UITableViewController {
             } else if m.isSecure {
                 alert = UIAlertController(title: NSLocalizedString("Letter", comment: "letter label"), message: NSLocalizedString("ReceiveSecureInfo", comment: "Letter infotext"), preferredStyle: .alert)
                 url = "https://userpage.fu-berlin.de/letterbox/faq.html#secureMailAnswer"
-                alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { (action: UIAlertAction!) -> Void in
+                alert.addAction(UIAlertAction(title: NSLocalizedString("ReadMailOnOtherDevice", comment: "email is not readable on other devices"), style: .default, handler: { [weak self] (action: UIAlertAction!) -> Void in
                         Logger.log(close: url, mail: m, action: "exportKey")
-                        self.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)
+                        self?.performSegue(withIdentifier: "exportKeyFromReadView", sender: nil)
                     }))
             } else if m.isCorrectlySigned {
                 alert = UIAlertController(title: NSLocalizedString("Postcard", comment: "postcard label"), message: NSLocalizedString("ReceiveInsecureInfoVerified", comment: "Postcard infotext"), preferredStyle: .alert)
@@ -369,8 +369,8 @@ class ReadViewController: UITableViewController {
 
             // mark mail as read if viewcontroller is open for more than 1.5 sec
             let delay = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-            DispatchQueue.main.asyncAfter(deadline: delay) {
-                if let viewControllers = self.navigationController?.viewControllers {
+            DispatchQueue.main.asyncAfter(deadline: delay) { [weak self] in
+                if let viewControllers = self?.navigationController?.viewControllers {
                     for viewController in viewControllers {
                         if viewController.isKind(of: ReadViewController.self) {
                             mail.isRead = true
@@ -602,8 +602,8 @@ class ReadViewController: UITableViewController {
             message = NSLocalizedString("Wrong password! Please, enter the password to import the new secret again.", comment: "NewSecretKeyMessage")
         }
         let alert = UIAlertController(title: NSLocalizedString("New secret", comment: "NewSecretKeyTitle"), message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("No import", comment: "NoSecretKeyImport"), style: UIAlertActionStyle.destructive, handler: { (_: UIAlertAction) -> Void in
-                Logger.log(importPrivateKeyPopupClose: self.mail, doImport: false)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No import", comment: "NoSecretKeyImport"), style: UIAlertActionStyle.destructive, handler: { [weak self] (_: UIAlertAction) -> Void in
+                Logger.log(importPrivateKeyPopupClose: self?.mail, doImport: false)
             }))
 
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Import secret Key"), style: UIAlertActionStyle.default, handler: importSecretKey))

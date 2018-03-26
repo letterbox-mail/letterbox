@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SendViewDelegate {
+protocol SendViewDelegate: class {
     //called after composition
     func compositionDiscarded()
     func compositionSavedAsDraft()
