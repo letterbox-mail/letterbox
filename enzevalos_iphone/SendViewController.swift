@@ -300,12 +300,12 @@ class SendViewController: UIViewController {
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
-                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                    if let mail = mail as? String {
                         to.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
                 for mail in ccText.mailTokens {
-                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                    if let mail = mail as? String {
                         cc.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
@@ -324,12 +324,12 @@ class SendViewController: UIViewController {
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
-                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                    if let mail = mail as? String {
                         to.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
                 for mail in ccText.mailTokens {
-                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                    if let mail = mail as? String {
                         cc.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
@@ -549,7 +549,6 @@ class SendViewController: UIViewController {
                 return
             }
             NSLog("Error sending email: \(String(describing: error))")
-            //            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil) @jakob: wofür ist dieses showMessage aus AppDelegate gut?
             let alert = UIAlertController(title: NSLocalizedString("ReceiveError", comment: "There was an error"), message: NSLocalizedString("ErrorText", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
