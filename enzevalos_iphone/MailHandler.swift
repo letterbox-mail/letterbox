@@ -383,7 +383,6 @@ class MailHandler {
                         builder.textBody = message
                     }
                 } else {
-                    //TODO do it better
                     callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
                 }
             }
@@ -505,7 +504,6 @@ class MailHandler {
                     saveDraft(data: sendData, callback: callback)
                 }
             } else {
-                //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
             }
         } else {
@@ -718,7 +716,6 @@ class MailHandler {
 
 
     func loadMailsForRecord(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Error?) -> ())) {
-        //TODO: Init update/old
         let folder = DataHandler.handler.findFolder(with: folderPath)
         let folderstatus = IMAPSession.folderStatusOperation(folderPath)
         folderstatus?.start { (error, status) -> Void in

@@ -43,9 +43,6 @@ fileprivate func <(lhs: NSDate, rhs: NSDate) -> Bool {
 
 }
 
-//TODO: TO Felder mit Strings
-// KeyRecord mergen?? IMAP Snyc?
-
 typealias requestTuple = (request: String, value: Any)
 
 class DataHandler {
@@ -757,9 +754,6 @@ class DataHandler {
         }
         return nil
     }
-
-    // TODO: handle BCC
-
     // -------- End handle to, cc, from addresses --------
 
     func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?, references: [String] = [], mailagent: String? = nil, messageID: String? = nil) -> PersistentMail? {
