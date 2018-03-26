@@ -353,9 +353,17 @@ class SendViewController: UIViewController {
                     scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
                     tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
                     if #available(iOS 11.0, *) {
-                        tableviewHeight.constant = keyboardY - tableviewBegin.constant
+                        if keyboardY > 0 {
+                            tableviewHeight.constant = keyboardY - tableviewBegin.constant
+                        } else {
+                            tableviewHeight.constant = view.safeAreaLayoutGuide.layoutFrame.size.height - tableviewBegin.constant
+                        }
                     } else {
-                        tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                        if keyboardY > 0 {
+                            tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                        } else {
+                            tableviewHeight.constant = view.bounds.size.height - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                        }
                     }
                 } else if !scrollview.isScrollEnabled {
                     scrollview.isScrollEnabled = true
