@@ -736,30 +736,30 @@ class SendViewController: UIViewController {
             let message = textView.text!
 
             alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { (action: UIAlertAction!) -> Void in
-                if let delegate = self.sendViewDelegate {
+            alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { [weak self] (action: UIAlertAction!) -> Void in
+                if let delegate = self?.sendViewDelegate {
                     delegate.compositionDiscarded()
                 }
-                self.navigationController?.dismiss(animated: true, completion: nil)
+                self?.navigationController?.dismiss(animated: true, completion: nil)
             }))
-            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveAsDraft", comment: "save the written E-Mail as draft"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                self.mailHandler.createDraft(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: { (error: Error?) -> Void in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveAsDraft", comment: "save the written E-Mail as draft"), style: .default, handler: { [weak self] (action: UIAlertAction!) -> Void in
+                self?.mailHandler.createDraft(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: { [weak self] (error: Error?) -> Void in
                     if let error = error {
                         print(error)
                     } else {
-                        if let delegate = self.sendViewDelegate {
+                        if let delegate = self?.sendViewDelegate {
                             delegate.compositionSavedAsDraft()
                         }
-                        self.navigationController?.dismiss(animated: true, completion: nil)
+                        self?.navigationController?.dismiss(animated: true, completion: nil)
                     }
                 })
             }))
             alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "cancel"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in
                 firstResponder?.becomeFirstResponder()
             }))
-            DispatchQueue.main.async(execute: {
-                self.view.endEditing(true)
-                self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async(execute: { [weak self] in
+                self?.view.endEditing(true)
+                self?.present(alert, animated: true, completion: nil)
             })
         }
     }
