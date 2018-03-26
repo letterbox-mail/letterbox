@@ -17,6 +17,7 @@ class FolderViewController: UITableViewController {
 
     override func viewDidLoad() {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
+        self.refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("PullToRefresh", comment: "Pull to refresh"))
 
         if isFirstFolderViewController {
             folders = DataHandler.handler.allRootFolders.sorted().filter { $0.path != UserManager.backendInboxFolderPath }
