@@ -474,6 +474,8 @@
 		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
+		F12D8DB320692E280068788E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Inbox.strings; sourceTree = "<group>"; };
+		F12D8DB520692E2D0068788E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Inbox.strings; sourceTree = "<group>"; };
 		F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		F14D18981ED880680080515D /* nchr-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "nchr-private.gpg"; path = "keys/nchr-private.gpg"; sourceTree = "<group>"; };
 		F14D18991ED880680080515D /* nchr-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "nchr-public.gpg"; path = "keys/nchr-public.gpg"; sourceTree = "<group>"; };
@@ -1101,7 +1103,7 @@
 					};
 					A13526741D955BDF00D3BFE1 = {
 						CreatedOnToolsVersion = 7.3.1;
-                        DevelopmentTeam = VJ9C93G68Y;
+						DevelopmentTeam = VJ9C93G68Y;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1797,6 +1799,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				F1F070271FA0DF3F004A860A /* Base */,
+				F12D8DB320692E280068788E /* en */,
+				F12D8DB520692E2D0068788E /* de */,
 			);
 			name = Inbox.storyboard;
 			sourceTree = "<group>";

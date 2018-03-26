@@ -1,0 +1,12 @@
+
+/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "5GZ-GC-SZf"; */
+"5GZ-GC-SZf.title" = "Posteingang";
+
+/* Class = "UIBarButtonItem"; title = "ID"; ObjectID = "aed-mv-upX"; */
+"aed-mv-upX.title" = "ID";
+
+/* Class = "UIBarButtonItem"; title = "Neue Nachricht"; ObjectID = "j5W-eH-o1q"; */
+"j5W-eH-o1q.title" = "Neue Nachricht";
+
+/* Class = "UIBarButtonItem"; title = "last Update"; ObjectID = "mki-ya-mz8"; */
+"mki-ya-mz8.title" = "letzte Aktualisierung";
