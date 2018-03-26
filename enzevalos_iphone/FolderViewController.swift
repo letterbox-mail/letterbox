@@ -32,6 +32,10 @@ class FolderViewController: UITableViewController {
             AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, newMailCallback: newMails, completionCallback: endRefreshing)
             folders = thisFolder.subfolders.sorted()
         }
+        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave, object: nil, queue: nil, using: {
+            [weak self] _ in
+            self?.tableView.reloadData()
+        })
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
