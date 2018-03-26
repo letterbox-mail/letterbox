@@ -14,6 +14,7 @@ import ContactsUI
 class ContactViewController: UIViewController {
     var keyRecord: KeyRecord? = nil
     var addressWithKey: MailAddress?
+    /// This email will be highlighted blue to indicate from which addres a mail was received
     var highlightEmail: String? = nil
     private var uiContact: CNContact? = nil
     private var vc: CNContactViewController? = nil
