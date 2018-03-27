@@ -27,11 +27,9 @@ class AddressHandler {
                     if c.emailAddresses.count > 1 {
                         if email.label == "_$!<Work>!$_" {
                             type = UIImage(named: "work2_white")!
-                        }
-                            else if email.label == "_$!<Home>!$_" {
+                        } else if email.label == "_$!<Home>!$_" {
                                 type = UIImage(named: "home2_white")!
-                        }
-                            else if email.label == "_$!<iCloud>!$_" {
+                        } else if email.label == "_$!<iCloud>!$_" {
                                 //TODO: appleIcon hinzufügen
                         }
                     }
@@ -45,9 +43,8 @@ class AddressHandler {
                     if !inserted.contains(addr.lowercased()) {
                         if let name = CNContactFormatter.string(from: c, style: .fullName) {
                             cons.append((c.getImageOrDefault(), name, addr, type, color))
-                        }
-                            else {
-                                cons.append((c.getImageOrDefault(), "NO NAME", addr, type, color))
+                        } else {
+                            cons.append((c.getImageOrDefault(), "NO NAME", addr, type, color))
                         }
                     }
                 }
@@ -103,8 +100,6 @@ class AddressHandler {
                     addrType = UIImage(named: "home2_white")!
                 }
                 if let cn = con.cnContact {
-
-
                     var color = cn.getColor()
                     if cn.thumbnailImageData != nil {
                         color = UIColor.gray //blackColor()
@@ -137,8 +132,7 @@ class AddressHandler {
             do {
                 let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContacts(matching: CNContact.predicateForContacts(matchingName: name), keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor])
                 return conList
-            }
-            catch {
+            } catch {
                 print("exception in contacts get for name: \(name)")
             }
         } else {
@@ -155,8 +149,7 @@ class AddressHandler {
             do {
                 let conList = try AppDelegate.getAppDelegate().contactStore.unifiedContacts(matching: CNContact.predicateForContacts(withIdentifiers: ids), keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor, CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor])
                 return conList
-            }
-            catch {
+            } catch {
                 print("exception in contacts")
             }
         } else {
@@ -199,7 +192,6 @@ class AddressHandler {
                     if cn.thumbnailImageData != nil {
                         color = UIColor.gray //blackColor()
                     }
-                    
                     let entry = (cn.getImageOrDefault(), con.ezContact.displayname!, address.mailAddress, addrType, color)
                     
                     list.append(entry)
@@ -230,7 +222,6 @@ class AddressHandler {
                         result.append(res)
                     }
                 }
-
             }
         }
         if result.count == 0 {
@@ -254,7 +245,6 @@ class AddressHandler {
 
     static func contactByEmail(_ mailaddreses: [MailAddress]) -> [CNContact] {
         var contacts: [CNContact] = []
-        
 
         let fetchRequest = CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName), CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor])
 
