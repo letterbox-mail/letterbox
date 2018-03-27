@@ -10,7 +10,7 @@ import UIKit
 import Contacts
 
 class InboxTableViewCell: UITableViewCell {
-    var delegate: InboxCellDelegator?
+    weak var delegate: InboxCellDelegator?
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var faceView: UIImageView!
