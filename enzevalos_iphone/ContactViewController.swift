@@ -110,6 +110,10 @@ class ContactViewController: UIViewController {
         tableView.reloadData()
     }
 
+    deinit {
+        print("===============|| ContactViewController deinitialized ||===============")
+    }
+
     func drawStatusCircle() -> UIImage? {
         guard let keyRecord = keyRecord else {
             return nil
