@@ -176,7 +176,7 @@
 "copied" = "Copied key to your clipboard";
 "copyKey" = "Copy key to clipboard";
 "NeverUpdated" = "Error while updating";
-"PullToRefresh" = "Refreshing";
+"PullToRefresh" = "Pull to Refresh";
 "Error.noInternet.Title" = "No internet connection!";
 "Error.noInternet.Message" = "We need internet!";
 "Invitation.Code.Title" = "Almost done!";
