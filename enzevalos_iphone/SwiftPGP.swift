@@ -324,10 +324,14 @@ class SwiftPGP: Encryption{
         }
         if let data = plaintext.data(using: String.Encoding.utf8){
             do{
-                let chipher = try ObjectivePGP.encrypt(data, addSignature: true, using: keyring.keys, passphraseForKey: loadPassword)
+                let chipher = try ObjectivePGP.encrypt(data, addSignature: signKey != nil, using: keyring.keys, passphraseForKey: loadPassword)
                 let armorChipherString = Armor.armored(chipher, as: .message)
                 let armorChipherData = armorChipherString.data(using: .utf8)
-                return CryptoObject(chiphertext: armorChipherData, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
+                if signKey != nil{
+                    return CryptoObject(chiphertext: armorChipherData, plaintext: plaintext, decryptedData: data, sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: myId, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
+                }
+                return CryptoObject(chiphertext: armorChipherData, plaintext: plaintext, decryptedData: data, sigState: SignatureState.NoSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: nil, encType: CryptoScheme.PGP, signedAdrs: [])
+                
             } catch {
                 print("Encryption error!")
             }
@@ -338,7 +342,7 @@ class SwiftPGP: Encryption{
         
     }
     
-    func decrypt(data: Data,decryptionIDs: [String], verifyIds: [String], fromAdr: String?) -> CryptoObject{
+    func decrypt(data: Data, decryptionIDs: [String], verifyIds: [String], fromAdr: String?) -> CryptoObject{
         var plaindata: Data? = nil
         var plaintext: String? = nil
         var sigState = SignatureState.NoSignature
@@ -409,8 +413,11 @@ class SwiftPGP: Encryption{
         if encState == EncryptionState.UnableToDecrypt{
             sigState = SignatureState.NoSignature
         }
-        if plaindata != nil{
-            plaintext = plaindata?.base64EncodedString()
+        if let data = plaindata{
+            plaintext =  String(data: data, encoding: String.Encoding.utf8)
+        }
+        else if encState == .NoEncryption{
+            plaintext =  String(data: data, encoding: String.Encoding.utf8)
         }
         return CryptoObject(chiphertext: data, plaintext: plaintext, decryptedData: plaindata, sigState: sigState, encState: encState, signKey: sigKeyID, encType: CryptoScheme.PGP, signedAdrs: signedAdr)
     }
