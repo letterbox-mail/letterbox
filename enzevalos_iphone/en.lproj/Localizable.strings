@@ -15,9 +15,9 @@
 "Attachment" = "Attachment";
 "Authentification" = "Authentification";
 "Back" = "Back";
-"Bcc" = "BCC";//"Blindkopie";
+"Bcc" = "BCC";
 "Cancel" = "Cancel";
-"Cc" = "CC";//"Kopie";
+"Cc" = "CC";
 "Checkmarks" = "You received Mails from Mailadresses with checkmarks";
 "codeExplanation" = "In order to use the secret on an other device, you need the following code. You can find the code again in this view, if you want to transfer it later.";
 "CouldNotConnect" = "Couldn't connect to server. Please check your data and modify it maybe.";
@@ -25,7 +25,7 @@
 "Contacts" = "Contacts";
 "Content" = "Content";
 "ContentNo" = "No content";
-"CreateAndManageKeys" = "Create and manage keys";
+"CreateAndManageKeys" = "Creating keys";
 "DeleteCode" = "Delete code and resend";
 "Details" = "Key Details";
 "DiscoveryTime" = "Discoverytime";
