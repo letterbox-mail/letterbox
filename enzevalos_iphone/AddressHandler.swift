@@ -195,8 +195,6 @@ class AddressHandler {
                     addrType = UIImage(named: "home2_white")!
                 }
                 if let cn = con.cnContact {
-                    
-                    
                     var color = cn.getColor()
                     if cn.thumbnailImageData != nil {
                         color = UIColor.gray //blackColor()
@@ -213,7 +211,6 @@ class AddressHandler {
                 }
             }
         }
-        
         
         return list
     }
