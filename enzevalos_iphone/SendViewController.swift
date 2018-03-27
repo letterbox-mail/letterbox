@@ -794,25 +794,6 @@ extension SendViewController: UIGestureRecognizerDelegate {
 }
 
 extension VENTokenFieldDataSource {
-    func someSecure(_ tokenField: VENTokenField) -> Bool {
-        for entry in tokenField.mailTokens {
-            if DataHandler.handler.hasKey(adr: entry as! String) {
-                return true
-            }
-        }
-
-        return false
-    }
-
-    func someInsecure(_ tokenField: VENTokenField) -> Bool {
-        for entry in tokenField.mailTokens {
-            if !DataHandler.handler.hasKey(adr: entry as! String) {
-                return true
-            }
-        }
-
-        return false
-    }
 
     /// Returns a bool showing whether all contacts in the field have a key. Returns true if no contacts are present.
     func allSecure(_ tokenField: VENTokenField) -> Bool {
