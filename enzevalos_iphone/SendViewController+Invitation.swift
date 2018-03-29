@@ -364,6 +364,10 @@ extension SendViewController: UITextViewDelegate {
         self.updateMarkedText(for: textView)
     }
 
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        self.updateMarkedText(for: textView)
+    }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 
         self.textChanged(inRange: range, with: text)
