@@ -1117,7 +1117,20 @@ class MailHandler {
                         op?.start {
                             (err, vanished) -> Void in
                             guard err == nil else {
-                                self.errorhandling(error: err, originalCall: {self.move(mails: mails, from: from, to: to)}, completionCallback: nil)
+                                self.errorhandling(error: err, originalCall: {self.move(mails: mails, from: from, to: to)}, completionCallback: { err in
+                                    guard err != nil else {
+                                        return
+                                    }
+                                    let op = self.IMAPSession.copyMessagesOperation(withFolder: from, uids: uids, destFolder: to)
+                                    op?.start({error, _ in
+                                        guard error == nil else {
+                                            return
+                                        }
+                                        uids.enumerate({uid in
+                                            self.addFlag(uid, flags: MCOMessageFlag.deleted, folder: from)
+                                        })
+                                    })
+                                })
                                 return
                             }
                         }
