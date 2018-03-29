@@ -53,8 +53,8 @@ class AutocryptContact {
 
     init(addr: String, type: String, prefer_encryption: String, key: String) {
         self.addr = addr
-        _ = setPrefer_encryption(prefer_encryption)
         self.key = key
+        setPrefer_encryption(prefer_encryption)
     }
 
 
@@ -62,7 +62,7 @@ class AutocryptContact {
         var autocrypt = header.extraHeaderValue(forName: AUTOCRYPTHEADER)
         var field: [String]
         var addr = ""
-        var type = "1" // Default value since no one else uses autocrypt...
+        var type = "1"
         var pref = "mutal"
         var key = ""
 
@@ -105,24 +105,15 @@ class AutocryptContact {
         self.init(addr: addr, type: type, prefer_encryption: pref, key: key)
     }
 
-    func validateContact() -> Bool {
-        if addr != "" && type != .UNKNOWN && key != "" {
-            return true
-        }
-        return false
-    }
 
-    func setPrefer_encryption(_ input: String) -> Bool {
+    func setPrefer_encryption(_ input: String){
         let pref = input.lowercased()
         if pref == "yes" || pref == "mutal" {
             self.prefer_encryption = EncState.MUTAL
-            return true
         } else if pref == "no" {
             self.prefer_encryption = EncState.NOPREFERENCE
-            return true
         }
         prefer_encryption = EncState.NOPREFERENCE
-        return false
     }
 
     func toString() -> String {
@@ -134,6 +125,7 @@ class MailHandler {
 
     var delegate: MailHandlerDelegator?
 
+    //Todo: @Jakob look here
     var INBOX: String {
         //return UserManager.backendInboxFolderPath
         return "INBOX"
@@ -160,7 +152,7 @@ class MailHandler {
             !(EmailHelper.singleton().authorization?.authState.isTokenFresh() ?? false)
     }
 
-    func addAutocryptHeader(_ builder: MCOMessageBuilder) {
+    private func addAutocryptHeader(_ builder: MCOMessageBuilder) {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
         let skID = DataHandler.handler.prefSecretKey().keyID
 
@@ -168,9 +160,9 @@ class MailHandler {
         if let id = skID {
             let enc = "yes"
             if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true) {
-                var string = "\(ADDR)=" + adr //+ "; type=1"
+                var string = "\(ADDR)=" + adr
                 if enc == "yes" {
-                    //string = string + "; \(ENC)=mutal"
+                    string = string + "; \(ENCRYPTION)=mutal"
                 }
                 string = string + "; \(KEY)= \n" + key
                 builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
@@ -232,7 +224,6 @@ class MailHandler {
                 ids.append(key)
             }
         }
-
         return ids
     }
 
@@ -266,7 +257,6 @@ class MailHandler {
         //createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
     }
 
-    //logMail should be false, if called from Logger, otherwise
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
@@ -305,11 +295,10 @@ class MailHandler {
 
             if let encPGP = ordered[CryptoScheme.PGP], encPGP.count > 0 {
                 var keyIDs = addKeys(adrs: encPGP)
-                //added own public key here, so we can decrypt our own message to read it in sent-folder
+                // added own public key here, so we can decrypt our own message to read it in sent-folder
                 keyIDs.append(sk.keyID!)
-
                 /*
-                Attach own public key
+                 Attach own public key
                 */
                 var missingOwnPublic = false
                 for id in keyIDs {
@@ -327,13 +316,10 @@ class MailHandler {
                         msg = msg + "\n" + myPK
                     }
                 }
-                /* ######## */
-
 
                 let cryptoObject = pgp.encrypt(plaintext: "\n" + msg, ids: keyIDs, myId: sk.keyID!)
                 if let encData = cryptoObject.chiphertext {
                     sendData = encData
-//                    Logger.queue.async(flags: .barrier) {
                     if Logger.logging && !loggingMail {
                         let secureAddrsInString = encPGP.map { $0.mailbox }
                         var secureAddresses: [Mail_Address] = []
@@ -364,10 +350,8 @@ class MailHandler {
                         }
                         Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs, inviteMailContent: inviteMailContent, invitationMail: inviteMail)
                     }
-//					  }
 
                     sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
-                    //TODO handle different callbacks
 
                     sendOperation.start(callback)
                     if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && !loggingMail {
@@ -397,7 +381,6 @@ class MailHandler {
 
                     sendData = builder.data()
                     sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
-                    //TODO handle different callbacks
                     if unenc.count == allRec.count && !loggingMail {
                         var inviteMailContent: String? = nil
                         if inviteMail {
@@ -464,13 +447,11 @@ class MailHandler {
         allRec.append(contentsOf: ccEntrys)
         // What about BCC??
 
-        //TODO add support for different Encryptions here
         var sendData: Data
 
         let pgp = SwiftPGP()
-        let keys = DataHandler.handler.findSecretKeys()
-        if keys.count > 0 && allRec.reduce(true, { $0 && DataHandler.handler.hasKey(adr: $1) }) {
-            let mykey = keys[0] //TODO: multiple privatekeys
+        let mykey = DataHandler.handler.prefSecretKey()
+        if  allRec.reduce(true, { $0 && DataHandler.handler.hasKey(adr: $1) }) {
             let receiverIds = [mykey.keyID] as! [String]
             if Logger.logging {
                 var to: [Mail_Address?] = []
@@ -487,9 +468,7 @@ class MailHandler {
                 for addr in bccEntrys {
                     bcc.append(DataHandler.handler.findMailAddress(adr: addr))
                 }
-//                Logger.queue.async(flags: .barrier) {
                 Logger.log(createDraft: to, cc: cc, bcc: bcc, subject: subject, bodyLength: message.count, isEncrypted: true, isSigned: true, myKeyID: mykey.keyID ?? "")
-//                }
             }
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: receiverIds, myId: mykey.keyID!)
             if let encData = cryptoObject.chiphertext {
@@ -522,9 +501,7 @@ class MailHandler {
                 for addr in bccEntrys {
                     bcc.append(DataHandler.handler.findMailAddress(adr: addr))
                 }
-//                Logger.queue.async(flags: .barrier) {
                 Logger.log(createDraft: to, cc: cc, bcc: bcc, subject: subject, bodyLength: message.count, isEncrypted: false, isSigned: false, myKeyID: "")
-//                }
             }
             builder.textBody = message
             sendData = builder.data()
@@ -545,7 +522,7 @@ class MailHandler {
         op?.start({ _, _ in callback(nil) })
     }
 
-    func setupIMAPSession() -> MCOIMAPSession {
+    private func setupIMAPSession() -> MCOIMAPSession {
         let imapsession = MCOIMAPSession()
         if let hostname = UserManager.loadUserValue(Attribute.imapHostname) as? String {
             imapsession.hostname = hostname
@@ -556,7 +533,7 @@ class MailHandler {
         if let username = UserManager.loadUserValue(Attribute.userAddr) as? String {
             imapsession.username = username
         }
-        //TODO: ERROR HANDLING!
+        //TODO: ERROR HANDLING! @Jakob
         imapsession.authType = UserManager.loadImapAuthType()
 
         if UserManager.loadImapAuthType() == MCOAuthType.xoAuth2 {
@@ -583,10 +560,8 @@ class MailHandler {
                                 self.startIMAPIdleIfSupported(addNewMail: addNewMail)
                             }
                         }
-                        print("An error occured with the idle operation: \(String(describing: error))")
                         return
                     }
-                    print("Something happened while idleing!")
                     self.IMAPIdleSession = nil
                     let folder = DataHandler.handler.findFolder(with: self.INBOX)
                     self.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: { _ in self.startIMAPIdleIfSupported(addNewMail: addNewMail) })
@@ -597,7 +572,7 @@ class MailHandler {
         }
     }
 
-    func checkIdleSupport(addNewMail: @escaping ((_ mail: PersistentMail?) -> ())) {
+    private func checkIdleSupport(addNewMail: @escaping ((_ mail: PersistentMail?) -> ())) {
         let op = setupIMAPSession().capabilityOperation()
         op?.start({ (error, capabilities) in
             guard error == nil else {
@@ -607,7 +582,6 @@ class MailHandler {
                     }
                     return
                 }
-                print("Error checking IMAP Idle capabilities: \(String(describing: error))")
                 return
             }
 
@@ -658,17 +632,17 @@ class MailHandler {
                 if uidValidity == f.uidvalidity {
                     let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.set, flags: flags)
                     op?.start { error -> Void in
-                        if let err = error {
-                            print("Error while updating flags: \(err)")
-                        } else {
-                            if flags.contains(MCOMessageFlag.deleted) {
-                                let operation = self.IMAPSession.expungeOperation(folderName)
-                                operation?.start({ err in
-                                    if err == nil {
-                                        DataHandler.handler.deleteMail(with: uid)
-                                    }
-                                })
-                            }
+                        guard error == nil else {
+                            return
+                        }
+                        if flags.contains(MCOMessageFlag.deleted) {
+                            let operation = self.IMAPSession.expungeOperation(folderName)
+                            operation?.start({ err in
+                                guard err == nil else {
+                                    return
+                                }
+                                DataHandler.handler.deleteMail(with: uid)
+                            })
                         }
                     }
                 }
@@ -1300,5 +1274,16 @@ class MailHandler {
             }
             completion()
         })
+    }
+    
+    private func errorhandling(error: Error?, originalCall: @escaping () -> (), completionCallback: @escaping ((Error?) -> ())){
+        // maybe refreshing oauth?
+        if self.shouldTryRefreshOAUTH {
+            self.retryWithRefreshedOAuth {
+                originalCall()
+            }
+            return
+        }
+        completionCallback(error)
     }
 }

@@ -258,7 +258,7 @@ class CoraDataTests: XCTestCase {
     }
     
     func testInbox() {
-        
+        // Test notificationcenter!
     }
     
     func checkOrderingOfRecord(record: KeyRecord) -> Bool{
