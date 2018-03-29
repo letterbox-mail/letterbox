@@ -23,8 +23,8 @@ class CryptoTests: XCTestCase {
     var user: MCOAddress = MCOAddress.init(mailbox: "alice@example.com")
     var userKeyID: String = ""
     
-    let importPW = "alice"
-    let importKey = """
+    static let importPW = "alice"
+    static let importKey = """
     -----BEGIN PGP PUBLIC KEY BLOCK-----
 
     mQINBFq4++UBEAC9U17Z0QGKJaagEdnGVrCNDt8ic0itgmynNYq1FlZz28hpcTq0
@@ -449,7 +449,7 @@ class CryptoTests: XCTestCase {
     func testimportSecretKey(){
         XCTAssert(datahandler.prefSecretKey().keyID == userKeyID)
         XCTAssertEqual(datahandler.findSecretKeys().count, 1)
-        guard let keys = try? pgp.importKeys(key: importKey, pw: importPW, isSecretKey: true, autocrypt: false) else {
+        guard let keys = try? pgp.importKeys(key: CryptoTests.importKey, pw: CryptoTests.importPW, isSecretKey: true, autocrypt: false) else {
             XCTFail("No key")
             return
         }
@@ -554,7 +554,7 @@ class CryptoTests: XCTestCase {
 
         // 5. case: used old key to encrypt message
         // Import a new secret key -> previous key is now an old key
-        guard let keys = try? pgp.importKeys(key: importKey, pw: importPW, isSecretKey: true, autocrypt: false), keys.count > 0 else {
+        guard let keys = try? pgp.importKeys(key: CryptoTests.importKey, pw: CryptoTests.importPW, isSecretKey: true, autocrypt: false), keys.count > 0 else {
             XCTFail("Can not import key")
             return 
         }
@@ -566,4 +566,6 @@ class CryptoTests: XCTestCase {
         XCTAssert(cryptoObject.encryptionState == .ValidEncryptedWithOldKey && cryptoObject.signatureState == .ValidSignature)
         XCTAssert(cryptoObject.decryptedText == body)
     }
+
+    
 }

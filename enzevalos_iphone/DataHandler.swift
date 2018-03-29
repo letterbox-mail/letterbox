@@ -77,20 +77,7 @@ class DataHandler {
 
 
 
-    func hasMail(folderName: String, uid: UInt64) -> Bool {
-        let folder = findFolder(with: folderName)
-        // TODO: As  Sql rquest with NSPredicate?
-        if let mails = folder.mails {
-            for m in mails {
-                let mail = m as! PersistentMail
-                if mail.uid == uid {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
+    
 
     func callForFolders(done: @escaping ((_ error: Error?) -> ())) { // Maybe call back? Look for new Folder?
         AppDelegate.getAppDelegate().mailHandler.allFolders { (err, array) -> Void in
@@ -296,9 +283,9 @@ class DataHandler {
     func reset() {
         removeAll(entity: "PersistentMail")
         removeAll(entity: "Folder")
+        removeAll(entity: "EnzevalosContact")
         removeAll(entity: "SecretKey")
         removeAll(entity: "PersistentKey")
-        removeAll(entity: "EnzevalosContact")
         removeAll(entity: "Mail_Address")
         save(during: "reset")
     }
@@ -471,7 +458,7 @@ class DataHandler {
 
     private func find(_ entityName: String, type: String, search: String) -> [AnyObject]? {
         let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fReq.predicate = NSPredicate(format: "\(type) CONTAINS %@ ", search) //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können...
+        fReq.predicate = NSPredicate(format: "\(type) CONTAINS %@ ", search)
         let result: [AnyObject]?
         do {
             result = try self.managedObjectContext.fetch(fReq)
