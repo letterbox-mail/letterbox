@@ -582,10 +582,10 @@ class ReadViewController: UITableViewController {
 
     func importSecretKey(alertAction: UIAlertAction!) {
         Logger.log(importPrivateKeyPopupClose: mail, doImport: true)
-        if let aAction = alertAction {
+        if (alertAction) != nil {
             if let pw = secretKeyPasswordField?.text {
                 do {
-                    let suc = try mail?.processSecretKey(pw: pw)
+                    _ = try mail?.processSecretKey(pw: pw)
                     Logger.log(importPrivateKey: mail, success: true)
                 } catch _ {
                     Logger.log(importPrivateKey: mail, success: false)

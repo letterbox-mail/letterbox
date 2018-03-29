@@ -240,7 +240,7 @@ class CoraDataTests: XCTestCase {
             XCTAssertTrue(myrecord.isSecure)
             XCTAssertEqual(myContact.publicKeys.count, 2)
             let cryptoObject2 = pgp.encrypt(plaintext: body , ids: [newKeyId], myId: keyID )
-            let mail = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: cryptoObject2)
+            _ = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: cryptoObject2)
             
             let cryptoObject3 = pgp.encrypt(plaintext: body , ids: [userKeyID], myId: keyID)
             let oldMail = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: cryptoObject3)

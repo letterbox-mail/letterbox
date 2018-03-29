@@ -188,7 +188,6 @@ struct UserManager {
     static func loadUserSignature() -> String {
         let enabled = UserDefaults.standard.bool(forKey: "Signature.Switch")
         let sig = UserDefaults.standard.string(forKey: "Signature.Text")
-        print("enabled: \(enabled), sig: \(sig)")
         if UserDefaults.standard.bool(forKey: "Signature.Switch"), let sig = UserDefaults.standard.string(forKey: "Signature.Text") {
 return "\n\n______________________________\n\n\(sig.trimmingCharacters(in: .whitespacesAndNewlines))\n\n"
         }

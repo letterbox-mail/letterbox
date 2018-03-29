@@ -51,7 +51,7 @@ public class Folder: NSManagedObject {
 
     var records: [KeyRecord]{
         get{
-            if var keyRecords = keyRecords as? Set<KeyRecord>{
+            if let keyRecords = keyRecords as? Set<KeyRecord>{
                 return Array(keyRecords).sorted()
             }
             return []
