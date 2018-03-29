@@ -35,7 +35,7 @@ class InvitationTests: XCTestCase {
 		let texts = ["Kontonummer", "DE 12345 625636 23", "Alice und Bob", "@~> ™", "12207", "🤨", "🤨 ABC123", "Hallo,\nwie geht es dir?🤨\n\nich bin hier und mir geht es gut"]
 		let pgp = SwiftPGP()
 
-		let encryption = pgp.symmetricEncrypt(textToEncrypt: texts, armored: true)
+        let encryption = pgp.symmetricEncrypt(textToEncrypt: texts, armored: true, password: nil)
 
 		XCTAssertEqual(encryption.chiphers.count, texts.count)
 		XCTAssertEqual(encryption.password.count, 9)

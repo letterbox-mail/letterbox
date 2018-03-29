@@ -43,9 +43,6 @@ fileprivate func <(lhs: NSDate, rhs: NSDate) -> Bool {
 
 }
 
-//TODO: TO Felder mit Strings
-// KeyRecord mergen?? IMAP Snyc?
-
 typealias requestTuple = (request: String, value: Any)
 
 class DataHandler {
@@ -78,23 +75,6 @@ class DataHandler {
         return root
     }
 
-
-
-    func hasMail(folderName: String, uid: UInt64) -> Bool {
-        let folder = findFolder(with: folderName)
-        // TODO: As  Sql rquest with NSPredicate?
-        if let mails = folder.mails {
-            for m in mails {
-                let mail = m as! PersistentMail
-                if mail.uid == uid {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
-
     func callForFolders(done: @escaping ((_ error: Error?) -> ())) { // Maybe call back? Look for new Folder?
         AppDelegate.getAppDelegate().mailHandler.allFolders { (err, array) -> Void in
             guard err == nil else {
@@ -115,73 +95,6 @@ class DataHandler {
             done(nil)
         }
     }
-
-
-    func allAddressesInFolder(folder: Folder, withoutSecure: Bool) -> [MailAddress] {
-        let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
-        let folderPredicate = NSPredicate(format: "folder = %@", folder)
-        if withoutSecure {
-            fReq.predicate = NSPredicate(format: "folder = %@ AND (isEncrypted = false OR isSigned = false OR unableToDecrypt = true OR trouble = true)", folder)
-        }
-            else {
-                fReq.predicate = folderPredicate
-        }
-        fReq.resultType = NSFetchRequestResultType.dictionaryResultType
-        fReq.propertiesToFetch = ["from"]
-        fReq.returnsDistinctResults = true
-        var addresses = [MailAddress]()
-        let result = (try? self.managedObjectContext.fetch(fReq))
-
-        if let res = result as? Array<NSDictionary> {
-            for nsdict in res {
-                let value = nsdict.value(forKey: "from")
-                if let fromID = value as? NSManagedObjectID {
-                    if let adr = managedObjectContext.object(with: fromID) as? Mail_Address {
-                        // Exclude empty folders!
-                        addresses.append(adr)
-                    }
-                }
-            }
-        }
-        return addresses
-    }
-
-    func allKeysInFolder(folder: Folder) -> [String] {
-        let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
-        var predicates = [NSPredicate]()
-        predicates.append(NSPredicate(format: "folder = %@", folder))
-        predicates.append(NSPredicate(format: "keyID.length > 0"))
-        let andPredicates = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-
-        fReq.predicate = andPredicates
-        fReq.propertiesToFetch = ["keyID"]
-        fReq.resultType = NSFetchRequestResultType.dictionaryResultType
-        fReq.returnsDistinctResults = true
-        var keys: [String] = [String]()
-
-        let result = (try? self.managedObjectContext.fetch(fReq))
-
-        if let res = result as? Array<NSDictionary> {
-            for nsdict in res {
-                if let keyID = nsdict.value(forKey: "keyID") as? String {
-                    keys.append(keyID)
-                }
-            }
-
-        }
-        var mykeys = Set<String>()
-        if let set = folder.mails{
-            if let mails = set as? Set<PersistentMail>{
-                for mail in mails{
-                    if let key = mail.keyID{
-                        mykeys.insert(key)
-                    }
-                }
-            }
-        }
-        return Array(mykeys)
-    }
-
 
     func allMailsInFolder(key: String?, contact: EnzevalosContact?, folder: Folder?, isSecure: Bool) -> [PersistentMail] {
         let fReq = NSFetchRequest<NSFetchRequestResult>(entityName: "PersistentMail")
@@ -259,8 +172,7 @@ class DataHandler {
         do {
             try managedObjectContext.save()
         } catch {
-            //fatalError("Failure to save context\(error)")
-            //print("Error during saving while: \(during)")
+            print("Error during saving while: \(during)")
         }
     }
 
@@ -294,14 +206,12 @@ class DataHandler {
     }
 
 
-
-
     func reset() {
         removeAll(entity: "PersistentMail")
         removeAll(entity: "Folder")
+        removeAll(entity: "EnzevalosContact")
         removeAll(entity: "SecretKey")
         removeAll(entity: "PersistentKey")
-        removeAll(entity: "EnzevalosContact")
         removeAll(entity: "Mail_Address")
         save(during: "reset")
     }
@@ -368,7 +278,6 @@ class DataHandler {
             }
             search.addToMailaddress(adr)
             pk = search
-//            Logger.queue.async(flags: .barrier) {
                 if Logger.logging {
                     var importChannel = "autocrypt"
                     if newGenerated {
@@ -378,7 +287,6 @@ class DataHandler {
                     }
                     Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: true)
                 }
-//            }
         } else {
             pk = NSEntityDescription.insertNewObject(forEntityName: "PersistentKey", into: managedObjectContext) as! PersistentKey
             pk.addToMailaddress(adr)
@@ -401,7 +309,6 @@ class DataHandler {
                 }
             }
             save(during: "new pk")
-//            Logger.queue.async(flags: .barrier) {
                 if Logger.logging {
                     var importChannel = "autocrypt"
                     if newGenerated {
@@ -411,7 +318,6 @@ class DataHandler {
                     }
                     Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: false)
                 }
-//            }
         }
         if let prim = adr.primaryKey, let last = prim.lastSeen, let currentLast = pk.lastSeen{
             if last < currentLast {
@@ -474,7 +380,7 @@ class DataHandler {
 
     private func find(_ entityName: String, type: String, search: String) -> [AnyObject]? {
         let fReq: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fReq.predicate = NSPredicate(format: "\(type) CONTAINS %@ ", search) //FIXME: Was ist hier mit Injections? Vorsicht wo das verwendet wird! Nicht, dass hier UI Eingaben reinkommen können...
+        fReq.predicate = NSPredicate(format: "\(type) CONTAINS %@ ", search)
         let result: [AnyObject]?
         do {
             result = try self.managedObjectContext.fetch(fReq)
@@ -614,13 +520,6 @@ class DataHandler {
         return nil
     }
 
-    func getMailAddressesByString(_ addresses: [String], temporary: Bool) -> [MailAddress] {
-        var mailaddresses = [MailAddress]()
-        for adr in addresses {
-            mailaddresses.append(getMailAddress(adr, temporary: temporary))
-        }
-        return mailaddresses
-    }
 
     func getMailAddressByMCOAddress(_ address: MCOAddress, temporary: Bool) -> MailAddress {
         return getMailAddress(address.mailbox!, temporary: temporary)
@@ -706,16 +605,6 @@ class DataHandler {
         return contact
     }
 
-    func getContacts(receivers: [MCOAddress]) -> [EnzevalosContact] {
-        var contacts = [EnzevalosContact]()
-        var contact: EnzevalosContact
-        for r in receivers {
-            contact = getContactByMCOAddress(address: r)
-            contacts.append(contact)
-        }
-        return contacts
-    }
-
     func getContactByMCOAddress(address: MCOAddress) -> EnzevalosContact {
         let contact = getContactByAddress(address.mailbox!)
         if address.displayName != nil {
@@ -757,9 +646,6 @@ class DataHandler {
         }
         return nil
     }
-
-    // TODO: handle BCC
-
     // -------- End handle to, cc, from addresses --------
 
     func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?, references: [String] = [], mailagent: String? = nil, messageID: String? = nil) -> PersistentMail? {
@@ -880,20 +766,6 @@ class DataHandler {
         save(during: "new mail")
         return mail
     }
-    
-    
-    private func readMails() -> [PersistentMail] {
-        var mails = [PersistentMail]()
-        let result = findAll("PersistentMail")
-        if result != nil {
-            for r in result! {
-                let m = r as! PersistentMail
-                mails.append(m)
-            }
-        }
-        return mails
-    }
-    
 
     func getAddresses() -> [MailAddress] {
         var adrs = [MailAddress]()

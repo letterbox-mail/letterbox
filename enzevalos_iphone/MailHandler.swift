@@ -1,4 +1,4 @@
-//
+ //
 //  MailHandler.swift
 //  mail_dynamic_icon_001
 //
@@ -53,8 +53,8 @@ class AutocryptContact {
 
     init(addr: String, type: String, prefer_encryption: String, key: String) {
         self.addr = addr
-        _ = setPrefer_encryption(prefer_encryption)
         self.key = key
+        setPrefer_encryption(prefer_encryption)
     }
 
 
@@ -62,7 +62,7 @@ class AutocryptContact {
         var autocrypt = header.extraHeaderValue(forName: AUTOCRYPTHEADER)
         var field: [String]
         var addr = ""
-        var type = "1" // Default value since no one else uses autocrypt...
+        var type = "1"
         var pref = "mutal"
         var key = ""
 
@@ -105,24 +105,15 @@ class AutocryptContact {
         self.init(addr: addr, type: type, prefer_encryption: pref, key: key)
     }
 
-    func validateContact() -> Bool {
-        if addr != "" && type != .UNKNOWN && key != "" {
-            return true
-        }
-        return false
-    }
 
-    func setPrefer_encryption(_ input: String) -> Bool {
+    func setPrefer_encryption(_ input: String){
         let pref = input.lowercased()
         if pref == "yes" || pref == "mutal" {
             self.prefer_encryption = EncState.MUTAL
-            return true
         } else if pref == "no" {
             self.prefer_encryption = EncState.NOPREFERENCE
-            return true
         }
         prefer_encryption = EncState.NOPREFERENCE
-        return false
     }
 
     func toString() -> String {
@@ -135,7 +126,6 @@ class MailHandler {
     var delegate: MailHandlerDelegator?
 
     var INBOX: String {
-        //return UserManager.backendInboxFolderPath
         return "INBOX"
     }
 
@@ -160,7 +150,7 @@ class MailHandler {
             !(EmailHelper.singleton().authorization?.authState.isTokenFresh() ?? false)
     }
 
-    func addAutocryptHeader(_ builder: MCOMessageBuilder) {
+    private func addAutocryptHeader(_ builder: MCOMessageBuilder) {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
         let skID = DataHandler.handler.prefSecretKey().keyID
 
@@ -168,9 +158,9 @@ class MailHandler {
         if let id = skID {
             let enc = "yes"
             if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true) {
-                var string = "\(ADDR)=" + adr //+ "; type=1"
+                var string = "\(ADDR)=" + adr
                 if enc == "yes" {
-                    //string = string + "; \(ENC)=mutal"
+                    string = string + "; \(ENCRYPTION)=mutal"
                 }
                 string = string + "; \(KEY)= \n" + key
                 builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
@@ -232,7 +222,6 @@ class MailHandler {
                 ids.append(key)
             }
         }
-
         return ids
     }
 
@@ -255,18 +244,13 @@ class MailHandler {
         let sendOperation = session.sendOperation(with: builder.data(), from: userID, recipients: [userID])
         sendOperation?.start({ error in
             guard error == nil else {
-                self.retryWithRefreshedOAuth {
-                    self.sendSecretKey(key: key, passcode: passcode, callback: callback)
-                }
+                self.errorhandling(error: error, originalCall: {self.sendSecretKey(key: key, passcode: passcode, callback: callback)}, completionCallback: nil)
                 return
             }
-
             callback(nil)
         })
-        //createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: keyData))
     }
 
-    //logMail should be false, if called from Logger, otherwise
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
@@ -305,11 +289,10 @@ class MailHandler {
 
             if let encPGP = ordered[CryptoScheme.PGP], encPGP.count > 0 {
                 var keyIDs = addKeys(adrs: encPGP)
-                //added own public key here, so we can decrypt our own message to read it in sent-folder
+                // added own public key here, so we can decrypt our own message to read it in sent-folder
                 keyIDs.append(sk.keyID!)
-
                 /*
-                Attach own public key
+                 Attach own public key
                 */
                 var missingOwnPublic = false
                 for id in keyIDs {
@@ -327,13 +310,10 @@ class MailHandler {
                         msg = msg + "\n" + myPK
                     }
                 }
-                /* ######## */
-
 
                 let cryptoObject = pgp.encrypt(plaintext: "\n" + msg, ids: keyIDs, myId: sk.keyID!)
                 if let encData = cryptoObject.chiphertext {
                     sendData = encData
-//                    Logger.queue.async(flags: .barrier) {
                     if Logger.logging && !loggingMail {
                         let secureAddrsInString = encPGP.map { $0.mailbox }
                         var secureAddresses: [Mail_Address] = []
@@ -364,10 +344,8 @@ class MailHandler {
                         }
                         Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: (String(data: cryptoObject.chiphertext!, encoding: String.Encoding.utf8) ?? "").count, isEncrypted: true, decryptedBodyLength: ("\n" + message).count, decryptedWithOldPrivateKey: false, isSigned: true, isCorrectlySigned: true, signingKeyID: sk.keyID!, myKeyID: sk.keyID!, secureAddresses: secureAddresses, encryptedForKeyIDs: keyIDs, inviteMailContent: inviteMailContent, invitationMail: inviteMail)
                     }
-//					  }
 
                     sendOperation = session.sendOperation(with: builder.openPGPEncryptedMessageData(withEncryptedData: sendData), from: userID, recipients: encPGP)
-                    //TODO handle different callbacks
 
                     sendOperation.start(callback)
                     if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && !loggingMail {
@@ -383,7 +361,6 @@ class MailHandler {
                         builder.textBody = message
                     }
                 } else {
-                    //TODO do it better
                     callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
                 }
             }
@@ -398,7 +375,6 @@ class MailHandler {
 
                     sendData = builder.data()
                     sendOperation = session.sendOperation(with: sendData, from: userID, recipients: unenc)
-                    //TODO handle different callbacks
                     if unenc.count == allRec.count && !loggingMail {
                         var inviteMailContent: String? = nil
                         if inviteMail {
@@ -425,33 +401,59 @@ class MailHandler {
         }
     }
 
-    // TODO: add OAuth refresh
     fileprivate func createSendCopy(sendData: Data) {
         let sentFolder = UserManager.backendSentFolderPath
         if !DataHandler.handler.existsFolder(with: sentFolder) {
             let op = IMAPSession.createFolderOperation(sentFolder)
             op?.start({ error in
+                guard error == nil else {
+                    self.errorhandling(error: error, originalCall: {self.createSendCopy(sendData: sendData)}, completionCallback: nil)
+                    return
+                }
                 let op = self.IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
-                op?.start({ _, _ in return })
+                op?.start({ error, _ in
+                    guard error == nil else {
+                        self.errorhandling(error: error, originalCall: {self.createSendCopy(sendData: sendData)}, completionCallback: nil)
+                        return
+                    }
+                })
             })
         } else {
             let op = IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
-            op?.start({ _, _ in return })
+            op?.start({ error, _ in
+                guard error == nil else {
+                    self.errorhandling(error: error, originalCall: {self.createSendCopy(sendData: sendData)}, completionCallback: nil)
+                    return
+                }
+            })
         }
     }
 
-    // TODO: add OAuth refresh
     fileprivate func createLoggingSendCopy(sendData: Data) {
         let sentFolder = UserManager.loadUserValue(.loggingFolderPath) as! String
         if !DataHandler.handler.existsFolder(with: sentFolder) {
             let op = IMAPSession.createFolderOperation(sentFolder)
             op?.start({ error in
+                guard error == nil else {
+                    self.errorhandling(error: error, originalCall: {self.createLoggingSendCopy(sendData: sendData)}, completionCallback: nil)
+                    return
+                }
                 let op = self.IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
-                op?.start({ _, _ in }) // TODO: @jakob: is this necessary?
+                op?.start({ error, _ in
+                    guard error == nil else {
+                        self.errorhandling(error: error, originalCall: {self.createLoggingSendCopy(sendData: sendData)}, completionCallback: nil)
+                        return
+                    }
+                })
             })
         } else {
             let op = IMAPSession.appendMessageOperation(withFolder: sentFolder, messageData: sendData, flags: MCOMessageFlag.mdnSent)
-            op?.start({ _, _ in })
+            op?.start({ error, _ in
+                guard error == nil else {
+                    self.errorhandling(error: error, originalCall: {self.createLoggingSendCopy(sendData: sendData)}, completionCallback: nil)
+                    return
+                }
+            })
         }
     }
 
@@ -465,13 +467,11 @@ class MailHandler {
         allRec.append(contentsOf: ccEntrys)
         // What about BCC??
 
-        //TODO add support for different Encryptions here
         var sendData: Data
 
         let pgp = SwiftPGP()
-        let keys = DataHandler.handler.findSecretKeys()
-        if keys.count > 0 && allRec.reduce(true, { $0 && DataHandler.handler.hasKey(adr: $1) }) {
-            let mykey = keys[0] //TODO: multiple privatekeys
+        let mykey = DataHandler.handler.prefSecretKey()
+        if  allRec.reduce(true, { $0 && DataHandler.handler.hasKey(adr: $1) }) {
             let receiverIds = [mykey.keyID] as! [String]
             if Logger.logging {
                 var to: [Mail_Address?] = []
@@ -488,9 +488,7 @@ class MailHandler {
                 for addr in bccEntrys {
                     bcc.append(DataHandler.handler.findMailAddress(adr: addr))
                 }
-//                Logger.queue.async(flags: .barrier) {
                 Logger.log(createDraft: to, cc: cc, bcc: bcc, subject: subject, bodyLength: message.count, isEncrypted: true, isSigned: true, myKeyID: mykey.keyID ?? "")
-//                }
             }
             let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: receiverIds, myId: mykey.keyID!)
             if let encData = cryptoObject.chiphertext {
@@ -500,12 +498,16 @@ class MailHandler {
 
                 if !DataHandler.handler.existsFolder(with: drafts) {
                     let op = IMAPSession.createFolderOperation(drafts)
-                    op?.start({ _ in self.saveDraft(data: sendData, callback: callback) })
+                    op?.start({ error in
+                        guard error == nil else {
+                            self.errorhandling(error: error, originalCall: {self.createDraft(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)}, completionCallback: nil)
+                            return
+                        }
+                        self.saveDraft(data: sendData, callback: callback) })
                 } else {
                     saveDraft(data: sendData, callback: callback)
                 }
             } else {
-                //TODO do it better
                 callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
             }
         } else {
@@ -524,9 +526,7 @@ class MailHandler {
                 for addr in bccEntrys {
                     bcc.append(DataHandler.handler.findMailAddress(adr: addr))
                 }
-//                Logger.queue.async(flags: .barrier) {
                 Logger.log(createDraft: to, cc: cc, bcc: bcc, subject: subject, bodyLength: message.count, isEncrypted: false, isSigned: false, myKeyID: "")
-//                }
             }
             builder.textBody = message
             sendData = builder.data()
@@ -535,7 +535,12 @@ class MailHandler {
 
             if !DataHandler.handler.existsFolder(with: drafts) {
                 let op = IMAPSession.createFolderOperation(drafts)
-                op?.start({ _ in self.saveDraft(data: sendData, callback: callback) })
+                op?.start({ error in
+                    guard error == nil else {
+                        self.errorhandling(error: error, originalCall: {self.createDraft(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)}, completionCallback: nil)
+                        return
+                    }
+                    self.saveDraft(data: sendData, callback: callback) })
             } else {
                 saveDraft(data: sendData, callback: callback)
             }
@@ -544,10 +549,17 @@ class MailHandler {
 
     fileprivate func saveDraft(data: Data, callback: @escaping (Error?) -> Void) {
         let op = IMAPSession.appendMessageOperation(withFolder: UserManager.backendDraftFolderPath, messageData: data, flags: MCOMessageFlag.draft)
-        op?.start({ _, _ in callback(nil) })
+        op?.start({ error, _ in
+            guard error == nil else {
+                self.errorhandling(error: error, originalCall: {self.saveDraft(data: data, callback: callback)}, completionCallback: callback)
+                return
+            }
+            callback(nil)
+            
+        })
     }
 
-    func setupIMAPSession() -> MCOIMAPSession {
+    private func setupIMAPSession() -> MCOIMAPSession {
         let imapsession = MCOIMAPSession()
         if let hostname = UserManager.loadUserValue(Attribute.imapHostname) as? String {
             imapsession.hostname = hostname
@@ -558,7 +570,6 @@ class MailHandler {
         if let username = UserManager.loadUserValue(Attribute.userAddr) as? String {
             imapsession.username = username
         }
-        //TODO: ERROR HANDLING!
         imapsession.authType = UserManager.loadImapAuthType()
 
         if UserManager.loadImapAuthType() == MCOAuthType.xoAuth2 {
@@ -580,18 +591,17 @@ class MailHandler {
                 let op = IMAPIdleSession!.idleOperation(withFolder: INBOX, lastKnownUID: UInt32(DataHandler.handler.findFolder(with: INBOX).maxID))
                 op?.start({ error in
                     guard error == nil else {
-                        if self.shouldTryRefreshOAUTH {
-                            self.retryWithRefreshedOAuth {
-                                self.startIMAPIdleIfSupported(addNewMail: addNewMail)
-                            }
-                        }
-                        print("An error occured with the idle operation: \(String(describing: error))")
+                        self.errorhandling(error: error, originalCall: {self.startIMAPIdleIfSupported(addNewMail: addNewMail)}, completionCallback: nil)
                         return
                     }
-                    print("Something happened while idleing!")
                     self.IMAPIdleSession = nil
                     let folder = DataHandler.handler.findFolder(with: self.INBOX)
-                    self.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: { _ in self.startIMAPIdleIfSupported(addNewMail: addNewMail) })
+                    self.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: { error in
+                        guard error == nil else {
+                            self.errorhandling(error: error, originalCall: {self.startIMAPIdleIfSupported(addNewMail: addNewMail)}, completionCallback: nil)
+                            return
+                        }
+                        self.startIMAPIdleIfSupported(addNewMail: addNewMail) })
                 })
             }
         } else {
@@ -599,17 +609,11 @@ class MailHandler {
         }
     }
 
-    func checkIdleSupport(addNewMail: @escaping ((_ mail: PersistentMail?) -> ())) {
+    private func checkIdleSupport(addNewMail: @escaping ((_ mail: PersistentMail?) -> ())) {
         let op = setupIMAPSession().capabilityOperation()
         op?.start({ (error, capabilities) in
             guard error == nil else {
-                if self.shouldTryRefreshOAUTH {
-                    self.retryWithRefreshedOAuth {
-                        self.checkIdleSupport(addNewMail: addNewMail)
-                    }
-                    return
-                }
-                print("Error checking IMAP Idle capabilities: \(String(describing: error))")
+                self.errorhandling(error: error, originalCall: {self.checkIdleSupport(addNewMail: addNewMail)}, completionCallback: nil)
                 return
             }
 
@@ -648,11 +652,7 @@ class MailHandler {
         let folderstatus = IMAPSession.folderStatusOperation(folderName)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
-                if self.shouldTryRefreshOAUTH {
-                    self.retryWithRefreshedOAuth {
-                        self.addFlag(uid, flags: flags, folder: folder)
-                    }
-                }
+                self.errorhandling(error: error, originalCall: {self.addFlag(uid, flags: flags, folder: folderName)}, completionCallback: nil)
                 return
             }
             if let status = status {
@@ -660,17 +660,19 @@ class MailHandler {
                 if uidValidity == f.uidvalidity {
                     let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.set, flags: flags)
                     op?.start { error -> Void in
-                        if let err = error {
-                            print("Error while updating flags: \(err)")
-                        } else {
-                            if flags.contains(MCOMessageFlag.deleted) {
-                                let operation = self.IMAPSession.expungeOperation(folderName)
-                                operation?.start({ err in
-                                    if err == nil {
-                                        DataHandler.handler.deleteMail(with: uid)
-                                    }
-                                })
-                            }
+                        guard error == nil else {
+                            self.errorhandling(error: error, originalCall: {self.addFlag(uid, flags: flags, folder: folderName)}, completionCallback: nil)
+                            return
+                        }
+                        if flags.contains(MCOMessageFlag.deleted) {
+                            let operation = self.IMAPSession.expungeOperation(folderName)
+                            operation?.start({ err in
+                                guard err == nil else {
+                                     self.errorhandling(error: error, originalCall: {self.addFlag(uid, flags: flags, folder: folderName)}, completionCallback: nil)
+                                    return
+                                }
+                                DataHandler.handler.deleteMail(with: uid)
+                            })
                         }
                     }
                 }
@@ -687,11 +689,7 @@ class MailHandler {
         let folderstatus = IMAPSession.folderStatusOperation(folderName)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
-                if self.shouldTryRefreshOAUTH {
-                    self.retryWithRefreshedOAuth {
-                        self.removeFlag(uid, flags: flags, folder: folder)
-                    }
-                }
+                self.errorhandling(error: error, originalCall: {self.removeFlag(uid, flags: flags, folder: folderName)}, completionCallback: nil)
                 return
             }
             if let status = status {
@@ -700,14 +698,9 @@ class MailHandler {
                     let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: MCOIMAPStoreFlagsRequestKind.remove, flags: flags)
 
                     op?.start { error -> Void in
-                        if let err = error {
-                            if self.shouldTryRefreshOAUTH {
-                                self.retryWithRefreshedOAuth {
-                                    self.removeFlag(uid, flags: flags, folder: folder)
-                                }
-                            } else {
-                                print("Error while updating flags: \(err)")
-                            }
+                        guard error == nil else {
+                            self.errorhandling(error: error, originalCall: {self.removeFlag(uid, flags: flags, folder: folderName)}, completionCallback: nil)
+                            return
                         }
                     }
                 }
@@ -718,18 +711,11 @@ class MailHandler {
 
 
     func loadMailsForRecord(_ record: KeyRecord, folderPath: String, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Error?) -> ())) {
-        //TODO: Init update/old
         let folder = DataHandler.handler.findFolder(with: folderPath)
         let folderstatus = IMAPSession.folderStatusOperation(folderPath)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
-                if self.shouldTryRefreshOAUTH {
-                    self.retryWithRefreshedOAuth {
-                        self.loadMailsForRecord(record, folderPath: folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)
-                    }
-                    return
-                }
-                completionCallback(error)
+                self.errorhandling(error: error, originalCall: {self.loadMailsForRecord(record, folderPath: folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
                 return
             }
             if let status = status {
@@ -745,13 +731,7 @@ class MailHandler {
 
                     searchOperation.start { (err, indices) -> Void in
                         guard err == nil else {
-                            if self.shouldTryRefreshOAUTH {
-                                self.retryWithRefreshedOAuth {
-                                    self.loadMailsForRecord(record, folderPath: folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)
-                                }
-                                return
-                            }
-                            completionCallback(err)
+                            self.errorhandling(error: err, originalCall: {self.loadMailsForRecord(record, folderPath: folderPath, newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
                             return
                         }
 
@@ -777,13 +757,7 @@ class MailHandler {
         let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
-                if self.shouldTryRefreshOAUTH {
-                    self.retryWithRefreshedOAuth {
-                        self.loadMailsForInbox(newMailCallback: newMailCallback, completionCallback: completionCallback)
-                    }
-                    return
-                }
-                completionCallback(error)
+                self.errorhandling(error: error, originalCall: {self.loadMailsForInbox(newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
                 return
             }
             if let status = status {
@@ -796,8 +770,6 @@ class MailHandler {
 
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS, record: KeyRecord?, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((_ error: Error?) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
-
-
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
         fetchOperation.extraHeaders = [AUTOCRYPTHEADER, SETUPMESSAGE]
         if uids.count() == 0 {
@@ -806,14 +778,7 @@ class MailHandler {
         }
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
-                if self.shouldTryRefreshOAUTH {
-                    self.retryWithRefreshedOAuth {
-                        self.loadMessagesFromServer(uids, folderPath: folderPath, maxLoad: maxLoad, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)
-                    }
-                    return
-                }
-                print("Error while fetching inbox: \(String(describing: err))")
-                completionCallback(err)
+                self.errorhandling(error: err, originalCall: {self.loadMessagesFromServer(uids, folderPath: folderPath, maxLoad: maxLoad, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
                 return
             }
 
@@ -825,7 +790,12 @@ class MailHandler {
                     dispatchGroup.enter()
 
                     let op = self.IMAPSession.fetchParsedMessageOperation(withFolder: folderPath, uid: message.uid)
-                    op?.start { err, data in self.parseMail(err, parser: data, message: message, record: record, folderPath: folderPath, newMailCallback: newMailCallback)
+                    op?.start { err, data in
+                        guard err == nil else {
+                            self.errorhandling(error: err, originalCall: {self.loadMessagesFromServer(uids, folderPath: folderPath, maxLoad: maxLoad, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
+                            return
+                        }
+                        self.parseMail(parser: data, message: message, record: record, folderPath: folderPath, newMailCallback: newMailCallback)
                         dispatchGroup.leave()
                     }
                     calledMails += 1
@@ -834,18 +804,19 @@ class MailHandler {
                     }
                 }
                 dispatchGroup.notify(queue: DispatchQueue.main) {
-                    self.IMAPSession.disconnectOperation().start({ _ in })
+                    self.IMAPSession.disconnectOperation().start({ err2 in
+                        guard err2 == nil else {
+                            self.errorhandling(error: err2, originalCall: {self.loadMessagesFromServer(uids, folderPath: folderPath, maxLoad: maxLoad, record: record, newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
+                            return
+                        }
+                    })
                     completionCallback(nil)
                 }
             }
         }
     }
 
-    private func parseMail(_ error: Error?, parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folderPath: String, newMailCallback: ((_ mail: PersistentMail?) -> ())?) {
-        guard error == nil else {
-            print("Error while fetching mail: \(String(describing: error))")
-            return
-        }
+    private func parseMail(parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folderPath: String, newMailCallback: ((_ mail: PersistentMail?) -> ())?) {
         var rec: [MCOAddress] = []
         var cc: [MCOAddress] = []
         var autocrypt: AutocryptContact? = nil
@@ -876,7 +847,6 @@ class MailHandler {
         }
 
         if let _ = header?.extraHeaderValue(forName: SETUPMESSAGE) {
-            // own key export message -> Drop message?.
             // TODO: Distinguish between other keys (future work)
             if newMailCallback != nil {
                 newMailCallback!(nil)
@@ -919,7 +889,7 @@ class MailHandler {
 
             }
             if isEnc {
-                html = msgParser!.plainTextRendering()//plainTextBodyRenderingAndStripWhitespace(false)
+                html = msgParser!.plainTextRendering()
                 lineArray = html.components(separatedBy: "\n")
                 lineArray.removeFirst(4)
                 body = lineArray.joined(separator: "\n")
@@ -1112,11 +1082,18 @@ class MailHandler {
 
         if !DataHandler.handler.existsFolder(with: to) && !folderCreated {
             let op = IMAPSession.createFolderOperation(to)
-            op?.start({ _ in self.move(mails: mails, from: from, to: to, folderCreated: true) })
+            op?.start({ error in
+                guard error == nil else {
+                    self.errorhandling(error: error, originalCall: {self.move(mails: mails, from: from, to: to)}, completionCallback: nil)
+                    return
+                }
+                self.move(mails: mails, from: from, to: to, folderCreated: true)
+            })
         } else {
             let folderstatusFrom = IMAPSession.folderStatusOperation(from)
             folderstatusFrom?.start { (error, status) -> Void in
                 guard error == nil else {
+                    self.errorhandling(error: error, originalCall: {self.move(mails: mails, from: from, to: to)}, completionCallback: nil)
                     return
                 }
                 if let statusFrom = status {
@@ -1140,7 +1117,7 @@ class MailHandler {
                         op?.start {
                             (err, vanished) -> Void in
                             guard err == nil else {
-                                print("Error while moving mails: \(String(describing: err))")
+                                self.errorhandling(error: err, originalCall: {self.move(mails: mails, from: from, to: to)}, completionCallback: nil)
                                 return
                             }
                         }
@@ -1159,7 +1136,7 @@ class MailHandler {
     }
 
 
-    func initFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
+    private func initFolder(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
         let folderPath = folder.path
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue)
         let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
@@ -1169,8 +1146,7 @@ class MailHandler {
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
-                print("Error while fetching \(folderPath): \(String(describing: err))")
-                completionCallback(err)
+                self.errorhandling(error: err, originalCall: {self.initFolder(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
                 return
             }
             if let msgs = msg {
@@ -1187,7 +1163,7 @@ class MailHandler {
         }
     }
 
-    func initInbox(inbox: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
+    private func initInbox(inbox: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
         if let date = Calendar.current.date(byAdding: .month, value: -1, to: Date()) {
             loadMailsSinceDate(folder: inbox, since: date, maxLoad: 100, newMailCallback: newMailCallback, completionCallback: completionCallback)
         } else {
@@ -1200,13 +1176,7 @@ class MailHandler {
         let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
-                if self.shouldTryRefreshOAUTH {
-                    self.retryWithRefreshedOAuth {
-                        self.updateFolder(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)
-                    }
-                    return
-                }
-                completionCallback(error)
+                self.errorhandling(error: error, originalCall: {self.updateFolder(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
                 return
             }
             if let status = status {
@@ -1228,7 +1198,7 @@ class MailHandler {
     }
 
     private func olderMails(folder: Folder, newMailCallback: @escaping ((_ mail: PersistentMail?) -> ()), completionCallback: @escaping ((Error?) -> ())) {
-        let folderPath = folder.path//UserManager.convertToBackendFolderPath(from: folder.path)
+        let folderPath = folder.path
         if let mails = folder.mails {
             var oldestDate: Date?
             for m in mails {
@@ -1244,8 +1214,7 @@ class MailHandler {
 
                 searchOperation?.start { (err, uids) -> Void in
                     guard err == nil else {
-                        print("Error while searching inbox: \(String(describing: err))")
-                        completionCallback(err)
+                         self.errorhandling(error: err, originalCall: {self.olderMails(folder: folder, newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
                         return
                     }
                     if let ids = uids {
@@ -1272,13 +1241,7 @@ class MailHandler {
 
         searchOperation?.start { (err, uids) -> Void in
             guard err == nil else {
-                if self.shouldTryRefreshOAUTH {
-                    self.retryWithRefreshedOAuth {
-                        self.loadMailsSinceDate(folder: folder, since: since, newMailCallback: newMailCallback, completionCallback: completionCallback)
-                    }
-                    return
-                }
-                completionCallback(err)
+                self.errorhandling(error: err, originalCall: {self.loadMailsSinceDate(folder: folder, since: since, newMailCallback: newMailCallback, completionCallback: completionCallback)}, completionCallback: completionCallback)
                 return
             }
             if let ids = uids {
@@ -1293,15 +1256,26 @@ class MailHandler {
 
     func retryWithRefreshedOAuth(completion: @escaping () -> ()) {
         guard shouldTryRefreshOAUTH else {
-            print("Please only call retryWithRefreshedOAuth after checking shouldTryRefreshOAUTH or your request might be lost.")
             return
         }
-
         EmailHelper.singleton().checkIfAuthorizationIsValid({ authorized in
             if authorized {
                 self.IMAPSes = nil
             }
             completion()
         })
+    }
+    
+    private func errorhandling(error: Error?, originalCall: @escaping () -> (), completionCallback: (((Error?) -> ()))?){
+        // maybe refreshing oauth?
+        if self.shouldTryRefreshOAUTH {
+            self.retryWithRefreshedOAuth {
+                originalCall()
+            }
+            return
+        }
+        if completionCallback != nil {
+            completionCallback!(error)
+        }
     }
 }

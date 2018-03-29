@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D47" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="16G1212" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Account" representedClassName="Account" syncable="YES" codeGenerationType="class">
         <attribute name="archiveFolderPath" attributeType="String" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
@@ -33,8 +33,8 @@
         <attribute name="cnidentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="color" optional="YES" attributeType="Transformable" customClassName="UIColor" syncable="YES"/>
         <attribute name="displayname" attributeType="String" syncable="YES"/>
-        <relationship name="addresses" toMany="YES" deletionRule="Nullify" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
-        <relationship name="keyrecords" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="KeyRecord" inverseName="contact" inverseEntity="KeyRecord" syncable="YES"/>
+        <relationship name="addresses" toMany="YES" deletionRule="Cascade" destinationEntity="Mail_Address" inverseName="contact" inverseEntity="Mail_Address" syncable="YES"/>
+        <relationship name="keyrecords" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="KeyRecord" inverseName="contact" inverseEntity="KeyRecord" syncable="YES"/>
     </entity>
     <entity name="Folder" representedClassName="Folder" syncable="YES">
         <attribute name="delimiter" optional="YES" attributeType="String" syncable="YES"/>
@@ -148,10 +148,10 @@
         <element name="Attachment" positionX="-315" positionY="-36" width="128" height="210"/>
         <element name="EnzevalosContact" positionX="-209" positionY="198" width="128" height="120"/>
         <element name="Folder" positionX="-297" positionY="-18" width="128" height="225"/>
+        <element name="KeyRecord" positionX="-315" positionY="-36" width="128" height="105"/>
         <element name="Mail_Address" positionX="-297" positionY="-18" width="128" height="210"/>
         <element name="PersistentKey" positionX="-315" positionY="-36" width="128" height="270"/>
         <element name="PersistentMail" positionX="-416" positionY="-189" width="128" height="540"/>
-        <element name="KeyRecord" positionX="-315" positionY="-36" width="128" height="105"/>
         <element name="SecretKey" positionX="-306" positionY="-27" width="128" height="135"/>
         <element name="Server" positionX="-306" positionY="-27" width="128" height="135"/>
     </elements>

@@ -234,7 +234,7 @@ class ContactViewController: UIViewController {
             if let DestinationViewController = segue.destination as? QRScannerView {
                 DestinationViewController.fingerprint = sender as? String
                 DestinationViewController.callback = verifySuccessfull
-                DestinationViewController.keyId = self.keyRecord?.keyID //used for logging TODO @jakob: is this suficient? The keyID might also be in the MailAddress
+                DestinationViewController.keyId = self.keyRecord?.keyID 
                 Logger.log(verify: self.keyRecord?.keyID ?? "noKeyID", open: true)
             }
         }
