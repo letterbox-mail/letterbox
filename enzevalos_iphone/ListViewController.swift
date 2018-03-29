@@ -52,7 +52,7 @@ class ListViewController: UITableViewController {
             self.title = contact!.name
             if contact!.mails.count < 20 {
                 loading = true
-                AppDelegate.getAppDelegate().mailHandler.loadMailsForRecord(contact!, folderPath: UserManager.backendInboxFolderPath, newMailCallback: addNewMail, completionCallback: doneLoading)
+                AppDelegate.getAppDelegate().mailHandler.loadMailsForRecord(contact!, folderPath: UserManager.backendInboxFolderPath, completionCallback: doneLoading)
             }
         }
     }
@@ -223,7 +223,7 @@ class ListViewController: UITableViewController {
         let reload_distance: CGFloat = 50
         if y > h + reload_distance && !loading {
             loading = true
-            AppDelegate.getAppDelegate().mailHandler.loadMailsForRecord(contact!, folderPath: UserManager.backendInboxFolderPath, newMailCallback: addNewMail, completionCallback: doneLoading)
+            AppDelegate.getAppDelegate().mailHandler.loadMailsForRecord(contact!, folderPath: UserManager.backendInboxFolderPath, completionCallback: doneLoading)
             tableView.reloadData()
         }
     }

@@ -72,7 +72,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
 
         tableView.register(UINib(nibName: "InboxTableViewCell", bundle: nil), forCellReuseIdentifier: "inboxCell")
 
-        AppDelegate.getAppDelegate().mailHandler.startIMAPIdleIfSupported(addNewMail: addNewMail)
+        AppDelegate.getAppDelegate().mailHandler.startIMAPIdleIfSupported()
         NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave, object: nil, queue: nil, using: {
             [weak self] _ in
             self?.tableView.reloadData()
@@ -82,12 +82,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     func refresh(_ refreshControl: UIRefreshControl?) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
-        AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: folder, newMailCallback: addNewMail, completionCallback: getMailCompleted)
-    }
-
-    // TODO @Olli: Remove this function when MailHandler is cleaned up
-    func addNewMail(mail: PersistentMail?) {
-        //tableView.reloadData()
+        AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: folder, completionCallback: getMailCompleted)
     }
 
     deinit {
@@ -287,7 +282,7 @@ extension InboxViewController {
         if y > h + reload_distance && !loading {
             loading = true
 
-            AppDelegate.getAppDelegate().mailHandler.loadMailsForInbox(newMailCallback: addNewMail, completionCallback: doneLoading)
+            AppDelegate.getAppDelegate().mailHandler.loadMailsForInbox(completionCallback: doneLoading)
         }
     }
 

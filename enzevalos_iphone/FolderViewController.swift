@@ -29,7 +29,7 @@ class FolderViewController: UITableViewController {
         if let thisFolder = presentedFolder {
             navigationItem.title = UserManager.convertToFrontendFolderPath(from: thisFolder.name)
             refreshControl?.beginRefreshing()
-            AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, newMailCallback: newMails, completionCallback: endRefreshing)
+            AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, completionCallback: endRefreshing)
             folders = thisFolder.subfolders.sorted()
         }
         NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave, object: nil, queue: nil, using: {
@@ -166,7 +166,7 @@ class FolderViewController: UITableViewController {
     func refresh() {
         if let thisFolder = presentedFolder {
             refreshControl?.beginRefreshing()
-            AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, newMailCallback: newMails, completionCallback: endRefreshing(_:))
+            AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, completionCallback: endRefreshing(_:))
         } else {
             DataHandler.handler.callForFolders(done: endRefreshing)
         }
@@ -182,9 +182,7 @@ class FolderViewController: UITableViewController {
         tableView.reloadData()
         refreshControl?.endRefreshing()
     }
-    func newMails(mail: PersistentMail?) {
-    }
-
+   
     func getImage(for path: String) -> UIImage {
         if path == UserManager.frontendInboxFolderPath {
             return #imageLiteral(resourceName: "Inbox")
