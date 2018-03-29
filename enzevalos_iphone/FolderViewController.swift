@@ -17,6 +17,7 @@ class FolderViewController: UITableViewController {
 
     override func viewDidLoad() {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
+        self.refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("PullToRefresh", comment: "Pull to refresh"))
 
         if isFirstFolderViewController {
             folders = DataHandler.handler.allRootFolders.sorted().filter { $0.path != UserManager.backendInboxFolderPath }
@@ -31,6 +32,10 @@ class FolderViewController: UITableViewController {
             AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, newMailCallback: newMails, completionCallback: endRefreshing)
             folders = thisFolder.subfolders.sorted()
         }
+        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave, object: nil, queue: nil, using: {
+            [weak self] _ in
+            self?.tableView.reloadData()
+        })
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

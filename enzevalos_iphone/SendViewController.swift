@@ -37,7 +37,7 @@ class SendViewController: UIViewController {
     @IBOutlet weak var seperator3Leading: NSLayoutConstraint!
     @IBOutlet weak var textViewLeading: NSLayoutConstraint!
     @IBOutlet weak var scrollViewBottom: NSLayoutConstraint!
-    @IBOutlet var scrollviewRecognizer: UITapGestureRecognizer!
+    @IBOutlet weak var scrollviewRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var sendButton: UIBarButtonItem!
 
     var keyboardOpened = false
@@ -52,7 +52,7 @@ class SendViewController: UIViewController {
     
     //These attributes may be interesting to set in a segue to SendViewController
     var prefilledMail: EphemeralMail? = nil
-    var sendViewDelegate: SendViewDelegate?
+    weak var sendViewDelegate: SendViewDelegate?
     var invite: Bool = false
     var enforcePostcard: Bool = false
     
@@ -101,9 +101,13 @@ class SendViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataDelegate = VENDataDelegate(changeFunc: self.editName, tappedWhenSelectedFunc: self.showContact, beginFunc: self.beginEditing, endFunc: self.endEditing, deleteFunc: { () -> Void in return })
-        tableDataDelegate = TableViewDataDelegate(insertCallback: self.insertName)
-        collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: self.insertName)
+        dataDelegate = VENDataDelegate(changeFunc: {[weak self] (tokenField: VENTokenField) in self?.editName(tokenField)},
+                                       tappedWhenSelectedFunc: {[weak self] (email: String) in self?.showContact(email)},
+                                       beginFunc: {[weak self] (tokenField: VENTokenField) in self?.beginEditing(tokenField)},
+                                       endFunc: {[weak self] (tokenField: VENTokenField) in self?.endEditing(tokenField)},
+                                       deleteFunc: { () -> Void in return })
+        tableDataDelegate = TableViewDataDelegate(insertCallback: {[weak self] (name: String, address: String) in self?.insertName(name, address: address)})
+        collectionDataDelegate = CollectionDataDelegate(suggestionFunc: AddressHandler.frequentAddresses, insertCallback: {[weak self] (name: String, address: String) in self?.insertName(name, address: address)})
         startIconAnimation()
 
         textView.font = UIFont.systemFont(ofSize: 17)
@@ -300,12 +304,12 @@ class SendViewController: UIViewController {
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
-                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                    if let mail = mail as? String {
                         to.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
                 for mail in ccText.mailTokens {
-                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                    if let mail = mail as? String {
                         cc.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
@@ -324,12 +328,12 @@ class SendViewController: UIViewController {
                 var to = [MailAddress]()
                 var cc = [MailAddress]()
                 for mail in toText.mailTokens {
-                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                    if let mail = mail as? String {
                         to.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
                 for mail in ccText.mailTokens {
-                    if let mail = mail as? String { // , !EnzevalosEncryptionHandler.hasKey(mail)
+                    if let mail = mail as? String {
                         cc.append(DataHandler.handler.getMailAddress(mail, temporary: false))
                     }
                 }
@@ -349,9 +353,17 @@ class SendViewController: UIViewController {
                     scrollview.contentOffset = CGPoint(x: 0, y: tokenField.frame.origin.y - self.topLayoutGuide.length)
                     tableviewBegin.constant = tokenField.frame.maxY - tokenField.frame.origin.y
                     if #available(iOS 11.0, *) {
-                        tableviewHeight.constant = keyboardY - tableviewBegin.constant
+                        if keyboardY > 0 {
+                            tableviewHeight.constant = keyboardY - tableviewBegin.constant
+                        } else {
+                            tableviewHeight.constant = view.safeAreaLayoutGuide.layoutFrame.size.height - tableviewBegin.constant
+                        }
                     } else {
-                        tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                        if keyboardY > 0 {
+                            tableviewHeight.constant = keyboardY - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                        } else {
+                            tableviewHeight.constant = view.bounds.size.height - tableviewBegin.constant - (self.navigationController?.navigationBar.frame.maxY)!
+                        }
                     }
                 } else if !scrollview.isScrollEnabled {
                     scrollview.isScrollEnabled = true
@@ -549,7 +561,6 @@ class SendViewController: UIViewController {
                 return
             }
             NSLog("Error sending email: \(String(describing: error))")
-            //            AppDelegate.getAppDelegate().showMessage("An error occured", completion: nil) @jakob: wofür ist dieses showMessage aus AppDelegate gut?
             let alert = UIAlertController(title: NSLocalizedString("ReceiveError", comment: "There was an error"), message: NSLocalizedString("ErrorText", comment: ""), preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
@@ -725,30 +736,30 @@ class SendViewController: UIViewController {
             let message = textView.text!
 
             alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { (action: UIAlertAction!) -> Void in
-                if let delegate = self.sendViewDelegate {
+            alert.addAction(UIAlertAction(title: NSLocalizedString("discardButton", comment: "discard"), style: .destructive, handler: { [weak self] (action: UIAlertAction!) -> Void in
+                if let delegate = self?.sendViewDelegate {
                     delegate.compositionDiscarded()
                 }
-                self.navigationController?.dismiss(animated: true, completion: nil)
+                self?.navigationController?.dismiss(animated: true, completion: nil)
             }))
-            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveAsDraft", comment: "save the written E-Mail as draft"), style: .default, handler: { (action: UIAlertAction!) -> Void in
-                self.mailHandler.createDraft(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: { (error: Error?) -> Void in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("SaveAsDraft", comment: "save the written E-Mail as draft"), style: .default, handler: { [weak self] (action: UIAlertAction!) -> Void in
+                self?.mailHandler.createDraft(toEntrys as NSArray as! [String], ccEntrys: ccEntrys as NSArray as! [String], bccEntrys: [], subject: subject, message: message, callback: { [weak self] (error: Error?) -> Void in
                     if let error = error {
                         print(error)
                     } else {
-                        if let delegate = self.sendViewDelegate {
+                        if let delegate = self?.sendViewDelegate {
                             delegate.compositionSavedAsDraft()
                         }
-                        self.navigationController?.dismiss(animated: true, completion: nil)
+                        self?.navigationController?.dismiss(animated: true, completion: nil)
                     }
                 })
             }))
             alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "cancel"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in
                 firstResponder?.becomeFirstResponder()
             }))
-            DispatchQueue.main.async(execute: {
-                self.view.endEditing(true)
-                self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async(execute: { [weak self] in
+                self?.view.endEditing(true)
+                self?.present(alert, animated: true, completion: nil)
             })
         }
     }
@@ -783,25 +794,6 @@ extension SendViewController: UIGestureRecognizerDelegate {
 }
 
 extension VENTokenFieldDataSource {
-    func someSecure(_ tokenField: VENTokenField) -> Bool {
-        for entry in tokenField.mailTokens {
-            if DataHandler.handler.hasKey(adr: entry as! String) {
-                return true
-            }
-        }
-
-        return false
-    }
-
-    func someInsecure(_ tokenField: VENTokenField) -> Bool {
-        for entry in tokenField.mailTokens {
-            if !DataHandler.handler.hasKey(adr: entry as! String) {
-                return true
-            }
-        }
-
-        return false
-    }
 
     /// Returns a bool showing whether all contacts in the field have a key. Returns true if no contacts are present.
     func allSecure(_ tokenField: VENTokenField) -> Bool {

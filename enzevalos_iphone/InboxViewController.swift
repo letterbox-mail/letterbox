@@ -90,6 +90,10 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         //tableView.reloadData()
     }
 
+    deinit {
+        print("===============|| InboxViewController deinitialized ||===============")
+    }
+
     func getMailCompleted(_ error: Error?) {
         if let rc = self.refreshControl {
             if error == nil {

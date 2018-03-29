@@ -263,6 +263,7 @@
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
 		F120A7D31F7937BB006D5BF1 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		F12D8DBB2069422A0068788E /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F12D8DBD2069422A0068788E /* About.storyboard */; };
 		F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
 		F14D189D1ED880680080515D /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
 		F14D189F1ED880680080515D /* ncpayroll-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189B1ED880680080515D /* ncpayroll-public.gpg */; };
@@ -279,7 +280,6 @@
 		F1ACF21C1E0C1C6800C1B843 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */; };
 		F1ADF0751FBDF7D20017AE31 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
 		F1AF938F1E2D04BA00755128 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AF938E1E2D04BA00755128 /* CustomCells.swift */; };
-		F1C733351FEC1CE2005A497E /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1C733341FEC1CE2005A497E /* About.storyboard */; };
 		F1C7AC821FED6473007629DB /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C7AC811FED6473007629DB /* AboutViewController.swift */; };
 		F1F070281FA0DF3F004A860A /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1F070261FA0DF3F004A860A /* Inbox.storyboard */; };
 /* End PBXBuildFile section */
@@ -480,6 +480,9 @@
 		F12041FC1DA409A5002E4940 /* ListViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshControlExtension.swift; sourceTree = "<group>"; };
 		F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandlerDelegator.swift; sourceTree = "<group>"; };
+		F12D8DB320692E280068788E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Inbox.strings; sourceTree = "<group>"; };
+		F12D8DB520692E2D0068788E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Inbox.strings; sourceTree = "<group>"; };
+		F12D8DBC2069422A0068788E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/About.storyboard; sourceTree = "<group>"; };
 		F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		F14D18981ED880680080515D /* nchr-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "nchr-private.gpg"; path = "keys/nchr-private.gpg"; sourceTree = "<group>"; };
 		F14D18991ED880680080515D /* nchr-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "nchr-public.gpg"; path = "keys/nchr-public.gpg"; sourceTree = "<group>"; };
@@ -487,6 +490,7 @@
 		F14D189B1ED880680080515D /* ncpayroll-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ncpayroll-public.gpg"; path = "keys/ncpayroll-public.gpg"; sourceTree = "<group>"; };
 		F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-private.gpg"; path = "keys/ullimuelle-private.gpg"; sourceTree = "<group>"; };
 		F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-public.gpg"; path = "keys/ullimuelle-public.gpg"; sourceTree = "<group>"; };
+		F176A216206943080068788E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/About.storyboard; sourceTree = "<group>"; };
 		F1866C85201F707200B72453 /* EmailHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailHelper.m; sourceTree = "<group>"; };
 		F1866C87201F70B700B72453 /* EmailHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailHelper.h; sourceTree = "<group>"; };
 		F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-private.gpg"; path = "keys/idsolutions-private.gpg"; sourceTree = "<group>"; };
@@ -499,7 +503,6 @@
 		F1984D731E1E92B300804E1E /* LabelStyleKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelStyleKit.swift; sourceTree = "<group>"; };
 		F1ACF21B1E0C1C6800C1B843 /* ContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		F1AF938E1E2D04BA00755128 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
-		F1C733341FEC1CE2005A497E /* About.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = About.storyboard; sourceTree = "<group>"; };
 		F1C7AC811FED6473007629DB /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		F1E918D61FBDEECA00D60418 /* LoggerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerTests.swift; sourceTree = "<group>"; };
 		F1F070271FA0DF3F004A860A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Inbox.storyboard; sourceTree = "<group>"; };
@@ -995,7 +998,7 @@
 		F1C733331FEC1CAC005A497E /* About */ = {
 			isa = PBXGroup;
 			children = (
-				F1C733341FEC1CE2005A497E /* About.storyboard */,
+				F12D8DBD2069422A0068788E /* About.storyboard */,
 				F1C7AC811FED6473007629DB /* AboutViewController.swift */,
 			);
 			path = About;
@@ -1098,7 +1101,7 @@
 					MailCoreRessources,
 				);
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "fu-berlin";
 				TargetAttributes = {
 					3E9708B01FAC95F5005825C9 = {
@@ -1217,7 +1220,7 @@
 				47953AA91FD7000200D4631A /* bitcoinde.asc in Resources */,
 				47CD5AAB2012368D00E771A1 /* bitcoinde.asc in Resources */,
 				F14D189D1ED880680080515D /* nchr-public.gpg in Resources */,
-				F1C733351FEC1CE2005A497E /* About.storyboard in Resources */,
+				F12D8DBB2069422A0068788E /* About.storyboard in Resources */,
 				F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */,
 				4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */,
 				A1E5960E1FCC871F003791E9 /* researchteam.asc in Resources */,
@@ -1805,10 +1808,21 @@
 			name = InboxTableViewCell.xib;
 			sourceTree = "<group>";
 		};
+		F12D8DBD2069422A0068788E /* About.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F12D8DBC2069422A0068788E /* Base */,
+				F176A216206943080068788E /* en */,
+			);
+			name = About.storyboard;
+			sourceTree = "<group>";
+		};
 		F1F070261FA0DF3F004A860A /* Inbox.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				F1F070271FA0DF3F004A860A /* Base */,
+				F12D8DB320692E280068788E /* en */,
+				F12D8DB520692E2D0068788E /* de */,
 			);
 			name = Inbox.storyboard;
 			sourceTree = "<group>";
@@ -1930,14 +1944,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1982,14 +2002,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

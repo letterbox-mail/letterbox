@@ -91,6 +91,10 @@ class ListViewController: UITableViewController {
         tableView.reloadData()
     }
 
+    deinit {
+        print("===============|| ListViewController deinitialized ||===============")
+    }
+
     func filterContentForSearchText(_ searchText: String, scope: Int = 0) {
         filteredMails = contact!.mails.filter { mail in
             var returnValue = false

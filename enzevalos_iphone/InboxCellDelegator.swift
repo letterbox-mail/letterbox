@@ -6,7 +6,7 @@
 //  Copyright © 2016 Joscha. All rights reserved.
 //
 
-protocol InboxCellDelegator {
+protocol InboxCellDelegator: class {
     
     func callSegueFromCell(_ mail: PersistentMail?)
     func callSegueFromCell2(_ contact: KeyRecord?)

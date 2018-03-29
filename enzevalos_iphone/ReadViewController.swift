@@ -131,7 +131,7 @@ class ReadViewController: UITableViewController {
         }
 
         textDelegate = ReadTextDelegate()
-        textDelegate?.callback = newMailCallback
+        textDelegate?.callback = {[weak self] (address: String) in self?.newMailCallback(Address: address)}
 
         messageBody.delegate = textDelegate
 
