@@ -932,9 +932,6 @@ class MailHandler {
             }
 
             if let header = header, let from = header.from, let date = header.date {
-                if StudySettings.studyMode && from.mailbox.lowercased().contains("bitcoin.de") {
-                    StudySettings.bitcoinMails = true
-                }
                 let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath, secretKey: secretKey, references: references, mailagent: userAgent, messageID: msgID)
                 if let m = mail {
                     let pgp = SwiftPGP()
