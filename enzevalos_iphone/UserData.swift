@@ -186,13 +186,19 @@ struct UserManager {
     }
 
     static func loadUserSignature() -> String {
-        let enabled = UserDefaults.standard.bool(forKey: "Signature.Switch")
-        let sig = UserDefaults.standard.string(forKey: "Signature.Text")
         if UserDefaults.standard.bool(forKey: "Signature.Switch"), let sig = UserDefaults.standard.string(forKey: "Signature.Text") {
-return "\n\n______________________________\n\n\(sig.trimmingCharacters(in: .whitespacesAndNewlines))\n\n"
+                return "\n\n______________________________\n\n\(sig.trimmingCharacters(in: .whitespacesAndNewlines))\n\n"
         }
 
         return ""
+    }
+    
+    static func loadInvitationMode()-> InvitationMode{
+        let mode = UserDefaults.standard.integer(forKey: "Invitation.Mode")
+        if let invitationmode = InvitationMode(rawValue: mode){
+            return invitationmode
+        }
+        return InvitationMode.Censorship
     }
 
     static func resetUserValues() {

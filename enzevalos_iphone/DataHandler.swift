@@ -651,6 +651,7 @@ class DataHandler {
     func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?, references: [String] = [], mailagent: String? = nil, messageID: String? = nil) -> PersistentMail? {
         let myfolder = findFolder(with: folderPath) as Folder
         let finding = findNum("PersistentMail", type: "uid", search: uid)
+        
         let mail: PersistentMail
         var mails: [PersistentMail] = []
 

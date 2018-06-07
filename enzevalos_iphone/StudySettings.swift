@@ -60,7 +60,7 @@ class StudySettings {
     
     public static var invitationEnabled: Bool{
         get {
-            return true //invitationsmode == InvitationMode.Censorship || invitationsmode == InvitationMode.PasswordEnc
+            return true
         }
     }
     static var freeTextInvitationTitle: String {
@@ -101,6 +101,7 @@ class StudySettings {
     
     static var invitationsmode: InvitationMode{
         get{
+            return UserManager.loadInvitationMode()
             let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.keyName)
             if let mode = InvitationMode.init(rawValue: value){
                 return mode
