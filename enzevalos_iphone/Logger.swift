@@ -53,7 +53,7 @@ class Logger {
         }
     }
 
-    static func log(setupStudy studypara: [StudyParamter:Int], alreadyRegistered: Bool, bitcoin: Bool) {
+    static func log(setupStudy studypara: [StudyParamter:Int], alreadyRegistered: Bool) {
         if !logging {
             return
         }
@@ -63,7 +63,6 @@ class Logger {
             event[para.name] = value
         }
         event["alreadyRegistered"] = alreadyRegistered
-        event["bitcoinMailReceived"] = bitcoin
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }

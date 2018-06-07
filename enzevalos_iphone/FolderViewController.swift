@@ -15,9 +15,22 @@ class FolderViewController: UITableViewController {
     var isFirstFolderViewController = true
     var presentedFolder: Folder? = nil
 
+    @IBOutlet weak var lastUpdateButton: UIBarButtonItem!
+    var lastUpdateLabel = UILabel(frame: CGRect.zero)
+    var lastUpdateText: String? {
+        didSet {
+            lastUpdateLabel.text = lastUpdateText
+            lastUpdateLabel.sizeToFit()
+        }
+    }
+    
+    var lastUpdate: Date? = Date()
+    let dateFormatter = DateFormatter()
+    
     override func viewDidLoad() {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
         self.refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("PullToRefresh", comment: "Pull to refresh"))
+        lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
 
         if isFirstFolderViewController {
             folders = DataHandler.handler.allRootFolders.sorted().filter { $0.path != UserManager.backendInboxFolderPath }
@@ -34,8 +47,19 @@ class FolderViewController: UITableViewController {
         }
         NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave, object: nil, queue: nil, using: {
             [weak self] _ in
+            self?.lastUpdate = Date()
             self?.tableView.reloadData()
         })
+        
+        dateFormatter.locale = Locale.current
+        dateFormatter.timeStyle = .medium
+        
+        lastUpdateLabel.sizeToFit()
+        lastUpdateLabel.backgroundColor = UIColor.clear
+        lastUpdateLabel.textAlignment = .center
+        lastUpdateLabel.font = UIFont.systemFont(ofSize: 13)
+        lastUpdateLabel.textColor = UIColor.black
+        lastUpdateButton.customView = lastUpdateLabel
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -164,6 +188,7 @@ class FolderViewController: UITableViewController {
     }
 
     func refresh() {
+        lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         if let thisFolder = presentedFolder {
             refreshControl?.beginRefreshing()
             AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: thisFolder, completionCallback: endRefreshing(_:))
@@ -181,6 +206,7 @@ class FolderViewController: UITableViewController {
         }
         tableView.reloadData()
         refreshControl?.endRefreshing()
+        lastUpdateText = lastUpdate != nil ? "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))" : NSLocalizedString("NeverUpdated", comment: "No internet connection since last launch")
     }
    
     func getImage(for path: String) -> UIImage {

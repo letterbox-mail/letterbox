@@ -929,9 +929,6 @@ class MailHandler {
             }
 
             if let header = header, let from = header.from, let date = header.date {
-                if StudySettings.studyMode && from.mailbox.lowercased().contains("bitcoin.de") {
-                    StudySettings.bitcoinMails = true
-                }
                 let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath, secretKey: secretKey, references: references, mailagent: userAgent, messageID: msgID)
                 if let m = mail {
                     let pgp = SwiftPGP()
@@ -1111,7 +1108,20 @@ class MailHandler {
                         op?.start {
                             (err, vanished) -> Void in
                             guard err == nil else {
-                                self.errorhandling(error: err, originalCall: {self.move(mails: mails, from: from, to: to)}, completionCallback: nil)
+                                self.errorhandling(error: err, originalCall: {self.move(mails: mails, from: from, to: to)}, completionCallback: { err in
+                                    guard err != nil else {
+                                        return
+                                    }
+                                    let op = self.IMAPSession.copyMessagesOperation(withFolder: from, uids: uids, destFolder: to)
+                                    op?.start({error, _ in
+                                        guard error == nil else {
+                                            return
+                                        }
+                                        uids.enumerate({uid in
+                                            self.addFlag(uid, flags: MCOMessageFlag.deleted, folder: from)
+                                        })
+                                    })
+                                })
                                 return
                             }
                         }

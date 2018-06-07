@@ -130,6 +130,7 @@ class SendViewController: UIViewController {
         toCollectionviewHeight.constant = 0
         ccText.delegate = dataDelegate
         ccText.dataSource = dataDelegate
+        ccText.inputTextFieldKeyboardType = UIKeyboardType.emailAddress
         ccText.toLabelText = NSLocalizedString("Cc", comment: "copy label") + ": "
         ccText.setColorScheme(self.view.tintColor)
         ccCollectionview.delegate = collectionDataDelegate
@@ -178,7 +179,6 @@ class SendViewController: UIViewController {
 
         textViewLeading.constant = seperator3Leading.constant - 4
 
-        ccText.inputTextFieldKeyboardType = UIKeyboardType.emailAddress
         scrollview.clipsToBounds = true
 
         tableview.delegate = tableDataDelegate

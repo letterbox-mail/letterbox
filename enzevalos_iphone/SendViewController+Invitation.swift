@@ -270,12 +270,12 @@ extension SendViewController {
     /// - Parameter textView: that changed it's selected Text
     func updateMarkedText(for textView: UITextView) {
 
-        guard (self.isEligibleForInvitation() == true) else {
-            self.removeAllInvitationMarks()
+        guard isEligibleForInvitation() else {
+            removeAllInvitationMarks()
             return
         }
 
-        UIMenuController.shared.menuItems = self.menuControllerItems(for: textView)
+        UIMenuController.shared.menuItems = menuControllerItems(for: textView)
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -364,6 +364,10 @@ extension SendViewController: UITextViewDelegate {
         self.updateMarkedText(for: textView)
     }
 
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        self.updateMarkedText(for: textView)
+    }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 
         self.textChanged(inRange: range, with: text)

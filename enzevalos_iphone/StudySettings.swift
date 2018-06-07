@@ -165,7 +165,7 @@ class StudySettings {
         
         
 //        Logger.queue.async(flags: .barrier) {
-        Logger.log(setupStudy: parameters, alreadyRegistered: !presentFirstQuestionaireMail, bitcoin: bitcoinMails)
+        Logger.log(setupStudy: parameters, alreadyRegistered: !presentFirstQuestionaireMail)
 //        }
         
     }
