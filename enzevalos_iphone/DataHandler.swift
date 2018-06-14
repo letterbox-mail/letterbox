@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 import Contacts
+import Foundation
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -173,6 +175,7 @@ class DataHandler {
             try managedObjectContext.save()
         } catch {
             print("Error during saving while: \(during)")
+            print(error)
         }
     }
 
@@ -480,7 +483,9 @@ class DataHandler {
         }
         // create KeyRecord
         let record = NSEntityDescription.insertNewObject(forEntityName: "KeyRecord", into: managedObjectContext) as! KeyRecord
-        record.contact = getContactByAddress(addr)
+        print(managedObjectContext.insertedObjects.count)
+        let contact = getContactByAddress(addr)
+        record.contact = contact
         save(during: "create keyRecord without key")
         return record
     }
