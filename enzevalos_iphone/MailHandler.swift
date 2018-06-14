@@ -1004,7 +1004,7 @@ class MailHandler {
                     let end = content.range(of: "-----END PGP PRIVATE KEY BLOCK-----") {
                     let s = start.lowerBound
                     let e = end.upperBound
-                    let sk = content[s..<e]
+                    let sk = String(content[s..<e])
                     return sk
                 }
             }
