@@ -44,9 +44,9 @@ class Onboarding: NSObject {
     static let font = UIFont.init(name: "Helvetica-Light", size: 28)
     static let padding: CGFloat = 30
 
-    static var doWhenDone: () -> () = { Void in }
-    static var fail: () -> () = { Void in }
-    static var work: () -> () = { Void in }
+    static var doWhenDone: () -> () = { () -> () in }
+    static var fail: () -> () = { () -> () in }
+    static var work: () -> () = { () -> () in }
 
     static var credentialFails = 0
 
@@ -279,7 +279,7 @@ class Onboarding: NSObject {
         Onboarding.password.returnKeyType = .done
         password.text = UserManager.loadUserValue(.userPW) as? String
         mailaddress.text = UserManager.loadUserValue(.userAddr) as? String
-        doWhenDone = { Void in }
+        doWhenDone = { () -> () in }
 
         let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: nil, actionBlock: callback)
         username = UITextField.init()

@@ -226,7 +226,7 @@ class DataHandler {
             sk = NSEntityDescription.insertNewObject(forEntityName: "SecretKey", into: managedObjectContext) as! SecretKey
             sk.keyID = keyID
             sk.obsolete = false
-            sk.importedDate = Date () as NSDate
+            sk.importedDate = Date() //as NSDate
             UserManager.storeUserValue(keyID as AnyObject, attribute: Attribute.prefSecretKeyID)
             let adr = UserManager.loadUserValue(Attribute.userAddr) as! String
             let name = UserManager.loadUserValue(Attribute.accountname) as? String ?? adr

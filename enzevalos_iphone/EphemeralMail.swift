@@ -19,7 +19,7 @@ open class EphemeralMail: Mail {
     public var uid: UInt64
     public var predecessor: PersistentMail?
 
-    public init(to: NSSet = [], cc: NSSet = [], bcc: NSSet = [], date: Date = Date(), subject: String? = nil, body: String? = UserManager.loadUserSignature(), uid: UInt64 = 0, predecessor: PersistentMail? = nil) {
+    public init(to: NSSet = [], cc: NSSet = [], bcc: NSSet = [], date: Date = Date(), subject: String? = nil, body: String? = ""/*UserManager.loadUserSignature()*/, uid: UInt64 = 0, predecessor: PersistentMail? = nil) {
         self.cc = cc
         self.bcc = bcc
         self.to = to
