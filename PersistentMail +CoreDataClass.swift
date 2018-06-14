@@ -65,9 +65,9 @@ open class PersistentMail: NSManagedObject, Mail {
         case 120..<24 * 60 * 60:
             dateFormatter.timeStyle = .short
             returnString = dateFormatter.string(from: mailTime as Date)
-        case 24 * 60 * 60..<48 * 60 * 60:
+        case 86400..<172800: //24 * 60 * 60..<48 * 60 * 60:
             returnString = NSLocalizedString("Yesterday", comment: "Email came yesterday")
-        case 48 * 60 * 60..<72 * 60 * 60:
+        case 172800..<259200: //48 * 60 * 60..<72 * 60 * 60:
             returnString = NSLocalizedString("TwoDaysAgo", comment: "Email came two days ago")
         default:
             dateFormatter.dateStyle = .short
