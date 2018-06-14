@@ -44,7 +44,7 @@ class ExportInfoViewController: UITableViewController {
         
         let scaleX = cell.qrCode.frame.size.width / qrCodeImage.extent.size.width
         let scaleY = cell.qrCode.frame.size.height / qrCodeImage.extent.size.height
-        cell.qrCode.image = UIImage.init(ciImage: qrCodeImage.applying(CGAffineTransform(scaleX: scaleX, y: scaleY)))
+        cell.qrCode.image = UIImage.init(ciImage: qrCodeImage.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY)))
         return cell
     }
     

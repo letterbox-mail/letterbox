@@ -454,12 +454,12 @@ class SendViewController: UIViewController {
         }
     }
 
-    func newInput(_ tokenField: VENTokenField) {
+    @objc func newInput(_ tokenField: VENTokenField) {
         updateSecurityUI()
         reloadCollectionViews()
     }
 
-    func keyboardOpen(_ notification: Notification) {
+    @objc func keyboardOpen(_ notification: Notification) {
         let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
         let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
@@ -514,7 +514,7 @@ class SendViewController: UIViewController {
         }
     }
 
-    func keyboardClose(_ notification: Notification) {
+    @objc func keyboardClose(_ notification: Notification) {
         let animationDuration: TimeInterval = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         let animationCurveRawNSN = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
         let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue

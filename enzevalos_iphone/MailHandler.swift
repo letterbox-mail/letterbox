@@ -975,7 +975,7 @@ class MailHandler {
                         let e = end.upperBound
                         let pk = content[s..<e]
                         let pgp = SwiftPGP()
-                        if let keyId = try? pgp.importKeys(key: pk, pw: nil, isSecretKey: false, autocrypt: false) {
+                        if let keyId = try? pgp.importKeys(key: String(pk), pw: nil, isSecretKey: false, autocrypt: false) {
                             newKey.append(contentsOf: keyId)
                         }
                     }

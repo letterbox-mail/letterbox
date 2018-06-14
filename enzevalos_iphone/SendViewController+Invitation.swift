@@ -157,18 +157,18 @@ extension SendViewController {
         guard self.invitationSelection.selectedWords.isEmpty == false && self.isEligibleForInvitation() == true else {
             let attributedString = NSMutableAttributedString(string: self.textView.text)
             let fullRange = NSRange(location: 0, length: attributedString.string.count)
-            attributedString.addAttributes([NSFontAttributeName: self.textView.font], range: fullRange)
-            attributedString.removeAttribute(NSBackgroundColorAttributeName, range: fullRange)
+            attributedString.addAttributes([NSAttributedStringKey.font: self.textView.font], range: fullRange)
+            attributedString.removeAttribute(NSAttributedStringKey.backgroundColor, range: fullRange)
             self.textView.attributedText = attributedString
             return
         }
 
         let text: String = self.textView.text
         let orangeColor = UIColor.Invitation.orange
-        let attributedString = NSMutableAttributedString(string: text, attributes: [NSFontAttributeName: self.textView.font!])
+        let attributedString = NSMutableAttributedString(string: text, attributes: [NSAttributedStringKey.font: self.textView.font!])
 
         for range in self.invitationSelection.selectedWords {
-            attributedString.addAttributes([NSBackgroundColorAttributeName: orangeColor], range: range)
+            attributedString.addAttributes([NSAttributedStringKey.backgroundColor: orangeColor], range: range)
         }
 
         self.textView.attributedText = attributedString

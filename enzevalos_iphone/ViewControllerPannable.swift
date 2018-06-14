@@ -19,7 +19,7 @@ class ViewControllerPannable: UIViewController {
         view.addGestureRecognizer(panGestureRecognizer!)
     }
 
-    func panGestureAction(_ panGesture: UIPanGestureRecognizer) {
+    @objc func panGestureAction(_ panGesture: UIPanGestureRecognizer) {
         let translation = panGesture.translation(in: view)
 
         if panGesture.state == .began {

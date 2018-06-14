@@ -145,13 +145,13 @@ class InboxTableViewCell: UITableViewCell {
         }
     }
 
-    func cellTouched(_ sender: AnyObject) {
+    @objc func cellTouched(_ sender: AnyObject) {
         if let button = sender as? UIButton {
             button.backgroundColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
         }
     }
 
-    func clearCell(_ sender: AnyObject) {
+    @objc func clearCell(_ sender: AnyObject) {
         if let button = sender as? UIButton {
             UIView.animate(withDuration: 0.5, animations: { button.backgroundColor = UIColor.clear })
         }

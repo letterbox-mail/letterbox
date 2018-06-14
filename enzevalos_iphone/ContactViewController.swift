@@ -67,7 +67,7 @@ class ContactViewController: UIViewController {
         navigationController?.toolbar.isHidden = false
     }
 
-    func dismissView() {
+    @objc func dismissView() {
         self.dismiss(animated: true, completion: nil)
         Logger.log(contactViewClose: self.keyRecord, otherRecords: self.otherRecords, isUser: self.isUser)
     }
@@ -157,7 +157,7 @@ class ContactViewController: UIViewController {
         return img
     }
 
-    func showContact() {
+    @objc func showContact() {
         self.navigationController?.pushViewController(vc!, animated: true)
         navigationController?.toolbar.isHidden = true
     }
@@ -291,7 +291,7 @@ extension ContactViewController: UITableViewDataSource {
                         let scaleY = qrCodeCell.qrCode.frame.size.height / qrCode.extent.size.height
 
                         qrCodeCell.label.text = NSLocalizedString("yourFingerprint", comment: "")
-                        qrCodeCell.qrCode.image = UIImage(ciImage: qrCode.applying(CGAffineTransform(scaleX: scaleX, y: scaleY)))
+                        qrCodeCell.qrCode.image = UIImage(ciImage: qrCode.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY)))
 
                         return qrCodeCell
                     } else {
