@@ -499,7 +499,7 @@ class SwiftPGP: Encryption{
                             adr.remove(at: adr.startIndex) // remove <
                         }
                         adr = adr.lowercased()
-                        adrs.append(adr)
+                        adrs.append(String(adr))
                     }
                 }
             }

@@ -21,7 +21,7 @@ class AboutViewController: UIViewController {
         aboutText.delegate = textDelegate
     }
 
-    func close() {
+    @objc func close() {
         self.dismiss(animated: true, completion: nil)
     }
 

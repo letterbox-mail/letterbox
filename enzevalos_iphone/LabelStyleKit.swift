@@ -31,11 +31,11 @@ open class LabelStyleKit : NSObject {
 
     //// Colors
 
-    open dynamic class var black: UIColor { return Cache.black }
+    @objc open dynamic class var black: UIColor { return Cache.black }
 
     //// Drawing Methods
 
-    open dynamic class func drawHome(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 28, height: 28), resizing: ResizingBehavior = .aspectFit, color: UIColor = LabelStyleKit.black) {
+    @objc open dynamic class func drawHome(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 28, height: 28), resizing: ResizingBehavior = .aspectFit, color: UIColor = LabelStyleKit.black) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
@@ -96,7 +96,7 @@ open class LabelStyleKit : NSObject {
 
     }
 
-    open dynamic class func drawWork(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 148, height: 134), resizing: ResizingBehavior = .aspectFit, color: UIColor = LabelStyleKit.black) {
+    @objc open dynamic class func drawWork(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 148, height: 134), resizing: ResizingBehavior = .aspectFit, color: UIColor = LabelStyleKit.black) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
@@ -164,7 +164,7 @@ open class LabelStyleKit : NSObject {
 
     }
 
-    open dynamic class func drawOther(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 86, height: 82), resizing: ResizingBehavior = .aspectFit, color: UIColor = LabelStyleKit.black) {
+    @objc open dynamic class func drawOther(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 86, height: 82), resizing: ResizingBehavior = .aspectFit, color: UIColor = LabelStyleKit.black) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
@@ -197,7 +197,7 @@ open class LabelStyleKit : NSObject {
 
     //// Generated Images
 
-    open dynamic class var imageOfHome: UIImage {
+    @objc open dynamic class var imageOfHome: UIImage {
         if Cache.imageOfHome != nil {
             return Cache.imageOfHome!
         }
@@ -211,7 +211,7 @@ open class LabelStyleKit : NSObject {
         return Cache.imageOfHome!
     }
 
-    open dynamic class var imageOfWork: UIImage {
+    @objc open dynamic class var imageOfWork: UIImage {
         if Cache.imageOfWork != nil {
             return Cache.imageOfWork!
         }
@@ -225,7 +225,7 @@ open class LabelStyleKit : NSObject {
         return Cache.imageOfWork!
     }
 
-    open dynamic class var imageOfOther: UIImage {
+    @objc open dynamic class var imageOfOther: UIImage {
         if Cache.imageOfOther != nil {
             return Cache.imageOfOther!
         }

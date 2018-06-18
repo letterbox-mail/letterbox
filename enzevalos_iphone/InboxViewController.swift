@@ -79,7 +79,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         })
     }
 
-    func refresh(_ refreshControl: UIRefreshControl?) {
+    @objc func refresh(_ refreshControl: UIRefreshControl?) {
         lastUpdateText = NSLocalizedString("Updating", comment: "Getting new data")
         let folder = DataHandler.handler.findFolder(with: UserManager.backendInboxFolderPath)
         AppDelegate.getAppDelegate().mailHandler.updateFolder(folder: folder, completionCallback: getMailCompleted)
@@ -208,7 +208,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
         }
     }
 
-    func dismissView() {
+    @objc func dismissView() {
         self.dismiss(animated: true, completion: nil)
     }
 

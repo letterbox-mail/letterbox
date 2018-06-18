@@ -26,7 +26,7 @@ extension Contact {
             tag = seperated.map({if let a = $0.first { return "\(a)" }; return "" }).joined()
         }
 
-        text = NSAttributedString(string: tag.uppercased(), attributes: [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.systemFont(ofSize: 32.2)])
+        text = NSAttributedString(string: tag.uppercased(), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 32.2)])
 
         var myBounds = CGRect()
         myBounds.size.width = 70
