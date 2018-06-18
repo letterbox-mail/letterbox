@@ -954,7 +954,7 @@ class MailHandler {
         if let lower = range?.lowerBound {
             range = text.range(of: "-----END PGP MESSAGE-----")
             if let upper = range?.upperBound {
-                let retValue = text.substring(to: upper).substring(from: lower)
+                let retValue = String(text[lower..<upper])
                 // We do not try to decrypt a previous mails.
                 if retValue.contains(">"){
                     return nil
