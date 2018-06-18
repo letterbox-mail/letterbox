@@ -171,7 +171,7 @@ extension PersistentMail {
         }
         if let key = keyword{
             if let range = (body.range(of: key)?.upperBound){
-                pw = body.substring(from: range)
+                pw = String(body[range...])
                 if let split = pw?.components(separatedBy: CharacterSet.whitespacesAndNewlines){
                     if split.count > 0 && split[0].count > 0{
                         pw = split[0]
