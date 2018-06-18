@@ -260,7 +260,7 @@
 		F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F120607F1DA540FE00F6EF37 /* RefreshControlExtension.swift */; };
 		F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
-		F120A7D31F7937BB006D5BF1 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		F120A7D31F7937BB006D5BF1 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		F12D8DBB2069422A0068788E /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F12D8DBD2069422A0068788E /* About.storyboard */; };
 		F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
 		F14D189D1ED880680080515D /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
@@ -522,7 +522,7 @@
 				47F867E42052B49800AA832F /* libbz2.tbd in Frameworks */,
 				47F867E22052B48E00AA832F /* libz.tbd in Frameworks */,
 				47F867E02052B47C00AA832F /* Security.framework in Frameworks */,
-				F120A7D31F7937BB006D5BF1 /* (null) in Frameworks */,
+				F120A7D31F7937BB006D5BF1 /* BuildFile in Frameworks */,
 				472F396E1E14F384009260FB /* CoreData.framework in Frameworks */,
 				9935BC866A86C4A4B9819F35 /* Pods_enzevalos_iphone.framework in Frameworks */,
 			);
@@ -1010,7 +1010,6 @@
 				3E9709351FAC95F5005825C9 /* Frameworks */,
 				3E9709391FAC95F5005825C9 /* Resources */,
 				FB3C7D2ADF04072A4E301DF7 /* [CP] Embed Pods Frameworks */,
-				DED9F32968663F222C7F4957 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1030,7 +1029,6 @@
 				A13526721D955BDF00D3BFE1 /* Frameworks */,
 				A13526731D955BDF00D3BFE1 /* Resources */,
 				1B3A7EC4B7EC43108D4CA42F /* [CP] Embed Pods Frameworks */,
-				9C00DB37D91C40FACD06D614 /* [CP] Copy Pods Resources */,
 				47F867DB2052B33C00AA832F /* CopyFiles */,
 				47F867E52052B4B500AA832F /* ShellScript */,
 			);
@@ -1051,8 +1049,6 @@
 				A13526881D955BE000D3BFE1 /* Sources */,
 				A13526891D955BE000D3BFE1 /* Frameworks */,
 				A135268A1D955BE000D3BFE1 /* Resources */,
-				6C4CB727DDC2AC31CCE50B26 /* [CP] Embed Pods Frameworks */,
-				E98D3D9213C0A8CF7EDD28B1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1072,8 +1068,6 @@
 				A13526931D955BE000D3BFE1 /* Sources */,
 				A13526941D955BE000D3BFE1 /* Frameworks */,
 				A13526951D955BE000D3BFE1 /* Resources */,
-				F855B7C77E9E7734BC50BC72 /* [CP] Copy Pods Resources */,
-				EE4FF4A968A2B2871F67C256 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1342,50 +1336,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6C4CB727DDC2AC31CCE50B26 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BZipCompression/BZipCompression.framework",
-				"${BUILT_PRODUCTS_DIR}/FrameAccessor/FrameAccessor.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
-				"${BUILT_PRODUCTS_DIR}/Onboard/Onboard.framework",
-				"${BUILT_PRODUCTS_DIR}/VENTokenField/VENTokenField.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BZipCompression.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FrameAccessor.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Onboard.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VENTokenField.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9C00DB37D91C40FACD06D614 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh",
-				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		CB3E7E0953A94645ED8E830A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1420,72 +1370,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DED9F32968663F222C7F4957 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc-resources.sh",
-				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone-AdHoc/Pods-enzevalos_iphone-AdHoc-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E98D3D9213C0A8CF7EDD28B1 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh",
-				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EE4FF4A968A2B2871F67C256 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F855B7C77E9E7734BC50BC72 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneUITests/Pods-enzevalos_iphoneUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FB3C7D2ADF04072A4E301DF7 /* [CP] Embed Pods Frameworks */ = {
