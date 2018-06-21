@@ -217,6 +217,7 @@
 		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
 		A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
 		A135269C1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */; };
+		A135772620DBE63B00B65827 /* QRDiashowScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135772520DBE63B00B65827 /* QRDiashowScannerView.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A1735DFA205AB88500B336DB /* SendViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1735DF9205AB88500B336DB /* SendViewState.swift */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
@@ -418,6 +419,7 @@
 		A13526971D955BE000D3BFE1 /* enzevalos_iphoneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = enzevalos_iphoneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A135269B1D955BE000D3BFE1 /* enzevalos_iphoneUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enzevalos_iphoneUITests.swift; sourceTree = "<group>"; };
 		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A135772520DBE63B00B65827 /* QRDiashowScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRDiashowScannerView.swift; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A1735DF9205AB88500B336DB /* SendViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewState.swift; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
@@ -947,6 +949,7 @@
 			isa = PBXGroup;
 			children = (
 				F113C3841F30D06800E7F1D6 /* QRScannerView.swift */,
+				A135772520DBE63B00B65827 /* QRDiashowScannerView.swift */,
 				F113C38A1F3344C200E7F1D6 /* ViewControllerPannable.swift */,
 				F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */,
 			);
@@ -1516,6 +1519,7 @@
 				8428A85D1F436A05007649A5 /* Badges.swift in Sources */,
 				8428A8651F436A11007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
 				472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */,
+				A135772620DBE63B00B65827 /* QRDiashowScannerView.swift in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
 				47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
