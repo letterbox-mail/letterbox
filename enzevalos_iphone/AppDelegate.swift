@@ -46,8 +46,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.register(defaults: ["Signature.Text": "Verfasst mit Letterbox. Mehr Informationen: http://letterbox.imp.fu-berlin.de?invitation=0"])
             
             self.window = UIWindow(frame: UIScreen.main.bounds)
-            //self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("onboarding")
-            self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
+            self.window?.rootViewController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "onboarding")
+            //self.window?.rootViewController = Onboarding.onboarding(self.credentialCheck)
             self.window?.makeKeyAndVisible()
 
             
