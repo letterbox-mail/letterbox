@@ -26,6 +26,7 @@ class OnboardingDescriptionViewController: UIViewController {
     var viewWillAppearBlock: (() -> ())?
     var viewWillDisappearBlock: (() -> ())?
     var layoutOptimization = true
+    var pageControlDelegate: OnboardingPageControlDelegate?
     
     var videoPath: String?
     
@@ -46,6 +47,13 @@ class OnboardingDescriptionViewController: UIViewController {
                     videoView.backgroundColor = newValue
                 }
             }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let delegate = pageControlDelegate {
+            delegate.contentViewControllerDidAppear(viewController: self)
         }
     }
     

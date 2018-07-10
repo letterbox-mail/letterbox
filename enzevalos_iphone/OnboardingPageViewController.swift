@@ -11,8 +11,10 @@ import Foundation
 class OnboardingPageViewController: UIPageViewController {
     
     var orderedViewControllers: [UIViewController] = []
+    var pageControl = UIPageControl()
     
     let defaultColor = UIColor.darkGray
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +27,13 @@ class OnboardingPageViewController: UIPageViewController {
                                animated: false,
                                completion: nil)
         }
+        pageControl = UIPageControl(frame: CGRect(x: 0, y: UIScreen.main.bounds.maxY - 50, width: UIScreen.main.bounds.width, height: 50))
+        pageControl.numberOfPages = orderedViewControllers.count
+        pageControl.currentPage = 0
+        pageControl.tintColor = UIColor.white
+        pageControl.pageIndicatorTintColor = UIColor.white.withAlphaComponent(0.4)
+        pageControl.currentPageIndicatorTintColor = UIColor.white
+        view.addSubview(pageControl)
     }
     
     func createViewControllers() -> [UIViewController] {
@@ -64,6 +73,7 @@ class OnboardingPageViewController: UIPageViewController {
             welcomeController.descriptionText.textAlignment = NSTextAlignment.center
             welcomeController.videoView.backgroundColor = self.defaultColor
         }
+        welcomeController.pageControlDelegate = self
         array.append(welcomeController)
         
         let letterController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description_new") as! OnboardingDescriptionViewController
@@ -74,6 +84,7 @@ class OnboardingPageViewController: UIPageViewController {
             letterController.titleLabel.text = NSLocalizedString("Letter", comment: "")
             letterController.descriptionText.text = NSLocalizedString("LetterDescription", comment: "describe the letter")
         }
+        letterController.pageControlDelegate = self
         array.append(letterController)
         
         let postcardController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description_new") as! OnboardingDescriptionViewController
@@ -84,6 +95,7 @@ class OnboardingPageViewController: UIPageViewController {
             postcardController.titleLabel.text = NSLocalizedString("Postcard", comment: "")
             postcardController.descriptionText.text = NSLocalizedString("PostcardDescription", comment: "describe the postcard")
         }
+        postcardController.pageControlDelegate = self
         array.append(postcardController)
         
         let helpController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description_new") as! OnboardingDescriptionViewController
@@ -93,6 +105,7 @@ class OnboardingPageViewController: UIPageViewController {
             helpController.descriptionText.textAlignment = NSTextAlignment.center
             helpController.videoPath = Bundle.main.path(forResource: "videoOnboarding2", ofType: "m4v")
         }
+        helpController.pageControlDelegate = self
         array.append(helpController)
         
         /*Colors*/
@@ -150,4 +163,24 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
     }
     
     
+}
+
+extension OnboardingPageViewController: UIPageViewControllerDelegate {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if let previous = previousViewControllers.last {
+            pageControl.currentPage = orderedViewControllers.index(of: previous)!
+        } else {
+            pageControl.currentPage = 0
+        }
+    }
+}
+
+extension OnboardingPageViewController: OnboardingPageControlDelegate {
+    func contentViewControllerDidAppear(viewController: UIViewController) {
+        if let index = orderedViewControllers.index(of: viewController) {
+            pageControl.currentPage = index
+            pageControl.updateCurrentPageDisplay()
+        }
+    }
 }

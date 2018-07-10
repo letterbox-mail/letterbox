@@ -212,6 +212,8 @@
 		A111F6AD1FA77B170060AFDE /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111F6AC1FA77B170060AFDE /* Logger.swift */; };
 		A1123E6A1DA682850069551C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
 		A114E4321FACB23000E40243 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E4311FACB23000E40243 /* StringExtension.swift */; };
+		A124893A20F4D05C008EF21B /* OnboardingTextInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124893920F4D05C008EF21B /* OnboardingTextInputViewController.swift */; };
+		A124893C20F4E006008EF21B /* OnboardingPageControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A124893B20F4E006008EF21B /* OnboardingPageControlDelegate.swift */; };
 		A12FC23120221A1400196008 /* ExportInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12FC23020221A1400196008 /* ExportInfoViewController.swift */; };
 		A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13526781D955BDF00D3BFE1 /* AppDelegate.swift */; };
 		A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
@@ -415,6 +417,8 @@
 		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A114E4311FACB23000E40243 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		A11E733B1E019AE3006574DD /* InitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitViewController.swift; sourceTree = "<group>"; };
+		A124893920F4D05C008EF21B /* OnboardingTextInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextInputViewController.swift; sourceTree = "<group>"; };
+		A124893B20F4E006008EF21B /* OnboardingPageControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageControlDelegate.swift; sourceTree = "<group>"; };
 		A12FC23020221A1400196008 /* ExportInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportInfoViewController.swift; sourceTree = "<group>"; };
 		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -863,6 +867,8 @@
 				A13A14D320DD38CE008F7090 /* DescriptionView.xib */,
 				A13A14D520E3CF90008F7090 /* DescriptionView.swift */,
 				A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */,
+				A124893920F4D05C008EF21B /* OnboardingTextInputViewController.swift */,
+				A124893B20F4E006008EF21B /* OnboardingPageControlDelegate.swift */,
 			);
 			name = new;
 			sourceTree = "<group>";
@@ -1542,6 +1548,7 @@
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				8428A85D1F436A05007649A5 /* Badges.swift in Sources */,
+				A124893A20F4D05C008EF21B /* OnboardingTextInputViewController.swift in Sources */,
 				8428A8651F436A11007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
 				472F39811E1E5347009260FB /* Mail_Address+CoreDataClass.swift in Sources */,
 				A135772620DBE63B00B65827 /* QRDiashowScannerView.swift in Sources */,
@@ -1586,6 +1593,7 @@
 				F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */,
 				4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */,
 				F12060801DA540FE00F6EF37 /* RefreshControlExtension.swift in Sources */,
+				A124893C20F4E006008EF21B /* OnboardingPageControlDelegate.swift in Sources */,
 				A13526811D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld in Sources */,
 				472F39821E1E5347009260FB /* Mail_Address+CoreDataProperties.swift in Sources */,
 				476373C21E09BA88004D5EFE /* UserData.swift in Sources */,
