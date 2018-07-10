@@ -18,6 +18,7 @@ class OnboardingDescriptionViewController: UIViewController {
     @IBOutlet weak var videoView: UIView!
     
     @IBOutlet weak var iconHeight: NSLayoutConstraint!
+    @IBOutlet weak var videoViewHeight: NSLayoutConstraint!
     @IBOutlet weak var underIconPadding: NSLayoutConstraint!
     @IBOutlet weak var underTitlePadding: NSLayoutConstraint!
     
@@ -42,7 +43,7 @@ class OnboardingDescriptionViewController: UIViewController {
                     descriptionText.backgroundColor = newValue
                 }
                 if let videoView = videoView {
-                    //videoView.backgroundColor = newValue
+                    videoView.backgroundColor = newValue
                 }
             }
         }
@@ -62,7 +63,12 @@ class OnboardingDescriptionViewController: UIViewController {
             //avpController = AVPlayerViewController()
             //avpController.player = player
             let playLayer = AVPlayerLayer(player: player)
-            playLayer.frame = videoView.frame
+            playLayer.frame = CGRect(x: 0, y: 0, width: 608*videoViewHeight.constant/1080, height: videoViewHeight.constant)
+            playLayer.videoGravity = AVLayerVideoGravity.resize
+            NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem, queue: .main) { _ in
+                self.player?.seek(to: kCMTimeZero)
+                self.player?.play()
+            }
             videoView.layer.addSublayer(playLayer)
             player.play()
             
@@ -96,5 +102,6 @@ class OnboardingDescriptionViewController: UIViewController {
             iconHeight.constant = 0
         }*/
         titleLabel.font = UIFont(descriptor: titleLabel.font.fontDescriptor, size: view.frame.height*38/referenceSize)
+        videoViewHeight.constant = view.frame.height*500/referenceSize
     }
 }

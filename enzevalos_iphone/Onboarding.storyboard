@@ -97,6 +97,7 @@
                         <outlet property="underIconPadding" destination="5oq-hn-LV5" id="YLc-E6-Z0G"/>
                         <outlet property="underTitlePadding" destination="P2j-aq-j8s" id="aG5-cl-fsL"/>
                         <outlet property="videoView" destination="rxv-EG-fpW" id="q41-v5-Xs4"/>
+                        <outlet property="videoViewHeight" destination="hWb-5a-tTM" id="DbL-XH-BWl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VRf-WW-QBm" userLabel="First Responder" sceneMemberID="firstResponder"/>
