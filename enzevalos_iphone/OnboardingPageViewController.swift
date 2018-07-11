@@ -67,11 +67,11 @@ class OnboardingPageViewController: UIPageViewController {
         array.append(vc)*/
         
         let welcomeController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description_new") as! OnboardingDescriptionViewController
-        welcomeController.viewModification = {
+        welcomeController.viewModification = { [weak self] in
             welcomeController.titleLabel.text = NSLocalizedString("Welcome", comment: "Welcome")
             welcomeController.descriptionText.text = NSLocalizedString("ReadFollowingPages", comment: "")
             welcomeController.descriptionText.textAlignment = NSTextAlignment.center
-            welcomeController.videoView.backgroundColor = self.defaultColor
+            welcomeController.videoView.backgroundColor = self?.defaultColor
         }
         welcomeController.pageControlDelegate = self
         array.append(welcomeController)
@@ -112,9 +112,9 @@ class OnboardingPageViewController: UIPageViewController {
         self.view.backgroundColor = defaultColor
         
         welcomeController.viewWillAppearBlock = {
-            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                welcomeController.backgroundColor = self.defaultColor
-                letterController.backgroundColor = self.defaultColor
+            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { [weak self] in
+                welcomeController.backgroundColor = self?.defaultColor
+                letterController.backgroundColor = self?.defaultColor
             })
         }
         
@@ -137,9 +137,9 @@ class OnboardingPageViewController: UIPageViewController {
         }
         
         helpController.viewWillAppearBlock = {
-            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                postcardController.backgroundColor = self.defaultColor
-                helpController.backgroundColor = self.defaultColor
+            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { [weak self] in
+                postcardController.backgroundColor = self?.defaultColor
+                helpController.backgroundColor = self?.defaultColor
             })
         }
         

@@ -26,7 +26,7 @@ class OnboardingDescriptionViewController: UIViewController {
     var viewWillAppearBlock: (() -> ())?
     var viewWillDisappearBlock: (() -> ())?
     var layoutOptimization = true
-    var pageControlDelegate: OnboardingPageControlDelegate?
+    weak var pageControlDelegate: OnboardingPageControlDelegate?
     
     var videoPath: String?
     

@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol OnboardingPageControlDelegate {
+protocol OnboardingPageControlDelegate: class {
     func contentViewControllerDidAppear(viewController: UIViewController);
 }
