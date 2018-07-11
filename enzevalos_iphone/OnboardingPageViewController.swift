@@ -41,31 +41,6 @@ class OnboardingPageViewController: UIPageViewController {
         
         let duration = 0.5
         
-        /*var vc = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description") as! OnboardingDescriptionViewController2
-//        vc.title = NSLocalizedString("Welcome", comment: "welcome string")
-        //vc.labelText = NSLocalizedString("Welcome", comment: "welcome string")
-        vc.viewModification = {
-            vc.descriptionView.title.text = "lksdjglkdsjg"
-        }
-        vc.descriptionView = DescriptionView(frame: vc.view.frame)
-        array.append(vc)
-        
-        vc = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description") as! OnboardingDescriptionViewController2
-        //        vc.title = NSLocalizedString("Welcome", comment: "welcome string")
-        //vc.labelText = NSLocalizedString("Welcome", comment: "welcome string")
-        vc.viewModification = {
-            UIGraphicsBeginImageContextWithOptions(CGSize(width: vc.descriptionView.image.frame.width, height: vc.descriptionView.image.frame.height), false, 0)
-            IconsStyleKit.drawLetter(frame: CGRect(x: 0, y: 0, width: vc.descriptionView.image.frame.width, height: vc.descriptionView.image.frame.height), fillBackground: true)
-            vc.descriptionView.image.image = UIGraphicsGetImageFromCurrentImageContext()!
-            vc.descriptionView.backgroundColor = ThemeManager.encryptedMessageColor()
-        }
-        vc.descriptionView = DescriptionView(frame: vc.view.frame)
-        vc.viewWillAppearBlock = {
-            UIView.animate(withDuration: duration, delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: { self.view.backgroundColor = ThemeManager.encryptedMessageColor(); self.view.setNeedsDisplay() })
-            
-        }
-        array.append(vc)*/
-        
         let welcomeController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description_new") as! OnboardingDescriptionViewController
         welcomeController.viewModification = { [weak self] in
             welcomeController.titleLabel.text = NSLocalizedString("Welcome", comment: "Welcome")
