@@ -83,29 +83,22 @@ class OnboardingPageViewController: UIPageViewController {
         helpController.pageControlDelegate = self
         array.append(helpController)
         
-        let entryView = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
-        entryView.viewModification = {
-            entryView.labelBottom.text = nil
-            entryView.disableSecondSection = true
+        let decisionController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "buttonInputView") as! OnboardingButtonInputViewController
+        decisionController.viewModification = {
+            decisionController.labelTop.text = NSLocalizedString("ImportSettings", comment: "ask whether settings from desktop should be imported")
+            decisionController.leftButton.setTitle(NSLocalizedString("yes", comment: "agree"), for: UIControlState.normal)
+            decisionController.rightButton.setTitle(NSLocalizedString("no", comment: "disagree"), for: UIControlState.normal)
         }
-        entryView.pageControlDelegate = self
-        array.append(entryView)
+        decisionController.pageControlDelegate = self
+        array.append(decisionController)
         
-        let entryView2 = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "pickerInputView") as! OnboardingPickerInputViewController
-        entryView2.viewModification = {
-            //entryView2.labelBottom.text = nil
-            //entryView2.disableSecondSection = true
+        let introduceScannerController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "introduceScannerView") as! OnboardingIntroduceScannerViewController
+        introduceScannerController.viewModification = {
+            introduceScannerController.labelTop.text = NSLocalizedString("IntroduceImportScanner", comment: "introduce the scanner and the related desktop tool")
+            introduceScannerController.scanButton.setTitle(NSLocalizedString("scan", comment: "begin to scan"), for: UIControlState.normal)
         }
-        entryView2.pageControlDelegate = self
-        array.append(entryView2)
-        
-        let entryView3 = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "buttonInputView") as! OnboardingButtonInputViewController
-        entryView3.viewModification = {
-            //entryView2.labelBottom.text = nil
-            //entryView2.disableSecondSection = true
-        }
-        entryView3.pageControlDelegate = self
-        array.append(entryView3)
+        introduceScannerController.pageControlDelegate = self
+        array.append(introduceScannerController)
         
         /*Colors*/
         self.view.backgroundColor = defaultColor

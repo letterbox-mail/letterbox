@@ -243,6 +243,7 @@
 		A1E6649B20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6649A20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift */; };
 		A1E6649F20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6649E20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift */; };
 		A1E664A120F64127009D9AB7 /* OnboardingButtonInputDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E664A020F64127009D9AB7 /* OnboardingButtonInputDelegate.swift */; };
+		A1E664A320F656B3009D9AB7 /* OnboardingIntroduceScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E664A220F656B3009D9AB7 /* OnboardingIntroduceScannerViewController.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
 		A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
@@ -460,6 +461,7 @@
 		A1E6649A20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextInputDelegate.swift; sourceTree = "<group>"; };
 		A1E6649E20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingButtonInputViewController.swift; sourceTree = "<group>"; };
 		A1E664A020F64127009D9AB7 /* OnboardingButtonInputDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingButtonInputDelegate.swift; sourceTree = "<group>"; };
+		A1E664A220F656B3009D9AB7 /* OnboardingIntroduceScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingIntroduceScannerViewController.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		A1EB057B1D956838008659C1 /* MailHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandler.swift; sourceTree = "<group>"; };
@@ -881,6 +883,7 @@
 				A1E6649820F627B9009D9AB7 /* OnboardingPickerInputViewController.swift */,
 				A1E6649E20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift */,
 				A1E664A020F64127009D9AB7 /* OnboardingButtonInputDelegate.swift */,
+				A1E664A220F656B3009D9AB7 /* OnboardingIntroduceScannerViewController.swift */,
 			);
 			name = new;
 			sourceTree = "<group>";
@@ -1633,6 +1636,7 @@
 				A13526791D955BDF00D3BFE1 /* AppDelegate.swift in Sources */,
 				A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */,
 				8428A85F1F436A05007649A5 /* GamificationData.swift in Sources */,
+				A1E664A320F656B3009D9AB7 /* OnboardingIntroduceScannerViewController.swift in Sources */,
 				475DF4791F0D54C9009D807F /* Folder+CoreDataClass.swift in Sources */,
 				A135772D20DBF77900B65827 /* OnboardingPageViewController.swift in Sources */,
 				3EC35F2D200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */,

@@ -47,6 +47,7 @@
 "GetHelp" = "Um Hilfe zu erhalten, tippe auf den Brief oder die Postkarte in der App.";
 "GotIt" = "Verstanden!";
 "Hello" = "Hallo";
+"ImportSettings" = "Nutzt du deinen E-Mailaccount bereits auf einem Desktop-Rechner und willst die Konfigurationen von dort importieren?";
 "INBOX" = "INBOX";
 "Inbox" = "Postfach";//Briefkasten?
 "Insecure" = "Unsicher";
@@ -70,6 +71,7 @@
 "MoreInformation" = "Weitere Informationen";
 "Next" = "Weiter";
 "next" = "weiter";
+"no" = "Nein";
 "None" = "Keine";
 "NormalPassword" = "Normal, Passwort";
 "Now" = "jetzt";
@@ -119,6 +121,7 @@
 "WhatAShame" = "Schade!";
 "WrongMailAddressOrPassword" = "Die E-Mail-Adresse oder das Passwort waren falsch. Bitte probiere es erneut!";
 "write" = "verfassen";
+"yes" = "Ja";
 "Yesterday" = "Gestern";
 "NoFurtherMessages" = "Keine weiteren Nachrichten...";
 "Updating" = "Aktualisiere...";

@@ -61,44 +61,46 @@ class QRDiashowScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjec
         let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
         
         do {
-            // Get an instance of the AVCaptureDeviceInput class using the previous device object.
-            let input = try AVCaptureDeviceInput(device: captureDevice!)
-            
-            // Initialize the captureSession object.
-            captureSession = AVCaptureSession()
-            
-            // Set the input device on the capture session.
-            captureSession?.addInput(input)
-            
-            // Initialize a AVCaptureMetadataOutput object and set it as the output device to the capture session.
-            let captureMetadataOutput = AVCaptureMetadataOutput()
-            captureSession?.addOutput(captureMetadataOutput)
-            
-            // Set delegate and use the default dispatch queue to execute the call back
-            captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            captureMetadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
-            
-            // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
-            videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
-            videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-            videoPreviewLayer?.frame = view.layer.bounds
-            view.layer.addSublayer(videoPreviewLayer!)
-            
-            // Initialize QR Code Frame to highlight the QR code
-            qrCodeFrameView = CAShapeLayer()
-            
-            if let qrCodeFrameView = qrCodeFrameView {
-                qrCodeFrameColor = UIColor.orange
-                qrCodeFrameView.lineWidth = 2
-                qrCodeFrameView.lineJoin = kCALineJoinMiter
-                view.layer.addSublayer(qrCodeFrameView)
+            if let device = captureDevice {
+                // Get an instance of the AVCaptureDeviceInput class using the previous device object.
+                let input = try AVCaptureDeviceInput(device: device)
+                
+                // Initialize the captureSession object.
+                captureSession = AVCaptureSession()
+                
+                // Set the input device on the capture session.
+                captureSession?.addInput(input)
+                
+                // Initialize a AVCaptureMetadataOutput object and set it as the output device to the capture session.
+                let captureMetadataOutput = AVCaptureMetadataOutput()
+                captureSession?.addOutput(captureMetadataOutput)
+                
+                // Set delegate and use the default dispatch queue to execute the call back
+                captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+                captureMetadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
+                
+                // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
+                videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
+                videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
+                videoPreviewLayer?.frame = view.layer.bounds
+                view.layer.addSublayer(videoPreviewLayer!)
+                
+                // Initialize QR Code Frame to highlight the QR code
+                qrCodeFrameView = CAShapeLayer()
+                
+                if let qrCodeFrameView = qrCodeFrameView {
+                    qrCodeFrameColor = UIColor.orange
+                    qrCodeFrameView.lineWidth = 2
+                    qrCodeFrameView.lineJoin = kCALineJoinMiter
+                    view.layer.addSublayer(qrCodeFrameView)
+                }
+                
+                view.bringSubview(toFront: topBar)
+                view.bringSubview(toFront: bottomBar)
+                
+                // Start video capture.
+                captureSession?.startRunning()
             }
-            
-            view.bringSubview(toFront: topBar)
-            view.bringSubview(toFront: bottomBar)
-            
-            // Start video capture.
-            captureSession?.startRunning()
         } catch {
             // If any error occurs, simply print it out and don't continue any more.
             print(error)

@@ -1,5 +1,5 @@
 //
-//  OnboardingButtonInputViewController.swift
+//  OnboardingIntroduceScannerViewController.swift
 //  enzevalos_iphone
 //
 //  Created by jakobsbode on 11.07.18.
@@ -8,11 +8,10 @@
 
 import Foundation
 
-class OnboardingButtonInputViewController: UIViewController {
+class OnboardingIntroduceScannerViewController: UIViewController {
     
     @IBOutlet weak var labelTop: UILabel!
-    @IBOutlet weak var leftButton: UIButton!
-    @IBOutlet weak var rightButton: UIButton!
+    @IBOutlet weak var scanButton: UIButton!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
     @IBOutlet weak var underLabelTopPadding: NSLayoutConstraint!
     
@@ -27,17 +26,14 @@ class OnboardingButtonInputViewController: UIViewController {
     
     var buttonFont: UIFont? {
         get {
-            if let label = leftButton.titleLabel {
+            if let label = scanButton.titleLabel {
                 return label.font
             }
             return nil
         }
         set(font) {
-            if leftButton.titleLabel != nil {
-                leftButton.titleLabel?.font = font
-            }
-            if rightButton.titleLabel != nil {
-                rightButton.titleLabel?.font = font
+            if scanButton.titleLabel != nil {
+                scanButton.titleLabel?.font = font
             }
         }
     }
@@ -48,11 +44,8 @@ class OnboardingButtonInputViewController: UIViewController {
         }
         set(color) {
             labelTop.textColor = color
-            if leftButton.titleLabel != nil {
-                leftButton.titleLabel?.textColor = color
-            }
-            if rightButton.titleLabel != nil {
-                rightButton.titleLabel?.textColor = color
+            if scanButton.titleLabel != nil {
+                scanButton.titleLabel?.textColor = color
             }
         }
     }
