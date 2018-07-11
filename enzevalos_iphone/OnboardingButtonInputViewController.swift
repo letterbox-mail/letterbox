@@ -100,5 +100,6 @@ class OnboardingButtonInputViewController: UIViewController {
         topSpace.constant *= view.frame.height/referenceSize
         labelTop.font = UIFont(descriptor: labelTop.font.fontDescriptor, size: 28*sqrt(view.frame.height/referenceSize))
         buttonFont = UIFont(descriptor: labelTop.font.fontDescriptor, size: 23*sqrt(view.frame.height/referenceSize))
+        /*TODO: set selected color for buttons*/
     }
 }
