@@ -109,7 +109,7 @@ class OnboardingDescriptionViewController: UIViewController {
         /*if icon.image == nil {
             iconHeight.constant = 0
         }*/
-        titleLabel.font = UIFont(descriptor: titleLabel.font.fontDescriptor, size: view.frame.height*38/referenceSize)
+        titleLabel.font = UIFont(descriptor: titleLabel.font.fontDescriptor, size: 38*sqrt(view.frame.height/referenceSize))
         videoViewHeight.constant = view.frame.height*500/referenceSize
     }
 }
