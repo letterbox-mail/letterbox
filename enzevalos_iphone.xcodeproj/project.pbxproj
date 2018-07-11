@@ -239,6 +239,10 @@
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
 		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
 		A1E5960E1FCC871F003791E9 /* researchteam.asc in Resources */ = {isa = PBXBuildFile; fileRef = A1E5960D1FCC871E003791E9 /* researchteam.asc */; };
+		A1E6649920F627B9009D9AB7 /* OnboardingPickerInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6649820F627B9009D9AB7 /* OnboardingPickerInputViewController.swift */; };
+		A1E6649B20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6649A20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift */; };
+		A1E6649F20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E6649E20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift */; };
+		A1E664A120F64127009D9AB7 /* OnboardingButtonInputDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E664A020F64127009D9AB7 /* OnboardingButtonInputDelegate.swift */; };
 		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
 		A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
@@ -452,6 +456,10 @@
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
 		A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListCell.swift; sourceTree = "<group>"; };
 		A1E5960D1FCC871E003791E9 /* researchteam.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = researchteam.asc; path = keys/researchteam.asc; sourceTree = "<group>"; };
+		A1E6649820F627B9009D9AB7 /* OnboardingPickerInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPickerInputViewController.swift; sourceTree = "<group>"; };
+		A1E6649A20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextInputDelegate.swift; sourceTree = "<group>"; };
+		A1E6649E20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingButtonInputViewController.swift; sourceTree = "<group>"; };
+		A1E664A020F64127009D9AB7 /* OnboardingButtonInputDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingButtonInputDelegate.swift; sourceTree = "<group>"; };
 		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		A1EB057B1D956838008659C1 /* MailHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandler.swift; sourceTree = "<group>"; };
@@ -868,7 +876,11 @@
 				A13A14D520E3CF90008F7090 /* DescriptionView.swift */,
 				A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */,
 				A124893920F4D05C008EF21B /* OnboardingTextInputViewController.swift */,
+				A1E6649A20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift */,
 				A124893B20F4E006008EF21B /* OnboardingPageControlDelegate.swift */,
+				A1E6649820F627B9009D9AB7 /* OnboardingPickerInputViewController.swift */,
+				A1E6649E20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift */,
+				A1E664A020F64127009D9AB7 /* OnboardingButtonInputDelegate.swift */,
 			);
 			name = new;
 			sourceTree = "<group>";
@@ -1544,6 +1556,7 @@
 				472F39861E1FA34E009260FB /* Record.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
+				A1E6649F20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift in Sources */,
 				A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
@@ -1554,10 +1567,12 @@
 				A135772620DBE63B00B65827 /* QRDiashowScannerView.swift in Sources */,
 				A1EB05821D95685B008659C1 /* CollectionDataDelegate.swift in Sources */,
 				47D1302B1F7CEE6D007B14DF /* DebugSettings.swift in Sources */,
+				A1E664A120F64127009D9AB7 /* OnboardingButtonInputDelegate.swift in Sources */,
 				A1EB05801D956851008659C1 /* SendViewController.swift in Sources */,
 				A13A14D820E3E503008F7090 /* OnboardingDescriptionViewController.swift in Sources */,
 				47691A8C1ECC3EC7004BCFC5 /* EphemeralMail.swift in Sources */,
 				8428A8671F436A11007649A5 /* SubBadgeHeaderTableViewCell.swift in Sources */,
+				A1E6649B20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift in Sources */,
 				A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */,
 				F1984D721E1D327200804E1E /* IconsStyleKit.swift in Sources */,
 				F1737ACB2031D7D70000312B /* StudySettings.swift in Sources */,
@@ -1589,6 +1604,7 @@
 				A12FC23120221A1400196008 /* ExportInfoViewController.swift in Sources */,
 				475DF47A1F0D54C9009D807F /* Folder+CoreDataProperties.swift in Sources */,
 				472F392C1E1277D2009260FB /* PersistentMail +CoreDataClass.swift in Sources */,
+				A1E6649920F627B9009D9AB7 /* OnboardingPickerInputViewController.swift in Sources */,
 				475B00431F7BB6D6006CDD41 /* PersistentKey+CoreDataProperties.swift in Sources */,
 				F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */,
 				4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */,

@@ -83,6 +83,30 @@ class OnboardingPageViewController: UIPageViewController {
         helpController.pageControlDelegate = self
         array.append(helpController)
         
+        let entryView = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
+        entryView.viewModification = {
+            entryView.labelBottom.text = nil
+            entryView.disableSecondSection = true
+        }
+        entryView.pageControlDelegate = self
+        array.append(entryView)
+        
+        let entryView2 = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "pickerInputView") as! OnboardingPickerInputViewController
+        entryView2.viewModification = {
+            //entryView2.labelBottom.text = nil
+            //entryView2.disableSecondSection = true
+        }
+        entryView2.pageControlDelegate = self
+        array.append(entryView2)
+        
+        let entryView3 = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "buttonInputView") as! OnboardingButtonInputViewController
+        entryView3.viewModification = {
+            //entryView2.labelBottom.text = nil
+            //entryView2.disableSecondSection = true
+        }
+        entryView3.pageControlDelegate = self
+        array.append(entryView3)
+        
         /*Colors*/
         self.view.backgroundColor = defaultColor
         

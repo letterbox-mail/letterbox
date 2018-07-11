@@ -1,32 +1,29 @@
 //
-//  OnboardingTextInputViewController.swift
+//  OnboardingPickerInputViewController.swift
 //  enzevalos_iphone
 //
-//  Created by jakobsbode on 10.07.18.
+//  Created by jakobsbode on 11.07.18.
 //  Copyright © 2018 fu-berlin. All rights reserved.
 //
 
 import Foundation
 
-class OnboardingTextInputViewController: UIViewController {
+class OnboardingPickerInputViewController: UIViewController {
     
     @IBOutlet weak var labelTop: UILabel!
-    @IBOutlet weak var textFieldTop: UITextField!
-    @IBOutlet weak var underlineTop: UIView!
+    
+    
     @IBOutlet weak var labelBottom: UILabel!
-    @IBOutlet weak var textFieldBottom: UITextField!
-    @IBOutlet weak var underlineBottom: UIView!
+    
     @IBOutlet weak var nextButton: UIButton!
     
+    @IBOutlet weak var pickerViewTop: UIPickerView!
+    @IBOutlet weak var pickerViewBottom: UIPickerView!
     @IBOutlet weak var topSpace: NSLayoutConstraint!
     @IBOutlet weak var underLabelTopPadding: NSLayoutConstraint!
-    @IBOutlet weak var underTextFieldTopPadding: NSLayoutConstraint!
     @IBOutlet weak var sectionSpace: NSLayoutConstraint!
     @IBOutlet weak var underLabelBottomPadding: NSLayoutConstraint!
-    @IBOutlet weak var underTextFieldBottomPadding: NSLayoutConstraint!
     @IBOutlet weak var underNextButtonPadding: NSLayoutConstraint!
-    @IBOutlet weak var underlineTopHeight: NSLayoutConstraint!
-    @IBOutlet weak var underlineBottomHeight: NSLayoutConstraint!
     
     var underLabelPadding: CGFloat {
         get {
@@ -35,26 +32,6 @@ class OnboardingTextInputViewController: UIViewController {
         set(padding) {
             underLabelTopPadding.constant = padding
             underLabelBottomPadding.constant = padding
-        }
-    }
-    
-    var underTextFieldPadding: CGFloat {
-        get {
-            return underTextFieldTopPadding.constant
-        }
-        set(padding) {
-            underTextFieldTopPadding.constant = padding
-            underTextFieldBottomPadding.constant = padding
-        }
-    }
-    
-    var underlineHeight: CGFloat {
-        get {
-            return underlineTopHeight.constant
-        }
-        set(height) {
-            underlineTopHeight.constant = height
-            underlineBottomHeight.constant = height
         }
     }
     
@@ -68,16 +45,26 @@ class OnboardingTextInputViewController: UIViewController {
         }
     }
     
+    var pickerViewTintColor: UIColor {
+        get {
+            return pickerViewTop.tintColor
+        }
+        set(color) {
+            pickerViewTop.tintColor = color
+            pickerViewBottom.tintColor = color
+        }
+    }
+    
     var viewModification: (() -> ())?
     var viewWillAppearBlock: (() -> ())?
     var viewWillDisappearBlock: (() -> ())?
     var layoutOptimization = true
     var disableSecondSection = false
     var disableButton = true
-    var enableKeyboardAccessory = true
     weak var pageControlDelegate: OnboardingPageControlDelegate?
     
     override func viewDidLoad() {
+        
         if let modification = viewModification {
             modification()
         }
@@ -110,33 +97,16 @@ class OnboardingTextInputViewController: UIViewController {
     func optimizeLayout() {
         let referenceSize: CGFloat = 812.0
         underLabelPadding *= view.frame.height/referenceSize
-        underTextFieldPadding *= underTextFieldPadding/referenceSize
         topSpace.constant *= view.frame.height/referenceSize
-        underlineHeight = 0.5
         if labelBottom.text == nil {
             underLabelBottomPadding.constant = 0
         }
         if disableSecondSection {
-            textFieldBottom.removeFromSuperview()
-            underlineBottom.removeFromSuperview()
+            pickerViewBottom.removeFromSuperview()
+            labelBottom.removeFromSuperview()
         }
         if disableButton {
             nextButton.removeFromSuperview()
-        }
-        if enableKeyboardAccessory {
-            let keyboardToolbar = UIToolbar()
-            keyboardToolbar.sizeToFit()
-            keyboardToolbar.barTintColor = defaultColor
-            keyboardToolbar.backgroundColor = defaultColor
-            let googleBarButton = UIBarButtonItem(title: "Login with Google", style: .plain, target: self, action: nil)
-            googleBarButton.tintColor = .orange
-            let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
-            doneBarButton.tintColor = .orange
-            keyboardToolbar.items = [googleBarButton, flexBarButton, doneBarButton]
-            textFieldTop.inputAccessoryView = keyboardToolbar
-            textFieldBottom.inputAccessoryView = keyboardToolbar
-
         }
         labelFont = UIFont(descriptor: labelFont.fontDescriptor, size: 28*sqrt(view.frame.height/referenceSize))
     }
