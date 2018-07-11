@@ -90,6 +90,7 @@ class OnboardingPageViewController: UIPageViewController {
             decisionController.rightButton.setTitle(NSLocalizedString("no", comment: "disagree"), for: UIControlState.normal)
         }
         decisionController.pageControlDelegate = self
+        decisionController.buttonInputDelegate = self
         array.append(decisionController)
         
         let introduceScannerController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "introduceScannerView") as! OnboardingIntroduceScannerViewController
@@ -174,5 +175,17 @@ extension OnboardingPageViewController: OnboardingPageControlDelegate {
             pageControl.currentPage = index
             pageControl.updateCurrentPageDisplay()
         }
+    }
+}
+
+extension OnboardingPageViewController: OnboardingButtonInputDelegate {
+    func leftButtonTapped() {
+        let index = pageControl.currentPage
+        if index+1 < orderedViewControllers.count {
+            setViewControllers([orderedViewControllers[index+1]], direction: .forward, animated: true, completion: nil)
+        }
+    }
+    func rightButtonTapped() {
+        //TODO goto other pageViewController
     }
 }

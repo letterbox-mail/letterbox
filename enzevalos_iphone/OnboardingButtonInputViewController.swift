@@ -62,6 +62,7 @@ class OnboardingButtonInputViewController: UIViewController {
     var viewWillDisappearBlock: (() -> ())?
     var layoutOptimization = true
     weak var pageControlDelegate: OnboardingPageControlDelegate?
+    weak var buttonInputDelegate: OnboardingButtonInputDelegate?
     
     override func viewDidLoad() {
         
@@ -91,6 +92,18 @@ class OnboardingButtonInputViewController: UIViewController {
         super.viewWillDisappear(animated)
         if let block = viewWillDisappearBlock {
             block()
+        }
+    }
+    
+    @IBAction func leftButtonTapped(_ sender: Any) {
+        if let delegate = buttonInputDelegate {
+            delegate.leftButtonTapped()
+        }
+    }
+    
+    @IBAction func rightButtonTapped(_ sender: Any) {
+        if let delegate = buttonInputDelegate {
+            delegate.rightButtonTapped()
         }
     }
     
