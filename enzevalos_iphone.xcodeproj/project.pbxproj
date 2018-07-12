@@ -222,8 +222,6 @@
 		A135772620DBE63B00B65827 /* QRDiashowScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135772520DBE63B00B65827 /* QRDiashowScannerView.swift */; };
 		A135772A20DBF65400B65827 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A135772920DBF65400B65827 /* Onboarding.storyboard */; };
 		A135772D20DBF77900B65827 /* OnboardingIntroPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */; };
-		A13A14D420DD38CE008F7090 /* DescriptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A13A14D320DD38CE008F7090 /* DescriptionView.xib */; };
-		A13A14D620E3CF90008F7090 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13A14D520E3CF90008F7090 /* DescriptionView.swift */; };
 		A13A14D820E3E503008F7090 /* OnboardingDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */; };
 		A15D18B620F7910D00C57844 /* OnboardingSpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15D18B520F7910D00C57844 /* OnboardingSpinnerViewController.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
@@ -438,8 +436,6 @@
 		A135772520DBE63B00B65827 /* QRDiashowScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRDiashowScannerView.swift; sourceTree = "<group>"; };
 		A135772920DBF65400B65827 /* Onboarding.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingIntroPageViewController.swift; sourceTree = "<group>"; };
-		A13A14D320DD38CE008F7090 /* DescriptionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DescriptionView.xib; sourceTree = "<group>"; };
-		A13A14D520E3CF90008F7090 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDescriptionViewController.swift; sourceTree = "<group>"; };
 		A15D18B520F7910D00C57844 /* OnboardingSpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSpinnerViewController.swift; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
@@ -879,8 +875,6 @@
 				A15D18B720F795FA00C57844 /* templates */,
 				A135772920DBF65400B65827 /* Onboarding.storyboard */,
 				A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */,
-				A13A14D320DD38CE008F7090 /* DescriptionView.xib */,
-				A13A14D520E3CF90008F7090 /* DescriptionView.swift */,
 			);
 			name = new;
 			sourceTree = "<group>";
@@ -1297,7 +1291,6 @@
 				47CD5AAA2012368D00E771A1 /* logging_pk.asc in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
 				4756DE0E20402F8E00452288 /* invitationTextCensor.html in Resources */,
-				A13A14D420DD38CE008F7090 /* DescriptionView.xib in Resources */,
 				A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
 				A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */,
@@ -1671,7 +1664,6 @@
 				A1C62E9A2018F716000E5273 /* OnboardingValueState.swift in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
 				A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */,
-				A13A14D620E3CF90008F7090 /* DescriptionView.swift in Sources */,
 				472F398E1E251B8D009260FB /* MailAddress.swift in Sources */,
 				A198D2292056B384004CC838 /* SendViewDelegate.swift in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
