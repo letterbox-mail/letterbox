@@ -75,6 +75,7 @@
 "None" = "Keine";
 "NormalPassword" = "Normal, Passwort";
 "Now" = "jetzt";
+"of" = "von";
 "OneMinuteAgo" = "vor 1 min";
 "original message" = "originale Nachricht";
 "Password" = "Passwort";
@@ -96,6 +97,7 @@
 "Refresh" = "Erneut laden";
 "Reply" = "Antworten";
 "SaveAsDraft" = "Als Entwurf speichern";
+"scanned" = "gescannt";
 "Secure" = "Sicher";
 "Send" = "Senden";
 "SendError" = "Ein Fehler ist aufgetreten"; //mehr spezifizieren?
