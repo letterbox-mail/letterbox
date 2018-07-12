@@ -1,5 +1,5 @@
 //
-//  OnboardingPageViewController.swift
+//  OnboardingIntroPageViewController.swift
 //  enzevalos_iphone
 //
 //  Created by jakobsbode on 21.06.18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class OnboardingPageViewController: UIPageViewController {
+class OnboardingIntroPageViewController: UIPageViewController {
     
     var orderedViewControllers: [UIViewController] = []
     var pageControl = UIPageControl()
@@ -81,6 +81,7 @@ class OnboardingPageViewController: UIPageViewController {
             helpController.videoPath = Bundle.main.path(forResource: "videoOnboarding2", ofType: "m4v")
         }
         helpController.pageControlDelegate = self
+        helpController.descriptionViewDelegate = self
         array.append(helpController)
         
         let decisionController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "buttonInputView") as! OnboardingButtonInputViewController
@@ -139,7 +140,7 @@ class OnboardingPageViewController: UIPageViewController {
         return array
     }
 }
-extension OnboardingPageViewController: UIPageViewControllerDataSource {
+extension OnboardingIntroPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         if let index = orderedViewControllers.index(of: viewController), index > 0 {
@@ -158,7 +159,7 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
     
 }
 
-extension OnboardingPageViewController: UIPageViewControllerDelegate {
+extension OnboardingIntroPageViewController: UIPageViewControllerDelegate {
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if let previous = previousViewControllers.last {
@@ -169,7 +170,7 @@ extension OnboardingPageViewController: UIPageViewControllerDelegate {
     }
 }
 
-extension OnboardingPageViewController: OnboardingPageControlDelegate {
+extension OnboardingIntroPageViewController: OnboardingPageControlDelegate {
     func contentViewControllerDidAppear(viewController: UIViewController) {
         if let index = orderedViewControllers.index(of: viewController) {
             pageControl.currentPage = index
@@ -178,7 +179,7 @@ extension OnboardingPageViewController: OnboardingPageControlDelegate {
     }
 }
 
-extension OnboardingPageViewController: OnboardingButtonInputDelegate {
+extension OnboardingIntroPageViewController: OnboardingButtonInputDelegate {
     func leftButtonTapped() {
         let index = pageControl.currentPage
         if index+1 < orderedViewControllers.count {
@@ -187,5 +188,15 @@ extension OnboardingPageViewController: OnboardingButtonInputDelegate {
     }
     func rightButtonTapped() {
         //TODO goto other pageViewController
+    }
+}
+
+extension OnboardingIntroPageViewController: OnboardingDescriptionViewDelegate {
+    //used for helpController
+    func videoViewTapped() {
+        let index = pageControl.currentPage
+        if index+1 < orderedViewControllers.count {
+            setViewControllers([orderedViewControllers[index+1]], direction: .forward, animated: true, completion: nil)
+        }
     }
 }

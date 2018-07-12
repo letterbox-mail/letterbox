@@ -27,6 +27,7 @@ class OnboardingDescriptionViewController: UIViewController {
     var viewWillDisappearBlock: (() -> ())?
     var layoutOptimization = true
     weak var pageControlDelegate: OnboardingPageControlDelegate?
+    weak var descriptionViewDelegate: OnboardingDescriptionViewDelegate?
     
     var videoPath: String?
     
@@ -98,6 +99,12 @@ class OnboardingDescriptionViewController: UIViewController {
         super.viewWillDisappear(animated)
         if let block = viewWillDisappearBlock {
             block()
+        }
+    }
+    
+    @IBAction func tappedVideoView(_ sender: Any) {
+        if let delegate = descriptionViewDelegate {
+            delegate.videoViewTapped()
         }
     }
     

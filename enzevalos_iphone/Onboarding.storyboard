@@ -21,10 +21,10 @@
             </objects>
             <point key="canvasLocation" x="-291" y="-381"/>
         </scene>
-        <!--Onboarding Page View Controller-->
+        <!--Onboarding Intro Page View Controller-->
         <scene sceneID="1hc-ob-0gN">
             <objects>
-                <pageViewController storyboardIdentifier="onboarding" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="GNu-Kq-U7l" customClass="OnboardingPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="onboarding" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="GNu-Kq-U7l" customClass="OnboardingIntroPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4MT-ld-5FK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-290" y="101"/>
@@ -63,10 +63,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rxv-EG-fpW">
                                 <rect key="frame" x="72" y="423" width="231" height="410"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="rxv-EG-fpW" secondAttribute="height" multiplier="608:1080" id="X5M-XQ-sK2"/>
                                     <constraint firstAttribute="height" constant="410" id="hWb-5a-tTM"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="tes-fA-BAE" appends="YES" id="yev-iD-VjY"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -95,6 +99,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VRf-WW-QBm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="tes-fA-BAE">
+                    <connections>
+                        <action selector="tappedVideoView:" destination="2H0-gJ-aTX" id="ZK0-Y9-usi"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-290" y="839"/>
         </scene>
