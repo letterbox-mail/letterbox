@@ -41,6 +41,13 @@ class OnboardingIntroPageViewController: UIPageViewController {
         
         let duration = 0.5
         
+        let spinnerController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "spinnerView") as! OnboardingSpinnerViewController
+        spinnerController.viewModification = {
+            spinnerController.labelTop.text = NSLocalizedString("Welcome", comment: "Welcome")
+        }
+        spinnerController.pageControlDelegate = self
+        array.append(spinnerController)
+        
         let welcomeController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description_new") as! OnboardingDescriptionViewController
         welcomeController.viewModification = { [weak self] in
             welcomeController.titleLabel.text = NSLocalizedString("Welcome", comment: "Welcome")

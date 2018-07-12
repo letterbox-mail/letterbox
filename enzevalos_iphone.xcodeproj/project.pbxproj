@@ -225,6 +225,7 @@
 		A13A14D420DD38CE008F7090 /* DescriptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A13A14D320DD38CE008F7090 /* DescriptionView.xib */; };
 		A13A14D620E3CF90008F7090 /* DescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13A14D520E3CF90008F7090 /* DescriptionView.swift */; };
 		A13A14D820E3E503008F7090 /* OnboardingDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */; };
+		A15D18B620F7910D00C57844 /* OnboardingSpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15D18B520F7910D00C57844 /* OnboardingSpinnerViewController.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A1735DFA205AB88500B336DB /* SendViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1735DF9205AB88500B336DB /* SendViewState.swift */; };
 		A18323D020F7760300BEAAEC /* OnboardingDescriptionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18323CF20F7760300BEAAEC /* OnboardingDescriptionViewDelegate.swift */; };
@@ -440,6 +441,7 @@
 		A13A14D320DD38CE008F7090 /* DescriptionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DescriptionView.xib; sourceTree = "<group>"; };
 		A13A14D520E3CF90008F7090 /* DescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionView.swift; sourceTree = "<group>"; };
 		A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDescriptionViewController.swift; sourceTree = "<group>"; };
+		A15D18B520F7910D00C57844 /* OnboardingSpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSpinnerViewController.swift; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A1735DF9205AB88500B336DB /* SendViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewState.swift; sourceTree = "<group>"; };
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
@@ -874,21 +876,38 @@
 		A135772B20DBF71900B65827 /* new */ = {
 			isa = PBXGroup;
 			children = (
+				A15D18B720F795FA00C57844 /* templates */,
 				A135772920DBF65400B65827 /* Onboarding.storyboard */,
 				A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */,
 				A13A14D320DD38CE008F7090 /* DescriptionView.xib */,
 				A13A14D520E3CF90008F7090 /* DescriptionView.swift */,
-				A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */,
-				A124893920F4D05C008EF21B /* OnboardingTextInputViewController.swift */,
-				A1E6649A20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift */,
-				A124893B20F4E006008EF21B /* OnboardingPageControlDelegate.swift */,
-				A1E6649820F627B9009D9AB7 /* OnboardingPickerInputViewController.swift */,
-				A1E6649E20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift */,
-				A1E664A020F64127009D9AB7 /* OnboardingButtonInputDelegate.swift */,
-				A1E664A220F656B3009D9AB7 /* OnboardingIntroduceScannerViewController.swift */,
-				A18323CF20F7760300BEAAEC /* OnboardingDescriptionViewDelegate.swift */,
 			);
 			name = new;
+			sourceTree = "<group>";
+		};
+		A15D18B720F795FA00C57844 /* templates */ = {
+			isa = PBXGroup;
+			children = (
+				A15D18B820F7963100C57844 /* delegates */,
+				A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */,
+				A124893920F4D05C008EF21B /* OnboardingTextInputViewController.swift */,
+				A1E6649820F627B9009D9AB7 /* OnboardingPickerInputViewController.swift */,
+				A1E6649E20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift */,
+				A15D18B520F7910D00C57844 /* OnboardingSpinnerViewController.swift */,
+				A1E664A220F656B3009D9AB7 /* OnboardingIntroduceScannerViewController.swift */,
+			);
+			name = templates;
+			sourceTree = "<group>";
+		};
+		A15D18B820F7963100C57844 /* delegates */ = {
+			isa = PBXGroup;
+			children = (
+				A18323CF20F7760300BEAAEC /* OnboardingDescriptionViewDelegate.swift */,
+				A1E6649A20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift */,
+				A1E664A020F64127009D9AB7 /* OnboardingButtonInputDelegate.swift */,
+				A124893B20F4E006008EF21B /* OnboardingPageControlDelegate.swift */,
+			);
+			name = delegates;
 			sourceTree = "<group>";
 		};
 		A17FDFF1202C680A00F7BA89 /* debug and study */ = {
@@ -1559,6 +1578,7 @@
 			files = (
 				47691A8A1ECB56D1004BCFC5 /* Mail.swift in Sources */,
 				472F398A1E251787009260FB /* Contact.swift in Sources */,
+				A15D18B620F7910D00C57844 /* OnboardingSpinnerViewController.swift in Sources */,
 				472F39861E1FA34E009260FB /* Record.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,

@@ -156,7 +156,7 @@ class QRDiashowScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjec
                         qrCodeFrameColor = UIColor.green
                         bottomLabel.text = "\(seenCodes?.count ?? 0) "+NSLocalizedString("of", comment: "")+" \(count) "+NSLocalizedString("scanned", comment: "")
                         if seenCodes?.count == count {
-                            
+                            self.dismiss(animated: false, completion: nil)
                         }
                         return
                     }

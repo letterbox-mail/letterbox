@@ -361,8 +361,8 @@
                                             <action selector="close:" destination="LSo-3f-auv" eventType="touchUpInside" id="rBP-QJ-F3s"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="Kontakt verifizieren" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WDL-an-lMG">
-                                        <rect key="frame" x="104" y="20" width="166" height="24"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="Einstellungen importieren" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WDL-an-lMG">
+                                        <rect key="frame" x="77" y="20" width="220" height="24"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -378,8 +378,8 @@
                             <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTU-DF-QCf" userLabel="BottomBar">
                                 <rect key="frame" x="0.0" y="630.5" width="375" height="36.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="Scanne den QR Code des Kontaktes" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rg5-m2-d5l">
-                                        <rect key="frame" x="49" y="8" width="276.5" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="1 von 4 QR Codes gescannt" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rg5-m2-d5l">
+                                        <rect key="frame" x="81.5" y="8" width="211.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -463,6 +463,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fQo-1g-zTU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="519" y="1555"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="vxq-b1-GXO">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="kYe-hM-2mF" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ImB-O4-sPe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2297" y="100"/>
+        </scene>
+        <!--Onboarding Spinner View Controller-->
+        <scene sceneID="pFZ-3Q-sgl">
+            <objects>
+                <viewController storyboardIdentifier="spinnerView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bRq-WD-Ae5" customClass="OnboardingSpinnerViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0oI-Eb-9j9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LabelTop" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgk-w6-34F">
+                                <rect key="frame" x="30" y="170" width="315" height="33.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="J7V-pj-Lfo">
+                                <rect key="frame" x="167" y="323" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="J7V-pj-Lfo" secondAttribute="height" multiplier="1:1" id="MjU-3l-i6A"/>
+                                </constraints>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="cgk-w6-34F" firstAttribute="top" secondItem="Q77-mh-cd0" secondAttribute="top" constant="150" id="4uw-E6-uhT"/>
+                            <constraint firstItem="cgk-w6-34F" firstAttribute="centerX" secondItem="Q77-mh-cd0" secondAttribute="centerX" id="BYu-EE-HPn"/>
+                            <constraint firstItem="J7V-pj-Lfo" firstAttribute="top" secondItem="cgk-w6-34F" secondAttribute="bottom" constant="119.5" id="NUF-Dm-HdJ"/>
+                            <constraint firstItem="cgk-w6-34F" firstAttribute="leading" secondItem="Q77-mh-cd0" secondAttribute="leading" constant="30" id="ORi-Zv-zIm"/>
+                            <constraint firstItem="J7V-pj-Lfo" firstAttribute="height" secondItem="0oI-Eb-9j9" secondAttribute="height" multiplier="40:667" id="hyJ-Cw-CsX"/>
+                            <constraint firstItem="J7V-pj-Lfo" firstAttribute="centerX" secondItem="Q77-mh-cd0" secondAttribute="centerX" id="uTg-Zl-Lse"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Q77-mh-cd0"/>
+                    </view>
+                    <connections>
+                        <outlet property="labelTop" destination="cgk-w6-34F" id="FvN-S1-Kre"/>
+                        <outlet property="spinner" destination="J7V-pj-Lfo" id="MlK-8g-uAj"/>
+                        <outlet property="topSpace" destination="4uw-E6-uhT" id="ILl-9A-wMw"/>
+                        <outlet property="underLabelTopPadding" destination="NUF-Dm-HdJ" id="70k-rp-DJp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QVu-7e-o0R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2297" y="839"/>
         </scene>
     </scenes>
 </document>
