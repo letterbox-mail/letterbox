@@ -44,9 +44,9 @@ class Onboarding: NSObject {
     static let font = UIFont.init(name: "Helvetica-Light", size: 28)
     static let padding: CGFloat = 30
 
-    static var doWhenDone: () -> () = { Void in }
-    static var fail: () -> () = { Void in }
-    static var work: () -> () = { Void in }
+    static var doWhenDone: () -> () = { () -> () in }
+    static var fail: () -> () = { () -> () in }
+    static var work: () -> () = { () -> () in }
 
     static var credentialFails = 0
 
@@ -124,7 +124,7 @@ class Onboarding: NSObject {
         if credentials == nil {
             mailaddress = UITextField.init()
             mailaddress.textColor = textColor
-            mailaddress.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Address", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
+            mailaddress.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Address", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: textColor])
             mailaddress.tintColor = textColor
             mailaddress.borderStyle = UITextBorderStyle.none
             mailaddress.keyboardType = UIKeyboardType.emailAddress
@@ -144,7 +144,7 @@ class Onboarding: NSObject {
             password.isSecureTextEntry = true
             password.returnKeyType = UIReturnKeyType.continue
             password.frame = CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height, width: 50, height: 30)
-            password.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Password", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
+            password.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Password", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: textColor])
             password.delegate = textDelegate
 
             let passwordUnderline = UIView.init(frame: CGRect.init(x: 0, y: mailaddress.frame.height + padding + mailaddressUnderline.frame.height + password.frame.height, width: password.frame.width, height: 0.5))
@@ -225,12 +225,12 @@ class Onboarding: NSObject {
         return vc!
     }
 
-    static func oauth() {
+    @objc static func oauth() {
         googleAuth = true
         doWhenDone()
     }
     
-    static func dismissKeyboard() {
+    @objc static func dismissKeyboard() {
         mailaddress.endEditing(true)
         password.endEditing(true)
     }
@@ -279,7 +279,7 @@ class Onboarding: NSObject {
         Onboarding.password.returnKeyType = .done
         password.text = UserManager.loadUserValue(.userPW) as? String
         mailaddress.text = UserManager.loadUserValue(.userAddr) as? String
-        doWhenDone = { Void in }
+        doWhenDone = { () -> () in }
 
         let email = OnboardingContentViewController.content(withTitle: nil, body: NSLocalizedString("InsertMailAddressAndPassword", comment: ""), videoURL: nil, inputView: credentials, buttonText: nil, actionBlock: callback)
         username = UITextField.init()
@@ -293,7 +293,7 @@ class Onboarding: NSObject {
         username.text = UserManager.loadUserValue(Attribute.userName) as? String
         username.textColor = textColor
         username.tintColor = textColor
-        username.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Username", comment: ""), attributes: [NSForegroundColorAttributeName: textColor])
+        username.attributedPlaceholder = NSAttributedString.init(string: NSLocalizedString("Username", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: textColor])
 
         let usernameUnderline = UIView.init(frame: CGRect.init(x: 0, y: username.frame.maxY, width: username.frame.width, height: 0.5))
         usernameUnderline.backgroundColor = textColor

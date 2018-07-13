@@ -35,11 +35,11 @@ open class IconsStyleKit : NSObject {
 
     //// Colors
 
-    open dynamic class var strokeColor: UIColor { return Cache.strokeColor }
+    @objc open dynamic class var strokeColor: UIColor { return Cache.strokeColor }
 
     //// Drawing Methods
 
-    open dynamic class func drawLetter(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 50, height: 35), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor, fillBackground: Bool = false) {
+    @objc open dynamic class func drawLetter(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 50, height: 35), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor, fillBackground: Bool = false) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
@@ -95,7 +95,7 @@ open class IconsStyleKit : NSObject {
 
     }
 
-    open dynamic class func drawLetterCorrupted(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 49, height: 34), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor) {
+    @objc open dynamic class func drawLetterCorrupted(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 49, height: 34), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
@@ -203,7 +203,7 @@ open class IconsStyleKit : NSObject {
 
     }
 
-    open dynamic class func drawPostcard(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 49, height: 34), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor, fillBackground: Bool = false) {
+    @objc open dynamic class func drawPostcard(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 49, height: 34), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor, fillBackground: Bool = false) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
@@ -335,7 +335,7 @@ open class IconsStyleKit : NSObject {
 
     }
     
-    open dynamic class func drawLetterOpen(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 47, height: 43), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor) {
+    @objc open dynamic class func drawLetterOpen(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 47, height: 43), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
         
@@ -448,7 +448,7 @@ open class IconsStyleKit : NSObject {
 
     //// Generated Images
 
-    open dynamic class var imageOfLetter: UIImage {
+    @objc open dynamic class var imageOfLetter: UIImage {
         if Cache.imageOfLetter != nil {
             return Cache.imageOfLetter!
         }
@@ -462,7 +462,7 @@ open class IconsStyleKit : NSObject {
         return Cache.imageOfLetter!
     }
 
-    open dynamic class var imageOfLetterBG: UIImage {
+    @objc open dynamic class var imageOfLetterBG: UIImage {
         if Cache.imageOfLetterBG != nil {
             return Cache.imageOfLetterBG!
         }
@@ -476,7 +476,7 @@ open class IconsStyleKit : NSObject {
         return Cache.imageOfLetterBG!
     }
     
-    open dynamic class var imageOfLetterCorrupted: UIImage {
+    @objc open dynamic class var imageOfLetterCorrupted: UIImage {
         if Cache.imageOfLetterCorrupted != nil {
             return Cache.imageOfLetterCorrupted!
         }
@@ -490,7 +490,7 @@ open class IconsStyleKit : NSObject {
         return Cache.imageOfLetterCorrupted!
     }
 
-    open dynamic class var imageOfPostcard: UIImage {
+    @objc open dynamic class var imageOfPostcard: UIImage {
         if Cache.imageOfPostcard != nil {
             return Cache.imageOfPostcard!
         }
@@ -504,7 +504,7 @@ open class IconsStyleKit : NSObject {
         return Cache.imageOfPostcard!
     }
     
-    open dynamic class var imageOfPostcardBG: UIImage {
+    @objc open dynamic class var imageOfPostcardBG: UIImage {
         if Cache.imageOfPostcardBG != nil {
             return Cache.imageOfPostcardBG!
         }
@@ -518,7 +518,7 @@ open class IconsStyleKit : NSObject {
         return Cache.imageOfPostcardBG!
     }
     
-    open dynamic class var imageOfLetterOpen: UIImage {
+    @objc open dynamic class var imageOfLetterOpen: UIImage {
         if Cache.imageOfLetterOpen != nil {
             return Cache.imageOfLetterOpen!
         }

@@ -722,13 +722,13 @@ class Logger {
         while hasPrefix {
             if oldSubject.hasPrefix("Re: ") || oldSubject.hasPrefix("RE: ") || oldSubject.hasPrefix("re: ") || oldSubject.hasPrefix("AW: ") || oldSubject.hasPrefix("Aw: ") || oldSubject.hasPrefix("aw: ") {
                 newSubject += "Re: "
-                oldSubject = oldSubject.substring(from: oldSubject.index(oldSubject.startIndex, offsetBy: 4)) //damn swift3!
+                oldSubject = String(oldSubject[oldSubject.index(oldSubject.startIndex, offsetBy: 4)...]) //damn swift3!
             } else if oldSubject.hasPrefix("Fwd: ") || oldSubject.hasPrefix("FWD: ") || oldSubject.hasPrefix("fwd: ") {
                 newSubject += "Fwd: "
-                oldSubject = oldSubject.substring(from: oldSubject.index(oldSubject.startIndex, offsetBy: 5))
+                oldSubject = String(oldSubject[oldSubject.index(oldSubject.startIndex, offsetBy: 5)...])
             } else if oldSubject.hasPrefix("WG: ") || oldSubject.hasPrefix("Wg: ") || oldSubject.hasPrefix("wg: ") {
                 newSubject += "Fwd: "
-                oldSubject = oldSubject.substring(from: oldSubject.index(oldSubject.startIndex, offsetBy: 4))
+                oldSubject = String(oldSubject[oldSubject.index(oldSubject.startIndex, offsetBy: 4)...])
             } else {
                 hasPrefix = false
             }

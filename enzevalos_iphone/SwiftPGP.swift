@@ -493,13 +493,14 @@ class SwiftPGP: Encryption{
                         let end = user.userID.range(of: ">"){
                         let s = start.lowerBound
                         let e = end.upperBound
-                        var adr = user.userID[s..<e]
-                        if adr.count > 2{
-                            adr = adr.substring(to: adr.index(before: adr.endIndex)) // remove >
-                            adr.remove(at: adr.startIndex) // remove <
+                        var adr = String(user.userID[s..<e])
+                        if adr.count > 2 {
+                            adr = String(user.userID[user.userID.index(s, offsetBy: 1)..<user.userID.index(e, offsetBy: -1)])
+                            //adr = adr.substring(to: adr.index(before: adr.endIndex)) // remove >
+                            //adr.remove(at: adr.startIndex) // remove <
                         }
                         adr = adr.lowercased()
-                        adrs.append(adr)
+                        adrs.append(String(adr))
                     }
                 }
             }

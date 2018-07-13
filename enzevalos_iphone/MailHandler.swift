@@ -954,7 +954,7 @@ class MailHandler {
         if let lower = range?.lowerBound {
             range = text.range(of: "-----END PGP MESSAGE-----")
             if let upper = range?.upperBound {
-                let retValue = text.substring(to: upper).substring(from: lower)
+                let retValue = String(text[lower..<upper])
                 // We do not try to decrypt a previous mails.
                 if retValue.contains(">"){
                     return nil
@@ -975,7 +975,7 @@ class MailHandler {
                         let e = end.upperBound
                         let pk = content[s..<e]
                         let pgp = SwiftPGP()
-                        if let keyId = try? pgp.importKeys(key: pk, pw: nil, isSecretKey: false, autocrypt: false) {
+                        if let keyId = try? pgp.importKeys(key: String(pk), pw: nil, isSecretKey: false, autocrypt: false) {
                             newKey.append(contentsOf: keyId)
                         }
                     }
@@ -1004,7 +1004,7 @@ class MailHandler {
                     let end = content.range(of: "-----END PGP PRIVATE KEY BLOCK-----") {
                     let s = start.lowerBound
                     let e = end.upperBound
-                    let sk = content[s..<e]
+                    let sk = String(content[s..<e])
                     return sk
                 }
             }

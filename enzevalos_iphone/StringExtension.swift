@@ -13,7 +13,7 @@ extension String {
         var randomBytes = Data(count: length)
         
         let result = randomBytes.withUnsafeMutableBytes {
-            SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, $0)
+            SecRandomCopyBytes(kSecRandomDefault, length, $0)
         }
         if result == errSecSuccess {
             return randomBytes.base64EncodedString()
