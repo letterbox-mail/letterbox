@@ -143,7 +143,7 @@ class StudySettings {
         if UserDefaults.standard.string(forKey: "studyID") != nil && UserDefaults.standard.string(forKey: "hideWarnings") != nil { //no need to refill this fields, they are already loaded
             return
         }
-        Logger.logging = true
+        //Logger.logging = true
         let keychain = Keychain(service: "Enzevalos/Study")
         if let studyID = keychain["studyID"] {
             UserDefaults.standard.set(studyID, forKey: "studyID")

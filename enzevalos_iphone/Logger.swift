@@ -10,7 +10,7 @@ import Foundation
 
 class Logger {
 
-    static var logging = true//false
+    static var logging = false
 
     static let queue = DispatchQueue(label: "logging", qos: .background)
 
