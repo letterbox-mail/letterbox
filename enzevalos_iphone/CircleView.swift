@@ -31,15 +31,15 @@ class CircleView: UIView {
      
      Default is .Down
      */
-    var drawTop : Direction = .Down
+    var drawTop: Direction = .Down
 
-    let width : CGFloat = 3.0 // change in ArrowView too
+    let width: CGFloat = 3.0 // change in ArrowView too
 
 
     /**
      Changes the Color with which the Line is drawn. Default is gray
      */
-    var pathColor : UIColor?
+    var pathColor: UIColor?
 
     // MARK:- Functions
 
@@ -51,17 +51,17 @@ class CircleView: UIView {
 
         switch drawTop {
         case .Both:
-            path.move(to: CGPoint(x: self.frame.width/2, y: 0 ))
-            path.addLine(to: CGPoint(x: self.frame.width/2, y: self.frame.height ))
+            path.move(to: CGPoint(x: self.frame.width / 2, y: 0))
+            path.addLine(to: CGPoint(x: self.frame.width / 2, y: self.frame.height))
 
             break
         case .Down:
-            path.move(to: CGPoint(x: self.frame.width/2, y: self.frame.height/2 ))
-            path.addLine(to: CGPoint(x: self.frame.width/2, y: self.frame.height ))
+            path.move(to: CGPoint(x: self.frame.width / 2, y: self.frame.height / 2))
+            path.addLine(to: CGPoint(x: self.frame.width / 2, y: self.frame.height))
             break
         case .Up:
-            path.move(to: CGPoint(x: self.frame.width/2, y: 0 ))
-            path.addLine(to: CGPoint(x: self.frame.width/2, y: self.frame.height / 2 ))
+            path.move(to: CGPoint(x: self.frame.width / 2, y: 0))
+            path.addLine(to: CGPoint(x: self.frame.width / 2, y: self.frame.height / 2))
             break
         case .None:
             break

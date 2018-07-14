@@ -10,7 +10,7 @@ import Foundation
 import Security
 import KeychainAccess
 
-class SwiftPGP: Encryption{
+class SwiftPGP: Encryption {
 
     let cryptoScheme = CryptoScheme.PGP
     

@@ -29,7 +29,7 @@ class ExportSecretCell: UITableViewCell {
     @IBOutlet weak var secretRow1: UILabel!
     @IBOutlet weak var secretRow2: UILabel!
     @IBOutlet weak var secretRow3: UILabel!
-    
+
     func setSecretToLabels(secret: String) {
         if secret.count == 44 {
             let cut1 = secret.index(secret.startIndex, offsetBy: 15)
@@ -39,5 +39,5 @@ class ExportSecretCell: UITableViewCell {
             secretRow3.text = String(secret[cut2...])
         }
     }
-    
+
 }

@@ -16,7 +16,7 @@ class UserNameGamificationTableViewCell: UITableViewCell {
 
     @IBOutlet weak var mailLabel: UILabel!
 
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

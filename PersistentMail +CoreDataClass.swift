@@ -15,11 +15,11 @@ import CoreData
 open class PersistentMail: NSManagedObject, Mail {
     public var predecessor: PersistentMail? = nil
 
-    
+
     var showMessage: Bool = false
 
     var isSecure: Bool {
-        return isEncrypted && isSigned && isCorrectlySigned && !unableToDecrypt && !trouble &&  keyID != nil
+        return isEncrypted && isSigned && isCorrectlySigned && !unableToDecrypt && !trouble && keyID != nil
     }
     var isRead: Bool {
         get {
@@ -35,8 +35,8 @@ open class PersistentMail: NSManagedObject, Mail {
             _ = DataHandler.handler.save(during: "set read flag")
         }
     }
-    
-    var isAnwered: Bool{
+
+    var isAnwered: Bool {
         get {
             let value = flag.contains(MCOMessageFlag.answered)
             return value
@@ -80,7 +80,7 @@ open class PersistentMail: NSManagedObject, Mail {
         guard !trouble else {
             return nil
         }
-        
+
         var message: String? = ""
         if isEncrypted && !unableToDecrypt {
             message = decryptedBody

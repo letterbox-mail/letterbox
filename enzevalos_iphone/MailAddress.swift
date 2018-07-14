@@ -15,9 +15,9 @@ public enum EncState {
     case NOPREFERENCE
     case RESET
     case NOAUTOCRYPT
-    
-    
-    static func find(i: Int) -> EncState{
+
+
+    static func find(i: Int) -> EncState {
         switch i {
         case 0:
             return EncState.MUTAL
@@ -33,9 +33,9 @@ public enum EncState {
             return EncState.NOAUTOCRYPT
         }
     }
-    
-    func canEnc() -> Bool{
-        
+
+    func canEnc() -> Bool {
+
         switch self {
         case EncState.MUTAL:
             return true
@@ -47,7 +47,7 @@ public enum EncState {
             return false
         }
     }
-    func asInt()-> Int16{
+    func asInt() -> Int16 {
         switch self {
         case EncState.MUTAL:
             return 0
@@ -65,13 +65,13 @@ public enum EncState {
 }
 
 public protocol MailAddress {
-    var mailAddress:String{get}
-    var label: CNLabeledValue<NSString>{get} //FIXME: ist der NSString hier wirklich richtig? (http://stackoverflow.com/questions/39648830/how-to-add-new-email-to-cnmutablecontact-in-swift-3)
-   // var prefEnc: EncState{get set}
-    var hasKey: Bool{get}
-    
-    var primaryKey: PersistentKey?{get}
-    var publicKeys: Set<PersistentKey>{get}
-    var contact: EnzevalosContact?{get}
+    var mailAddress: String { get }
+    var label: CNLabeledValue<NSString> { get } //FIXME: ist der NSString hier wirklich richtig? (http://stackoverflow.com/questions/39648830/how-to-add-new-email-to-cnmutablecontact-in-swift-3)
+    // var prefEnc: EncState{get set}
+    var hasKey: Bool { get }
+
+    var primaryKey: PersistentKey? { get }
+    var publicKeys: Set<PersistentKey> { get }
+    var contact: EnzevalosContact? { get }
 }
 

@@ -9,7 +9,7 @@
 import Foundation
 
 open class EphemeralMail: Mail {
-    
+
     public var cc: NSSet?
     public var bcc: NSSet?
     public var to: NSSet

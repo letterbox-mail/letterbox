@@ -8,10 +8,10 @@
 
 import Foundation
 extension String {
-    
+
     static func random(length: Int = 20) -> String {
         var randomBytes = Data(count: length)
-        
+
         let result = randomBytes.withUnsafeMutableBytes {
             SecRandomCopyBytes(kSecRandomDefault, length, $0)
         }

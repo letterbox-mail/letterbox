@@ -17,5 +17,5 @@ class FolderListCell: UITableViewCell {
     @IBOutlet weak var markImageView: UIImageView!
     @IBOutlet weak var replyImageView: UIImageView!
     @IBOutlet weak var stackView: UIStackView!
-    
+
 }

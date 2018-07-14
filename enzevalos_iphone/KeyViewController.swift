@@ -12,7 +12,7 @@ class KeyViewController: UIViewController {
 
     @IBOutlet var tableView: UITableView!
     @IBOutlet weak var copyButton: UIButton!
-    
+
     var openDate: Date = Date() //used for logging issues [see Logger.log(keyViewClose keyID:String, timevisited: Date)]
 
     var record: KeyRecord?
@@ -24,9 +24,9 @@ class KeyViewController: UIViewController {
         tableView.estimatedRowHeight = 100
         openDate = Date()
 //        Logger.queue.async(flags: .barrier) {
-            if let record = self.record, let keyID = record.keyID {
-                Logger.log(keyViewOpen: keyID)
-            }
+        if let record = self.record, let keyID = record.keyID {
+            Logger.log(keyViewOpen: keyID)
+        }
 //        }
         copyButton.setTitle(NSLocalizedString("copyKey", comment: ""), for: .normal)
         copyButton.setTitle(NSLocalizedString("copied", comment: "the key has been copied to the clipboard"), for: .disabled)
@@ -48,9 +48,9 @@ class KeyViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
 //        Logger.queue.async(flags: .barrier) {
-            if let record = self.record, let keyID = record.keyID {
-                Logger.log(keyViewClose: keyID, secondsOpened: Int(Date().timeIntervalSince(self.openDate)))
-            }
+        if let record = self.record, let keyID = record.keyID {
+            Logger.log(keyViewClose: keyID, secondsOpened: Int(Date().timeIntervalSince(self.openDate)))
+        }
 //        }
         super.viewDidDisappear(animated)
     }
@@ -89,9 +89,9 @@ extension KeyViewController: UITableViewDataSource {
                 let characters = Array((record?.fingerprint ?? ""))
                 var i = 0
                 stride(from: 0, to: characters.count, by: 4).forEach {
-                    result += String(characters[$0..<min($0+4, characters.count)])
-                    if $0+4 < characters.count {
-                        i = (i+1) % 3
+                    result += String(characters[$0..<min($0 + 4, characters.count)])
+                    if $0 + 4 < characters.count {
+                        i = (i + 1) % 3
                         if i == 0 {
                             result += "\n"
                         }
@@ -118,10 +118,10 @@ extension KeyViewController: UITableViewDataSource {
                 formatter.locale = Locale.current
                 formatter.dateStyle = .medium
                 formatter.timeStyle = .medium
-                if let discoveryDate = record?.key?.discoveryDate{
-                    cell.detailTextLabel?.text = formatter.string(from:  discoveryDate as Date)
+                if let discoveryDate = record?.key?.discoveryDate {
+                    cell.detailTextLabel?.text = formatter.string(from: discoveryDate as Date)
                 }
-                
+
                 return cell
             }
             else if toRowType(indexPath) == .discoveryMail {
@@ -159,7 +159,7 @@ extension KeyViewController: UITableViewDataSource {
         cell.textLabel?.text = NSLocalizedString("KeyNotFound", comment: "there was no key found. Contact developers")
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 1 {
             return NSLocalizedString("Checkmarks", comment: "Checkmarks")
@@ -170,7 +170,7 @@ extension KeyViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         if let key = record?.key {
             var sections = 1
-            if key.mailaddress != nil{
+            if key.mailaddress != nil {
                 sections += 1
             }
             return sections
@@ -187,7 +187,7 @@ extension KeyViewController: UITableViewDataSource {
         }
         return nil
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if toSectionType(indexPath.section) == .keyDetails {
             if toRowType(indexPath) == .fingerprint {
@@ -196,7 +196,7 @@ extension KeyViewController: UITableViewDataSource {
         }
         return UITableViewAutomaticDimension
     }
-    
+
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }

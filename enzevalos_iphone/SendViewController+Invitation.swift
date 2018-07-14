@@ -20,12 +20,12 @@ struct InvitationSelection {
 
 extension SendViewController {
 
-    var isCensored: Bool{
-        get{
+    var isCensored: Bool {
+        get {
             return StudySettings.invitationsmode == InvitationMode.Censorship
         }
     }
-    
+
     func htmlMessage() -> (html: String?, textparts: Int, plaintext: String?) {
         var htmlName = "invitationText"
         if isCensored {
@@ -49,8 +49,8 @@ extension SendViewController {
         let cipherText = SwiftPGP().symmetricEncrypt(textToEncrypt: [textsToEncrypt.joined(separator: "\n")], armored: true, password: nil)
         let texts = textsToEncrypt.map { _ -> String in
             // Change text in mail body
-            if isCensored{
-                return String(repeating: "█" as String as String, count: (Int(arc4random_uniform(7)+3)))
+            if isCensored {
+                return String(repeating: "█" as String as String, count: (Int(arc4random_uniform(7) + 3)))
             }
             return String.random(length: 10)
         }
@@ -62,7 +62,7 @@ extension SendViewController {
         }
 
         var link = "http://letterbox.imp.fu-berlin.de?text=\(urlTexts)&cipher=\(cipher)&id=\(StudySettings.studyID)&invitation=Enc"
-        if isCensored{
+        if isCensored {
             link = "http://letterbox.imp.fu-berlin.de?id=\(StudySettings.studyID)&invitation=Censor"
         }
 
@@ -71,41 +71,41 @@ extension SendViewController {
         }
 
         for (index, range) in locations.enumerated() {
-            if isCensored{
+            if isCensored {
                 let t = text as NSString
                 text = t.replacingCharacters(in: range, with: texts[index])
                 plainText = (plainText as NSString).replacingCharacters(in: range, with: texts[index])
             }
-            else{
+            else {
                 text = (text as NSString).replacingCharacters(in: range, with: "<a class=\"encrypted-text\">\(texts[index])</a>")
                 plainText = (plainText as NSString).replacingCharacters(in: range, with: texts[index])
 
-                
+
             }
         }
         if (self.invitationSelection.code == nil && StudySettings.invitationsmode == InvitationMode.PasswordEnc) {
             self.invitationSelection.code = cipherText.password
         }
         var previousText = ""
-        
-        if let range = text.range(of: NSLocalizedString("Mail.Signature", comment: "")){
+
+        if let range = text.range(of: NSLocalizedString("Mail.Signature", comment: "")) {
             text.removeSubrange(range)
         }
-        
-        if let preMail = prefilledMail, let previousBody = preMail.body{
-            if let range = text.range(of: previousBody){
+
+        if let preMail = prefilledMail, let previousBody = preMail.body {
+            if let range = text.range(of: previousBody) {
                 previousText = previousBody
                 text.removeSubrange(range)
             }
         }
-        
+
         var plainFooter = String(format: NSLocalizedString("Invitation.EncryptionFooter", comment: ""), link, link)
         if isCensored {
             plainFooter = String(format: NSLocalizedString("Invitation.CensorFooter", comment: ""), link, link)
         }
-        
+
         plainText = plainText + plainFooter + "\n\n" + previousText
-        
+
         return (String(format: htmlString, text, link, link, previousText), texts.count, nil)
     }
 
@@ -129,19 +129,19 @@ extension SendViewController {
         guard selectedRange != nil else {
             let labelTitel: String
             switch StudySettings.invitationsmode {
-                case .Censorship    : labelTitel = NSLocalizedString("Invitation.Encrypt.Censor", comment: "")
-                case .PasswordEnc   : labelTitel = NSLocalizedString("Invitation.Encrypt", comment: "")
-                case .FreeText,
-                     .InviteMail    : return nil
+            case .Censorship: labelTitel = NSLocalizedString("Invitation.Encrypt.Censor", comment: "")
+            case .PasswordEnc: labelTitel = NSLocalizedString("Invitation.Encrypt", comment: "")
+            case .FreeText,
+                 .InviteMail: return nil
             }
             return [UIMenuItem(title: labelTitel, action: #selector(self.markSelectedText))]
         }
         let labelTitel: String
         switch StudySettings.invitationsmode {
-        case .Censorship    : labelTitel = NSLocalizedString("Invitation.Decrypt.Censor", comment: "")
-        case .PasswordEnc   : labelTitel = NSLocalizedString("Invitation.Decrypt", comment: "")
+        case .Censorship: labelTitel = NSLocalizedString("Invitation.Decrypt.Censor", comment: "")
+        case .PasswordEnc: labelTitel = NSLocalizedString("Invitation.Decrypt", comment: "")
         case .FreeText,
-             .InviteMail    : return nil
+             .InviteMail: return nil
         }
         return [UIMenuItem(title: labelTitel, action: #selector(self.unmarkSelectedText))]
     }
@@ -216,12 +216,12 @@ extension SendViewController {
         controller?.ctaAction = {
             controller?.hideDialog(completion: nil)
             switch StudySettings.invitationsmode {
-                case .FreeText:
-                    self.performSegue(withIdentifier: "inviteSegueStudy", sender: nil)
-                    return
-                case .InviteMail:
-                    self.performSegue(withIdentifier: "inviteSegue", sender: nil)
-                    return
+            case .FreeText:
+                self.performSegue(withIdentifier: "inviteSegueStudy", sender: nil)
+                return
+            case .InviteMail:
+                self.performSegue(withIdentifier: "inviteSegue", sender: nil)
+                return
             case .Censorship, .PasswordEnc:
                 return
             }
@@ -367,7 +367,7 @@ extension SendViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.updateMarkedText(for: textView)
     }
-    
+
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 
         self.textChanged(inRange: range, with: text)

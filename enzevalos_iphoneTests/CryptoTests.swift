@@ -10,19 +10,19 @@ import XCTest
 
 @testable import enzevalos_iphone
 class CryptoTests: XCTestCase {
-    
+
     //TODO: test importkey: public, autocrypt
     //      test export key: public, secret
     //      implement signature check
-    
+
     let datahandler = DataHandler.handler
     let pgp = SwiftPGP()
-    
+
     let userAdr = "alice@example.com"
     let userName = "alice"
     var user: MCOAddress = MCOAddress.init(mailbox: "alice@example.com")
     var userKeyID: String = ""
-    
+
     static let importPW = "alice"
     static let importKey = """
     -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -185,7 +185,7 @@ class CryptoTests: XCTestCase {
     =U2bk
     -----END PGP PRIVATE KEY BLOCK-----
     """
-    
+
     let keyForSignedMessage = """
     -----BEGIN PGP PUBLIC KEY BLOCK-----
 
@@ -345,7 +345,7 @@ class CryptoTests: XCTestCase {
     -----END PGP PRIVATE KEY BLOCK-----
 
     """
-    
+
     let signedMessage = """
     -----BEGIN PGP SIGNATURE-----
 
@@ -362,7 +362,7 @@ class CryptoTests: XCTestCase {
     =OmRP
     -----END PGP SIGNATURE-----
     """
-    
+
     let manipulatedSignedMail = """
     -----BEGIN PGP SIGNATURE-----
 
@@ -379,52 +379,52 @@ class CryptoTests: XCTestCase {
     =OmRP
     -----END PGP SIGNATURE-----
     """
-    
-    
+
+
     override func setUp() {
         super.setUp()
         datahandler.reset()
         pgp.resetKeychains()
         (user, userKeyID) = owner()
     }
-    
+
     override func tearDown() {
         datahandler.reset()
         super.tearDown()
     }
-    
-    func createUser(adr: String = String.random().lowercased(), name: String = String.random()) -> MCOAddress{
+
+    func createUser(adr: String = String.random().lowercased(), name: String = String.random()) -> MCOAddress {
         return MCOAddress.init(displayName: name, mailbox: adr.lowercased())
     }
-    
-    func createPGPUser(adr: String = String.random().lowercased(), name: String = String.random()) -> (address: MCOAddress, keyID: String){
+
+    func createPGPUser(adr: String = String.random().lowercased(), name: String = String.random()) -> (address: MCOAddress, keyID: String) {
         let user = createUser(adr: adr, name: name)
         let id = pgp.generateKey(adr: user.mailbox)
         return (user, id)
     }
-    
-    func owner() -> (MCOAddress, String){
+
+    func owner() -> (MCOAddress, String) {
         Logger.logging = false
         let (user, userid) = createPGPUser(adr: userAdr, name: userName)
         UserManager.storeUserValue(userAdr as AnyObject, attribute: Attribute.userAddr)
         UserManager.storeUserValue(userid as AnyObject, attribute: Attribute.prefSecretKeyID)
         return (user, userid)
     }
-    
-    func createSender(n: Int)-> [MCOAddress:String]{
-        var result = [MCOAddress:String]()
-        
-        for _ in 1...n{
+
+    func createSender(n: Int) -> [MCOAddress: String] {
+        var result = [MCOAddress: String]()
+
+        for _ in 1...n {
             let adr = String.random()
             let name = String.random()
-            
-            let (mcoaddr, id) =  createPGPUser(adr: adr, name: name)
+
+            let (mcoaddr, id) = createPGPUser(adr: adr, name: name)
             result[mcoaddr] = id
         }
         return result
     }
-    
-    func testKeyGen(){
+
+    func testKeyGen() {
         guard let key = pgp.loadKey(id: userKeyID) else {
             XCTFail("No key")
             return
@@ -436,17 +436,17 @@ class CryptoTests: XCTestCase {
         XCTAssertTrue(key.isPublic && key.isSecret)
         var containsAddr = false
         for user in pk.users {
-            if user.userID.contains(userAdr){
+            if user.userID.contains(userAdr) {
                 containsAddr = true
             }
-            else{
+            else {
                 XCTFail("userID does not contain userAddr")
             }
         }
         XCTAssertTrue(containsAddr)
     }
-    
-    func testimportSecretKey(){
+
+    func testimportSecretKey() {
         XCTAssert(datahandler.prefSecretKey().keyID == userKeyID)
         XCTAssertEqual(datahandler.findSecretKeys().count, 1)
         guard let keys = try? pgp.importKeys(key: CryptoTests.importKey, pw: CryptoTests.importPW, isSecretKey: true, autocrypt: false) else {
@@ -459,7 +459,7 @@ class CryptoTests: XCTestCase {
         }
         XCTAssert(keys.count == 1)
         XCTAssert(key == "008933003B986364")
-        
+
         // Test storing a key
         _ = datahandler.newSecretKey(keyID: key, addPk: true)
         XCTAssert(datahandler.prefSecretKey().keyID == key)
@@ -467,12 +467,12 @@ class CryptoTests: XCTestCase {
         XCTAssertEqual(datahandler.findSecretKeys().count, 2)
 
     }
-    
-    func testPlainMail(){
+
+    func testPlainMail() {
         let body = "plain message"
         guard let data = body.data(using: .utf8) else {
             XCTFail("No data")
-            return 
+            return
         }
         let cryptoObject = pgp.decrypt(data: data, decryptionId: userKeyID, verifyIds: [], fromAdr: nil)
         XCTAssert(cryptoObject.encryptionState == .NoEncryption)
@@ -480,54 +480,54 @@ class CryptoTests: XCTestCase {
         XCTAssert(cryptoObject.decryptedData == nil && cryptoObject.decryptedText == nil && cryptoObject.signKey == nil)
         XCTAssert(cryptoObject.plaintext == body)
     }
-    
-    func testEncMail(){
+
+    func testEncMail() {
         let body = "encrypted text"
         let senderPGP = SwiftPGP()
         let encryptedObject = senderPGP.encrypt(plaintext: body, ids: [userKeyID], myId: "")
         XCTAssert(encryptedObject.encryptionState == .ValidedEncryptedWithCurrentKey && encryptedObject.signatureState == .NoSignature)
-        
+
         guard let data = encryptedObject.chiphertext else {
             XCTFail("No chipher data")
             return
-        }        
+        }
         let cryptoObject = pgp.decrypt(data: data, decryptionId: userKeyID, verifyIds: [], fromAdr: nil)
         XCTAssert(cryptoObject.encryptionState == .ValidedEncryptedWithCurrentKey)
         XCTAssert(cryptoObject.signatureState == .NoSignature)
         XCTAssert(cryptoObject.plaintext == body && cryptoObject.plaintext == cryptoObject.decryptedText)
     }
-    
-    func testSignedMail(){
+
+    func testSignedMail() {
         // import keys and data for signature test
         guard let keys = try? pgp.importKeys(key: keyForSignedMessage, pw: nil, isSecretKey: true, autocrypt: false), keys.count > 0 else {
             XCTFail("Can not import key")
             return
         }
-        guard let signedData = signedMessage.data(using: .utf8), let manipulatedDate = manipulatedSignedMail.data(using: .utf8) else{
+        guard let signedData = signedMessage.data(using: .utf8), let manipulatedDate = manipulatedSignedMail.data(using: .utf8) else {
             XCTFail("No signed data")
             return
         }
-        
+
         // 1. case: correct signed mail
         var cryptoObject = pgp.decrypt(data: signedData, decryptionId: keys.first, verifyIds: keys, fromAdr: nil)
         XCTAssert(cryptoObject.encryptionState == .NoEncryption && cryptoObject.signatureState == .ValidSignature)
         XCTAssert(cryptoObject.decryptedText == "only a signed mail!")
-        
+
         // 2. case: manipulated mail
         cryptoObject = pgp.decrypt(data: manipulatedDate, decryptionId: keys.first, verifyIds: keys, fromAdr: nil)
         XCTAssert(cryptoObject.encryptionState == .NoEncryption && cryptoObject.signatureState == .InvalidSignature)
     }
-    
-    func testEncSignedMail(){
+
+    func testEncSignedMail() {
         let body = "signed text"
         let (senderAddress, senderID) = createPGPUser()
         let (_, id2) = createPGPUser()
 
         let senderPGP = SwiftPGP()
         let encObject = senderPGP.encrypt(plaintext: body, ids: [userKeyID], myId: senderID)
-        XCTAssert(encObject.encryptionState == .ValidedEncryptedWithCurrentKey && encObject.signatureState == SignatureState.ValidSignature )
+        XCTAssert(encObject.encryptionState == .ValidedEncryptedWithCurrentKey && encObject.signatureState == SignatureState.ValidSignature)
         let falseEncObject = senderPGP.encrypt(plaintext: body, ids: [], myId: senderID)
-        
+
         guard let data = encObject.chiphertext, let data2 = falseEncObject.chiphertext else {
             XCTFail("no chipher data")
             return
@@ -537,17 +537,17 @@ class CryptoTests: XCTestCase {
         XCTAssert(cryptoObject.encryptionState == .ValidedEncryptedWithCurrentKey)
         XCTAssert(cryptoObject.signatureState == .NoPublicKey)
         XCTAssert(cryptoObject.plaintext == body && cryptoObject.plaintext == cryptoObject.decryptedText)
-        
+
         // 2. case: signed and public key available
         cryptoObject = pgp.decrypt(data: data, decryptionId: userKeyID, verifyIds: [senderID, id2], fromAdr: nil)
         XCTAssert(cryptoObject.signatureState == .ValidSignature)
         XCTAssert(cryptoObject.signKey == senderID)
         XCTAssert(cryptoObject.signedAdrs.contains(senderAddress.mailbox) && cryptoObject.signedAdrs.count == 1)
-    
+
         // 3. case: signed and check with wrong key
         cryptoObject = pgp.decrypt(data: data, decryptionId: userKeyID, verifyIds: [id2], fromAdr: nil)
         XCTAssert(cryptoObject.signatureState == .NoPublicKey)
-       
+
         // 4. case: can not decrypt (wrong/missing decryption/encryption key)
         cryptoObject = pgp.decrypt(data: data2, decryptionId: userKeyID, verifyIds: [senderID], fromAdr: nil)
         XCTAssert(cryptoObject.encryptionState == .UnableToDecrypt && cryptoObject.signatureState == .NoSignature)
@@ -556,7 +556,7 @@ class CryptoTests: XCTestCase {
         // Import a new secret key -> previous key is now an old key
         guard let keys = try? pgp.importKeys(key: CryptoTests.importKey, pw: CryptoTests.importPW, isSecretKey: true, autocrypt: false), keys.count > 0 else {
             XCTFail("Can not import key")
-            return 
+            return
         }
         XCTAssertEqual(keys.count, 1)
         _ = datahandler.newSecretKeys(keyIds: keys, addPKs: true)
@@ -567,5 +567,5 @@ class CryptoTests: XCTestCase {
         XCTAssert(cryptoObject.decryptedText == body)
     }
 
-    
+
 }

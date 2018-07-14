@@ -25,7 +25,7 @@ class SubBadgeTableViewCell: UITableViewCell {
      Displayed Badge 
      */
     @IBOutlet weak var badgeImage: UIImageView!
-    
+
 
 
 //    override func awakeFromNib() {

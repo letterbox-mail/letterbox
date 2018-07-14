@@ -23,10 +23,10 @@ class FolderViewController: UITableViewController {
             lastUpdateLabel.sizeToFit()
         }
     }
-    
+
     var lastUpdate: Date? = Date()
     let dateFormatter = DateFormatter()
-    
+
     override func viewDidLoad() {
         self.refreshControl?.addTarget(self, action: #selector(FolderViewController.refresh), for: UIControlEvents.valueChanged)
         self.refreshControl?.attributedTitle = NSAttributedString(string: NSLocalizedString("PullToRefresh", comment: "Pull to refresh"))
@@ -50,10 +50,10 @@ class FolderViewController: UITableViewController {
             self?.lastUpdate = Date()
             self?.tableView.reloadData()
         })
-        
+
         dateFormatter.locale = Locale.current
         dateFormatter.timeStyle = .medium
-        
+
         lastUpdateLabel.sizeToFit()
         lastUpdateLabel.backgroundColor = UIColor.clear
         lastUpdateLabel.textAlignment = .center
@@ -208,7 +208,7 @@ class FolderViewController: UITableViewController {
         refreshControl?.endRefreshing()
         lastUpdateText = lastUpdate != nil ? "\(NSLocalizedString("LastUpdate", comment: "When the last update occured")): \(dateFormatter.string(from: lastUpdate!))" : NSLocalizedString("NeverUpdated", comment: "No internet connection since last launch")
     }
-   
+
     func getImage(for path: String) -> UIImage {
         if path == UserManager.frontendInboxFolderPath {
             return #imageLiteral(resourceName: "Inbox")

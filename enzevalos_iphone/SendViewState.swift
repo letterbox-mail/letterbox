@@ -14,18 +14,18 @@ enum SendViewContactSecurityState {
 
 enum SendViewMailSecurityState: Equatable {
     case letter, postcard, extendedPostcard(SendViewSpecialMailState)
-    
+
     var rawValue: Int {
         get {
             switch self {
-                case .letter: return 0
-                case .postcard: return 1
-                case .extendedPostcard(_): return 2
+            case .letter: return 0
+            case .postcard: return 1
+            case .extendedPostcard(_): return 2
             }
         }
     }
-    
-    static func ==(lhs:SendViewMailSecurityState, rhs:SendViewMailSecurityState) -> Bool {
+
+    static func == (lhs: SendViewMailSecurityState, rhs: SendViewMailSecurityState) -> Bool {
         return lhs.rawValue == rhs.rawValue
     }
 }

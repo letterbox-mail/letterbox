@@ -20,35 +20,35 @@ class AddressHandler {
         do {
 
             try AppDelegate.getAppDelegate().contactStore.enumerateContacts(with: CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: CNContactFormatterStyle.fullName), CNContactEmailAddressesKey as CNKeyDescriptor, CNContactImageDataKey as CNKeyDescriptor, CNContactThumbnailImageDataKey as CNKeyDescriptor]), usingBlock: {
-                ( c: CNContact, stop) -> Void in
-                for email in c.emailAddresses {
-                    let addr = email.value as String
-                    var type: UIImage? = nil
-                    if c.emailAddresses.count > 1 {
-                        if email.label == "_$!<Work>!$_" {
-                            type = UIImage(named: "work2_white")!
-                        } else if email.label == "_$!<Home>!$_" {
+                    (c: CNContact, stop) -> Void in
+                    for email in c.emailAddresses {
+                        let addr = email.value as String
+                        var type: UIImage? = nil
+                        if c.emailAddresses.count > 1 {
+                            if email.label == "_$!<Work>!$_" {
+                                type = UIImage(named: "work2_white")!
+                            } else if email.label == "_$!<Home>!$_" {
                                 type = UIImage(named: "home2_white")!
-                        } else if email.label == "_$!<iCloud>!$_" {
+                            } else if email.label == "_$!<iCloud>!$_" {
                                 //TODO: appleIcon hinzufügen
+                            }
+                        }
+                        var color = c.getColor()
+                        if c.thumbnailImageData != nil {
+                            color = UIColor.gray //blackColor()
+                        }
+                        if addr == "" {
+                            continue
+                        }
+                        if !inserted.contains(addr.lowercased()) {
+                            if let name = CNContactFormatter.string(from: c, style: .fullName) {
+                                cons.append((c.getImageOrDefault(), name, addr, type, color))
+                            } else {
+                                cons.append((c.getImageOrDefault(), "NO NAME", addr, type, color))
+                            }
                         }
                     }
-                    var color = c.getColor()
-                    if c.thumbnailImageData != nil {
-                        color = UIColor.gray //blackColor()
-                    }
-                    if addr == "" {
-                        continue
-                    }
-                    if !inserted.contains(addr.lowercased()) {
-                        if let name = CNContactFormatter.string(from: c, style: .fullName) {
-                            cons.append((c.getImageOrDefault(), name, addr, type, color))
-                        } else {
-                            cons.append((c.getImageOrDefault(), "NO NAME", addr, type, color))
-                        }
-                    }
-                }
-            })
+                })
         }
         catch { }
         var list: [(UIImage, String, String, UIImage?, UIColor)] = []
@@ -117,11 +117,11 @@ class AddressHandler {
             }
         }
 
-        
+
 
         return list
     }
-    
+
     static func getContact(_ name: String) -> [CNContact] {
         if name == "" {
             return []
@@ -163,7 +163,7 @@ class AddressHandler {
         let cons = DataHandler.handler.folderRecords(folderPath: UserManager.backendInboxFolderPath)
         var list: [(UIImage, String, String, UIImage?, UIColor)] = []
         var localInserted = inserted
-        
+
         for con: KeyRecord in cons {
             if list.count >= CollectionDataDelegate.maxFrequent {
                 break
@@ -180,7 +180,7 @@ class AddressHandler {
             }
             if !insertedEntry {
                 var addrType: UIImage? = nil
-                
+
                 if address.label.label == "_$!<Work>!$_" {
                     addrType = UIImage(named: "work2_white")!
                 }
@@ -193,7 +193,7 @@ class AddressHandler {
                         color = UIColor.gray //blackColor()
                     }
                     let entry = (cn.getImageOrDefault(), con.ezContact.displayname!, address.mailAddress, addrType, color)
-                    
+
                     list.append(entry)
                     localInserted.append(address.mailAddress)
                 } else {
@@ -203,7 +203,7 @@ class AddressHandler {
                 }
             }
         }
-        
+
         return list
     }
 
@@ -263,15 +263,15 @@ class AddressHandler {
 
         return contacts
     }
-    
-    
-    static func updateCNContacts(){
+
+
+    static func updateCNContacts() {
         let enzContacts = DataHandler.handler.getContacts()
-        
-        for contact in enzContacts{
-            if contact.cnContact == nil{
+
+        for contact in enzContacts {
+            if contact.cnContact == nil {
                 let contacts = findContact(contact)
-                if contacts.count > 0{
+                if contacts.count > 0 {
                     contact.cnidentifier = contacts.first?.identifier
                 }
             }

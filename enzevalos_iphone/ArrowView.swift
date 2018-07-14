@@ -17,12 +17,12 @@ import UIKit
 class ArrowView: UIView {
     // MARK:- Variables
 
-    let width : CGFloat = 3.0 // change in CircleView too
+    let width: CGFloat = 3.0 // change in CircleView too
 
     /**
      Changes the Color with which the Line is drawn. Default is gray
      */
-    var pathColor : UIColor?
+    var pathColor: UIColor?
 
 
     // MARK:- Functions
@@ -32,8 +32,8 @@ class ArrowView: UIView {
         let path = UIBezierPath()
         path.lineWidth = width
 
-        path.move(to: CGPoint(x: self.frame.width/2, y: 0 ))
-        path.addLine(to: CGPoint(x: self.frame.width/2, y: self.frame.height ))
+        path.move(to: CGPoint(x: self.frame.width / 2, y: 0))
+        path.addLine(to: CGPoint(x: self.frame.width / 2, y: self.frame.height))
 
         path.close()
 

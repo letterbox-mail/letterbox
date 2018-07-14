@@ -10,15 +10,15 @@ import XCTest
 @testable import enzevalos_iphone
 
 class GamificationDataUnitTest: XCTestCase {
-    var badges : [Badges]!
-    
+    var badges: [Badges]!
+
     override func setUp() {
         super.setUp()
         badges = GamificationData.sharedInstance.badges
 
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
@@ -26,12 +26,12 @@ class GamificationDataUnitTest: XCTestCase {
     }
 
 
-    func testBadgePictures(){
+    func testBadgePictures() {
         // tests if all image Names are correct and can be loaded
         for e in badges {
             // Test Main Badges
             let bundle = Bundle(for: type(of: self))
-            
+
             let imageOn = UIImage.init(named: e.onName, in: bundle, compatibleWith: nil)
             XCTAssert(imageOn != nil, "Image \(e.onName) failed")
             let imageOff = UIImage.init(named: e.offName, in: bundle, compatibleWith: nil)
@@ -53,11 +53,11 @@ class GamificationDataUnitTest: XCTestCase {
 
     }
 
-    func testWidth(){
+    func testWidth() {
         let arrow = ArrowView()
         let circle = CircleView()
 
-         XCTAssert( arrow.width == circle.width , "LineStrokes not identical")
+        XCTAssert(arrow.width == circle.width, "LineStrokes not identical")
 
     }
     /*
@@ -67,5 +67,5 @@ class GamificationDataUnitTest: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }*/
-    
+
 }

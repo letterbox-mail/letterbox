@@ -15,7 +15,7 @@
 
 import UIKit
 
-open class IconsStyleKit : NSObject {
+open class IconsStyleKit: NSObject {
 
     //// Cache
 
@@ -42,7 +42,7 @@ open class IconsStyleKit : NSObject {
     @objc open dynamic class func drawLetter(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 50, height: 35), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor, fillBackground: Bool = false) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         //// Resize to Target Frame
         context.saveGState()
         let resizedFrame: CGRect = resizing.apply(rect: CGRect(x: 0, y: 0, width: 50, height: 35), target: targetFrame)
@@ -90,7 +90,7 @@ open class IconsStyleKit : NSObject {
         color.setStroke()
         bezier3Path.lineWidth = 2
         bezier3Path.stroke()
-        
+
         context.restoreGState()
 
     }
@@ -98,7 +98,7 @@ open class IconsStyleKit : NSObject {
     @objc open dynamic class func drawLetterCorrupted(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 49, height: 34), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         //// Resize to Target Frame
         context.saveGState()
         let resizedFrame: CGRect = resizing.apply(rect: CGRect(x: 0, y: 0, width: 49, height: 34), target: targetFrame)
@@ -198,7 +198,7 @@ open class IconsStyleKit : NSObject {
         color.setStroke()
         bezier8Path.lineWidth = 1.5
         bezier8Path.stroke()
-        
+
         context.restoreGState()
 
     }
@@ -206,7 +206,7 @@ open class IconsStyleKit : NSObject {
     @objc open dynamic class func drawPostcard(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 49, height: 34), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor, fillBackground: Bool = false) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         //// Resize to Target Frame
         context.saveGState()
         let resizedFrame: CGRect = resizing.apply(rect: CGRect(x: 0, y: 0, width: 49, height: 34), target: targetFrame)
@@ -330,21 +330,21 @@ open class IconsStyleKit : NSObject {
         bezier10Path.close()
         color.setFill()
         bezier10Path.fill()
-        
+
         context.restoreGState()
 
     }
-    
+
     @objc open dynamic class func drawLetterOpen(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 47, height: 43), resizing: ResizingBehavior = .aspectFit, color: UIColor = IconsStyleKit.strokeColor) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         //// Resize to Target Frame
         context.saveGState()
         let resizedFrame: CGRect = resizing.apply(rect: CGRect(x: 0, y: 0, width: 47, height: 43), target: targetFrame)
         context.translateBy(x: resizedFrame.minX, y: resizedFrame.minY)
         context.scaleBy(x: resizedFrame.width / 47, y: resizedFrame.height / 43)
-        
+
         //// Group
         //// Bezier Drawing
         let bezierPath = UIBezierPath()
@@ -404,8 +404,8 @@ open class IconsStyleKit : NSObject {
         bezierPath.usesEvenOddFillRule = true
         color.setFill()
         bezierPath.fill()
-        
-        
+
+
         //// Bezier 2 Drawing
         let bezier2Path = UIBezierPath()
         bezier2Path.move(to: CGPoint(x: 2.96, y: 15.51))
@@ -417,8 +417,8 @@ open class IconsStyleKit : NSObject {
         color.setStroke()
         bezier2Path.lineWidth = 1.5
         bezier2Path.stroke()
-        
-        
+
+
         //// Bezier 4 Drawing
         let bezier4Path = UIBezierPath()
         bezier4Path.move(to: CGPoint(x: 11.09, y: 22.41))
@@ -428,8 +428,8 @@ open class IconsStyleKit : NSObject {
         color.setStroke()
         bezier4Path.lineWidth = 1.5
         bezier4Path.stroke()
-        
-        
+
+
         //// Bezier 3 Drawing
         let bezier3Path = UIBezierPath()
         bezier3Path.move(to: CGPoint(x: 6, y: 6.25))
@@ -442,7 +442,7 @@ open class IconsStyleKit : NSObject {
         bezier3Path.lineWidth = 1.5
         bezier3Path.lineCapStyle = .round
         bezier3Path.stroke()
-        
+
         context.restoreGState()
     }
 
@@ -454,7 +454,7 @@ open class IconsStyleKit : NSObject {
         }
 
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 50, height: 35), false, 0)
-            IconsStyleKit.drawLetter()
+        IconsStyleKit.drawLetter()
 
         Cache.imageOfLetter = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
@@ -466,23 +466,23 @@ open class IconsStyleKit : NSObject {
         if Cache.imageOfLetterBG != nil {
             return Cache.imageOfLetterBG!
         }
-        
+
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 50, height: 35), false, 0)
         IconsStyleKit.drawLetter(fillBackground: true)
-        
+
         Cache.imageOfLetterBG = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
+
         return Cache.imageOfLetterBG!
     }
-    
+
     @objc open dynamic class var imageOfLetterCorrupted: UIImage {
         if Cache.imageOfLetterCorrupted != nil {
             return Cache.imageOfLetterCorrupted!
         }
 
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 49, height: 34), false, 0)
-            IconsStyleKit.drawLetterCorrupted()
+        IconsStyleKit.drawLetterCorrupted()
 
         Cache.imageOfLetterCorrupted = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
@@ -496,39 +496,39 @@ open class IconsStyleKit : NSObject {
         }
 
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 49, height: 34), false, 0)
-            IconsStyleKit.drawPostcard()
+        IconsStyleKit.drawPostcard()
 
         Cache.imageOfPostcard = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
 
         return Cache.imageOfPostcard!
     }
-    
+
     @objc open dynamic class var imageOfPostcardBG: UIImage {
         if Cache.imageOfPostcardBG != nil {
             return Cache.imageOfPostcardBG!
         }
-        
+
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 49, height: 34), false, 0)
         IconsStyleKit.drawPostcard(fillBackground: true)
-        
+
         Cache.imageOfPostcardBG = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
+
         return Cache.imageOfPostcardBG!
     }
-    
+
     @objc open dynamic class var imageOfLetterOpen: UIImage {
         if Cache.imageOfLetterOpen != nil {
             return Cache.imageOfLetterOpen!
         }
-        
+
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 47, height: 43), false, 0)
         IconsStyleKit.drawLetterOpen()
-        
+
         Cache.imageOfLetterOpen = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
+
         return Cache.imageOfLetterOpen!
     }
 
@@ -591,17 +591,17 @@ open class IconsStyleKit : NSObject {
             scales.height = abs(target.height / rect.height)
 
             switch self {
-                case .aspectFit:
-                    scales.width = min(scales.width, scales.height)
-                    scales.height = scales.width
-                case .aspectFill:
-                    scales.width = max(scales.width, scales.height)
-                    scales.height = scales.width
-                case .stretch:
-                    break
-                case .center:
-                    scales.width = 1
-                    scales.height = 1
+            case .aspectFit:
+                scales.width = min(scales.width, scales.height)
+                scales.height = scales.width
+            case .aspectFill:
+                scales.width = max(scales.width, scales.height)
+                scales.height = scales.width
+            case .stretch:
+                break
+            case .center:
+                scales.width = 1
+                scales.height = 1
             }
 
             var result = rect.standardized

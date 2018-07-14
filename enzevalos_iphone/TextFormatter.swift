@@ -9,7 +9,7 @@
 import Foundation
 
 class TextFormatter {
-    static func insertBeforeEveryLine(_ insertion: String, text: String) -> String{
+    static func insertBeforeEveryLine(_ insertion: String, text: String) -> String {
         let textSep = text.components(separatedBy: "\n")
         var ret = ""
         for t in textSep {

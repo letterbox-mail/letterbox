@@ -10,18 +10,18 @@
 import Foundation
 
 class QRCode {
-    
+
     static func generate(input: String) -> CIImage {
         var qrCode: CIImage
-        
+
         let data = input.data(using: String.Encoding.isoLatin1)
         let filter = CIFilter(name: "CIQRCodeGenerator")!
-        
+
         filter.setValue(data, forKey: "inputMessage")
         filter.setValue("M", forKey: "inputCorrectionLevel")
-        
+
         qrCode = filter.outputImage!
-        
+
         return qrCode
     }
 }

@@ -142,7 +142,7 @@ class GamificationData: NSObject {
 
      **Returns** the boolean Value whether the Badge is **Achieved (true)** or not (false)
      */
-    func badgeAchieved(badge : Badges) -> Bool {
+    func badgeAchieved(badge: Badges) -> Bool {
         // Check if Subbadges are Finished
         let subBadges = self.subBadgesforBadge(badge: badge.type)
         for element in subBadges {

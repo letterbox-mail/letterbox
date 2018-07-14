@@ -114,7 +114,7 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
 
     @IBAction func close(_ sender: Any) {
 //        Logger.queue.async(flags: .barrier) {
-            Logger.log(verify: self.keyId ?? "noKeyID", open: false, success: false)
+        Logger.log(verify: self.keyId ?? "noKeyID", open: false, success: false)
 //        }
         dismiss(animated: true, completion: nil)
     }
@@ -165,15 +165,15 @@ class QRScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjectsDeleg
                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
                             let alert = UIAlertController(title: NSLocalizedString("fingerprintMissmatchShort", comment: "Found fingerprint does not match"), message: NSLocalizedString("fingerprintMissmatchText", comment: "Found fingerprint does not match"), preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information"), style: .default, handler: {
-                                (action: UIAlertAction!) -> Void in
-                                UIApplication.shared.openURL(URL(string: "https://userpage.fu-berlin.de/letterbox/faq.html#headingWrongFingerprint")!)
-                                self.dismiss(animated: false, completion: nil)
-                            }))
+                                    (action: UIAlertAction!) -> Void in
+                                    UIApplication.shared.openURL(URL(string: "https://userpage.fu-berlin.de/letterbox/faq.html#headingWrongFingerprint")!)
+                                    self.dismiss(animated: false, completion: nil)
+                                }))
                             alert.addAction(UIAlertAction(title: NSLocalizedString("scanDifferentCode", comment: ""), style: .default, handler: {
-                                (action: UIAlertAction!) -> Void in
-                                self.qrCodeFrameView?.path = nil
-                                self.captureSession?.startRunning()
-                            }))
+                                    (action: UIAlertAction!) -> Void in
+                                    self.qrCodeFrameView?.path = nil
+                                    self.captureSession?.startRunning()
+                                }))
                             alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in self.dismiss(animated: true, completion: nil) }))
                             self.present(alert, animated: true, completion: nil)
                         }

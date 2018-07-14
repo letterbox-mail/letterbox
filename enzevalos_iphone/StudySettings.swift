@@ -12,9 +12,9 @@ import KeychainAccess
 enum StudyParamter: Int {
     case Warning = 0
     case Invitation = 1
-    
-    var name: String{
-        get{
+
+    var name: String {
+        get {
             switch self {
             case .Warning:
                 return "warning"
@@ -23,10 +23,10 @@ enum StudyParamter: Int {
             }
         }
     }
-    
+
     var keyName: String {
-        get{
-            switch  self {
+        get {
+            switch self {
             case .Warning:
                 return "hideWarnings"
             case .Invitation:
@@ -35,7 +35,7 @@ enum StudyParamter: Int {
         }
     }
     var numberOfTreatments: UInt32 {
-        get{
+        get {
             switch self {
             case .Warning:
                 return 2
@@ -57,8 +57,8 @@ class StudySettings {
     static var studyMode = true
     static var presentFirstQuestionaireMail = false
     static let parameters = [StudyParamter.Invitation]
-    
-    public static var invitationEnabled: Bool{
+
+    public static var invitationEnabled: Bool {
         get {
             return true
         }
@@ -93,39 +93,39 @@ class StudySettings {
                 keychain["bitcoin"] = "true"
                 UserDefaults.standard.set(true, forKey: "bitcoin")
 //                Logger.queue.async(flags: .barrier) {
-                    Logger.log(bitcoinMail: true)
+                Logger.log(bitcoinMail: true)
 //                }
             }
         }
     }
-    
-    static var invitationsmode: InvitationMode{
-        get{
+
+    static var invitationsmode: InvitationMode {
+        get {
             return UserManager.loadInvitationMode()
             let value = UserDefaults.standard.integer(forKey: StudyParamter.Invitation.keyName)
-            if let mode = InvitationMode.init(rawValue: value){
+            if let mode = InvitationMode.init(rawValue: value) {
                 return mode
             }
             return InvitationMode.InviteMail
         }
     }
-    
-    
-    private static var studyParameters: [StudyParamter:Int]{
-        get{
+
+
+    private static var studyParameters: [StudyParamter: Int] {
+        get {
             let keychain = Keychain(service: "Enzevalos/Study")
             var studyParamters = [StudyParamter: Int]()
-            for parameter in parameters{
+            for parameter in parameters {
                 var value: Int?
                 if let state = keychain[parameter.keyName], let num = Int(state) {
                     value = num
                 } else {
                     value = Int(arc4random_uniform(parameter.numberOfTreatments))
-                    if let value = value{
+                    if let value = value {
                         keychain[parameter.keyName] = String(value)
                     }
                 }
-                if let v = value{
+                if let v = value {
                     UserDefaults.standard.set(v, forKey: parameter.keyName)
                     studyParamters[parameter] = v
                 }
@@ -133,8 +133,8 @@ class StudySettings {
             return studyParamters
         }
     }
-    
-    
+
+
     static func setupStudy() {
         if !studyMode {
             //Logger.logging = false
@@ -154,7 +154,7 @@ class StudySettings {
             keychain["studyID"] = studyID
             UserDefaults.standard.set(studyID, forKey: "studyID")
         }
-        
+
         if let bitcoin = keychain["bitcoin"] { //do we received a mail from bitcoin.de?
             UserDefaults.standard.set(Bool(bitcoin) ?? false, forKey: "bitcoin")
         } else {
@@ -162,12 +162,12 @@ class StudySettings {
             UserDefaults.standard.set(false, forKey: "bitcoin")
         }
         let parameters = studyParameters
-        
-        
+
+
 //        Logger.queue.async(flags: .barrier) {
         Logger.log(setupStudy: parameters, alreadyRegistered: !presentFirstQuestionaireMail)
 //        }
-        
+
     }
     //create local mail for first interview here
     static func firstMail() {
@@ -176,7 +176,7 @@ class StudySettings {
         }
         let subject = "Herzlich Willkommen in Letterbox"
         let body =
-        """
+            """
         Liebe Teilnehmerin, lieber Teilnehmer,
         
         Herzlichen Glückwunsch! Sie haben Letterbox erfolgreich installiert.
@@ -200,14 +200,14 @@ class StudySettings {
         """
         mailToParticipat(subject: subject, body: body)
     }
-    
+
     static func givecards() {
         if !studyMode || !presentFirstQuestionaireMail {
             return
         }
         let subject = "Teilnahmeentschädigung: Verlosung von Amazon-Gutscheinen"
         let body =
-        """
+            """
         Liebe Teilnehmerin, lieber Teilnehmer,
 
         unter den teilnehmenden Personen werden 20 Amazon-Gutscheine im Wert von jeweils 50 Euro verlost.
@@ -225,31 +225,31 @@ class StudySettings {
 
         PS: Diese Nachricht wurde automatisch in Letterbox erzeugt und ist nur hier gespeichert.
         """
-        
+
         mailToParticipat(subject: subject, body: body)
     }
-    
-    
-    private static func mailToParticipat(subject: String, body: String){
+
+
+    private static func mailToParticipat(subject: String, body: String) {
         let senderAdr = SUPPORT_MAIL_ADR
         let sender = MCOAddress.init(displayName: "Letterbox-Team", mailbox: senderAdr)
         var keyID: String?
-        if let addr = DataHandler.handler.findMailAddress(adr: senderAdr){
-            if let pk = addr.primaryKey{
+        if let addr = DataHandler.handler.findMailAddress(adr: senderAdr) {
+            if let pk = addr.primaryKey {
                 keyID = pk.keyID
             }
         }
         let cryptoObject = CryptoObject(chiphertext: nil, plaintext: body, decryptedData: body.data(using: .utf8), sigState: SignatureState.ValidSignature, encState: EncryptionState.ValidedEncryptedWithCurrentKey, signKey: keyID, encType: CryptoScheme.PGP, signedAdrs: [senderAdr])
-        
+
         _ = DataHandler.handler.createMail(0, sender: sender, receivers: [], cc: [], time: Date(), received: false, subject: subject, body: body, flags: MCOMessageFlag.init(rawValue: 0), record: nil, autocrypt: nil, decryptedData: cryptoObject, folderPath: UserManager.backendInboxFolderPath, secretKey: nil)
     }
-    
-  
-    
+
+
+
     public static func setupStudyKeys() {
         if studyMode || Logger.logging {
             setupStudyPublicKeys()
         }
     }
-    
+
 }

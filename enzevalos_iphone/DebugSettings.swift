@@ -15,112 +15,112 @@ private let datahandler = DataHandler.handler
 let SUPPORT_MAIL_ADR = "letterbox@inf.fu-berlin.de"
 let LOGGING_MAIL_ADR = "letterbox-reports@inf.fu-berlin.de"
 
-func setupStudyPublicKeys(){
+func setupStudyPublicKeys() {
     let logging_pk = "logging_pk"
     let support_pk = "support_pk"
-    let keys = ["noreply@bitcoin.de": "bitcoinde", "letterbox@zedat.fu-berlin.de": support_pk,"letterbox-hilfe@inf.fu-berlin.de": support_pk, "enzevalos@inf.fu-berlin.de": support_pk, SUPPORT_MAIL_ADR: support_pk, LOGGING_MAIL_ADR: logging_pk]
+    let keys = ["noreply@bitcoin.de": "bitcoinde", "letterbox@zedat.fu-berlin.de": support_pk, "letterbox-hilfe@inf.fu-berlin.de": support_pk, "enzevalos@inf.fu-berlin.de": support_pk, SUPPORT_MAIL_ADR: support_pk, LOGGING_MAIL_ADR: logging_pk]
     importPublicKeyDic(keys: keys, type: "asc")
     datahandler.save(during: "init study keys")
 }
 
-func loadTestAcc(){
+func loadTestAcc() {
     //loadAliceEnzevalos()
-   //loadBobEnzevalos()
+    //loadBobEnzevalos()
     //loadAlice2005()
     //loadCharlieEnzevalos()
     //importPublicKeys()
     //loadBob2005()
 
-    
+
 }
 
-func loadUlli(){
-    let user =  web(name: "ullimuelle", pw: "")
+func loadUlli() {
+    let user = web(name: "ullimuelle", pw: "")
     userdefaults(defaults: user)
     importSecretKey(file: "ullimuelle-private", type: "gpg")
-  
+
 }
 
-func loadBob2005(){
+func loadBob2005() {
     let user = web(name: "bob2005", pw: "")
     userdefaults(defaults: user)
     importSecretKey(file: "bob2005-private", type: "gpg")
 }
 
-func loadAlice2005(){
+func loadAlice2005() {
     let user = web(name: "alice2005", pw: "")
     userdefaults(defaults: user)
     importSecretKey(file: "alice2005-private", type: "gpg")
-  
+
 }
 
-func loadBobEnzevalos(){
+func loadBobEnzevalos() {
     let user = enzevalos(name: "bob", pw: "")
     userdefaults(defaults: user)
     importSecretKey(file: "bob_enzvalos_private", type: "asc")
 }
 
 
-func loadCharlieEnzevalos(){
+func loadCharlieEnzevalos() {
     let user = enzevalos(name: "charlie", pw: "")
     userdefaults(defaults: user)
 }
 
-func loadAliceEnzevalos(){
+func loadAliceEnzevalos() {
     let user = enzevalos(name: "alice", pw: "")
     userdefaults(defaults: user)
 }
 
 
 
-private func userdefaults(defaults: [Attribute: AnyObject?]){
-    for (att, value) in defaults{
+private func userdefaults(defaults: [Attribute: AnyObject?]) {
+    for (att, value) in defaults {
         UserManager.storeUserValue(value, attribute: att)
     }
 
 }
 
-private func web(name: String, pw: String) -> [Attribute: AnyObject?]{
-    return  [.accountname : name as AnyObject?, .userName : name as Optional<AnyObject>, .userAddr : name+"@web.de" as Optional<AnyObject>, .userPW : pw as Optional<AnyObject>, .smtpHostname : "smtp.web.de" as Optional<AnyObject>, .smtpPort : 587 as Optional<AnyObject>,  .smtpConnectionType:MCOConnectionType.startTLS.rawValue as AnyObject?, .smtpAuthType:MCOAuthType.saslPlain.rawValue as AnyObject?, .imapHostname : "imap.web.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?,.imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?]
+private func web(name: String, pw: String) -> [Attribute: AnyObject?] {
+    return [.accountname: name as AnyObject?, .userName: name as Optional<AnyObject>, .userAddr: name + "@web.de" as Optional<AnyObject>, .userPW: pw as Optional<AnyObject>, .smtpHostname: "smtp.web.de" as Optional<AnyObject>, .smtpPort: 587 as Optional<AnyObject>, .smtpConnectionType: MCOConnectionType.startTLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .imapHostname: "imap.web.de" as Optional<AnyObject>, .imapPort: 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?]
 }
 
-private func enzevalos(name: String, pw: String)-> [Attribute: AnyObject?]{
-    return  [.accountname : name as AnyObject?, .userName : name as Optional<AnyObject>, .userAddr : name+"@enzevalos.de" as Optional<AnyObject>, .userPW : pw as Optional<AnyObject>, .smtpHostname : "mail.enzevalos.de" as Optional<AnyObject>, .smtpPort : 465 as Optional<AnyObject>, .smtpConnectionType: MCOConnectionType.TLS.rawValue as AnyObject? ,.smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?,.imapHostname : "mail.enzevalos.de" as Optional<AnyObject>, .imapPort : 993 as AnyObject?, .imapConnectionType:MCOConnectionType.TLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?]
+private func enzevalos(name: String, pw: String) -> [Attribute: AnyObject?] {
+    return [.accountname: name as AnyObject?, .userName: name as Optional<AnyObject>, .userAddr: name + "@enzevalos.de" as Optional<AnyObject>, .userPW: pw as Optional<AnyObject>, .smtpHostname: "mail.enzevalos.de" as Optional<AnyObject>, .smtpPort: 465 as Optional<AnyObject>, .smtpConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .smtpAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?, .imapHostname: "mail.enzevalos.de" as Optional<AnyObject>, .imapPort: 993 as AnyObject?, .imapConnectionType: MCOConnectionType.TLS.rawValue as AnyObject?, .imapAuthType: MCOAuthType.saslPlain.rawValue as AnyObject?]
 }
 
 
-func importPublicKeys(){
-    let asc = ["jakob.bode@fu-berlin.de":"JakobBode", "alice@enzevalos.de":"alice_enzevalos_public", "bob@enzevalos.de":"bob_enzevalos_public", "dave@enzevalos.de":"dave_enzevalos_public"]
-    let gpg = ["bob2005@web.de":"bob-public", "ullimuelle@web.de":"ullimuelle-public", "alice2005@web.de":"alice2005-public"]
+func importPublicKeys() {
+    let asc = ["jakob.bode@fu-berlin.de": "JakobBode", "alice@enzevalos.de": "alice_enzevalos_public", "bob@enzevalos.de": "bob_enzevalos_public", "dave@enzevalos.de": "dave_enzevalos_public"]
+    let gpg = ["bob2005@web.de": "bob-public", "ullimuelle@web.de": "ullimuelle-public", "alice2005@web.de": "alice2005-public"]
     importPublicKeyDic(keys: asc, type: "asc")
     importPublicKeyDic(keys: gpg, type: "gpg")
-  
+
 }
 
-func importSecretKey(file: String, type: String){
-    if let path = Bundle.main.path(forResource: file, ofType: type){
+func importSecretKey(file: String, type: String) {
+    if let path = Bundle.main.path(forResource: file, ofType: type) {
         let ids = try! pgp.importKeysFromFile(file: path, pw: nil)
-        for id in ids{
+        for id in ids {
             _ = datahandler.newSecretKey(keyID: id, addPk: true)
         }
     }
 }
 
-private func importPublicKeyDic(keys: [String:String], type: String){
-    for (adr, file) in keys{
+private func importPublicKeyDic(keys: [String: String], type: String) {
+    for (adr, file) in keys {
         importPublicKey(file: file, type: type, adr: adr)
     }
 }
 
-private func importPublicKey(file: String, type: String, adr: String){
-    if let path = Bundle.main.path(forResource: file, ofType: type){
-        do{
+private func importPublicKey(file: String, type: String, adr: String) {
+    if let path = Bundle.main.path(forResource: file, ofType: type) {
+        do {
             let ids = try pgp.importKeysFromFile(file: path, pw: nil)
-            for id in ids{
+            for id in ids {
                 _ = datahandler.newPublicKey(keyID: id, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false)
             }
         } catch _ {
-            
+
         }
     }
 }

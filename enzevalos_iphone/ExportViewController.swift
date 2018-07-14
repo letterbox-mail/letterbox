@@ -12,23 +12,23 @@ class ExportViewController: UITableViewController {
     var alreadySent = false
     var sentToAddress = (UserManager.loadUserValue(Attribute.userAddr) as! String)
     var passcode = ""
-    
+
     override func viewWillDisappear(_ animated: Bool) {
 //        Logger.queue.async(flags: .barrier) {
-            Logger.log(exportKeyViewClose: 2)
+        Logger.log(exportKeyViewClose: 2)
 //        }
         super.viewWillDisappear(animated)
     }
-    
+
     @IBAction func buttonTouched(_ sender: Any) {
 
 //        Logger.queue.async(flags: .barrier) {
-            Logger.log(exportKeyViewButton: !alreadySent)
+        Logger.log(exportKeyViewButton: !alreadySent)
 //        }
-        
+
         let handler = DataHandler.handler
         let ids = handler.findSecretKeys()
-        if ids.count > 0{
+        if ids.count > 0 {
             let id = ids[0]
             let pgp = SwiftPGP()
             if let keyId = id.keyID {
@@ -39,7 +39,7 @@ class ExportViewController: UITableViewController {
                         mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
                     }
                 } else {
-                    if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: false){
+                    if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: false) {
                         passcode = pgp.loadExportPasscode(id: keyId)!
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
                         mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
@@ -53,19 +53,19 @@ class ExportViewController: UITableViewController {
         }
         tableView.reloadData()
     }
-    
+
     @IBAction func doneButtonPressed(_ sender: Any) {
         let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController]
         self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true)
     }
-    
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         if alreadySent {
             return 2
         }
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 2
@@ -74,7 +74,7 @@ class ExportViewController: UITableViewController {
         }
         return 0
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
@@ -102,14 +102,14 @@ class ExportViewController: UITableViewController {
                 }
                 return cell
             }
-            
+
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: "ExportSecretCell") as! ExportSecretCell
         cell.infoTextLabel.text = NSLocalizedString("codeExplanation", comment: "")
         cell.setSecretToLabels(secret: passcode)
         return cell
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -127,12 +127,12 @@ class ExportViewController: UITableViewController {
             }
         }
 
-        
+
 //        Logger.queue.async(flags: .barrier) {
         Logger.log(exportKeyViewOpen: 2)
 //        }
     }
-    
+
     func mailSend(_ error: Error?) {
         if (error != nil) {
             NSLog("Error sending email: \(String(describing: error))")

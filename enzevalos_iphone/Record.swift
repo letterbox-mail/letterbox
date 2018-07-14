@@ -12,7 +12,7 @@ import UIKit
 
 
 public protocol Record: Comparable {
-    
+
     var name: String { get }
     var hasKey: Bool { get }
     var isVerified: Bool { get }

@@ -16,11 +16,11 @@ class Logger {
 
     static let defaultFileName = "log.json"
     static let loggingInterval = 21600 //60*60*6 seconds
-    static let resendInterval = 5*60
+    static let resendInterval = 5 * 60
     static let logReceiver = LOGGING_MAIL_ADR
 
     static var nextDeadline = (UserManager.loadUserValue(Attribute.nextDeadline) as? Date) ?? Date()
-    
+
     static var studyID = StudySettings.studyID //identifies the participant in the study
 
     static fileprivate func sendCheck() {
@@ -29,7 +29,7 @@ class Logger {
             let tmpNextDeadline = Date(timeIntervalSinceNow: TimeInterval(resendInterval))
             nextDeadline = tmpNextDeadline
             UserManager.storeUserValue(nextDeadline as AnyObject?, attribute: Attribute.nextDeadline)
-            
+
             sendLog()
         }
     }
@@ -53,20 +53,20 @@ class Logger {
         }
     }
 
-    static func log(setupStudy studypara: [StudyParamter:Int], alreadyRegistered: Bool) {
+    static func log(setupStudy studypara: [StudyParamter: Int], alreadyRegistered: Bool) {
         if !logging {
             return
         }
         var event = plainLogDict()
         event["type"] = LoggingEventType.setupStudy.rawValue
-        for (para,value) in studypara{
+        for (para, value) in studypara {
             event[para.name] = value
         }
         event["alreadyRegistered"] = alreadyRegistered
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(startApp onboarding: Bool) {
         if !logging {
             return
@@ -99,24 +99,24 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(onboardingState onboardingSection: String) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.onboardingState.rawValue
         event["onboardingSection"] = onboardingSection
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(onboardingPageTransition from: Int, to: Int, onboardingSection: String) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.onboardingPageTransition.rawValue
         event["from"] = from
@@ -258,38 +258,38 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(exportKeyViewOpen view: Int) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.exportKeyViewOpen.rawValue
         event["view"] = view
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(exportKeyViewClose view: Int) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.exportKeyViewClose.rawValue
         event["view"] = view
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(exportKeyViewButton send: Bool) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.exportKeyViewClose.rawValue
         if send {
@@ -297,98 +297,98 @@ class Logger {
         } else {
             event["case"] = "deletePasscode"
         }
-            
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(importPrivateKeyPopupOpen mail: PersistentMail?) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.importPrivateKeyPopupOpen.rawValue
         if let mail = mail {
             event = extract(from: mail, event: event)
         }
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(importPrivateKeyPopupClose mail: PersistentMail?, doImport: Bool) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.importPrivateKeyPopupClose.rawValue
         event["doImport"] = doImport
         if let mail = mail {
             event = extract(from: mail, event: event)
         }
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(importPrivateKey mail: PersistentMail?, success: Bool) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.importPrivateKey.rawValue
         event["success"] = success
         if let mail = mail {
             event = extract(from: mail, event: event)
         }
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(sendViewOpen mail: EphemeralMail?) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.sendViewOpen.rawValue
         if let mail = mail {
             event = extract(from: mail, event: event)
         }
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(sendViewClose mail: EphemeralMail?) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.sendViewClose.rawValue
         if let mail = mail {
             event = extract(from: mail, event: event)
         }
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(createDraft to: [Mail_Address?], cc: [Mail_Address?], bcc: [Mail_Address?], subject: String, bodyLength: Int, isEncrypted: Bool, isSigned: Bool, myKeyID: String) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.createDraft.rawValue
-        
-        
-        
+
+
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
@@ -429,22 +429,22 @@ class Logger {
         else {
             sendCheck()
         }
-            
-        
+
+
     }
-    
+
     static func log(readViewOpen mail: PersistentMail, message: String, draft: Bool = false) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
-        
+
         event["type"] = LoggingEventType.readViewOpen.rawValue
         event = extract(from: mail, event: event)
         event["messagePresented"] = message
         event["draft"] = draft
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
@@ -453,13 +453,13 @@ class Logger {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
-        
+
         event["type"] = LoggingEventType.readViewClose.rawValue
         event["messagePresented"] = message
         event["draft"] = draft
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
@@ -477,20 +477,20 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(bitcoinMail gotIt: Bool) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
-        
+
         event["type"] = LoggingEventType.gotBitcoinMail.rawValue
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
 
     static func log(delete mail: PersistentMail, toTrash: Bool) {
         if !logging {
@@ -503,7 +503,7 @@ class Logger {
         } else {
             event["type"] = LoggingEventType.mailDeletedPersistent.rawValue
         }
-       // event = extract(from: mail, event: event)
+        // event = extract(from: mail, event: event)
         event["operation"] = "DeleteMail"
 
         saveToDisk(json: dictToJSON(fields: event))
@@ -577,18 +577,18 @@ class Logger {
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
-    
+
     static func log(reactTo mail: PersistentMail?) {
         if !logging {
             return
         }
-        
+
         var event = plainLogDict()
         event["type"] = LoggingEventType.reactButtonTapped.rawValue
         if let mail = mail {
             event = extract(from: mail, event: event)
         }
-        
+
         saveToDisk(json: dictToJSON(fields: event))
         sendCheck()
     }
@@ -690,7 +690,7 @@ class Logger {
 
         return event
     }
-    
+
     static fileprivate func extract(from mail: EphemeralMail, event: [String: Any]) -> [String: Any] {
         var event = event
         event["to"] = Logger.resolve(mailAddresses: mail.to)
@@ -702,12 +702,12 @@ class Logger {
         //TODO:
         //event["signingKeyID"] = Logger.resolve(keyID: signingKeyID)
         //event["myKeyID"] = Logger.resolve(keyID: myKeyID)
-        
-        
-        
+
+
+
         //event["secureAddresses"] = secureAddresses //could mean the addresses, in this mail we have a key for
         //event["encryptedForKeyIDs"] = Logger.resolve(keyIDs: encryptedForKeyIDs)
-        
+
         return event
     }
 
@@ -736,7 +736,7 @@ class Logger {
 
         return newSubject
     }
-    
+
     static func specialMail(subject: String) -> String {
         if subject.contains(NSLocalizedString("inviteSubject", comment: "subject of invitation email")) {
             return "invitation"
@@ -883,7 +883,7 @@ class Logger {
             do {
                 let currentContent = try String(contentsOf: fileURL, encoding: .utf8)
                 if !currentContent.isEmpty {
-                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "[Enzevalos] Log", message: "{\"studyID\":\""+studyID+"\",\"data\":" + "[" + currentContent.dropLast() + "\n]" + "}", callback: sendCallback, loggingMail: true)
+                    AppDelegate.getAppDelegate().mailHandler.send([logMailAddress], ccEntrys: [], bccEntrys: [], subject: "[Enzevalos] Log", message: "{\"studyID\":\"" + studyID + "\",\"data\":" + "[" + currentContent.dropLast() + "\n]" + "}", callback: sendCallback, loggingMail: true)
                 }
             }
             catch {

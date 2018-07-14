@@ -17,7 +17,7 @@ class ListViewCell: UITableViewCell {
 
 class LoadingCell: UITableViewCell {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         activityIndicator.startAnimating()

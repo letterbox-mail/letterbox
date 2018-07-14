@@ -23,7 +23,7 @@ extension Contact {
         var tag = String()
         if name.count > 0 {
             let seperated = name.components(separatedBy: " ")
-            tag = seperated.map({if let a = $0.first { return "\(a)" }; return "" }).joined()
+            tag = seperated.map({ if let a = $0.first { return "\(a)" }; return "" }).joined()
         }
 
         text = NSAttributedString(string: tag.uppercased(), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 32.2)])
@@ -73,7 +73,7 @@ extension Contact {
     }
 
     func getColor() -> UIColor {
-        
+
         if let enzCon = self as? EnzevalosContact {
             if let color = enzCon.color {
                 return color

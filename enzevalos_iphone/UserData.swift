@@ -171,7 +171,7 @@ struct UserManager {
         }
     }
 
-    static func loadImapAuthType() -> MCOAuthType{
+    static func loadImapAuthType() -> MCOAuthType {
         if let auth = UserManager.loadUserValue(Attribute.imapAuthType) as? Int, auth != 0 {
             return MCOAuthType.init(rawValue: auth)
         }
@@ -187,15 +187,15 @@ struct UserManager {
 
     static func loadUserSignature() -> String {
         if UserDefaults.standard.bool(forKey: "Signature.Switch"), let sig = UserDefaults.standard.string(forKey: "Signature.Text") {
-                return "\n\n______________________________\n\n\(sig.trimmingCharacters(in: .whitespacesAndNewlines))\n\n"
+            return "\n\n______________________________\n\n\(sig.trimmingCharacters(in: .whitespacesAndNewlines))\n\n"
         }
 
         return ""
     }
-    
-    static func loadInvitationMode()-> InvitationMode{
+
+    static func loadInvitationMode() -> InvitationMode {
         let mode = UserDefaults.standard.integer(forKey: "Invitation.Mode")
-        if let invitationmode = InvitationMode(rawValue: mode){
+        if let invitationmode = InvitationMode(rawValue: mode) {
             return invitationmode
         }
         return InvitationMode.Censorship

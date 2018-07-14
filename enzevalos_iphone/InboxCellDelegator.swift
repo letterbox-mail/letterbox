@@ -7,7 +7,7 @@
 //
 
 protocol InboxCellDelegator: class {
-    
+
     func callSegueFromCell(_ mail: PersistentMail?)
     func callSegueFromCell2(_ contact: KeyRecord?)
     func callSegueToContact(_ contact: KeyRecord?)

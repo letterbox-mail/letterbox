@@ -21,5 +21,5 @@ class BadgeCaseCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var badgeName: UILabel!
 
 
-    
+
 }

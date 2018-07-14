@@ -14,7 +14,7 @@ import UIKit
 /**
  Enum Type for easier Recogition.
  */
-enum BadgeType : Int {
+enum BadgeType: Int {
     case keyMaster
     case trustmaster
     case encMaster
@@ -23,7 +23,7 @@ enum BadgeType : Int {
     case onBoarding
     case inviteAFriend
     case Ambassador
-    
+
     case MailMaster
     case MailMaster1
     case MailMaster10
@@ -38,13 +38,13 @@ enum BadgeType : Int {
     case SecureMailMaster50
     case SecureMailMaster100
     case SecureMailMaster1000
-    case None  // for SubBadge
+    case None // for SubBadge
 }
 
 /**
  Identifies Achievments, needed for DataStorage, mapping Achievments with Badges, Setting Conditions for Achievments
  */
-enum Achievment{
+enum Achievment {
     case Firstkey
     case OneFriendInvited
     case FiveFriendsInvited
@@ -68,20 +68,20 @@ enum Achievment{
 enum SegueName {
     case LinearBadge
     case inviteFriend
-    case None  // for SubBadge
+    case None // for SubBadge
 }
 
 
 class Badges: NSObject {
     // MARK:- Variables
-    let type : BadgeType
+    let type: BadgeType
 
     // Picture Names
-    let offName : String
-    let onName : String
-    let segueName : SegueName
-    let displayName : String
-    let achievments : [Achievment]?
+    let offName: String
+    let onName: String
+    let segueName: SegueName
+    let displayName: String
+    let achievments: [Achievment]?
 
     // MARK:- Functions
     /**
@@ -92,7 +92,7 @@ class Badges: NSObject {
      - Parameter displayName: Name Displayed in badge Case and elsewhere
      - Parameter achievmentsNeeded: Achievments needed to Complete this Badge, if nil Badge is always Completed
      */
-    init(type : BadgeType = .None, pictureOff : String, pictureOn : String, segue : SegueName = .None , displayName : String, achievmentsNeeded : [Achievment]? = nil) {
+    init(type: BadgeType = .None, pictureOff: String, pictureOn: String, segue: SegueName = .None, displayName: String, achievmentsNeeded: [Achievment]? = nil) {
         self.type = type
         self.offName = pictureOff
         self.onName = pictureOn
@@ -110,9 +110,9 @@ class Badges: NSObject {
      */
     func badgeImage() -> UIImage {
 
-        var image : UIImage?
-        if (GamificationData.sharedInstance.badgeAchieved(badge: self)){
-           image = UIImage.init(named: onName)
+        var image: UIImage?
+        if (GamificationData.sharedInstance.badgeAchieved(badge: self)) {
+            image = UIImage.init(named: onName)
         } else {
             image = UIImage.init(named: offName)
         }
@@ -134,7 +134,7 @@ class Badges: NSObject {
 
 extension UIColor {
     class func badgeGreen() -> UIColor {
-        return UIColor(red: 37/255, green: 132/255, blue: 6/255, alpha: 1)
+        return UIColor(red: 37 / 255, green: 132 / 255, blue: 6 / 255, alpha: 1)
     }
 
 }

@@ -23,21 +23,21 @@ extension PersistentMail {
     @NSManaged public var secretKey: String?
     @NSManaged public var record: KeyRecord?
 
-    public var flag: MCOMessageFlag{
+    public var flag: MCOMessageFlag {
         set {
-            if newValue != flag{
+            if newValue != flag {
                 AppDelegate.getAppDelegate().mailHandler.addFlag(self.uid, flags: newValue, folder: folder.name)
                 self.willChangeValue(forKey: "flag")
                 self.setPrimitiveValue(newValue.rawValue, forKey: "flag")
                 self.didChangeValue(forKey: "flag")
-                
+
             }
-            
+
         }
         get {
             self.willAccessValue(forKey: "flag")
             var value = MCOMessageFlag().rawValue
-            if let flagInt = self.primitiveValue(forKey: "flag"){
+            if let flagInt = self.primitiveValue(forKey: "flag") {
                 value = flagInt as! Int
             }
             let text = MCOMessageFlag(rawValue: value)
@@ -55,32 +55,32 @@ extension PersistentMail {
     @NSManaged public var firstKey: PersistentKey?
     @NSManaged public var signedKey: PersistentKey?
     @NSManaged public var received: Bool
-    
+
     @NSManaged public var gmailMessageID: NSNumber?
     @NSManaged public var gmailThreadID: NSNumber?
     @NSManaged public var messageID: String?
     @NSManaged public var notLoadedMessages: String?
-    
+
     @NSManaged public var xMailer: String?
 
- 
-    public var keyID: String?{
+
+    public var keyID: String? {
         set {
             self.willChangeValue(forKey: "keyID")
             self.setPrimitiveValue(newValue, forKey: "keyID")
             self.didChangeValue(forKey: "keyID")
         }
         get {
-            var  signKeyID: String?
-            if let k = self.signedKey{
+            var signKeyID: String?
+            if let k = self.signedKey {
                 signKeyID = k.keyID
             }
             self.willAccessValue(forKey: "keyID")
-            if let text = self.primitiveValue(forKey: "keyID"){
+            if let text = self.primitiveValue(forKey: "keyID") {
                 signKeyID = text as? String
             }
-            else{
-                if let id = signKeyID{
+            else {
+                if let id = signKeyID {
                     self.setPrimitiveValue(id, forKey: "keyID")
                 }
             }
@@ -88,9 +88,9 @@ extension PersistentMail {
             return signKeyID
         }
     }
-    
-    
-    public var trouble: Bool{
+
+
+    public var trouble: Bool {
         set {
             self.willChangeValue(forKey: "trouble")
             self.setPrimitiveValue(newValue, forKey: "trouble")
@@ -102,9 +102,9 @@ extension PersistentMail {
             self.didAccessValue(forKey: "trouble")
             return text
         }
-    
+
     }
-    public var uid: UInt64{
+    public var uid: UInt64 {
         set {
             self.willChangeValue(forKey: "uid")
             self.setPrimitiveValue(NSDecimalNumber.init(value: newValue as UInt64), forKey: "uid")
@@ -117,9 +117,9 @@ extension PersistentMail {
             return text!
         }
     }
-    public var uidvalidity: UInt32?{
+    public var uidvalidity: UInt32? {
         set {
-            if let num = newValue{
+            if let num = newValue {
                 self.willChangeValue(forKey: "uidvalidity")
                 self.setPrimitiveValue(NSDecimalNumber.init(value: num as UInt32), forKey: "uidvalidity")
                 self.didChangeValue(forKey: "uidvalidity")
@@ -132,12 +132,12 @@ extension PersistentMail {
             return text
         }
     }
-    public var from: MailAddress{
+    public var from: MailAddress {
         set {
-            if newValue is Mail_Address{
+            if newValue is Mail_Address {
                 let adr = newValue as! Mail_Address
                 self.willChangeValue(forKey: "from")
-                self.setValue(adr, forKey: "from" )
+                self.setValue(adr, forKey: "from")
                 self.didChangeValue(forKey: "from")
             }
         }
@@ -151,43 +151,43 @@ extension PersistentMail {
             return Mail_Address()
         }
     }
-    public var containsSecretKey: Bool{
-        get{
+    public var containsSecretKey: Bool {
+        get {
             return secretKey != nil
         }
     }
-    
-    private func extractPassword(body: String)-> String?{
+
+    private func extractPassword(body: String) -> String? {
         var pw: String? = nil
         var keyword: String? = nil
-        if body.contains("PW:"){
+        if body.contains("PW:") {
             keyword = "PW:"
         }
-        else if body.contains("pw:"){
+        else if body.contains("pw:") {
             keyword = "pw:"
         }
-        else if body.contains("password:"){
+        else if body.contains("password:") {
             keyword = "password:"
         }
-        if let key = keyword{
-            if let range = (body.range(of: key)?.upperBound){
+        if let key = keyword {
+            if let range = (body.range(of: key)?.upperBound) {
                 pw = String(body[range...])
-                if let split = pw?.components(separatedBy: CharacterSet.whitespacesAndNewlines){
-                    if split.count > 0 && split[0].count > 0{
+                if let split = pw?.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
+                    if split.count > 0 && split[0].count > 0 {
                         pw = split[0]
                     }
-                    else if split.count > 1{
+                    else if split.count > 1 {
                         pw = split[1]
                     }
                 }
             }
         }
         return pw
-        
+
     }
-    
-    public func processSecretKey(pw: String?) throws -> Bool{
-        if let sk = secretKey{
+
+    public func processSecretKey(pw: String?) throws -> Bool {
+        if let sk = secretKey {
             let pgp = SwiftPGP()
             let keyIDs = try pgp.importKeys(key: sk, pw: pw, isSecretKey: true, autocrypt: false)
             let sks = DataHandler.handler.newSecretKeys(keyIds: keyIDs, addPKs: true)
@@ -195,7 +195,7 @@ extension PersistentMail {
         }
         return false
     }
-    
+
     @NSManaged public var bcc: NSSet?
     @NSManaged public var cc: NSSet?
     @NSManaged public var to: NSSet
@@ -257,34 +257,34 @@ extension PersistentMail {
 
 // MARK: Generated accessors for attachments
 extension PersistentMail {
-    
+
     @objc(addAttachmentsObject:)
     @NSManaged public func addToAttachments(_ value: Attachment)
-    
+
     @objc(removeAttachmentsObject:)
     @NSManaged public func removeFromAttachments(_ value: Attachment)
-    
+
     @objc(addAttachments:)
     @NSManaged public func addToAttachments(_ values: NSSet)
-    
+
     @objc(removeAttachments:)
     @NSManaged public func removeFromAttachments(_ values: NSSet)
-    
+
 }
 
 // MARK: Generated accessors for attachments
 extension PersistentMail {
-    
+
     @objc(addReferenceMailsObject:)
     @NSManaged public func addToReferenceMails(_ value: PersistentMail)
-    
+
     @objc(removeReferenceMailsObject:)
     @NSManaged public func removeFromReferenceMails(_ value: PersistentMail)
-    
+
     @objc(addReferenceMails:)
     @NSManaged public func addToReferenceMails(_ values: NSSet)
-    
+
     @objc(removeReferenceMails:)
     @NSManaged public func removeFromReferenceMails(_ values: NSSet)
-    
+
 }

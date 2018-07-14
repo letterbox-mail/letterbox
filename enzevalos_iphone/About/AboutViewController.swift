@@ -55,7 +55,7 @@ class AboutTextDelegate: NSObject, UITextViewDelegate {
         }
         return true
     }
-    
+
     @available(iOS 10.0, *)
     func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         if url.scheme == "mailto" {

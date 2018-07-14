@@ -34,11 +34,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-fileprivate func ==(lhs: NSDate, rhs: NSDate) -> Bool {
+fileprivate func == (lhs: NSDate, rhs: NSDate) -> Bool {
     return lhs === rhs || lhs.compare(rhs as Date) == .orderedSame
 }
 
-fileprivate func <(lhs: NSDate, rhs: NSDate) -> Bool {
+fileprivate func < (lhs: NSDate, rhs: NSDate) -> Bool {
     return lhs.compare(rhs as Date) == .orderedAscending
 
 }
@@ -51,7 +51,7 @@ class DataHandler {
     private var managedObjectContext: NSManagedObjectContext
     private let MaxRecords = 50
     private let MaxMailsPerRecord = 100
-    
+
     var allFolders: [Folder] {
         get {
             var folders = [Folder]()
@@ -168,7 +168,7 @@ class DataHandler {
         save(during: "Terminating")
     }
 
-    func save(during:String) {
+    func save(during: String) {
         do {
             try managedObjectContext.save()
         } catch {
@@ -232,22 +232,22 @@ class DataHandler {
             let name = UserManager.loadUserValue(Attribute.accountname) as? String ?? adr
             _ = getContact(name: name, address: adr, key: keyID, prefer_enc: true)
             if addPk {
-                newPublicKey(keyID: keyID, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false)
+                _ = newPublicKey(keyID: keyID, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false)
             }
         }
         save(during: "new sk")
         return sk
     }
-    
-    func newSecretKeys(keyIds:[String], addPKs: Bool)-> [SecretKey]{
+
+    func newSecretKeys(keyIds: [String], addPKs: Bool) -> [SecretKey] {
         var sks = [SecretKey]()
-        for id in keyIds{
+        for id in keyIds {
             sks.append(newSecretKey(keyID: id, addPk: addPKs))
         }
         return sks
     }
 
-    func createNewSecretKey(adr: String) -> SecretKey{
+    func createNewSecretKey(adr: String) -> SecretKey {
         let keys = findSecretKeys()
         if keys.count > 0 {
             return findSecretKeys().first!
@@ -262,34 +262,34 @@ class DataHandler {
 
     func newPublicKey(keyID: String, cryptoType: CryptoScheme, adr: String, autocrypt: Bool, firstMail: PersistentMail? = nil, newGenerated: Bool = false) -> PersistentKey {
         var date = Date.init()
-        if let mail = firstMail{
-            if date.compare(mail.date).rawValue > 0{
+        if let mail = firstMail {
+            if date.compare(mail.date).rawValue > 0 {
                 date = mail.date
             }
         }
         let adr = getMailAddress(adr, temporary: false) as! Mail_Address
         var pk: PersistentKey
         if let search = findKey(keyID: keyID) {
-            if search.lastSeen < date{
+            if search.lastSeen < date {
                 search.lastSeen = date
             }
             if autocrypt {
-                if search.lastSeenAutocrypt < date{
+                if search.lastSeenAutocrypt < date {
                     search.lastSeenAutocrypt = date
                 }
                 search.sentOwnPublicKey = true
             }
             search.addToMailaddress(adr)
             pk = search
-                if Logger.logging {
-                    var importChannel = "autocrypt"
-                    if newGenerated {
-                        importChannel = "generated"
-                    } else if !autocrypt {
-                        importChannel = "attachment"
-                    }
-                    Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: true)
+            if Logger.logging {
+                var importChannel = "autocrypt"
+                if newGenerated {
+                    importChannel = "generated"
+                } else if !autocrypt {
+                    importChannel = "attachment"
                 }
+                Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map { ($0.keyID ?? "") == keyID }.reduce(false, { $0 || $1 }), knownBefore: true)
+            }
         } else {
             pk = NSEntityDescription.insertNewObject(forEntityName: "PersistentKey", into: managedObjectContext) as! PersistentKey
             pk.addToMailaddress(adr)
@@ -299,7 +299,7 @@ class DataHandler {
             pk.discoveryDate = date
             pk.firstMail = firstMail
             if autocrypt {
-                pk.lastSeenAutocrypt = date 
+                pk.lastSeenAutocrypt = date
                 pk.sentOwnPublicKey = true
             }
             var found = false
@@ -312,44 +312,44 @@ class DataHandler {
                 }
             }
             save(during: "new pk")
-                if Logger.logging {
-                    var importChannel = "autocrypt"
-                    if newGenerated {
-                        importChannel = "generated"
-                    } else if !autocrypt {
-                        importChannel = "attachment"
-                    }
-                    Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map{($0.keyID ?? "") == keyID}.reduce(false, {$0 || $1}), knownBefore: false)
+            if Logger.logging {
+                var importChannel = "autocrypt"
+                if newGenerated {
+                    importChannel = "generated"
+                } else if !autocrypt {
+                    importChannel = "attachment"
                 }
+                Logger.log(discover: pk.keyID, mailAddress: adr, importChannel: importChannel, knownPrivateKey: DataHandler.handler.findSecretKeys().map { ($0.keyID ?? "") == keyID }.reduce(false, { $0 || $1 }), knownBefore: false)
+            }
         }
-        if let prim = adr.primaryKey, let last = prim.lastSeen, let currentLast = pk.lastSeen{
+        if let prim = adr.primaryKey, let last = prim.lastSeen, let currentLast = pk.lastSeen {
             if last < currentLast {
                 adr.primaryKeyID = pk.keyID
             }
         }
-        else{
+        else {
             adr.primaryKeyID = keyID
         }
         save(during: "new PK")
         return pk
     }
-    
-    func prefSecretKey()->SecretKey{
-        if let prefId = UserManager.loadUserValue(Attribute.prefSecretKeyID){
-            if let id = prefId as? String{
-                if let key =  findSecretKey(keyID: id){
+
+    func prefSecretKey() -> SecretKey {
+        if let prefId = UserManager.loadUserValue(Attribute.prefSecretKeyID) {
+            if let id = prefId as? String {
+                if let key = findSecretKey(keyID: id) {
                     return key
                 }
             }
         }
         var allSKs = findSecretKeys()
-        allSKs = allSKs.sorted(by: {($0.importedDate)!<($1.importedDate)!})
-        if allSKs.count > 0{
+        allSKs = allSKs.sorted(by: { ($0.importedDate)! < ($1.importedDate)! })
+        if allSKs.count > 0 {
             UserManager.storeUserValue(allSKs[0].keyID as AnyObject, attribute: Attribute.prefSecretKeyID)
             return allSKs[0]
         }
-        if let adr = UserManager.loadUserValue(Attribute.userAddr){
-            if let adrString = adr as? String{
+        if let adr = UserManager.loadUserValue(Attribute.userAddr) {
+            if let adrString = adr as? String {
                 return createNewSecretKey(adr: adrString)
             }
         }
@@ -447,33 +447,33 @@ class DataHandler {
         }
         return false
     }
-    
-    func getKeyRecord(addr: String, keyID: String?) -> KeyRecord{
-        if let id = keyID{
-            if let key = findKey(keyID: id){
-                if let record = key.record{
+
+    func getKeyRecord(addr: String, keyID: String?) -> KeyRecord {
+        if let id = keyID {
+            if let key = findKey(keyID: id) {
+                if let record = key.record {
                     return record
                 }
                 // Create KeyRecord
                 let record = NSEntityDescription.insertNewObject(forEntityName: "KeyRecord", into: managedObjectContext) as! KeyRecord
                 record.key = key
-                if let contact = getContact(keyID: id){
+                if let contact = getContact(keyID: id) {
                     record.contact = contact
                 }
-                else{
+                else {
                     record.contact = getContactByAddress(addr)
                 }
                 save(during: "create keyRecord with key")
                 return record
             }
         }
-        
-        if let address = findMailAddress(adr: addr){
-            if let contact = address.contact{
-                for record in contact.records{
-                    if !record.hasKey{
-                        for a in record.addresses{
-                            if a.mailAddress == addr{
+
+        if let address = findMailAddress(adr: addr) {
+            if let contact = address.contact {
+                for record in contact.records {
+                    if !record.hasKey {
+                        for a in record.addresses {
+                            if a.mailAddress == addr {
                                 return record
                             }
                         }
@@ -552,7 +552,7 @@ class DataHandler {
         if let contacts = findAll("EnzevalosContact") {
             for c in contacts {
                 if case let contact as EnzevalosContact = c {
-                    for adr in contact.addresses{
+                    for adr in contact.addresses {
                         if case let mailAdr as Mail_Address = adr {
                             if mailAdr.address == address {
                                 return contact
@@ -579,18 +579,18 @@ class DataHandler {
         let adr = getMailAddress(lowerAdr, temporary: false) as! Mail_Address
         adr.contact = contact
         let cncontacts = AddressHandler.findContact(contact)
-        if cncontacts.count > 0{
+        if cncontacts.count > 0 {
             contact.cnidentifier = cncontacts.first?.identifier
         }
         return contact
     }
-    
-    func getContact(keyID: String)-> EnzevalosContact?{
-        if let key = findKey(keyID: keyID){
-            if let adrs = key.mailaddress{
-                for item in adrs{
+
+    func getContact(keyID: String) -> EnzevalosContact? {
+        if let key = findKey(keyID: keyID) {
+            if let adrs = key.mailaddress {
+                for item in adrs {
                     let adr = item as! Mail_Address
-                    if adr.contact != nil{
+                    if adr.contact != nil {
                         return adr.contact
                     }
                 }
@@ -602,7 +602,7 @@ class DataHandler {
     func getContact(name: String, address: String, key: String, prefer_enc: Bool) -> EnzevalosContact {
         let contact = getContactByAddress(address)
         contact.displayname = name
-        if let mykey = findKey(keyID: key){
+        if let mykey = findKey(keyID: key) {
             contact.getAddress(address)?.addToKeys(mykey)
         }
         return contact
@@ -627,7 +627,7 @@ class DataHandler {
         }
         if let contact = adr.contact {
             if !(contact.addresses.contains(adr)) {
-                    contact.addToAddresses(adr)
+                contact.addToAddresses(adr)
             }
         }
         fromMail.from = adr
@@ -640,10 +640,10 @@ class DataHandler {
     private func handleCCAddresses(_ cc: [MCOAddress], mail: PersistentMail) {
         mail.addToCc(NSSet(array: getMailAddressesByMCOAddresses(cc)))
     }
-    
-    private func findMail(msgID: String) -> PersistentMail?{
-        if let result = find("PersistentMail", type: "messageID", search: msgID) as?[PersistentMail]{
-            if result.count > 0{
+
+    private func findMail(msgID: String) -> PersistentMail? {
+        if let result = find("PersistentMail", type: "messageID", search: msgID) as?[PersistentMail] {
+            if result.count > 0 {
                 return result[0]
             }
         }
@@ -654,7 +654,7 @@ class DataHandler {
     func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?, references: [String] = [], mailagent: String? = nil, messageID: String? = nil) -> PersistentMail? {
         let myfolder = findFolder(with: folderPath) as Folder
         let finding = findNum("PersistentMail", type: "uid", search: uid)
-        
+
         let mail: PersistentMail
         var mails: [PersistentMail] = []
 
@@ -662,21 +662,21 @@ class DataHandler {
             mails = tmpMails
         }
 
-        if finding == nil || finding!.count == 0 || mails.filter( {$0.folder.path == folderPath && $0.uidvalidity == myfolder.uidvalidity}).count == 0 {
+        if finding == nil || finding!.count == 0 || mails.filter({ $0.folder.path == folderPath && $0.uidvalidity == myfolder.uidvalidity }).count == 0 {
             // create new mail object
             mail = NSEntityDescription.insertNewObject(forEntityName: "PersistentMail", into: managedObjectContext) as! PersistentMail
-            
+
             mail.date = time
             mail.subject = subject
             mail.body = body
-            mail.secretKey  = secretKey
+            mail.secretKey = secretKey
 
             mail.folder = myfolder
             mail.uidvalidity = myfolder.uidvalidity
             mail.uid = uid
             mail.messageID = messageID
             mail.xMailer = mailagent
-            
+
             mail.flag = flags
             // Default values
             mail.isSigned = false
@@ -684,17 +684,17 @@ class DataHandler {
             mail.trouble = false
             mail.unableToDecrypt = false
             mail.received = received
-           
+
             var notStored = ""
-            for reference in references{
-                if let ref = findMail(msgID: reference){
-                   // mail.addToReferenceMails(ref)
+            for reference in references {
+                if let ref = findMail(msgID: reference) {
+                    // mail.addToReferenceMails(ref)
                 }
-                else{
-                    notStored = notStored + " ; "+(reference)
+                else {
+                    notStored = notStored + " ; " + (reference)
                 }
             }
-            if notStored != ""{
+            if notStored != "" {
                 //mail.notLoadedMessages = notStored
             }
 
@@ -744,20 +744,20 @@ class DataHandler {
                 case SignatureState.ValidSignature:
                     mail.isCorrectlySigned = true
                     mail.isSigned = true
-                    if let signedKey = findKey(keyID: decData.signKey!){
+                    if let signedKey = findKey(keyID: decData.signKey!) {
                         mail.signedKey = signedKey
                         mail.keyID = signedKey.keyID
                     }
-                    else{
+                    else {
                         mail.signedKey = newPublicKey(keyID: decData.signKey!, cryptoType: decData.encType, adr: decData.signedAdrs.first!, autocrypt: false, firstMail: mail, newGenerated: false)
                     }
-                   
+
                 }
             }
-                else {
-                    // Maybe PGPInline?
-                    // TODO: Refactoring!
-                    //mail.decryptIfPossible()
+            else {
+                // Maybe PGPInline?
+                // TODO: Refactoring!
+                //mail.decryptIfPossible()
             }
         }
         else {
@@ -768,7 +768,7 @@ class DataHandler {
             myfolder.maxID = mail.uid
         }
         var record = getKeyRecord(addr: mail.from.mailAddress, keyID: nil)
-        if let signedID = mail.signedKey?.keyID{
+        if let signedID = mail.signedKey?.keyID {
             record = getKeyRecord(addr: mail.from.mailAddress, keyID: signedID)
         }
         record.addToPersistentMails(mail)

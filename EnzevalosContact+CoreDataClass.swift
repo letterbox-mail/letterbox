@@ -29,23 +29,23 @@ fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 @objc(EnzevalosContact)
 open class EnzevalosContact: NSManagedObject, Contact, Comparable {
 
-    override open var debugDescription: String{
-        get{
+    override open var debugDescription: String {
+        get {
             var string = ""
             string = string + "Name: \(name) #Keys: \(publicKeys.count) #Addr: \(addresses.count) \n Addresses: \n"
-            for addr in addresses{
-                if let a = addr as? Mail_Address{
+            for addr in addresses {
+                if let a = addr as? Mail_Address {
                     string = string + a.address + "\n"
                 }
             }
             string = string + "public Keys: \n"
-            for pk in publicKeys{
+            for pk in publicKeys {
                 string = string + "\(pk.keyID) \n"
             }
             return string
         }
     }
-    
+
     open var name: String {
         if let name = nameOptional {
             return name
@@ -80,7 +80,7 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
     open var to: [PersistentMail] {
         get {
             var mails = [PersistentMail]()
-            for adr in addresses{
+            for adr in addresses {
                 if let a = adr as? Mail_Address, let to = a.to {
                     for m in to {
                         mails.append(m as! PersistentMail)
@@ -134,11 +134,11 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
             return mails
         }
     }
-    
-    var publicKeys: Set<PersistentKey>{
-        get{
+
+    var publicKeys: Set<PersistentKey> {
+        get {
             var pks = Set<PersistentKey>()
-            for adr in getMailAddresses(){
+            for adr in getMailAddresses() {
                 pks = pks.union(adr.publicKeys)
             }
             return pks
@@ -147,16 +147,16 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
 
     open var records: [KeyRecord] {
         get {
-            if let krecords = self.keyrecords as? Set<KeyRecord>{
+            if let krecords = self.keyrecords as? Set<KeyRecord> {
                 return Array(krecords)
-            }        
+            }
             return []
         }
 
     }
     open var hasKey: Bool {
         get {
-            for item in addresses{
+            for item in addresses {
                 let adr = item as! MailAddress
                 if adr.hasKey {
                     return true
@@ -168,16 +168,16 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
 
     open var cnContact: CNContact? {
         get {
-            if let cn = cnidentifier{
+            if let cn = cnidentifier {
                 let contacts = AddressHandler.getContactByID(cn)
-                if contacts.count > 0{
+                if contacts.count > 0 {
                     return contacts.first
                 }
             }
             return nil
         }
     }
-    
+
     open var newCnContact: CNContact {
         let con = CNMutableContact()
         let name = self.displayname
@@ -227,10 +227,10 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         }
         return adr
     }
-    
-    func isAddress(mailadr: String) -> Bool{
-        for adr in getMailAddresses(){
-            if mailadr.lowercased() == adr.mailAddress.lowercased(){
+
+    func isAddress(mailadr: String) -> Bool {
+        for adr in getMailAddresses() {
+            if mailadr.lowercased() == adr.mailAddress.lowercased() {
                 return true
             }
         }

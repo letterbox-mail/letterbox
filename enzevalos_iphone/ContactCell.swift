@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-class ContactCell : UITableViewCell {
-    
+class ContactCell: UITableViewCell {
+
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var address: UILabel!
     @IBOutlet weak var img: UIImageView!
-       
+
 }

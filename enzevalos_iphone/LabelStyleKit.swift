@@ -15,7 +15,7 @@
 
 import UIKit
 
-open class LabelStyleKit : NSObject {
+open class LabelStyleKit: NSObject {
 
     //// Cache
 
@@ -38,7 +38,7 @@ open class LabelStyleKit : NSObject {
     @objc open dynamic class func drawHome(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 28, height: 28), resizing: ResizingBehavior = .aspectFit, color: UIColor = LabelStyleKit.black) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         //// Resize to Target Frame
         context.saveGState()
         let resizedFrame: CGRect = resizing.apply(rect: CGRect(x: 0, y: 0, width: 28, height: 28), target: targetFrame)
@@ -91,7 +91,7 @@ open class LabelStyleKit : NSObject {
         bezier3Path.close()
         color.setFill()
         bezier3Path.fill()
-        
+
         context.restoreGState()
 
     }
@@ -99,7 +99,7 @@ open class LabelStyleKit : NSObject {
     @objc open dynamic class func drawWork(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 148, height: 134), resizing: ResizingBehavior = .aspectFit, color: UIColor = LabelStyleKit.black) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         //// Resize to Target Frame
         context.saveGState()
         let resizedFrame: CGRect = resizing.apply(rect: CGRect(x: 0, y: 0, width: 148, height: 134), target: targetFrame)
@@ -159,7 +159,7 @@ open class LabelStyleKit : NSObject {
         bezier4Path.close()
         color.setFill()
         bezier4Path.fill()
-        
+
         context.restoreGState()
 
     }
@@ -167,7 +167,7 @@ open class LabelStyleKit : NSObject {
     @objc open dynamic class func drawOther(frame targetFrame: CGRect = CGRect(x: 0, y: 0, width: 86, height: 82), resizing: ResizingBehavior = .aspectFit, color: UIColor = LabelStyleKit.black) {
         //// General Declarations
         let context = UIGraphicsGetCurrentContext()!
-        
+
         //// Resize to Target Frame
         context.saveGState()
         let resizedFrame: CGRect = resizing.apply(rect: CGRect(x: 0, y: 0, width: 86, height: 82), target: targetFrame)
@@ -190,7 +190,7 @@ open class LabelStyleKit : NSObject {
         starPath.close()
         color.setFill()
         starPath.fill()
-        
+
         context.restoreGState()
 
     }
@@ -203,7 +203,7 @@ open class LabelStyleKit : NSObject {
         }
 
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 28, height: 28), false, 0)
-            LabelStyleKit.drawHome()
+        LabelStyleKit.drawHome()
 
         Cache.imageOfHome = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
@@ -217,7 +217,7 @@ open class LabelStyleKit : NSObject {
         }
 
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 148, height: 134), false, 0)
-            LabelStyleKit.drawWork()
+        LabelStyleKit.drawWork()
 
         Cache.imageOfWork = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
@@ -231,7 +231,7 @@ open class LabelStyleKit : NSObject {
         }
 
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 86, height: 82), false, 0)
-            LabelStyleKit.drawOther()
+        LabelStyleKit.drawOther()
 
         Cache.imageOfOther = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
@@ -290,17 +290,17 @@ open class LabelStyleKit : NSObject {
             scales.height = abs(target.height / rect.height)
 
             switch self {
-                case .aspectFit:
-                    scales.width = min(scales.width, scales.height)
-                    scales.height = scales.width
-                case .aspectFill:
-                    scales.width = max(scales.width, scales.height)
-                    scales.height = scales.width
-                case .stretch:
-                    break
-                case .center:
-                    scales.width = 1
-                    scales.height = 1
+            case .aspectFit:
+                scales.width = min(scales.width, scales.height)
+                scales.height = scales.width
+            case .aspectFill:
+                scales.width = max(scales.width, scales.height)
+                scales.height = scales.width
+            case .stretch:
+                break
+            case .center:
+                scales.width = 1
+                scales.height = 1
             }
 
             var result = rect.standardized

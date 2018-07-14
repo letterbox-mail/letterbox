@@ -224,12 +224,12 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
     func filterContentForSearchText(_ searchText: String, scope: Int = 0) {
         var records = [KeyRecord]()
         if scope == 0 || scope == 3 {
-            records += folder.records.filter({ ( record: KeyRecord) -> Bool in
+            records += folder.records.filter({ (record: KeyRecord) -> Bool in
                 return record.name.lowercased().contains(searchText.lowercased())
             })
         }
         if scope == 1 || scope == 3 {
-            records += folder.records.filter({ ( record: KeyRecord) -> Bool in
+            records += folder.records.filter({ (record: KeyRecord) -> Bool in
                 let mails = record.inboxMails
                 return mails.filter({ (mail: PersistentMail) -> Bool in
                     mail.subject?.lowercased().contains(searchText.lowercased()) ?? false
@@ -237,7 +237,7 @@ class InboxViewController: UITableViewController, InboxCellDelegator {
             })
         }
         if scope == 2 || scope == 3 {
-            records += folder.records.filter({ ( record: KeyRecord) -> Bool in
+            records += folder.records.filter({ (record: KeyRecord) -> Bool in
                 let mails = record.inboxMails
                 return mails.filter({ (mail: PersistentMail) -> Bool in
                     if let decryptedBody = mail.decryptedBody {

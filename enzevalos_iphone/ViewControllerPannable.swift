@@ -25,7 +25,7 @@ class ViewControllerPannable: UIViewController {
         if panGesture.state == .began {
             originalPosition = view.center
             currentPositionTouched = panGesture.location(in: view)
-            
+
         } else if panGesture.state == .changed {
             view.frame.origin = CGPoint(
                 x: 0,
@@ -36,16 +36,16 @@ class ViewControllerPannable: UIViewController {
 
             if velocity.y >= 1500 || translation.y >= 300 {
                 UIView.animate(withDuration: 0.2
-                               , animations: {
-                                   self.view.frame.origin = CGPoint(
-                                                                        x: self.view.frame.origin.x,
-                                                                        y: self.view.frame.size.height
-                                   )
-                               }, completion: { (isCompleted) in
-                                   if isCompleted {
-                                       self.dismiss(animated: false, completion: nil)
-                                   }
-                               })
+                    , animations: {
+                        self.view.frame.origin = CGPoint(
+                            x: self.view.frame.origin.x,
+                            y: self.view.frame.size.height
+                        )
+                    }, completion: { (isCompleted) in
+                        if isCompleted {
+                            self.dismiss(animated: false, completion: nil)
+                        }
+                    })
             } else {
                 UIView.animate(withDuration: 0.2, animations: {
                     self.view.center = self.originalPosition!
