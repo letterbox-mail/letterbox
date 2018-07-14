@@ -186,8 +186,8 @@ class SwiftPGP: Encryption{
         return nil
     }
     
-    func generateKey(adr: String) -> String{
-        if oldSecretKeys.count > 0{
+    func generateKey(adr: String, new: Bool = false) -> String{
+        if oldSecretKeys.count > 0 && !new{
             var primkey: Key?
             for key in oldSecretKeys{
                 if vaildAddress(key: key).contains(adr){

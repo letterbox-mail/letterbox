@@ -101,7 +101,7 @@ func importSecretKey(file: String, type: String){
     if let path = Bundle.main.path(forResource: file, ofType: type){
         let ids = try! pgp.importKeysFromFile(file: path, pw: nil)
         for id in ids{
-            _ = datahandler.newSecretKey(keyID: id)
+            _ = datahandler.newSecretKey(keyID: id, addPk: true)
         }
     }
 }

@@ -74,15 +74,21 @@ class CoraDataTests: XCTestCase {
     func testArrivingMail(){
         let sender = createUser()
         let folder = "INBOX"
-        XCTAssertNil(datahandler.findMailAddress(adr: sender.mailbox))
+        XCTAssertNil( datahandler.findMailAddress(adr: sender.mailbox))
         
-        if let mail = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folder){
+        if let mail = testMail(from: sender, to: [user], cc: [user], bcc: [], folder: folder){
             XCTAssertFalse(mail.isSecure)
             XCTAssertFalse(mail.isEncrypted)
             XCTAssertFalse(mail.isSigned)
             XCTAssertFalse(mail.trouble)
             XCTAssertFalse(mail.isCorrectlySigned)
             
+            XCTAssert(mail.getCCs().count == 1)
+            XCTAssert(mail.getCCs()[0].mailAddress == user.mailbox)
+            XCTAssert(mail.getReceivers().count == 1)
+            XCTAssert(mail.getReceivers()[0].mailAddress == user.mailbox)
+            
+
             XCTAssertNotNil(datahandler.findMailAddress(adr: sender.mailbox))
             let f = datahandler.findFolder(with: folder)
             XCTAssertEqual(f.mailsOfFolder.count, 1)
@@ -107,7 +113,6 @@ class CoraDataTests: XCTestCase {
         else {
             XCTFail("No mail")
         }
-        //TODO: May test cc, bbcc fields
     }
     
     func testMultiplePlainMailsFromOne() {
@@ -193,11 +198,12 @@ class CoraDataTests: XCTestCase {
         let cryptoObject1 = senderPGP.encrypt(plaintext: body , ids: [userKeyID], myId: keyID1)
         _ = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: cryptoObject1)
         
-        let keyID2 = pgp.generateKey(adr: sender.mailbox)
+        let keyID2 = pgp.generateKey(adr: sender.mailbox, new: true)
         let cryptoObject2 = senderPGP.encrypt(plaintext: body , ids: [userKeyID], myId: keyID2)
         _ = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: cryptoObject2)
 
         let folder = datahandler.findFolder(with: folderName)
+
         XCTAssertEqual(folder.records.count, 2)
         for record in folder.records {
             XCTAssertTrue(record.isSecure)
@@ -214,22 +220,24 @@ class CoraDataTests: XCTestCase {
         let (sender, keyID) = createPGPUser()
         let body = "enc with old key"
         let folderName = "INBOX"
+        let oldID = userKeyID
        
         var myrecord = datahandler.getKeyRecord(addr: userAdr, keyID: datahandler.prefSecretKey().keyID)
         XCTAssertEqual(myrecord.keyID, userKeyID)
         XCTAssertEqual(myrecord.ezContact.records.count, 1)
 
         
-        let cryptoObject1 = pgp.encrypt(plaintext: body , ids: [userKeyID], myId: keyID)
+        let cryptoObject1 = pgp.encrypt(plaintext: body , ids: [oldID], myId: keyID)
         _ = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: cryptoObject1)
         let myContact = datahandler.getContactByAddress(userAdr)
         
         if let newKeyIDs = try? pgp.importKeys(key: CryptoTests.importKey, pw: CryptoTests.importPW, isSecretKey: true, autocrypt: false), let newKeyId = newKeyIDs.first {
-            _ = datahandler.newSecretKey(keyID: newKeyId)
+            _ = datahandler.newSecretKey(keyID: newKeyId, addPk: true)
             XCTAssertTrue(newKeyId == datahandler.prefSecretKey().keyID)
             XCTAssertTrue(userKeyID != newKeyId)
             
-            let key = datahandler.findKey(keyID: datahandler.prefSecretKey().keyID!)
+            let key = datahandler.findSecretKey(keyID: datahandler.prefSecretKey().keyID!)
+            XCTAssertNotNil(key)
             XCTAssertTrue(key?.keyID == newKeyId)
             
             myrecord = datahandler.getKeyRecord(addr: userAdr, keyID: datahandler.prefSecretKey().keyID)
@@ -240,10 +248,13 @@ class CoraDataTests: XCTestCase {
             XCTAssertTrue(myrecord.isSecure)
             XCTAssertEqual(myContact.publicKeys.count, 2)
             let cryptoObject2 = pgp.encrypt(plaintext: body , ids: [newKeyId], myId: keyID )
-            _ = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: cryptoObject2)
+            let decryptObject2 = pgp.decrypt(data: cryptoObject2.chiphertext!, decryptionIDs: [newKeyId], verifyIds: [keyID], fromAdr: sender.mailbox)
+
+            _ = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: decryptObject2)
             
-            let cryptoObject3 = pgp.encrypt(plaintext: body , ids: [userKeyID], myId: keyID)
-            let oldMail = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: cryptoObject3)
+            let cryptoObject3 = pgp.encrypt(plaintext: body , ids: [oldID], myId: keyID)
+            let decryptObject3 = pgp.decrypt(data: cryptoObject3.chiphertext!, decryptionIDs: [oldID], verifyIds: [keyID], fromAdr: sender.mailbox)
+            let oldMail = testMail(from: sender, to: [user], cc: [], bcc: [], folder: folderName, cryptoObject: decryptObject3)
             
             XCTAssertTrue((oldMail?.decryptedWithOldPrivateKey)!)
             
@@ -252,14 +263,8 @@ class CoraDataTests: XCTestCase {
             XCTFail("No new key")
             return
         }
-        // teste, ob alle eigenen Keys da sind
-        
-        // teste, ob das hin und herspringen klappt.
     }
     
-    func testInbox() {
-        // Test notificationcenter!
-    }
     
     func checkOrderingOfRecord(record: KeyRecord) -> Bool{
         var prev: PersistentMail?

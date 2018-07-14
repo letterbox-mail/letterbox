@@ -190,7 +190,7 @@ extension PersistentMail {
         if let sk = secretKey{
             let pgp = SwiftPGP()
             let keyIDs = try pgp.importKeys(key: sk, pw: pw, isSecretKey: true, autocrypt: false)
-            let sks = DataHandler.handler.newSecretKeys(keyIds: keyIDs)
+            let sks = DataHandler.handler.newSecretKeys(keyIds: keyIDs, addPKs: true)
             return sks.count > 0
         }
         return false

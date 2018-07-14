@@ -218,7 +218,7 @@ class DataHandler {
 
     // Save, load, search
 
-    func newSecretKey(keyID: String) -> SecretKey {
+    func newSecretKey(keyID: String, addPk: Bool) -> SecretKey {
         let sk: SecretKey
         if let key = findSecretKey(keyID: keyID) {
             sk = key
@@ -226,20 +226,23 @@ class DataHandler {
             sk = NSEntityDescription.insertNewObject(forEntityName: "SecretKey", into: managedObjectContext) as! SecretKey
             sk.keyID = keyID
             sk.obsolete = false
-            sk.importedDate = Date() //as NSDate
+            sk.importedDate = Date()
             UserManager.storeUserValue(keyID as AnyObject, attribute: Attribute.prefSecretKeyID)
             let adr = UserManager.loadUserValue(Attribute.userAddr) as! String
             let name = UserManager.loadUserValue(Attribute.accountname) as? String ?? adr
             _ = getContact(name: name, address: adr, key: keyID, prefer_enc: true)
+            if addPk {
+                newPublicKey(keyID: keyID, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false)
+            }
         }
         save(during: "new sk")
         return sk
     }
     
-    func newSecretKeys(keyIds:[String])-> [SecretKey]{
+    func newSecretKeys(keyIds:[String], addPKs: Bool)-> [SecretKey]{
         var sks = [SecretKey]()
         for id in keyIds{
-            sks.append(newSecretKey(keyID: id))
+            sks.append(newSecretKey(keyID: id, addPk: addPKs))
         }
         return sks
     }
@@ -251,7 +254,7 @@ class DataHandler {
         }
         let pgp = SwiftPGP()
         let key = pgp.generateKey(adr: adr)
-        let sk = DataHandler.handler.newSecretKey(keyID: key)
+        let sk = DataHandler.handler.newSecretKey(keyID: key, addPk: false)
         let pk = DataHandler.handler.newPublicKey(keyID: key, cryptoType: CryptoScheme.PGP, adr: adr, autocrypt: false, newGenerated: true)
         pk.sentOwnPublicKey = true
         return sk
@@ -715,7 +718,13 @@ class DataHandler {
                     mail.unableToDecrypt = true
                     mail.isEncrypted = true
                     mail.trouble = false
-                case EncryptionState.ValidEncryptedWithOldKey, EncryptionState.ValidedEncryptedWithCurrentKey:
+                case EncryptionState.ValidEncryptedWithOldKey:
+                    mail.isEncrypted = true
+                    mail.trouble = false
+                    mail.unableToDecrypt = false
+                    mail.decryptedBody = body
+                    mail.decryptedWithOldPrivateKey = true
+                case EncryptionState.ValidedEncryptedWithCurrentKey:
                     mail.isEncrypted = true
                     mail.trouble = false
                     mail.unableToDecrypt = false

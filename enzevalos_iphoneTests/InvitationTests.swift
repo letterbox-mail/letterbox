@@ -21,11 +21,9 @@ class InvitationTests: XCTestCase {
 		let firstResult = string.words(inRange: firstStringRange)
 		let secondResult = string.words(inRange: secondStringRange)
 
-		print(firstResult)
 		XCTAssertEqual(firstResult?.words, "Diese")
 		XCTAssertEqual(firstResult?.extendedRange, firstStringRange)
 
-		print(secondResult)
 		XCTAssertEqual(secondResult?.words, "App hat viele")
 		XCTAssertEqual(secondResult?.extendedRange, NSRange(location: 6, length: 13))
 	}

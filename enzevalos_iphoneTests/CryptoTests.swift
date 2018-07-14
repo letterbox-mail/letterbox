@@ -461,7 +461,7 @@ class CryptoTests: XCTestCase {
         XCTAssert(key == "008933003B986364")
         
         // Test storing a key
-        _ = datahandler.newSecretKey(keyID: key)
+        _ = datahandler.newSecretKey(keyID: key, addPk: true)
         XCTAssert(datahandler.prefSecretKey().keyID == key)
         XCTAssertNotNil(datahandler.findSecretKey(keyID: key))
         XCTAssertEqual(datahandler.findSecretKeys().count, 2)
@@ -559,7 +559,7 @@ class CryptoTests: XCTestCase {
             return 
         }
         XCTAssertEqual(keys.count, 1)
-        _ = datahandler.newSecretKeys(keyIds: keys)
+        _ = datahandler.newSecretKeys(keyIds: keys, addPKs: true)
         XCTAssertEqual(keys.first, datahandler.prefSecretKey().keyID)
         cryptoObject = pgp.decrypt(data: data, decryptionId: userKeyID, verifyIds: [senderID], fromAdr: nil)
         XCTAssertEqual(keys.first, datahandler.prefSecretKey().keyID)
