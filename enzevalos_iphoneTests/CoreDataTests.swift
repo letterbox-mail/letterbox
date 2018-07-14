@@ -24,6 +24,8 @@ import XCTest
  Test EnzContact
  - #records
  
+ 
+ TODO: Delete mail, move mail, reply mail, forward mail
  */
 
 @testable import enzevalos_iphone
@@ -74,7 +76,7 @@ class CoraDataTests: XCTestCase {
     func testArrivingMail(){
         let sender = createUser()
         let folder = "INBOX"
-        XCTAssertNil( datahandler.findMailAddress(adr: sender.mailbox))
+        XCTAssertNil(datahandler.findMailAddress(adr: sender.mailbox))
         
         if let mail = testMail(from: sender, to: [user], cc: [user], bcc: [], folder: folder){
             XCTAssertFalse(mail.isSecure)
