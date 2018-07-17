@@ -194,6 +194,8 @@ extension OnboardingIntroPageViewController: OnboardingButtonInputDelegate {
         }
     }
     func rightButtonTapped() {
+        let setupController = self.storyboard?.instantiateViewController(withIdentifier: "setup") as! OnboardingSetupPageViewController
+        self.present(setupController, animated: true, completion: nil)
         //TODO goto other pageViewController
     }
 }

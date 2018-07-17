@@ -236,6 +236,7 @@
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1C62E9A2018F716000E5273 /* OnboardingValueState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C62E992018F716000E5273 /* OnboardingValueState.swift */; };
+		A1CA92CD20FDF5570034E934 /* OnboardingSetupPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CA92CC20FDF5570034E934 /* OnboardingSetupPageViewController.swift */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
 		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
 		A1E5960E1FCC871F003791E9 /* researchteam.asc in Resources */ = {isa = PBXBuildFile; fileRef = A1E5960D1FCC871E003791E9 /* researchteam.asc */; };
@@ -454,6 +455,7 @@
 		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-private.gpg"; path = "keys/alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1C62E992018F716000E5273 /* OnboardingValueState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingValueState.swift; sourceTree = "<group>"; };
+		A1CA92CC20FDF5570034E934 /* OnboardingSetupPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSetupPageViewController.swift; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
 		A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListCell.swift; sourceTree = "<group>"; };
 		A1E5960D1FCC871E003791E9 /* researchteam.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = researchteam.asc; path = keys/researchteam.asc; sourceTree = "<group>"; };
@@ -874,7 +876,7 @@
 			children = (
 				A15D18B720F795FA00C57844 /* templates */,
 				A135772920DBF65400B65827 /* Onboarding.storyboard */,
-				A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */,
+				A1CA92CE20FDFE640034E934 /* controller */,
 			);
 			name = new;
 			sourceTree = "<group>";
@@ -965,6 +967,15 @@
 				A19C12461DE602FF007F72E7 /* jabo.asc */,
 			);
 			name = keys;
+			sourceTree = "<group>";
+		};
+		A1CA92CE20FDFE640034E934 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */,
+				A1CA92CC20FDF5570034E934 /* OnboardingSetupPageViewController.swift */,
+			);
+			name = controller;
 			sourceTree = "<group>";
 		};
 		A1D5076D1E80254D00B68B38 /* keyView */ = {
@@ -1664,6 +1675,7 @@
 				A1C62E9A2018F716000E5273 /* OnboardingValueState.swift in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
 				A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */,
+				A1CA92CD20FDF5570034E934 /* OnboardingSetupPageViewController.swift in Sources */,
 				472F398E1E251B8D009260FB /* MailAddress.swift in Sources */,
 				A198D2292056B384004CC838 /* SendViewDelegate.swift in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
