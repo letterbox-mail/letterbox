@@ -420,10 +420,10 @@
             </objects>
             <point key="canvasLocation" x="-290" y="1555"/>
         </scene>
-        <!--Onboarding Introduce Scanner View Controller-->
+        <!--Onboarding Confirmation View Controller-->
         <scene sceneID="XBa-ey-Zg1">
             <objects>
-                <viewController storyboardIdentifier="introduceScannerView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MxH-9k-9nO" customClass="OnboardingIntroduceScannerViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="confirmationView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MxH-9k-9nO" customClass="OnboardingConfirmationViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DwZ-CK-GLA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

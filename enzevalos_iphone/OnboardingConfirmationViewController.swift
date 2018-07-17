@@ -1,5 +1,5 @@
 //
-//  OnboardingIntroduceScannerViewController.swift
+//  OnboardingConfirmationViewController.swift
 //  enzevalos_iphone
 //
 //  Created by jakobsbode on 11.07.18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class OnboardingIntroduceScannerViewController: UIViewController {
+class OnboardingConfirmationViewController: UIViewController {
     
     @IBOutlet weak var labelTop: UILabel!
     @IBOutlet weak var scanButton: UIButton!

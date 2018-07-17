@@ -94,7 +94,7 @@ class OnboardingIntroPageViewController: UIPageViewController {
         decisionController.buttonInputDelegate = self
         array.append(decisionController)
         
-        let introduceScannerController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "introduceScannerView") as! OnboardingIntroduceScannerViewController
+        let introduceScannerController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "confirmationView") as! OnboardingConfirmationViewController
         introduceScannerController.viewModification = {
             introduceScannerController.labelTop.text = NSLocalizedString("IntroduceImportScanner", comment: "introduce the scanner and the related desktop tool")
             introduceScannerController.scanButton.setTitle(NSLocalizedString("scan", comment: "begin to scan"), for: UIControlState.normal)
