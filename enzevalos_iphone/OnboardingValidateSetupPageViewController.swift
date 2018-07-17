@@ -39,7 +39,6 @@ class OnboardingValidateSetupPageViewController: UIPageViewController {
         spinnerController.viewModification = {
             spinnerController.labelTop.text = NSLocalizedString("ConnectingToMailServer", comment: "")
         }
-        spinnerController.pageControlDelegate = self
         array.append(spinnerController)
         
         return array

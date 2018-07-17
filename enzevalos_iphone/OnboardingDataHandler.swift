@@ -15,33 +15,33 @@ class OnboardingDataHandler {
     
     fileprivate static var singleton: OnboardingDataHandler?
     
-    fileprivate func init() { }
+    fileprivate init() { }
     
-    static var handler {
+    static var handler: OnboardingDataHandler {
         get {
             if let handler = singleton {
                 return handler
             }
             singleton = OnboardingDataHandler()
-            return singleton
+            return singleton!
         }
     }
     
-    func checkSettings(with mailaddress: String, password: String, callback: ((working: Bool) -> ())) {
-        let mailAddress = (mailaddress.text ?? "").lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+    func checkSettings(with mailaddress: String, password: String, callback: @escaping ((_ working: Bool) -> ())) {
+        let mailAddress = mailaddress.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         var guessedUserName = ""
         if mailAddress.components(separatedBy: "@").count >= 1 {
             guessedUserName = mailAddress.components(separatedBy: "@")[0]
         }
         UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
         UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
-        UserManager.storeUserValue((password.text ?? "") as AnyObject?, attribute: Attribute.userPW)
+        UserManager.storeUserValue(password as AnyObject?, attribute: Attribute.userPW)
         loadTestAcc()
         setServerValues(mailaddress: mailAddress)
-        checkSettings(working)
+        checkSettings(callback: callback)
     }
     
-    func checkSettings(with mailaddress: String, password: String, username: String, imapServer: String, imapPort: Int, imapConnectionTypeIndex: Int, imapAuthenticationTypeIndex: Int, smtpServer: Sting, smtpPort: Int, smtpConnectionTypeIndex: Int, smtpAuthenticationTypeIndex: Int, callback: ((working: Bool) -> ())) {
+    func checkSettings(with mailaddress: String, password: String, username: String, imapServer: String, imapPort: Int, imapConnectionType: String, imapAuthenticationType: String, smtpServer: String, smtpPort: Int, smtpConnectionType: String, smtpAuthenticationType: String, callback: @escaping ((_ working: Bool) -> ())) {
         UserManager.storeUserValue(imapServer as AnyObject?, attribute: Attribute.imapHostname)
         UserManager.storeUserValue(imapPort as AnyObject?, attribute: Attribute.imapPort)
         UserManager.storeUserValue(smtpServer as AnyObject?, attribute: Attribute.smtpHostname)
@@ -50,14 +50,14 @@ class OnboardingDataHandler {
         UserManager.storeUserValue(password as AnyObject?, attribute: Attribute.userPW)
         UserManager.storeUserValue(username as AnyObject?, attribute: Attribute.userName)
         UserManager.storeUserValue(username as AnyObject?, attribute: Attribute.accountname)
-        UserManager.storeUserValue(keyForValue(transportOptions, value: imapConnectionTypeIndex)[0] as AnyObject?, attribute: Attribute.imapConnectionType)
-        UserManager.storeUserValue(keyForValue(authenticationOptions, value: imapAuthenticationTypeIndex)[0] as AnyObject?, attribute: Attribute.imapAuthType)
-        UserManager.storeUserValue(keyForValue(transportOptions, value: smtpConnectionTypeIndex)[0] as AnyObject?, attribute: Attribute.smtpConnectionType)
-        UserManager.storeUserValue(keyForValue(authenticationOptions, value: smtpAuthenticationTypeIndex)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
-        checkSettings(working)
+        UserManager.storeUserValue(keyForValue(transportOptions, value: imapConnectionType)[0] as AnyObject?, attribute: Attribute.imapConnectionType)
+        UserManager.storeUserValue(keyForValue(authenticationOptions, value: imapAuthenticationType)[0] as AnyObject?, attribute: Attribute.imapAuthType)
+        UserManager.storeUserValue(keyForValue(transportOptions, value: smtpConnectionType)[0] as AnyObject?, attribute: Attribute.smtpConnectionType)
+        UserManager.storeUserValue(keyForValue(authenticationOptions, value: smtpAuthenticationType)[0] as AnyObject?, attribute: Attribute.smtpAuthType)
+        checkSettings(callback: callback)
     }
     
-    fileprivate func checkSettings(callback: ((working: Bool) -> ())) {
+    fileprivate func checkSettings(callback: @escaping ((_ working: Bool) -> ())) {
         AppDelegate.getAppDelegate().mailHandler.checkIMAP({ (error: Error?) -> () in
             if error == nil {
                 AppDelegate.getAppDelegate().mailHandler.checkSMTP({ (error2: Error?) -> () in
