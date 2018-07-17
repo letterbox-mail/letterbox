@@ -444,6 +444,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
+                                    <action selector="confirmTapped:" destination="MxH-9k-9nO" eventType="primaryActionTriggered" id="Tga-Rn-Lf1"/>
                                     <segue destination="LSo-3f-auv" kind="presentation" id="9jW-AS-e8H"/>
                                 </connections>
                             </button>

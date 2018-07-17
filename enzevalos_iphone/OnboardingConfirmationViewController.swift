@@ -54,6 +54,7 @@ class OnboardingConfirmationViewController: UIViewController {
     var viewWillAppearBlock: (() -> ())?
     var viewWillDisappearBlock: (() -> ())?
     var layoutOptimization = true
+    weak var confirmationDelegate: OnboardingConfirmationDelegate?
     weak var pageControlDelegate: OnboardingPageControlDelegate?
     
     override func viewDidLoad() {
@@ -84,6 +85,12 @@ class OnboardingConfirmationViewController: UIViewController {
         super.viewWillDisappear(animated)
         if let block = viewWillDisappearBlock {
             block()
+        }
+    }
+    
+    @IBAction func confirmTapped(_ sender: Any) {
+        if let delegate = confirmationDelegate {
+            delegate.confirmationButtonTapped(viewController: self)
         }
     }
     

@@ -267,6 +267,8 @@
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
 		A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */; };
+		A1F74E0420FE42BD004A9480 /* OnboardingAccessContactsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F74E0320FE42BD004A9480 /* OnboardingAccessContactsPageViewController.swift */; };
+		A1F74E0620FE4474004A9480 /* OnboardingConfirmationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F74E0520FE4474004A9480 /* OnboardingConfirmationDelegate.swift */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
 		A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */; };
@@ -489,6 +491,8 @@
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
+		A1F74E0320FE42BD004A9480 /* OnboardingAccessContactsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAccessContactsPageViewController.swift; sourceTree = "<group>"; };
+		A1F74E0520FE4474004A9480 /* OnboardingConfirmationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConfirmationDelegate.swift; sourceTree = "<group>"; };
 		A1F992301DA7D22D0073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992321DA7D2360073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A1F992341DA7DA570073BF1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -917,6 +921,7 @@
 				A1E6649A20F63C28009D9AB7 /* OnboardingTextInputDelegate.swift */,
 				A1E664A020F64127009D9AB7 /* OnboardingButtonInputDelegate.swift */,
 				A124893B20F4E006008EF21B /* OnboardingPageControlDelegate.swift */,
+				A1F74E0520FE4474004A9480 /* OnboardingConfirmationDelegate.swift */,
 			);
 			name = delegates;
 			sourceTree = "<group>";
@@ -991,6 +996,7 @@
 				A1CA92CC20FDF5570034E934 /* OnboardingSetupPageViewController.swift */,
 				A141AA2A20FE027A00B797BD /* OnboardingValidateSetupPageViewController.swift */,
 				A192216120FE322700C27F40 /* OnboardingSetupLongPageViewController.swift */,
+				A1F74E0320FE42BD004A9480 /* OnboardingAccessContactsPageViewController.swift */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -1603,6 +1609,7 @@
 				472F39861E1FA34E009260FB /* Record.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
+				A1F74E0620FE4474004A9480 /* OnboardingConfirmationDelegate.swift in Sources */,
 				A1E6649F20F640FB009D9AB7 /* OnboardingButtonInputViewController.swift in Sources */,
 				A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */,
 				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
@@ -1634,6 +1641,7 @@
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */,
 				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
+				A1F74E0420FE42BD004A9480 /* OnboardingAccessContactsPageViewController.swift in Sources */,
 				A1735DFA205AB88500B336DB /* SendViewState.swift in Sources */,
 				475B00331F7B9565006CDD41 /* SwiftPGP.swift in Sources */,
 				3EB4FAA420120096001D0625 /* DialogOption.swift in Sources */,
