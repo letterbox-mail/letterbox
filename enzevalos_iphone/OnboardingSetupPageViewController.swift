@@ -19,7 +19,7 @@ class OnboardingSetupPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
-        orderedViewControllers = createViewControllers() //[UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description")]
+        orderedViewControllers = createViewControllers() 
         
         if let firstViewController = orderedViewControllers.first {
             setViewControllers([firstViewController],
@@ -97,7 +97,7 @@ extension OnboardingSetupPageViewController: OnboardingPageControlDelegate {
 
 extension OnboardingSetupPageViewController: OnboardingTextInputDelegate {
     func leftKeyboardButton(viewController: OnboardingTextInputViewController) {
-        
+        //TODO: add gmail support
     }
     
     func rightKeyboardButton(viewController: OnboardingTextInputViewController) {
