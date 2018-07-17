@@ -223,6 +223,8 @@
 		A135772A20DBF65400B65827 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A135772920DBF65400B65827 /* Onboarding.storyboard */; };
 		A135772D20DBF77900B65827 /* OnboardingIntroPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */; };
 		A13A14D820E3E503008F7090 /* OnboardingDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */; };
+		A141AA2B20FE027A00B797BD /* OnboardingValidateSetupPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A141AA2A20FE027A00B797BD /* OnboardingValidateSetupPageViewController.swift */; };
+		A141AA2E20FE05D400B797BD /* OnboardingDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A141AA2D20FE05D400B797BD /* OnboardingDataHandler.swift */; };
 		A15D18B620F7910D00C57844 /* OnboardingSpinnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15D18B520F7910D00C57844 /* OnboardingSpinnerViewController.swift */; };
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A1735DFA205AB88500B336DB /* SendViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1735DF9205AB88500B336DB /* SendViewState.swift */; };
@@ -438,6 +440,8 @@
 		A135772920DBF65400B65827 /* Onboarding.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingIntroPageViewController.swift; sourceTree = "<group>"; };
 		A13A14D720E3E503008F7090 /* OnboardingDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDescriptionViewController.swift; sourceTree = "<group>"; };
+		A141AA2A20FE027A00B797BD /* OnboardingValidateSetupPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingValidateSetupPageViewController.swift; sourceTree = "<group>"; };
+		A141AA2D20FE05D400B797BD /* OnboardingDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDataHandler.swift; sourceTree = "<group>"; };
 		A15D18B520F7910D00C57844 /* OnboardingSpinnerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSpinnerViewController.swift; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A1735DF9205AB88500B336DB /* SendViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewState.swift; sourceTree = "<group>"; };
@@ -877,8 +881,17 @@
 				A15D18B720F795FA00C57844 /* templates */,
 				A135772920DBF65400B65827 /* Onboarding.storyboard */,
 				A1CA92CE20FDFE640034E934 /* controller */,
+				A141AA2C20FE058F00B797BD /* backend */,
 			);
 			name = new;
+			sourceTree = "<group>";
+		};
+		A141AA2C20FE058F00B797BD /* backend */ = {
+			isa = PBXGroup;
+			children = (
+				A141AA2D20FE05D400B797BD /* OnboardingDataHandler.swift */,
+			);
+			name = backend;
 			sourceTree = "<group>";
 		};
 		A15D18B720F795FA00C57844 /* templates */ = {
@@ -974,6 +987,7 @@
 			children = (
 				A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */,
 				A1CA92CC20FDF5570034E934 /* OnboardingSetupPageViewController.swift */,
+				A141AA2A20FE027A00B797BD /* OnboardingValidateSetupPageViewController.swift */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -1631,10 +1645,12 @@
 				476142081E07E52B00FD5E4F /* Theme.swift in Sources */,
 				8428A8701F436A1E007649A5 /* LinearBadgeViewController.swift in Sources */,
 				A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */,
+				A141AA2E20FE05D400B797BD /* OnboardingDataHandler.swift in Sources */,
 				A12FC23120221A1400196008 /* ExportInfoViewController.swift in Sources */,
 				475DF47A1F0D54C9009D807F /* Folder+CoreDataProperties.swift in Sources */,
 				472F392C1E1277D2009260FB /* PersistentMail +CoreDataClass.swift in Sources */,
 				A1E6649920F627B9009D9AB7 /* OnboardingPickerInputViewController.swift in Sources */,
+				A141AA2B20FE027A00B797BD /* OnboardingValidateSetupPageViewController.swift in Sources */,
 				475B00431F7BB6D6006CDD41 /* PersistentKey+CoreDataProperties.swift in Sources */,
 				F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */,
 				4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */,
