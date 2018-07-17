@@ -52,6 +52,7 @@ class OnboardingSetupPageViewController: UIPageViewController {
             credentialsController.nextButton.titleLabel?.text = NSLocalizedString("next", comment: "")
         }
         credentialsController.pageControlDelegate = self
+        credentialsController.textInputDelegate = self
         array.append(credentialsController)
         
         return array
@@ -100,10 +101,7 @@ extension OnboardingSetupPageViewController: OnboardingTextInputDelegate {
     }
     
     func rightKeyboardButton(viewController: OnboardingTextInputViewController) {
-        viewController.textFieldTop.endEditing(true)
-        if viewController.textFieldBottom != nil {
-            viewController.textFieldBottom.endEditing(true)
-        }
+        viewController.view.endEditing(true)
     }
     
     func nextButtonTapped(viewController: OnboardingTextInputViewController) {

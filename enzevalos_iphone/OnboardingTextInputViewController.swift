@@ -75,6 +75,7 @@ class OnboardingTextInputViewController: UIViewController {
     var disableSecondSection = false
     var disableButton = true
     var enableKeyboardAccessory = true
+    weak var textInputDelegate: OnboardingTextInputDelegate?
     weak var pageControlDelegate: OnboardingPageControlDelegate?
     
     override func viewDidLoad() {
@@ -131,8 +132,8 @@ class OnboardingTextInputViewController: UIViewController {
             keyboardToolbar.backgroundColor = defaultColor
             let googleBarButton = UIBarButtonItem(title: "Login with Google", style: .plain, target: self, action: nil)
             googleBarButton.tintColor = .orange
-            let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: nil)
+            let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: #selector(OnboardingTextInputViewController.leftKeyboardButtonAction))
+            let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(OnboardingTextInputViewController.rightKeyboardButtonAction))
             doneBarButton.tintColor = .orange
             keyboardToolbar.items = [googleBarButton, flexBarButton, doneBarButton]
             textFieldTop.inputAccessoryView = keyboardToolbar
@@ -140,5 +141,17 @@ class OnboardingTextInputViewController: UIViewController {
 
         }
         labelFont = UIFont(descriptor: labelFont.fontDescriptor, size: 28*sqrt(view.frame.height/referenceSize))
+    }
+    
+    @objc func leftKeyboardButtonAction() {
+        if let delegate = textInputDelegate {
+            delegate.leftKeyboardButton(viewController: self)
+        }
+    }
+    
+    @objc func rightKeyboardButtonAction() {
+        if let delegate = textInputDelegate {
+            delegate.rightKeyboardButton(viewController: self)
+        }
     }
 }
