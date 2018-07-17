@@ -66,6 +66,7 @@
 "Letter" = "Brief";
 "LetterDamaged" = "Angerissener Brief";
 "LetterDescription" = "• Briefe wurden tatsächlich vom angegebenen Absender versendet\n• Nur Empfänger und Sender können die Nachricht lesen.\n• Für eine sichere Kommunikation müssen alle zusammenarbeiten. Dafür können in der App Kontakte eingeladen werden.";
+"LoginWithGoogle" = "Login über Google";
 "mail from" = "Nachricht von";
 "Message" = "Nachricht";
 "MoreInformation" = "Weitere Informationen";

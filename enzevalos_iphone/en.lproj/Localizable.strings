@@ -66,6 +66,7 @@
 "Letter" = "Letter";
 "LetterDamaged" = "Damaged Letter";
 "LetterDescription" = "• A confidential mail\n• Written by the stated sender\n• Needs participation of sender and receiver. You can invite contacts in the app.";
+"LoginWithGoogle" = "Login with Google";
 "mail from" = "mail from";
 "Message" = "Message";
 "MoreInformation" = "More Information";
