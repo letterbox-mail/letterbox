@@ -76,6 +76,7 @@ class OnboardingTextInputViewController: UIViewController {
     var disableButton = true
     var keyboardAccessoryLeft: String? = nil
     var keyboardAccessoryRight: Bool = true
+    var defaultColor = UIColor.darkGray
     weak var textInputDelegate: OnboardingTextInputDelegate?
     weak var pageControlDelegate: OnboardingPageControlDelegate?
     
