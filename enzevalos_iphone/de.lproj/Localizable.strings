@@ -47,6 +47,8 @@
 "GetHelp" = "Um Hilfe zu erhalten, tippe auf den Brief oder die Postkarte in der App.";
 "GotIt" = "Verstanden!";
 "Hello" = "Hallo";
+"IMAP-Port" = "IMAP-Port";
+"IMAP-Server" = "IMAP-Server";
 "ImportSettings" = "Nutzt du deinen E-Mailaccount bereits auf einem Desktop-Rechner und willst die Konfigurationen von dort importieren?";
 "INBOX" = "INBOX";
 "Inbox" = "Postfach";//Briefkasten?

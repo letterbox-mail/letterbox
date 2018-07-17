@@ -47,10 +47,19 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
     func createViewControllers() -> [UIViewController] {
         var array: [UIViewController] = []
         
+        let introductionController =  UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "description_new") as! OnboardingDescriptionViewController
+        introductionController.viewModification = { [weak self] in
+            introductionController.titleLabel.text = NSLocalizedString("WhatAShame", comment: "")
+            introductionController.descriptionText.text = NSLocalizedString("CouldNotConnect", comment: "")
+            introductionController.descriptionText.textAlignment = NSTextAlignment.center
+            introductionController.videoView.backgroundColor = self?.defaultColor
+        }
+        introductionController.pageControlDelegate = self
+        array.append(introductionController)
+        
         credentialsController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
         credentialsController!.viewModification = { [weak credentialsController] in
             credentialsController?.labelTop.text = NSLocalizedString("InsertMailAddressAndPassword", comment: "")
-            credentialsController?.textFieldTop.placeholder = NSLocalizedString("Address", comment: "")
             credentialsController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
             credentialsController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Address", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
             credentialsController?.labelBottom.text = nil
@@ -60,6 +69,29 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
         credentialsController!.pageControlDelegate = self
         credentialsController!.textInputDelegate = self
         array.append(credentialsController!)
+        
+        usernameController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
+        usernameController!.viewModification = { [weak usernameController] in
+            usernameController?.labelTop.text = NSLocalizedString("InsertUsername", comment: "")
+            usernameController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
+            usernameController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            usernameController?.disableSecondSection = true
+        }
+        usernameController!.pageControlDelegate = self
+        usernameController!.textInputDelegate = self
+        array.append(usernameController!)
+        
+        imapServerController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
+        imapServerController!.viewModification = { [weak imapServerController] in
+            imapServerController?.labelTop.text = NSLocalizedString("IMAP-Server", comment: "")
+            imapServerController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
+            imapServerController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("IMAP-Server", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            imapServerController?.textFieldBottom.text = NSLocalizedString("IMAP-Port", comment: "")
+            imapServerController?.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("IMAP-Port", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+        }
+        imapServerController!.pageControlDelegate = self
+        imapServerController!.textInputDelegate = self
+        array.append(imapServerController!)
         
         return array
     }
@@ -103,7 +135,7 @@ extension OnboardingSetupLongPageViewController: OnboardingPageControlDelegate {
 
 extension OnboardingSetupLongPageViewController: OnboardingTextInputDelegate {
     func leftKeyboardButton(viewController: OnboardingTextInputViewController) {
-        
+        //TODO: google oauth
     }
     
     func rightKeyboardButton(viewController: OnboardingTextInputViewController) {
