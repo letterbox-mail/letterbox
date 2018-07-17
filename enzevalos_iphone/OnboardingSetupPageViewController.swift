@@ -27,14 +27,7 @@ class OnboardingSetupPageViewController: UIPageViewController {
                                animated: false,
                                completion: nil)
         }
-        pageControl = UIPageControl(frame: CGRect(x: 0, y: UIScreen.main.bounds.maxY - 50, width: UIScreen.main.bounds.width, height: 50))
-        pageControl.numberOfPages = orderedViewControllers.count
-        pageControl.currentPage = 0
-        pageControl.tintColor = UIColor.white
-        pageControl.pageIndicatorTintColor = UIColor.white.withAlphaComponent(0.4)
-        pageControl.currentPageIndicatorTintColor = UIColor.white
         self.view.backgroundColor = defaultColor
-        view.addSubview(pageControl)
     }
     
     func createViewControllers() -> [UIViewController] {
@@ -51,7 +44,6 @@ class OnboardingSetupPageViewController: UIPageViewController {
             credentialsController.nextButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControlState.normal)
             //credentialsController.keyboardAccessoryLeft = NSLocalizedString("LoginWithGoogle", comment: "Login via google oauth")
         }
-        credentialsController.pageControlDelegate = self
         credentialsController.textInputDelegate = self
         array.append(credentialsController)
         
