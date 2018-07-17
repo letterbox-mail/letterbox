@@ -93,6 +93,8 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
         imapServerController!.textInputDelegate = self
         array.append(imapServerController!)
         
+        //TODO: add more views here
+        
         return array
     }
 }
