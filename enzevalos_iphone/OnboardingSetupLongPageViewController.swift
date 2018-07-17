@@ -74,6 +74,7 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
             usernameController?.labelTop.text = NSLocalizedString("InsertUsername", comment: "")
             usernameController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
             usernameController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            usernameController?.labelBottom.text = nil
             usernameController?.disableSecondSection = true
         }
         usernameController!.pageControlDelegate = self
