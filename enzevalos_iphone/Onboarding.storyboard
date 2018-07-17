@@ -445,7 +445,6 @@
                                 </state>
                                 <connections>
                                     <action selector="confirmTapped:" destination="MxH-9k-9nO" eventType="primaryActionTriggered" id="Tga-Rn-Lf1"/>
-                                    <segue destination="LSo-3f-auv" kind="presentation" id="9jW-AS-e8H"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -464,11 +463,12 @@
                         <outlet property="scanButton" destination="7hZ-7T-pya" id="g6u-Hc-WFy"/>
                         <outlet property="topSpace" destination="T69-R7-73M" id="V9G-iF-cuy"/>
                         <outlet property="underLabelTopPadding" destination="Q7R-Nr-EA9" id="jcp-DC-wmy"/>
+                        <segue destination="LSo-3f-auv" kind="presentation" identifier="scan" id="QTv-Mk-HhJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fQo-1g-zTU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="519" y="1555"/>
+            <point key="canvasLocation" x="518" y="1555"/>
         </scene>
         <!--Onboarding Setup Page View Controller-->
         <scene sceneID="vxq-b1-GXO">
@@ -485,6 +485,30 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0GK-h0-WgR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1265" y="99"/>
+        </scene>
+        <!--Onboarding Setup Long Page View Controller-->
+        <scene sceneID="31v-Lv-Z0X">
+            <objects>
+                <pageViewController storyboardIdentifier="setupLong" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="0io-wU-acH" customClass="OnboardingSetupLongPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BF7-Pw-GbZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2097" y="-620"/>
+        </scene>
+        <!--Onboarding Validate Setup Long Page View Controller-->
+        <scene sceneID="Bmj-jz-rib">
+            <objects>
+                <pageViewController storyboardIdentifier="validateSetupLong" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="j9T-3b-F7Z" customClass="OnboardingValidateSetupLongPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gIo-8e-PzX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2097" y="100"/>
+        </scene>
+        <!--Onboarding Access Contacts Page View Controller-->
+        <scene sceneID="tQK-jK-Ac6">
+            <objects>
+                <pageViewController storyboardIdentifier="accessContacts" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="Ke1-gK-rYL" customClass="OnboardingAccessContactsPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Okc-4w-anP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2902" y="100"/>
         </scene>
         <!--Onboarding Spinner View Controller-->
         <scene sceneID="pFZ-3Q-sgl">

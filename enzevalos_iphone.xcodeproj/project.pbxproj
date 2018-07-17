@@ -229,6 +229,7 @@
 		A16BA2121E0439B6005E29E3 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
 		A1735DFA205AB88500B336DB /* SendViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1735DF9205AB88500B336DB /* SendViewState.swift */; };
 		A18323D020F7760300BEAAEC /* OnboardingDescriptionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18323CF20F7760300BEAAEC /* OnboardingDescriptionViewDelegate.swift */; };
+		A18C468A20FE54DF00663EC8 /* OnboardingValidateSetupLongPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18C468920FE54DE00663EC8 /* OnboardingValidateSetupLongPageViewController.swift */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		A192216220FE322800C27F40 /* OnboardingSetupLongPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A192216120FE322700C27F40 /* OnboardingSetupLongPageViewController.swift */; };
 		A198D2292056B384004CC838 /* SendViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A198D2282056B384004CC838 /* SendViewDelegate.swift */; };
@@ -451,6 +452,7 @@
 		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
 		A17FDFF2202C685800F7BA89 /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		A18323CF20F7760300BEAAEC /* OnboardingDescriptionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDescriptionViewDelegate.swift; sourceTree = "<group>"; };
+		A18C468920FE54DE00663EC8 /* OnboardingValidateSetupLongPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingValidateSetupLongPageViewController.swift; sourceTree = "<group>"; };
 		A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingEventType.swift; sourceTree = "<group>"; };
 		A192216120FE322700C27F40 /* OnboardingSetupLongPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSetupLongPageViewController.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -995,6 +997,7 @@
 				A135772C20DBF77900B65827 /* OnboardingIntroPageViewController.swift */,
 				A1CA92CC20FDF5570034E934 /* OnboardingSetupPageViewController.swift */,
 				A141AA2A20FE027A00B797BD /* OnboardingValidateSetupPageViewController.swift */,
+				A18C468920FE54DE00663EC8 /* OnboardingValidateSetupLongPageViewController.swift */,
 				A192216120FE322700C27F40 /* OnboardingSetupLongPageViewController.swift */,
 				A1F74E0320FE42BD004A9480 /* OnboardingAccessContactsPageViewController.swift */,
 			);
@@ -1695,6 +1698,7 @@
 				A1E664A320F656B3009D9AB7 /* OnboardingConfirmationViewController.swift in Sources */,
 				475DF4791F0D54C9009D807F /* Folder+CoreDataClass.swift in Sources */,
 				A135772D20DBF77900B65827 /* OnboardingIntroPageViewController.swift in Sources */,
+				A18C468A20FE54DF00663EC8 /* OnboardingValidateSetupLongPageViewController.swift in Sources */,
 				3EC35F2D200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */,
 				475B00341F7B9565006CDD41 /* Cryptography.swift in Sources */,
 				A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */,
