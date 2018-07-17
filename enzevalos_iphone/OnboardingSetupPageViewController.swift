@@ -50,6 +50,7 @@ class OnboardingSetupPageViewController: UIPageViewController {
             credentialsController.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
             credentialsController.disableButton = false
             credentialsController.nextButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControlState.normal)
+            //credentialsController.keyboardAccessoryLeft = NSLocalizedString("LoginWithGoogle", comment: "Login via google oauth")
         }
         credentialsController.pageControlDelegate = self
         credentialsController.textInputDelegate = self

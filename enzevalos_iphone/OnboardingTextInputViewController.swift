@@ -74,7 +74,8 @@ class OnboardingTextInputViewController: UIViewController {
     var layoutOptimization = true
     var disableSecondSection = false
     var disableButton = true
-    var enableKeyboardAccessory = true
+    var keyboardAccessoryLeft: String? = nil
+    var keyboardAccessoryRight: Bool = true
     weak var textInputDelegate: OnboardingTextInputDelegate?
     weak var pageControlDelegate: OnboardingPageControlDelegate?
     
@@ -125,17 +126,25 @@ class OnboardingTextInputViewController: UIViewController {
         if disableButton {
             nextButton.removeFromSuperview()
         }
-        if enableKeyboardAccessory {
+        if keyboardAccessoryLeft != nil || keyboardAccessoryRight {
             let keyboardToolbar = UIToolbar()
             keyboardToolbar.sizeToFit()
             keyboardToolbar.barTintColor = defaultColor
             keyboardToolbar.backgroundColor = defaultColor
-            let googleBarButton = UIBarButtonItem(title: "Login with Google", style: .plain, target: self, action: nil)
-            googleBarButton.tintColor = .orange
-            let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: #selector(OnboardingTextInputViewController.leftKeyboardButtonAction))
-            let doneBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(OnboardingTextInputViewController.rightKeyboardButtonAction))
-            doneBarButton.tintColor = .orange
-            keyboardToolbar.items = [googleBarButton, flexBarButton, doneBarButton]
+            var buttons: [UIBarButtonItem] = []
+            if let left = keyboardAccessoryLeft {
+                let leftBarButton = UIBarButtonItem(title: left, style: .plain, target: self, action: #selector(OnboardingTextInputViewController.leftKeyboardButtonAction))
+                leftBarButton.tintColor = .orange
+                buttons.append(leftBarButton)
+            }
+            let flexBarButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            buttons.append(flexBarButton)
+            if keyboardAccessoryRight {
+                let rightBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(OnboardingTextInputViewController.rightKeyboardButtonAction))
+                rightBarButton.tintColor = .orange
+                buttons.append(rightBarButton)
+            }
+            keyboardToolbar.items = buttons
             textFieldTop.inputAccessoryView = keyboardToolbar
             textFieldBottom.inputAccessoryView = keyboardToolbar
 
