@@ -19,7 +19,7 @@ class OnboardingSetupPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
-        orderedViewControllers = createViewControllers() 
+        orderedViewControllers = createViewControllers()
         
         if let firstViewController = orderedViewControllers.first {
             setViewControllers([firstViewController],
@@ -43,7 +43,6 @@ class OnboardingSetupPageViewController: UIPageViewController {
         let credentialsController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
         credentialsController.viewModification = {
             credentialsController.labelTop.text = NSLocalizedString("InsertMailAddressAndPassword", comment: "")
-            credentialsController.textFieldTop.placeholder = NSLocalizedString("Address", comment: "")
             credentialsController.textFieldTop.keyboardType = UIKeyboardType.emailAddress
             credentialsController.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Address", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
             credentialsController.labelBottom.text = nil
