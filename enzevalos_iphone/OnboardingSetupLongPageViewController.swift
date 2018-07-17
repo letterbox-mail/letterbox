@@ -21,7 +21,6 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
     var imapConnectionController: OnboardingPickerInputViewController?
     var smtpServerController: OnboardingTextInputViewController?
     var smtpConnectionController: OnboardingPickerInputViewController?
-    var confirmationController: OnboardingConfirmationViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,6 +94,16 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
         
         //TODO: add more views here
         
+        //...
+        
+        let confirmationController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "confirmationView") as! OnboardingConfirmationViewController
+        confirmationController.viewModification = {
+            confirmationController.labelTop.text = NSLocalizedString("EverythingCorrect", comment: "")
+            confirmationController.scanButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControlState.normal)
+        }
+        confirmationController.confirmationDelegate = self
+        array.append(confirmationController)
+        
         return array
     }
 }
@@ -145,11 +154,25 @@ extension OnboardingSetupLongPageViewController: OnboardingTextInputDelegate {
     }
     
     func nextButtonTapped(viewController: OnboardingTextInputViewController) {
-        if let top = viewController.textFieldTop.text, let bottom = viewController.textFieldBottom.text, top != "" && bottom != "" {
-            let onboardingDataHandler = OnboardingDataHandler.handler
-            onboardingDataHandler.setSettings(mailaddress: top, password: bottom)
-            let setupController = self.storyboard?.instantiateViewController(withIdentifier: "validateSetup") as! OnboardingValidateSetupPageViewController
-            self.present(setupController, animated: true, completion: nil)
+        
+    }
+}
+
+extension OnboardingSetupLongPageViewController: OnboardingConfirmationDelegate {
+    func confirmationButtonTapped(viewController: OnboardingConfirmationViewController) {
+        let onboardingDataHandler = OnboardingDataHandler.handler
+        var mailaddress = ""
+        var password = ""
+        //TODO add more
+        
+        if let controller = credentialsController {
+            mailaddress = controller.textFieldTop.text ?? ""
         }
+        //TODO add more
+        
+        //TODO
+        //onboardingDataHandler.setSettings(with: mailaddress, password: password, username: <#T##String#>, imapServer: <#T##String#>, imapPort: <#T##Int#>, imapConnectionType: <#T##String#>, imapAuthenticationType: <#T##String#>, smtpServer: <#T##String#>, smtpPort: <#T##Int#>, smtpConnectionType: <#T##String#>, smtpAuthenticationType: <#T##String#>)
+        let setupController = self.storyboard?.instantiateViewController(withIdentifier: "validateSetupLong") as! OnboardingValidateSetupLongPageViewController
+        self.present(setupController, animated: true, completion: nil)
     }
 }

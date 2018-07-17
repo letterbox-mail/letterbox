@@ -100,6 +100,7 @@ class OnboardingIntroPageViewController: UIPageViewController {
             introduceScannerController.scanButton.setTitle(NSLocalizedString("scan", comment: "begin to scan"), for: UIControlState.normal)
         }
         introduceScannerController.pageControlDelegate = self
+        introduceScannerController.confirmationDelegate = self
         array.append(introduceScannerController)
         
         /*Colors*/
@@ -198,6 +199,14 @@ extension OnboardingIntroPageViewController: OnboardingDescriptionViewDelegate {
         let index = pageControl.currentPage
         if index+1 < orderedViewControllers.count {
             setViewControllers([orderedViewControllers[index+1]], direction: .forward, animated: true, completion: nil)
+        }
+    }
+}
+
+extension OnboardingIntroPageViewController: OnboardingConfirmationDelegate {
+    func confirmationButtonTapped(viewController: OnboardingConfirmationViewController) {
+        if let vc = viewControllers?.last {
+            vc.performSegue(withIdentifier: "scan", sender: nil)
         }
     }
 }

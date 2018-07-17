@@ -38,6 +38,7 @@ class OnboardingAccessContactsPageViewController: UIPageViewController {
             confirmationController.labelTop.text = NSLocalizedString("AccessContactsDescription", comment: "Description, why we need access")
             confirmationController.scanButton.setTitle(NSLocalizedString("GotIt", comment: ""), for: UIControlState.normal)
         }
+        confirmationController.confirmationDelegate = self
         array.append(confirmationController)
         
         return array
