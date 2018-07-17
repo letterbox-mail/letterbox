@@ -159,10 +159,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func contactCheck(_ accessGranted: Bool) {
         if accessGranted {
-            setupKeys()
+            setupKeysAndFolder()
         } else {
             DispatchQueue.main.async(execute: {
-                self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.setupKeys)
+                self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.setupKeysAndFolder)
             });
         }
     }
@@ -185,8 +185,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func setupKeys() {
-        self.window?.rootViewController = Onboarding.keyHandlingView()
+    func setupKeysAndFolder() {
+        //TODO only create Keys, if there were non imported during onboarding
+        
+        //self.window?.rootViewController = Onboarding.keyHandlingView()
         let handler = DataHandler.init()
         _ = handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
         StudySettings.setupStudyKeys()
