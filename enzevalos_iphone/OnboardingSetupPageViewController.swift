@@ -49,7 +49,7 @@ class OnboardingSetupPageViewController: UIPageViewController {
             credentialsController.labelBottom.text = nil
             credentialsController.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
             credentialsController.disableButton = false
-            credentialsController.nextButton.titleLabel?.text = NSLocalizedString("next", comment: "")
+            credentialsController.nextButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControlState.normal)
         }
         credentialsController.pageControlDelegate = self
         credentialsController.textInputDelegate = self
