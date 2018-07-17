@@ -48,19 +48,19 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
         var array: [UIViewController] = []
         
         credentialsController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
-        credentialsController.viewModification = { [weak credentialsController] in
-            credentialsController.labelTop.text = NSLocalizedString("InsertMailAddressAndPassword", comment: "")
-            credentialsController.textFieldTop.placeholder = NSLocalizedString("Address", comment: "")
-            credentialsController.textFieldTop.keyboardType = UIKeyboardType.emailAddress
-            credentialsController.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Address", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
-            credentialsController.labelBottom.text = nil
-            credentialsController.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
-            credentialsController.disableButton = false
-            credentialsController.nextButton.titleLabel?.text = NSLocalizedString("next", comment: "")
+        credentialsController!.viewModification = { [weak credentialsController] in
+            credentialsController?.labelTop.text = NSLocalizedString("InsertMailAddressAndPassword", comment: "")
+            credentialsController?.textFieldTop.placeholder = NSLocalizedString("Address", comment: "")
+            credentialsController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
+            credentialsController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Address", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            credentialsController?.labelBottom.text = nil
+            credentialsController?.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            credentialsController?.disableButton = false
+            credentialsController?.nextButton.titleLabel?.text = NSLocalizedString("next", comment: "")
         }
-        credentialsController.pageControlDelegate = self
-        credentialsController.textInputDelegate = self
-        array.append(credentialsController)
+        credentialsController!.pageControlDelegate = self
+        credentialsController!.textInputDelegate = self
+        array.append(credentialsController!)
         
         return array
     }
