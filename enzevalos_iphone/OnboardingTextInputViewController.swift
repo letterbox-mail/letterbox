@@ -154,4 +154,11 @@ class OnboardingTextInputViewController: UIViewController {
             delegate.rightKeyboardButton(viewController: self)
         }
     }
+    
+    @IBAction func nextButtonAction(_ sender: Any) {
+        if let delegate = textInputDelegate {
+            delegate.nextButtonTapped(viewController: self)
+        }
+    }
+    
 }
