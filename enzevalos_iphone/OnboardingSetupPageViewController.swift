@@ -106,7 +106,9 @@ extension OnboardingSetupPageViewController: OnboardingTextInputDelegate {
     
     func nextButtonTapped(viewController: OnboardingTextInputViewController) {
         if let top = viewController.textFieldTop.text, let bottom = viewController.textFieldBottom.text, top != "" && bottom != "" {
-            let setupController = self.storyboard?.instantiateViewController(withIdentifier: "setup") as! OnboardingSetupPageViewController
+            let onboardingDataHandler = OnboardingDataHandler.handler
+            onboardingDataHandler.setSettings(mailaddress: top, password: bottom)
+            let setupController = self.storyboard?.instantiateViewController(withIdentifier: "validateSetup") as! OnboardingValidateSetupPageViewController
             self.present(setupController, animated: true, completion: nil)
         }
     }

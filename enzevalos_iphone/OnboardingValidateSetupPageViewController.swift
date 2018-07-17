@@ -28,6 +28,8 @@ class OnboardingValidateSetupPageViewController: UIPageViewController {
                                completion: nil)
         }
         self.view.backgroundColor = defaultColor
+        let onboardingDataHandler = OnboardingDataHandler.handler
+        onboardingDataHandler.checkSettings(callback: self.settingsChecked)
     }
     
     func createViewControllers() -> [UIViewController] {
@@ -42,6 +44,10 @@ class OnboardingValidateSetupPageViewController: UIPageViewController {
         array.append(spinnerController)
         
         return array
+    }
+    
+    @objc func settingsChecked(working: Bool) {
+        
     }
 }
 extension OnboardingValidateSetupPageViewController: UIPageViewControllerDataSource {

@@ -477,7 +477,7 @@
         <!--Onboarding Validate Setup Page View Controller-->
         <scene sceneID="nQF-3a-3Ic">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="7uf-HL-Bnq" customClass="OnboardingValidateSetupPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="validateSetup" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="7uf-HL-Bnq" customClass="OnboardingValidateSetupPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0GK-h0-WgR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1265" y="99"/>
