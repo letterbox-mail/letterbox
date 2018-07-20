@@ -23,9 +23,11 @@ import XCTest
  - #Sortierung, #Mails
  Test EnzContact
  - #records
+ - Test different types of Mail (sec, insecure etc.)
  
  
  TODO: Delete mail, move mail, reply mail, forward mail
+ TEST MAXID in folders!
  */
 
 @testable import enzevalos_iphone

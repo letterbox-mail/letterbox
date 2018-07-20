@@ -67,7 +67,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		if #available(iOS 11.0, *) {
 			QAKit.Fingertips.start()
 		}
-
+        // Set background fetching time intervl.
+        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+        print("First fetch of  mails!")
+        mailHandler.newMails(completionCallback: hasNewMails(_:))
         return true
     }
     
@@ -256,6 +259,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Logger.log(terminateApp: Void())
         DataHandler.handler.terminate()
     }
+    
+  
 
     class func getAppDelegate() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -322,6 +327,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 break
             }
         }
+    }
+    
+    // Support for background fetch
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+            print("Fetch mails!")
+        mailHandler.newMails(completionCallback: hasNewMails(_:))
+        
+    }
+    
+    func hasNewMails(_ newMails: Bool){
+        print("Have we new Mails?: %s", newMails)
+        if newMails {
+            // TODO: Push notifcation or icon change
+            UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalNever)
+        }
+        
     }
 }
 

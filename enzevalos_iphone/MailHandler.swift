@@ -767,6 +767,31 @@ class MailHandler {
             }
         }
     }
+    
+    func newMails(completionCallback: @escaping ((_ newMails: Bool) -> ()) ){
+        let folder = DataHandler.handler.findFolder(with: INBOX)
+        let folderstatus = IMAPSession.folderStatusOperation(folder.path)
+        print("Ask folder")
+        folderstatus?.start { (error, status) -> Void in
+            print("Result!")
+            guard error == nil else {
+                return
+            }
+            if let status = status {
+                print("Status: %s | Folder max ID: %s", status, folder.maxID)
+                let uidValidity = status.uidValidity
+                let uid = status.uidNext
+                let unseen = status.unseenCount > 0
+                if (unseen || uidValidity != folder.uidvalidity || folder.maxID < uid - 1) {
+                    completionCallback(true)
+                }
+                else {
+                    completionCallback(false)
+                }
+                
+            }
+        }
+    }
 
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS, record: KeyRecord?, completionCallback: @escaping ((_ error: Error?) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
