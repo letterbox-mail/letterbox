@@ -29,11 +29,11 @@ class QRDiashowScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjec
         get { return nil }
     }
     
-    var fingerprint: String?
-    var keyId: String? //used for logging
+    
     var callback: (() -> ())?
-    var seenCodes: [Int: [String]]?
-    var count = 0
+    var seenCodes: [String?]?
+    var maxCodes = 0
+    var foundCodes = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,7 +118,9 @@ class QRDiashowScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjec
     
     @IBAction func close(_ sender: Any) {
         //        Logger.queue.async(flags: .barrier) {
-        Logger.log(verify: self.keyId ?? "noKeyID", open: false, success: false)
+        
+        //TODO: LOG!
+        //Logger.log(verify: self.keyId ?? "noKeyID", open: false, success: false)
         //        }
         dismiss(animated: true, completion: nil)
     }
@@ -145,69 +147,33 @@ class QRDiashowScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjec
                 if seperated.count > 1 {
                     let header = seperated[0].components(separatedBy: ",")
                     if header.count == 2, let index = Int(header[0]), let scannedCount = Int(header[1]) {
-                        if count != scannedCount {
+                        if maxCodes != scannedCount {
                             seenCodes = nil
                         }
                         if seenCodes == nil {
-                            seenCodes = [:]
-                            count = scannedCount
+                            maxCodes = scannedCount
+                            foundCodes = 0
+                            seenCodes = [String?] (repeatElement(nil, count: maxCodes))
                         }
-                        seenCodes![index] = seperated
+                        let payload = string.suffix(string.count - seperated[0].count - 1) // consider ;
+                        if seenCodes![index] == nil {
+                            foundCodes = foundCodes + 1
+                        }
+                        seenCodes![index] = String(payload)
                         qrCodeFrameColor = UIColor.green
-                        bottomLabel.text = "\(seenCodes?.count ?? 0) "+NSLocalizedString("of", comment: "")+" \(count) "+NSLocalizedString("scanned", comment: "")
-                        if seenCodes?.count == count {
-                            self.dismiss(animated: false, completion: nil)
+                        bottomLabel.text = "\(seenCodes?.count ?? 0) "+NSLocalizedString("of", comment: "")+" \(maxCodes) "+NSLocalizedString("scanned", comment: "")
+                        if foundCodes == maxCodes {
+                            //self.dismiss(animated: false, completion: nil)
+                            let data = parseCodes()
+                            handleData(user: data.user, name: data.name, mailaddr: data.mailaddr, pw: data.pw, imapServer: data.imapServer, imapPort: data.imapPort, imapAuth: data.imapAuth, imapTransport: data.imapTransport, smtpServer: data.smtpServer, smtpPort: data.smtpPort, smtpAuth: data.smtpAuth, smtpTransport: data.smtpTransport, keys: data.keys)
+                            let validationController = self.storyboard?.instantiateViewController(withIdentifier: "validateSetup") as! OnboardingValidateSetupPageViewController
+                            self.present(validationController, animated: false, completion: nil)
                         }
                         return
                     }
                 }
                 qrCodeFrameColor = UIColor.orange
                 bottomLabel.text = NSLocalizedString("wrongQRCode", comment: "The found QR Code is not compatible")
-                
-//                if let fingerprint = fingerprint, seperated[0].caseInsensitiveCompare("OPENPGP4FPR") == ComparisonResult.orderedSame {
-//                    if seperated[1].caseInsensitiveCompare(fingerprint) == ComparisonResult.orderedSame {
-//                        qrCodeFrameColor = UIColor.green
-//                        captureSession?.stopRunning()
-//                        bottomLabel.text = NSLocalizedString("verifySuccess", comment: "Fingerprint was successfully verified")
-//                        if #available(iOS 10.0, *) {
-//                            let feedbackGenerator = UINotificationFeedbackGenerator()
-//                            feedbackGenerator.notificationOccurred(.success)
-//                        } else {
-//                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
-//                        }
-//                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
-//                            self.dismiss(animated: true, completion: self.callback)
-//                        }
-//                    } else {
-//                        qrCodeFrameColor = UIColor.red
-//                        bottomLabel.text = NSLocalizedString("fingerprintMissmatch", comment: "Found fingerprint does not match")
-//                        captureSession?.stopRunning()
-//                        if #available(iOS 10.0, *) {
-//                            let feedbackGenerator = UINotificationFeedbackGenerator()
-//                            feedbackGenerator.notificationOccurred(.error)
-//                        } else {
-//                            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
-//                        }
-//                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-//                            let alert = UIAlertController(title: NSLocalizedString("fingerprintMissmatchShort", comment: "Found fingerprint does not match"), message: NSLocalizedString("fingerprintMissmatchText", comment: "Found fingerprint does not match"), preferredStyle: .alert)
-//                            alert.addAction(UIAlertAction(title: NSLocalizedString("MoreInformation", comment: "More Information"), style: .default, handler: {
-//                                (action: UIAlertAction!) -> Void in
-//                                UIApplication.shared.openURL(URL(string: "https://userpage.fu-berlin.de/letterbox/faq.html#headingWrongFingerprint")!)
-//                                self.dismiss(animated: false, completion: nil)
-//                            }))
-//                            alert.addAction(UIAlertAction(title: NSLocalizedString("scanDifferentCode", comment: ""), style: .default, handler: {
-//                                (action: UIAlertAction!) -> Void in
-//                                self.qrCodeFrameView?.path = nil
-//                                self.captureSession?.startRunning()
-//                            }))
-//                            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel, handler: { (action: UIAlertAction!) -> Void in self.dismiss(animated: true, completion: nil) }))
-//                            self.present(alert, animated: true, completion: nil)
-//                        }
-//                    }
-//                } else {
-//                    qrCodeFrameColor = UIColor.orange
-//                    bottomLabel.text = NSLocalizedString("wrongQRCode", comment: "The found QR Code is not compatible")
-//                }
             }
         }
     }
@@ -234,5 +200,174 @@ class QRDiashowScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjec
         }
         
         return path
+    }
+    
+    private func prepareCode() -> String{
+        guard seenCodes != nil else {
+            return ""
+        }
+        var message = ""
+        
+        for code in seenCodes! {
+            if let payload = code {
+                message = message + payload
+            }
+        }
+        return message
+        
+    }
+    
+    
+    private func parseCodes() -> (user: String?, name: String?, mailaddr: String?, pw: String?, imapServer: String?, imapPort: Int?, imapAuth: Int?, imapTransport: Int?, smtpServer: String?, smtpPort: Int?, smtpAuth: Int?, smtpTransport: Int?, keys: [String]){
+        /* TODO: Testcases:
+         password with ;, : and ;+:
+         multiple keys
+         no key
+         no account data
+         */
+
+        guard seenCodes != nil else {
+            return (user: nil, name: nil, mailaddr: nil, pw: nil, imapServer: nil, imapPort: nil, imapAuth: nil, imapTransport: nil, smtpServer: nil, smtpPort:nil, smtpAuth: nil, smtpTransport: nil, keys: [String] ())
+        }
+        // Extract PW with length
+        // Tokenize message again.
+        let msg = prepareCode()
+        // Assumption: SeenCodes is sorted.
+        var user: String?
+        var name: String?
+        var mailaddr: String?
+        var passwordLength = -1
+        var password: String?
+        var imapServer: String?
+        var imapPort: Int?
+        var imapAuth: Int?
+        var imapTransportType: Int?
+        var smtpServer: String?
+        var smtpPort: Int?
+        var smtpAuth: Int?
+        var smtpTransportType: Int?
+        
+        var keys = [String]()
+        var leftTokens = ""
+        
+        let tokens = msg.split(separator: ";")
+        for token in tokens {
+            let pair = token.split(separator: ":", maxSplits: 1)
+            if (pair.count >= 2) {
+                let type = String(pair[0])
+                let value = String(pair[1])
+                switch type {
+                case "U":
+                    user = value
+                case "N":
+                    name = value
+                case "EMAIL":
+                    mailaddr = value
+                case "PLENGTH":
+                    if let pwl = Int(value) {
+                        passwordLength = pwl
+                    }
+                    else {
+                       passwordLength = 0
+                    }
+                case "PW":
+                    password = value
+                case "IMAPSERVER":
+                    imapServer = value
+                case "IMAPPORT":
+                    if let port = Int(value) {
+                        imapPort = port
+                    }
+                case "IMAPAUTH":
+                    if let auth = Int(value) {
+                        imapAuth = auth
+                    }
+                case "IMAPTRANS":
+                    if let type = Int(value) {
+                        imapTransportType = type
+                    }
+                case "SMTPSERVER":
+                    smtpServer = value
+                case "SMTPPORT":
+                    if let port = Int(value) {
+                        smtpPort = port
+                    }
+                case "SMTPAUTH":
+                    if let type = Int(value) {
+                        smtpAuth = type
+                    }
+                case "SMTPTRANS":
+                    if let type = Int(value) {
+                        smtpTransportType = type
+                    }
+                case "KEY", "key":
+                    keys.append(value)
+                default:
+                    leftTokens = leftTokens + ";" + type + ":" + value
+                }
+            }
+            else {
+                leftTokens = leftTokens + ";" + String(token)
+            }
+        }
+        if let pw = password, pw.count < passwordLength {
+            password = pw + leftTokens
+        }
+        
+        return (user: user, name: name, mailaddr: mailaddr, pw: password, imapServer: imapServer, imapPort: imapPort, imapAuth: imapAuth, imapTransport: imapTransportType, smtpServer: smtpServer, smtpPort: smtpPort, smtpAuth: smtpAuth, smtpTransport: smtpTransportType, keys: keys)
+    }
+    
+    private func handleData (user: String?, name: String?, mailaddr: String?, pw: String?, imapServer: String?, imapPort: Int?, imapAuth: Int?, imapTransport: Int?, smtpServer: String?, smtpPort: Int?, smtpAuth: Int?, smtpTransport: Int?, keys: [String]){
+        if let server = imapServer {
+            UserManager.storeServerConfig(type: .IMAP, server: server, port: imapPort, authType: imapAuth, connectionType: imapTransport)
+        }
+        
+        if let server = smtpServer {
+            UserManager.storeServerConfig(type: .SMTP, server: server, port: smtpPort, authType: smtpAuth, connectionType: smtpTransport)
+        }
+        
+        if let adr = mailaddr {
+            UserManager.storeUserValue(adr as AnyObject, attribute: .userAddr)
+        }
+        if let pw = pw {
+            UserManager.storeUserValue(pw as AnyObject, attribute: .userPW)
+        }
+        
+        if let name = name {
+            UserManager.storeUserValue(name as AnyObject, attribute: Attribute.userName)
+        }
+        else if let adr = mailaddr {
+            UserManager.storeUserValue(adr as AnyObject as AnyObject, attribute: Attribute.userName)
+        }
+        else if let user = user {
+            UserManager.storeUserValue(user as AnyObject, attribute: Attribute.userName)
+        }
+        
+        
+        if let user = user {
+            UserManager.storeUserValue(user as AnyObject, attribute: Attribute.accountname)
+        }
+        else if let adr = mailaddr {
+            UserManager.storeUserValue(adr as AnyObject, attribute: Attribute.accountname)
+            
+        }
+        else if let name = name {
+            UserManager.storeUserValue(name as AnyObject, attribute: Attribute.accountname)
+            
+        }
+        let pgp = SwiftPGP()
+        var keyIds = [String] ()
+        for key in keys {
+            do {
+                let ids = try pgp.importKeys(key: key, pw: nil, isSecretKey: true, autocrypt: false)
+                keyIds.append(contentsOf: ids)
+                print(ids)
+            } catch{
+                print(error)
+            }
+        }
+        for id in keyIds {
+            _ = DataHandler.handler.newSecretKey(keyID: id)
+        }
     }
 }

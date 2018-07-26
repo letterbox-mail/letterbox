@@ -705,6 +705,7 @@
 		8428A8511F436952007649A5 /* Gamification */ = {
 			isa = PBXGroup;
 			children = (
+				3EC35F1F2003755F008BDF95 /* Invitation */,
 				8428A8521F4369C0007649A5 /* Gamification.storyboard */,
 				F18C5E551FE025D300C3B86D /* BadgeCase.storyboard */,
 				8428A8541F4369CF007649A5 /* GamificationElements.xcassets */,
@@ -824,7 +825,6 @@
 			children = (
 				F1866C84201F703200B72453 /* OAuth */,
 				3EB4FA9C2012007C001D0625 /* Dialog */,
-				3EC35F1F2003755F008BDF95 /* Invitation */,
 				F1C733331FEC1CAC005A497E /* About */,
 				8428A8511F436952007649A5 /* Gamification */,
 				A17FDFF1202C680A00F7BA89 /* debug and study */,

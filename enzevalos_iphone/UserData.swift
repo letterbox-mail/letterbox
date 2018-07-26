@@ -9,6 +9,9 @@
 import Foundation
 import KeychainAccess
 
+enum ProtocolType {
+    case IMAP, SMTP
+}
 
 enum Attribute: Int {
     case accountname, userName, userAddr, userPW, smtpHostname, smtpPort, imapHostname, imapPort, prefEncryption, publicKey, autocryptType, imapConnectionType, imapAuthType, smtpConnectionType, smtpAuthType, sentFolderPath, draftFolderPath, trashFolderPath, inboxFolderPath, archiveFolderPath, nextDeadline/*used for Logging; determines the earliest next time a log is send to the researchers*/, prefSecretKeyID, subjectSalt /*used for Logging; salt for the hashfunction for mail subjects*/, loggingFolderPath
@@ -205,6 +208,51 @@ struct UserManager {
         for a in Attribute.allAttributes {
             storeUserValue(a.defaultValue, attribute: a)
             //UserDefaults.standard.removeObject(forKey: "\(a.hashValue)")
+        }
+    }
+    
+    static func storeServerConfig(type: ProtocolType, server: String, port: Int?, authType: Int?, connectionType: Int?) {
+        switch type {
+        case .IMAP:
+            storeUserValue(server as AnyObject, attribute: .imapHostname)
+            if let port = port {
+                storeUserValue(port as AnyObject, attribute: .imapPort)
+            }
+            else {
+                storeUserValue(993 as AnyObject, attribute: .imapPort)
+            }
+            if let auth = authType {
+                storeUserValue(auth as AnyObject, attribute: .imapAuthType)
+            }
+            else {
+                storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject, attribute: .imapAuthType)
+            }
+            if let conn = connectionType {
+                storeUserValue(conn as AnyObject, attribute: .imapConnectionType)
+            }
+            else {
+                storeUserValue(MCOConnectionType.startTLS.rawValue as AnyObject, attribute: .imapConnectionType)
+            }
+        case .SMTP:
+            storeUserValue(server as AnyObject, attribute: .smtpHostname)
+            if let port = port {
+                storeUserValue(port as AnyObject, attribute: .smtpPort)
+            }
+            else {
+                storeUserValue(993 as AnyObject, attribute: .smtpPort)
+            }
+            if let auth = authType {
+                storeUserValue(auth as AnyObject, attribute: .smtpAuthType)
+            }
+            else {
+                storeUserValue(MCOAuthType.saslPlain.rawValue as AnyObject, attribute: .smtpAuthType)
+            }
+            if let conn = connectionType {
+                storeUserValue(conn as AnyObject, attribute: .smtpConnectionType)
+            }
+            else {
+                storeUserValue(MCOConnectionType.startTLS.rawValue as AnyObject, attribute: .smtpConnectionType)
+            }
         }
     }
 }
