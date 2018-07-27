@@ -319,11 +319,11 @@ class QRDiashowScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjec
     
     private func handleData (user: String?, name: String?, mailaddr: String?, pw: String?, imapServer: String?, imapPort: Int?, imapAuth: Int?, imapTransport: Int?, smtpServer: String?, smtpPort: Int?, smtpAuth: Int?, smtpTransport: Int?, keys: [String]){
         if let server = imapServer {
-            UserManager.storeServerConfig(type: .IMAP, server: server, port: imapPort, authType: imapAuth, connectionType: imapTransport)
+           // UserManager.storeServerConfig(type: .IMAP, server: server, port: UInt32(imapPort), authType: imapAuth, connectionType: imapTransport)
         }
         
         if let server = smtpServer {
-            UserManager.storeServerConfig(type: .SMTP, server: server, port: smtpPort, authType: smtpAuth, connectionType: smtpTransport)
+           // UserManager.storeServerConfig(type: .SMTP, server: server, port: UInt32(smtpPort), authType: smtpAuth, connectionType: smtpTransport)
         }
         
         if let adr = mailaddr {

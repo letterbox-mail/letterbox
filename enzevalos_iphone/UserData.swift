@@ -211,7 +211,30 @@ struct UserManager {
         }
     }
     
-    static func storeServerConfig(type: ProtocolType, server: String, port: Int?, authType: Int?, connectionType: Int?) {
+    static func storeUser(mailAddr: String, password: String, accountname: String? = nil, username: String? = nil) {
+        storeUserValue(mailAddr as AnyObject, attribute: Attribute.userAddr)
+        storeUserValue(password as AnyObject, attribute: Attribute.userPW)
+        var prefix = mailAddr
+        let tokens = mailAddr.split(separator: "@", maxSplits: 1)
+        if tokens.count > 0 {
+            prefix = String(tokens[0])
+        }
+        if let account = accountname {
+            storeUserValue(account as AnyObject, attribute: Attribute.accountname)
+        }
+        else {
+            storeUserValue(prefix as AnyObject, attribute: Attribute.accountname)
+        }
+        if let user = username {
+            storeUserValue(user as AnyObject, attribute: Attribute.userName)
+        }
+        else {
+            storeUserValue(prefix as AnyObject, attribute: Attribute.userName)
+        }
+        
+    }
+    
+    static func storeServerConfig(type: ProtocolType, server: String, port: UInt32?, authType: Int?, connectionType: Int?) {
         switch type {
         case .IMAP:
             storeUserValue(server as AnyObject, attribute: .imapHostname)
