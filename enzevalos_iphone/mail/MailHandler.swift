@@ -1045,7 +1045,7 @@ class MailHandler {
     }
 
 
-    func checkSMTP(_ completion: @escaping (Error?) -> Void) {
+    private func checkSMTP(_ completion: @escaping (Error?) -> Void) {
         let useraddr = UserManager.loadUserValue(Attribute.userAddr) as! String
 
         let session = MCOSMTPSession()
@@ -1064,7 +1064,7 @@ class MailHandler {
 
     }
 
-    func checkIMAP(_ completion: @escaping (Error?) -> Void) {
+    private func checkIMAP(_ completion: @escaping (Error?) -> Void) {
         self.setupIMAPSession().checkAccountOperation().start(completion)
     }
 

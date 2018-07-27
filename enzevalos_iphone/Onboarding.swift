@@ -508,12 +508,14 @@ class Onboarding: NSObject {
     static func checkConfig(_ fail: @escaping () -> (), work: @escaping () -> ()) {
         self.work = work
         self.fail = fail
-        AppDelegate.getAppDelegate().mailHandler.checkIMAP(imapCompletion)
+        print("CHECK IMAP")
+        //TODO: LOAD MAIL CONFIG FROMUsermanger: AppDelegate.getAppDelegate().mailHandler.checkIMAP(imapCompletion)
     }
 
     static func imapCompletion(_ error: Error?) {
         if error == nil {
-            AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)
+            //TODO: LOAD MAIL CONFIG FROMUsermanger:  AppDelegate.getAppDelegate().mailHandler.checkSMTP(smtpCompletion)
+            print("CHECKSMTP")
             return
         }
         fail()

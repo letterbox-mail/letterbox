@@ -149,6 +149,8 @@ class MailConfigurator {
     
     // End static stuff
     
+    //TODO: Wenn Pw, etc sich ändern muss die Session angepasst werden.
+    
     var imapSession: MCOIMAPSession
     var smtpSession: MCOSMTPSession
     var userAddr: String
@@ -159,16 +161,18 @@ class MailConfigurator {
     private var considerIMAPFromFile = false
     private var considerSmtpFromFile = false
     
+    
+    //TODO: Revist Konstruktors!
     init(imapSession: MCOIMAPSession, smtpSession: MCOSMTPSession, userAddr: String, password: String, accountName: String?, displayName: String?) {
         self.imapSession = imapSession
         self.smtpSession = smtpSession
-        self.userAddr = userAddr
+        self.userAddr = userAddr.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         self.password = password
         self.accountName = accountName ?? MailConfigurator.accountName(userAddr: userAddr)
         self.displayName = displayName ?? userAddr
     }
     
-    convenience init(useraddr: String, password: String, accountName: String?, displayName: String?) {
+    convenience init(useraddr: String, password: String, accountName: String? = nil, displayName: String? = nil) {
         var imap: MCOIMAPSession
         var smtp: MCOSMTPSession
         var imapFile = false
@@ -197,7 +201,7 @@ class MailConfigurator {
     }
     
     
-    convenience init(userAddr: String, password: String, accountName: String?, displayName: String?,imapHostname: String, imapPort: UInt32, imapAuthType: MCOAuthType, imapConType: MCOConnectionType, smtpHostname: String, smtpPort: UInt32, smtpAuthType: MCOAuthType, smtpConType: MCOConnectionType) {
+    convenience init(userAddr: String, password: String, accountName: String? = nil, displayName: String? = nil, imapHostname: String, imapPort: UInt32, imapAuthType: MCOAuthType, imapConType: MCOConnectionType, smtpHostname: String, smtpPort: UInt32, smtpAuthType: MCOAuthType, smtpConType: MCOConnectionType) {
         let imap = MailConfigurator.createIMAPSession(hostname: imapHostname, port: imapPort, username: userAddr, password: password, authType: imapAuthType, contype: imapConType)
         let smtp = MailConfigurator.createSMTPSession(hostname: smtpHostname, port: smtpPort, username: userAddr, password: password, authType: smtpAuthType, contype: smtpConType)
         self.init(imapSession: imap, smtpSession: smtp, userAddr: userAddr, password: password, accountName: accountName, displayName: displayName)
@@ -206,16 +210,19 @@ class MailConfigurator {
     
     
     
-    func checkSettings(_ callback: @escaping (_ working: Bool) -> ()){
+    func checkSettings(storeValues: Bool, _ callback: @escaping (_ working: Bool) -> ()){
         checkIMAP({ (errorIMAP: Error?) -> () in
             if errorIMAP != nil {
                 callback(false)
                 return
             }
-            self.checkSMTP({ (errorSMTP: Error?) -> () in
+            self.checkSMTP({(errorSMTP: Error?) -> () in
                 if errorSMTP != nil {
                     callback(false)
                     return
+                }
+                if storeValues {
+                    self.storeConfig()
                 }
                 callback(true)
                 return
@@ -223,10 +230,15 @@ class MailConfigurator {
         })
     }
     
-    func findUserConfiguration(_ callback: @escaping (_ working: Bool) -> ()){
+    func findUserConfiguration(_ storeValues: Bool,_ callback: @escaping (_ working: Bool) -> ()){
         findIMAPConfig({(working: Bool) -> () in
             if working {
-                self.findSMTPConfig(callback)
+                self.findSMTPConfig({(working: Bool) -> () in
+                    if storeValues && working{
+                        self.storeConfig()
+                    }
+                    callback(working)
+                })
             }
             else {
                 callback(false)
