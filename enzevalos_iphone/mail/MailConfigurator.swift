@@ -17,7 +17,7 @@ class MailConfigurator {
     private static let IMAPPREFIX = ["mail", "imap"]
     private static let IMAPPORT: [UInt32] = [143, 993]
 
-    private static let AUTHTYPE = [MCOAuthType.saslLogin, MCOAuthType.SASLNTLM, MCOAuthType.saslKerberosV4, MCOAuthType.SASLCRAMMD5, MCOAuthType.SASLDIGESTMD5, MCOAuthType.SASLGSSAPI, MCOAuthType.SASLSRP, MCOAuthType.saslPlain]
+    private static let AUTHTYPE = [MCOAuthType.saslPlain, MCOAuthType.saslLogin, MCOAuthType.SASLNTLM, MCOAuthType.saslKerberosV4, MCOAuthType.SASLCRAMMD5, MCOAuthType.SASLDIGESTMD5, MCOAuthType.SASLGSSAPI, MCOAuthType.SASLSRP]
     private static let CONNTECTIONTYPE = [MCOConnectionType.TLS, MCOConnectionType.startTLS] // We do not test for plain connections!
 
     static func defaultIMAP(userAddr: String) -> (hostname: String, port: UInt32, authType: MCOAuthType, connType: MCOConnectionType) {
