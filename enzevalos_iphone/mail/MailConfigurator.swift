@@ -249,7 +249,7 @@ class MailConfigurator {
                 callback(true)
                 return
             }
-            if !self.considerIMAPFromFile {
+            if !self.considerIMAPFromFile { //@Olli don't you mean the inverse statement?
                 if let session = MailConfigurator.fromFileIMAP(accountname: self.accountName, password: self.password) {
                     self.imapSession = session
                     // recall with a new imap configuration from the default file
@@ -290,7 +290,7 @@ class MailConfigurator {
                 for conn in MailConfigurator.CONNTECTIONTYPE {
                     for port in ports {
                         for prefix in prefixes {
-                            let hostname = prefix + "." + domain // TODO: there are servers without prefix in it's hostname
+                            let hostname = prefix + "." + domain // TODO: @Olli there are servers without prefix in it's hostname
                             if imap {
                                 let session = MailConfigurator.createIMAPSession(hostname: hostname, port: port, username: self.accountName, password: self.password, authType: auth, contype: conn)
                                 session.checkAccountOperation().start({ (error: Error?) -> Void in
