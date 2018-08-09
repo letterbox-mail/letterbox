@@ -47,8 +47,10 @@
 "GetHelp" = "To get help, tap on the letter or postcard in the app.";
 "GotIt" = "Got it!";
 "Hello" = "Hello";
+"IMAP-Authentification" = "IMAP-Authentification";
 "IMAP-Port" = "IMAP-Port";
 "IMAP-Server" = "IMAP-Server";
+"IMAP-Transportencryption" = "IMAP-Transportencryption";
 "ImportSettings" = "Do you use your mailaccount already on your desktop and want to import its settings?";
 "INBOX" = "INBOX";
 "Inbox" = "Inbox";

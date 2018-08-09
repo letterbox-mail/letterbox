@@ -93,6 +93,22 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
         imapServerController!.textInputDelegate = self
         array.append(imapServerController!)
         
+        imapConnectionController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "pickerInputView") as! OnboardingPickerInputViewController
+        imapServerController!.viewModification = { [weak imapConnectionController] in
+            imapConnectionController?.labelTop.text = NSLocalizedString("IMAP-Transportencryption", comment: "")
+            let imapTransportDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.transportOptions.values))
+            imapConnectionController?.pickerViewTop.dataSource = imapTransportDataDelegate
+            imapConnectionController?.pickerViewTop.delegate = imapTransportDataDelegate
+
+            imapConnectionController?.labelBottom.text = NSLocalizedString("IMAP-Authentification", comment: "")
+            let imapAuthDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.authenticationOptions.values))
+            imapConnectionController?.pickerViewBottom.dataSource = imapAuthDataDelegate
+            imapConnectionController?.pickerViewBottom.delegate = imapAuthDataDelegate
+        }
+        imapServerController!.pageControlDelegate = self
+        imapServerController!.textInputDelegate = self
+        array.append(imapServerController!)
+        
         //TODO: add more views here
         
         //...
