@@ -9,34 +9,33 @@
 import Foundation
 
 class MailConfigurator {
-    
     // Begin static stuff
-    
+
     private static let SMTPPORT: [UInt32] = [587, 465, 25]
     private static let SMTPPREFIX = ["smtp", "mail", "outgoing"]
-    
+
     private static let IMAPPREFIX = ["mail", "imap"]
     private static let IMAPPORT: [UInt32] = [143, 993]
-    
+
     private static let AUTHTYPE = [MCOAuthType.saslLogin, MCOAuthType.SASLNTLM, MCOAuthType.saslKerberosV4, MCOAuthType.SASLCRAMMD5, MCOAuthType.SASLDIGESTMD5, MCOAuthType.SASLGSSAPI, MCOAuthType.SASLSRP, MCOAuthType.saslPlain]
     private static let CONNTECTIONTYPE = [MCOConnectionType.TLS, MCOConnectionType.startTLS] // We do not test for plain connections!
-    
+
     static func defaultIMAP(userAddr: String) -> (hostname: String, port: UInt32, authType: MCOAuthType, connType: MCOConnectionType) {
-        //TODO: Optimize here: Use files?
+        // TODO: Optimize here: Use files?
         let tokens = userAddr.split(separator: "@", maxSplits: 1)
         var hostname = "example.com"
         if tokens.count == 2 {
             hostname = String(tokens[1])
         }
-        return (IMAPPREFIX[0]+"."+hostname, IMAPPORT[0], AUTHTYPE[0], CONNTECTIONTYPE[0])
+        return (IMAPPREFIX[0] + "." + hostname, IMAPPORT[0], AUTHTYPE[0], CONNTECTIONTYPE[0])
     }
-    
+
     static func defaultSMTP(userAddr: String) -> (hostname: String, port: UInt32, authType: MCOAuthType, connType: MCOConnectionType) {
-        //TODO: Optimize here: Use files?
-        
-        return (SMTPPREFIX[0]+"."+MailConfigurator.hostname(userAddr: userAddr), SMTPPORT[0], AUTHTYPE[1], CONNTECTIONTYPE[0])
+        // TODO: Optimize here: Use files?
+
+        return (SMTPPREFIX[0] + "." + MailConfigurator.hostname(userAddr: userAddr), SMTPPORT[0], AUTHTYPE[1], CONNTECTIONTYPE[0])
     }
-    
+
     private static func splitAddr(userAddr: String) -> (local: String, domain: String) {
         let tokens = userAddr.split(separator: "@", maxSplits: 1)
         var hostname = "example.com"
@@ -47,32 +46,32 @@ class MailConfigurator {
         }
         return (local, hostname)
     }
-    
+
     private static func hostname(userAddr: String) -> String {
         return splitAddr(userAddr: userAddr).domain
     }
-    
+
     private static func accountName(userAddr: String) -> String {
         return splitAddr(userAddr: userAddr).local
     }
-    
-    private static func findPreConfig(userAddr: String) -> MCOMailProvider?{
+
+    private static func findPreConfig(userAddr: String) -> MCOMailProvider? {
         let manager = MCOMailProvidersManager.shared()!
         let path = Bundle.main.path(forResource: "providers", ofType: "json")
         manager.registerProviders(withFilename: path)
         return manager.provider(forEmail: userAddr)
     }
-    
+
     private static func fromFileIMAP(accountname: String, password: String) -> MCOIMAPSession? {
         if let provider = MailConfigurator.findPreConfig(userAddr: accountname) {
-            if provider.imapServices().count > 0, let services = provider.imapServices() as? [MCONetService]{
+            if provider.imapServices().count > 0, let services = provider.imapServices() as? [MCONetService] {
                 let imapService = services[0]
-                return MailConfigurator.createIMAPSession(hostname: imapService.hostname, port: imapService.port, username: accountname, password: password, authType: MailConfigurator.authType(service: imapService) , contype: imapService.connectionType)
+                return MailConfigurator.createIMAPSession(hostname: imapService.hostname, port: imapService.port, username: accountname, password: password, authType: MailConfigurator.authType(service: imapService), contype: imapService.connectionType)
             }
         }
         return nil
     }
-    
+
     private static func fromFileSMTP(accountname: String, password: String) -> MCOSMTPSession? {
         if let provider = MailConfigurator.findPreConfig(userAddr: accountname) {
             if provider.smtpServices().count > 0, let services = provider.smtpServices() as? [MCONetService] {
@@ -82,7 +81,7 @@ class MailConfigurator {
         }
         return nil
     }
-    
+
     private static func authType(service: MCONetService) -> MCOAuthType {
         if let auth = service.info()["auth"] as? String {
             switch auth {
@@ -112,8 +111,8 @@ class MailConfigurator {
         }
         return MCOAuthType.saslPlain
     }
-    
-    private static func createSMTPSession (hostname: String, port: UInt32,  username: String, password: String?, authType: MCOAuthType, contype: MCOConnectionType) -> MCOSMTPSession {
+
+    private static func createSMTPSession(hostname: String, port: UInt32, username: String, password: String?, authType: MCOAuthType, contype: MCOConnectionType) -> MCOSMTPSession {
         let session = MCOSMTPSession()
         session.hostname = hostname
         session.port = port
@@ -129,8 +128,8 @@ class MailConfigurator {
         session.connectionType = contype
         return session
     }
-    
-    private static func createIMAPSession (hostname: String, port: UInt32,  username: String, password: String?, authType: MCOAuthType, contype: MCOConnectionType) -> MCOIMAPSession {
+
+    private static func createIMAPSession(hostname: String, port: UInt32, username: String, password: String?, authType: MCOAuthType, contype: MCOConnectionType) -> MCOIMAPSession {
         let session = MCOIMAPSession()
         session.hostname = hostname
         session.port = port
@@ -146,23 +145,22 @@ class MailConfigurator {
         session.connectionType = contype
         return session
     }
-    
+
     // End static stuff
-    
-    //TODO: Wenn Pw, etc sich ändern muss die Session angepasst werden.
-    
+
+    // TODO: Wenn Pw, etc sich ändern muss die Session angepasst werden.
+
     var imapSession: MCOIMAPSession
     var smtpSession: MCOSMTPSession
     var userAddr: String
     var accountName: String
     var displayName: String
     var password: String
-    
+
     private var considerIMAPFromFile = false
     private var considerSmtpFromFile = false
-    
-    
-    //TODO: Revist Konstruktors!
+
+    // TODO: Revist Konstruktors!
     init(imapSession: MCOIMAPSession, smtpSession: MCOSMTPSession, userAddr: String, password: String, accountName: String?, displayName: String?) {
         self.imapSession = imapSession
         self.smtpSession = smtpSession
@@ -171,27 +169,25 @@ class MailConfigurator {
         self.accountName = accountName ?? MailConfigurator.accountName(userAddr: userAddr)
         self.displayName = displayName ?? userAddr
     }
-    
+
     convenience init(useraddr: String, password: String, accountName: String? = nil, displayName: String? = nil) {
         var imap: MCOIMAPSession
         var smtp: MCOSMTPSession
         var imapFile = false
         var smtpFile = false
-        
+
         if let session = MailConfigurator.fromFileIMAP(accountname: accountName ?? useraddr, password: password) {
             imap = session
             imapFile = true
-        }
-        else {
+        } else {
             let defaultIMAP = MailConfigurator.defaultIMAP(userAddr: accountName ?? useraddr)
             imap = MailConfigurator.createIMAPSession(hostname: defaultIMAP.hostname, port: defaultIMAP.port, username: accountName ?? useraddr, password: password, authType: defaultIMAP.authType, contype: defaultIMAP.connType)
         }
-        
-        if let session = MailConfigurator.fromFileSMTP(accountname: accountName ?? useraddr, password: password){
+
+        if let session = MailConfigurator.fromFileSMTP(accountname: accountName ?? useraddr, password: password) {
             smtp = session
             smtpFile = true
-        }
-        else {
+        } else {
             let defaultSMTP = MailConfigurator.defaultSMTP(userAddr: accountName ?? useraddr)
             smtp = MailConfigurator.createSMTPSession(hostname: defaultSMTP.hostname, port: defaultSMTP.port, username: accountName ?? useraddr, password: password, authType: defaultSMTP.authType, contype: defaultSMTP.connType)
         }
@@ -199,24 +195,20 @@ class MailConfigurator {
         considerIMAPFromFile = imapFile
         considerSmtpFromFile = smtpFile
     }
-    
-    
+
     convenience init(userAddr: String, password: String, accountName: String? = nil, displayName: String? = nil, imapHostname: String, imapPort: UInt32, imapAuthType: MCOAuthType, imapConType: MCOConnectionType, smtpHostname: String, smtpPort: UInt32, smtpAuthType: MCOAuthType, smtpConType: MCOConnectionType) {
         let imap = MailConfigurator.createIMAPSession(hostname: imapHostname, port: imapPort, username: userAddr, password: password, authType: imapAuthType, contype: imapConType)
         let smtp = MailConfigurator.createSMTPSession(hostname: smtpHostname, port: smtpPort, username: userAddr, password: password, authType: smtpAuthType, contype: smtpConType)
         self.init(imapSession: imap, smtpSession: smtp, userAddr: userAddr, password: password, accountName: accountName, displayName: displayName)
     }
-    
-    
-    
-    
-    func checkSettings(storeValues: Bool, _ callback: @escaping (_ working: Bool) -> ()){
-        checkIMAP({ (errorIMAP: Error?) -> () in
+
+    func checkSettings(storeValues: Bool, _ callback: @escaping (_ working: Bool) -> Void) {
+        checkIMAP({ (errorIMAP: Error?) -> Void in
             if errorIMAP != nil {
                 callback(false)
                 return
             }
-            self.checkSMTP({(errorSMTP: Error?) -> () in
+            self.checkSMTP({ (errorSMTP: Error?) -> Void in
                 if errorSMTP != nil {
                     callback(false)
                     return
@@ -229,31 +221,30 @@ class MailConfigurator {
             })
         })
     }
-    
-    func findUserConfiguration(_ storeValues: Bool,_ callback: @escaping (_ working: Bool) -> ()){
-        findIMAPConfig({(working: Bool) -> () in
+
+    func findUserConfiguration(_ storeValues: Bool, _ callback: @escaping (_ working: Bool) -> Void) {
+        findIMAPConfig({ (working: Bool) -> Void in
             if working {
-                self.findSMTPConfig({(working: Bool) -> () in
-                    if storeValues && working{
+                self.findSMTPConfig({ (working: Bool) -> Void in
+                    if storeValues && working {
                         self.storeConfig()
                     }
                     callback(working)
                 })
-            }
-            else {
+            } else {
                 callback(false)
             }
         })
     }
-    
-    func storeConfig(){
+
+    func storeConfig() {
         UserManager.storeUser(mailAddr: userAddr, password: password, accountname: accountName, username: displayName)
         UserManager.storeServerConfig(type: ProtocolType.IMAP, server: imapSession.hostname, port: imapSession.port, authType: imapSession.authType.rawValue, connectionType: imapSession.connectionType.rawValue)
         UserManager.storeServerConfig(type: .SMTP, server: smtpSession.hostname, port: smtpSession.port, authType: smtpSession.authType.rawValue, connectionType: smtpSession.connectionType.rawValue)
     }
-    
-    private func findIMAPConfig(_ callback: @escaping (_ successful: Bool) -> ()){
-        checkIMAP({(error: Error?) -> () in
+
+    private func findIMAPConfig(_ callback: @escaping (_ successful: Bool) -> Void) {
+        checkIMAP({ (error: Error?) -> Void in
             if error == nil {
                 callback(true)
                 return
@@ -270,9 +261,9 @@ class MailConfigurator {
             self.iterateIMAPConfig(callback)
         })
     }
-    
-    private func findSMTPConfig(_ callback: @escaping (_ successful: Bool) -> ()){
-        checkSMTP({(error: Error?) -> () in
+
+    private func findSMTPConfig(_ callback: @escaping (_ successful: Bool) -> Void) {
+        checkSMTP({ (error: Error?) -> Void in
             if error == nil {
                 callback(true)
                 return
@@ -288,21 +279,21 @@ class MailConfigurator {
             self.iterateSMTPConfig(callback)
         })
     }
-    
-    private func iterateConfig(_ callback: @escaping (_ working: Bool) -> (), prefixes: [String], ports: [UInt32], imap: Bool){
+
+    private func iterateConfig(_ callback: @escaping (_ working: Bool) -> Void, prefixes: [String], ports: [UInt32], imap: Bool) {
         let dispatchQueue = DispatchQueue(label: "ConfigChecker")
         let dispatchSemaphore = DispatchSemaphore(value: 0)
-        let domain = MailConfigurator.hostname(userAddr: self.userAddr)
-        let from = MCOAddress.init(mailbox: self.userAddr)
+        let domain = MailConfigurator.hostname(userAddr: userAddr)
+        let from = MCOAddress(mailbox: userAddr)
         dispatchQueue.async {
             for auth in MailConfigurator.AUTHTYPE {
                 for conn in MailConfigurator.CONNTECTIONTYPE {
-                    for port in ports{
-                        for prefix in prefixes{
-                            let hostname = prefix + "." + domain
+                    for port in ports {
+                        for prefix in prefixes {
+                            let hostname = prefix + "." + domain // TODO: there are servers without prefix in it's hostname
                             if imap {
                                 let session = MailConfigurator.createIMAPSession(hostname: hostname, port: port, username: self.accountName, password: self.password, authType: auth, contype: conn)
-                                session.checkAccountOperation().start({(error: Error?) -> () in
+                                session.checkAccountOperation().start({ (error: Error?) -> Void in
                                     if error == nil {
                                         self.imapSession = session
                                         callback(true)
@@ -310,10 +301,9 @@ class MailConfigurator {
                                     }
                                     dispatchSemaphore.signal()
                                 })
-                            }
-                            else {
+                            } else {
                                 let session = MailConfigurator.createSMTPSession(hostname: hostname, port: port, username: self.accountName, password: self.password, authType: auth, contype: conn)
-                                session.checkAccountOperationWith(from: from).start({(error: Error?) -> () in
+                                session.checkAccountOperationWith(from: from).start({ (error: Error?) -> Void in
                                     if error == nil {
                                         self.smtpSession = session
                                         callback(true)
@@ -331,33 +321,28 @@ class MailConfigurator {
             return
         }
     }
-    
-    private func iterateIMAPConfig(_ callback: @escaping (_ working: Bool) -> ()){
+
+    private func iterateIMAPConfig(_ callback: @escaping (_ working: Bool) -> Void) {
         iterateConfig(callback, prefixes: MailConfigurator.IMAPPREFIX, ports: MailConfigurator.IMAPPORT, imap: true)
     }
-    
-    private func iterateSMTPConfig(_ callback: @escaping (_ working: Bool) -> ()){
+
+    private func iterateSMTPConfig(_ callback: @escaping (_ working: Bool) -> Void) {
         iterateConfig(callback, prefixes: MailConfigurator.SMTPPREFIX, ports: MailConfigurator.SMTPPORT, imap: false)
     }
-    
+
     private func completeOptionalInput(error: Error?) {
         if error != nil {
-           // 2. Test user data
-        }
-        else {
+            // 2. Test user data
+        } else {
             // store data
         }
     }
-    
-   
-    private func checkIMAP(_ completion: @escaping (Error?) -> ()) {
-       imapSession.checkAccountOperation().start(completion)
-    }
-    
-    private func checkSMTP(_ completion: @escaping (Error?) -> ()) {
-        smtpSession.checkAccountOperationWith(from: MCOAddress.init(mailbox: userAddr)).start(completion)
+
+    private func checkIMAP(_ completion: @escaping (Error?) -> Void) {
+        imapSession.checkAccountOperation().start(completion)
     }
 
-    
-   
+    private func checkSMTP(_ completion: @escaping (Error?) -> Void) {
+        smtpSession.checkAccountOperationWith(from: MCOAddress(mailbox: userAddr)).start(completion)
+    }
 }
