@@ -98,6 +98,7 @@ class OnboardingPickerInputViewController: UIViewController {
         let referenceSize: CGFloat = 812.0
         underLabelPadding *= view.frame.height/referenceSize
         topSpace.constant *= view.frame.height/referenceSize
+        nextButton.titleLabel?.font = nextButton.titleLabel?.font.withSize((nextButton.titleLabel?.font.pointSize)!*sqrt(view.frame.height/referenceSize))
         if labelBottom.text == nil {
             underLabelBottomPadding.constant = 0
         }

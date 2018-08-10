@@ -122,6 +122,7 @@ class OnboardingTextInputViewController: UIViewController {
         underTextFieldPadding *= underTextFieldPadding/referenceSize
         topSpace.constant *= view.frame.height/referenceSize
         sectionSpace.constant *= view.frame.height/referenceSize
+        nextButton.titleLabel?.font = nextButton.titleLabel?.font.withSize((nextButton.titleLabel?.font.pointSize)!*sqrt(view.frame.height/referenceSize)) 
         underlineHeight = 0.5
         if labelBottom.text == nil {
             underLabelBottomPadding.constant = 0
