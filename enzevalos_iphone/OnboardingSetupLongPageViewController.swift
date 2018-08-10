@@ -136,6 +136,7 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
             confirmationController.scanButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControlState.normal)
         }
         confirmationController.confirmationDelegate = self
+        confirmationController.pageControlDelegate = self
         array.append(confirmationController)
         
         return array
