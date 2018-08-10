@@ -47,12 +47,14 @@ class OnboardingValidateSetupPageViewController: UIPageViewController {
     }
     
     @objc func settingsChecked(working: Bool) {
-        if working {
-            let accessController = self.storyboard?.instantiateViewController(withIdentifier: "accessContacts") as! OnboardingAccessContactsPageViewController
-            self.present(accessController, animated: false, completion: nil)
-        } else {
-            let setupController = self.storyboard?.instantiateViewController(withIdentifier: "setupLong") as! OnboardingSetupLongPageViewController
-            self.present(setupController, animated: false, completion: nil)
+        DispatchQueue.main.async {
+            if working {
+                let accessController = self.storyboard?.instantiateViewController(withIdentifier: "accessContacts") as! OnboardingAccessContactsPageViewController
+                self.present(accessController, animated: false, completion: nil)
+            } else {
+                let setupController = self.storyboard?.instantiateViewController(withIdentifier: "setupLong") as! OnboardingSetupLongPageViewController
+                self.present(setupController, animated: false, completion: nil)
+            }
         }
     }
 }
