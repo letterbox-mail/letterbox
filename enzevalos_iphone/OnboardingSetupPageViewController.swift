@@ -40,6 +40,7 @@ class OnboardingSetupPageViewController: UIPageViewController {
             credentialsController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
             credentialsController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Address", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
             credentialsController?.textFieldTop.autocorrectionType = UITextAutocorrectionType.no
+            credentialsController?.textFieldTop.returnKeyType = UIReturnKeyType.continue
             credentialsController?.labelBottom.text = nil
             credentialsController?.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
             if #available(iOS 11.0, *) {
@@ -49,6 +50,7 @@ class OnboardingSetupPageViewController: UIPageViewController {
             }
             credentialsController?.textFieldBottom.isSecureTextEntry = true
             credentialsController?.textFieldBottom.autocorrectionType = UITextAutocorrectionType.no
+            credentialsController?.textFieldBottom.returnKeyType = UIReturnKeyType.next
             credentialsController?.disableButton = false
             credentialsController?.nextButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControlState.normal)
             //credentialsController.keyboardAccessoryLeft = NSLocalizedString("LoginWithGoogle", comment: "Login via google oauth")

@@ -65,8 +65,18 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
             credentialsController?.labelTop.text = NSLocalizedString("InsertMailAddressAndPassword", comment: "")
             credentialsController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
             credentialsController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Address", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            credentialsController?.textFieldTop.autocorrectionType = UITextAutocorrectionType.no
+            credentialsController?.textFieldTop.returnKeyType = UIReturnKeyType.continue
             credentialsController?.labelBottom.text = nil
             credentialsController?.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            if #available(iOS 11.0, *) {
+                credentialsController?.textFieldBottom.textContentType = UITextContentType.password
+            } else {
+                //TODO: do we have to do here something?
+            }
+            credentialsController?.textFieldBottom.isSecureTextEntry = true
+            credentialsController?.textFieldBottom.autocorrectionType = UITextAutocorrectionType.no
+            credentialsController?.textFieldBottom.returnKeyType = UIReturnKeyType.next
             //credentialsController?.keyboardAccessoryLeft = NSLocalizedString("LoginWithGoogle", comment: "Login via google oauth")
         }
         credentialsController!.pageControlDelegate = self
@@ -78,6 +88,7 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
             usernameController?.labelTop.text = NSLocalizedString("InsertUsername", comment: "")
             usernameController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
             usernameController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            usernameController?.textFieldTop.returnKeyType = .next
             usernameController?.labelBottom.text = nil
             usernameController?.disableSecondSection = true
         }
@@ -88,10 +99,15 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
         imapServerController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
         imapServerController!.viewModification = { [weak imapServerController] in
             imapServerController?.labelTop.text = NSLocalizedString("IMAP-Server", comment: "")
-            imapServerController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
+            imapServerController?.textFieldTop.keyboardType = UIKeyboardType.URL
             imapServerController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("IMAP-Server", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
-            imapServerController?.textFieldBottom.text = NSLocalizedString("IMAP-Port", comment: "")
+            imapServerController?.textFieldTop.autocorrectionType = UITextAutocorrectionType.no
+            imapServerController?.textFieldTop.returnKeyType = UIReturnKeyType.continue
+            imapServerController?.labelBottom.text = NSLocalizedString("IMAP-Port", comment: "")
             imapServerController?.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("IMAP-Port", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            imapServerController?.textFieldBottom.keyboardType = UIKeyboardType.numberPad
+            imapServerController?.textFieldBottom.autocorrectionType = UITextAutocorrectionType.no
+            imapServerController?.textFieldBottom.returnKeyType = UIReturnKeyType.next
         }
         imapServerController!.pageControlDelegate = self
         imapServerController!.textInputDelegate = self
@@ -123,6 +139,12 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
         array.append(confirmationController)
         
         return array
+    }
+    
+    func presentController(behind viewController: UIViewController?) {
+        if viewController != nil, let currentIndex = orderedViewControllers.index(of: viewController!), currentIndex+1 < orderedViewControllers.count {
+            setViewControllers([orderedViewControllers[currentIndex+1]], direction: .forward, animated: true, completion: nil)
+        }
     }
 }
 extension OnboardingSetupLongPageViewController: UIPageViewControllerDataSource {
@@ -173,6 +195,25 @@ extension OnboardingSetupLongPageViewController: OnboardingTextInputDelegate {
     
     func nextButtonTapped(viewController: OnboardingTextInputViewController) {
         
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == credentialsController?.textFieldTop {
+            credentialsController?.textFieldBottom.becomeFirstResponder()
+        }
+        else if textField == credentialsController?.textFieldBottom {
+            presentController(behind: credentialsController)
+        }
+        else if textField == usernameController?.textFieldTop {
+            presentController(behind: usernameController)
+        }
+        else if textField == imapServerController?.textFieldTop {
+            imapServerController?.textFieldBottom.becomeFirstResponder()
+        }
+        else if textField == imapServerController?.textFieldBottom {
+            presentController(behind: imapServerController)
+        }
+        return true
     }
 }
 
