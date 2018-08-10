@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol OnboardingTextInputDelegate: class {
+protocol OnboardingTextInputDelegate: UITextFieldDelegate {
     func nextButtonTapped(viewController: OnboardingTextInputViewController)
     func leftKeyboardButton(viewController: OnboardingTextInputViewController)
     func rightKeyboardButton(viewController: OnboardingTextInputViewController)

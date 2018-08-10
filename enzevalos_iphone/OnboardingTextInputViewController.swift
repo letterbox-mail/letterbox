@@ -81,6 +81,12 @@ class OnboardingTextInputViewController: UIViewController {
     weak var pageControlDelegate: OnboardingPageControlDelegate?
     
     override func viewDidLoad() {
+        if textInputDelegate != nil {
+            textFieldTop.delegate = textInputDelegate
+            if !disableSecondSection {
+                textFieldBottom.delegate = textInputDelegate
+            }
+        }
         if let modification = viewModification {
             modification()
         }
