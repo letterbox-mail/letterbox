@@ -295,10 +295,17 @@ class MailConfigurator {
                             let hostname = prefix + "." + domain // TODO: @Olli there are servers without prefix in it's hostname
                             if imap {
                                 let session = MailConfigurator.createIMAPSession(hostname: hostname, port: port, username: self.accountName, password: self.password, authType: auth, contype: conn) //@Olli: usernames are sometimes with domain suffix and sometimes without. We have to iterate over it too!
-                                session.checkAccountOperation().start({ (error: Error?) -> Void in
+                                let accountCheck = {session.checkAccountOperation().start({ (error: Error?) -> Void in
                                     if error == nil {
                                         self.imapSession = session
                                         callback(true)
+                                        return
+                                    }
+                                    dispatchSemaphore.signal()
+                                })}
+                                session.connectOperation().start({ (error: Error?) in
+                                    if error == nil {
+                                        accountCheck()
                                         return
                                     }
                                     dispatchSemaphore.signal()
