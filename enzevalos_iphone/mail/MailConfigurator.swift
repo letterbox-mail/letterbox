@@ -39,7 +39,7 @@ class MailConfigurator {
     private static func splitAddr(userAddr: String) -> (local: String, domain: String) {
         let tokens = userAddr.split(separator: "@", maxSplits: 1)
         var hostname = "example.com"
-        var local = "Alice"
+        var local = "Alice" //TODO: set better default value
         if tokens.count == 2 {
             hostname = String(tokens[1])
             local = String(tokens[0])
@@ -166,15 +166,16 @@ class MailConfigurator {
         self.smtpSession = smtpSession
         self.userAddr = userAddr.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
         self.password = password
-        self.accountName = accountName ?? MailConfigurator.accountName(userAddr: userAddr)
+        self.accountName = accountName ?? MailConfigurator.accountName(userAddr: userAddr) //@Olli: depends of the service, if the domainpart is contained in the accountname
         self.displayName = displayName ?? userAddr
     }
 
-    convenience init(useraddr: String, password: String, accountName: String? = nil, displayName: String? = nil) {
+    convenience init(userAddr: String, password: String, accountName: String? = nil, displayName: String? = nil) {
         var imap: MCOIMAPSession
         var smtp: MCOSMTPSession
         var imapFile = false
         var smtpFile = false
+        let useraddr = userAddr.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
 
         if let session = MailConfigurator.fromFileIMAP(accountname: accountName ?? useraddr, password: password) {
             imap = session
@@ -286,13 +287,14 @@ class MailConfigurator {
         let domain = MailConfigurator.hostname(userAddr: userAddr)
         let from = MCOAddress(mailbox: userAddr)
         dispatchQueue.async {
+            print("go in here!!!!!! 12345")
             for auth in MailConfigurator.AUTHTYPE {
                 for conn in MailConfigurator.CONNTECTIONTYPE {
                     for port in ports {
                         for prefix in prefixes {
                             let hostname = prefix + "." + domain // TODO: @Olli there are servers without prefix in it's hostname
                             if imap {
-                                let session = MailConfigurator.createIMAPSession(hostname: hostname, port: port, username: self.accountName, password: self.password, authType: auth, contype: conn)
+                                let session = MailConfigurator.createIMAPSession(hostname: hostname, port: port, username: self.accountName, password: self.password, authType: auth, contype: conn) //@Olli: usernames are sometimes with domain suffix and sometimes without. We have to iterate over it too!
                                 session.checkAccountOperation().start({ (error: Error?) -> Void in
                                     if error == nil {
                                         self.imapSession = session

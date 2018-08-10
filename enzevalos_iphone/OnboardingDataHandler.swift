@@ -35,7 +35,7 @@ class OnboardingDataHandler {
             mailconfig.password = password
         }
         else {
-            mailconfig = MailConfigurator(useraddr: mailaddress, password: password)
+            mailconfig = MailConfigurator(userAddr: mailaddress, password: password)
         }
     }
     
