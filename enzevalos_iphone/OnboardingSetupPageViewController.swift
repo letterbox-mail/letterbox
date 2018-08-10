@@ -15,6 +15,7 @@ class OnboardingSetupPageViewController: UIPageViewController {
     
     let defaultColor = UIColor.darkGray
     
+    var credentialsController: OnboardingTextInputViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,19 +34,27 @@ class OnboardingSetupPageViewController: UIPageViewController {
     func createViewControllers() -> [UIViewController] {
         var array: [UIViewController] = []
         
-        let credentialsController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
-        credentialsController.viewModification = {
-            credentialsController.labelTop.text = NSLocalizedString("InsertMailAddressAndPassword", comment: "")
-            credentialsController.textFieldTop.keyboardType = UIKeyboardType.emailAddress
-            credentialsController.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Address", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
-            credentialsController.labelBottom.text = nil
-            credentialsController.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
-            credentialsController.disableButton = false
-            credentialsController.nextButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControlState.normal)
+        credentialsController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
+        credentialsController?.viewModification = { [weak credentialsController] in
+            credentialsController?.labelTop.text = NSLocalizedString("InsertMailAddressAndPassword", comment: "")
+            credentialsController?.textFieldTop.keyboardType = UIKeyboardType.emailAddress
+            credentialsController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Address", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            credentialsController?.textFieldTop.autocorrectionType = UITextAutocorrectionType.no
+            credentialsController?.labelBottom.text = nil
+            credentialsController?.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            if #available(iOS 11.0, *) {
+                credentialsController?.textFieldBottom.textContentType = UITextContentType.password
+            } else {
+                //TODO: do we have to do here something?
+            }
+            credentialsController?.textFieldBottom.isSecureTextEntry = true
+            credentialsController?.textFieldBottom.autocorrectionType = UITextAutocorrectionType.no
+            credentialsController?.disableButton = false
+            credentialsController?.nextButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControlState.normal)
             //credentialsController.keyboardAccessoryLeft = NSLocalizedString("LoginWithGoogle", comment: "Login via google oauth")
         }
-        credentialsController.textInputDelegate = self
-        array.append(credentialsController)
+        credentialsController?.textInputDelegate = self
+        array.append(credentialsController!)
         
         return array
     }
@@ -103,5 +112,15 @@ extension OnboardingSetupPageViewController: OnboardingTextInputDelegate {
             let validationController = self.storyboard?.instantiateViewController(withIdentifier: "validateSetup") as! OnboardingValidateSetupPageViewController
             self.present(validationController, animated: false, completion: nil)
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == credentialsController?.textFieldBottom {
+            nextButtonTapped(viewController: credentialsController!)
+        }
+        if textField == credentialsController?.textFieldTop {
+            credentialsController?.textFieldBottom.becomeFirstResponder()
+        }
+        return true
     }
 }
