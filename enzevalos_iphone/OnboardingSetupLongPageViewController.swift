@@ -19,12 +19,16 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
     var usernameController: OnboardingTextInputViewController?
     var imapServerController: OnboardingTextInputViewController?
     var imapConnectionController: OnboardingPickerInputViewController?
+    var imapTransportDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.transportOptions.values))
+    var imapAuthDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.authenticationOptions.values))
     var smtpServerController: OnboardingTextInputViewController?
     var smtpConnectionController: OnboardingPickerInputViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
+        imapTransportDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.transportOptions.values))
+        imapAuthDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.authenticationOptions.values))
         orderedViewControllers = createViewControllers()
         
         if let firstViewController = orderedViewControllers.first {
@@ -94,20 +98,17 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
         array.append(imapServerController!)
         
         imapConnectionController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "pickerInputView") as! OnboardingPickerInputViewController
-        imapServerController!.viewModification = { [weak imapConnectionController] in
+        imapConnectionController!.viewModification = { [weak imapConnectionController, weak self] in
             imapConnectionController?.labelTop.text = NSLocalizedString("IMAP-Transportencryption", comment: "")
-            let imapTransportDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.transportOptions.values))
-            imapConnectionController?.pickerViewTop.dataSource = imapTransportDataDelegate
-            imapConnectionController?.pickerViewTop.delegate = imapTransportDataDelegate
+            imapConnectionController?.pickerViewTop.dataSource = self?.imapTransportDataDelegate
+            imapConnectionController?.pickerViewTop.delegate = self?.imapTransportDataDelegate
 
             imapConnectionController?.labelBottom.text = NSLocalizedString("IMAP-Authentification", comment: "")
-            let imapAuthDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.authenticationOptions.values))
-            imapConnectionController?.pickerViewBottom.dataSource = imapAuthDataDelegate
-            imapConnectionController?.pickerViewBottom.delegate = imapAuthDataDelegate
+            imapConnectionController?.pickerViewBottom.dataSource = self?.imapAuthDataDelegate
+            imapConnectionController?.pickerViewBottom.delegate = self?.imapAuthDataDelegate
         }
-        imapServerController!.pageControlDelegate = self
-        imapServerController!.textInputDelegate = self
-        array.append(imapServerController!)
+        imapConnectionController!.pageControlDelegate = self
+        array.append(imapConnectionController!)
         
         //TODO: add more views here
         
