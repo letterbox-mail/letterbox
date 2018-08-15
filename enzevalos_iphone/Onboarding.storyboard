@@ -473,7 +473,7 @@
         <!--Onboarding Setup Page View Controller-->
         <scene sceneID="vxq-b1-GXO">
             <objects>
-                <pageViewController storyboardIdentifier="setup" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="kYe-hM-2mF" customClass="OnboardingSetupPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="setup" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="kYe-hM-2mF" customClass="OnboardingSetupPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ImB-O4-sPe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="518" y="100"/>
@@ -481,7 +481,7 @@
         <!--Onboarding Validate Setup Page View Controller-->
         <scene sceneID="nQF-3a-3Ic">
             <objects>
-                <pageViewController storyboardIdentifier="validateSetup" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="7uf-HL-Bnq" customClass="OnboardingValidateSetupPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="validateSetup" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="7uf-HL-Bnq" customClass="OnboardingValidateSetupPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0GK-h0-WgR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1265" y="99"/>
@@ -489,7 +489,7 @@
         <!--Onboarding Setup Long Page View Controller-->
         <scene sceneID="31v-Lv-Z0X">
             <objects>
-                <pageViewController storyboardIdentifier="setupLong" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="0io-wU-acH" customClass="OnboardingSetupLongPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="setupLong" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="0io-wU-acH" customClass="OnboardingSetupLongPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BF7-Pw-GbZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2097" y="-620"/>
@@ -497,7 +497,7 @@
         <!--Onboarding Validate Setup Long Page View Controller-->
         <scene sceneID="Bmj-jz-rib">
             <objects>
-                <pageViewController storyboardIdentifier="validateSetupLong" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="j9T-3b-F7Z" customClass="OnboardingValidateSetupLongPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="validateSetupLong" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="j9T-3b-F7Z" customClass="OnboardingValidateSetupLongPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gIo-8e-PzX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2097" y="100"/>
@@ -505,7 +505,7 @@
         <!--Onboarding Access Contacts Page View Controller-->
         <scene sceneID="tQK-jK-Ac6">
             <objects>
-                <pageViewController storyboardIdentifier="accessContacts" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="Ke1-gK-rYL" customClass="OnboardingAccessContactsPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="accessContacts" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="Ke1-gK-rYL" customClass="OnboardingAccessContactsPageViewController" customModule="enzevalos_iphone" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Okc-4w-anP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2902" y="100"/>
