@@ -50,7 +50,7 @@
 "IMAP-Authentification" = "IMAP-Authentifizierung";
 "IMAP-Port" = "IMAP-Port";
 "IMAP-Server" = "IMAP-Server";
-"IMAP-Transportencryption" = "IMAP-Transferverschlüsselung";
+"IMAP-Transportencryption" = "IMAP-Transportverschlüsselung";
 "ImportSettings" = "Nutzt du deinen E-Mailaccount bereits auf einem Desktop-Rechner und willst die Konfigurationen von dort importieren?";
 "INBOX" = "INBOX";
 "Inbox" = "Postfach";//Briefkasten?
@@ -120,7 +120,7 @@
 "Sender" = "Absender";
 "To" = "An";
 "to" = "an";
-"Transportencryption" = "Transferverschlüsselung";
+"Transportencryption" = "Transportverschlüsselung";
 "Trash" = "Papierkorb";
 "TwoDaysAgo" = "Vorgestern";
 "Username" = "Nutzername";
