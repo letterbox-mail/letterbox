@@ -240,7 +240,7 @@ class QRDiashowScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjec
         var password: String?
         var imapServer: String?
         var imapPort: Int?
-        var imapAuth: Int?
+        var imapAuth: Int? //TODO: combine auth- and transportType in one int, since there are only few values each and the qr-code size is limited.
         var imapTransportType: Int?
         var smtpServer: String?
         var smtpPort: Int?
@@ -318,43 +318,11 @@ class QRDiashowScannerView: ViewControllerPannable, AVCaptureMetadataOutputObjec
     }
     
     private func handleData (user: String?, name: String?, mailaddr: String?, pw: String?, imapServer: String?, imapPort: Int?, imapAuth: Int?, imapTransport: Int?, smtpServer: String?, smtpPort: Int?, smtpAuth: Int?, smtpTransport: Int?, keys: [String]){
-        if let server = imapServer {
-           // UserManager.storeServerConfig(type: .IMAP, server: server, port: UInt32(imapPort), authType: imapAuth, connectionType: imapTransport)
-        }
         
-        if let server = smtpServer {
-           // UserManager.storeServerConfig(type: .SMTP, server: server, port: UInt32(smtpPort), authType: smtpAuth, connectionType: smtpTransport)
-        }
+        let handler = OnboardingDataHandler.handler
         
-        if let adr = mailaddr {
-            UserManager.storeUserValue(adr as AnyObject, attribute: .userAddr)
-        }
-        if let pw = pw {
-            UserManager.storeUserValue(pw as AnyObject, attribute: .userPW)
-        }
+        handler.setSettings(with: mailaddr ?? "", password: pw ?? "", username: name ?? mailaddr ?? user ?? "", imapServer: imapServer ?? "", imapPort: imapPort ?? 0, imapConnectionType: imapTransport ?? 0, imapAuthenticationType: imapAuth ?? 0, smtpServer: smtpServer ?? "", smtpPort: smtpPort ?? 0, smtpConnectionType: smtpTransport ?? 0, smtpAuthenticationType: smtpAuth ?? 0)
         
-        if let name = name {
-            UserManager.storeUserValue(name as AnyObject, attribute: Attribute.userName)
-        }
-        else if let adr = mailaddr {
-            UserManager.storeUserValue(adr as AnyObject as AnyObject, attribute: Attribute.userName)
-        }
-        else if let user = user {
-            UserManager.storeUserValue(user as AnyObject, attribute: Attribute.userName)
-        }
-        
-        
-        if let user = user {
-            UserManager.storeUserValue(user as AnyObject, attribute: Attribute.accountname)
-        }
-        else if let adr = mailaddr {
-            UserManager.storeUserValue(adr as AnyObject, attribute: Attribute.accountname)
-            
-        }
-        else if let name = name {
-            UserManager.storeUserValue(name as AnyObject, attribute: Attribute.accountname)
-            
-        }
         let pgp = SwiftPGP()
         var keyIds = [String] ()
         for key in keys {
