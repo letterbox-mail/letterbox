@@ -259,15 +259,42 @@ extension OnboardingSetupLongPageViewController: OnboardingConfirmationDelegate 
         let onboardingDataHandler = OnboardingDataHandler.handler
         var mailaddress = ""
         var password = ""
+        var username = ""
+        var imapServer = ""
+        var imapPort = 0
+        var imapEncryption = MCOConnectionType.clear.rawValue
+        var imapAuthentification = MCOAuthType.saslPlain.rawValue
+        var smtpServer = ""
+        var smtpPort = 0
+        var smtpEncryption = MCOConnectionType.clear.rawValue
+        var smtpAuthentification = MCOAuthType.saslPlain.rawValue
         //TODO add more
         
         if let controller = credentialsController {
             mailaddress = controller.textFieldTop.text ?? ""
+            password = controller.textFieldBottom.text ?? ""
         }
-        //TODO add more
+        if let controller = usernameController {
+            username = controller.textFieldTop.text ?? ""
+        }
+        if let controller = imapServerController {
+            imapServer = controller.textFieldTop.text ?? ""
+            imapPort = Int(controller.textFieldBottom.text ?? "0") ?? 0
+        }
+        if let controller = imapConnectionController {
+            imapEncryption = controller.pickerViewTop.selectedRow(inComponent: 0)
+            imapAuthentification = controller.pickerViewBottom.selectedRow(inComponent: 0)
+        }
+        if let controller = smtpServerController {
+            smtpServer = controller.textFieldTop.text ?? ""
+            smtpPort = Int(controller.textFieldBottom.text ?? "0") ?? 0
+        }
+        if let controller = smtpConnectionController {
+            smtpEncryption = controller.pickerViewTop.selectedRow(inComponent: 0)
+            smtpAuthentification = controller.pickerViewBottom.selectedRow(inComponent: 0)
+        }
         
-        //TODO
-        //onboardingDataHandler.setSettings(with: mailaddress, password: password, username: <#T##String#>, imapServer: <#T##String#>, imapPort: <#T##Int#>, imapConnectionType: <#T##String#>, imapAuthenticationType: <#T##String#>, smtpServer: <#T##String#>, smtpPort: <#T##Int#>, smtpConnectionType: <#T##String#>, smtpAuthenticationType: <#T##String#>)
+        onboardingDataHandler.setSettings(with: mailaddress, password: password, username: username, imapServer: imapServer, imapPort: imapPort, imapConnectionType: imapEncryption, imapAuthenticationType: imapAuthentification, smtpServer: smtpServer, smtpPort: smtpPort, smtpConnectionType: smtpEncryption, smtpAuthenticationType: smtpAuthentification)
         let setupController = self.storyboard?.instantiateViewController(withIdentifier: "validateSetupLong") as! OnboardingValidateSetupLongPageViewController
         self.present(setupController, animated: true, completion: nil)
     }
