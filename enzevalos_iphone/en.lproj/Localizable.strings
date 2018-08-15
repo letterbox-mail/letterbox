@@ -86,7 +86,7 @@
 "Password" = "Password";
 "Plaintext" = "Plaintext";
 "Postcard" = "Postcard";
-"PostcardDescription" = "• The kind of mail you know\n• Neihter confidential, nor you know if it's a forgery\n• Everybody can read and manipulate it";
+"PostcardDescription" = "• The kind of mail you know\n• Neither confidential, nor you know if it's a forgery\n• Everybody can read and manipulate it";
 "Re" = "Re";
 "ReadFollowingPages" = "We want to make secure mail easy to use.\nTherefore please read the next three pages.";
 "ReadMailOnOtherDevice" = "Read this email on another device";
