@@ -41,16 +41,18 @@ class OnboardingDataHandler {
     
     
     
-    func setSettings(with mailaddress: String, password: String, username: String, imapServer: String, imapPort: Int, imapConnectionType: String, imapAuthenticationType: String, smtpServer: String, smtpPort: Int, smtpConnectionType: String, smtpAuthenticationType: String) {
+    func setSettings(with mailaddress: String, password: String, username: String, imapServer: String, imapPort: Int, imapConnectionType: Int, imapAuthenticationType: Int, smtpServer: String, smtpPort: Int, smtpConnectionType: Int, smtpAuthenticationType: Int) {
         if let mailconfig = mailconfig {
             //TODO: Update mailconfig
             print("update Mail cpnfig!")
         }
         else {
-            let imapAuth = MCOAuthType.init(rawValue: keyForValue(authenticationOptions, value: imapAuthenticationType)[0])
-            let imapCon = MCOConnectionType.init(rawValue: keyForValue(transportOptions, value: imapConnectionType)[0])
-            let smtpAuth = MCOAuthType.init(rawValue: keyForValue(authenticationOptions, value: smtpAuthenticationType)[0])
-            let smtpCon = MCOConnectionType.init(rawValue: keyForValue(transportOptions, value: smtpConnectionType)[0])
+            
+            
+            let imapAuth = MCOAuthType.init(rawValue: imapAuthenticationType % authenticationOptions.count)
+            let imapCon = MCOConnectionType.init(rawValue: imapConnectionType % transportOptions.count)
+            let smtpAuth = MCOAuthType.init(rawValue: smtpAuthenticationType % authenticationOptions.count)
+            let smtpCon = MCOConnectionType.init(rawValue: smtpConnectionType % transportOptions.count)
 
             mailconfig = MailConfigurator(userAddr: mailaddress, password: password, accountName: nil, displayName: nil, imapHostname: imapServer, imapPort: UInt32(imapPort), imapAuthType: imapAuth  , imapConType: imapCon, smtpHostname: smtpServer, smtpPort: UInt32(smtpPort), smtpAuthType: smtpAuth, smtpConType: smtpCon)
         }
