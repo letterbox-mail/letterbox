@@ -23,12 +23,16 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
     var imapAuthDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.authenticationOptions.values))
     var smtpServerController: OnboardingTextInputViewController?
     var smtpConnectionController: OnboardingPickerInputViewController?
+    var smtpTransportDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.transportOptions.values))
+    var smtpAuthDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.authenticationOptions.values))
     
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
         imapTransportDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.transportOptions.values))
         imapAuthDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.authenticationOptions.values))
+        smtpTransportDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.transportOptions.values))
+        smtpAuthDataDelegate = PickerDataDelegate.init(rows: Array(OnboardingDataHandler.handler.authenticationOptions.values))
         orderedViewControllers = createViewControllers()
         
         if let firstViewController = orderedViewControllers.first {
@@ -126,9 +130,35 @@ class OnboardingSetupLongPageViewController: UIPageViewController {
         imapConnectionController!.pageControlDelegate = self
         array.append(imapConnectionController!)
         
-        //TODO: add more views here
+        smtpServerController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "textInputView") as! OnboardingTextInputViewController
+        smtpServerController!.viewModification = { [weak smtpServerController] in
+            smtpServerController?.labelTop.text = NSLocalizedString("SMTP-Server", comment: "")
+            smtpServerController?.textFieldTop.keyboardType = UIKeyboardType.URL
+            smtpServerController?.textFieldTop.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("SMTP-Server", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            smtpServerController?.textFieldTop.autocorrectionType = UITextAutocorrectionType.no
+            smtpServerController?.textFieldTop.returnKeyType = UIReturnKeyType.continue
+            smtpServerController?.labelBottom.text = NSLocalizedString("SMTP-Port", comment: "")
+            smtpServerController?.textFieldBottom.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("SMTP-Port", comment: ""), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+            smtpServerController?.textFieldBottom.keyboardType = UIKeyboardType.numberPad
+            smtpServerController?.textFieldBottom.autocorrectionType = UITextAutocorrectionType.no
+            smtpServerController?.textFieldBottom.returnKeyType = UIReturnKeyType.next
+        }
+        smtpServerController!.pageControlDelegate = self
+        smtpServerController!.textInputDelegate = self
+        array.append(smtpServerController!)
         
-        //...
+        smtpConnectionController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "pickerInputView") as! OnboardingPickerInputViewController
+        smtpConnectionController!.viewModification = { [weak smtpConnectionController, weak self] in
+            smtpConnectionController?.labelTop.text = NSLocalizedString("SMTP-Transportencryption", comment: "")
+            smtpConnectionController?.pickerViewTop.dataSource = self?.smtpTransportDataDelegate
+            smtpConnectionController?.pickerViewTop.delegate = self?.smtpTransportDataDelegate
+            
+            smtpConnectionController?.labelBottom.text = NSLocalizedString("SMTP-Authentification", comment: "")
+            smtpConnectionController?.pickerViewBottom.dataSource = self?.smtpAuthDataDelegate
+            smtpConnectionController?.pickerViewBottom.delegate = self?.smtpAuthDataDelegate
+        }
+        smtpConnectionController!.pageControlDelegate = self
+        array.append(smtpConnectionController!)
         
         let confirmationController = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "confirmationView") as! OnboardingConfirmationViewController
         confirmationController.viewModification = {
@@ -213,6 +243,12 @@ extension OnboardingSetupLongPageViewController: OnboardingTextInputDelegate {
         }
         else if textField == imapServerController?.textFieldBottom {
             presentController(behind: imapServerController)
+        }
+        else if textField == smtpServerController?.textFieldTop {
+            smtpServerController?.textFieldBottom.becomeFirstResponder()
+        }
+        else if textField == smtpServerController?.textFieldBottom {
+            presentController(behind: smtpServerController)
         }
         return true
     }

@@ -118,6 +118,10 @@
 "subject" = "subject";
 "SubjectNo" = "No subject";
 "Sender" = "Sender";
+"SMTP-Authentification" = "SMTP-Authentification";
+"SMTP-Port" = "SMTP-Port";
+"SMTP-Server" = "SMTP-Server";
+"SMTP-Transportencryption" = "SMTP-Transportencryption";
 "To" = "To";
 "to" = "to";
 "Transportencryption" = "Transportencryption";
