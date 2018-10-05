@@ -810,9 +810,3 @@ extension VENTokenFieldDataSource {
         return true
     }
 }
-
-extension String {
-    func trimmed() -> String {
-        return self.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-}
