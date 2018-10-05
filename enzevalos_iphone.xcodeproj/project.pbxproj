@@ -75,7 +75,6 @@
 		3E97091C1FAC95F5005825C9 /* AddressHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05871D956879008659C1 /* AddressHandler.swift */; };
 		3E97091D1FAC95F5005825C9 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F396F1E14F75C009260FB /* DataHandler.swift */; };
 		3E9709201FAC95F5005825C9 /* ReadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB058F1D956923008659C1 /* ReadViewController.swift */; };
-		3E9709221FAC95F5005825C9 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		3E9709231FAC95F5005825C9 /* MailAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F398D1E251B8D009260FB /* MailAddress.swift */; };
 		3E9709241FAC95F5005825C9 /* MailHandlerDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12060811DA552FC00F6EF37 /* MailHandlerDelegator.swift */; };
 		3E97092A1FAC95F5005825C9 /* LabelStyleKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1984D731E1E92B300804E1E /* LabelStyleKit.swift */; };
@@ -225,7 +224,6 @@
 		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
-		A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11E733B1E019AE3006574DD /* InitViewController.swift */; };
 		A1C62E9A2018F716000E5273 /* OnboardingValueState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C62E992018F716000E5273 /* OnboardingValueState.swift */; };
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
 		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
@@ -406,7 +404,6 @@
 		A1123E6B1DA682850069551C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A1123E6D1DA682870069551C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A114E4311FACB23000E40243 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
-		A11E733B1E019AE3006574DD /* InitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitViewController.swift; sourceTree = "<group>"; };
 		A12FC23020221A1400196008 /* ExportInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportInfoViewController.swift; sourceTree = "<group>"; };
 		A13526751D955BDF00D3BFE1 /* enzevalos_iphone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = enzevalos_iphone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13526781D955BDF00D3BFE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -734,14 +731,6 @@
 			name = Logging;
 			sourceTree = "<group>";
 		};
-		A11E733A1E019AB5006574DD /* init */ = {
-			isa = PBXGroup;
-			children = (
-				A11E733B1E019AE3006574DD /* InitViewController.swift */,
-			);
-			name = init;
-			sourceTree = "<group>";
-		};
 		A1230BD81E2F881E006642C7 /* Encryption */ = {
 			isa = PBXGroup;
 			children = (
@@ -787,7 +776,6 @@
 				A17FDFF1202C680A00F7BA89 /* debug and study */,
 				47B91AC11EC0C1FB000AE3EE /* data */,
 				A1C7FF8B1E895316000D1E92 /* keys */,
-				A11E733A1E019AB5006574DD /* init */,
 				A10DE41E1EFAA140005E8189 /* folders */,
 				A18C76851E8185ED00B21414 /* onboarding */,
 				A1EB05761D9567F2008659C1 /* read */,
@@ -1482,7 +1470,6 @@
 				3E97091C1FAC95F5005825C9 /* AddressHandler.swift in Sources */,
 				3E97091D1FAC95F5005825C9 /* DataHandler.swift in Sources */,
 				3E9709201FAC95F5005825C9 /* ReadViewController.swift in Sources */,
-				3E9709221FAC95F5005825C9 /* InitViewController.swift in Sources */,
 				3E9709231FAC95F5005825C9 /* MailAddress.swift in Sources */,
 				3E9709241FAC95F5005825C9 /* MailHandlerDelegator.swift in Sources */,
 				3E97092A1FAC95F5005825C9 /* LabelStyleKit.swift in Sources */,
@@ -1581,7 +1568,6 @@
 				472F39701E14F75C009260FB /* DataHandler.swift in Sources */,
 				A1C62E9A2018F716000E5273 /* OnboardingValueState.swift in Sources */,
 				A1EB05901D956923008659C1 /* ReadViewController.swift in Sources */,
-				A1C3DEEC1E0AB15300EB7D02 /* InitViewController.swift in Sources */,
 				472F398E1E251B8D009260FB /* MailAddress.swift in Sources */,
 				A198D2292056B384004CC838 /* SendViewDelegate.swift in Sources */,
 				F12060821DA552FC00F6EF37 /* MailHandlerDelegator.swift in Sources */,
