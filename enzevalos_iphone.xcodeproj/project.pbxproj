@@ -35,7 +35,6 @@
 		3E9708DF1FAC95F5005825C9 /* CryptoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00321F7B9565006CDD41 /* CryptoObject.swift */; };
 		3E9708E01FAC95F5005825C9 /* VENDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057D1D956848008659C1 /* VENDataDelegate.swift */; };
 		3E9708E11FAC95F5005825C9 /* InviteFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A86B1F436A1E007649A5 /* InviteFriendViewController.swift */; };
-		3E9708E21FAC95F5005825C9 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		3E9708E41FAC95F5005825C9 /* SwiftPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475B00301F7B9565006CDD41 /* SwiftPGP.swift */; };
 		3E9708E61FAC95F5005825C9 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
 		3E9708E91FAC95F5005825C9 /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
@@ -228,7 +227,6 @@
 		A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D5076E1E80257A00B68B38 /* KeyViewController.swift */; };
 		A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
 		A1E5960E1FCC871F003791E9 /* researchteam.asc in Resources */ = {isa = PBXBuildFile; fileRef = A1E5960D1FCC871E003791E9 /* researchteam.asc */; };
-		A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E81B661DCA296200535F98 /* UIViewResolver.swift */; };
 		A1EB057A1D956829008659C1 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05791D956829008659C1 /* ContactCell.swift */; };
 		A1EB057C1D956838008659C1 /* MailHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057B1D956838008659C1 /* MailHandler.swift */; };
 		A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB057D1D956848008659C1 /* VENDataDelegate.swift */; };
@@ -431,7 +429,6 @@
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
 		A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderListCell.swift; sourceTree = "<group>"; };
 		A1E5960D1FCC871E003791E9 /* researchteam.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = researchteam.asc; path = keys/researchteam.asc; sourceTree = "<group>"; };
-		A1E81B661DCA296200535F98 /* UIViewResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewResolver.swift; sourceTree = "<group>"; };
 		A1EB05791D956829008659C1 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		A1EB057B1D956838008659C1 /* MailHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailHandler.swift; sourceTree = "<group>"; };
 		A1EB057D1D956848008659C1 /* VENDataDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VENDataDelegate.swift; sourceTree = "<group>"; };
@@ -902,7 +899,6 @@
 			children = (
 				A1EB057F1D956851008659C1 /* SendViewController.swift */,
 				F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */,
-				A1E81B661DCA296200535F98 /* UIViewResolver.swift */,
 				A1EB057D1D956848008659C1 /* VENDataDelegate.swift */,
 				A1EB05811D95685B008659C1 /* CollectionDataDelegate.swift */,
 				A1EB05831D956867008659C1 /* TableViewDataDelegate.swift */,
@@ -1423,7 +1419,6 @@
 				3E9708DF1FAC95F5005825C9 /* CryptoObject.swift in Sources */,
 				3E9708E01FAC95F5005825C9 /* VENDataDelegate.swift in Sources */,
 				3E9708E11FAC95F5005825C9 /* InviteFriendViewController.swift in Sources */,
-				3E9708E21FAC95F5005825C9 /* UIViewResolver.swift in Sources */,
 				3EC35F2E200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */,
 				3EB4FAA520120096001D0625 /* DialogOption.swift in Sources */,
 				3E9708E41FAC95F5005825C9 /* SwiftPGP.swift in Sources */,
@@ -1515,7 +1510,6 @@
 				475B00351F7B9565006CDD41 /* CryptoObject.swift in Sources */,
 				A1EB057E1D956848008659C1 /* VENDataDelegate.swift in Sources */,
 				8428A86F1F436A1E007649A5 /* InviteFriendViewController.swift in Sources */,
-				A1E81B671DCA296200535F98 /* UIViewResolver.swift in Sources */,
 				A1735DFA205AB88500B336DB /* SendViewState.swift in Sources */,
 				475B00331F7B9565006CDD41 /* SwiftPGP.swift in Sources */,
 				3EB4FAA420120096001D0625 /* DialogOption.swift in Sources */,
