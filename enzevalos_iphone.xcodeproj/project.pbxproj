@@ -86,38 +86,18 @@
 		3E9709371FAC95F5005825C9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472F396D1E14F384009260FB /* CoreData.framework */; };
 		3E97093A1FAC95F5005825C9 /* videoOnboarding2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A102AA891EDDB4E80024B457 /* videoOnboarding2.m4v */; };
 		3E97093B1FAC95F5005825C9 /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
-		3E97093C1FAC95F5005825C9 /* alice_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */; };
 		3E97093D1FAC95F5005825C9 /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05891D956890008659C1 /* ContactCell.xib */; };
 		3E97093E1FAC95F5005825C9 /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1F070261FA0DF3F004A860A /* Inbox.storyboard */; };
-		3E97093F1FAC95F5005825C9 /* dave_enezvalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */; };
 		3E9709401FAC95F5005825C9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 476142091E082F9C00FD5E4F /* Settings.bundle */; };
-		3E9709411FAC95F5005825C9 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
-		3E9709421FAC95F5005825C9 /* alice_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD91EFEA17900A2107C /* alice_enzevalos_public.asc */; };
 		3E9709431FAC95F5005825C9 /* providers.json in Resources */ = {isa = PBXBuildFile; fileRef = A16BA2111E0439B6005E29E3 /* providers.json */; };
-		3E9709441FAC95F5005825C9 /* idsolutions-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */; };
-		3E9709461FAC95F5005825C9 /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
-		3E9709471FAC95F5005825C9 /* nchr-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18981ED880680080515D /* nchr-private.gpg */; };
-		3E9709481FAC95F5005825C9 /* idsolutions-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */; };
-		3E9709491FAC95F5005825C9 /* ncpayroll-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189A1ED880680080515D /* ncpayroll-private.gpg */; };
-		3E97094A1FAC95F5005825C9 /* bob-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F51EDDADA10068235E /* bob-public.gpg */; };
-		3E97094B1FAC95F5005825C9 /* bob_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD81EFEA17900A2107C /* bob_enzevalos_public.asc */; };
 		3E97094C1FAC95F5005825C9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1123E6C1DA682850069551C /* Localizable.strings */; };
 		3E97094D1FAC95F5005825C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
-		3E97094E1FAC95F5005825C9 /* ullimuelle-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */; };
-		3E97094F1FAC95F5005825C9 /* ullimuelle-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */; };
 		3E9709501FAC95F5005825C9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
 		3E9709511FAC95F5005825C9 /* Gamification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8521F4369C0007649A5 /* Gamification.storyboard */; };
-		3E9709521FAC95F5005825C9 /* JakobBode.asc in Resources */ = {isa = PBXBuildFile; fileRef = A17A18F81DDCCF370058D934 /* JakobBode.asc */; };
 		3E9709531FAC95F5005825C9 /* GamificationElements.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8428A8541F4369CF007649A5 /* GamificationElements.xcassets */; };
-		3E9709541FAC95F5005825C9 /* ncpayroll-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189B1ED880680080515D /* ncpayroll-public.gpg */; };
-		3E9709551FAC95F5005825C9 /* alice2005-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1C09FC51DF04D650006B783 /* alice2005-private.gpg */; };
-		3E9709561FAC95F5005825C9 /* bob_enzvalos_private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */; };
 		3E9709571FAC95F5005825C9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A13526841D955BDF00D3BFE1 /* LaunchScreen.storyboard */; };
 		3E9709581FAC95F5005825C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
-		3E9709591FAC95F5005825C9 /* alice2005-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */; };
 		3E97095A1FAC95F5005825C9 /* FrequentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1EB058B1D9568AB008659C1 /* FrequentCell.xib */; };
-		3E97095B1FAC95F5005825C9 /* bob-private.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F41EDDADA10068235E /* bob-private.gpg */; };
-		3E97095C1FAC95F5005825C9 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		3EB4FA9F2012007C001D0625 /* DialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB4FA9D2012007C001D0625 /* DialogViewController.swift */; };
 		3EB4FAA02012007C001D0625 /* DialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EB4FA9D2012007C001D0625 /* DialogViewController.swift */; };
 		3EB4FAA12012007C001D0625 /* Dialog.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EB4FA9E2012007C001D0625 /* Dialog.storyboard */; };
@@ -134,7 +114,6 @@
 		4715F637202A0248001BFFD0 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4715F636202A0248001BFFD0 /* CoreDataTests.swift */; };
 		472276BC1FCD46B200ADA507 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		472276BE1FCD484C00ADA507 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E4311FACB23000E40243 /* StringExtension.swift */; };
-		4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = 4725C4F51EDDADA10068235E /* bob-public.gpg */; };
 		472F392A1E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */; };
 		472F392C1E1277D2009260FB /* PersistentMail +CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */; };
 		472F396E1E14F384009260FB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 472F396D1E14F384009260FB /* CoreData.framework */; };
@@ -168,9 +147,6 @@
 		479B597920691BFB00B3944D /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F867E32052B49800AA832F /* libbz2.tbd */; };
 		479B597A20691C0600B3944D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F867E12052B48E00AA832F /* libz.tbd */; };
 		479B597B20691C1A00B3944D /* ObjectivePGP.framework in Resources */ = {isa = PBXBuildFile; fileRef = 47CEF4EA2052C3C700887CDB /* ObjectivePGP.framework */; };
-		479BBDDA1EFEA17900A2107C /* bob_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD81EFEA17900A2107C /* bob_enzevalos_public.asc */; };
-		479BBDDB1EFEA17900A2107C /* alice_enzevalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDD91EFEA17900A2107C /* alice_enzevalos_public.asc */; };
-		479BBDDD1EFEA3CB00A2107C /* dave_enezvalos_public.asc in Resources */ = {isa = PBXBuildFile; fileRef = 479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */; };
 		47A7975B1FCD56B7006B3BC4 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
 		47CD5AAA2012368D00E771A1 /* logging_pk.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AA82012368D00E771A1 /* logging_pk.asc */; };
 		47CD5AAB2012368D00E771A1 /* bitcoinde.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AA92012368D00E771A1 /* bitcoinde.asc */; };
@@ -218,9 +194,7 @@
 		A1735DFA205AB88500B336DB /* SendViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1735DF9205AB88500B336DB /* SendViewState.swift */; };
 		A18E7D771FBDE5D9002F7CC9 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
 		A198D2292056B384004CC838 /* SendViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A198D2282056B384004CC838 /* SendViewDelegate.swift */; };
-		A19C12471DE602FF007F72E7 /* jabo.asc in Resources */ = {isa = PBXBuildFile; fileRef = A19C12461DE602FF007F72E7 /* jabo.asc */; };
 		A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1A9DE721F864B0500B808AA /* ExportCells.swift */; };
-		A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */; };
 		A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1BE3FF81E9664660040114B /* InfoPlist.strings */; };
 		A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		A1C62E9A2018F716000E5273 /* OnboardingValueState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C62E992018F716000E5273 /* OnboardingValueState.swift */; };
@@ -246,7 +220,6 @@
 		A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */; };
 		A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F9922B1DA7C9100073BF1B /* Main.storyboard */; };
 		A1F992391DA7DD2E0073BF1B /* InboxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1F9923B1DA7DD2E0073BF1B /* InboxTableViewCell.xib */; };
-		A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */; };
 		F113C3851F30D06800E7F1D6 /* QRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C3841F30D06800E7F1D6 /* QRScannerView.swift */; };
 		F113C38B1F3344C200E7F1D6 /* ViewControllerPannable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F113C38A1F3344C200E7F1D6 /* ViewControllerPannable.swift */; };
 		F119D2901E364B59001D732A /* AnimatedSendIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F119D28F1E364B59001D732A /* AnimatedSendIcon.swift */; };
@@ -257,12 +230,8 @@
 		F120A7D31F7937BB006D5BF1 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		F12D8DBB2069422A0068788E /* About.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F12D8DBD2069422A0068788E /* About.storyboard */; };
 		F14239C11F30A99C00998A83 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */; };
-		F14D189D1ED880680080515D /* nchr-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18991ED880680080515D /* nchr-public.gpg */; };
-		F14D189F1ED880680080515D /* ncpayroll-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D189B1ED880680080515D /* ncpayroll-public.gpg */; };
-		F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */; };
 		F1737ACB2031D7D70000312B /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17FDFF2202C685800F7BA89 /* StudySettings.swift */; };
 		F1866C86201F707200B72453 /* EmailHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F1866C85201F707200B72453 /* EmailHelper.m */; };
-		F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */ = {isa = PBXBuildFile; fileRef = F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */; };
 		F18B445E1E7044B70080C041 /* FlipTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445D1E7044B70080C041 /* FlipTransition.swift */; };
 		F18B44601E704C550080C041 /* ReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B445F1E704C550080C041 /* ReplaceSegue.swift */; };
 		F18B44621E73286C0080C041 /* ReadVENDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B44611E73286C0080C041 /* ReadVENDelegate.swift */; };
@@ -323,8 +292,6 @@
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		4715F636202A0248001BFFD0 /* CoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
-		4725C4F41EDDADA10068235E /* bob-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-private.gpg"; path = "keys/bob-private.gpg"; sourceTree = "<group>"; };
-		4725C4F51EDDADA10068235E /* bob-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "bob-public.gpg"; path = "keys/bob-public.gpg"; sourceTree = "<group>"; };
 		472F39261E1277D2009260FB /* EnzevalosContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "EnzevalosContact+CoreDataClass.swift"; path = "../EnzevalosContact+CoreDataClass.swift"; sourceTree = "<group>"; };
 		472F39281E1277D2009260FB /* PersistentMail +CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "PersistentMail +CoreDataClass.swift"; path = "../PersistentMail +CoreDataClass.swift"; sourceTree = "<group>"; };
 		472F396D1E14F384009260FB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -353,11 +320,6 @@
 		47691A8B1ECC3EC7004BCFC5 /* EphemeralMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralMail.swift; sourceTree = "<group>"; };
 		47953AA81FD7000200D4631A /* bitcoinde.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bitcoinde.asc; sourceTree = "<group>"; };
 		479B5976206914BE00B3944D /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
-		479BBDD81EFEA17900A2107C /* bob_enzevalos_public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bob_enzevalos_public.asc; path = keys/bob_enzevalos_public.asc; sourceTree = "<group>"; };
-		479BBDD91EFEA17900A2107C /* alice_enzevalos_public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = alice_enzevalos_public.asc; path = keys/alice_enzevalos_public.asc; sourceTree = "<group>"; };
-		479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dave_enezvalos_public.asc; path = keys/dave_enezvalos_public.asc; sourceTree = "<group>"; };
-		479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bob_enzvalos_private.asc; path = keys/bob_enzvalos_private.asc; sourceTree = "<group>"; };
-		479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = alice_enzvalos_private.asc; path = keys/alice_enzvalos_private.asc; sourceTree = "<group>"; };
 		47B2318A1F0D458100961B28 /* enzevalos_iphone 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "enzevalos_iphone 2.xcdatamodel"; sourceTree = "<group>"; };
 		47CD5AA82012368D00E771A1 /* logging_pk.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = logging_pk.asc; path = keys/logging_pk.asc; sourceTree = "<group>"; };
 		47CD5AA92012368D00E771A1 /* bitcoinde.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bitcoinde.asc; path = keys/bitcoinde.asc; sourceTree = "<group>"; };
@@ -413,17 +375,13 @@
 		A135269D1D955BE000D3BFE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A16BA2111E0439B6005E29E3 /* providers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; lineEnding = 0; path = providers.json; sourceTree = "<group>"; };
 		A1735DF9205AB88500B336DB /* SendViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewState.swift; sourceTree = "<group>"; };
-		A17A18F81DDCCF370058D934 /* JakobBode.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = JakobBode.asc; path = keys/JakobBode.asc; sourceTree = "<group>"; };
 		A17FDFF2202C685800F7BA89 /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingEventType.swift; sourceTree = "<group>"; };
 		A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "enzevalos_iphone-Bridging-Header.h"; sourceTree = "<group>"; };
 		A198D2282056B384004CC838 /* SendViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendViewDelegate.swift; sourceTree = "<group>"; };
-		A19C12461DE602FF007F72E7 /* jabo.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jabo.asc; path = keys/jabo.asc; sourceTree = "<group>"; };
 		A1A9DE721F864B0500B808AA /* ExportCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportCells.swift; sourceTree = "<group>"; };
-		A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-2.gpg"; path = "keys/alice2005-2.gpg"; sourceTree = "<group>"; };
 		A1BE3FF71E9664660040114B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A1BE3FF91E96646A0040114B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A1C09FC51DF04D650006B783 /* alice2005-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-private.gpg"; path = "keys/alice2005-private.gpg"; sourceTree = "<group>"; };
 		A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFormatter.swift; sourceTree = "<group>"; };
 		A1C62E992018F716000E5273 /* OnboardingValueState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingValueState.swift; sourceTree = "<group>"; };
 		A1D5076E1E80257A00B68B38 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
@@ -454,7 +412,6 @@
 		A1F9923A1DA7DD2E0073BF1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/InboxTableViewCell.xib; sourceTree = "<group>"; };
 		A1F9923D1DA7DD350073BF1B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
 		A1F9923F1DA7DD370073BF1B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InboxTableViewCell.strings; sourceTree = "<group>"; };
-		A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "alice2005-public.gpg"; path = "keys/alice2005-public.gpg"; sourceTree = "<group>"; };
 		AA686D4FC9B86445A0C87F0F /* Pods-enzevalos_iphone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphone.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphone/Pods-enzevalos_iphone.release.xcconfig"; sourceTree = "<group>"; };
 		BC7D006B3B40A23E53B4F317 /* Pods-enzevalos_iphoneTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.release.xcconfig"; path = "../enzevalos_iphone_workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.release.xcconfig"; sourceTree = "<group>"; };
 		C1F4458FC892EBE555836F55 /* Pods_enzevalos_iphone_AdHoc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_enzevalos_iphone_AdHoc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -471,17 +428,9 @@
 		F12D8DB520692E2D0068788E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Inbox.strings; sourceTree = "<group>"; };
 		F12D8DBC2069422A0068788E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/About.storyboard; sourceTree = "<group>"; };
 		F14239C01F30A99C00998A83 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
-		F14D18981ED880680080515D /* nchr-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "nchr-private.gpg"; path = "keys/nchr-private.gpg"; sourceTree = "<group>"; };
-		F14D18991ED880680080515D /* nchr-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "nchr-public.gpg"; path = "keys/nchr-public.gpg"; sourceTree = "<group>"; };
-		F14D189A1ED880680080515D /* ncpayroll-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ncpayroll-private.gpg"; path = "keys/ncpayroll-private.gpg"; sourceTree = "<group>"; };
-		F14D189B1ED880680080515D /* ncpayroll-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ncpayroll-public.gpg"; path = "keys/ncpayroll-public.gpg"; sourceTree = "<group>"; };
-		F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-private.gpg"; path = "keys/ullimuelle-private.gpg"; sourceTree = "<group>"; };
-		F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "ullimuelle-public.gpg"; path = "keys/ullimuelle-public.gpg"; sourceTree = "<group>"; };
 		F176A216206943080068788E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/About.storyboard; sourceTree = "<group>"; };
 		F1866C85201F707200B72453 /* EmailHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmailHelper.m; sourceTree = "<group>"; };
 		F1866C87201F70B700B72453 /* EmailHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmailHelper.h; sourceTree = "<group>"; };
-		F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-private.gpg"; path = "keys/idsolutions-private.gpg"; sourceTree = "<group>"; };
-		F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "idsolutions-public.gpg"; path = "keys/idsolutions-public.gpg"; sourceTree = "<group>"; };
 		F18B445D1E7044B70080C041 /* FlipTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipTransition.swift; sourceTree = "<group>"; };
 		F18B445F1E704C550080C041 /* ReplaceSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaceSegue.swift; sourceTree = "<group>"; };
 		F18B44611E73286C0080C041 /* ReadVENDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadVENDelegate.swift; sourceTree = "<group>"; };
@@ -859,29 +808,9 @@
 			children = (
 				A1E5960D1FCC871E003791E9 /* researchteam.asc */,
 				47953AA81FD7000200D4631A /* bitcoinde.asc */,
-				4725C4F41EDDADA10068235E /* bob-private.gpg */,
-				4725C4F51EDDADA10068235E /* bob-public.gpg */,
-				F14D18981ED880680080515D /* nchr-private.gpg */,
-				479BBDD81EFEA17900A2107C /* bob_enzevalos_public.asc */,
-				479BBDDE1EFEA4D800A2107C /* bob_enzvalos_private.asc */,
-				479BBDDF1EFEA4D800A2107C /* alice_enzvalos_private.asc */,
-				479BBDD91EFEA17900A2107C /* alice_enzevalos_public.asc */,
-				F14D18991ED880680080515D /* nchr-public.gpg */,
-				479BBDDC1EFEA3CB00A2107C /* dave_enezvalos_public.asc */,
-				F14D189A1ED880680080515D /* ncpayroll-private.gpg */,
-				F14D189B1ED880680080515D /* ncpayroll-public.gpg */,
 				47CD5AA92012368D00E771A1 /* bitcoinde.asc */,
 				47CD5AAC2012369300E771A1 /* support_pk.asc */,
 				47CD5AA82012368D00E771A1 /* logging_pk.asc */,
-				F189C17D1ED59FEF00BAE9B3 /* idsolutions-private.gpg */,
-				F189C17E1ED59FEF00BAE9B3 /* idsolutions-public.gpg */,
-				F14D18A01ED8811F0080515D /* ullimuelle-private.gpg */,
-				F14D18A11ED8811F0080515D /* ullimuelle-public.gpg */,
-				A1FA3F6B1E78565B0093C0B6 /* alice2005-public.gpg */,
-				A1C09FC51DF04D650006B783 /* alice2005-private.gpg */,
-				A1B8C0191DD5D9B10044A358 /* alice2005-2.gpg */,
-				A17A18F81DDCCF370058D934 /* JakobBode.asc */,
-				A19C12461DE602FF007F72E7 /* jabo.asc */,
 			);
 			name = keys;
 			sourceTree = "<group>";
@@ -1133,41 +1062,21 @@
 			files = (
 				3E97093A1FAC95F5005825C9 /* videoOnboarding2.m4v in Resources */,
 				3E97093B1FAC95F5005825C9 /* InboxTableViewCell.xib in Resources */,
-				3E97093C1FAC95F5005825C9 /* alice_enzvalos_private.asc in Resources */,
 				3E97093D1FAC95F5005825C9 /* ContactCell.xib in Resources */,
 				3E97093E1FAC95F5005825C9 /* Inbox.storyboard in Resources */,
-				3E97093F1FAC95F5005825C9 /* dave_enezvalos_public.asc in Resources */,
 				3E9709401FAC95F5005825C9 /* Settings.bundle in Resources */,
-				3E9709411FAC95F5005825C9 /* jabo.asc in Resources */,
-				3E9709421FAC95F5005825C9 /* alice_enzevalos_public.asc in Resources */,
 				3E9709431FAC95F5005825C9 /* providers.json in Resources */,
-				3E9709441FAC95F5005825C9 /* idsolutions-private.gpg in Resources */,
 				3EB4FAA22012007C001D0625 /* Dialog.storyboard in Resources */,
-				3E9709461FAC95F5005825C9 /* nchr-public.gpg in Resources */,
-				3E9709471FAC95F5005825C9 /* nchr-private.gpg in Resources */,
-				3E9709481FAC95F5005825C9 /* idsolutions-public.gpg in Resources */,
-				3E9709491FAC95F5005825C9 /* ncpayroll-private.gpg in Resources */,
-				3E97094A1FAC95F5005825C9 /* bob-public.gpg in Resources */,
-				3E97094B1FAC95F5005825C9 /* bob_enzevalos_public.asc in Resources */,
 				3E97094C1FAC95F5005825C9 /* Localizable.strings in Resources */,
 				47953AAA1FD7000200D4631A /* bitcoinde.asc in Resources */,
 				3E97094D1FAC95F5005825C9 /* Main.storyboard in Resources */,
-				3E97094E1FAC95F5005825C9 /* ullimuelle-private.gpg in Resources */,
-				3E97094F1FAC95F5005825C9 /* ullimuelle-public.gpg in Resources */,
 				3E9709501FAC95F5005825C9 /* InfoPlist.strings in Resources */,
 				3E9709511FAC95F5005825C9 /* Gamification.storyboard in Resources */,
 				3E6B07DF2011246500E49609 /* invitationText.html in Resources */,
-				3E9709521FAC95F5005825C9 /* JakobBode.asc in Resources */,
 				3E9709531FAC95F5005825C9 /* GamificationElements.xcassets in Resources */,
-				3E9709541FAC95F5005825C9 /* ncpayroll-public.gpg in Resources */,
-				3E9709551FAC95F5005825C9 /* alice2005-private.gpg in Resources */,
-				3E9709561FAC95F5005825C9 /* bob_enzvalos_private.asc in Resources */,
 				3E9709571FAC95F5005825C9 /* LaunchScreen.storyboard in Resources */,
 				3E9709581FAC95F5005825C9 /* Assets.xcassets in Resources */,
-				3E9709591FAC95F5005825C9 /* alice2005-public.gpg in Resources */,
 				3E97095A1FAC95F5005825C9 /* FrequentCell.xib in Resources */,
-				3E97095B1FAC95F5005825C9 /* bob-private.gpg in Resources */,
-				3E97095C1FAC95F5005825C9 /* alice2005-2.gpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1180,36 +1089,25 @@
 				47CD5AAD2012369400E771A1 /* support_pk.asc in Resources */,
 				A1EB058A1D956890008659C1 /* ContactCell.xib in Resources */,
 				F1F070281FA0DF3F004A860A /* Inbox.storyboard in Resources */,
-				479BBDDD1EFEA3CB00A2107C /* dave_enezvalos_public.asc in Resources */,
 				4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */,
-				A19C12471DE602FF007F72E7 /* jabo.asc in Resources */,
-				479BBDDB1EFEA17900A2107C /* alice_enzevalos_public.asc in Resources */,
 				A16BA2121E0439B6005E29E3 /* providers.json in Resources */,
 				47953AA91FD7000200D4631A /* bitcoinde.asc in Resources */,
 				47CD5AAB2012368D00E771A1 /* bitcoinde.asc in Resources */,
-				F14D189D1ED880680080515D /* nchr-public.gpg in Resources */,
 				F12D8DBB2069422A0068788E /* About.storyboard in Resources */,
-				F189C1801ED59FEF00BAE9B3 /* idsolutions-public.gpg in Resources */,
-				4725C4F71EDDADA10068235E /* bob-public.gpg in Resources */,
 				A1E5960E1FCC871F003791E9 /* researchteam.asc in Resources */,
-				479BBDDA1EFEA17900A2107C /* bob_enzevalos_public.asc in Resources */,
 				A1123E6A1DA682850069551C /* Localizable.strings in Resources */,
 				A1F992291DA7C9100073BF1B /* Main.storyboard in Resources */,
 				F18C5E561FE025D300C3B86D /* BadgeCase.storyboard in Resources */,
 				3EB4FAA12012007C001D0625 /* Dialog.storyboard in Resources */,
-				F14D18A31ED8811F0080515D /* ullimuelle-public.gpg in Resources */,
 				A1BE3FF61E9664660040114B /* InfoPlist.strings in Resources */,
 				3E6B07DE2011246500E49609 /* invitationText.html in Resources */,
 				8428A8531F4369C0007649A5 /* Gamification.storyboard in Resources */,
 				8428A8551F4369CF007649A5 /* GamificationElements.xcassets in Resources */,
-				F14D189F1ED880680080515D /* ncpayroll-public.gpg in Resources */,
 				A13526861D955BDF00D3BFE1 /* LaunchScreen.storyboard in Resources */,
 				47CD5AAA2012368D00E771A1 /* logging_pk.asc in Resources */,
 				A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */,
 				4756DE0E20402F8E00452288 /* invitationTextCensor.html in Resources */,
-				A1FA3F6C1E78565B0093C0B6 /* alice2005-public.gpg in Resources */,
 				A1EB058C1D9568AB008659C1 /* FrequentCell.xib in Resources */,
-				A1B8C01A1DD5D9B10044A358 /* alice2005-2.gpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
