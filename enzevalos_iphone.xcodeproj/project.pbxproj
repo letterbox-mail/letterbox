@@ -15,7 +15,6 @@
 		3E9708BA1FAC95F5005825C9 /* TextFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3270D1DB907D900CE2ED5 /* TextFormatter.swift */; };
 		3E9708BD1FAC95F5005825C9 /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12041FC1DA409A5002E4940 /* ListViewCell.swift */; };
 		3E9708C01FAC95F5005825C9 /* FolderListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2324D1F0FA41A00DC9D40 /* FolderListCell.swift */; };
-		3E9708C11FAC95F5005825C9 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
 		3E9708C41FAC95F5005825C9 /* InboxCellDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05931D956931008659C1 /* InboxCellDelegator.swift */; };
 		3E9708C51FAC95F5005825C9 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8591F436A05007649A5 /* Badges.swift */; };
 		3E9708C61FAC95F5005825C9 /* BadgeCaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8428A8601F436A11007649A5 /* BadgeCaseCollectionViewCell.swift */; };
@@ -246,7 +245,6 @@
 		A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05931D956931008659C1 /* InboxCellDelegator.swift */; };
 		A1EB05961D956939008659C1 /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05951D956939008659C1 /* InboxTableViewCell.swift */; };
 		A1EB05981D956947008659C1 /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB05971D956947008659C1 /* InboxViewController.swift */; };
-		A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059B1D956957008659C1 /* NSDateCompare.swift */; };
 		A1EB05A01D95696C008659C1 /* MessageBodyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */; };
 		A1EB05A41D956E32008659C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1EB05A31D956E32008659C1 /* Assets.xcassets */; };
 		A1ECE54B1EFBE7ED0009349F /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */; };
@@ -451,7 +449,6 @@
 		A1EB05931D956931008659C1 /* InboxCellDelegator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxCellDelegator.swift; sourceTree = "<group>"; };
 		A1EB05951D956939008659C1 /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05971D956947008659C1 /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
-		A1EB059B1D956957008659C1 /* NSDateCompare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateCompare.swift; sourceTree = "<group>"; };
 		A1EB059F1D95696C008659C1 /* MessageBodyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyTableViewCell.swift; sourceTree = "<group>"; };
 		A1EB05A31D956E32008659C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1ECE54A1EFBE7ED0009349F /* FolderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
@@ -803,7 +800,6 @@
 				F113C3831F30D01A00E7F1D6 /* QRCode */,
 				476142071E07E52B00FD5E4F /* Theme.swift */,
 				A1230BD81E2F881E006642C7 /* Encryption */,
-				A1EB059B1D956957008659C1 /* NSDateCompare.swift */,
 				476373C11E09BA88004D5EFE /* UserData.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
@@ -1419,7 +1415,6 @@
 				3E9708BA1FAC95F5005825C9 /* TextFormatter.swift in Sources */,
 				3E9708BD1FAC95F5005825C9 /* ListViewCell.swift in Sources */,
 				3E9708C01FAC95F5005825C9 /* FolderListCell.swift in Sources */,
-				3E9708C11FAC95F5005825C9 /* NSDateCompare.swift in Sources */,
 				3E9708C41FAC95F5005825C9 /* InboxCellDelegator.swift in Sources */,
 				3E9708C51FAC95F5005825C9 /* Badges.swift in Sources */,
 				3E9708C61FAC95F5005825C9 /* BadgeCaseCollectionViewCell.swift in Sources */,
@@ -1511,7 +1506,6 @@
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,
 				F12041FD1DA409A5002E4940 /* ListViewCell.swift in Sources */,
 				A1E2324E1F0FA41A00DC9D40 /* FolderListCell.swift in Sources */,
-				A1EB059C1D956957008659C1 /* NSDateCompare.swift in Sources */,
 				A1EB05941D956931008659C1 /* InboxCellDelegator.swift in Sources */,
 				8428A85D1F436A05007649A5 /* Badges.swift in Sources */,
 				8428A8651F436A11007649A5 /* BadgeCaseCollectionViewCell.swift in Sources */,
