@@ -193,15 +193,6 @@ class SendViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardOpen(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardClose(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil);
 
-        toText.tag = UIViewResolver.toText.rawValue
-        ccText.tag = UIViewResolver.ccText.rawValue
-        textView.tag = UIViewResolver.textView.rawValue
-        tableview.tag = UIViewResolver.tableview.rawValue
-        toCollectionview.tag = UIViewResolver.toCollectionview.rawValue
-        ccCollectionview.tag = UIViewResolver.ccCollectionview.rawValue
-        subjectText.tag = UIViewResolver.subjectText.rawValue
-        scrollview.tag = UIViewResolver.scrollview.rawValue
-
         updateNavigationBar()
 
 //        Logger.queue.async(flags: .barrier) {
@@ -817,11 +808,5 @@ extension VENTokenFieldDataSource {
         }
         
         return true
-    }
-}
-
-extension String {
-    func trimmed() -> String {
-        return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

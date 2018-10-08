@@ -538,7 +538,6 @@ class Onboarding: NSObject {
             UserManager.storeUserValue(guessedUserName as AnyObject?, attribute: Attribute.userName)
             UserManager.storeUserValue(mailAddress as AnyObject?, attribute: Attribute.userAddr)
             UserManager.storeUserValue((password.text ?? "") as AnyObject?, attribute: Attribute.userPW)
-            loadTestAcc()
             return setServerValues(mailaddress: mailAddress)
         } else {
             UserManager.storeUserValue(imapServer.text as AnyObject?, attribute: Attribute.imapHostname)
