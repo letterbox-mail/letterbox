@@ -236,26 +236,52 @@ class MailHandler {
         return ids
     }
 
-    func sendSecretKey(key: String, passcode: String, callback: @escaping (Error?) -> Void) {
+    func sendSecretKey(keyID: String, key: String, passcode: String, callback: @escaping (Error?) -> Void) {
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let session = createSMTPSession()
         let builder = MCOMessageBuilder()
         let userID: MCOAddress = MCOAddress(displayName: useraddr, mailbox: useraddr)
 
         createHeader(builder, toEntrys: [useraddr], ccEntrys: [], bccEntrys: [], subject: "Autocrypt Setup Message")
-        builder.header.setExtraHeaderValue("v0", forName: SETUPMESSAGE)
+        builder.header.setExtraHeaderValue("v1", forName: SETUPMESSAGE)
 
 
         builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/letterbox/faq.html#otherDevices \n\n"))
 
         // See: https://autocrypt.org/level1.html#autocrypt-setup-message
-        let keyAttachment = MCOAttachment.init(text: key)
-        builder.addAttachment(keyAttachment)
+        let filename = keyID+".asc.asc"
+        if let keyAttachment = MCOAttachment.init(contentsOfFile: filename){
+            keyAttachment.mimeType = "application/autocrypt-setup"
+            keyAttachment.setContentTypeParameterValue("UTF-8", forName: "charset")
+            keyAttachment.setContentTypeParameterValue(filename, forName: "name")
+            keyAttachment.filename = filename
+            keyAttachment.data = key.data(using: .utf8)
+
+            builder.addAttachment(keyAttachment)
+
+        }
+        /*
+        if let keyAttachment = MCOAttachment.init(contentsOfFile: filename){
+            keyAttachment.mimeType = "text/plain"
+            keyAttachment.setContentTypeParameterValue("UTF-8", forName: "charset")
+            keyAttachment.setContentTypeParameterValue(filename, forName: "name")
+            keyAttachment.data = key.data(using: .utf8)
+            keyAttachment.filename = filename
+
+            builder.addAttachment(keyAttachment)
+
+        }
+  */
+         if let keyAttachment = MCOAttachment.init(text: key){
+            builder.addAttachment(keyAttachment)
+        }
+        
+        
 
         let sendOperation = session.sendOperation(with: builder.data(), from: userID, recipients: [userID])
         sendOperation?.start({ error in
             guard error == nil else {
-                self.errorhandling(error: error, originalCall: {self.sendSecretKey(key: key, passcode: passcode, callback: callback)}, completionCallback: nil)
+                self.errorhandling(error: error, originalCall: {self.sendSecretKey(keyID: keyID, key: key, passcode: passcode, callback: callback)}, completionCallback: nil)
                 return
             }
             callback(nil)

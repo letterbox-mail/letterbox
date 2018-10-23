@@ -48,13 +48,13 @@ class ExportViewController: UITableViewController {
                     if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: true) {
                         passcode = pgp.loadExportPasscode(id: keyId)!
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
-                        mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
+                        mailHandler.sendSecretKey(keyID: keyId, key: message, passcode: passcode, callback: mailSend)
                     }
                 } else {
                     if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: false) {
                         passcode = pgp.loadExportPasscode(id: keyId)!
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
-                        mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
+                        mailHandler.sendSecretKey(keyID: keyId, key: message, passcode: passcode, callback: mailSend)
                     }
                     alreadySent = true
                 }
@@ -105,8 +105,9 @@ class ExportViewController: UITableViewController {
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ExportSendButtonCell") as! ExportSendButtonCell
                 if alreadySent {
-                    cell.sendButton.setTitle(NSLocalizedString("DeleteCode", comment: "delete (pass-)code, which was used to symmetrically encrypt the secret key"), for: UIControlState.normal) //geht besser...
+                    cell.sendButton.setTitle(NSLocalizedString("DeleteCode", comment: "delete (pass-)code, which was used to symmetrically encrypt the secret key"), for: UIControlState.normal)
                     cell.sendButton.setTitleColor(UIColor.red, for: .normal)
+                    
                     //TODO: delete code from keychain
                 } else {
                     cell.sendButton.setTitle(NSLocalizedString("Send", comment: "send mail with secret key attached"), for: .normal)

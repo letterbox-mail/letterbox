@@ -34,7 +34,8 @@ public protocol Mail: Comparable {
 }
 
 public func == <T: Mail> (lhs: T, rhs: T) -> Bool {
-    return lhs.date == rhs.date && lhs.uid == rhs.uid //TODO: update see: https://www.limilabs.com/blog/unique-id-in-imap-protocol
+    return lhs.date == rhs.date && lhs.uid == rhs.uid
+    //TODO: update see: https://www.limilabs.com/blog/unique-id-in-imap-protocol
 }
 
 public func << T: Mail > (lhs: T, rhs: T) -> Bool {

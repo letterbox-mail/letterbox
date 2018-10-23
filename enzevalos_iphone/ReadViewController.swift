@@ -566,7 +566,7 @@ class ReadViewController: UITableViewController {
 
                 let answerTo = sender as? String ?? "" // TODO: Convert String into MailAddress(?)
 
-                let answerMail = EphemeralMail(to: NSSet.init(array: [answerTo]), cc: NSSet.init(array: []), bcc: [], date: Date(), subject: "", body: "", uid: 0, predecessor: nil) // TODO: are these the best values?
+                let answerMail = EphemeralMail(to: NSSet.init(array: [answerTo]), cc: NSSet.init(array: []), bcc: [], date: Date(), subject: "", body: "", uid: 0, predecessor: nil) 
 
                 controller.sendViewDelegate = self
                 controller.prefilledMail = answerMail
