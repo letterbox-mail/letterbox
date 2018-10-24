@@ -3,7 +3,19 @@
 //  enzevalos_iphone
 //
 //  Created by jakobsbode on 04.10.17.
-//  Copyright © 2017 fu-berlin. All rights reserved.
+//  Copyright © 2018 fu-berlin.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
 import UIKit
@@ -36,13 +48,13 @@ class ExportViewController: UITableViewController {
                     if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: true) {
                         passcode = pgp.loadExportPasscode(id: keyId)!
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
-                        mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
+                        mailHandler.sendSecretKey(keyID: keyId, key: message, passcode: passcode, callback: mailSend)
                     }
                 } else {
                     if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: false) {
                         passcode = pgp.loadExportPasscode(id: keyId)!
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
-                        mailHandler.sendSecretKey(key: message, passcode: passcode, callback: mailSend)
+                        mailHandler.sendSecretKey(keyID: keyId, key: message, passcode: passcode, callback: mailSend)
                     }
                     alreadySent = true
                 }
@@ -93,8 +105,9 @@ class ExportViewController: UITableViewController {
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ExportSendButtonCell") as! ExportSendButtonCell
                 if alreadySent {
-                    cell.sendButton.setTitle(NSLocalizedString("DeleteCode", comment: "delete (pass-)code, which was used to symmetrically encrypt the secret key"), for: UIControlState.normal) //geht besser...
+                    cell.sendButton.setTitle(NSLocalizedString("DeleteCode", comment: "delete (pass-)code, which was used to symmetrically encrypt the secret key"), for: UIControlState.normal)
                     cell.sendButton.setTitleColor(UIColor.red, for: .normal)
+                    
                     //TODO: delete code from keychain
                 } else {
                     cell.sendButton.setTitle(NSLocalizedString("Send", comment: "send mail with secret key attached"), for: .normal)

@@ -3,7 +3,19 @@
 //  enzevalos_iphone
 //
 //  Created by Oliver Wiese on 28.09.17.
-//  Copyright © 2017 fu-berlin. All rights reserved.
+//  Copyright © 2018 fu-berlin.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
 import Foundation
@@ -23,61 +35,11 @@ func setupStudyPublicKeys() {
     datahandler.save(during: "init study keys")
 }
 
-func loadTestAcc() {
-    //loadAliceEnzevalos()
-    //loadBobEnzevalos()
-    //loadAlice2005()
-    //loadCharlieEnzevalos()
-    //importPublicKeys()
-    //loadBob2005()
 
-
-}
-
-func loadUlli() {
-    let user = web(name: "ullimuelle", pw: "")
-    userdefaults(defaults: user)
-    importSecretKey(file: "ullimuelle-private", type: "gpg")
-
-}
-
-func loadBob2005() {
-    let user = web(name: "bob2005", pw: "")
-    userdefaults(defaults: user)
-    importSecretKey(file: "bob2005-private", type: "gpg")
-}
-
-func loadAlice2005() {
-    let user = web(name: "alice2005", pw: "")
-    userdefaults(defaults: user)
-    importSecretKey(file: "alice2005-private", type: "gpg")
-
-}
-
-func loadBobEnzevalos() {
-    let user = enzevalos(name: "bob", pw: "")
-    userdefaults(defaults: user)
-    importSecretKey(file: "bob_enzvalos_private", type: "asc")
-}
-
-
-func loadCharlieEnzevalos() {
-    let user = enzevalos(name: "charlie", pw: "")
-    userdefaults(defaults: user)
-}
-
-func loadAliceEnzevalos() {
-    let user = enzevalos(name: "alice", pw: "")
-    userdefaults(defaults: user)
-}
-
-
-
-private func userdefaults(defaults: [Attribute: AnyObject?]) {
-    for (att, value) in defaults {
+private func userdefaults(defaults: [Attribute: AnyObject?]){
+    for (att, value) in defaults{
         UserManager.storeUserValue(value, attribute: att)
     }
-
 }
 
 private func web(name: String, pw: String) -> [Attribute: AnyObject?] {
@@ -89,16 +51,8 @@ private func enzevalos(name: String, pw: String) -> [Attribute: AnyObject?] {
 }
 
 
-func importPublicKeys() {
-    let asc = ["jakob.bode@fu-berlin.de": "JakobBode", "alice@enzevalos.de": "alice_enzevalos_public", "bob@enzevalos.de": "bob_enzevalos_public", "dave@enzevalos.de": "dave_enzevalos_public"]
-    let gpg = ["bob2005@web.de": "bob-public", "ullimuelle@web.de": "ullimuelle-public", "alice2005@web.de": "alice2005-public"]
-    importPublicKeyDic(keys: asc, type: "asc")
-    importPublicKeyDic(keys: gpg, type: "gpg")
-
-}
-
-func importSecretKey(file: String, type: String) {
-    if let path = Bundle.main.path(forResource: file, ofType: type) {
+func importSecretKey(file: String, type: String){
+    if let path = Bundle.main.path(forResource: file, ofType: type){
         let ids = try! pgp.importKeysFromFile(file: path, pw: nil)
         for id in ids {
             _ = datahandler.newSecretKey(keyID: id, addPk: true)

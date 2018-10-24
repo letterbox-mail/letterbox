@@ -3,7 +3,18 @@
 //  mail_dynamic_icon_001
 //
 //  Created by jakobsbode on 01.07.16.
-//  Copyright © 2016 jakobsbode. All rights reserved.
+//  //  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
 import UIKit
@@ -192,15 +203,6 @@ class SendViewController: UIViewController {
         //register KeyBoardevents
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardOpen(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil);
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardClose(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil);
-
-        toText.tag = UIViewResolver.toText.rawValue
-        ccText.tag = UIViewResolver.ccText.rawValue
-        textView.tag = UIViewResolver.textView.rawValue
-        tableview.tag = UIViewResolver.tableview.rawValue
-        toCollectionview.tag = UIViewResolver.toCollectionview.rawValue
-        ccCollectionview.tag = UIViewResolver.ccCollectionview.rawValue
-        subjectText.tag = UIViewResolver.subjectText.rawValue
-        scrollview.tag = UIViewResolver.scrollview.rawValue
 
         updateNavigationBar()
 
@@ -817,11 +819,5 @@ extension VENTokenFieldDataSource {
         }
         
         return true
-    }
-}
-
-extension String {
-    func trimmed() -> String {
-        return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
