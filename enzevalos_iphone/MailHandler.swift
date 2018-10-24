@@ -260,18 +260,6 @@ class MailHandler {
             builder.addAttachment(keyAttachment)
 
         }
-        /*
-        if let keyAttachment = MCOAttachment.init(contentsOfFile: filename){
-            keyAttachment.mimeType = "text/plain"
-            keyAttachment.setContentTypeParameterValue("UTF-8", forName: "charset")
-            keyAttachment.setContentTypeParameterValue(filename, forName: "name")
-            keyAttachment.data = key.data(using: .utf8)
-            keyAttachment.filename = filename
-
-            builder.addAttachment(keyAttachment)
-
-        }
-  */
          if let keyAttachment = MCOAttachment.init(text: key){
             builder.addAttachment(keyAttachment)
         }
