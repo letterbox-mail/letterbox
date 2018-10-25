@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var contactStore = CNContactStore()
     var mailHandler = MailHandler()
     var orientationLock = UIInterfaceOrientationMask.allButUpsideDown
+    var counterBackgroundFetch = 0
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -79,7 +80,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			QAKit.Fingertips.start()
 		}
         // Set background fetching time intervl.
-        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+        let backgroundFetchInterval : Double = 60*5  // seconds * minutes or UIApplicationBackgroundFetchIntervalMinimum
+        UIApplication.shared.setMinimumBackgroundFetchInterval(backgroundFetchInterval)
+        print("Min time: ", backgroundFetchInterval)
         print("First fetch of  mails!")
         mailHandler.newMails(completionCallback: hasNewMails(_:))
         return true
@@ -340,12 +343,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    
+    
+    
     // Support for background fetch
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-            print("Fetch mails!")
+        counterBackgroundFetch = counterBackgroundFetch + 1
+        print("Fetch mails! #Fetches", counterBackgroundFetch )
         mailHandler.newMails(completionCallback: hasNewMails(_:))
+        completionHandler(.newData)
+        
         
     }
+    
+    
     
     func hasNewMails(_ newMails: Bool){
         print("Have we new Mails?: %s", newMails)

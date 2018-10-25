@@ -793,29 +793,51 @@ class MailHandler {
         }
     }
     
-    func newMails(completionCallback: @escaping ((_ newMails: Bool) -> ()) ){
+    func newMails(completionCallback: @escaping ((_ newMails: Bool) -> ())){
         let folder = DataHandler.handler.findFolder(with: INBOX)
         let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         print("Ask folder")
-        folderstatus?.start { (error, status) -> Void in
-            print("Result!")
-            guard error == nil else {
-                return
+        var backgroundTaskID: Int?
+        DispatchQueue.global(qos: .background).async {
+            print("This is run on the background queue")
+            backgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "Finish Network Tasks"){
+                UIApplication.shared.endBackgroundTask(backgroundTaskID!)
+                backgroundTaskID = UIBackgroundTaskInvalid
             }
-            if let status = status {
-                print("Status: %s | Folder max ID: %s", status, folder.maxID)
-                let uidValidity = status.uidValidity
-                let uid = status.uidNext
-                let unseen = status.unseenCount > 0
-                if (unseen || uidValidity != folder.uidvalidity || folder.maxID < uid - 1) {
-                    completionCallback(true)
+            
+            folderstatus?.start { (error, status) -> Void in
+                print("Result!")
+                guard error == nil else {
+                    UIApplication.shared.endBackgroundTask(backgroundTaskID!)
+                    backgroundTaskID = UIBackgroundTaskInvalid
+                    return
                 }
-                else {
-                    completionCallback(false)
+                if let status = status {
+                    
+                    let uidValidity = status.uidValidity
+                    let uid = status.uidNext
+                    let unseen = status.unseenCount > 0
+                    print("Status: ", status)
+                    let currentDateTime = Date()
+                    print(currentDateTime, " Folder maxID: ", folder.maxID)
+
+                    if (unseen || uidValidity != folder.uidvalidity || folder.maxID < uid - 1) {
+                        UIApplication.shared.endBackgroundTask(backgroundTaskID!)
+                        backgroundTaskID = UIBackgroundTaskInvalid
+                        completionCallback(true)
+                    }
+                    else {
+                        UIApplication.shared.endBackgroundTask(backgroundTaskID!)
+                        backgroundTaskID = UIBackgroundTaskInvalid
+                        completionCallback(false)
+                    }
                 }
                 
             }
+            
         }
+        
+       
     }
 
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS, record: KeyRecord?, completionCallback: @escaping ((_ error: Error?) -> ())) {
