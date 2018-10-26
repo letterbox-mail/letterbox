@@ -32,7 +32,7 @@ open class CNMailAddressExtension: MailAddress {
             return label.value as String
         }
     }
-    open var label: CNLabeledValue<NSString> //FIXME: NSString hier richtig?
+    open var label: CNLabeledValue<NSString> 
 
     open var prefEnc: EncState {
         get {
@@ -60,12 +60,12 @@ open class CNMailAddressExtension: MailAddress {
         }
     }
 
-    init(addr: CNLabeledValue<NSString>) { //FIXME: NSString hier richtig?
+    init(addr: CNLabeledValue<NSString>) {
         self.label = addr
         self.publicKeys = Set<PersistentKey>()
     }
 
-    convenience init(addr: NSString) { //FIXME: manuell: String -> NSString
+    convenience init(addr: NSString) {
         self.init(addr: CNLabeledValue(label: CNLabelOther, value: addr))
     }
 }

@@ -280,11 +280,40 @@ class AddressHandler {
         let enzContacts = DataHandler.handler.getContacts()
 
         for contact in enzContacts {
+            let contacts = findContact(contact)
             if contact.cnContact == nil {
-                let contacts = findContact(contact)
                 if contacts.count > 0 {
                     contact.cnidentifier = contacts.first?.identifier
                 }
+            }
+            else if contacts.count > 0 && contact.cnContact != nil {
+                contact.cnidentifier = nil
+            }
+            else if contacts.count > 0 {
+                let cnContact = contacts.first
+                if let addresses = cnContact?.getMailAddresses() {
+                    var hasSame = false
+                    for adr1 in contact.getMailAddresses() {
+                        var found = false
+                        for adr2 in addresses {
+                            if adr1.mailAddress == adr2.mailAddress {
+                                found = true
+                                break
+                            }
+                        }
+                        if found {
+                            hasSame = true
+                        }
+                    }
+                    if !hasSame {
+                        contact.cnidentifier = nil
+                    }
+                }
+                else {
+                    contact.cnidentifier = nil
+                }
+                
+                
             }
         }
         DataHandler.handler.save(during: "updateCNContacts")
