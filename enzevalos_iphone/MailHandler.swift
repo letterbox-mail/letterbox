@@ -793,7 +793,7 @@ class MailHandler {
         }
     }
     
-    func newMails(completionCallback: @escaping ((_ newMails: Bool) -> ())){
+    func newMails(completionCallback: @escaping (_ newMails: UInt32, _ completionHandler: @escaping (UIBackgroundFetchResult) -> Void)  -> (), performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
         let folder = DataHandler.handler.findFolder(with: INBOX)
         let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         print("Ask folder")
@@ -816,20 +816,20 @@ class MailHandler {
                     
                     let uidValidity = status.uidValidity
                     let uid = status.uidNext
-                    let unseen = status.unseenCount > 0
+                    let newMails = status.recentCount
                     print("Status: ", status)
+                    print("newMails: ", newMails)
                     let currentDateTime = Date()
                     print(currentDateTime, " Folder maxID: ", folder.maxID)
-
-                    if (unseen || uidValidity != folder.uidvalidity || folder.maxID < uid - 1) {
+                    if (uidValidity != folder.uidvalidity || folder.maxID < uid - 1) {
                         UIApplication.shared.endBackgroundTask(backgroundTaskID!)
                         backgroundTaskID = UIBackgroundTaskInvalid
-                        completionCallback(true)
+                        completionCallback(newMails, completionHandler)
                     }
                     else {
                         UIApplication.shared.endBackgroundTask(backgroundTaskID!)
                         backgroundTaskID = UIBackgroundTaskInvalid
-                        completionCallback(false)
+                        completionCallback(0, completionHandler)
                     }
                 }
                 

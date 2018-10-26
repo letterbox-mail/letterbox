@@ -24,6 +24,7 @@ import Onboard
 import SystemConfiguration
 import QAKit
 import GTMAppAuth
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -79,12 +80,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		if #available(iOS 11.0, *) {
 			QAKit.Fingertips.start()
 		}
-        // Set background fetching time intervl.
-        let backgroundFetchInterval : Double = 60*5  // seconds * minutes or UIApplicationBackgroundFetchIntervalMinimum
+        // Set background fetching time interval.
+        let backgroundFetchInterval : Double = 10 //60*5  // seconds * minutes or UIApplicationBackgroundFetchIntervalMinimum
         UIApplication.shared.setMinimumBackgroundFetchInterval(backgroundFetchInterval)
-        print("Min time: ", backgroundFetchInterval)
-        print("First fetch of  mails!")
-        mailHandler.newMails(completionCallback: hasNewMails(_:))
+        print("Time interval: ", backgroundFetchInterval)
+        
         return true
     }
     
@@ -176,10 +176,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func contactCheck(_ accessGranted: Bool) {
         if accessGranted {
-            setupKeys()
+            requestForNotifications()
         } else {
             DispatchQueue.main.async(execute: {
-                self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.setupKeys)
+                self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.requestForNotifications)
             });
         }
     }
@@ -298,8 +298,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         presentedViewController.present(alertController, animated: true, completion: nil)
     }
 
+    
+    func requestForNotifications(){
+        if #available(iOS 10.0, *) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [ .badge], completionHandler: {didAllow, error in
+                self.setupKeys()
+            })
+        } else {
+            // TODO: Fallback on earlier versions
+            self.setupKeys()
+        }
+    }
 
     func requestForAccess(_ completionHandler: @escaping (_ accessGranted: Bool) -> Void) {
+        //requesting for authorization
         let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
 
         switch authorizationStatus {
@@ -312,10 +324,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     completionHandler(access)
                 } else {
                     if authorizationStatus == CNAuthorizationStatus.denied {
-                        /*dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts through the Settings."
-                            self.showMessage(message, completion: nil)
-                        })*/
                     }
                     completionHandler(false)
                 }
@@ -345,26 +353,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
-    
     // Support for background fetch
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         counterBackgroundFetch = counterBackgroundFetch + 1
         print("Fetch mails! #Fetches", counterBackgroundFetch )
-        mailHandler.newMails(completionCallback: hasNewMails(_:))
-        completionHandler(.newData)
-        
-        
+        mailHandler.newMails(completionCallback: hasNewMails(_:performFetchWithCompletionHandler: ), performFetchWithCompletionHandler: completionHandler)
     }
     
+    var c = 1
     
-    
-    func hasNewMails(_ newMails: Bool){
-        print("Have we new Mails?: %s", newMails)
-        if newMails {
-            // TODO: Push notifcation or icon change
-            UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalNever)
+    func hasNewMails(_ newMails: UInt32, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
+        print("Have we new Mails?: ", newMails)
+        c = c + 1
+        UIApplication.shared.applicationIconBadgeNumber = Int(c)
+        if newMails > 0 {
+            // UIApplication.shared.applicationIconBadgeNumber = Int(newMails)
         }
-        
+        completionHandler(.newData)
     }
 }
 
