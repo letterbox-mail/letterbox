@@ -56,9 +56,8 @@ class ReadViewController: UITableViewController {
     var isInSentFolder = false
     var isInArchiveFolder = false
     var isTrash = false
-
     var keyDiscoveryDate: Date? = nil
-
+    
     var secretKeyPasswordField: UITextField? = nil
 
     var isNewPubKey: Bool? {
@@ -148,8 +147,8 @@ class ReadViewController: UITableViewController {
 
         _ = mail?.from.contact?.records.flatMap { x in
             if x.hasKey && x.keyID != nil {
-                let keyWrapper = DataHandler.handler.findKey(keyID: x.keyID!)
-                self.keyDiscoveryDate = keyWrapper?.discoveryDate as Date?
+                // We consider the enzvalos contact key disccovery date
+                self.keyDiscoveryDate = x.contact.firstSecureMailReceived
             }
             return nil
         }

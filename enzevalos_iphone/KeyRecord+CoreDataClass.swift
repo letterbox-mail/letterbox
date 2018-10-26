@@ -198,6 +198,13 @@ public class KeyRecord: NSManagedObject, Record {
             return mailsInFolder(folder: inbox)
         }
     }
+    
+    public var firstSecureMailReceived: Date? {
+        if let key = key {
+            return key.firstMail?.date
+        }
+        return nil
+    }
 
 
 }
