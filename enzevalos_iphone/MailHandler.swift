@@ -810,10 +810,10 @@ class MailHandler {
                 guard error == nil else {
                     UIApplication.shared.endBackgroundTask(backgroundTaskID!)
                     backgroundTaskID = UIBackgroundTaskInvalid
+                    completionCallback(0, completionHandler)
                     return
                 }
                 if let status = status {
-                    
                     let uidValidity = status.uidValidity
                     let uid = status.uidNext
                     let newMails = status.recentCount
@@ -832,12 +832,8 @@ class MailHandler {
                         completionCallback(0, completionHandler)
                     }
                 }
-                
             }
-            
         }
-        
-       
     }
 
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS, record: KeyRecord?, completionCallback: @escaping ((_ error: Error?) -> ())) {

@@ -66,9 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         } else {
             AddressHandler.updateCNContacts()
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(startApp: false)
-//            }
+            Logger.log(startApp: false)
             presentInboxViewController()
         }
         NotificationCenter.default.addObserver(
