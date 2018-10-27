@@ -630,7 +630,7 @@ class DataHandler {
 
 
     // -------- Start handle to, cc, from addresses --------
-    private func handleFromAddress(_ sender: MCOAddress, fromMail: PersistentMail, autocrypt: AutocryptContact?) {
+    private func handleFromAddress(_ sender: MCOAddress, fromMail: PersistentMail, autocrypt: Autocrypt?) {
         let adr: Mail_Address
         adr = getMailAddressByMCOAddress(sender, temporary: false) as! Mail_Address
         if adr.contact == nil {
@@ -662,7 +662,7 @@ class DataHandler {
     }
     // -------- End handle to, cc, from addresses --------
 
-    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: AutocryptContact?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?, references: [String] = [], mailagent: String? = nil, messageID: String? = nil) -> PersistentMail? {
+    func createMail(_ uid: UInt64, sender: MCOAddress?, receivers: [MCOAddress], cc: [MCOAddress], time: Date, received: Bool, subject: String, body: String?, flags: MCOMessageFlag, record: KeyRecord?, autocrypt: Autocrypt?, decryptedData: CryptoObject?, folderPath: String, secretKey: String?, references: [String] = [], mailagent: String? = nil, messageID: String? = nil) -> PersistentMail? {
         let myfolder = findFolder(with: folderPath) as Folder
         let finding = findNum("PersistentMail", type: "uid", search: uid)
 

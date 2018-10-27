@@ -46,113 +46,21 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-
-
-let AUTOCRYPTHEADER = "Autocrypt"
-let SETUPMESSAGE = "Autocrypt-Setup-Message"
-let ADDR = "addr"
-let TYPE = "type"
-let ENCRYPTION = "prefer-encrypt"
-let KEY = "keydata"
-
-
-class AutocryptContact {
-    var addr: String = ""
-    var type: CryptoScheme = .PGP
-    var prefer_encryption: EncState = EncState.NOAUTOCRYPT
-    var key: String = ""
-
-    init(addr: String, type: String, prefer_encryption: String, key: String) {
-        self.addr = addr
-        self.key = key
-        setPrefer_encryption(prefer_encryption)
-    }
-
-
-    convenience init(header: MCOMessageHeader) {
-        var autocrypt = header.extraHeaderValue(forName: AUTOCRYPTHEADER)
-        var field: [String]
-        var addr = ""
-        var type = "1"
-        var pref = "mutal"
-        var key = ""
-
-        if autocrypt != nil {
-            autocrypt = autocrypt?.trimmingCharacters(in: .whitespacesAndNewlines)
-            let autocrypt_fields = autocrypt?.components(separatedBy: ";")
-            for f in autocrypt_fields! {
-                field = f.components(separatedBy: "=")
-                if field.count > 1 {
-                    let flag = field[0].trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                    var value = field[1]
-                    if field.count > 2 {
-                        for i in 2...(field.count - 1) {
-                            value = value + "="
-                            value = value + field[i]
-                        }
-                    }
-                    switch flag {
-                    case ADDR:
-                        addr = value.trimmingCharacters(in: .whitespacesAndNewlines)
-                        addr = addr.lowercased()
-                        break
-                    case TYPE:
-                        type = value.trimmingCharacters(in: .whitespacesAndNewlines)
-                        break
-                    case ENCRYPTION:
-                        pref = value.trimmingCharacters(in: .whitespacesAndNewlines)
-                        break
-                    case KEY:
-                        if value.count > 0 {
-                            key = value
-                        }
-                        break
-                    default:
-                        break
-                    }
-                }
-            }
-        }
-        self.init(addr: addr, type: type, prefer_encryption: pref, key: key)
-    }
-
-
-    func setPrefer_encryption(_ input: String){
-        let pref = input.lowercased()
-        if pref == "yes" || pref == "mutal" {
-            self.prefer_encryption = EncState.MUTAL
-        } else if pref == "no" {
-            self.prefer_encryption = EncState.NOPREFERENCE
-        }
-        prefer_encryption = EncState.NOPREFERENCE
-    }
-
-    func toString() -> String {
-        return "Addr: \(addr) | type: \(type) | encryption? \(prefer_encryption) key size: \(key.count)"
-    }
-}
-
 class MailHandler {
+    private static let MAXMAILS = 25
 
     var delegate: MailHandlerDelegator?
-
     var INBOX: String {
         return "INBOX"
     }
-
-    fileprivate static let MAXMAILS = 25
-
-    fileprivate let concurrentMailServer = DispatchQueue(label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent)
-
+    private let concurrentMailServer = DispatchQueue(label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent) //TODO: REMOVE?
     private var IMAPSes: MCOIMAPSession?
-
     var IMAPSession: MCOIMAPSession {
         if IMAPSes == nil {
             IMAPSes = setupIMAPSession()
         }
         return IMAPSes!
     }
-
     var IMAPIdleSession: MCOIMAPSession?
     var IMAPIdleSupported: Bool?
 
@@ -161,26 +69,8 @@ class MailHandler {
             !(EmailHelper.singleton().authorization?.authState.isTokenFresh() ?? false)
     }
 
-    private func addAutocryptHeader(_ builder: MCOMessageBuilder) {
-        let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
-        let skID = DataHandler.handler.prefSecretKey().keyID
 
-        let pgp = SwiftPGP()
-        if let id = skID {
-            let enc = "yes"
-            if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true) {
-                var string = "\(ADDR)=" + adr
-                if enc == "yes" {
-                    string = string + "; \(ENCRYPTION)=mutal"
-                }
-                string = string + "; \(KEY)= \n" + key
-                builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
-            }
-        }
-    }
-
-    fileprivate func createHeader(_ builder: MCOMessageBuilder, toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String) {
-
+    private func createHeader(_ builder: MCOMessageBuilder, toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String) {
         let username = UserManager.loadUserValue(Attribute.userName) as! String
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
 
@@ -205,20 +95,25 @@ class MailHandler {
         builder.header.from = MCOAddress(displayName: username, mailbox: useraddr)
         builder.header.subject = subject
         builder.header.setExtraHeaderValue("letterbox", forName: "X-Mailer")
-
-        addAutocryptHeader(builder)
+        Autocrypt.addAutocryptHeader(builder)
 
     }
 
-    private func orderReceiver(receiver: [String], sendEncryptedIfPossible: Bool) -> [CryptoScheme: [MCOAddress]] {
+    private func orderReceiver(receivers: [String], sendEncryptedIfPossible: Bool) -> [CryptoScheme: [MCOAddress]] {
         var orderedReceiver = [CryptoScheme: [MCOAddress]]()
         orderedReceiver[CryptoScheme.PGP] = [MCOAddress]()
         orderedReceiver[CryptoScheme.UNKNOWN] = [MCOAddress]()
 
-        for r in receiver {
+        for r in receivers {
             let mco = MCOAddress(displayName: r, mailbox: r)
-            if let adr = DataHandler.handler.findMailAddress(adr: r), adr.hasKey, sendEncryptedIfPossible { // TODO: include encryption preference of Autocrypt
-                orderedReceiver[CryptoScheme.PGP]?.append(mco!)
+            if let adr = DataHandler.handler.findMailAddress(adr: r) {
+                let recommandation = Autocrypt.recommandateEncryption(receiver: adr)
+                if recommandation.recommandEnc {
+                    orderedReceiver[CryptoScheme.PGP]?.append(mco!)
+                }
+                else {
+                    orderedReceiver[CryptoScheme.UNKNOWN]?.append(mco!)
+                }
             } else {
                 orderedReceiver[CryptoScheme.UNKNOWN]?.append(mco!)
             }
@@ -243,29 +138,8 @@ class MailHandler {
         let userID: MCOAddress = MCOAddress(displayName: useraddr, mailbox: useraddr)
 
         createHeader(builder, toEntrys: [useraddr], ccEntrys: [], bccEntrys: [], subject: "Autocrypt Setup Message")
-        builder.header.setExtraHeaderValue("v1", forName: SETUPMESSAGE)
-
-
-        builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit:https://userpage.fu-berlin.de/letterbox/faq.html#otherDevices \n\n"))
-
-        // See: https://autocrypt.org/level1.html#autocrypt-setup-message
-        let filename = keyID+".asc.asc"
-        if let keyAttachment = MCOAttachment.init(contentsOfFile: filename){
-            keyAttachment.mimeType = "application/autocrypt-setup"
-            keyAttachment.setContentTypeParameterValue("UTF-8", forName: "charset")
-            keyAttachment.setContentTypeParameterValue(filename, forName: "name")
-            keyAttachment.filename = filename
-            keyAttachment.data = key.data(using: .utf8)
-
-            builder.addAttachment(keyAttachment)
-
-        }
-         if let keyAttachment = MCOAttachment.init(text: key){
-            builder.addAttachment(keyAttachment)
-        }
+        Autocrypt.createAutocryptKeyExport(builder: builder, keyID: keyID, key: key, passcode: passcode)
         
-        
-
         let sendOperation = session.sendOperation(with: builder.data(), from: userID, recipients: [userID])
         sendOperation?.start({ error in
             guard error == nil else {
@@ -303,7 +177,7 @@ class MailHandler {
                 bccLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
             }
 
-            let ordered = orderReceiver(receiver: allRec, sendEncryptedIfPossible: sendEncryptedIfPossible)
+            let ordered = orderReceiver(receivers: allRec, sendEncryptedIfPossible: sendEncryptedIfPossible)
 
             let userID = MCOAddress(displayName: useraddr, mailbox: useraddr)
             let sk = DataHandler.handler.prefSecretKey()
@@ -839,7 +713,7 @@ class MailHandler {
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS, record: KeyRecord?, completionCallback: @escaping ((_ error: Error?) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
-        fetchOperation.extraHeaders = [AUTOCRYPTHEADER, SETUPMESSAGE]
+        fetchOperation.extraHeaders = Autocrypt.EXTRAHEADERS
         if uids.count() == 0 {
             completionCallback(nil)
             return
@@ -887,7 +761,7 @@ class MailHandler {
     private func parseMail(parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folderPath: String) {
         var rec: [MCOAddress] = []
         var cc: [MCOAddress] = []
-        var autocrypt: AutocryptContact? = nil
+        var autocrypt: Autocrypt? = nil
         var newKeyIds = [String]()
 
         var secretKey: String? = nil
@@ -910,11 +784,11 @@ class MailHandler {
         }
 
 
-        if let _ = header?.extraHeaderValue(forName: AUTOCRYPTHEADER) {
-            autocrypt = AutocryptContact(header: header!)
+        if let _ = header?.extraHeaderValue(forName: Autocrypt.AUTOCRYPTHEADER) {
+            autocrypt = Autocrypt(header: header!)
         }
 
-        if let _ = header?.extraHeaderValue(forName: SETUPMESSAGE) {
+        if let _ = header?.extraHeaderValue(forName: Autocrypt.SETUPMESSAGE) {
             // TODO: Distinguish between other keys (future work)
             return
         }
@@ -1080,7 +954,7 @@ class MailHandler {
         return nil
     }
 
-    private func decryptText(body: String, from: MCOAddress?, autocrypt: AutocryptContact?) -> CryptoObject? {
+    private func decryptText(body: String, from: MCOAddress?, autocrypt: Autocrypt?) -> CryptoObject? {
         var sender: String? = nil
         if let fromMCO = from {
             sender = fromMCO.mailbox
@@ -1311,6 +1185,7 @@ class MailHandler {
         let searchExp = MCOIMAPSearchExpression.search(since: since)
         let searchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExp)
 
+        
         searchOperation?.start { (err, uids) -> Void in
             guard err == nil else {
                 self.errorhandling(error: err, originalCall: {self.loadMailsSinceDate(folder: folder, since: since, completionCallback: completionCallback)}, completionCallback: completionCallback)

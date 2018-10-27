@@ -12,15 +12,6 @@ import CoreData
 @objc(PersistentKey)
 public class PersistentKey: NSManagedObject {
 
-    open var prefEnc: EncState {
-        get {
-            return prefer_encryption
-        }
-        set {
-            prefer_encryption = newValue
-        }
-    }
-
     var counterSignedMails: Int {
         if let signedMails = self.signedMails {
             return signedMails.count
