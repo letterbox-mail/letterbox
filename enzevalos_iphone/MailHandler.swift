@@ -190,9 +190,6 @@ class MailHandler {
                 var keyIDs = addKeys(adrs: encPGP)
                 // added own public key here, so we can decrypt our own message to read it in sent-folder
                 keyIDs.append(sk.keyID!)
-                /*
-                 Attach own public key
-                */
                 var missingOwnPublic = false
                 for id in keyIDs {
                     if let key = DataHandler.handler.findKey(keyID: id) {
@@ -884,7 +881,6 @@ class MailHandler {
                     for keyId in newKeyIds {
                         _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
                     }
-                    //                Logger.queue.async(flags: .barrier) {
                     Logger.log(received: m)
                 }
             }
