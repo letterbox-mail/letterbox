@@ -136,6 +136,8 @@
 		476373C21E09BA88004D5EFE /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
 		476801DB218436B600F7F259 /* Autocrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476801DA218436B600F7F259 /* Autocrypt.swift */; };
 		476801DC218436B600F7F259 /* Autocrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476801DA218436B600F7F259 /* Autocrypt.swift */; };
+		476801DE21846A5A00F7F259 /* OutgoingMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476801DD21846A5A00F7F259 /* OutgoingMail.swift */; };
+		476801DF21846A5A00F7F259 /* OutgoingMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476801DD21846A5A00F7F259 /* OutgoingMail.swift */; };
 		476916A0216B86A100491527 /* PersistentMail +CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4769169F216B86A100491527 /* PersistentMail +CoreDataClass.swift */; };
 		476916A2216B86CF00491527 /* EnzevalosContact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476916A1216B86CF00491527 /* EnzevalosContact+CoreDataClass.swift */; };
 		47691A8A1ECB56D1004BCFC5 /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47691A891ECB56D1004BCFC5 /* Mail.swift */; };
@@ -315,6 +317,7 @@
 		476142091E082F9C00FD5E4F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		476373C11E09BA88004D5EFE /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		476801DA218436B600F7F259 /* Autocrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Autocrypt.swift; sourceTree = "<group>"; };
+		476801DD21846A5A00F7F259 /* OutgoingMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMail.swift; sourceTree = "<group>"; };
 		4769169F216B86A100491527 /* PersistentMail +CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersistentMail +CoreDataClass.swift"; sourceTree = "<group>"; };
 		476916A1216B86CF00491527 /* EnzevalosContact+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnzevalosContact+CoreDataClass.swift"; sourceTree = "<group>"; };
 		47691A891ECB56D1004BCFC5 /* Mail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
@@ -706,6 +709,7 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
+				476801DD21846A5A00F7F259 /* OutgoingMail.swift */,
 				F1866C84201F703200B72453 /* OAuth */,
 				3EB4FA9C2012007C001D0625 /* Dialog */,
 				3EC35F1F2003755F008BDF95 /* Invitation */,
@@ -1369,6 +1373,7 @@
 				3E97092D1FAC95F5005825C9 /* FrequentCell.swift in Sources */,
 				3E97092E1FAC95F5005825C9 /* ListViewController.swift in Sources */,
 				3E97092F1FAC95F5005825C9 /* FlipTransition.swift in Sources */,
+				476801DF21846A5A00F7F259 /* OutgoingMail.swift in Sources */,
 				3EB4FAA02012007C001D0625 /* DialogViewController.swift in Sources */,
 				3E9709331FAC95F5005825C9 /* EnzevalosContact+CoreDataProperties.swift in Sources */,
 				3E9709341FAC95F5005825C9 /* BadgeCase.swift in Sources */,
@@ -1380,6 +1385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47691A8A1ECB56D1004BCFC5 /* Mail.swift in Sources */,
+				476801DE21846A5A00F7F259 /* OutgoingMail.swift in Sources */,
 				472F398A1E251787009260FB /* Contact.swift in Sources */,
 				472F39861E1FA34E009260FB /* Record.swift in Sources */,
 				A1C3270E1DB907D900CE2ED5 /* TextFormatter.swift in Sources */,

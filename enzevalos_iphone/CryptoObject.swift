@@ -69,6 +69,13 @@ public class CryptoObject {
         }
         return nil
     }
+    
+    var chiperString: String? {
+        if let data = chiphertext {
+            return String.init(data: data, encoding: .utf8)
+        }
+        return nil
+    }
 
 
     init(chiphertext: Data?, plaintext: String?, decryptedData: Data?, sigState: SignatureState, encState: EncryptionState, signKey: String?, encType: CryptoScheme, signedAdrs: [String]) {

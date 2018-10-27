@@ -149,24 +149,18 @@ class MailHandler {
             callback(nil)
         })
     }
+    
 
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
             let builder = MCOMessageBuilder()
 
-            createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
-
-            var allRec: [String] = []
-            allRec.append(contentsOf: toEntrys)
-            allRec.append(contentsOf: ccEntrys)
-            allRec.append(contentsOf: bccEntrys)
-
             let fromLogging: Mail_Address = DataHandler.handler.getMailAddress(useraddr, temporary: false) as! Mail_Address
             var toLogging: [Mail_Address] = []
             var ccLogging: [Mail_Address] = []
             var bccLogging: [Mail_Address] = []
-
+            
             for entry in toEntrys {
                 toLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
             }
@@ -176,6 +170,15 @@ class MailHandler {
             for entry in bccEntrys {
                 bccLogging.append(DataHandler.handler.getMailAddress(entry, temporary: false) as! Mail_Address)
             }
+            
+            createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
+
+            var allRec: [String] = []
+            allRec.append(contentsOf: toEntrys)
+            allRec.append(contentsOf: ccEntrys)
+            allRec.append(contentsOf: bccEntrys)
+
+          
 
             let ordered = orderReceiver(receivers: allRec, sendEncryptedIfPossible: sendEncryptedIfPossible)
 
