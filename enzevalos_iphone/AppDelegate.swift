@@ -33,11 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var mailHandler = MailHandler()
     var orientationLock = UIInterfaceOrientationMask.allButUpsideDown
     var counterBackgroundFetch = 0
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
-        
         if UIScreen.main.bounds.height < 700 {
             kDefaultImageViewSize = 20
             kDefaultTitleFontSize = 33
@@ -81,7 +80,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Set background fetching time interval.
         let backgroundFetchInterval : Double = 10 //60*5  // seconds * minutes or UIApplicationBackgroundFetchIntervalMinimum
         UIApplication.shared.setMinimumBackgroundFetchInterval(backgroundFetchInterval)
-        print("Time interval: ", backgroundFetchInterval)
         
         return true
     }
@@ -140,7 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func credentialCheck() {
+    func credentialCheck() {        
         self.window?.rootViewController = Onboarding.checkConfigView()
         if Onboarding.googleAuth {
             Onboarding.googleAuth = false
@@ -250,7 +248,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         //DataHandler.handler.terminate()
-    
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -373,7 +370,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate { //Network check
     
-    //Inspired by https://stackoverflow.com/questions/39558868/check-internet-connection-ios-10
+    // Inspired by https://stackoverflow.com/questions/39558868/check-internet-connection-ios-10
     
     enum ReachabilityStatus {
         case notReachable
@@ -424,7 +421,7 @@ extension AppDelegate { //Network check
 }
 
 struct AppUtility {
-    // https://stackoverflow.com/a/41811798
+    // See:  https://stackoverflow.com/a/41811798
 
     static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
 
