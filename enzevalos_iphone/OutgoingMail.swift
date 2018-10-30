@@ -39,9 +39,9 @@ class OutgoingMail {
     private var textparts: Int
     private let textContent: String
     private var htmlContent: String? = nil
-    var pgpData: Data {
+    var pgpData: Data? {
         get {
-            return createEncMailPartBuilder().data()
+           return createEncData()
         }
     }
     
@@ -53,12 +53,12 @@ class OutgoingMail {
             if loggingMail {
                 return nil
             }
-            return createPlainMailPartBuilder().data()
+            return createPlainData()
         }
     }
     private var cryptoObject: CryptoObject? = nil
     
-    var sendEncryptedIfPossible: Bool = true
+    private var sendEncryptedIfPossible: Bool
     var loggingMail: Bool = false
     var warningReact: Bool = false
     var inviteMail: Bool = false
@@ -86,7 +86,7 @@ class OutgoingMail {
         }
     }
     
-    init(toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, textContent: String, htmlContent: String?, textparts: Int = 0) {
+    init(toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, textContent: String, htmlContent: String?, textparts: Int = 0, sendEncryptedIfPossible: Bool = true) {
         self.toEntrys = OutgoingMail.mapToMCOAddresses(addr: toEntrys)
         self.ccEntrys = OutgoingMail.mapToMCOAddresses(addr: ccEntrys)
         self.bccEntrys = OutgoingMail.mapToMCOAddresses(addr: bccEntrys)
@@ -94,6 +94,10 @@ class OutgoingMail {
         self.textContent = textContent
         self.htmlContent = htmlContent
         self.textparts = textparts
+        self.sendEncryptedIfPossible = sendEncryptedIfPossible
+        self.orderReceiver(receivers: toEntrys)
+        self.orderReceiver(receivers: ccEntrys)
+        self.orderReceiver(receivers: bccEntrys)
     }
     
     func logMail() -> Bool {
@@ -159,17 +163,17 @@ class OutgoingMail {
     
    
     
-    func createPlainMailPartBuilder() -> MCOMessageBuilder {
+    private func createPlainData() -> Data {
         let builder = createBuilder()
         if let html = htmlContent {
             builder.htmlBody = html
         } else {
             builder.textBody = textContent //Maybe add both?!
         }
-        return builder
+        return builder.data()
     }
     
-    func createEncMailPartBuilder() -> MCOMessageBuilder {
+    private func createEncData() -> Data? {
         let encMailBuilder = createBuilder()
         let pgp = SwiftPGP()
         var msg = textContent
@@ -196,12 +200,12 @@ class OutgoingMail {
         }
         cryptoObject = pgp.encrypt(plaintext: "\n" + msg, ids: pgpKeyIds, myId: sk.keyID!)
         if let encData = cryptoObject?.chiphertext {
-            encMailBuilder.openPGPEncryptedMessageData(withEncryptedData: encData)
+            return encMailBuilder.openPGPEncryptedMessageData(withEncryptedData: encData)
         }
-        return encMailBuilder
+        return nil
     }
     
-    private func orderReceiver(receivers: [String], sendEncryptedIfPossible: Bool){
+    private func orderReceiver(receivers: [String]){
         for r in receivers {
             let mco = MCOAddress(displayName: r, mailbox: r)
             if let adr = DataHandler.handler.findMailAddress(adr: r) {
@@ -264,6 +268,8 @@ class OutgoingMail {
     static func createSecretKeyExportMail(keyID: String, keyData: String, passcode: String) -> OutgoingMail{
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let mail = OutgoingMail(toEntrys: [useraddr], ccEntrys: [], bccEntrys: [], subject: "Autocrypt Setup Message", textContent: "", htmlContent: nil)
+        mail.plainAddresses = mail.pgpAddresses
+        mail.pgpAddresses = []
         mail.exportSecretKey = true
         mail.keyData = keyData
         mail.keyID = keyID

@@ -30,18 +30,21 @@ extension PersistentKey {
     
     public var prefer_encryption: EncState{
         set {
-            let name = "prefer_encryption"
+            let name = "preferEncryption"
             self.willChangeValue(forKey: name)
             self.setPrimitiveValue(newValue.asInt(), forKey: name)
             self.didChangeValue(forKey: name)
         }
         get {
             
-            let name = "prefer_encryption"
+            let name = "preferEncryption"
             self.willAccessValue(forKey: name)
-            let i = self.primitiveValue(forKey: name) as! Int
-            self.didAccessValue(forKey: name)
-            return EncState.find(i: i)
+            if let i = self.primitiveValue(forKey: name) {
+                let value = i as! Int
+                self.didAccessValue(forKey: name)
+                return EncState.find(i: value)
+            }
+            return EncState.NOAUTOCRYPT
         }
     }
     

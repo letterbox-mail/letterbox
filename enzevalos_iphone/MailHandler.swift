@@ -133,6 +133,7 @@ class MailHandler {
 
     func sendSecretKey(keyID: String, key: String, passcode: String, callback: @escaping (Error?) -> Void) {
         newSendSecretKey(keyID: keyID, key: key, passcode: passcode, callback: callback)
+        return
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let session = createSMTPSession()
         let builder = MCOMessageBuilder()
@@ -157,10 +158,12 @@ class MailHandler {
     }
     
     func sendSMTP(mail: OutgoingMail, callback: ((Error?) -> Void)?) {
+        // Problem: Body bei verschlüsselter Mail auf Mac fehlt und flags falsch?‚
         let session = createSMTPSession()
         var sent = false
         if let callback = callback, mail.encReceivers.count > 0 {
-            if let sendOperation = session.sendOperation(with: mail.pgpData, from: mail.sender, recipients: mail.encReceivers){
+            let data = mail.pgpData
+            if let sendOperation = session.sendOperation(with: data, from: mail.sender, recipients: mail.encReceivers){
                 sendOperation.start(callback) //TODO: ERROR HANDLING? -> Jakob IDEE: Funktion mit callback, operation und function call. -> Dann zentrale Fehlerbehandlung
                 sent = true
             }
@@ -173,6 +176,9 @@ class MailHandler {
         }
         if sent {
             _ = mail.logMail()
+        }
+        else {
+            callback!(nil)
         }
     }
     
@@ -191,17 +197,20 @@ class MailHandler {
                     self.storeIMAP(mail: mail, folder: folder, callback: callback)
                 })
             }
-            else {
-                // 2. Store Mail in test
-                // We can always store encrypted data on the imap server because the user has a key pair and it is users imap account.
-                let op = self.IMAPSession.appendMessageOperation(withFolder: folder, messageData: mail.pgpData, flags: MCOMessageFlag.mdnSent)
-                op?.start({ error, _ in
-                    guard error == nil else {
-                        self.errorhandling(error: error, originalCall: {self.storeIMAP(mail: mail, folder: folder, callback: callback)}, completionCallback: callback)
-                        return
-                    }
-                })
-            }
+        }
+        else {
+            // 2. Store Mail in test
+            // We can always store encrypted data on the imap server because the user has a key pair and it is users imap account.
+            let op = self.IMAPSession.appendMessageOperation(withFolder: folder, messageData: mail.pgpData, flags: MCOMessageFlag.mdnSent)
+            op?.start({ error, _ in
+                guard error == nil else {
+                    self.errorhandling(error: error, originalCall: {self.storeIMAP(mail: mail, folder: folder, callback: callback)}, completionCallback: callback)
+                    return
+                }
+                if let callback = callback {
+                    callback(nil)
+                }
+            })
         }
     }
     
@@ -223,7 +232,7 @@ class MailHandler {
             if loggingMail {
                 copyFolder = UserManager.loadUserValue(.loggingFolderPath) as! String
             }
-            self.storeIMAP(mail: mail, folder: copyFolder, callback: callback) // TODO delegate callback?!
+            self.storeIMAP(mail: mail, folder: copyFolder, callback: callback)
         })
         
         
@@ -231,6 +240,7 @@ class MailHandler {
 
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
         newSend(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)
+        return // Test enforce plain text message
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
             let builder = MCOMessageBuilder()
@@ -444,6 +454,7 @@ class MailHandler {
     
     func createDraft(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
         newCreateDraft(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)
+        return
         let builder = MCOMessageBuilder()
 
         createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
