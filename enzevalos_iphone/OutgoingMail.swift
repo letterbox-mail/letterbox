@@ -210,7 +210,7 @@ class OutgoingMail {
             let mco = MCOAddress(displayName: r, mailbox: r)
             if let adr = DataHandler.handler.findMailAddress(adr: r) {
                 let recommandation = Autocrypt.recommandateEncryption(receiver: adr)
-                if recommandation.recommandEnc {
+                if recommandation.recommandEnc && self.sendEncryptedIfPossible {
                     pgpAddresses.append(mco!)
                 }
                 else {

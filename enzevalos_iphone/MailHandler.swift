@@ -131,28 +131,8 @@ class MailHandler {
         return ids
     }
 
-    func sendSecretKey(keyID: String, key: String, passcode: String, callback: @escaping (Error?) -> Void) {
-        newSendSecretKey(keyID: keyID, key: key, passcode: passcode, callback: callback)
-        return
-        let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
-        let session = createSMTPSession()
-        let builder = MCOMessageBuilder()
-        let userID: MCOAddress = MCOAddress(displayName: useraddr, mailbox: useraddr)
-
-        createHeader(builder, toEntrys: [useraddr], ccEntrys: [], bccEntrys: [], subject: "Autocrypt Setup Message")
-        Autocrypt.createAutocryptKeyExport(builder: builder, keyID: keyID, key: key, passcode: passcode)
-        
-        let sendOperation = session.sendOperation(with: builder.data(), from: userID, recipients: [userID])
-        sendOperation?.start({ error in
-            guard error == nil else {
-                self.errorhandling(error: error, originalCall: {self.sendSecretKey(keyID: keyID, key: key, passcode: passcode, callback: callback)}, completionCallback: nil)
-                return
-            }
-            callback(nil)
-        })
-    }
     
-    func newSendSecretKey(keyID: String, key: String, passcode: String, callback: @escaping (Error?) -> Void) {
+    func sendSecretKey(keyID: String, key: String, passcode: String, callback: @escaping (Error?) -> Void) {
         let mail = OutgoingMail.createSecretKeyExportMail(keyID: keyID, keyData: key, passcode: passcode)
         sendSMTP(mail: mail, callback: callback)
     }
@@ -214,13 +194,13 @@ class MailHandler {
         }
     }
     
-    func newSend(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
+    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
         let mail: OutgoingMail
         if inviteMail {
             mail = OutgoingMail.createInvitationMail(toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, textContent: message, htmlContent: htmlContent)
         }
         else {
-            mail = OutgoingMail(toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, textContent: message, htmlContent: htmlContent, textparts: textparts)
+            mail = OutgoingMail(toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, textContent: message, htmlContent: htmlContent, textparts: textparts, sendEncryptedIfPossible: sendEncryptedIfPossible)
         }
         self.sendSMTP(mail: mail, callback: {error in
             guard error == nil else {
@@ -238,9 +218,7 @@ class MailHandler {
         
     }
 
-    func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
-        newSend(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)
-        return // Test enforce plain text message
+    func oldSend(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
             let builder = MCOMessageBuilder()
@@ -445,117 +423,12 @@ class MailHandler {
         }
     }
 
-    func newCreateDraft(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
+    func createDraft(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
         let mail = OutgoingMail.createDraft(toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, textContent: message, htmlContent: nil)
         let folder = UserManager.backendDraftFolderPath
         self.storeIMAP(mail: mail, folder: folder, callback: callback)
         _ = mail.logMail()
     }
-    
-    func createDraft(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
-        newCreateDraft(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)
-        return
-        let builder = MCOMessageBuilder()
-
-        createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
-
-        var allRec: [String] = []
-        allRec.append(contentsOf: toEntrys)
-        allRec.append(contentsOf: ccEntrys)
-        // What about BCC??
-
-        var sendData: Data
-
-        let pgp = SwiftPGP()
-        let mykey = DataHandler.handler.prefSecretKey()
-        if  allRec.reduce(true, { $0 && DataHandler.handler.hasKey(adr: $1) }) {
-            let receiverIds = [mykey.keyID] as! [String]
-            if Logger.logging {
-                var to: [Mail_Address?] = []
-                for addr in toEntrys {
-                    to.append(DataHandler.handler.findMailAddress(adr: addr))
-                }
-
-                var cc: [Mail_Address?] = []
-                for addr in ccEntrys {
-                    cc.append(DataHandler.handler.findMailAddress(adr: addr))
-                }
-
-                var bcc: [Mail_Address?] = []
-                for addr in bccEntrys {
-                    bcc.append(DataHandler.handler.findMailAddress(adr: addr))
-                }
-                Logger.log(createDraft: to, cc: cc, bcc: bcc, subject: subject, bodyLength: message.count, isEncrypted: true, isSigned: true, myKeyID: mykey.keyID ?? "")
-            }
-            let cryptoObject = pgp.encrypt(plaintext: "\n" + message, ids: receiverIds, myId: mykey.keyID!)
-            if let encData = cryptoObject.chiphertext {
-                sendData = builder.openPGPEncryptedMessageData(withEncryptedData: encData)
-
-                let drafts = UserManager.backendDraftFolderPath
-
-                if !DataHandler.handler.existsFolder(with: drafts) {
-                    let op = IMAPSession.createFolderOperation(drafts)
-                    op?.start({ error in
-                        guard error == nil else {
-                            self.errorhandling(error: error, originalCall: {self.createDraft(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)}, completionCallback: nil)
-                            return
-                        }
-                        self.saveDraft(data: sendData, callback: callback) })
-                } else {
-                    saveDraft(data: sendData, callback: callback)
-                }
-            } else {
-                callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
-            }
-        } else {
-            if Logger.logging {
-                var to: [Mail_Address?] = []
-                for addr in toEntrys {
-                    to.append(DataHandler.handler.findMailAddress(adr: addr))
-                }
-
-                var cc: [Mail_Address?] = []
-                for addr in ccEntrys {
-                    cc.append(DataHandler.handler.findMailAddress(adr: addr))
-                }
-
-                var bcc: [Mail_Address?] = []
-                for addr in bccEntrys {
-                    bcc.append(DataHandler.handler.findMailAddress(adr: addr))
-                }
-                Logger.log(createDraft: to, cc: cc, bcc: bcc, subject: subject, bodyLength: message.count, isEncrypted: false, isSigned: false, myKeyID: "")
-            }
-            builder.textBody = message
-            sendData = builder.data()
-
-            let drafts = UserManager.backendDraftFolderPath
-
-            if !DataHandler.handler.existsFolder(with: drafts) {
-                let op = IMAPSession.createFolderOperation(drafts)
-                op?.start({ error in
-                    guard error == nil else {
-                        self.errorhandling(error: error, originalCall: {self.createDraft(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)}, completionCallback: nil)
-                        return
-                    }
-                    self.saveDraft(data: sendData, callback: callback) })
-            } else {
-                saveDraft(data: sendData, callback: callback)
-            }
-        }
-    }
-
-    fileprivate func saveDraft(data: Data, callback: @escaping (Error?) -> Void) {
-        let op = IMAPSession.appendMessageOperation(withFolder: UserManager.backendDraftFolderPath, messageData: data, flags: MCOMessageFlag.draft)
-        op?.start({ error, _ in
-            guard error == nil else {
-                self.errorhandling(error: error, originalCall: {self.saveDraft(data: data, callback: callback)}, completionCallback: callback)
-                return
-            }
-            callback(nil)
-            
-        })
-    }
-
     private func setupIMAPSession() -> MCOIMAPSession {
         let imapsession = MCOIMAPSession()
         if let hostname = UserManager.loadUserValue(Attribute.imapHostname) as? String {
