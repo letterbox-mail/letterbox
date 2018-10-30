@@ -132,6 +132,7 @@ class MailHandler {
     }
 
     func sendSecretKey(keyID: String, key: String, passcode: String, callback: @escaping (Error?) -> Void) {
+        newSendSecretKey(keyID: keyID, key: key, passcode: passcode, callback: callback)
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let session = createSMTPSession()
         let builder = MCOMessageBuilder()
@@ -229,6 +230,7 @@ class MailHandler {
     }
 
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
+        newSend(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
             let session = createSMTPSession()
             let builder = MCOMessageBuilder()
@@ -441,6 +443,7 @@ class MailHandler {
     }
     
     func createDraft(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
+        newCreateDraft(toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, message: message, callback: callback)
         let builder = MCOMessageBuilder()
 
         createHeader(builder, toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject)
