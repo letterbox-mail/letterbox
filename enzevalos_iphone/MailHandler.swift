@@ -150,27 +150,82 @@ class MailHandler {
         })
     }
     
-    func newSend(mail: OutgoingMail, isDraft: Bool = false, callback: ((Error?) -> Void)?) {
-        /* if mail.
-        sendOperation = session.sendOperation(with: mail.pgpData, from: userID, recipients: encPGP)
+    func newSendSecretKey(keyID: String, key: String, passcode: String, callback: @escaping (Error?) -> Void) {
+        let mail = OutgoingMail.createSecretKeyExportMail(keyID: keyID, keyData: key, passcode: passcode)
+        sendSMTP(mail: mail, callback: callback)
+    }
+    
+    func sendSMTP(mail: OutgoingMail, callback: ((Error?) -> Void)?) {
+        let session = createSMTPSession()
+        var sent = false
+        if let callback = callback, mail.encReceivers.count > 0 {
+            if let sendOperation = session.sendOperation(with: mail.pgpData, from: mail.sender, recipients: mail.encReceivers){
+                sendOperation.start(callback) //TODO: ERROR HANDLING? -> Jakob IDEE: Funktion mit callback, operation und function call. -> Dann zentrale Fehlerbehandlung
+                sent = true
+            }
+        }
+        if let callback = callback, mail.plainReceivers.count > 0 {
+            if let sendOperation = session.sendOperation(with: mail.plainData, from: mail.sender, recipients: mail.plainReceivers) {
+                sendOperation.start(callback) //TODO: ERROR HANDLING? -> Jakob
+                sent = true
+            }
+        }
+        if sent {
+            _ = mail.logMail()
+        }
+    }
+    
+    func storeIMAP(mail: OutgoingMail, folder: String, callback: ((Error?) -> Void)?) {
+        // 1. Test if folder exists
+        // TODO: Does this really work? Should we test if folder exits on server and not locally? -> Ask Jakob
+        if !DataHandler.handler.existsFolder(with: folder) {
+            if let op = IMAPSession.createFolderOperation(folder) {
+                op.start({ error in
+                    guard error == nil else {
+                        self.errorhandling(error: error, originalCall: {self.storeIMAP(mail: mail, folder: folder, callback: callback)}, completionCallback: callback)
+                        return
+                    }
+                    // Create folder on local
+                    _ = DataHandler.handler.findFolder(with: folder)
+                    self.storeIMAP(mail: mail, folder: folder, callback: callback)
+                })
+            }
+            else {
+                // 2. Store Mail in test
+                // We can always store encrypted data on the imap server because the user has a key pair and it is users imap account.
+                let op = self.IMAPSession.appendMessageOperation(withFolder: folder, messageData: mail.pgpData, flags: MCOMessageFlag.mdnSent)
+                op?.start({ error, _ in
+                    guard error == nil else {
+                        self.errorhandling(error: error, originalCall: {self.storeIMAP(mail: mail, folder: folder, callback: callback)}, completionCallback: callback)
+                        return
+                    }
+                })
+            }
+        }
+    }
+    
+    func newSend(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
+        let mail: OutgoingMail
+        if inviteMail {
+            mail = OutgoingMail.createInvitationMail(toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, textContent: message, htmlContent: htmlContent)
+        }
+        else {
+            mail = OutgoingMail(toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, textContent: message, htmlContent: htmlContent, textparts: textparts)
+        }
+        self.sendSMTP(mail: mail, callback: {error in
+            guard error == nil else {
+                callback(error)
+                return
+            }
+            _ = mail.logMail()
+            var copyFolder = UserManager.backendSentFolderPath
+            if loggingMail {
+                copyFolder = UserManager.loadUserValue(.loggingFolderPath) as! String
+            }
+            self.storeIMAP(mail: mail, folder: copyFolder, callback: callback) // TODO delegate callback?!
+        })
         
-        sendOperation.start(callback)
-        if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && !loggingMail {
-            createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
-        }
-        if Logger.logging && loggingMail {
-            createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
-        }
         
-        if let html = htmlContent {
-            builder.htmlBody = html
-        } else {
-            builder.textBody = message
-        }
-    } else {
-    callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
-    }*/
-
     }
 
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
@@ -378,6 +433,13 @@ class MailHandler {
         }
     }
 
+    func newCreateDraft(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
+        let mail = OutgoingMail.createDraft(toEntrys: toEntrys, ccEntrys: ccEntrys, bccEntrys: bccEntrys, subject: subject, textContent: message, htmlContent: nil)
+        let folder = UserManager.backendDraftFolderPath
+        self.storeIMAP(mail: mail, folder: folder, callback: callback)
+        _ = mail.logMail()
+    }
+    
     func createDraft(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, callback: @escaping (Error?) -> Void) {
         let builder = MCOMessageBuilder()
 
@@ -745,7 +807,6 @@ class MailHandler {
                 self.errorhandling(error: err, originalCall: {self.loadMessagesFromServer(uids, folderPath: folderPath, maxLoad: maxLoad, record: record, completionCallback: completionCallback)}, completionCallback: completionCallback)
                 return
             }
-
             var calledMails = 0
             if let msgs = msg {
                 let dispatchGroup = DispatchGroup()

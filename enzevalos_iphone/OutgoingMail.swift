@@ -9,13 +9,23 @@
 import Foundation
 class OutgoingMail {
     private var pgpAddresses: [MCOAddress] = []
+    var encReceivers: [MCOAddress] {
+        get {
+            return pgpAddresses
+        }
+    }
     private var plainAddresses: [MCOAddress] = []
+    var plainReceivers: [MCOAddress] {
+        get {
+            return plainAddresses
+        }
+    }
     private let toEntrys: [MCOAddress]
     private let ccEntrys: [MCOAddress]
     private let bccEntrys: [MCOAddress]
     var username = UserManager.loadUserValue(Attribute.userName) as! String
     var useraddr = UserManager.loadUserValue(Attribute.userAddr) as! String
-    var userMCO: MCOAddress {
+    var sender: MCOAddress {
         get {
             return MCOAddress.init(displayName: username, mailbox: useraddr)
         }
@@ -53,6 +63,7 @@ class OutgoingMail {
     var warningReact: Bool = false
     var inviteMail: Bool = false
     var onlySelfEnc: Bool = false
+    var isPending: Bool = false
     
     private var isDraft: Bool = false
     
@@ -61,6 +72,19 @@ class OutgoingMail {
     fileprivate var keyData: String?
     fileprivate var passcode: String?
 
+    var imapFlag: MCOMessageFlag {
+        get {
+            if isDraft {
+                return MCOMessageFlag.draft
+            }
+            else if isPending {
+                return MCOMessageFlag.submitPending
+            }
+            else {
+                return MCOMessageFlag.mdnSent
+            }
+        }
+    }
     
     init(toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, textContent: String, htmlContent: String?, textparts: Int = 0) {
         self.toEntrys = OutgoingMail.mapToMCOAddresses(addr: toEntrys)
@@ -121,7 +145,7 @@ class OutgoingMail {
             else {
                 Logger.log(sent: fromLogging, to: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: co.chiperString?.count ?? 0, isEncrypted: isEnc, decryptedBodyLength: ("\n" + (co.plaintext ?? "")).count, decryptedWithOldPrivateKey: false, isSigned: isSig, isCorrectlySigned: isCorSig, signingKeyID: co.signKey ?? "", myKeyID: sk.keyID ?? "", secureAddresses: secureAddresses, encryptedForKeyIDs: OutgoingMail.addKeys(adrs: pgpAddresses), inviteMailContent: inviteMailContent, invitationMail: inviteMail)
             }
-        }
+        } //TODO: Doppeltes logging? crpyto mail und plain mail?
         else {
             if isDraft {
                 Logger.log(createDraft: toLogging, cc: ccLogging, bcc: bccLogging, subject: subject, bodyLength: textContent.count, isEncrypted: false, isSigned: false, myKeyID: "")
