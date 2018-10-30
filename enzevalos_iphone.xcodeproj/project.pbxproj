@@ -709,7 +709,6 @@
 		A13526771D955BDF00D3BFE1 /* enzevalos_iphone */ = {
 			isa = PBXGroup;
 			children = (
-				476801DD21846A5A00F7F259 /* OutgoingMail.swift */,
 				F1866C84201F703200B72453 /* OAuth */,
 				3EB4FA9C2012007C001D0625 /* Dialog */,
 				3EC35F1F2003755F008BDF95 /* Invitation */,
@@ -732,6 +731,7 @@
 				A1230BD81E2F881E006642C7 /* Encryption */,
 				476373C11E09BA88004D5EFE /* UserData.swift */,
 				A16BA2111E0439B6005E29E3 /* providers.json */,
+				476801DD21846A5A00F7F259 /* OutgoingMail.swift */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
 				476801DA218436B600F7F259 /* Autocrypt.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,

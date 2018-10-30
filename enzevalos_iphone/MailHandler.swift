@@ -150,6 +150,28 @@ class MailHandler {
         })
     }
     
+    func newSend(mail: OutgoingMail, isDraft: Bool = false, callback: ((Error?) -> Void)?) {
+        /* if mail.
+        sendOperation = session.sendOperation(with: mail.pgpData, from: userID, recipients: encPGP)
+        
+        sendOperation.start(callback)
+        if (ordered[CryptoScheme.UNKNOWN] == nil || ordered[CryptoScheme.UNKNOWN]!.count == 0) && !loggingMail {
+            createSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
+        }
+        if Logger.logging && loggingMail {
+            createLoggingSendCopy(sendData: builder.openPGPEncryptedMessageData(withEncryptedData: sendData))
+        }
+        
+        if let html = htmlContent {
+            builder.htmlBody = html
+        } else {
+            builder.textBody = message
+        }
+    } else {
+    callback(NSError(domain: NSCocoaErrorDomain, code: NSPropertyListReadCorruptError, userInfo: nil))
+    }*/
+
+    }
 
     func send(_ toEntrys: [String], ccEntrys: [String], bccEntrys: [String], subject: String, message: String, sendEncryptedIfPossible: Bool = true, callback: @escaping (Error?) -> Void, loggingMail: Bool = false, htmlContent: String? = nil, warningReact: Bool = false, inviteMail: Bool = false, textparts: Int = 0) {
         if let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as? String) {
