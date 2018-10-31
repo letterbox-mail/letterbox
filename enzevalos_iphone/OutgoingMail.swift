@@ -168,7 +168,7 @@ class OutgoingMail {
         if let html = htmlContent {
             builder.htmlBody = html
         } else {
-            builder.textBody = textContent //Maybe add both?!
+            builder.textBody = textContent // Maybe add both?!
         }
         return builder.data()
     }

@@ -279,6 +279,7 @@ class MailHandler {
             }
         }
     }
+    //TODO: REMOVE and ADD FLAG mergen
 
     func removeFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String?) {
         var folderName = INBOX
@@ -437,7 +438,10 @@ class MailHandler {
                             self.errorhandling(error: err, originalCall: {self.loadMessagesFromServer(uids, folderPath: folderPath, maxLoad: maxLoad, record: record, completionCallback: completionCallback)}, completionCallback: completionCallback)
                             return
                         }
-                        self.parseMail(parser: data, message: message, record: record, folderPath: folderPath)
+                        if let parser = data {
+                            _ = self.parseMail(parser: parser, record: record, folderPath: folderPath, uid: UInt64(message.uid), flags: message.flags)
+
+                        }
                         dispatchGroup.leave()
                     }
                     calledMails += 1
@@ -458,18 +462,27 @@ class MailHandler {
         }
     }
 
-    private func parseMail(parser: MCOMessageParser?, message: MCOIMAPMessage, record: KeyRecord?, folderPath: String) {
+    internal func parseMail(parser: MCOMessageParser, record: KeyRecord?, folderPath: String, uid: UInt64, flags: MCOMessageFlag) -> PersistentMail?{
         var rec: [MCOAddress] = []
         var cc: [MCOAddress] = []
         var autocrypt: Autocrypt? = nil
         var newKeyIds = [String]()
-
         var secretKey: String? = nil
-        let header = message.header
-
+        var isEnc = false
+        var html: String
+        var body: String
+        var lineArray: [String]
+        var dec: CryptoObject? = nil
+        let header = parser.header
         let msgID = header?.messageID
         let userAgent = header?.userAgent
         var references = [String]()
+        
+        // 1. parse header
+        if header?.from == nil {
+            // Drops mails with no from field. Otherwise it becomes ugly with no ezcontact,fromadress etc.
+            return nil
+        }
         if let refs = header?.references {
             for ref in refs {
                 if let string = ref as? String {
@@ -477,23 +490,14 @@ class MailHandler {
                 }
             }
         }
-
-        if header?.from == nil {
-            // Drops mails with no from field. Otherwise it becomes ugly with no ezcontact,fromadress etc.
-            return
-        }
-
-
+        
         if let _ = header?.extraHeaderValue(forName: Autocrypt.AUTOCRYPTHEADER) {
             autocrypt = Autocrypt(header: header!)
         }
-
         if let _ = header?.extraHeaderValue(forName: Autocrypt.SETUPMESSAGE) {
             // TODO: Distinguish between other keys (future work)
-            return
+            return nil
         }
-
-
         if let to = header?.to {
             for r in to {
                 rec.append(r as! MCOAddress)
@@ -504,16 +508,11 @@ class MailHandler {
                 cc.append(r as! MCOAddress)
             }
         }
-
-        if let data = parser?.data() {
-            var msgParser = MCOMessageParser(data: data)
-            var isEnc = false
-            var html: String
-            var body: String
-            var lineArray: [String]
-            var dec: CryptoObject? = nil
-
-            for a in (msgParser?.attachments())! {
+        
+        // 2. parse body
+        if let p = MCOMessageParser(data: parser.data()) {
+            var msgParser = p
+            for a in (msgParser.attachments())! {
                 let at = a as! MCOAttachment
                 if at.mimeType == "application/pgp-encrypted" {
                     isEnc = true
@@ -528,21 +527,21 @@ class MailHandler {
 
             }
             if isEnc {
-                html = msgParser!.plainTextRendering()
+                html = msgParser.plainTextRendering()
                 lineArray = html.components(separatedBy: "\n")
                 lineArray.removeFirst(4)
                 body = lineArray.joined(separator: "\n")
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                 body.append("\n")
-                dec = decryptText(body: body, from: message.header.from, autocrypt: autocrypt)
+                dec = decryptText(body: body, from: header?.from, autocrypt: autocrypt)
                 if (dec?.plaintext != nil) {
                     msgParser = MCOMessageParser(data: dec?.decryptedData)
-                    html = msgParser!.plainTextBodyRenderingAndStripWhitespace(false)
+                    html = msgParser.plainTextBodyRenderingAndStripWhitespace(false)
                     lineArray = html.components(separatedBy: "\n")
                     body = lineArray.joined(separator: "\n")
                     body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                    body.append("\n")
-                    for a in (msgParser?.attachments())! {
+                    //body.append("\n")
+                    for a in (msgParser.attachments())! {
                         let at = a as! MCOAttachment
                         newKeyIds.append(contentsOf: parsePublicKeys(attachment: at))
                         if let sk = parseSecretKey(attachment: at) {
@@ -552,16 +551,15 @@ class MailHandler {
                     }
                 }
             } else {
-                html = msgParser!.plainTextRendering()
-
+                html = msgParser.plainTextBodyRendering() // statt nur plainText
                 lineArray = html.components(separatedBy: "\n")
-                lineArray.removeFirst(4)
+               // lineArray.removeFirst(4)
                 body = lineArray.joined(separator: "\n")
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                body.append("\n")
+                // body.append("\n") //TODO: @ Jakob WHY????
 
                 if let chipher = findInlinePGP(text: body) {
-                    dec = decryptText(body: chipher, from: message.header.from, autocrypt: autocrypt)
+                    dec = decryptText(body: chipher, from: header?.from, autocrypt: autocrypt)
                     if dec != nil {
                         if let text = dec?.decryptedText {
                             body = text
@@ -569,9 +567,10 @@ class MailHandler {
                     }
                 }
             }
+        
 
             if let header = header, let from = header.from, let date = header.date {
-                let mail = DataHandler.handler.createMail(UInt64(message.uid), sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: message.flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath, secretKey: secretKey, references: references, mailagent: userAgent, messageID: msgID)
+                let mail = DataHandler.handler.createMail(uid, sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath, secretKey: secretKey, references: references, mailagent: userAgent, messageID: msgID)
                 if let m = mail {
                     let pgp = SwiftPGP()
                     if let autoc = autocrypt {
@@ -586,8 +585,10 @@ class MailHandler {
                     }
                     Logger.log(received: m)
                 }
+                return mail
             }
-        }
+    }
+        return nil
     }
 
     private func findInlinePGP(text: String) -> String? {
