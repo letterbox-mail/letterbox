@@ -108,6 +108,13 @@
 		3EC35F2E200376A1008BDF95 /* SendViewController+Invitation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */; };
 		3EC35F302003838E008BDF95 /* InvitationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC35F2F2003838E008BDF95 /* InvitationTests.swift */; };
 		45262931B4C72A96C686C533 /* Pods_enzevalos_iphoneTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9B9CE43043CF806E1C02FCA /* Pods_enzevalos_iphoneTests.framework */; };
+		470709192189BC3500DF71A3 /* enc+signedInlineThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709122189BC3400DF71A3 /* enc+signedInlineThunderbird.eml */; };
+		4707091A2189BC3500DF71A3 /* enc+signThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709132189BC3500DF71A3 /* enc+signThunderbird.eml */; };
+		4707091B2189BC3500DF71A3 /* signThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709142189BC3500DF71A3 /* signThunderbird.eml */; };
+		4707091C2189BC3500DF71A3 /* signedInlineThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709152189BC3500DF71A3 /* signedInlineThunderbird.eml */; };
+		4707091D2189BC3500DF71A3 /* encInlineThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709162189BC3500DF71A3 /* encInlineThunderbird.eml */; };
+		4707091E2189BC3500DF71A3 /* plainThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709172189BC3500DF71A3 /* plainThunderbird.eml */; };
+		4707091F2189BC3500DF71A3 /* encThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709182189BC3500DF71A3 /* encThunderbird.eml */; };
 		4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
 		4715F637202A0248001BFFD0 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4715F636202A0248001BFFD0 /* CoreDataTests.swift */; };
 		472276BC1FCD46B200ADA507 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
@@ -293,6 +300,13 @@
 		3EC35F2C200376A1008BDF95 /* SendViewController+Invitation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SendViewController+Invitation.swift"; sourceTree = "<group>"; };
 		3EC35F2F2003838E008BDF95 /* InvitationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationTests.swift; sourceTree = "<group>"; };
 		411EB2B85F99B48FFD36F966 /* Pods-enzevalos_iphoneTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-enzevalos_iphoneTests.debug.xcconfig"; path = "../workspace/Pods/Target Support Files/Pods-enzevalos_iphoneTests/Pods-enzevalos_iphoneTests.debug.xcconfig"; sourceTree = "<group>"; };
+		470709122189BC3400DF71A3 /* enc+signedInlineThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "enc+signedInlineThunderbird.eml"; sourceTree = "<group>"; };
+		470709132189BC3500DF71A3 /* enc+signThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "enc+signThunderbird.eml"; sourceTree = "<group>"; };
+		470709142189BC3500DF71A3 /* signThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = signThunderbird.eml; sourceTree = "<group>"; };
+		470709152189BC3500DF71A3 /* signedInlineThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = signedInlineThunderbird.eml; sourceTree = "<group>"; };
+		470709162189BC3500DF71A3 /* encInlineThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encInlineThunderbird.eml; sourceTree = "<group>"; };
+		470709172189BC3500DF71A3 /* plainThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plainThunderbird.eml; sourceTree = "<group>"; };
+		470709182189BC3500DF71A3 /* encThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encThunderbird.eml; sourceTree = "<group>"; };
 		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		4715F636202A0248001BFFD0 /* CoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		472F396D1E14F384009260FB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -547,6 +561,20 @@
 			name = Invitation;
 			sourceTree = "<group>";
 		};
+		470709112189BB4A00DF71A3 /* testMails */ = {
+			isa = PBXGroup;
+			children = (
+				470709122189BC3400DF71A3 /* enc+signedInlineThunderbird.eml */,
+				470709132189BC3500DF71A3 /* enc+signThunderbird.eml */,
+				470709162189BC3500DF71A3 /* encInlineThunderbird.eml */,
+				470709182189BC3500DF71A3 /* encThunderbird.eml */,
+				470709172189BC3500DF71A3 /* plainThunderbird.eml */,
+				470709152189BC3500DF71A3 /* signedInlineThunderbird.eml */,
+				470709142189BC3500DF71A3 /* signThunderbird.eml */,
+			);
+			path = testMails;
+			sourceTree = "<group>";
+		};
 		472F39921E279792009260FB /* protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -754,6 +782,7 @@
 		A135268F1D955BE000D3BFE1 /* enzevalos_iphoneTests */ = {
 			isa = PBXGroup;
 			children = (
+				470709112189BB4A00DF71A3 /* testMails */,
 				4715F636202A0248001BFFD0 /* CoreDataTests.swift */,
 				476801E221898BBE00F7F259 /* MailTest.swift */,
 				A13526921D955BE000D3BFE1 /* Info.plist */,
@@ -1122,8 +1151,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4707091A2189BC3500DF71A3 /* enc+signThunderbird.eml in Resources */,
+				4707091C2189BC3500DF71A3 /* signedInlineThunderbird.eml in Resources */,
+				4707091B2189BC3500DF71A3 /* signThunderbird.eml in Resources */,
 				479B597B20691C1A00B3944D /* ObjectivePGP.framework in Resources */,
 				8428A8841F436ACC007649A5 /* GamificationElements.xcassets in Resources */,
+				4707091D2189BC3500DF71A3 /* encInlineThunderbird.eml in Resources */,
+				470709192189BC3500DF71A3 /* enc+signedInlineThunderbird.eml in Resources */,
+				4707091F2189BC3500DF71A3 /* encThunderbird.eml in Resources */,
+				4707091E2189BC3500DF71A3 /* plainThunderbird.eml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
