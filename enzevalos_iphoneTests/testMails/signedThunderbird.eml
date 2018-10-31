@@ -2,7 +2,7 @@ Return-Path: <alice@enzevalos.de>
 Delivered-To: bob@enzevalos.de
 To: Bob <bob@enzevalos.de>
 From: alice <alice@enzevalos.de>
-Subject: enc mail with inline pgp from thunderbird
+Subject: signed from Thunderbird
 Openpgp: preference=signencrypt
 Autocrypt: addr=alice@enzevalos.de; prefer-encrypt=mutual; keydata=
  xsDNBFp+5vsBDACuHCvqCBlUT1O+IIQ0LOWsA2l/UAa+7PHNHotZJ22BtR//fmkdrIesPye2
@@ -45,49 +45,65 @@ Autocrypt: addr=alice@enzevalos.de; prefer-encrypt=mutual; keydata=
  PUGqnJ3Q4N73NoT8RNFru90P0HAgYPOMEphFh1T36OPCg7zIYuR1+eFu4mzpNirOU1MAYeVQ
  cw1lQm55YnkGHnrDrikMLOk2ZqmWGw+8k96Xvsx7TrnrnPSa4uf/DbBo6Sd0xordGbSBeEJC
  FRdV+uRcABCD6OuDTg==
-Message-ID: <57fe0db6-aaa4-45e7-0f1b-79714851a510@enzevalos.de>
-Date: Wed, 31 Oct 2018 11:26:12 +0100
+Message-ID: <310eef89-5be5-6018-3ded-a9cda76a0342@enzevalos.de>
+Date: Wed, 31 Oct 2018 12:15:17 +0100
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:52.0)
  Gecko/20100101 Thunderbird/52.9.1
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="jGY9eHsM08PgfVXXPT2f3AZCPJW4IwZj4"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--jGY9eHsM08PgfVXXPT2f3AZCPJW4IwZj4
+Content-Type: multipart/mixed; boundary="dibSubdyFVMsrRSzHsR83Pehjj4u2PlX3";
+ protected-headers="v1"
+From: alice <alice@enzevalos.de>
+To: Bob <bob@enzevalos.de>
+Message-ID: <310eef89-5be5-6018-3ded-a9cda76a0342@enzevalos.de>
+Subject: signed from Thunderbird
+
+--dibSubdyFVMsrRSzHsR83Pehjj4u2PlX3
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Content-Language: en-US
 
-
------BEGIN PGP MESSAGE-----
-Charset: utf-8
-
-hQGMA8KB2AWxAHMfAQv/cRChTHhvz7xn9FsJ1r9ZYOwTFUhhwhmoheIYaLPdGpwU
-Qi15eberyvgEAKgl9TEraqae8n4bF2xiJms5VcDVAOU+SnY3yi+kDyfPNkY25Jwp
-KBbRT2+0ekJYpznKvi54r8xooxN3sFo9vEXSt3ZIvPGGmtd3X98dS04OlhxbrVSQ
-JGtPTMNTRTnpDYk6sp/rw4pYLCOZAGWS3MI4nxxV4Y1y2MNU8JgvqPFfrlVMv3Ox
-D//ajGmQxfAl/pwPnJYWSHtt8tPDGUgoFQS37KbasseWj0KDTzqPUJYsht813YKH
-AFnXbEWJfyGPM8IUXXS0WStaFTIEq7c3tX2nrF1hKboieKuUYhMW85GsAEJUYsM7
-m6ZuOsMufbCnOc4700YDuKWGvbymHbFtwiJ6CIJFKqeuZfMSRakyGRc6uUOvs6m8
-Zl7S3ZhX8C35FSUUMgqNP4VTH7nYJChRpJn4DDG0gmL1DzGXddiOeyp/AzRComw/
-FRyYpSw1vErqHvOWpVsVhQGMA6mH5Wf4h8YiAQv/etrUsqGwOWt/AE2UHMWOkL6C
-9TNI7C/KR+1fNqVHk/jgJy3FAWUd83KJ9Oy/ph+mJWs8AsDlYTQVLG6bQDJTxotU
-0iYTjc+kXX6KwkaGx13R62NKNiOAZenLPaS6IWxSadVMQ73mTWqXKvy5zg8p4oXf
-yofQ55CIi7tQH6ByMGFwT8AITOaK3QzHcO/Ijx8DBdUhvha0jMqeYjjuhcAZvk1o
-BWWAigU/iBwGGHm6/G1JZ8e+/uOaEPZSIiEMIYrbt3Onr3AMRA3/4R7a3MVeApSt
-fDP5ZY8h87GttzK7fJpiCbcbj3MjAr9CkKqkbfo4e6srxnx+3pNkVJwm9PIy+ZmX
-TJV8kLiQTLiHttzKGT+rGNAHRjpSNa5yzqZoUj6+HnWF6s9D6quzvWmVVLr3VNZD
-c1BHrn/AKqk9DFIGGROio4daOoWUNwfId16L30QUGryf9GAI9dRL5J/WlS/dHIR7
-TbNOJJY4uZ/ouDX7lZY+GXU2xsh4YnUBBggQuMZv0ukB/mdJ9O3hX11S1UkrMu2U
-+RSh/qIvG/uPjgpI4YJ6Ft7yVXtxJaQrWVTymhHynxe2rvIGoZomdeyV5KQtS+P+
-XsBtoRCJFl56eKzWb1JrHdwyH+DBukug49ebAUKl1oWig6gTriPMjDF2TMZ3yamx
-RZYTcIjL3TZbtkj0fZEVUOSvVhkHRZRbmJMbhYd3IZJkVuHhIbvs2gcwwV6fEfvY
-xR9xNh7s1zkyAJRnMIvectpcZnPbQr/uYIfvkcpIguDD2ZzfqBiOTUcdRfTYLvPj
-sFvnbdtT769fqjIlfME3nGCKOUOY7psTyu3MZdb0Cm/PMXIzwvhCFQqzJblW+mgn
-ilEykfYV3mRs3GkjKDz7f437zQreF4kUixP0e9+jHN3EGf1OeGdAmBR8GeC2NIb9
-w57/xqyPVNAlE/R0bKBfCZ34HorrAJN3PcJ0bUdPSHH5qhQp4Rj+br5U9u1LZ+kJ
-FIeBCE14TaRAOEbew3tToFFoJXN2kmNXS2zAUtPAHtcVqXewOXjN+MNX1FabGaVy
-hc20qDgSQ4txeHjCB1oEK4RPt01yPLmrcvV9U5yNUsZhP+nOdlxsTAJQ95i+fBVq
-D2vyKm2zXOKZ3R+/6pEdqrnJFo/EkEarwcN6zDkRVteztWO93py7FWnlqfUjOZbX
-EG6R92QWfCXRdjX8Hkq0CUHNbLB4Mgzb88fmdZcCsydbcsMALQmOJaA2srrOCl8S
-Vce0Ch+EAwXcVyqSNRrD0mi9WyVeTsIyEzQ1FFsUzWoHsw=3D=3D
-=3Dutlx
------END PGP MESSAGE-----
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dapibus
+id diam ac volutpat. Sed quis cursus ante. Vestibulum eget gravida
+felis. Nullam accumsan diam quis sem ornare lacinia. Aenean risus risus,
+maximus quis faucibus et, maximus at nunc. Duis pharetra augue libero,
+et congue diam varius eget. Nullam efficitur ex purus, non accumsan
+tellus laoreet hendrerit. Suspendisse gravida interdum eros, eu
+venenatis ante suscipit nec. Class aptent taciti sociosqu ad litora
+torquent per conubia nostra, per inceptos himenaeos. Praesent
+pellentesque cursus sem, non ornare nunc commodo vel. Praesent sed magna
+at ligula ultricies sagittis malesuada non est. Nam maximus varius
+mauris. Etiam dignissim congue ligula eu porta. Nunc rutrum nisl id
+mauris efficitur ultrices. Maecenas sit amet velit ac mauris consequat
+sagittis at et lorem.
 
 
+
+--dibSubdyFVMsrRSzHsR83Pehjj4u2PlX3--
+
+--jGY9eHsM08PgfVXXPT2f3AZCPJW4IwZj4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAEBCgAdFiEEJRxNIIPfYdSrprTDTbvambTX/SgFAlvZjsUACgkQTbvambTX
+/Sj26gv/VN0k/cDybI5RUU/qCIxcivOy3qM/9AauHjQQ/RJWlBAsVy/JU04xS+Qi
+DdLmXP9LJa8np5T9B/rVJZrVbv5FjidsY6UsPbcqRcTZGe/X8ikscpRqUlYqkeAI
+F4u2tKQiSaxbB4J9Mj4WindG3y3kcRUoTizFv7I7Zl6rLc2WVayLwFaA79pDv3M9
+NEgwv5i7gE48dppEJLUBeXtpK00N5/BxJ0w7L0hirQZFo7FMTkDgCbYA+9seDfS4
+lx4aHYjB+BUsV1n7dO6bdumnutP3eK1awk2Yyq4EJHizLNd/SsWVltOxukRqrUAp
+qFlwclAEOxlWs0uLckMU6jZnhk4nUC8S20MLznNN4ASBjdo4mRIZFHIq9X8qLikl
+uUvxM1Tj3+Vx/6JvHI3kxrq68QARkvTKOMOcLnPUOlQgEvUe9JZvJfSdm2xhqVa+
+vBWUTsso1k+G40NdpH72SlTxFdIOlg5GX4MVVXzDyt+t2z+PVZFOPhMyp25h7efS
+JPEF5Jke
+=SZPp
+-----END PGP SIGNATURE-----
+
+--jGY9eHsM08PgfVXXPT2f3AZCPJW4IwZj4--

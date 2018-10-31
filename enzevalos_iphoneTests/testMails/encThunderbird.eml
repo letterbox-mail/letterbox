@@ -2,7 +2,7 @@ Return-Path: <alice@enzevalos.de>
 Delivered-To: bob@enzevalos.de
 To: Bob <bob@enzevalos.de>
 From: alice <alice@enzevalos.de>
-Subject: enc mail from Thunderbird
+Subject: enc from Thunderbird
 Openpgp: preference=signencrypt
 Autocrypt: addr=alice@enzevalos.de; prefer-encrypt=mutual; keydata=
  xsDNBFp+5vsBDACuHCvqCBlUT1O+IIQ0LOWsA2l/UAa+7PHNHotZJ22BtR//fmkdrIesPye2
@@ -45,66 +45,66 @@ Autocrypt: addr=alice@enzevalos.de; prefer-encrypt=mutual; keydata=
  PUGqnJ3Q4N73NoT8RNFru90P0HAgYPOMEphFh1T36OPCg7zIYuR1+eFu4mzpNirOU1MAYeVQ
  cw1lQm55YnkGHnrDrikMLOk2ZqmWGw+8k96Xvsx7TrnrnPSa4uf/DbBo6Sd0xordGbSBeEJC
  FRdV+uRcABCD6OuDTg==
-Message-ID: <ae9db0f8-498a-0e6b-fbe7-c534a8226eaa@enzevalos.de>
-Date: Wed, 31 Oct 2018 11:24:30 +0100
+Message-ID: <f11c49b1-f2e6-a981-2ed2-92e3ea8af251@enzevalos.de>
+Date: Wed, 31 Oct 2018 12:15:40 +0100
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:52.0)
  Gecko/20100101 Thunderbird/52.9.1
 MIME-Version: 1.0
 Content-Type: multipart/encrypted;
  protocol="application/pgp-encrypted";
- boundary="YHMt6qox5Q98ST4AQG72PmRsHN3WX9OVK"
+ boundary="rQTpXP7Mot8JXwKx13GEOPUvkBQfoDvqM"
 
 This is an OpenPGP/MIME encrypted message (RFC 4880 and 3156)
---YHMt6qox5Q98ST4AQG72PmRsHN3WX9OVK
+--rQTpXP7Mot8JXwKx13GEOPUvkBQfoDvqM
 Content-Type: application/pgp-encrypted
 Content-Description: PGP/MIME version identification
 
 Version: 1
 
---YHMt6qox5Q98ST4AQG72PmRsHN3WX9OVK
+--rQTpXP7Mot8JXwKx13GEOPUvkBQfoDvqM
 Content-Type: application/octet-stream; name="encrypted.asc"
 Content-Description: OpenPGP encrypted message
 Content-Disposition: inline; filename="encrypted.asc"
 
 -----BEGIN PGP MESSAGE-----
 
-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
-3PFdqopI7RzKPrbe44oDBR8vhXOZHxB7F2cShOM=
-=/LLJ
+hQGMA26fFf9Ygp7zAQv/T+jfE/eXkL66DslAsxrb1/Fle5dhBoLWwqBx8apRGSCl
+IlZbvyJAArtN/k3JPAnsd0Kg0t89bOsjC3c7CkplkcIm87gW+gCG85zkchxRVUAk
+N9ES8cRrTWI6tGCQPRKi9MV2w+GApf2DUo2lx8S6lhW5z8ZKLVMgg6T5sgwz81CO
+N+UGhhx6T30IrZel0XhUqQaUx6Vq0T/SAiP7FeFs3QctZ/k70xKmJHKGwKixAYmV
+Z7tRsiF37iP92Zr5yZz0l9O1Hh1Ov2kMi9GfrCLWr2Ca0qClv6oAbUR9pXGJAwUM
+hLiVuESAk8VBDvAizILM7Gcq2LqcBPPj0TgF/FvYdK09l4ivexBBYCeCTpXEQaBO
+tPucdz22RzEXdyv8aKxxZpxOj8jlspfCWFqyKxmzzah98Jb4qEzyPql2+cH/ECVP
+KzJjCk03Pil41Ve2pAELJgV2aiEHR7j2UINf5/8ZbsVdoKojD3f1FQHIO1zoZE97
+jHUsrX4XmdG/x69IDSHMhQGMA6mH5Wf4h8YiAQv/a9fCg2dMoE4cUOvbTjmw3Q6z
+UDlLc5/1yawp7tcCIYCWH+P6D76oXgMMbtP8mV+fZVNBSHKJ0JnrkFwK2kRNQrFu
+h+nHszE6hjo0befEhc0VwAWTCDHKIZHqWxmh/gBmuJYqs0h44QCH9opuYKICoWOi
+rGzFk0Ql1Zdn9PCU58Wtq39EwknK6bZxXUC5wH9+UTReP17DlPNG+0ylldoYNFQc
+JPgCFUzhCCv93Ob8HyoYTnkowCvVjHDjbYIoBixOyD7iX5hO6GiuRa14MvSFrIAj
+r1g5EkmFMc12XXWN/A1xacxIreFdZth+CN5qJxFUJNzWWPgmHluwuE2hkGFXeY3i
+kNCExqaiNic5Jf2fN3fcyik9X4k1awiMWunqq71Tl4imUMz08/w+z06BbgPhdCZp
+3R75wUqlKuuhfEz1ezijfrwFkNXK2YQUpxRnyRnhvVAuYNzaGb+vTnCuRYtRCwBu
+aTnzeihTleYYBPouqWntt/B5IeFVVaB/GAYpvDzf0ukBrC0uGLPbRy06eloLWHhH
+lcicPuBK/1UWUNA8MP/TUm7TYlKOgyz3NKYBmSq8ID/yjHE2JeQqDfRyrmS/Atj3
+kzSCzXVe4rIqgL3yFxnylQ2oVfk2LsTYW9zEtFCpwH8uXjpKESRCpGGZUAdvY9rJ
+f4UAqybxdDCyWSCN8uo2TNOiQgiw3PHdJ/8Srx8GgElA1j2A2CZjB8NIbdTnhQft
+FEQFroljMooTDoAa0kC5DfhPAdS+n2Fd/AuVX8hRDh5v1k16xhRaLaQ2A1TkR2h1
+xsLP0mAcKcXVRCwlhxGsmGgxUBzueRuEiKG+C/zTJJgxqKQFlVQhmwCsfsfs7bM8
+rtBAL1HobWNJ8Jo+tK9rodmfZzIP3V6FT2B/sGZa7dLxjm/FyhINX+VGg9RvSDnG
+Qxuc28AFLFwLtJvZpTRBftbiDSVgZ6TbOQcWZx9zMN2UyRVBrx9ujM5q2bRq2WJN
+znCseZPhvWiRk5H4NK8WdmGrk6pAzD0AGLIOZa0jb6XVpb30ptv+5eDyrVLb0MBO
+KD3WahDRSBzuq/zsHZNDEekBxanCxWg9fdudp3DQg27TbFpuvj3lL+FHVf9Z6qA4
+zHO+8lIxQXBjRaZiibCoMKRhwlyI1ub5I3NvvMiOTSI2yOQB4f0+m3wmIlR3yGnj
+loRsz7uJRbxLpF5WX/XpkMDFyJ6P/02WvK2CPYMF3dxFzsPMdVgb1CpVHEq/q8E6
+OrD/B/UlIJcAxaKHpSa+8Nd68ubA6mApwS/2AKff7Z4Qc9Mxsw5AEyk4CiWqBz+5
++keZoqrM4HAriCtXKNh65AXIYwxiMecIkoui4mtf1zE3S1G3Xzcr6cALhWyifl0V
+MkhJVMmv/RQv5ue7IrD9y8Lw8uGCLhvgMkpEhdaVjuBqMRUnJnuMtVcDJR2JZ5Ko
+A+1jvNYEfzLbnK5R/8ltW1olans8gpqMOvinS/+VBNykZuxhR1v3ogcuFDWRddYK
+iTAA087O16tlUoy9waomYBZks0hW0IhJ+3uZNcrjdkVoE9A8QiM8qqsB/CVITx5m
+wr25XgCs/ynFMBs/VAEMbGCJaPuITPfJbsfjhnvcmjWlLuFIRc5MJK+d6QjYb5fU
+FBe4BOqXtFlf4Jog+zKqb/SN2uUO/N8Qxw2YmQxDnsygYS7OSjuBf49m7Rh8OVmy
+fBpUtF7IcZuVODbaSotJGrVy6Vcc47U=
+=Mtyb
 -----END PGP MESSAGE-----
 
---YHMt6qox5Q98ST4AQG72PmRsHN3WX9OVK--
+--rQTpXP7Mot8JXwKx13GEOPUvkBQfoDvqM--

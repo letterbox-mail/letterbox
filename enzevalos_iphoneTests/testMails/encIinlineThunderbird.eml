@@ -2,7 +2,7 @@ Return-Path: <alice@enzevalos.de>
 Delivered-To: bob@enzevalos.de
 To: Bob <bob@enzevalos.de>
 From: alice <alice@enzevalos.de>
-Subject: sign mail from thunderbird
+Subject: enc with inline from Thunderbird
 Openpgp: preference=signencrypt
 Autocrypt: addr=alice@enzevalos.de; prefer-encrypt=mutual; keydata=
  xsDNBFp+5vsBDACuHCvqCBlUT1O+IIQ0LOWsA2l/UAa+7PHNHotZJ22BtR//fmkdrIesPye2
@@ -45,65 +45,49 @@ Autocrypt: addr=alice@enzevalos.de; prefer-encrypt=mutual; keydata=
  PUGqnJ3Q4N73NoT8RNFru90P0HAgYPOMEphFh1T36OPCg7zIYuR1+eFu4mzpNirOU1MAYeVQ
  cw1lQm55YnkGHnrDrikMLOk2ZqmWGw+8k96Xvsx7TrnrnPSa4uf/DbBo6Sd0xordGbSBeEJC
  FRdV+uRcABCD6OuDTg==
-Message-ID: <0a3e1f89-73a8-da22-5afb-1430291e6cbf@enzevalos.de>
-Date: Wed, 31 Oct 2018 11:24:46 +0100
+Message-ID: <b61496b6-f4e5-74d0-dc38-07e168075640@enzevalos.de>
+Date: Wed, 31 Oct 2018 12:16:15 +0100
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:52.0)
  Gecko/20100101 Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature";
- boundary="T4IPURkwNKhiI9JJqz8fskA4uvD5zKnIq"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---T4IPURkwNKhiI9JJqz8fskA4uvD5zKnIq
-Content-Type: multipart/mixed; boundary="DNG54E5nkvGWZc6LwmSfJ9tadRP0lFhmY";
- protected-headers="v1"
-From: alice <alice@enzevalos.de>
-To: Bob <bob@enzevalos.de>
-Message-ID: <0a3e1f89-73a8-da22-5afb-1430291e6cbf@enzevalos.de>
-Subject: sign mail from thunderbird
-
---DNG54E5nkvGWZc6LwmSfJ9tadRP0lFhmY
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Content-Language: en-US
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dapibus
-id diam ac volutpat. Sed quis cursus ante. Vestibulum eget gravida
-felis. Nullam accumsan diam quis sem ornare lacinia. Aenean risus risus,
-maximus quis faucibus et, maximus at nunc. Duis pharetra augue libero,
-et congue diam varius eget. Nullam efficitur ex purus, non accumsan
-tellus laoreet hendrerit. Suspendisse gravida interdum eros, eu
-venenatis ante suscipit nec. Class aptent taciti sociosqu ad litora
-torquent per conubia nostra, per inceptos himenaeos. Praesent
-pellentesque cursus sem, non ornare nunc commodo vel. Praesent sed magna
-at ligula ultricies sagittis malesuada non est. Nam maximus varius
-mauris. Etiam dignissim congue ligula eu porta. Nunc rutrum nisl id
-mauris efficitur ultrices. Maecenas sit amet velit ac mauris consequat
-sagittis at et lorem.
+
+-----BEGIN PGP MESSAGE-----
+Charset: utf-8
+
+hQGMA26fFf9Ygp7zAQwAljI+Vx1FyBb7R2TdQEY/dwQYy4cDHCeJ170KrFJHBhV/
+zkZe/NF7RBk0mmNkPHem3kbrHa66hVkl3m6Zo9KTWrAGO8WD6jrcYLcXA+ll99+z
+siXzOU0vmGsQf7NZV9aooejVkXm96YSTzS58805znOSHsepyHY2MzwWUUhRyZ7x1
+58xswnoejBAGSmk8yHgSm58mfBTMfVlC1ICsBguqaaxc43Xq946uEJeEKjYYyhAH
+qSlDfU86AOmdjoGeaRcikdCGnaIK0FniS4EZkGb39A/4U/gIEsOT59bk2hfEGELX
+e2jakX6dsRmimXp2Fhxnxt74k1WfnMJl04yR4j+ONJ7l4kDn0S1KmUTWnikpL0jk
+L6VkwrAj/QafDcXdNSSrN5xC5Wou/mW8CAxJuWtfBNauWXx8tGVOWjCls6TXweIh
+QnZP7eBOzZir0i+pzYHGkpSrsqCLD6k2c3ZSnwlN4o1Bl4R+9Bp0nLU0J/MWHOkR
+eeLDJV4R7rLwa4yafYEphQGMA6mH5Wf4h8YiAQwAjXBRu5LT2iyvA0WPjblDDf0t
+rNW1LK92AdE4AsrlQ0a6Co/lFIZTCF8C85CGh1dRK8URNrp/CmzAexGNzi2VyzkR
+dCHlmr+3Il0Y05B/uPpAJjXwsH0TgvIU394IEZg6eVEQOMBgFhxmgogOSMgqVIAs
+RJ7+LcURLjeJTsAr1KtsaqEXSaqH7NaYPO/MiVcahEKYgsRBtqvMyzCj4OZbYXkF
+nYTpdNRhZNC0Jl9r9pebLtTbVCQJdWgSI4muKnyJomiiyKxVZNFlEUb06d5L8pc6
+kD+OO0ckbS7jdGDoarg6D4WNR8g5/AGxemLkJKpGYBzQ0UrbcZ778dXL2Hn6ZMaF
+QA2Hk0wKbaXhxdr418YiIYam1B3LyqP9PH/xptZVcDkwpe6rIPj6vITSDwAYYHD+
+H0IrGTU3GTqLR/O4b/jSC59N9zYyfSoTW+C+QNmBlgSbC1GzxcrBgXXxO7TA5xIs
+ZZ3hEid8wJOlqoHV48nxUecpYUmrGWIekjzF25H40ukB0QSl480vNF+qzk4KZrfe
+wEq2maaKR6D+3aN7L4AVIJ/HJx6GOIUIS8nmfPr6iVL1JnBRS/J/A13DuIHGZcTA
+tW4w7PbyotPbtcEpR+gQaIYg2prCeSqjlvpHCuAK30F082b42X2y/Mh4lDlOGgZI
+9pS2f0zxBXOm+7Vvz006fCNlQAMkBFWT0YAqQMs6smss0PN80c2vFbYtQVlfFqb2
+vNPcf8sDTYclukFptMMSDESxea2rp+i+PyAPWW2dyipmd6KajiWx6zPNXYMB4em2
+/ZjdjCmhiZ3fsGQCDMRNyUVRC028S7okRpdb5yIwYUvlC8CmLtSPygYsiLe+j8OD
+pGKIpiwFav47pu2gCRF0LCMjpIJmLTJoemhKL+EUyKVLt2E8SNJ80fZPK2x7KyV/
+VMQ8Adkvqz9pulpcmOz9WloMJz287Yg1Ptud5ANng/1zV/caSuR5zSYKxe5XJ1Qx
+toIqrnO2w2qUh4G9bBP+0RyAcV3sbO4G0fTxkfwtRWx6x9zBxDSDaPViR5PYgGnM
+Jgff31KYMi+kTRgOzcUCp1kcaZrRoJ/bxznhEV3FaADqmlnGGfA2LVKEY+dy+wEk
+UQELoDg+Cfpv1jVq7Ghcaf5/JI02YuwP/HDl4xgtkRmmgBV5o6YLzts6rb4lyk7r
+1qJcgTbRVJSDeLSkIZzU405NZdY7ZOmbioaqMHsvDXYw1E09mmcOET62knE57J1f
+auXDgLhzEVxLfHcU4hvb0QMC9+tMQEpTWU3o7YSmoyoPFyro8sEICZgW+ELmg1o=3D
+=3DZZML
+-----END PGP MESSAGE-----
 
 
-
---DNG54E5nkvGWZc6LwmSfJ9tadRP0lFhmY--
-
---T4IPURkwNKhiI9JJqz8fskA4uvD5zKnIq
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAEBCgAdFiEEJRxNIIPfYdSrprTDTbvambTX/SgFAlvZgu4ACgkQTbvambTX
-/Sg4twv9HV8Yh8S9Cn2BqwUuyDWeI1y5U7WGMptjfZVPi7KxW7yVQfZvYsELkCn6
-Nkwaa4MD611WoNdD4Mx7PAGX47Hd1gKilH5CKkg47fvYYM2oxAJa6IxrZUWelBYw
-xfPBuOAAoyD1IvmU//p4O6zvkDpIwGjgnVzFGOLDOV6hzo9mfcQWZ6GGa0RCT0nn
-NwikcsNuCI8Zj17+IX105NJbRb0PJ4YqB6z4CY8mAVk2bFX1dtCKswZDVdfUoBME
-4Kcz62WgiN3c0Ya/1Ksq93H1weScILRDO1ViHG0MKyx9t65taYWA698p8DivbT0O
-nHFtC7rAyC5UdXOMT/pIOo1ZtusjQXjrg67Zuzs9qs5VsOid6MKjHMUE8KLVuj9/
-pGCoVxB4JY8DmXJCYvvfMAa0A3KgszOMECnljBP2GHsA9IdzINFQpT2SPFzxmajd
-xaZ3+/nH97javO5uBrYgR/mWQdKJ8n4GCgUQrVZM+ShpR/CAG7PatJufK8WLTvuq
-YaPqzxIM
-=eN+A
------END PGP SIGNATURE-----
-
---T4IPURkwNKhiI9JJqz8fskA4uvD5zKnIq--

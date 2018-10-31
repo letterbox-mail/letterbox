@@ -2,7 +2,7 @@ Return-Path: <alice@enzevalos.de>
 Delivered-To: bob@enzevalos.de
 To: Bob <bob@enzevalos.de>
 From: alice <alice@enzevalos.de>
-Subject: signed mail with inline pgp from thunderbird
+Subject: signed with inline from Thunderbird
 Openpgp: preference=signencrypt
 Autocrypt: addr=alice@enzevalos.de; prefer-encrypt=mutual; keydata=
  xsDNBFp+5vsBDACuHCvqCBlUT1O+IIQ0LOWsA2l/UAa+7PHNHotZJ22BtR//fmkdrIesPye2
@@ -45,8 +45,8 @@ Autocrypt: addr=alice@enzevalos.de; prefer-encrypt=mutual; keydata=
  PUGqnJ3Q4N73NoT8RNFru90P0HAgYPOMEphFh1T36OPCg7zIYuR1+eFu4mzpNirOU1MAYeVQ
  cw1lQm55YnkGHnrDrikMLOk2ZqmWGw+8k96Xvsx7TrnrnPSa4uf/DbBo6Sd0xordGbSBeEJC
  FRdV+uRcABCD6OuDTg==
-Message-ID: <65fe43e6-a951-0bb8-ede1-5497c08bb757@enzevalos.de>
-Date: Wed, 31 Oct 2018 11:26:35 +0100
+Message-ID: <d6a408af-f34d-d5bc-f74c-2ec9a70d3c15@enzevalos.de>
+Date: Wed, 31 Oct 2018 12:16:37 +0100
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:52.0)
  Gecko/20100101 Thunderbird/52.9.1
 MIME-Version: 1.0
@@ -71,19 +71,18 @@ at ligula ultricies sagittis malesuada non est. Nam maximus varius
 mauris. Etiam dignissim congue ligula eu porta. Nunc rutrum nisl id
 mauris efficitur ultrices. Maecenas sit amet velit ac mauris consequat
 sagittis at et lorem.
-
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAEBCgAdFiEEJRxNIIPfYdSrprTDTbvambTX/SgFAlvZg1sACgkQTbvambTX
-/Sis/Av+KOas3AmpBEWRaZV7tttCJ2jTr4wmp/NHaXEZ1P1/XM0zYGy9iHEdTZsZ
-dLJfjRfVhBp3GMA1xx3E77fRbiF+pGXg9NkvKNL/c9W1knCt2wyXVAqQcq17U5vW
-t+gXG1osRyJev1/HrVbyq1zdTYnIrvnRYoFp1TrZRncZXh2cxGvhqZXtTu2nGy5A
-K+gciE7yejX4OAX0rwHT9K5g/tALx5Q0zxJmsomFKEmdep3OEaVdZrxRdcUY1bYi
-wMh4onH2OPgWaxLouv9xSglhi0LZsHpKqwD4o0h8UUUmf01tIa40erP9KRRMVtKL
-n5fYig5sK8sMc1vZxhT6VlRe4Zvdl+JgnUbqvy4a9D3vrFJLEG2T7VP1R86C5nQr
-O6B64j20UrKOHDLoTq3ZotfDS4Y//0qEEXgqZ8FMPRDWJSmfe9Vpbx1lorJR6MJM
-bmlYcDw0wph/xCJ5rChBjnoipbElg/wewpNfLtcEVjSzoHpQB8W9ZiITEcceQg30
-b9OryFLe
-=qiw4
+iQGzBAEBCgAdFiEEJRxNIIPfYdSrprTDTbvambTX/SgFAlvZjxUACgkQTbvambTX
+/SiZ0Av8DJ9xa/OX9TioSBtcOc3l/VdCZfm8vQCN0kiZTW8Mg9J3kZNOFsLwoqfz
+5aaBL/HVfpK9ZJSZLdUGfSrBxk+K6FJN7UW1Yzbkvo7Pec1Zof+DfUJSlZT5vJiZ
+naqJ/oW/nmgSSaaeBxWAOBgjQ5yQCaCN8vJLpMztl92zE5NUKP4FUL6V+HmXybMN
+P5cApXABamuYFY/v4FnYCeTZ/yjpBMrcF8bUr+f9yQ8Df4oQnQVAKKsdfJVwpY1v
+Pv1iRAeXa3p1YKDdxtDpqaVe66XqfBrRvrbGSNCIbIaF1Kh6ooLvmEjZLiJ9AdSx
+mEfVAJgcC69r4dR2R9Tph9odD2/WAKSnoTcA7x5pb4ZZfg/TXhNhVQeqOJ4XxlFZ
+u7lCeJzv8daFAs/7B31OKcXe0wYyOtBhXdQ0O5DkEubkYIFNR2918E4dUxQb1xKO
+JsRL+kuWEhFXSUXm87Wyph6lPdyMYHV82HG5FfQ65BPmxUkAvlVdZEwlXEjhiiXO
+eMyfhiTy
+=d3k6
 -----END PGP SIGNATURE-----
 
