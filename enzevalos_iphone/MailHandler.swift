@@ -53,7 +53,6 @@ class MailHandler {
     var INBOX: String {
         return "INBOX"
     }
-    private let concurrentMailServer = DispatchQueue(label: "com.enzevalos.mailserverQueue", attributes: DispatchQueue.Attributes.concurrent) //TODO: REMOVE?
     private var IMAPSes: MCOIMAPSession?
     var IMAPSession: MCOIMAPSession {
         if IMAPSes == nil {
@@ -78,16 +77,32 @@ class MailHandler {
         // Problem: Body bei verschlüsselter Mail auf Mac fehlt und flags falsch?‚
         let session = createSMTPSession()
         var sent = false
-        if let callback = callback, mail.encReceivers.count > 0 {
+        if mail.encReceivers.count > 0 {
             let data = mail.pgpData
             if let sendOperation = session.sendOperation(with: data, from: mail.sender, recipients: mail.encReceivers){
-                sendOperation.start(callback) //TODO: ERROR HANDLING? -> Jakob IDEE: Funktion mit callback, operation und function call. -> Dann zentrale Fehlerbehandlung
+                sendOperation.start({ error in
+                    guard error == nil else {
+                        self.errorhandling(error: error, originalCall: {self.sendSMTP(mail: mail, callback: callback)}, completionCallback: callback)
+                        return
+                    }
+                    if let callback = callback{
+                        callback(nil)
+                    }
+                })
                 sent = true
             }
         }
-        if let callback = callback, mail.plainReceivers.count > 0 {
+        if mail.plainReceivers.count > 0 {
             if let sendOperation = session.sendOperation(with: mail.plainData, from: mail.sender, recipients: mail.plainReceivers) {
-                sendOperation.start(callback) //TODO: ERROR HANDLING? -> Jakob
+                sendOperation.start({error in
+                    guard error == nil else {
+                        self.errorhandling(error: error, originalCall: {self.sendSMTP(mail: mail, callback: callback)}, completionCallback: callback)
+                        return
+                    }
+                    if let callback = callback{
+                        callback(nil)
+                    }
+                }) 
                 sent = true
             }
         }

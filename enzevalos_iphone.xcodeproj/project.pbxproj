@@ -111,11 +111,12 @@
 		4707091E2189BC3500DF71A3 /* plainThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709172189BC3500DF71A3 /* plainThunderbird.eml */; };
 		470709262189C73900DF71A3 /* enc+signedInlineThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709212189C73900DF71A3 /* enc+signedInlineThunderbird.eml */; };
 		470709272189C73900DF71A3 /* encThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709222189C73900DF71A3 /* encThunderbird.eml */; };
-		470709282189C73900DF71A3 /* encIinlineThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709232189C73900DF71A3 /* encIinlineThunderbird.eml */; };
+		470709282189C73900DF71A3 /* encInlineThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709232189C73900DF71A3 /* encInlineThunderbird.eml */; };
 		470709292189C73900DF71A3 /* signedInlineThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709242189C73900DF71A3 /* signedInlineThunderbird.eml */; };
 		4707092A2189C73900DF71A3 /* signedThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 470709252189C73900DF71A3 /* signedThunderbird.eml */; };
 		4707092D2189C74200DF71A3 /* bobSecret.asc in Resources */ = {isa = PBXBuildFile; fileRef = 4707092B2189C74200DF71A3 /* bobSecret.asc */; };
 		4707092E2189C74200DF71A3 /* alicePublic.asc in Resources */ = {isa = PBXBuildFile; fileRef = 4707092C2189C74200DF71A3 /* alicePublic.asc */; };
+		470709302189E1C100DF71A3 /* enc+signedThunderbird.eml in Resources */ = {isa = PBXBuildFile; fileRef = 4707092F2189E1C000DF71A3 /* enc+signedThunderbird.eml */; };
 		4707096D1F8F9F4900657F41 /* ExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707096C1F8F9F4900657F41 /* ExportViewController.swift */; };
 		4715F637202A0248001BFFD0 /* CoreDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4715F636202A0248001BFFD0 /* CoreDataTests.swift */; };
 		472276BC1FCD46B200ADA507 /* LoggingEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18E7D761FBDE5D9002F7CC9 /* LoggingEventType.swift */; };
@@ -159,6 +160,8 @@
 		479B597A20691C0600B3944D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 47F867E12052B48E00AA832F /* libz.tbd */; };
 		479B597B20691C1A00B3944D /* ObjectivePGP.framework in Resources */ = {isa = PBXBuildFile; fileRef = 47CEF4EA2052C3C700887CDB /* ObjectivePGP.framework */; };
 		47A7975B1FCD56B7006B3BC4 /* enzevalos_iphone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A135267F1D955BDF00D3BFE1 /* enzevalos_iphone.xcdatamodeld */; };
+		47C22281218AFD6300BD2C2B /* AutocryptTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C22280218AFD6300BD2C2B /* AutocryptTest.swift */; };
+		47C22283218B02C700BD2C2B /* autocryptSimpleExample1.eml in Resources */ = {isa = PBXBuildFile; fileRef = 47C22282218B02C700BD2C2B /* autocryptSimpleExample1.eml */; };
 		47CD5AAA2012368D00E771A1 /* logging_pk.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AA82012368D00E771A1 /* logging_pk.asc */; };
 		47CD5AAB2012368D00E771A1 /* bitcoinde.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AA92012368D00E771A1 /* bitcoinde.asc */; };
 		47CD5AAD2012369400E771A1 /* support_pk.asc in Resources */ = {isa = PBXBuildFile; fileRef = 47CD5AAC2012369300E771A1 /* support_pk.asc */; };
@@ -304,11 +307,12 @@
 		470709172189BC3500DF71A3 /* plainThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = plainThunderbird.eml; sourceTree = "<group>"; };
 		470709212189C73900DF71A3 /* enc+signedInlineThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "enc+signedInlineThunderbird.eml"; sourceTree = "<group>"; };
 		470709222189C73900DF71A3 /* encThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encThunderbird.eml; sourceTree = "<group>"; };
-		470709232189C73900DF71A3 /* encIinlineThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encIinlineThunderbird.eml; sourceTree = "<group>"; };
+		470709232189C73900DF71A3 /* encInlineThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = encInlineThunderbird.eml; sourceTree = "<group>"; };
 		470709242189C73900DF71A3 /* signedInlineThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = signedInlineThunderbird.eml; sourceTree = "<group>"; };
 		470709252189C73900DF71A3 /* signedThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = signedThunderbird.eml; sourceTree = "<group>"; };
 		4707092B2189C74200DF71A3 /* bobSecret.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bobSecret.asc; sourceTree = "<group>"; };
 		4707092C2189C74200DF71A3 /* alicePublic.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = alicePublic.asc; sourceTree = "<group>"; };
+		4707092F2189E1C000DF71A3 /* enc+signedThunderbird.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "enc+signedThunderbird.eml"; sourceTree = "<group>"; };
 		4707096C1F8F9F4900657F41 /* ExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportViewController.swift; sourceTree = "<group>"; };
 		4715F636202A0248001BFFD0 /* CoreDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTests.swift; sourceTree = "<group>"; };
 		472F396D1E14F384009260FB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -343,6 +347,8 @@
 		47953AA81FD7000200D4631A /* bitcoinde.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bitcoinde.asc; sourceTree = "<group>"; };
 		479B5976206914BE00B3944D /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
 		47B2318A1F0D458100961B28 /* enzevalos_iphone 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "enzevalos_iphone 2.xcdatamodel"; sourceTree = "<group>"; };
+		47C22280218AFD6300BD2C2B /* AutocryptTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocryptTest.swift; sourceTree = "<group>"; };
+		47C22282218B02C700BD2C2B /* autocryptSimpleExample1.eml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = autocryptSimpleExample1.eml; sourceTree = "<group>"; };
 		47CD5AA82012368D00E771A1 /* logging_pk.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = logging_pk.asc; path = keys/logging_pk.asc; sourceTree = "<group>"; };
 		47CD5AA92012368D00E771A1 /* bitcoinde.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bitcoinde.asc; path = keys/bitcoinde.asc; sourceTree = "<group>"; };
 		47CD5AAC2012369300E771A1 /* support_pk.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = support_pk.asc; path = keys/support_pk.asc; sourceTree = "<group>"; };
@@ -566,8 +572,10 @@
 		470709112189BB4A00DF71A3 /* testMails */ = {
 			isa = PBXGroup;
 			children = (
+				47C22282218B02C700BD2C2B /* autocryptSimpleExample1.eml */,
+				4707092F2189E1C000DF71A3 /* enc+signedThunderbird.eml */,
 				470709212189C73900DF71A3 /* enc+signedInlineThunderbird.eml */,
-				470709232189C73900DF71A3 /* encIinlineThunderbird.eml */,
+				470709232189C73900DF71A3 /* encInlineThunderbird.eml */,
 				470709222189C73900DF71A3 /* encThunderbird.eml */,
 				470709242189C73900DF71A3 /* signedInlineThunderbird.eml */,
 				470709252189C73900DF71A3 /* signedThunderbird.eml */,
@@ -801,6 +809,7 @@
 				3EC35F2F2003838E008BDF95 /* InvitationTests.swift */,
 				8428A8561F4369EA007649A5 /* GamificationDataUnitTest.swift */,
 				479B5976206914BE00B3944D /* CryptoTests.swift */,
+				47C22280218AFD6300BD2C2B /* AutocryptTest.swift */,
 			);
 			path = enzevalos_iphoneTests;
 			sourceTree = "<group>";
@@ -1164,13 +1173,15 @@
 			files = (
 				470709262189C73900DF71A3 /* enc+signedInlineThunderbird.eml in Resources */,
 				479B597B20691C1A00B3944D /* ObjectivePGP.framework in Resources */,
-				470709282189C73900DF71A3 /* encIinlineThunderbird.eml in Resources */,
+				470709282189C73900DF71A3 /* encInlineThunderbird.eml in Resources */,
 				470709292189C73900DF71A3 /* signedInlineThunderbird.eml in Resources */,
 				8428A8841F436ACC007649A5 /* GamificationElements.xcassets in Resources */,
 				4707092D2189C74200DF71A3 /* bobSecret.asc in Resources */,
 				4707091E2189BC3500DF71A3 /* plainThunderbird.eml in Resources */,
 				4707092E2189C74200DF71A3 /* alicePublic.asc in Resources */,
 				4707092A2189C73900DF71A3 /* signedThunderbird.eml in Resources */,
+				47C22283218B02C700BD2C2B /* autocryptSimpleExample1.eml in Resources */,
+				470709302189E1C100DF71A3 /* enc+signedThunderbird.eml in Resources */,
 				470709272189C73900DF71A3 /* encThunderbird.eml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1540,6 +1551,7 @@
 				476801E321898BBE00F7F259 /* MailTest.swift in Sources */,
 				479B5977206914BE00B3944D /* CryptoTests.swift in Sources */,
 				4715F637202A0248001BFFD0 /* CoreDataTests.swift in Sources */,
+				47C22281218AFD6300BD2C2B /* AutocryptTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
