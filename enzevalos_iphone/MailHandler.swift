@@ -102,7 +102,7 @@ class MailHandler {
                     if let callback = callback{
                         callback(nil)
                     }
-                }) 
+                })
                 sent = true
             }
         }
@@ -523,87 +523,72 @@ class MailHandler {
                 cc.append(r as! MCOAddress)
             }
         }
-        
         // 2. parse body
-        if let p = MCOMessageParser(data: parser.data()) {
-            var msgParser = p
-            for a in (msgParser.attachments())! {
-                let at = a as! MCOAttachment
-                if at.mimeType == "application/pgp-encrypted" {
-                    isEnc = true
-                }
-                if isEnc && at.mimeType == "application/octet-stream" {
-                    msgParser = MCOMessageParser(data: at.data)
-                }
-                newKeyIds.append(contentsOf: parsePublicKeys(attachment: at))
-                if let sk = parseSecretKey(attachment: at) {
-                    secretKey = sk
-                }
-
+        var msgParser = parser
+        for a in (msgParser.attachments())! {
+            let at = a as! MCOAttachment
+            if at.mimeType == "application/pgp-encrypted" {
+                isEnc = true
             }
-            if isEnc {
-                html = msgParser.plainTextRendering()
-                lineArray = html.components(separatedBy: "\n")
-                lineArray.removeFirst(4)
-                body = lineArray.joined(separator: "\n")
+            if isEnc && at.mimeType == "application/octet-stream" {
+                msgParser = MCOMessageParser(data: at.data)
+            }
+            newKeyIds.append(contentsOf: parsePublicKeys(attachment: at))
+            if let sk = parseSecretKey(attachment: at) {
+                secretKey = sk
+            }
+        }
+        if isEnc {
+            html = msgParser.plainTextRendering()
+            lineArray = html.components(separatedBy: "\n")
+            lineArray.removeFirst(4)
+            body = lineArray.joined(separator: "\n")
+            body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            body.append("\n")
+            dec = decryptText(body: body, from: header?.from, autocrypt: autocrypt)
+            if (dec?.plaintext != nil) {
+                msgParser = MCOMessageParser(data: dec?.decryptedData)
+                body = msgParser.plainTextBodyRendering().removeNewLines()
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                body.append("\n")
-                dec = decryptText(body: body, from: header?.from, autocrypt: autocrypt)
-                if (dec?.plaintext != nil) {
-                    msgParser = MCOMessageParser(data: dec?.decryptedData)
-                    html = msgParser.plainTextBodyRenderingAndStripWhitespace(false)
-                    lineArray = html.components(separatedBy: "\n")
-                    body = lineArray.joined(separator: "\n")
-                    body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                    //body.append("\n")
-                    for a in (msgParser.attachments())! {
-                        let at = a as! MCOAttachment
-                        newKeyIds.append(contentsOf: parsePublicKeys(attachment: at))
-                        if let sk = parseSecretKey(attachment: at) {
-                            secretKey = sk
-                        }
-
+                for a in (msgParser.attachments())! {
+                    let at = a as! MCOAttachment
+                    newKeyIds.append(contentsOf: parsePublicKeys(attachment: at))
+                    if let sk = parseSecretKey(attachment: at) {
+                        secretKey = sk
                     }
+
                 }
-            } else {
-                html = msgParser.plainTextBodyRendering() // statt nur plainText
-                lineArray = html.components(separatedBy: "\n")
-               // lineArray.removeFirst(4)
-                body = lineArray.joined(separator: "\n")
-                body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                // body.append("\n") //TODO: @ Jakob WHY????
-
-
-                if let chipher = findInlinePGP(text: msgParser.plainTextRendering()) {
-                    dec = decryptText(body: chipher, from: header?.from, autocrypt: autocrypt)
-                    if dec != nil {
-                        if let text = dec?.decryptedText {
-                            body = text
-                        }
+            }
+        } else {
+            body = msgParser.plainTextBodyRendering().removeNewLines()
+            body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            if let chipher = findInlinePGP(text: msgParser.plainTextRendering()) {
+                dec = decryptText(body: chipher, from: header?.from, autocrypt: autocrypt)
+                if dec != nil {
+                    if let text = dec?.decryptedText {
+                        body = text.removeNewLines()
                     }
                 }
             }
-        
-
-            if let header = header, let from = header.from, let date = header.date {
-                let mail = DataHandler.handler.createMail(uid, sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath, secretKey: secretKey, references: references, mailagent: userAgent, messageID: msgID)
-                if let m = mail {
-                    let pgp = SwiftPGP()
-                    if let autoc = autocrypt {
-                        if let publickeys = try? pgp.importKeys(key: autoc.key, pw: nil, isSecretKey: false, autocrypt: true) {
-                            for pk in publickeys {
-                                _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
-                            }
+        }
+        if let header = header, let from = header.from, let date = header.date {
+            let mail = DataHandler.handler.createMail(uid, sender: from, receivers: rec, cc: cc, time: date, received: true, subject: header.subject ?? "", body: body, flags: flags, record: record, autocrypt: autocrypt, decryptedData: dec, folderPath: folderPath, secretKey: secretKey, references: references, mailagent: userAgent, messageID: msgID)
+            if let m = mail {
+                let pgp = SwiftPGP()
+                if let autoc = autocrypt {
+                    if let publickeys = try? pgp.importKeys(key: autoc.key, pw: nil, isSecretKey: false, autocrypt: true) {
+                        for pk in publickeys {
+                            _ = DataHandler.handler.newPublicKey(keyID: pk, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: true, firstMail: mail)
                         }
                     }
-                    for keyId in newKeyIds {
-                        _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
-                    }
-                    Logger.log(received: m)
                 }
-                return mail
+                for keyId in newKeyIds {
+                    _ = DataHandler.handler.newPublicKey(keyID: keyId, cryptoType: CryptoScheme.PGP, adr: from.mailbox, autocrypt: false, firstMail: mail)
+                }
+                Logger.log(received: m)
             }
-    }
+            return mail
+        }
         return nil
     }
 
@@ -652,9 +637,6 @@ class MailHandler {
         }
         return newKey
     }
-
-
-
     private func parseSecretKey(attachment: MCOAttachment) -> String? {
         if let content = attachment.decodedString() {
             if content.contains("-----BEGIN PGP PRIVATE KEY BLOCK-----") {
@@ -669,7 +651,6 @@ class MailHandler {
         }
         return nil
     }
-
     private func decryptText(body: String, from: MCOAddress?, autocrypt: Autocrypt?) -> CryptoObject? {
         var sender: String? = nil
         if let fromMCO = from {
