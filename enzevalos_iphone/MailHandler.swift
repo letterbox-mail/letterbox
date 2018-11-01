@@ -446,7 +446,6 @@ class MailHandler {
                 for m in msgs.reversed() {
                     let message: MCOIMAPMessage = m as! MCOIMAPMessage
                     dispatchGroup.enter()
-
                     let op = self.IMAPSession.fetchParsedMessageOperation(withFolder: folderPath, uid: message.uid)
                     op?.start { err, data in
                         guard err == nil else {
@@ -492,7 +491,8 @@ class MailHandler {
         let msgID = header?.messageID
         let userAgent = header?.userAgent
         var references = [String]()
-        
+        var msgParser = parser
+
         // 1. parse header
         if header?.from == nil {
             // Drops mails with no from field. Otherwise it becomes ugly with no ezcontact,fromadress etc.
@@ -524,7 +524,6 @@ class MailHandler {
             }
         }
         // 2. parse body
-        var msgParser = parser
         for a in (msgParser.attachments())! {
             let at = a as! MCOAttachment
             if at.mimeType == "application/pgp-encrypted" {
@@ -686,11 +685,11 @@ class MailHandler {
 
     func checkSMTP(_ completion: @escaping (Error?) -> Void) {
         let useraddr = UserManager.loadUserValue(Attribute.userAddr) as! String
-
         let session = MCOSMTPSession()
         session.hostname = UserManager.loadUserValue(Attribute.smtpHostname) as! String
         session.port = UInt32(UserManager.loadUserValue(Attribute.smtpPort) as! Int)
         session.username = useraddr
+        
         if UserManager.loadSmtpAuthType() == MCOAuthType.xoAuth2 {
             session.oAuth2Token = EmailHelper.singleton().authorization?.authState.lastTokenResponse?.accessToken
         } else if let pw = UserManager.loadUserValue(Attribute.userPW) as? String {
@@ -698,9 +697,7 @@ class MailHandler {
         }
         session.authType = UserManager.loadSmtpAuthType()
         session.connectionType = MCOConnectionType.init(rawValue: UserManager.loadUserValue(Attribute.smtpConnectionType) as! Int)
-
         session.checkAccountOperationWith(from: MCOAddress.init(mailbox: useraddr)).start(completion)
-
     }
 
     func checkIMAP(_ completion: @escaping (Error?) -> Void) {
@@ -785,7 +782,6 @@ class MailHandler {
         let uids = MCOIndexSet(range: MCORangeMake(1, UINT64_MAX))
         let toFetchIDs = MCOIndexSet()
 
-
         let fetchOperation: MCOIMAPFetchMessagesOperation = self.IMAPSession.fetchMessagesOperation(withFolder: folderPath, requestKind: requestKind, uids: uids)
         fetchOperation.start { (err, msg, vanished) -> Void in
             guard err == nil else {
@@ -825,8 +821,6 @@ class MailHandler {
             if let status = status {
                 let uidValidity = status.uidValidity
                 folder.uidvalidity = uidValidity
-
-
                 if let date = folder.lastUpdate {
                     self.loadMailsSinceDate(folder: folder, since: date, completionCallback: completionCallback)
                 } else {
@@ -854,7 +848,6 @@ class MailHandler {
             if let date = oldestDate {
                 let searchExp = MCOIMAPSearchExpression.search(before: date)
                 let searchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExp)
-
                 searchOperation?.start { (err, uids) -> Void in
                     guard err == nil else {
                          self.errorhandling(error: err, originalCall: {self.olderMails(folder: folder, completionCallback: completionCallback)}, completionCallback: completionCallback)
@@ -875,14 +868,11 @@ class MailHandler {
         }
 
     }
-
-
     private func loadMailsSinceDate(folder: Folder, since: Date, maxLoad: Int = MailHandler.MAXMAILS, completionCallback: @escaping ((Error?) -> ())) {
         let folderPath = folder.path
         let searchExp = MCOIMAPSearchExpression.search(since: since)
         let searchOperation = self.IMAPSession.searchExpressionOperation(withFolder: folderPath, expression: searchExp)
 
-        
         searchOperation?.start { (err, uids) -> Void in
             guard err == nil else {
                 self.errorhandling(error: err, originalCall: {self.loadMailsSinceDate(folder: folder, since: since, completionCallback: completionCallback)}, completionCallback: completionCallback)
