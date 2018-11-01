@@ -11,23 +11,21 @@ import XCTest
  Test cases:
  
  parse incoming mails:
- MUA = {Letterbox, AppleMail, iOSMail, Thunderbird (+ Enigmail), K9 (+ OKC)(, WebMail)}
+ MUA = {Letterbox, AppleMail, iOSMail, Thunderbird (+ Enigmail) [DONE], K9 (+ OKC)(, WebMail)}
  MUA x EncState x SigState (x Attachment)
  
  parse pgp mails:
-    * inline pgp
-    * mime pgp
+    * inline pgp DONE
+    * mime pgp DONE
  
  parse special mails:
-    * public key import (Autocrypt, attachment, inline)
-    * secret key import (Autocryp,t attachment, inline)
- 
- parse autocrypt:
-    * header fields
+    * public key import (attachment, inline)
+    * secret key import (attachment, inline)
+
  
  parse mail compontens:
-    * header (to, cc, bcc, subject, date etc.)
-    * body
+    * header (to, cc, bcc, subject, date etc.) DONE
+    * body DONE
     * attachments
  
 What about errors and special cases?
@@ -39,8 +37,7 @@ What about errors and special cases?
  
  create Mails: -> Export as eml (in Message builder)?
     * EncState x SigState -> is correct?
-    * mixed receivers (plain, enc) -> Text if matching is correct
-    * add autocrypt header
+    * mixed receivers (plain, enc) -> Text if matching is correct DONE
     * attach public key
     * export secret key
  
@@ -53,19 +50,19 @@ class MailTest: XCTestCase {
     let datahandler = DataHandler.handler
     let mailHandler = AppDelegate.getAppDelegate().mailHandler
     let pgp = SwiftPGP()
-    let userAdr = "alice@example.com"
-    let userName = "alice"
-    var user: MCOAddress = MCOAddress.init(mailbox: "alice@example.com")
+    let userAdr = "bob@enzevalos.de"
+    let userName = "bob"
+    var user: MCOAddress = MCOAddress.init(mailbox: "bob@enzevalos.de")
     var userKeyID: String = ""
     
+    
+    static let body = """
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dapibus id diam ac volutpat. Sed quis cursus ante. Vestibulum eget gravida felis. Nullam accumsan diam quis sem ornare lacinia. Aenean risus risus, maximus quis faucibus et, maximus at nunc. Duis pharetra augue libero, et congue diam varius eget. Nullam efficitur ex purus, non accumsan tellus laoreet hendrerit. Suspendisse gravida interdum eros, eu venenatis ante suscipit nec. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent pellentesque cursus sem, non ornare nunc commodo vel. Praesent sed magna at ligula ultricies sagittis malesuada non est. Nam maximus varius mauris. Etiam dignissim congue ligula eu porta. Nunc rutrum nisl id mauris efficitur ultrices. Maecenas sit amet velit ac mauris consequat sagittis at et lorem.
+    """
     override func setUp() {
         super.setUp()
         datahandler.reset()
         pgp.resetKeychains()
-        XCTAssertEqual(datahandler.findSecretKeys().count, 0)
-        XCTAssertEqual(datahandler.allFolders.count, 0)
-        XCTAssertEqual(datahandler.getContacts().count, 0)
-        XCTAssertEqual(datahandler.getAddresses().count, 0)
         (user, userKeyID) = owner()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -150,9 +147,89 @@ class MailTest: XCTestCase {
                 XCTAssertFalse(mail.isSecure)
                 XCTAssertTrue(MailTest.compareAdrs(adrs1: [plainAdr, encAdr], adrs2: mail.getReceivers()))
             }
+            else {
+                XCTFail()
+            }
         }
+        else {
+            XCTFail()
+        }
+    }
+    
+    func testSecretKeyImport(){
         
     }
+    
+    func testThunderbirdPlainMail() {
+        testMailAliceToBob(name: "plainThunderbird", isSecure: false, encState: EncryptionState.NoEncryption, sigState: SignatureState.NoSignature)
+    }
+    func testThunderbirdSecureMail(){
+        testSecureMail(name: "enc+signedThunderbird")
+    }
+    func testThunderBirdSecureInlineMail() {
+        testSecureMail(name: "enc+signedInlineThunderbird")
+    }
+    func testThunderbirdEncMail(){
+        testMailAliceToBob(name: "encThunderbird", isSecure: false, encState: EncryptionState.ValidedEncryptedWithCurrentKey, sigState: SignatureState.NoSignature)
+    }
+    func testThunderbirdEncInlineMail(){
+        testMailAliceToBob(name: "encInlineThunderbird", isSecure: false, encState: EncryptionState.ValidedEncryptedWithCurrentKey, sigState: SignatureState.NoSignature)
+    }
+    func testThunderbirdSigedInlineMail() {
+        //testMailAliceToBob(name: "signedInlineThunderbird", isSecure: false, encState: EncryptionState.NoEncryption, sigState: SignatureState.ValidSignature)
+    }
+    func testThunderbirdSigedMail() {
+        //testMailAliceToBob(name: "signedThunderbird", isSecure: false, encState: EncryptionState.NoEncryption, sigState: SignatureState.ValidSignature)
+    }
+    
+    func testSecureMail(name: String) {
+        testMailAliceToBob(name: name, isSecure: true)
+    }
+    
+    func testMailAliceToBob(name: String, isSecure: Bool, encState: EncryptionState? = nil, sigState: SignatureState? = nil) {
+        testMailAliceToBob(pkExists: true, name: name, isSecure: isSecure, encState: encState, sigState: sigState)
+        tearDown()
+        setUp()
+        testMailAliceToBob(pkExists: false, name: name, isSecure: isSecure, encState: encState, sigState: sigState)
+    }
+    
+    func testMailAliceToBob(pkExists: Bool, name: String, isSecure: Bool, encState: EncryptionState? = nil, sigState: SignatureState? = nil) {
+        let mailData = MailTest.loadMail(name: name )
+        let (alice, _) = addAliceAndBob(addAlice: pkExists)
+        if let parser = MCOMessageParser(data: mailData) {
+            if let mail = mailHandler.parseMail(parser: parser, record: nil, folderPath: "INBOX", uid: 0, flags: MCOMessageFlag.seen) {
+                XCTAssertEqual(mail.isSecure, isSecure)
+                if mail.isSecure || mail.sigState == .ValidSignature{
+                    XCTAssertEqual(mail.signedKey?.keyID, alice)
+                    XCTAssertEqual(mail.keyID, alice)
+                }
+                if let encState = encState {
+                    XCTAssertEqual(mail.encState, encState)
+                }
+                if let sigState = sigState {
+                    XCTAssertEqual(mail.sigState, sigState)
+                }
+                if let body = mail.body {
+                    XCTAssertEqual(body.removeNewLines(), MailTest.body.removeNewLines())
+                }
+                else {
+                    XCTFail()
+                }
+                XCTAssertTrue(MailTest.compareAdrs(adrs1: ["bob@enzevalos.de"], adrs2: mail.getReceivers()))
+            }
+        }
+    }
+    
+    func addAliceAndBob(addAlice: Bool) -> (alice: String, bob: String){
+        let aliceKeyId = importKey(file: "alicePublic", isSecretKey: false)
+        if addAlice {
+            _ = datahandler.newPublicKey(keyID: aliceKeyId, cryptoType: .PGP, adr: "alice@enzevalos.de", autocrypt: true)
+        }
+        let bobKeyId = importKey(file: "bobSecret", isSecretKey: true)
+        _ = datahandler.newSecretKey(keyID: bobKeyId, addPk: true)
+        return (aliceKeyId, bobKeyId)
+    }
+    
     
     static func compareAdrs(adrs1: [String], adrs2: [Mail_Address]) -> Bool{
         for adr in adrs1 {
@@ -182,20 +259,30 @@ class MailTest: XCTestCase {
         
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        
-        // Import eml file
-        // Add content as data
-        
+    func importKey(file: String, isSecretKey: Bool) -> String{
+        let bundle = Bundle(for: type(of: self))
+        do {
+            let keyData = try Data(contentsOf: bundle.url(forResource: file, withExtension: "asc")!)
+            let ids = try pgp.importKeys(data: keyData, pw: nil, secret: isSecretKey)
+            if ids.count > 0 {
+                return ids.first!
+            }
+        } catch {
+            XCTFail()
+        }
+        XCTFail()
+        return ""
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    static func loadMail(name: String) -> Data {
+        let bundle = Bundle(for: self)
+        do {
+            let mail = try Data(contentsOf: bundle.url(forResource: name, withExtension: "eml")!)
+            return mail
+        } catch {
+            XCTFail()
         }
+        return Data(base64Encoded: "")!
     }
     
     func createUser(adr: String = String.random().lowercased(), name: String = String.random()) -> MCOAddress {

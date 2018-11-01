@@ -32,6 +32,41 @@ open class PersistentMail: NSManagedObject, Mail {
     var isSecure: Bool {
         return isEncrypted && isSigned && isCorrectlySigned && !unableToDecrypt && !trouble && keyID != nil
     }
+    var encState: EncryptionState {
+        get{
+            if unableToDecrypt {
+                return EncryptionState.UnableToDecrypt
+            }
+            if !isEncrypted {
+                return EncryptionState.NoEncryption
+            }
+            else if self.decryptedWithOldPrivateKey {
+                return EncryptionState.ValidEncryptedWithOldKey
+            }
+            else {
+                return EncryptionState.ValidedEncryptedWithCurrentKey
+            }
+        }
+    }
+    
+    var sigState: SignatureState {
+        get{
+            if isSigned && isCorrectlySigned {
+                return SignatureState.ValidSignature
+            }
+            else if isSigned && keyID == nil {
+                return SignatureState.NoPublicKey
+            }
+            else if isSigned {
+                return SignatureState.InvalidSignature
+            }
+            else {
+                return SignatureState.NoSignature
+            }
+           
+        }
+    }
+
     var isRead: Bool {
         get {
             let value = flag.contains(MCOMessageFlag.seen)

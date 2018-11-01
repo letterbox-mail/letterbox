@@ -1,3 +1,4 @@
+
 //
 //  Autocrypt.swift
 //  enzevalos_iphone
@@ -38,7 +39,7 @@ class Autocrypt {
         var field: [String]
         var addr = ""
         var type = "1"
-        var pref = "mutal"
+        var pref = "mutual"
         var key = ""
         
         if autocrypt != nil {
@@ -83,12 +84,14 @@ class Autocrypt {
     
     func setPrefer_encryption(_ input: String){
         let pref = input.lowercased()
-        if pref == "yes" || pref == "mutal" {
-            self.prefer_encryption = EncState.MUTAL
+        if pref == "yes" || pref == "mutual" {
+            self.prefer_encryption = EncState.MUTUAL
         } else if pref == "no" {
             self.prefer_encryption = EncState.NOPREFERENCE
         }
-        prefer_encryption = EncState.NOPREFERENCE
+        else {
+            self.prefer_encryption = EncState.NOPREFERENCE
+        }
     }
     
     func toString() -> String {
@@ -105,7 +108,7 @@ class Autocrypt {
             if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true) {
                 var string = "\(ADDR)=" + adr
                 if enc == "yes" {
-                    string = string + "; \(ENCRYPTION)=mutal"
+                    string = string + "; \(ENCRYPTION)=mutual"
                 }
                 string = string + "; \(KEY)= \n" + key
                 builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
@@ -118,7 +121,7 @@ class Autocrypt {
             if key.prefer_encryption == .NOAUTOCRYPT {
                 return (false, ENFORCEENCRYPTION)
             }
-            else if key.prefer_encryption == .MUTAL {
+            else if key.prefer_encryption == .MUTUAL {
                 return (true, true)
             }
             return (true, false)
@@ -128,7 +131,7 @@ class Autocrypt {
         }
     }
     
-    static func createAutocryptKeyExport(builder: MCOMessageBuilder, keyID: String, key: String, passcode: String) {
+    static func createAutocryptKeyExport(builder: MCOMessageBuilder, keyID: String, key: String) {
         builder.header.setExtraHeaderValue("v1", forName: SETUPMESSAGE)
         
         builder.addAttachment(MCOAttachment.init(text: "This message contains a secret for reading secure mails on other devices. \n 1) Input the passcode from your smartphone to unlock the message on your other device. \n 2) Import the secret key into your pgp program on the device.  \n\n For more information visit: https://userpage.fu-berlin.de/letterbox/faq.html#otherDevices \n\n"))

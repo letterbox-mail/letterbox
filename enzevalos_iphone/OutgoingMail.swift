@@ -70,7 +70,6 @@ class OutgoingMail {
     fileprivate var exportSecretKey: Bool = false
     fileprivate var keyID: String?
     fileprivate var keyData: String?
-    fileprivate var passcode: String?
 
     var imapFlag: MCOMessageFlag {
         get {
@@ -233,8 +232,8 @@ class OutgoingMail {
         Autocrypt.addAutocryptHeader(builder)
         
         if exportSecretKey {
-            if let keyID = keyID, let keyData = keyData, let passcode = passcode {
-                Autocrypt.createAutocryptKeyExport(builder: builder, keyID: keyID, key: keyData, passcode: passcode)
+            if let keyID = keyID, let keyData = keyData {
+                Autocrypt.createAutocryptKeyExport(builder: builder, keyID: keyID, key: keyData)
             }
         }
         return builder
@@ -265,7 +264,7 @@ class OutgoingMail {
         mail.inviteMail = true
         return mail
     }
-    static func createSecretKeyExportMail(keyID: String, keyData: String, passcode: String) -> OutgoingMail{
+    static func createSecretKeyExportMail(keyID: String, keyData: String) -> OutgoingMail{
         let useraddr = (UserManager.loadUserValue(Attribute.userAddr) as! String)
         let mail = OutgoingMail(toEntrys: [useraddr], ccEntrys: [], bccEntrys: [], subject: "Autocrypt Setup Message", textContent: "", htmlContent: nil)
         mail.plainAddresses = mail.pgpAddresses
@@ -273,7 +272,6 @@ class OutgoingMail {
         mail.exportSecretKey = true
         mail.keyData = keyData
         mail.keyID = keyID
-        mail.passcode = passcode
         return mail
     }
     static func createLoggingMail(addr: String, textcontent: String) -> OutgoingMail{

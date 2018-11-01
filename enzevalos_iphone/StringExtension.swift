@@ -40,4 +40,15 @@ extension String {
     func trimmed() -> String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
+    
+    func removeNewLines() -> String {
+        let components = self.components(separatedBy: .whitespacesAndNewlines)
+        return components.filter { !$0.isEmpty }.joined(separator: " ")
+    }
+    
+    func remove(seperatedBy: CharacterSet) -> String {
+        let components = self.components(separatedBy: .whitespacesAndNewlines)
+        return components.filter { !$0.isEmpty }.joined(separator: " ")
+    }
 }
+

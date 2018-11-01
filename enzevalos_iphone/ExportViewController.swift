@@ -48,13 +48,13 @@ class ExportViewController: UITableViewController {
                     if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: true) {
                         passcode = pgp.loadExportPasscode(id: keyId)!
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
-                        mailHandler.sendSecretKey(keyID: keyId, key: message, passcode: passcode, callback: mailSend)
+                        mailHandler.sendSecretKey(keyID: keyId, key: message, callback: mailSend)
                     }
                 } else {
                     if let message = pgp.exportKey(id: keyId, isSecretkey: true, autocrypt: true, newPasscode: false) {
                         passcode = pgp.loadExportPasscode(id: keyId)!
                         let mailHandler = AppDelegate.getAppDelegate().mailHandler
-                        mailHandler.sendSecretKey(keyID: keyId, key: message, passcode: passcode, callback: mailSend)
+                        mailHandler.sendSecretKey(keyID: keyId, key: message, callback: mailSend)
                     }
                     alreadySent = true
                 }

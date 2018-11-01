@@ -22,7 +22,7 @@ import Foundation
 import Contacts
 
 public enum EncState {
-    case MUTAL
+    case MUTUAL
     case GOSSIP
     case NOPREFERENCE
     case RESET
@@ -32,7 +32,7 @@ public enum EncState {
     static func find(i: Int) -> EncState {
         switch i {
         case 0:
-            return EncState.MUTAL
+            return EncState.MUTUAL
         case 1:
             return EncState.GOSSIP
         case 2:
@@ -49,7 +49,7 @@ public enum EncState {
     func canEnc() -> Bool {
 
         switch self {
-        case EncState.MUTAL:
+        case EncState.MUTUAL:
             return true
         case EncState.GOSSIP:
             return true
@@ -61,7 +61,7 @@ public enum EncState {
     }
     func asInt() -> Int16 {
         switch self {
-        case EncState.MUTAL:
+        case EncState.MUTUAL:
             return 0
         case EncState.GOSSIP:
             return 1

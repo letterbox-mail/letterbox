@@ -69,8 +69,8 @@ class MailHandler {
             !(EmailHelper.singleton().authorization?.authState.isTokenFresh() ?? false)
     }
     
-    func sendSecretKey(keyID: String, key: String, passcode: String, callback: @escaping (Error?) -> Void) {
-        let mail = OutgoingMail.createSecretKeyExportMail(keyID: keyID, keyData: key, passcode: passcode)
+    func sendSecretKey(keyID: String, key: String, callback: @escaping (Error?) -> Void) {
+        let mail = OutgoingMail.createSecretKeyExportMail(keyID: keyID, keyData: key)
         sendSMTP(mail: mail, callback: callback)
     }
     
@@ -558,7 +558,8 @@ class MailHandler {
                 body = body.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                 // body.append("\n") //TODO: @ Jakob WHY????
 
-                if let chipher = findInlinePGP(text: body) {
+
+                if let chipher = findInlinePGP(text: msgParser.plainTextRendering()) {
                     dec = decryptText(body: chipher, from: header?.from, autocrypt: autocrypt)
                     if dec != nil {
                         if let text = dec?.decryptedText {
