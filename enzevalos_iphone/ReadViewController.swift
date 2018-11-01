@@ -313,7 +313,7 @@ class ReadViewController: UITableViewController {
         if let mail = mail {
             if isTrash {
                 Logger.log(delete: mail, toTrash: false)
-                AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
+                AppDelegate.getAppDelegate().mailHandler.setFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
             } else {
                 Logger.log(delete: mail, toTrash: true)
                 AppDelegate.getAppDelegate().mailHandler.move(mails: [mail], from: mail.folder.path, to: UserManager.backendTrashFolderPath)
@@ -635,7 +635,7 @@ extension ReadViewController: SendViewDelegate {
         reactButton.isEnabled = false
         if isDraft {
             if let mail = mail {
-                AppDelegate.getAppDelegate().mailHandler.addFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
+                AppDelegate.getAppDelegate().mailHandler.setFlag(mail.uid, flags: MCOMessageFlag.deleted, folder: mail.folder.path)
             }
             self.navigationController?.viewControllers.removeLast()
         }

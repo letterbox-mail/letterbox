@@ -50,7 +50,7 @@ class MailHandler {
     private static let MAXMAILS = 25
 
     var delegate: MailHandlerDelegator?
-    var INBOX: String {
+    static var INBOX: String {
         return "INBOX"
     }
     private var IMAPSes: MCOIMAPSession?
@@ -203,14 +203,14 @@ class MailHandler {
         if let supported = IMAPIdleSupported {
             if supported && IMAPIdleSession == nil {
                 IMAPIdleSession = setupIMAPSession()
-                let op = IMAPIdleSession!.idleOperation(withFolder: INBOX, lastKnownUID: UInt32(DataHandler.handler.findFolder(with: INBOX).maxID))
+                let op = IMAPIdleSession!.idleOperation(withFolder: MailHandler.INBOX, lastKnownUID: UInt32(DataHandler.handler.findFolder(with: MailHandler.INBOX).maxID))
                 op?.start({ error in
                     guard error == nil else {
                         self.errorhandling(error: error, originalCall: {self.startIMAPIdleIfSupported()}, completionCallback: nil)
                         return
                     }
                     self.IMAPIdleSession = nil
-                    let folder = DataHandler.handler.findFolder(with: self.INBOX)
+                    let folder = DataHandler.handler.findFolder(with: MailHandler.INBOX)
                     self.updateFolder(folder: folder, completionCallback: { error in
                         guard error == nil else {
                             self.errorhandling(error: error, originalCall: {self.startIMAPIdleIfSupported()}, completionCallback: nil)
@@ -257,24 +257,20 @@ class MailHandler {
         return session
     }
 
-    func addFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String?) {
-       changeFlag(uid: uid, flags: flags, kind: MCOIMAPStoreFlagsRequestKind.add, folder: folder)
+    func setFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String = INBOX) {
+        changeFlag(uid: uid, flags: flags, kind: MCOIMAPStoreFlagsRequestKind.set, folderName: folder)
     }
 
-    func removeFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String?) {
-       changeFlag(uid: uid, flags: flags, kind: MCOIMAPStoreFlagsRequestKind.remove, folder: folder)
+    func removeFlag(_ uid: UInt64, flags: MCOMessageFlag, folder: String = INBOX) {
+       changeFlag(uid: uid, flags: flags, kind: MCOIMAPStoreFlagsRequestKind.remove, folderName: folder)
     }
     
-    private func changeFlag(uid: UInt64, flags: MCOMessageFlag, kind: MCOIMAPStoreFlagsRequestKind, folder: String?){
-        var folderName = INBOX
-        if let folder = folder {
-            folderName = folder
-        }
+    private func changeFlag(uid: UInt64, flags: MCOMessageFlag, kind: MCOIMAPStoreFlagsRequestKind, folderName: String){
         let f = DataHandler.handler.findFolder(with: folderName)
         let folderstatus = IMAPSession.folderStatusOperation(folderName)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
-                self.errorhandling(error: error, originalCall: {self.changeFlag(uid: uid, flags: flags, kind: kind, folder: folder)}, completionCallback: nil)
+                self.errorhandling(error: error, originalCall: {self.changeFlag(uid: uid, flags: flags, kind: kind, folderName: folderName)}, completionCallback: nil)
                 return
             }
             if let status = status {
@@ -283,14 +279,14 @@ class MailHandler {
                     let op = self.IMAPSession.storeFlagsOperation(withFolder: folderName, uids: MCOIndexSet.init(index: uid), kind: kind, flags: flags)
                     op?.start { error -> Void in
                         guard error == nil else {
-                            self.errorhandling(error: error, originalCall: {self.changeFlag(uid: uid, flags: flags, kind: kind, folder: folder)}, completionCallback: nil)
+                            self.errorhandling(error: error, originalCall: {self.changeFlag(uid: uid, flags: flags, kind: kind, folderName: folderName)}, completionCallback: nil)
                             return
                         }
                         if flags.contains(MCOMessageFlag.deleted) && kind == MCOIMAPStoreFlagsRequestKind.add {
                             let operation = self.IMAPSession.expungeOperation(folderName)
                             operation?.start({ err in
                                 guard err == nil else {
-                                    self.errorhandling(error: error, originalCall: {self.changeFlag(uid: uid, flags: flags, kind: kind, folder: folder)}, completionCallback: nil)
+                                    self.errorhandling(error: error, originalCall: {self.changeFlag(uid: uid, flags: flags, kind: kind, folderName: folderName)}, completionCallback: nil)
                                     return
                                 }
                                 DataHandler.handler.deleteMail(with: uid)
@@ -347,7 +343,7 @@ class MailHandler {
     }
 
     func loadMailsForInbox(completionCallback: @escaping ((_ error: Error?) -> ())) {
-        let folder = DataHandler.handler.findFolder(with: INBOX)
+        let folder = DataHandler.handler.findFolder(with: MailHandler.INBOX)
         let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         folderstatus?.start { (error, status) -> Void in
             guard error == nil else {
@@ -363,7 +359,7 @@ class MailHandler {
     }
     
     func newMails(completionCallback: @escaping (_ newMails: UInt32, _ completionHandler: @escaping (UIBackgroundFetchResult) -> Void)  -> (), performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
-        let folder = DataHandler.handler.findFolder(with: INBOX)
+        let folder = DataHandler.handler.findFolder(with: MailHandler.INBOX)
         let folderstatus = IMAPSession.folderStatusOperation(folder.path)
         print("Ask folder")
         var backgroundTaskID: Int?
@@ -732,7 +728,7 @@ class MailHandler {
                                             return
                                         }
                                         uids.enumerate({uid in
-                                            self.addFlag(uid, flags: MCOMessageFlag.deleted, folder: from)
+                                            self.setFlag(uid, flags: MCOMessageFlag.deleted, folder: from)
                                         })
                                     })
                                 })
