@@ -27,7 +27,7 @@ enum Attribute: Int {
     var defaultValue: AnyObject? {
         switch self {
         case .prefEncryption:
-            return "mutal" as AnyObject?
+            return EncState.MUTUAL.name as AnyObject?
         case .autocryptType:
             return "1" as AnyObject? // only openpgp
         case .sentFolderPath: //save backendFolderPath here

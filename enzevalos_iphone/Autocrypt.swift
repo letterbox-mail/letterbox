@@ -21,7 +21,6 @@ class Autocrypt {
     static let KEY = "keydata"
     static let EXTRAHEADERS = [Autocrypt.AUTOCRYPTHEADER, Autocrypt.SETUPMESSAGE]
     
-    
     var addr: String = ""
     var type: CryptoScheme = .PGP
     var prefer_encryption: EncState = EncState.NOAUTOCRYPT
@@ -39,7 +38,7 @@ class Autocrypt {
         var field: [String]
         var addr = ""
         var type = "1"
-        var pref = "mutual"
+        var pref = EncState.MUTUAL.name
         var key = ""
         
         if autocrypt != nil {
@@ -84,9 +83,9 @@ class Autocrypt {
     
     func setPrefer_encryption(_ input: String){
         let pref = input.lowercased()
-        if pref == "yes" || pref == "mutual" {
+        if pref == "yes" || pref == "mutual" || pref == EncState.MUTUAL.name {
             self.prefer_encryption = EncState.MUTUAL
-        } else if pref == "no" {
+        } else if pref == "no" || pref == EncState.NOPREFERENCE.name {
             self.prefer_encryption = EncState.NOPREFERENCE
         }
         else {
@@ -101,15 +100,13 @@ class Autocrypt {
     static func addAutocryptHeader(_ builder: MCOMessageBuilder) {
         let adr = (UserManager.loadUserValue(Attribute.userAddr) as! String).lowercased()
         let skID = DataHandler.handler.prefSecretKey().keyID
+        let encPref = EncState.MUTUAL
         
         let pgp = SwiftPGP()
         if let id = skID {
-            let enc = "yes"
             if let key = pgp.exportKey(id: id, isSecretkey: false, autocrypt: true) {
                 var string = "\(ADDR)=" + adr
-                if enc == "yes" {
-                    string = string + "; \(ENCRYPTION)=mutual"
-                }
+                string = string + "; \(ENCRYPTION)=\(encPref.name)"
                 string = string + "; \(KEY)= \n" + key
                 builder.header.setExtraHeaderValue(string, forName: AUTOCRYPTHEADER)
             }

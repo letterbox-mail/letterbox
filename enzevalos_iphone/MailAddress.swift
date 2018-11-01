@@ -27,6 +27,19 @@ public enum EncState {
     case NOPREFERENCE
     case RESET
     case NOAUTOCRYPT
+    
+    var name: String{
+        get{
+            switch self {
+            case .MUTUAL:
+                return "mutual"
+            case .NOPREFERENCE:
+                return "nopreference"
+            default:
+                return ""
+            }
+        }
+    }
 
 
     static func find(i: Int) -> EncState {
