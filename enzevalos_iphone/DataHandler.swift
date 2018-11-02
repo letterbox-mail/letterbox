@@ -777,7 +777,6 @@ class DataHandler {
         myfolder.addToMails(mail)
         if mail.uid > myfolder.maxID {
             myfolder.maxID = mail.uid
-            print("New ID: \( myfolder.maxID)")
         }
         var record = getKeyRecord(addr: mail.from.mailAddress, keyID: nil)
         if let signedID = mail.signedKey?.keyID {

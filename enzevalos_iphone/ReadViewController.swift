@@ -147,7 +147,7 @@ class ReadViewController: UITableViewController {
 
         _ = mail?.from.contact?.records.flatMap { x in
             if x.hasKey && x.keyID != nil {
-                // We consider the enzvalos contact key disccovery date
+                // We consider the enzvalos contact key discovery date
                 self.keyDiscoveryDate = x.contact.firstSecureMailReceived
             }
             return nil
