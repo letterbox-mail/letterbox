@@ -841,7 +841,6 @@ class MailHandler {
         } else {
             initFolder(folder: folder, completionCallback: completionCallback)
         }
-
     }
     private func loadMailsSinceDate(folder: Folder, since: Date, maxLoad: Int = MailHandler.MAXMAILS, completionCallback: @escaping ((Error?) -> ())) {
         let folderPath = folder.path

@@ -143,6 +143,8 @@
 		476142081E07E52B00FD5E4F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476142071E07E52B00FD5E4F /* Theme.swift */; };
 		4761420A1E082F9C00FD5E4F /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 476142091E082F9C00FD5E4F /* Settings.bundle */; };
 		476373C21E09BA88004D5EFE /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476373C11E09BA88004D5EFE /* UserData.swift */; };
+		4766A38E218DFC9500F35ECA /* NBUIKitMainThreadGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4766A38D218DFC9500F35ECA /* NBUIKitMainThreadGuard.swift */; };
+		4766A38F218DFFF800F35ECA /* NBUIKitMainThreadGuard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4766A38D218DFC9500F35ECA /* NBUIKitMainThreadGuard.swift */; };
 		476801DB218436B600F7F259 /* Autocrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476801DA218436B600F7F259 /* Autocrypt.swift */; };
 		476801DC218436B600F7F259 /* Autocrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476801DA218436B600F7F259 /* Autocrypt.swift */; };
 		476801DE21846A5A00F7F259 /* OutgoingMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476801DD21846A5A00F7F259 /* OutgoingMail.swift */; };
@@ -337,6 +339,7 @@
 		476142071E07E52B00FD5E4F /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		476142091E082F9C00FD5E4F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		476373C11E09BA88004D5EFE /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		4766A38D218DFC9500F35ECA /* NBUIKitMainThreadGuard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NBUIKitMainThreadGuard.swift; sourceTree = "<group>"; };
 		476801DA218436B600F7F259 /* Autocrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Autocrypt.swift; sourceTree = "<group>"; };
 		476801DD21846A5A00F7F259 /* OutgoingMail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMail.swift; sourceTree = "<group>"; };
 		476801E221898BBE00F7F259 /* MailTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MailTest.swift; path = /Users/Olli/enzevalos/test2/enzevalos_iphone/enzevalos_iphoneTests/MailTest.swift; sourceTree = "<absolute>"; };
@@ -781,6 +784,7 @@
 				A16BA2111E0439B6005E29E3 /* providers.json */,
 				476801DD21846A5A00F7F259 /* OutgoingMail.swift */,
 				A1EB057B1D956838008659C1 /* MailHandler.swift */,
+				4766A38D218DFC9500F35ECA /* NBUIKitMainThreadGuard.swift */,
 				476801DA218436B600F7F259 /* Autocrypt.swift */,
 				A198270D1D9A8ABC0027F65C /* enzevalos_iphone-Bridging-Header.h */,
 				A1F9922B1DA7C9100073BF1B /* Main.storyboard */,
@@ -1418,6 +1422,7 @@
 				3E9709111FAC95F5005825C9 /* ArrowView.swift in Sources */,
 				3E9709121FAC95F5005825C9 /* InboxTableViewCell.swift in Sources */,
 				3E9709131FAC95F5005825C9 /* Onboarding.swift in Sources */,
+				4766A38F218DFFF800F35ECA /* NBUIKitMainThreadGuard.swift in Sources */,
 				3E9709141FAC95F5005825C9 /* AppDelegate.swift in Sources */,
 				3EC35F2520037651008BDF95 /* InvitationHelper.swift in Sources */,
 				3E9709151FAC95F5005825C9 /* FolderCell.swift in Sources */,
@@ -1505,6 +1510,7 @@
 				3EC35F2420037651008BDF95 /* InvitationHelper.swift in Sources */,
 				A1D5076F1E80257A00B68B38 /* KeyViewController.swift in Sources */,
 				A1A9DE731F864B0500B808AA /* ExportCells.swift in Sources */,
+				4766A38E218DFC9500F35ECA /* NBUIKitMainThreadGuard.swift in Sources */,
 				472F39901E252470009260FB /* CNMailAddressesExtension.swift in Sources */,
 				F113C38B1F3344C200E7F1D6 /* ViewControllerPannable.swift in Sources */,
 				A1EB05841D956867008659C1 /* TableViewDataDelegate.swift in Sources */,

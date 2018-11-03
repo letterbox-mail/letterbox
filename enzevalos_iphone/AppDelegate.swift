@@ -35,6 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var counterBackgroundFetch = 0
     var start: Date = Date()
 
+    override init() {
+        super.init()
+        UIView.classInit
+    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -201,11 +205,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func setupKeys() {
-        self.window?.rootViewController = Onboarding.keyHandlingView()
+        DispatchQueue.main.async(execute: {
+            self.window?.rootViewController = Onboarding.keyHandlingView()
+        })
         let handler = DataHandler.init()
         _ = handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
-        StudySettings.setupStudyKeys()
-        StudySettings.firstMail()
+       // StudySettings.setupStudyKeys()
+       // StudySettings.firstMail()
         DataHandler.handler.callForFolders(done: { err in
             for f in DataHandler.handler.allFolders {
             if f.flags.contains(MCOIMAPFolderFlag.drafts) {
