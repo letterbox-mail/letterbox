@@ -145,13 +145,7 @@ class ReadViewController: UITableViewController {
 
         messageBody.delegate = textDelegate
 
-        _ = mail?.from.contact?.records.flatMap { x in
-            if x.hasKey && x.keyID != nil {
-                // We consider the enzvalos contact key discovery date
-                self.keyDiscoveryDate = x.contact.firstSecureMailReceived
-            }
-            return nil
-        }
+        self.keyDiscoveryDate = mail?.from.contact?.firstSecureMailReceived
     }
 
     deinit {
