@@ -59,7 +59,18 @@ typealias requestTuple = (request: String, value: Any)
 class DataHandler {
     static let handler: DataHandler = DataHandler()
 
-    private var managedObjectContext: NSManagedObjectContext
+    private var mainMOC: NSManagedObjectContext
+    private var backMOC: NSManagedObjectContext
+    private var managedObjectContext: NSManagedObjectContext {
+        get {
+            if Thread.current.isMainThread {
+                return mainMOC
+            }
+            else {
+                return backMOC
+            }
+        }
+    }
     private let MaxRecords = 50
     private let MaxMailsPerRecord = 100
 
@@ -155,8 +166,8 @@ class DataHandler {
             fatalError("Error initializing mom from: \(modelURL)")
         }
         let psc = NSPersistentStoreCoordinator(managedObjectModel: mom)
-        self.managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType) // This is why we have trouble with concurrency: https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/Concurrency.html
-        self.managedObjectContext.persistentStoreCoordinator = psc
+        self.mainMOC = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType) // This is why we have trouble with concurrency: https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/Concurrency.html
+        self.mainMOC.persistentStoreCoordinator = psc
 
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let docURL = urls[urls.endIndex - 1]
@@ -169,7 +180,9 @@ class DataHandler {
         } catch {
             fatalError("Error migrating store: \(error)")
         }
-        managedObjectContext.mergePolicy = NSMergePolicy(merge: NSMergePolicyType.mergeByPropertyObjectTrumpMergePolicyType);
+        mainMOC.mergePolicy = NSMergePolicy(merge: NSMergePolicyType.mergeByPropertyObjectTrumpMergePolicyType);
+        backMOC = NSManagedObjectContext.init(concurrencyType: .privateQueueConcurrencyType)
+        backMOC.parent = mainMOC
 
         callForFolders(done: { _ in return })
 
