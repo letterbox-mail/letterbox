@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         resetApp()
         StudySettings.setupStudy()
-       // StudySettings.firstMail()
+        //StudySettings.firstMail()
         if (!UserDefaults.standard.bool(forKey: "launchedBefore")) {
 //            Logger.queue.async(flags: .barrier) {
                 Logger.log(startApp: true)
@@ -205,8 +205,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         let handler = DataHandler.init()
         _ = handler.createNewSecretKey(adr: UserManager.loadUserValue(Attribute.userAddr) as! String)
-       // StudySettings.setupStudyKeys()
-       // StudySettings.firstMail()
+        StudySettings.setupStudyKeys()
+        StudySettings.firstMail()
         DataHandler.handler.callForFolders(done: { err in
             for f in DataHandler.handler.allFolders {
             if f.flags.contains(MCOIMAPFolderFlag.drafts) {
