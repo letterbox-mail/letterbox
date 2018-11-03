@@ -34,11 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var orientationLock = UIInterfaceOrientationMask.allButUpsideDown
     var counterBackgroundFetch = 0
     var start: Date = Date()
-
-    override init() {
-        super.init()
-        UIView.classInit
-    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
