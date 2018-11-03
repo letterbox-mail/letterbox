@@ -358,20 +358,17 @@ class MailHandler {
         }
     }
     
-    func newMails(completionCallback: @escaping (_ newMails: UInt32, _ completionHandler: @escaping (UIBackgroundFetchResult) -> Void)  -> (), performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
+    func backgroundUpdate(completionCallback: @escaping (_ newMails: UInt32, _ completionHandler: @escaping (UIBackgroundFetchResult) -> Void)  -> (), performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
         let folder = DataHandler.handler.findFolder(with: MailHandler.INBOX)
         let folderstatus = IMAPSession.folderStatusOperation(folder.path)
-        print("Ask folder")
+        // Work only in background thread....
         var backgroundTaskID: Int?
         DispatchQueue.global(qos: .background).async {
-            print("This is run on the background queue")
             backgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "Finish Network Tasks"){
                 UIApplication.shared.endBackgroundTask(backgroundTaskID!)
                 backgroundTaskID = UIBackgroundTaskInvalid
             }
-            
             folderstatus?.start { (error, status) -> Void in
-                print("Result!")
                 guard error == nil else {
                     UIApplication.shared.endBackgroundTask(backgroundTaskID!)
                     backgroundTaskID = UIBackgroundTaskInvalid
@@ -381,11 +378,15 @@ class MailHandler {
                 if let status = status {
                     let uidValidity = status.uidValidity
                     let uid = status.uidNext
-                    let newMails = status.recentCount
-                    print("Status: ", status)
-                    print("newMails: ", newMails)
-                    let currentDateTime = Date()
-                    print(currentDateTime, " Folder maxID: ", folder.maxID)
+                    var newMails: UInt32 = 0
+                    var diff = uid.subtractingReportingOverflow(UInt32(folder.maxID))
+                    diff = diff.partialValue.subtractingReportingOverflow(1)
+                    if diff.overflow {
+                        newMails = 0
+                    }
+                    else {
+                        newMails = diff.partialValue
+                    }
                     if (uidValidity != folder.uidvalidity || folder.maxID < uid - 1) {
                         UIApplication.shared.endBackgroundTask(backgroundTaskID!)
                         backgroundTaskID = UIBackgroundTaskInvalid

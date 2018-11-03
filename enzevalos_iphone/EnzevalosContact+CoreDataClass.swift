@@ -185,7 +185,6 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
         for r in records {
             if date == nil {
                 date = r.firstSecureMailReceived
-
             }
             else if let current =  r.firstSecureMailReceived, let d = date {
                 if current < d {

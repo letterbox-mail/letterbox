@@ -33,6 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var mailHandler = MailHandler()
     var orientationLock = UIInterfaceOrientationMask.allButUpsideDown
     var counterBackgroundFetch = 0
+    var start: Date = Date()
+
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -77,10 +79,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		if #available(iOS 11.0, *) {
 			QAKit.Fingertips.start()
 		}
-        // Set background fetching time interval.
-        let backgroundFetchInterval : Double = 10 //60*5  // seconds * minutes or UIApplicationBackgroundFetchIntervalMinimum
+        // Set background fetching time interval to 5 min
+        // Alternative:  UIApplicationBackgroundFetchIntervalMinimum
+        let backgroundFetchInterval : Double = 60*5  // =  seconds * minutes
         UIApplication.shared.setMinimumBackgroundFetchInterval(backgroundFetchInterval)
-        
         return true
     }
     
@@ -228,9 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func onboardingDone() {
-//        Logger.queue.async(flags: .barrier) {
-            Logger.log(onboardingState: "done")
-//        }
+        Logger.log(onboardingState: "done")
         UserDefaults.standard.set(true, forKey: "launchedBefore")
         self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         presentInboxViewController()
@@ -239,9 +239,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-//        Logger.queue.async(flags: .barrier) {
-            Logger.log(background: true)
-//        }
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        Logger.log(background: true)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -347,24 +346,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    
     // Support for background fetch
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         counterBackgroundFetch = counterBackgroundFetch + 1
-        print("Fetch mails! #Fetches", counterBackgroundFetch )
-        mailHandler.newMails(completionCallback: hasNewMails(_:performFetchWithCompletionHandler: ), performFetchWithCompletionHandler: completionHandler)
+        start = Date()
+        mailHandler.backgroundUpdate(completionCallback: hasNewMails(_:performFetchWithCompletionHandler: ), performFetchWithCompletionHandler: completionHandler)
     }
     
-    var c = 1
     
     func hasNewMails(_ newMails: UInt32, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
-        print("Have we new Mails?: ", newMails)
-        c = c + 1
-        UIApplication.shared.applicationIconBadgeNumber = Int(c)
+        let duration = Date().timeIntervalSince(start)
+        Logger.log(backgroundFetch: newMails, duration: duration)
         if newMails > 0 {
-            // UIApplication.shared.applicationIconBadgeNumber = Int(newMails)
+            UIApplication.shared.applicationIconBadgeNumber = Int(newMails)
+            completionHandler(.newData)
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+            completionHandler(.noData)
         }
-        completionHandler(.newData)
+
     }
 }
 

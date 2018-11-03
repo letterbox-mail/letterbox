@@ -625,6 +625,19 @@ class Logger {
         sendCheck()
     }
 
+    static func log(backgroundFetch newMails: UInt32, duration: Double) {
+        if !logging {
+            return
+        }
+        
+        var event = plainLogDict()
+        event["type"] = LoggingEventType.backgroundFetch.rawValue
+        event["newMails"] = Int(newMails)
+        event["duration"] = duration
+        
+        saveToDisk(json: dictToJSON(fields: event))
+    }
+    
     static func log(verify keyID: String, open: Bool, success: Bool? = nil) {
         if !logging {
             return
