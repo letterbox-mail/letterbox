@@ -61,5 +61,6 @@ enum LoggingEventType: String {
         search = "search",
         gotBitcoinMail = "gotBitcoinMail",
         onboardingPageTransition = "onboardingPageTransition",
-        onboardingState = "onboardingState"
+        onboardingState = "onboardingState",
+        backgroundFetch = "backgroundFetch"
 }

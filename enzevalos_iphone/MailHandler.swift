@@ -792,6 +792,50 @@ class MailHandler {
             }
         }
     }
+    
+    func backgroundUpdate(completionCallback: @escaping (_ newMails: UInt32, _ completionHandler: @escaping (UIBackgroundFetchResult) -> Void)  -> (), performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
+        let folder = DataHandler.handler.findFolder(with: INBOX)
+        let folderstatus = IMAPSession.folderStatusOperation(folder.path)
+        // Work only in background thread....
+        var backgroundTaskID: Int?
+        DispatchQueue.global(qos: .background).async {
+            backgroundTaskID = UIApplication.shared.beginBackgroundTask (withName: "Finish Network Tasks"){
+                UIApplication.shared.endBackgroundTask(backgroundTaskID!)
+                backgroundTaskID = UIBackgroundTaskInvalid
+            }
+            folderstatus?.start { (error, status) -> Void in
+                guard error == nil else {
+                    UIApplication.shared.endBackgroundTask(backgroundTaskID!)
+                    backgroundTaskID = UIBackgroundTaskInvalid
+                    completionCallback(0, completionHandler)
+                    return
+                }
+                if let status = status {
+                    let uidValidity = status.uidValidity
+                    let uid = status.uidNext
+                    var newMails: UInt32 = 0
+                    var diff = uid.subtractingReportingOverflow(UInt32(folder.maxID))
+                    diff = diff.partialValue.subtractingReportingOverflow(1)
+                    if diff.overflow {
+                        newMails = 0
+                    }
+                    else {
+                        newMails = diff.partialValue
+                    }
+                    if (uidValidity != folder.uidvalidity || folder.maxID < uid - 1) {
+                        UIApplication.shared.endBackgroundTask(backgroundTaskID!)
+                        backgroundTaskID = UIBackgroundTaskInvalid
+                        completionCallback(newMails, completionHandler)
+                    }
+                    else {
+                        UIApplication.shared.endBackgroundTask(backgroundTaskID!)
+                        backgroundTaskID = UIBackgroundTaskInvalid
+                        completionCallback(0, completionHandler)
+                    }
+                }
+            }
+        }
+    }
 
     private func loadMessagesFromServer(_ uids: MCOIndexSet, folderPath: String, maxLoad: Int = MailHandler.MAXMAILS, record: KeyRecord?, completionCallback: @escaping ((_ error: Error?) -> ())) {
         let requestKind = MCOIMAPMessagesRequestKind(rawValue: MCOIMAPMessagesRequestKind.headers.rawValue | MCOIMAPMessagesRequestKind.flags.rawValue)

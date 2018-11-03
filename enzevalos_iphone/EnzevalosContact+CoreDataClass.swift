@@ -176,6 +176,24 @@ open class EnzevalosContact: NSManagedObject, Contact, Comparable {
             return false
         }
     }
+    
+    open var firstSecureMailReceived: Date? {
+        if !hasKey {
+            return nil
+        }
+        var date: Date? = nil
+        for r in records {
+            if date == nil {
+                date = r.firstSecureMailReceived
+            }
+            else if let current =  r.firstSecureMailReceived, let d = date {
+                if current < d {
+                    date = r.firstSecureMailReceived
+                }
+            }
+        }
+        return date
+    }
 
     open var cnContact: CNContact? {
         get {

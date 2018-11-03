@@ -24,6 +24,7 @@ import Onboard
 import SystemConfiguration
 import QAKit
 import GTMAppAuth
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,11 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var contactStore = CNContactStore()
     var mailHandler = MailHandler()
     var orientationLock = UIInterfaceOrientationMask.allButUpsideDown
+    var counterBackgroundFetch = 0
+    var start: Date = Date()
 
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         //UINavigationBar.appearance().backgroundColor = UIColor.blueColor()
-        
         if UIScreen.main.bounds.height < 700 {
             kDefaultImageViewSize = 20
             kDefaultTitleFontSize = 33
@@ -64,9 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         } else {
             AddressHandler.updateCNContacts()
-//            Logger.queue.async(flags: .barrier) {
-                Logger.log(startApp: false)
-//            }
+            Logger.log(startApp: false)
             presentInboxViewController()
         }
         NotificationCenter.default.addObserver(
@@ -78,6 +79,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		if #available(iOS 11.0, *) {
 			QAKit.Fingertips.start()
 		}
+        // Set background fetching time interval to 5 min
+        // Alternative:  UIApplicationBackgroundFetchIntervalMinimum
+        let backgroundFetchInterval : Double = 60*5  // =  seconds * minutes
+        UIApplication.shared.setMinimumBackgroundFetchInterval(backgroundFetchInterval)
 
         return true
     }
@@ -136,7 +141,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func credentialCheck() {
+    func credentialCheck() {        
         self.window?.rootViewController = Onboarding.checkConfigView()
         if Onboarding.googleAuth {
             Onboarding.googleAuth = false
@@ -170,10 +175,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func contactCheck(_ accessGranted: Bool) {
         if accessGranted {
-            setupKeys()
+            requestForNotifications()
         } else {
             DispatchQueue.main.async(execute: {
-                self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.setupKeys)
+                self.showMessage(NSLocalizedString("AccessNotGranted", comment: ""), completion: self.requestForNotifications)
             });
         }
     }
@@ -226,9 +231,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func onboardingDone() {
-//        Logger.queue.async(flags: .barrier) {
-            Logger.log(onboardingState: "done")
-//        }
+        Logger.log(onboardingState: "done")
         UserDefaults.standard.set(true, forKey: "launchedBefore")
         self.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
         presentInboxViewController()
@@ -237,16 +240,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-//        Logger.queue.async(flags: .barrier) {
-            Logger.log(background: true)
-//        }
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        Logger.log(background: true)
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         //DataHandler.handler.terminate()
-    
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -267,6 +268,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Logger.log(terminateApp: Void())
         DataHandler.handler.terminate()
     }
+    
+  
 
     class func getAppDelegate() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
@@ -290,8 +293,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         presentedViewController.present(alertController, animated: true, completion: nil)
     }
 
+    
+    func requestForNotifications(){
+        if #available(iOS 10.0, *) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [ .badge], completionHandler: {didAllow, error in
+                self.setupKeys()
+            })
+        } else {
+            // TODO: Fallback on earlier versions
+            self.setupKeys()
+        }
+    }
 
     func requestForAccess(_ completionHandler: @escaping (_ accessGranted: Bool) -> Void) {
+        //requesting for authorization
         let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
 
         switch authorizationStatus {
@@ -304,10 +319,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     completionHandler(access)
                 } else {
                     if authorizationStatus == CNAuthorizationStatus.denied {
-                        /*dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts through the Settings."
-                            self.showMessage(message, completion: nil)
-                        })*/
                     }
                     completionHandler(false)
                 }
@@ -334,11 +345,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    
+    // Support for background fetch
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        counterBackgroundFetch = counterBackgroundFetch + 1
+        start = Date()
+        mailHandler.backgroundUpdate(completionCallback: hasNewMails(_:performFetchWithCompletionHandler: ), performFetchWithCompletionHandler: completionHandler)
+    }
+    
+    
+    func hasNewMails(_ newMails: UInt32, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
+        let duration = Date().timeIntervalSince(start)
+        Logger.log(backgroundFetch: newMails, duration: duration)
+        if newMails > 0 {
+            UIApplication.shared.applicationIconBadgeNumber = Int(newMails)
+            completionHandler(.newData)
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+            completionHandler(.noData)
+        }
+
+    }
 }
 
 extension AppDelegate { //Network check
     
-    //Inspired by https://stackoverflow.com/questions/39558868/check-internet-connection-ios-10
+    // Inspired by https://stackoverflow.com/questions/39558868/check-internet-connection-ios-10
     
     enum ReachabilityStatus {
         case notReachable
@@ -389,7 +422,7 @@ extension AppDelegate { //Network check
 }
 
 struct AppUtility {
-    // https://stackoverflow.com/a/41811798
+    // See:  https://stackoverflow.com/a/41811798
 
     static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
 
